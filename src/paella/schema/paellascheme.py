@@ -38,38 +38,13 @@ plpgsql_delete_trait = """create or replace function delete_trait(varchar, varch
 	end ;
 ' language 'plpgsql';
 """
-
-plpgsql_delete_profile = """create or replace function delete_profile(varchar)
-returns integer as '
-        begin
-        execute ''delete from profile_variables where profile = ''|| quote_literal($1) ;
-        execute ''delete from profile_family where profile = ''|| quote_literal($1) ;
-        execute ''delete from profile_trait where profile = ''|| quote_literal($1) ;
-        execute ''delete from profiles where profile = ''|| quote_literal($1) ;
-        return 0 ;
-        end ;
-' language 'plpgsql';
-"""
-
-plpgsql_delete_family = """create or replace function delete_family(varchar)
-returns integer as '
-        begin
-        execute ''delete from family_environment where family = ''|| quote_literal($1) ;
-        execute ''delete from family_parent where family = ''|| quote_literal($1) ;
-        execute ''delete from families where family = ''|| quote_literal($1) ;
-        return 0 ;
-        end ;
-' language 'plpgsql';
-"""
-
-
 def pgsql_delete(name, tables, key):
     lines = []
     lines.append('create or replace function %s(varchar)' % name)
     lines.append("returns integer as '")
     lines.append('begin')
     for table in tables:
-        line = "execute ''delete from %s where %s = ''|| quote_literal($1) ;" % (table, key)
+        line = "delete from %s where %s = $1 ;" % (table, key)
         lines.append(line)
     lines.append('return 0 ;')
     lines.append('end ;')
