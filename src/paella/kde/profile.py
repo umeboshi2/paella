@@ -1,9 +1,14 @@
 import os
 from qt import SLOT, SIGNAL, Qt
+from qt import QListBoxText
+from qt import QFrame, QVBoxLayout, QHBoxLayout
+
 from kdeui import KMainWindow
 from kdeui import KPopupMenu
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
+from kdeui import KActionSelector
+from kdeui import KPushButton
 
 from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
@@ -12,13 +17,78 @@ from paella.profile.profile import Profile
 
 from kommon.pdb.midlevel import StatementCursor
 from kommon.base.gui import MainWindow, SimpleSplitWindow
-from kommon.base.gui import ViewBrowser, ViewWindow
+from kommon.base.gui import ViewWindow
+from kommon.base.gui import BaseAssigner
+from kommon.db.gui import ViewBrowser
 from paella.kde.xmlgen import ProfileDoc
 
 class SimpleEdit(KTextEdit):
     def __init__(self, app, parent):
         KTextEdit.__init__(self, parent)
         self.app = app
+
+class TraitAssigner(BaseAssigner):
+    def __init__(self, app, parent, profile):
+        self.profile = Profile(app.conn)
+        self.profile.set_profile(profile)
+        BaseAssigner.__init__(self, app, parent,
+                              name='TraitAssigner', udbuttons=True)
+        
+    def initView(self):
+        app = self.app
+        self.db = app.db
+        self.suite = self.profile.current.suite
+        self.traits = StatementCursor(app.conn)
+        self.traits.set_table('%s_traits'  % self.suite)
+        
+        ptrows = self.profile.get_trait_rows()
+        pt = [r.trait for r in ptrows]
+        all_trows = self.traits.select(fields=['trait'], order=['trait'])
+        trows = [r for r in all_trows if r.trait not in pt]
+        abox = self.listBox.availableListBox()
+        sbox = self.listBox.selectedListBox()
+        for row in ptrows:
+            QListBoxText(sbox, row.trait)
+        for row in trows:
+            QListBoxText(abox, row.trait)
+
+class TraitAssignerOrig(KMainWindow):
+    def __init__(self, app, parent, profile):
+        KMainWindow.__init__(self, parent, 'TraitAssigner')
+        self.page = QFrame(self)
+        self.vbox = QVBoxLayout(self.page, 5, 7)
+        self.listBox = KActionSelector(self.page)
+        self.listBox.setShowUpDownButtons(True)
+        self.setCentralWidget(self.page)
+        self.vbox.addWidget(self.listBox)
+        hbox = QHBoxLayout(self.page, 5, 7)
+        self.vbox.addLayout(hbox)
+        self.ok_button = KPushButton('ok', self.page)
+        self.cancel_button = KPushButton('cancel', self.page)
+        hbox.addWidget(self.ok_button)
+        hbox.addWidget(self.cancel_button)
+        self.app = app
+        self.db = app.db
+        self.profile = Profile(app.conn)
+        self.profile.set_profile(profile)
+        self.suite = self.profile.current.suite
+        self.traits = StatementCursor(app.conn)
+        self.traits.set_table('%s_traits'  % self.suite)
+        self.initlistView()
+        self.show()
+
+    def initlistView(self):
+        ptrows = self.profile.get_trait_rows()
+        pt = [r.trait for r in ptrows]
+        all_trows = self.traits.select(fields=['trait'], order=['trait'])
+        trows = [r for r in all_trows if r.trait not in pt]
+        abox = self.listBox.availableListBox()
+        sbox = self.listBox.selectedListBox()
+        for row in ptrows:
+            QListBoxText(sbox, row.trait)
+        for row in trows:
+            QListBoxText(abox, row.trait)
+            
         
 class ProfileView(ViewBrowser):
     def __init__(self, app, parent):
@@ -50,6 +120,11 @@ class ProfileView(ViewBrowser):
                 win = ViewWindow(self.app, self.parent(), SimpleEdit, 'ScriptView')
                 win.view.setText(scriptfile)
                 win.resize(600, 800)
+        elif action == 'edit':
+            if context == 'traits':
+                win = TraitAssigner(self.app, self.parent(), id)
+            else:
+                self._url_error(url)
                 
         else:
             KMessageBox.information(self, 'called %s' % url)

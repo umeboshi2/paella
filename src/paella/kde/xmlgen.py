@@ -6,6 +6,7 @@ from kommon.base.xmlgen import ListItem, UnorderedList
 from kommon.base.xmlgen import BR, HR, Bold, TR, TD, Paragraph
 from kommon.base.xmlgen import SimpleTitleElement, RecordElement
 
+from paella.db.midlevel import StatementCursor
 from paella.profile.trait import Trait
 from paella.profile.profile import Profile
 from paella.profile.family import Family
@@ -49,6 +50,19 @@ class PackageTable(BaseElement):
             trow.appendChild(a)
             self.appendChild(trow)
 
+class PackageFieldTable(BaseElement):
+    def __init__(self, row, **atts):
+        BaseElement.__init__(self, 'table', **atts)
+        fields = ['package', 'priority', 'section', 'installedsize',
+                  'maintainer', 'version', 'description']
+        for field in fields:
+            trow = TR()
+            p = TxtTD(field)
+            trow.appendChild(p)
+            a = TxtTD(row[field])
+            trow.appendChild(a)
+            self.appendChild(trow)
+            
 class TemplateTable(BaseElement):
     def __init__(self, rows, **atts):
         BaseElement.__init__(self, 'table', **atts)
@@ -63,7 +77,26 @@ class TemplateTable(BaseElement):
             trow.appendChild(p)
             self.appendChild(trow)
         
-        
+class PackageDoc(BaseDocument):
+    def __init__(self, app, **atts):
+        BaseDocument.__init__(self, app, **atts)
+        self.suite = None
+        self.cursor = StatementCursor(self.conn)
+
+    def set_suite(self, suite):
+        self.suite = suite
+        self.cursor.set_table('%s_packages' % self.suite)
+
+    def set_clause(self, clause):
+        print 'clause---->', clause, type(clause)
+        self.cursor.clause = clause
+        self.clear_body()
+        title = SimpleTitleElement('%s Packages' % self.suite, bgcolor='IndianRed', width='100%')
+        self.body.appendChild(title)
+        for row in self.cursor.select(clause=clause):
+            self.body.appendChild(PackageFieldTable(row, bgcolor='MistyRose2'))
+            self.body.appendChild(HR())
+            
 class TraitDoc(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)
@@ -74,9 +107,14 @@ class TraitDoc(BaseDocument):
         self.trait.set_trait(trait)
         title = SimpleTitleElement('Trait: %s' % trait, bgcolor='IndianRed', width='100%')
         self.body.appendChild(title)
+        self.body.appendChild(HR())
         plist = UnorderedList()
         parents = self.trait.parents(trait=trait)
-        self.body.appendChild(SectionTitle('Parents'))
+        parent_section = SectionTitle('Parents')
+        parent_section.create_rightside_table()
+        parent_section.append_rightside_anchor(Anchor('hello.there.dude', 'edit'))
+        parent_section.append_rightside_anchor(Anchor('hello.there.dudee', 'edit2'))
+        self.body.appendChild(parent_section)
         for parent in parents:
             pp = Anchor('show.parent.%s' % parent, parent)
             plist.appendChild(ListItem(pp))
@@ -142,7 +180,9 @@ class ProfileDoc(BaseDocument):
                                    width='100%')
         self.body.appendChild(title)
         rows = self.profile.get_trait_rows()
-        self.body.appendChild(SectionTitle('Traits'))
+        ptitle = Anchor('edit.traits.%s' % self.profile.current.profile, 'Traits')
+        self.body.appendChild(SectionTitle(ptitle))
+        #self.body.appendChild(SectionTitle('Traits'))
         if len(rows):
             self.body.appendChild(TraitTable(rows, bgcolor='IndianRed1'))
         self.body.appendChild(SectionTitle('Variables'))

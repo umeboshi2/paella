@@ -11,7 +11,8 @@ from paella.profile.family import Family
 
 from kommon.pdb.midlevel import StatementCursor
 from kommon.base.gui import MainWindow, SimpleSplitWindow
-from kommon.base.gui import ViewBrowser, ViewWindow
+from kommon.base.gui import ViewWindow
+from kommon.db.gui import ViewBrowser
 from paella.kde.xmlgen import FamilyDoc
 
 class SimpleEdit(KTextEdit):

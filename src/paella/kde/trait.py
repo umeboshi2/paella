@@ -11,6 +11,8 @@ from kdeui import KPopupMenu
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 
+from kfile import KFileDialog
+
 from paella.base.template import Template
 from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
@@ -18,8 +20,13 @@ from paella.profile.trait import Trait
 
 from kommon.pdb.midlevel import StatementCursor
 from kommon.base.gui import MainWindow, SimpleSplitWindow
-from kommon.base.gui import ViewBrowser, ViewWindow
-from paella.kde.xmlgen import TraitDoc
+from kommon.base.gui import ViewWindow
+from kommon.db.gui import ViewBrowser
+from paella.kde.xmlgen import TraitDoc, PackageDoc
+
+from kommon.db.gui import RecordSelector
+
+from paella.kde.base import RecordSelectorWindow
 
 class TemplateHighlighter(QSyntaxHighlighter):
     def highlightParagraph(self, text, endStateOfLastPara):
@@ -55,6 +62,31 @@ class SimpleEdit(KTextEdit):
         self.app = app
         self.hl = TemplateHighlighter(self)
         
+class PackageView(ViewBrowser):
+    def __init__(self, app, parent):
+        ViewBrowser.__init__(self, app, parent, PackageDoc)
+        
+class PackageSelector(RecordSelector):
+    def __init__(self, app, parent, suite):
+        table = '%s_packages' % suite
+        fields = ['package', 'priority', 'section', 'installedsize',
+                  'maintainer', 'version', 'description']
+        idcol = 'package'
+        groupfields = ['priority', 'section', 'maintainer']
+        view = PackageView
+        RecordSelector.__init__(self, app, parent, table, fields,
+                                idcol, groupfields, view, 'PackageSelector')
+
+class PackageSelectorWindow(KMainWindow):
+    def __init__(self, app, parent, suite):
+        KMainWindow.__init__(self, parent, 'PackageSelector')
+        self.app = app
+        self.conn = app.conn
+        self.mainView = PackageSelector(self.app, self, suite)
+        self.mainView.recView.doc.set_suite(suite)
+        self.setCentralWidget(self.mainView)
+        self.show()
+        
 class TraitView(ViewBrowser):
     def __init__(self, app, parent):
         ViewBrowser.__init__(self, app, parent, TraitDoc)
@@ -85,11 +117,19 @@ class TraitView(ViewBrowser):
                 win = ViewWindow(self.app, self.parent(), SimpleEdit, 'ScriptView')
                 win.view.setText(scriptfile)
                 win.resize(600, 800)
-                
+            else:
+                self._url_error(url)
+        elif action == 'edit':
+            if context == 'templates':
+                win = KFileDialog('.', '*', self, 'hello file dialog', False)
+                win.show()
+            elif context == 'packages':
+                win = PackageSelectorWindow(self.app, self.parent(), self.doc.suite)
+            else:
+                self._url_error(url)
         else:
-            KMessageBox.information(self, 'called %s' % url)
-        
-        
+            self._url_error(url)
+            
 class TraitMainWindow(SimpleSplitWindow):
     def __init__(self, app, parent, suite):
         SimpleSplitWindow.__init__(self, app, parent, TraitView, 'TraitMainWindow')

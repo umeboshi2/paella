@@ -15,17 +15,21 @@ from paella.profile.base import PaellaConnection
 
 from kommon.pdb.midlevel import StatementCursor
 from kommon.base.gui import MainWindow
+from kommon.db import BaseDatabase
 
+from paella.kde.base.actions import ManageFamilies
 from paella.kde.trait import TraitMainWindow
 from paella.kde.profile import ProfileMainWindow
 from paella.kde.family import FamilyMainWindow
 from paella.kde.machine import MachineMainWindow
+from paella.kde.differ import DifferWin
 
 class PaellaMainApplication(KApplication):
     def __init__(self, *args):
         KApplication.__init__(self)
         self.cfg = PaellaConfig()
         self.conn = PaellaConnection(self.cfg)
+        self.db = BaseDatabase(self.conn, 'paelladb', None)
         dirs = KStandardDirs()
         self.tmpdir = str(dirs.findResourceDir('tmp', '/'))
         self.datadir = str(dirs.findResourceDir('data', '/'))
@@ -53,7 +57,8 @@ class PaellaMainWindow(KMainWindow):
                      SIGNAL('selectionChanged()'), self.selectionChanged)
 
     def initActions(self):
-        collection = self.actionCollection() 
+        collection = self.actionCollection()
+        self.manageFamiliesAction = ManageFamilies(self.slotManageFamilies, collection)
         self.quitAction = KStdAction.quit(self.app.quit, collection)
        
     def initMenus(self):
@@ -62,11 +67,12 @@ class PaellaMainWindow(KMainWindow):
         self.menuBar().insertItem('&Main', mainMenu)
         self.menuBar().insertItem('&Help', self.helpMenu(''))
         for menu in menus:
+            self.manageFamiliesAction.plug(menu)
             self.quitAction.plug(menu)
             
     def initToolbar(self):
         toolbar = self.toolBar()
-        actions = [self.quitAction]
+        actions = [self.manageFamiliesAction, self.quitAction]
         for action in actions:
             action.plug(toolbar)
             
@@ -81,6 +87,11 @@ class PaellaMainWindow(KMainWindow):
         family_folder.families = True
         machine_folder = KListViewItem(self.listView, 'machines')
         machine_folder.machines = True
+        differ_folder = KListViewItem(self.listView, 'differs')
+        differ_folder.differs = True
+        for dtype in ['template', 'script', 'family']:
+            item = KListViewItem(differ_folder, dtype)
+            item.dtype = dtype
         
     def selectionChanged(self):
         current = self.listView.currentItem()
@@ -90,8 +101,14 @@ class PaellaMainWindow(KMainWindow):
         elif hasattr(current, 'profiles'):
             ProfileMainWindow(self.app, self)
         elif hasattr(current, 'families'):
-            print 'running families'
-            FamilyMainWindow(self.app, self)
+            self.slotManageFamilies()
         elif hasattr(current, 'machines'):
             MachineMainWindow(self.app, self)
+        elif hasattr(current, 'dtype'):
+            print 'differ', current.dtype
+            DifferWin(self.app, self)
+            
+    def slotManageFamilies(self):
+        print 'running families'
+        FamilyMainWindow(self.app, self)
             
