@@ -390,9 +390,10 @@ class PaellaDatabase(Element):
         
         
 class PaellaProcessor(object):
-    def __init__(self, conn):
+    def __init__(self, conn, cfg=None):
         object.__init__(self)
         self.conn = conn
+        self.cfg = cfg
         self.__set_cursors__()
         self.main_path = None
         
@@ -411,7 +412,7 @@ class PaellaProcessor(object):
             if suite.name not in current_suites:
                 self.main.insert(data=suite)
                 make_suite(self.main, suite.name)
-                insert_packages(self.main, suite.name, quick=False)
+                insert_packages(self.cfg, self.main, suite.name, quick=False)
             else:
                 self.main.update(data=suite)
 

@@ -145,7 +145,7 @@ def make_suite(cursor, suite):
     map(cursor.create_table, tables)
     cursor.execute(grant_public([x.name for x in tables]))
 
-def insert_packages(cursor, suite, quick=False):
+def insert_packages(cfg, cursor, suite, quick=False):
     source = 'deb file:/mirrors/debian %s main contrib non-free' %suite
     rp = LocalRepos(source)
     rp.parse_release()

@@ -43,7 +43,7 @@ class DatabaseManager(object):
             raise Error, 'arguement needs to be a directory'
         dbpath = join(path, 'database.xml')
         mdbpath = join(path, 'machine_database.xml')
-        pp = PaellaProcessor(self.conn)
+        pp = PaellaProcessor(self.conn, self.cfg)
         pp.create(dbpath)
         mh = MachineHandler(self.conn)
         md = mh.parse_xmlfile(mdbpath)
@@ -147,7 +147,7 @@ class ClientManager(CommandBoxWindow):
             f = Family(self.conn)
             f.import_families(fpath)
         if profiles:
-            pp = PaellaProcessor(self.conn)
+            pp = PaellaProcessor(self.conn, self.cfg)
             pp.main_path = cpath
             pp.insert_profiles()
         mh = MachineHandler(self.conn)

@@ -121,13 +121,13 @@ def check_file(path, md5_, quick=False):
         return 'gone'
 
 def get_file(rpath, lpath, result='gone'):
+    dir, package = os.path.split(lpath)
     if result == 'corrupt':
         while isfile(lpath):
             os.remove(lpath)
         wget(rpath, lpath)
-        print 'was corrupt, got it'
+        print package, ' was corrupt, got it'
     else:
-        dir, package = os.path.split(lpath)
         print package, ' not there'
         makepaths(dir)
         wget(rpath, lpath)
