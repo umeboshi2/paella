@@ -1,6 +1,9 @@
 import os
+import re
+
 from qt import SLOT, SIGNAL, Qt
 from qt import QSyntaxHighlighter
+from qt import QColor
 from qtext import QextScintilla, QextScintillaLexer
 from qtext import QextScintillaLexerPython
 from kdeui import KMainWindow
@@ -8,6 +11,7 @@ from kdeui import KPopupMenu
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 
+from paella.base.template import Template
 from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
 from paella.profile.trait import Trait
@@ -18,9 +22,16 @@ from paella.kde.xmlgen import TraitDoc
 
 class TemplateHighlighter(QSyntaxHighlighter):
     def highlightParagraph(self, text, endStateOfLastPara):
-        pass
-    
-
+        text = str(text)
+        template = Template()
+        template.set_template(text)
+        for span in template.spans():
+            font = self.textEdit().currentFont()
+            font.setBold(True)
+            color =QColor('purple')
+            length = span[1] - span[0]
+            self.setFormat(span[0], length, font, color)
+        return 0
 
 class AnotherView(QextScintilla):
     def __init__(self, app, parent):
@@ -41,6 +52,7 @@ class SimpleEdit(KTextEdit):
     def __init__(self, app, parent):
         KTextEdit.__init__(self, parent)
         self.app = app
+        self.hl = TemplateHighlighter(self)
         
 class TraitView(ViewBrowser):
     def __init__(self, app, parent):

@@ -9,7 +9,7 @@ from konsultant.base.xmlgen import SimpleTitleElement, RecordElement
 from paella.profile.trait import Trait
 from paella.profile.profile import Profile
 from paella.profile.family import Family
-
+from paella.machines.machine import MachineHandler
 class BaseDocument(BaseElement):
     def __init__(self, app, **atts):
         BaseElement.__init__(self, 'html', **atts)
@@ -179,3 +179,28 @@ class FamilyDoc(BaseDocument):
         if len(erows):
             self.body.appendChild(PVarTable(erows, bgcolor='MistyRose2'))
             
+class MachineDoc(BaseDocument):
+    def __init__(self, app, **atts):
+        BaseDocument.__init__(self, app, **atts)
+        self.machine = MachineHandler(self.conn)
+
+    def set_machine(self, machine):
+        self.machine.set_machine(machine)
+        self.clear_body()
+        title = SimpleTitleElement('Machine:  %s' % machine, bgcolor='IndianRed',
+                                   width='100%')
+        self.body.appendChild(title)
+        mtable = BaseElement('table')
+        for k,v in self.machine.current.items():
+            trow = TR()
+            trow.appendChild(TxtTD(Bold(k)))
+            trow.appendChild(TxtTD(v))
+            mtable.appendChild(trow)
+        self.body.appendChild(mtable)
+        self.body.appendChild(SectionTitle('Machine Type'))
+        self.body.appendChild(SectionTitle('Kernel'))
+        self.body.appendChild(SectionTitle('Profile'))
+        self.body.appendChild(SectionTitle('Filesystem'))
+        
+    def set_clause(self, clause):
+        print clause, dir(clause)

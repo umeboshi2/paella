@@ -17,6 +17,7 @@ from paella.kde.base import MainWindow
 from paella.kde.trait import TraitMainWindow
 from paella.kde.profile import ProfileMainWindow
 from paella.kde.family import FamilyMainWindow
+from paella.kde.machine import MachineMainWindow
 
 class PaellaMainApplication(KApplication):
     def __init__(self, *args):
@@ -70,6 +71,8 @@ class PaellaMainWindow(KMainWindow):
         profile_folder.profiles = True
         family_folder = KListViewItem(self.listView, 'families')
         family_folder.families = True
+        machine_folder = KListViewItem(self.listView, 'machines')
+        machine_folder.machines = True
         
     def selectionChanged(self):
         current = self.listView.currentItem()
@@ -81,3 +84,6 @@ class PaellaMainWindow(KMainWindow):
         elif hasattr(current, 'families'):
             print 'running families'
             FamilyMainWindow(self.app, self)
+        elif hasattr(current, 'machines'):
+            MachineMainWindow(self.app, self)
+            
