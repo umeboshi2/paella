@@ -1,0 +1,40 @@
+#!/usr/bin/python
+import sys
+from qt import QApplication
+from qt import SIGNAL, SLOT, Qt
+from kdecore import KApplication, KCmdLineArgs, KAboutData
+from kdecore import KIconLoader
+from kdeui import KSystemTray, KMainWindow
+
+
+from paella.kde.main import PaellaMainApplication
+from paella.kde.main import PaellaMainWindow
+        
+if __name__ == '__main__':
+    aboutData = KAboutData('', '', '0.0',
+                           'Paella Configuration Management Database', 0,
+                           'Joseph Rawson')
+    KCmdLineArgs.init(sys.argv, aboutData)
+    #app = KApplication()
+    app = PaellaMainApplication()
+    app.connect(app, SIGNAL('lastWindowClosed()'), app.quit)
+    dcop = app.dcopClient()
+    appid = dcop.registerAs('paella')
+    #bo = BaseObject('kon-default')
+    #bo.db = app.db
+    #app.db = BaseDatabase('Konsultant', app)
+    #win = ClientManager(app.db)
+    win = PaellaMainWindow(app)
+    win.show()
+    #win.lower()
+    
+    #win.hide()
+    #app.setMainWidget(win)
+    #print app.mainWidget()
+    #win2 = ClientManager(win, win.db)
+    #win2.hide()
+    cfg = app.config()
+    print cfg
+    from kdecore import KLockFile
+    f = KLockFile('foolock')
+    app.exec_loop()
