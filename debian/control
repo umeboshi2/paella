@@ -1,7 +1,7 @@
 Source: paella
 Section: unknown
 Priority: optional
-Maintainer: Debian User <umeboshi@gregscomputerservice.com>
+Maintainer: Joseph Rawson <umeboshi@gregscomputerservice.com>
 Build-Depends: debhelper (>> 4.0.0), python2.3, python2.3-dev
 Standards-Version: 3.5.8
 

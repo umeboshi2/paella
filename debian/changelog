@@ -1,3 +1,9 @@
+paella (0.5-52) common; urgency=low
+
+  * first release at berlios
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Sat, 18 Sep 2004 06:38:36 -0500
+
 paella (0.5-51) common; urgency=low
 
   * added authldap to paella.base
