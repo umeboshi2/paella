@@ -1,3 +1,0 @@
-deb file:/mirrors/debian sid main contrib non-free
-deb file:/mirrors/debian local/
-

@@ -1,5 +1,0 @@
-deb file:/mirrors/debian woody main contrib non-free
-deb file:/mirrors/debian woody/non-US main contrib non-free
-deb file:/mirrors/debian/updates woody/updates main contrib non-free
-deb file:/mirrors/debian local/
-
