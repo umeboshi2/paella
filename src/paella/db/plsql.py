@@ -5,7 +5,7 @@ def header(name, params, returns):
     return lines
 
 def pgsql_delete(name, tables, key):
-    lines = header(name, 'varchar', 'integer')
+    lines = header(name, ['varchar'], 'integer')
     lines.append('begin')
     for table in tables:
         line = "delete from %s where %s = $1 ;" % (table, key)

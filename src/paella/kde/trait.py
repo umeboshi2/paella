@@ -1,9 +1,10 @@
 import os
 from qt import SLOT, SIGNAL, Qt
-
+from qtext import QextScintilla, QextScintillaLexer
+from qtext import QextScintillaLexerPython
 from kdeui import KMainWindow
 from kdeui import KPopupMenu
-from kdeui import KMessageBox
+from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 
 from paella.profile.base import PaellaConfig
@@ -16,6 +17,26 @@ from paella.kde.xmlgen import TraitDoc
 
 
 
+class AnotherView(QextScintilla):
+    def __init__(self, app, parent):
+        QextScintilla.__init__(self, parent)
+        self.app = app
+        self.pylex = QextScintillaLexerPython(self)
+        self.lex = QextScintillaLexer(self)
+        
+    def setText(self, text):
+        line = text.split('\n')[0]
+        if 'python' in line:
+            self.setLexer(self.pylex)
+        else:
+            self.setLexer(self.lex)
+        QextScintilla.setText(self, text)
+
+class SimpleEdit(KTextEdit):
+    def __init__(self, app, parent):
+        KTextEdit.__init__(self, parent)
+        self.app = app
+        
 class TraitView(ViewBrowser):
     def __init__(self, app, parent):
         ViewBrowser.__init__(self, app, parent, TraitDoc)
@@ -37,13 +58,13 @@ class TraitView(ViewBrowser):
             elif context == 'template':
                 fid = id.replace(',', '.')
                 package, template = fid.split('...')
-                win = ViewWindow(self.app, self.parent(), TraitView, 'TemplateView')
+                win = ViewWindow(self.app, self.parent(), SimpleEdit, 'TemplateView')
                 templatefile = self.doc.trait._templates.templatedata(package, template)
                 win.view.setText(templatefile)
                 win.resize(600, 800)
             elif context == 'script':
                 scriptfile = self.doc.trait._scripts.scriptdata(id)
-                win = ViewWindow(self.app, self.parent(), TraitView, 'ScriptView')
+                win = ViewWindow(self.app, self.parent(), SimpleEdit, 'ScriptView')
                 win.view.setText(scriptfile)
                 win.resize(600, 800)
                 
