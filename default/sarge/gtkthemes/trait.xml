@@ -1,0 +1,131 @@
+<trait name="gtkthemes" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			gtk-engines-begtk
+		</package>
+		<package action="install">
+			gtk-engines-eazel
+		</package>
+		<package action="install">
+			gtk-engines-geramik
+		</package>
+		<package action="install">
+			gtk-engines-geramik-data
+		</package>
+		<package action="install">
+			gtk-engines-icegradient
+		</package>
+		<package action="install">
+			gtk-engines-industrial
+		</package>
+		<package action="install">
+			gtk-engines-lighthouseblue
+		</package>
+		<package action="install">
+			gtk-engines-mac2
+		</package>
+		<package action="install">
+			gtk-engines-metal
+		</package>
+		<package action="install">
+			gtk-engines-mist
+		</package>
+		<package action="install">
+			gtk-engines-notif
+		</package>
+		<package action="install">
+			gtk-engines-pixmap
+		</package>
+		<package action="install">
+			gtk-engines-qtpixmap
+		</package>
+		<package action="install">
+			gtk-engines-raleigh
+		</package>
+		<package action="install">
+			gtk-engines-redmond95
+		</package>
+		<package action="install">
+			gtk-engines-smooth
+		</package>
+		<package action="install">
+			gtk-engines-thingeramik
+		</package>
+		<package action="install">
+			gtk-engines-thingeramik-data
+		</package>
+		<package action="install">
+			gtk-engines-thinice
+		</package>
+		<package action="install">
+			gtk-engines-xenophilia
+		</package>
+		<package action="install">
+			gtk-smooth-themes
+		</package>
+		<package action="install">
+			gtk-theme-switch
+		</package>
+		<package action="install">
+			gtk2-engines-cleanice
+		</package>
+		<package action="install">
+			gtk2-engines-crux
+		</package>
+		<package action="install">
+			gtk2-engines-geramik
+		</package>
+		<package action="install">
+			gtk2-engines-industrial
+		</package>
+		<package action="install">
+			gtk2-engines-lighthouseblue
+		</package>
+		<package action="install">
+			gtk2-engines-magicchicken
+		</package>
+		<package action="install">
+			gtk2-engines-metal
+		</package>
+		<package action="install">
+			gtk2-engines-mist
+		</package>
+		<package action="install">
+			gtk2-engines-pixbuf
+		</package>
+		<package action="install">
+			gtk2-engines-qtpixmap
+		</package>
+		<package action="install">
+			gtk2-engines-redmond95
+		</package>
+		<package action="install">
+			gtk2-engines-smooth
+		</package>
+		<package action="install">
+			gtk2-engines-spherecrystal
+		</package>
+		<package action="install">
+			gtk2-engines-thingeramik
+		</package>
+		<package action="install">
+			gtk2-engines-thinice
+		</package>
+		<package action="install">
+			gtk2-engines-wonderland
+		</package>
+		<package action="install">
+			gtk2-engines-xfce
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,167 @@
+<trait name="ume_docs" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			docs
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			abs-guide
+		</package>
+		<package action="install">
+			apt-doc
+		</package>
+		<package action="install">
+			apt-dpkg-ref
+		</package>
+		<package action="install">
+			autobook
+		</package>
+		<package action="install">
+			bind9-doc
+		</package>
+		<package action="install">
+			cdrtools-doc
+		</package>
+		<package action="install">
+			cvsbook
+		</package>
+		<package action="install">
+			db4.1-doc
+		</package>
+		<package action="install">
+			defoma-doc
+		</package>
+		<package action="install">
+			doc-iana
+		</package>
+		<package action="install">
+			doc-linux-html
+		</package>
+		<package action="install">
+			doc-rfc
+		</package>
+		<package action="install">
+			doc-rfc-fyi-bcp
+		</package>
+		<package action="install">
+			doc-rfc-misc
+		</package>
+		<package action="install">
+			doc-rfc-std
+		</package>
+		<package action="install">
+			doc-rfc-std-proposed
+		</package>
+		<package action="install">
+			docbook-defguide
+		</package>
+		<package action="install">
+			docbook-doc
+		</package>
+		<package action="install">
+			dwww
+		</package>
+		<package action="install">
+			elisp-manual
+		</package>
+		<package action="install">
+			exim4-doc-html
+		</package>
+		<package action="install">
+			gcc-3.3-doc
+		</package>
+		<package action="install">
+			gimp-manual
+		</package>
+		<package action="install">
+			grub-doc
+		</package>
+		<package action="install">
+			jargon-text
+		</package>
+		<package action="install">
+			kernel-internals-guide
+		</package>
+		<package action="install">
+			krb5-doc
+		</package>
+		<package action="install">
+			libapt-pkg-doc
+		</package>
+		<package action="install">
+			libatk1.0-doc
+		</package>
+		<package action="install">
+			libglib2.0-doc
+		</package>
+		<package action="install">
+			libgnutls-doc
+		</package>
+		<package action="install">
+			libgtk2.0-doc
+		</package>
+		<package action="install">
+			libpam-doc
+		</package>
+		<package action="install">
+			libtool-doc
+		</package>
+		<package action="install">
+			lilo-doc
+		</package>
+		<package action="install">
+			linuxcookbook
+		</package>
+		<package action="install">
+			maint-guide
+		</package>
+		<package action="install">
+			make-doc
+		</package>
+		<package action="install">
+			newbiedoc
+		</package>
+		<package action="install">
+			ntp-doc
+		</package>
+		<package action="install">
+			octave2.1-doc
+		</package>
+		<package action="install">
+			postgresql-doc
+		</package>
+		<package action="install">
+			python-doc
+		</package>
+		<package action="install">
+			python-imaging-doc
+		</package>
+		<package action="install">
+			quick-reference-en
+		</package>
+		<package action="install">
+			samba-doc
+		</package>
+		<package action="install">
+			sqlite-doc
+		</package>
+		<package action="install">
+			stl-manual
+		</package>
+		<package action="install">
+			sysadmin-guide
+		</package>
+		<package action="install">
+			user-mode-linux-doc
+		</package>
+		<package action="install">
+			w3-recs
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

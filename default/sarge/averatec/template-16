@@ -1,0 +1,70 @@
+# Example dput.cf that defines the host that can be used
+# with dput for uploading.
+
+[DEFAULT]
+login = username
+method = local
+hash = md5
+allow_unsigned_uploads = 1
+run_lintian = 0
+run_dinstall = 0
+check_version = 0
+scp_compress = 0
+post_upload_command =
+pre_upload_command =
+passive_ftp = 0
+default_host_main =
+default_host_non-us =
+
+[ftp-master]
+fqdn = ftp-master.debian.org
+incoming = /pub/UploadQueue/
+login = anonymous
+
+[ftp-master-secure]
+fqdn = ftp-master.debian.org
+incoming = /org/ftp.debian.org/incoming/
+method = scp
+# And if you want to override one of the defaults, add it here.
+# For example, comment out the next line
+# login = another_username
+# post_upload_command = /path/to/some/script
+# pre_upload_command = /path/to/some/script
+
+[erlangen]
+fqdn = ftp.uni-erlangen.de
+incoming = /public/pub/Linux/debian/UploadQueue/
+login = anonymous
+
+[uk]
+fqdn = ftp.uk.debian.org
+incoming = debian/UploadQueue/
+login = anonymous
+
+[jp]
+fqdn = master.debian.or.jp
+incoming = /pub/Incoming/upload
+login = anonymous
+
+[samosa]
+fqdn = samosa.debian.org
+incoming = /pub/UploadQueue/
+login = anonymous
+
+[non-us]
+fqdn = non-us.debian.org
+incoming = /pub/UploadQueue/
+login = anonymous
+allow_non-us_software = 1
+
+[non-us-secure]
+fqdn = non-us.debian.org
+method = scp
+incoming = /org/non-us.debian.org/incoming
+allow_non-us_software = 1
+
+[local]
+method = local
+incoming = /freespace/debian/local/mini-dinstall/incoming
+allow_non-us_software = 1
+

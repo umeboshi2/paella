@@ -1,0 +1,44 @@
+	<family name="insecure">
+		<parents/>
+		<environ>
+			<family_variable name="adduser_dirmode" trait="base">
+				0750
+			</family_variable>
+			<family_variable name="adminuser_passwd_opt" trait="base">
+				NOPASSWD
+			</family_variable>
+			<family_variable name="distribution" trait="base">
+				INSECURE/Paella/Debian
+			</family_variable>
+			<family_variable name="issue_release" trait="base">
+				INSECURE/testing
+			</family_variable>
+			<family_variable name="root_password" trait="base">
+				$$1$IImobcMx$4Lsn4oHhM7L9pNYZNP7zz/
+			</family_variable>
+			<family_variable name="sshd_allowusers" trait="default">
+				root umeboshi ggprine
+			</family_variable>
+			<family_variable name="sshd_authkeys" trait="default">
+				%h/.ssh/authorized_keys
+			</family_variable>
+			<family_variable name="sshd_motd" trait="default">
+				yes
+			</family_variable>
+			<family_variable name="sshd_permitrootlogin" trait="default">
+				yes
+			</family_variable>
+			<family_variable name="sshd_pwauth" trait="default">
+				yes
+			</family_variable>
+			<family_variable name="sshd_x11forward" trait="default">
+				yes
+			</family_variable>
+			<family_variable name="trusted_hosts" trait="postgres">
+				host	all	all		10.0.0.0		255.0.0.0	trust
+			</family_variable>
+			<family_variable name="admin_password" trait="webmin">
+				YD52jq/nPegVE:0::
+			</family_variable>
+		</environ>
+	</family>

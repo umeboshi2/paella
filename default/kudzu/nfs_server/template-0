@@ -1,0 +1,8 @@
+# /etc/exports: the access control list for filesystems which may be exported
+#		to NFS clients.  See exports(5).
+<--|fileserver_base_path|-->/<--|fileserver_common_path|-->	<--|global_local_network_cidr|-->(ro,async)
+<--|fileserver_base_path|-->/<--|fileserver_share_path|-->	<--|global_local_network_cidr|-->(rw,async) 
+#<--|fileserver_base_path|-->/<--|fileserver_admin_path|-->	<--|global_local_network_cidr|-->(rw,async)
+<--|fileserver_base_path|-->/<--|fileserver_office_path|-->	<--|global_local_network_cidr|-->(rw,async)
+
+

@@ -1,0 +1,12 @@
+	<profile name="pdev" suite="questron">
+		<traits>
+			<trait ord="40">
+				vnc_server
+			</trait>
+			<trait ord="75">
+				sshd_test
+			</trait>
+		</traits>
+		<families/>
+		<environ/>
+	</profile>

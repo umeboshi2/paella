@@ -1,0 +1,8 @@
+# Kernel Image management overrides
+# See kernel-img.cnf(5) for details
+do_symlinks = Yes
+do_initrd = Yes
+silent_loader = Yes
+do_boot_enable = Yes
+do_bootfloppy = No
+do_bootloader = Yes

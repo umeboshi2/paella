@@ -1,0 +1,64 @@
+<trait name="workstation" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			ldap_common
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ldap-utils
+		</package>
+		<package action="install">
+			libnss-ldap
+		</package>
+		<package action="install">
+			libpam-ldap
+		</package>
+		<package action="install">
+			migrationtools
+		</package>
+	</packages>
+	<environ>
+		<basedn>
+			dc=umdomain
+		</basedn>
+		<ldap_uris>
+			ldap://umhead
+		</ldap_uris>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/common-account
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/common-auth
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/common-password
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/common-session
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/login
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/passwd
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/samba
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/ssh
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/su
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam.d/sudo
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

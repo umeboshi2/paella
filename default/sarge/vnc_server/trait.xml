@@ -1,0 +1,34 @@
+<trait name="vnc_server" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			vnc-common
+		</package>
+		<package action="install">
+			vncserver
+		</package>
+	</packages>
+	<environ>
+		<depth>
+			24
+		</depth>
+		<geometry>
+			1024x768
+		</geometry>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="vnc-common">
+			etc/vnc.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,53 @@
+	<family name="bigten">
+		<parents/>
+		<environ>
+			<family_variable name="local_address" trait="default">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="local_netmask" trait="default">
+				255.0.0.0
+			</family_variable>
+			<family_variable name="local_network" trait="default">
+				10.0.0.0
+			</family_variable>
+			<family_variable name="reversed_local_zone" trait="default">
+				10
+			</family_variable>
+			<family_variable name="main_range" trait="dhcp_server">
+				10.0.0.51 10.0.0.253
+			</family_variable>
+			<family_variable name="local_netmask" trait="global">
+				255.0.0.0
+			</family_variable>
+			<family_variable name="local_network" trait="global">
+				10.0.0.0
+			</family_variable>
+			<family_variable name="local_network_cidr" trait="global">
+				10.0.0.0/8
+			</family_variable>
+			<family_variable name="rev_local_zone" trait="global">
+				10
+			</family_variable>
+			<family_variable name="cidr" trait="localnet">
+				10.0.0.0/8
+			</family_variable>
+			<family_variable name="first_dynhost" trait="localnet">
+				10.0.0.51
+			</family_variable>
+			<family_variable name="last_dynhost" trait="localnet">
+				10.0.0.253
+			</family_variable>
+			<family_variable name="netmask" trait="localnet">
+				255.0.0.0
+			</family_variable>
+			<family_variable name="network" trait="localnet">
+				10.0.0.0
+			</family_variable>
+			<family_variable name="rev_zone" trait="localnet">
+				10
+			</family_variable>
+			<family_variable name="reversed_local_address" trait="nameserver">
+				1.0.0.10
+			</family_variable>
+		</environ>
+	</family>

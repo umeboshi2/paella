@@ -1,0 +1,15 @@
+	<profile name="mainserver" suite="sarge">
+		<traits>
+			<trait ord="50">
+				clockserver
+			</trait>
+			<trait ord="50">
+				diskless_server
+			</trait>
+			<trait ord="99">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ/>
+	</profile>

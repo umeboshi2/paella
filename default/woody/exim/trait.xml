@@ -1,0 +1,37 @@
+<trait name="exim" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			exim
+		</package>
+	</packages>
+	<environ>
+		<local_domains>
+			gregscomputerservice.com
+		</local_domains>
+		<maildomain>
+			gregscomputerservice.com
+		</maildomain>
+		<qualifydomain>
+			gregscomputerservice.com
+		</qualifydomain>
+		<relay_local_network>
+			10.0.0.0/8
+		</relay_local_network>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="exim">
+			etc/email-addresses
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="exim">
+			etc/exim/exim.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

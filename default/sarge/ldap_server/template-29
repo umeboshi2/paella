@@ -1,0 +1,24 @@
+auth_ldap=/etc/libnss-ldap.conf
+imap_login=root
+samba_class=sambaAccount
+imap_class=SuSEeMailObject
+imap_folders=old public sent-mail
+md5=0
+given=0
+quota=
+addressbook=
+user_base=
+domain=
+other_class=top inetOrgPerson
+ldap_host=
+ldap_port=
+imap_host=
+pass=a
+samba_domain=
+group_base=
+login=cn=batman,<--|ldap_common_basedn|-->
+samba_props=
+imap_props=
+props=sn: noname
+fields=
+imap_pass=

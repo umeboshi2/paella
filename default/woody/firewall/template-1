@@ -1,0 +1,2 @@
+search <--|base_domain|-->
+nameserver <--|default_local_address|-->

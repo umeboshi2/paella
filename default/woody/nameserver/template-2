@@ -1,0 +1,9 @@
+$ttl 38400
+<--|base_domain|-->.	IN	SOA	<--|base_hostname|-->. root.<--|base_hostname|-->. (
+			1035540349
+			10800
+			3600
+			604800
+			38400 )
+<--|base_domain|-->.	IN	NS	<--|base_hostname|-->.
+<--|base_hostname|-->.<--|base_domain|-->.	IN	A	<--|default_local_address|-->

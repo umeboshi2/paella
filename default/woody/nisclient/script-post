@@ -1,0 +1,4 @@
+#!/bin/bash
+target=/tmp/target
+script=var/lib/dpkg/info/nis.postinst
+mv $target/$script $target/$script.ignore

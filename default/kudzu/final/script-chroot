@@ -1,0 +1,4 @@
+#!/bin/bash
+if [ -d /root/paella/real_templates ]; then
+    rsync -av /root/paella/real_templates/ /
+fi

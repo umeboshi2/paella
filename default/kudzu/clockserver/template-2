@@ -1,0 +1,12 @@
+Name: shared/ntp/servers
+Template: shared/ntp/servers
+Value: tock.usno.navy.mil
+Owners: ntp-refclock, ntpdate
+Flags: seen
+
+Name: shared/ntp/update-conf
+Template: shared/ntp/update-conf
+Value: true
+Owners: ntp-refclock
+Flags: seen
+

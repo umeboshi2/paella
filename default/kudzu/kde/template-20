@@ -1,0 +1,6 @@
+[General]
+Buttons=kde-Home.desktop,mozilla-firefox.desktop,kontact.desktop,kde-Help.desktop,kde-kinfocenter.desktop,kde-kate.desktop,kde-kcalc.desktop,xterm.desktop
+ConserveSpace=true
+DragEnabled=true
+IconDim=0
+

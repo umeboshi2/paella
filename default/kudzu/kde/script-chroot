@@ -1,0 +1,12 @@
+#!/bin/bash
+if [ ! -d /etc/skel/.kde/Autostart ] ; then
+    mkdir /etc/skel/.kde/Autostart
+fi
+
+if [ -f /usr/bin/gkrellm ] ; then
+    ln -s /usr/bin/gkrellm /etc/skel/.kde/Autostart/50gkrellm
+fi
+
+ln -s /usr/bin/knotes /etc/skel/.kde/Autostart/20knotes
+ln -s /usr/bin/kompose /etc/skel/.kde/Autostart/30kompose
+update-alternatives --install /usr/bin/x-session-manager x-session-manager /usr/bin/startkde 999

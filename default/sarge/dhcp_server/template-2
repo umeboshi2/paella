@@ -1,0 +1,17 @@
+Name: dhcp3-server/config_warn
+Template: dhcp3-server/config_warn
+Value: 
+Owners: dhcp3-server
+Flags: seen
+
+Name: dhcp3-server/interfaces
+Template: dhcp3-server/interfaces
+Value: eth1
+Owners: dhcp3-server
+Flags: seen
+
+Name: dhcp3-server/new_auth_behavior
+Template: dhcp3-server/new_auth_behavior
+Value: 
+Owners: dhcp3-server
+Flags: seen

@@ -1,0 +1,190 @@
+<trait name="default" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			acct
+		</package>
+		<package action="install">
+			bible-kjv
+		</package>
+		<package action="install">
+			bible-kjv-text
+		</package>
+		<package action="install">
+			grep-dctrl
+		</package>
+		<package action="install">
+			ledit
+		</package>
+		<package action="install">
+			less
+		</package>
+		<package action="install">
+			logcheck
+		</package>
+		<package action="install">
+			logcheck-database
+		</package>
+		<package action="install">
+			logrotate
+		</package>
+		<package action="install">
+			lynx
+		</package>
+		<package action="install">
+			members
+		</package>
+		<package action="install">
+			most
+		</package>
+		<package action="install">
+			ntpdate
+		</package>
+		<package action="install">
+			quota
+		</package>
+		<package action="install">
+			rcconf
+		</package>
+		<package action="install">
+			rsync
+		</package>
+		<package action="install">
+			slay
+		</package>
+		<package action="install">
+			ssh
+		</package>
+		<package action="install">
+			sudo
+		</package>
+		<package action="install">
+			xemacs21
+		</package>
+		<package action="install">
+			zile
+		</package>
+	</packages>
+	<environ>
+		<dhclient_require>
+			#require subnet-mask, domain-name-servers;
+		</dhclient_require>
+		<fake_mac>
+			#send dhcp-client-identifier 1:0:a0:24:ab:fb:9c
+		</fake_mac>
+		<local_address>
+			192.168.0.1
+		</local_address>
+		<local_netmask>
+			255.255.255.0
+		</local_netmask>
+		<local_network>
+			192.168.0.0
+		</local_network>
+		<logcheck_email>
+			root
+		</logcheck_email>
+		<logrotate_rotate>
+			10
+		</logrotate_rotate>
+		<logrotate_weeks>
+			10
+		</logrotate_weeks>
+		<prepend_nameservers>
+			#prepend domain-name-servers 127.0.0.1
+		</prepend_nameservers>
+		<request_options>
+			#request subnet-mask, broadcast-address, time-offset, routers,
+#	domain-name, domain-name-servers, host-name;
+		</request_options>
+		<reversed_local_zone>
+			0.168.192
+		</reversed_local_zone>
+		<standard_key>
+			ozEDawrG84aUSAf+JXf55hsw8RCT6OSKxQOzce25GZxd8UbXFZviDLgt gcehytZ49SQDHIbqp6txteVtO3k3sA==
+		</standard_key>
+		<standard_key_name>
+			standard
+		</standard_key_name>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/debconf.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/default/quota
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/dhclient.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/lilo.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/motd
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/pam.d/login
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/pam.d/passwd
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/pam.d/ssh
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/pam.d/su
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/pam.d/sudo
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/security/access.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/security/group.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/security/limits.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/security/pam_env.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/security/time.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/ssh/sshd_config
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/ssl/openssl.cnf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="acct">
+			etc/syslog.conf
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="acct">
+			var/cache/debconf/config.dat
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="logcheck">
+			etc/logcheck/logcheck.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="logcheck">
+			etc/logcheck/logcheck.logfiles
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="logrotate">
+			etc/logrotate.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="quota">
+			etc/quotatab
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

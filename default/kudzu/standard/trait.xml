@@ -1,0 +1,42 @@
+<trait name="standard" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			clockserver
+		</parent>
+		<parent>
+			dhcp_server
+		</parent>
+		<parent>
+			firewall
+		</parent>
+		<parent>
+			ipsec
+		</parent>
+		<parent>
+			nameserver
+		</parent>
+		<parent>
+			samba
+		</parent>
+		<parent>
+			squid
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="tramp">
+			etc/emacs/site-start.d/50tramp.el
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="xemacs21">
+			etc/mailname
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

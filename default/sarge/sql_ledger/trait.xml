@@ -1,0 +1,28 @@
+<trait name="sql_ledger" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			postgres
+		</parent>
+		<parent>
+			webserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			libdbd-pg-perl
+		</package>
+		<package action="install">
+			libdbi-perl
+		</package>
+		<package action="install">
+			libpgperl
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

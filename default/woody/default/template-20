@@ -1,0 +1,6 @@
+# these files will be checked by logcheck
+/var/log/messages
+/var/log/syslog
+/var/log/auth.log
+/var/log/mail.log
+/var/log/daemon.log

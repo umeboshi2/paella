@@ -1,0 +1,9 @@
+#!/usr/bin/env python2.3
+import os
+target = os.environ['PAELLA_TARGET']
+hack_dir = os.path.join(target, 'etc/diskless-image')
+# this directory needs to be made for
+# the diskless-image package to be installed
+os.system('mkdir %s' % hack_dir)
+print 'created', hack_dir
+

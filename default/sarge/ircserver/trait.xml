@@ -1,0 +1,33 @@
+<trait name="ircserver" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			dancer-ircd
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="dancer" mode="0640" owner="root" package="dancer-ircd">
+			etc/dancer-ircd/ircd.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="dancer-ircd">
+			etc/dancer-ircd/motd
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="dancer-ircd">
+			etc/dancer-ircd/ohelp
+		</template>
+		<template grp_owner="dancer" mode="0640" owner="root" package="dancer-ircd">
+			etc/dancer-ircd/olines
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="dancer-ircd">
+			etc/dancer-ircd/omotd
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

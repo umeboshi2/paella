@@ -1,0 +1,12 @@
+	<profile name="nfsroot_installer" suite="questron">
+		<traits>
+			<trait ord="50">
+				paella_nfsroot
+			</trait>
+			<trait ord="75">
+				sshd_test
+			</trait>
+		</traits>
+		<families/>
+		<environ/>
+	</profile>

@@ -1,0 +1,24 @@
+<trait name="nisclient" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			nis
+		</package>
+		<package action="install">
+			portmap
+		</package>
+	</packages>
+	<environ>
+		<ypserver>
+			umhead
+		</ypserver>
+	</environ>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

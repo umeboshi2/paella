@@ -1,0 +1,12 @@
+	<profile name="nfsroot" suite="questron">
+		<traits>
+			<trait ord="0">
+				simple_nfsroot
+			</trait>
+			<trait ord="75">
+				sshd_test
+			</trait>
+		</traits>
+		<families/>
+		<environ/>
+	</profile>

@@ -1,0 +1,8 @@
+#
+# /etc/pam.d/common-password - password-related modules common to all services
+#
+# This file is included from other service-specific PAM config files,
+# and should contain a list of modules that define  the services to be
+#used to change user passwords.  The default is pam_unix
+password	sufficient	pam_ldap.so
+password	required	pam_unix.so md5

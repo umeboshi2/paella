@@ -1,0 +1,14 @@
+#!/usr/bin/python
+import os
+from paella.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+it.set_trait('diskless')
+cmd = '/var/lib/dpkg/info/diskless-image-simple.postinst configure'
+os.system('chroot %s %s' % (it.target, cmd))
+kernel = it.get('boot_server_diskless_kernel')
+print 'installing kernel', kernel
+os.system('chroot %s apt-get -y install %s' % (it.target, kernel))
+
+

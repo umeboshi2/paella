@@ -1,0 +1,28 @@
+#!/usr/bin/python
+import os
+from os.path import isdir, isfile, join
+from paella.base.util import makepaths
+from paella.base.authldap import make_main_ldif
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+it.set_trait('ldap_server')
+sections = it.default.sections()
+admin_sections = [x for x in sections if x[:10] == 'adminuser_']
+admins = [it.default.get(x, 'user') for x in admin_sections]
+print 'admins', admins
+homepath = it.get('base_homepath')
+rhomepath = homepath
+while rhomepath[0] == '/':
+    rhomepath = rhomepath[1:]
+
+ld_keys = ['basedn', 'admin', 'nss', 'admin_base', 'adminpw', 'nsspw']
+keymap = dict([(k, 'ldap_common_%s' % k) for k in ld_keys])
+keymap['domain'] = 'global_domain'
+keymap['homepath'] = 'base_homepath'
+
+ldap_env = dict([(k, it.get(keymap[k])) for k in keymap])
+ldif = make_main_ldif(ldap_env)
+bpath = join(it.target, 'root/paella/files')
+makepaths(bpath)
+ldif.write(join(bpath, 'main.ldif'))

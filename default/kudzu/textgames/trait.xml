@@ -1,0 +1,67 @@
+<trait name="textgames" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			bsdgames
+		</package>
+		<package action="install">
+			cowsay
+		</package>
+		<package action="install">
+			filters
+		</package>
+		<package action="install">
+			frotz
+		</package>
+		<package action="install">
+			gsn-curses
+		</package>
+		<package action="install">
+			gsn-jigsaw
+		</package>
+		<package action="install">
+			gumshoe
+		</package>
+		<package action="install">
+			int-fiction
+		</package>
+		<package action="install">
+			nethack-common
+		</package>
+		<package action="install">
+			nethack-console
+		</package>
+		<package action="install">
+			ninvaders
+		</package>
+		<package action="install">
+			omega-rpg
+		</package>
+		<package action="install">
+			tatctae
+		</package>
+		<package action="install">
+			weather
+		</package>
+	</packages>
+	<environ>
+		<frotz_background_color>
+			blue
+		</frotz_background_color>
+		<frotz_foreground_color>
+			white
+		</frotz_foreground_color>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="frotz">
+			etc/frotz.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,19 @@
+<trait name="zathras" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

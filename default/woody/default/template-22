@@ -1,0 +1,18 @@
+# This is an example quotatab file
+# 
+# This file is used as a translation for device names, so a warnquota message
+# makes sense to the user.
+#
+# syntax is as follows:
+#
+# colon ':' is used to specify the start of the substituted text
+# pipe  '|' is used to specify a line break
+#
+# device:substituted text
+# device:text on line 1|test on line2
+#
+# For instance if you would like to have warnquota tell the user their
+# 'mailspool' is full instead of '/dev/hdb1' is full, use the following
+# example.
+#
+# /dev/hdb1:mailspool

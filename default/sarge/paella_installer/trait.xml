@@ -1,0 +1,22 @@
+<trait name="paella_installer" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			paella_common
+		</parent>
+		<parent>
+			subversion
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			paella-installer
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

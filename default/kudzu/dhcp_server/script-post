@@ -1,0 +1,52 @@
+#!/usr/bin/python
+import os
+from paella.base import Error
+from paella.base.util import makepaths, str2list
+from paella.installer.toolkit import InstallerTools
+
+first_div = '# begin static hosts...'
+end_div = '# end static hosts...'
+
+def make_host(host, mac, ip):
+    data = 'host %s {\n' % host
+    data += '\thardware ethernet %s;\n' % mac
+    data += '\tfixed-address %s;\n}\n' % ip
+    return data
+
+def make_all_hosts(hostdata):
+    lines = []
+    for host in hostdata:
+        lines.append(make_host(host, hostdata[host][0], hostdata[host][1]))
+    return lines
+
+
+def make_dhcpd_conf(dhcpdconf, hostdata):
+    f = [x.strip() for x in file(dhcpdconf).readlines()]
+    first, end = f[:f.index(first_div) +1], f[f.index(end_div):]
+    print first
+    middle = make_all_hosts(hostdata)
+    print middle
+    return '\n'.join(first + middle + end) + '\n'
+
+
+it = InstallerTools()
+it.set_trait('dhcp_server')
+
+hosts = str2list(it.get('localnet_static_hosts'))
+macs = str2list(it.get('localnet_static_macs'))
+ips = str2list(it.get('localnet_static_ips'))
+
+if len(hosts) != len(macs):
+    raise Error, 'macs != hosts'
+if len(macs) != len(ips):
+    raise Error, 'ips != macs'
+if len(ips) != len(hosts):
+    raise Error, 'hosts != ips'
+
+hostdata = dict(zip(hosts, zip(macs, ips)))
+path = os.path.join(it.target, 'etc/dhcp3/dhcpd.conf')
+fdata = make_dhcpd_conf(path, hostdata)
+f = file(path, 'w')
+f.write(fdata)
+f.close()
+

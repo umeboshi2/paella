@@ -1,0 +1,95 @@
+Name: exim4/dc_eximconfig_configtype
+Template: exim4/dc_eximconfig_configtype
+Value: internet site; mail is sent and received directly using SMTP
+Owners: exim4-config
+Flags: seen
+
+Name: exim4/dc_local_interfaces
+Template: exim4/dc_local_interfaces
+Value: 
+Owners: exim4-config
+Flags: seen
+
+Name: exim4/dc_minimaldns
+Template: exim4/dc_minimaldns
+Value: false
+Owners: exim4-config
+Flags: seen
+
+Name: exim4/dc_noalias_regenerate
+Template: exim4/dc_noalias_regenerate
+Owners: exim4-config
+
+Name: exim4/dc_other_hostnames
+Template: exim4/dc_other_hostnames
+Value: <--|exim_maildomain|-->:<--|localnet_domain|-->
+Owners: exim4-config
+Flags: seen
+Variables:
+ mailname = <--|exim_maildomain|-->
+
+Name: exim4/dc_postmaster
+Template: exim4/dc_postmaster
+Value: umeboshi
+Owners: exim4-config
+Flags: seen
+
+Name: exim4/dc_readhost
+Template: exim4/dc_readhost
+Value: 
+Owners: exim4-config
+
+Name: exim4/dc_relay_domains
+Template: exim4/dc_relay_domains
+Value: <--|exim_maildomain|-->:<--|exim_local_domains|-->
+Owners: exim4-config
+Flags: seen
+
+Name: exim4/dc_relay_nets
+Template: exim4/dc_relay_nets
+Value: <--|localnet_cidr|-->
+Owners: exim4-config
+Flags: seen
+
+Name: exim4/dc_smarthost
+Template: exim4/dc_smarthost
+Value: 
+Owners: exim4-config
+
+Name: exim4/exim3_upgrade
+Template: exim4/exim3_upgrade
+Owners: exim4-config
+
+Name: exim4/exim4-config-title
+Template: exim4/exim4-config-title
+Owners: exim4-config
+
+Name: exim4/hide_mailname
+Template: exim4/hide_mailname
+Value: 
+Owners: exim4-config
+
+Name: exim4/mailname
+Template: exim4/mailname
+Value: <--|global_mailname|-->
+Owners: exim4-config
+Flags: seen
+
+Name: exim4/move_exim3_spool
+Template: exim4/move_exim3_spool
+Owners: exim4-base
+
+Name: exim4/no_config
+Template: exim4/no_config
+Owners: exim4-config
+
+Name: exim4/purge_spool
+Template: exim4/purge_spool
+Owners: exim4-base
+
+Name: exim4/use_split_config
+Template: exim4/use_split_config
+Value: true
+Owners: exim4-config
+Flags: seen
+

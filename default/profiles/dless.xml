@@ -1,0 +1,25 @@
+	<profile name="dless" suite="kudzu">
+		<traits>
+			<trait ord="20">
+				base
+			</trait>
+			<trait ord="50">
+				diskless
+			</trait>
+			<trait ord="50">
+				netdesk
+			</trait>
+			<trait ord="99">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				insecure
+			</family>
+			<family>
+				nielsen
+			</family>
+		</families>
+		<environ/>
+	</profile>

@@ -1,0 +1,17 @@
+<trait name="simple" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			libc6
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

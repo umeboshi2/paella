@@ -1,0 +1,64 @@
+<trait name="webbrowser" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			mozilla-ctxextensions
+		</package>
+		<package action="install">
+			mozilla-diggler
+		</package>
+		<package action="install">
+			mozilla-firefox
+		</package>
+		<package action="install">
+			mozilla-mozgest
+		</package>
+		<package action="install">
+			mozilla-psm
+		</package>
+		<package action="install">
+			mozilla-stumbleupon
+		</package>
+		<package action="install">
+			mozilla-tabextensions
+		</package>
+		<package action="install">
+			xprt-xprintorg
+		</package>
+	</packages>
+	<environ>
+		<homepage>
+			http://news.google.com
+		</homepage>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/mozilla-firefoxrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/pref/all.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/pref/security-prefs.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/pref/unix.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/pref/xpinstall.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/profile/US/bookmarks.html
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/profile/bookmarks.html
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

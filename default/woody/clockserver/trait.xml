@@ -1,0 +1,31 @@
+<trait name="clockserver" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ntp
+		</package>
+		<package action="install">
+			ntp-refclock
+		</package>
+	</packages>
+	<environ>
+		<server>
+			tock.usno.navy.mil
+		</server>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="ntp">
+			etc/default/ntp-servers
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="ntp">
+			etc/ntp.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

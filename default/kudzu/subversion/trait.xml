@@ -1,0 +1,24 @@
+<trait name="subversion" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			subversion
+		</package>
+		<package action="install">
+			svn-buildpackage
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="subversion">
+			etc/subversion/config
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

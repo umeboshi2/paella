@@ -1,0 +1,46 @@
+<trait name="cdburner" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			cdrecord
+		</package>
+		<package action="install">
+			mkisofs
+		</package>
+	</packages>
+	<environ>
+		<cdr_device>
+			0,0,0
+		</cdr_device>
+		<cdr_fifosize>
+			4m
+		</cdr_fifosize>
+		<cdr_speed>
+			4
+		</cdr_speed>
+		<kmods>
+			ide-scsi, sr_mod, sg
+		</kmods>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="cdrecord">
+			etc/default/cdrecord
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="cdrecord">
+			etc/default/rscsi
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="cdrecord">
+			etc/lilo.conf
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="cdrecord">
+			var/cache/debconf/config.dat
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,52 @@
+<trait name="um_repository" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			mirrors_server
+		</parent>
+		<parent>
+			um_base
+		</parent>
+		<parent>
+			ume_testhome
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ssh
+		</package>
+	</packages>
+	<environ>
+		<address>
+			10.0.1.100
+		</address>
+		<hostname>
+			umrepos
+		</hostname>
+		<nfshost>
+			paella
+		</nfshost>
+		<root_device>
+			/dev/ubd0
+		</root_device>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="ssh">
+			etc/fstab
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="ssh">
+			etc/hostname
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="ssh">
+			etc/mailname
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="ssh">
+			etc/network/interfaces
+		</template>
+		<template grp_owner="umeboshi" mode="0100640" owner="umeboshi" package="ssh">
+			home/umeboshi/.ssh/authorized_keys
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

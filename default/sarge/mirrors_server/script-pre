@@ -1,0 +1,14 @@
+#!/usr/bin/python2.3
+import os
+from os.path import isdir, isfile, join
+
+from paella.base.util import makepaths
+
+target = os.environ['PAELLA_TARGET']
+
+mirrors = join(target, 'mirrors')
+makepaths(mirrors)
+exports = file(join(target, 'etc', 'exports')).readlines()
+for directory in ['share', 'common', 'bkups', 'debian']:
+    makepaths(join(mirrors, directory))
+    exports.append('%s\t\t*(ro)\n' % join('/mirrors', directory))

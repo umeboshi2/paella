@@ -1,0 +1,12 @@
+[Display]
+bgcolor=175,180,159
+fgcolor=0,0,0
+width=150
+
+[Editor]
+font=<--|kde_knotes_font|-->
+richtext=false
+titlefont=<--|kde_knotes_titlefont|-->
+
+[General]
+version=2.3

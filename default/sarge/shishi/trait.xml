@@ -1,0 +1,55 @@
+<trait name="shishi" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			standard
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			login
+		</package>
+	</packages>
+	<environ>
+		<paella_bootfile>
+			pxelinux.0
+		</paella_bootfile>
+		<paella_desktop>
+			roujin
+		</paella_desktop>
+		<paella_desktop_hwaddr>
+			00:E0:81:24:69:30
+		</paella_desktop_hwaddr>
+		<paella_desktop_ip>
+			192.168.0.6
+		</paella_desktop_ip>
+		<paella_laptop>
+			bard
+		</paella_laptop>
+		<paella_laptop_hwaddr>
+			00:40:45:12:54:62
+		</paella_laptop_hwaddr>
+		<paella_laptop_ip>
+			192.168.0.12
+		</paella_laptop_ip>
+		<paella_mainhost>
+			zathras
+		</paella_mainhost>
+		<paella_mainhost_hwaddr>
+			00:03:6D:15:83:5A
+		</paella_mainhost_hwaddr>
+		<paella_mainhost_ip>
+			192.168.0.2
+		</paella_mainhost_ip>
+		<paella_rootpath>
+			/freespace/nfsroot
+		</paella_rootpath>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="login">
+			etc/dhcp3/dhcpd.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,9 @@
+#!/bin/bash
+mount proc /proc -t proc
+rm /var/run/postgresql/*
+apt-get -y install sql-ledger
+/etc/init.d/postgresql start
+sleep 3
+su postgres -c "createuser -A -d sql-ledger"
+/etc/init.d/postgresql stop
+umount /proc

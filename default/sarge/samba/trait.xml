@@ -1,0 +1,52 @@
+<trait name="samba" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			fileserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			samba
+		</package>
+		<package action="install">
+			samba-common
+		</package>
+	</packages>
+	<environ>
+		<common_path>
+			$fileserver_common_path
+		</common_path>
+		<domain_master>
+			auto
+		</domain_master>
+		<local_master>
+			yes
+		</local_master>
+		<oslevel>
+			20
+		</oslevel>
+		<preferred_master>
+			auto
+		</preferred_master>
+		<security>
+			share
+		</security>
+		<shared_path>
+			$fileserver_share_path
+		</shared_path>
+		<workgroup>
+			workgroup
+		</workgroup>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="samba">
+			etc/samba/smb.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="samba-common">
+			etc/default/samba
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

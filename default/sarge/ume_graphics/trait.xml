@@ -1,0 +1,50 @@
+<trait name="ume_graphics" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			ume_desktop
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			blender
+		</package>
+		<package action="install">
+			dia
+		</package>
+		<package action="install">
+			dia-common
+		</package>
+		<package action="install">
+			gqview
+		</package>
+		<package action="install">
+			gtkmorph
+		</package>
+		<package action="install">
+			gtkmorph-example
+		</package>
+		<package action="install">
+			pngcrush
+		</package>
+		<package action="install">
+			propaganda-debian
+		</package>
+		<package action="install">
+			sodipodi
+		</package>
+		<package action="install">
+			stereograph
+		</package>
+		<package action="install">
+			transfig
+		</package>
+		<package action="install">
+			xfig
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

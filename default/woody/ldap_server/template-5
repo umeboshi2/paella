@@ -1,0 +1,151 @@
+Name: libnss-ldap/binddn
+Template: libnss-ldap/binddn
+Owners: libnss-ldap
+
+Name: libnss-ldap/bindpw
+Template: libnss-ldap/bindpw
+Owners: libnss-ldap
+
+Name: libnss-ldap/confperm
+Template: libnss-ldap/confperm
+Value: true
+Owners: libnss-ldap
+Flags: seen
+
+Name: libnss-ldap/dblogin
+Template: libnss-ldap/dblogin
+Value: false
+Owners: libnss-ldap
+Flags: seen
+
+Name: libnss-ldap/nsswitch
+Template: libnss-ldap/nsswitch
+Value: 
+Owners: libnss-ldap
+Flags: seen
+
+Name: libnss-ldap/override
+Template: libnss-ldap/override
+Value: true
+Owners: libnss-ldap
+
+Name: shared/ldapns/base-dn
+Template: shared/ldapns/base-dn
+Value: <--|ldap_server_basedn|-->
+Owners: libnss-ldap
+Flags: seen
+
+Name: shared/ldapns/ldap-server
+Template: shared/ldapns/ldap-server
+Value: 127.0.0.1
+Owners: libnss-ldap
+Flags: seen
+
+Name: shared/ldapns/ldap_version
+Template: shared/ldapns/ldap_version
+Value: 3
+Owners: libnss-ldap
+Flags: seen
+
+Name: shared/locale/countrycode
+Template: shared/locale/countrycode
+Owners: slapd
+
+Name: shared/organization
+Template: shared/organization
+Owners: slapd
+
+Name: slapd/conf_exists
+Template: slapd/conf_exists
+Owners: slapd
+
+Name: slapd/custom_suffix
+Template: slapd/custom_suffix
+Owners: slapd
+
+Name: slapd/domain
+Template: slapd/domain
+Value: umdomain
+Owners: slapd
+Flags: seen
+
+Name: slapd/fill_method
+Template: slapd/fill_method
+Value: auto
+Owners: slapd
+Flags: seen
+
+Name: slapd/internal/admin
+Template: slapd/internal/admin
+Value: cn=admin,dc=umdomain
+Owners: slapd
+
+Name: slapd/internal/adminpw
+Template: slapd/internal/adminpw
+Value: 
+Owners: slapd
+
+Name: slapd/internal/dn
+Template: slapd/internal/dn
+Value: <--|ldap_server_internal_dn|-->
+Owners: slapd
+
+Name: slapd/ldif_file
+Template: slapd/ldif_file
+Owners: slapd
+
+Name: slapd/ldif_noexist
+Template: slapd/ldif_noexist
+Owners: slapd
+
+Name: slapd/no_password
+Template: slapd/no_password
+Owners: slapd
+
+Name: slapd/password1
+Template: slapd/password1
+Value: 
+Owners: slapd
+Flags: seen
+
+Name: slapd/password2
+Template: slapd/password2
+Value: 
+Owners: slapd
+Flags: seen
+
+Name: slapd/password_mismatch
+Template: slapd/password_mismatch
+Owners: slapd
+
+Name: slapd/replicate
+Template: slapd/replicate
+Value: false
+Owners: slapd
+Flags: seen
+
+Name: slapd/slurpd/binddn
+Template: slapd/slurpd/binddn
+Owners: slapd
+
+Name: slapd/slurpd/credentials
+Template: slapd/slurpd/credentials
+Owners: slapd
+
+Name: slapd/slurpd/host
+Template: slapd/slurpd/host
+Owners: slapd
+
+Name: slapd/slurpd/port
+Template: slapd/slurpd/port
+Owners: slapd
+
+Name: slapd/suffix_type
+Template: slapd/suffix_type
+Value: domain or host
+Owners: slapd
+Flags: seen
+
+Name: slapd/unknown_class
+Template: slapd/unknown_class
+Owners: slapd

@@ -1,0 +1,17 @@
+<trait name="diskless_common" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

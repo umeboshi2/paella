@@ -1,0 +1,6 @@
+Name: nis/domain
+Template: nis/domain
+Value: <--|diskless_server_nis_domain|-->
+Owners: nis
+Flags: seen
+

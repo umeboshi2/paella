@@ -1,0 +1,77 @@
+<trait name="ume_math" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			ume_devel
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			celestia-common
+		</package>
+		<package action="install">
+			celestia-glut
+		</package>
+		<package action="install">
+			gap
+		</package>
+		<package action="install">
+			gap-core
+		</package>
+		<package action="install">
+			gap-libs
+		</package>
+		<package action="install">
+			gap-online-help
+		</package>
+		<package action="install">
+			gap-prim-groups
+		</package>
+		<package action="install">
+			gap-small-groups
+		</package>
+		<package action="install">
+			gap-small-groups-extra
+		</package>
+		<package action="install">
+			gap-trans-groups
+		</package>
+		<package action="install">
+			garlic
+		</package>
+		<package action="install">
+			gperiodic
+		</package>
+		<package action="install">
+			gretl
+		</package>
+		<package action="install">
+			mayavi
+		</package>
+		<package action="install">
+			octave2.1
+		</package>
+		<package action="install">
+			octave2.1-emacsen
+		</package>
+		<package action="install">
+			octave2.1-headers
+		</package>
+		<package action="install">
+			octave2.1-htmldoc
+		</package>
+		<package action="install">
+			pi
+		</package>
+		<package action="install">
+			r-recommended
+		</package>
+		<package action="install">
+			rpncalc
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

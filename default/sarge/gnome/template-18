@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="show_default_theme" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/show_default_theme"/>
+<entry name="cmd_line_color_bg_g" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/cmd_line_color_bg_g"/>
+<entry name="cmd_line_color_bg_r" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/cmd_line_color_bg_r"/>
+<entry name="show_handle" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/show_handle" muser="root" type="bool" value="true"/>
+<entry name="cmd_line_color_fg_g" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/cmd_line_color_fg_g"/>
+<entry name="cmd_line_color_fg_r" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/cmd_line_color_fg_r"/>
+<entry name="cmd_line_y" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/cmd_line_y"/>
+<entry name="macro_commands" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/macro_commands"/>
+<entry name="autocomplete_history" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/autocomplete_history"/>
+<entry name="normal_size_x" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/normal_size_x"/>
+<entry name="normal_size_y" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/normal_size_y"/>
+<entry name="show_frame" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/show_frame" muser="root" type="bool" value="true"/>
+<entry name="macro_patterns" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/macro_patterns"/>
+<entry name="cmd_line_color_bg_b" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/cmd_line_color_bg_b"/>
+<entry name="cmd_line_color_fg_b" mtime="1081404905" schema="/schemas/apps/mini-commander/prefs/cmd_line_color_fg_b"/>
+</gconf>

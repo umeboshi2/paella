@@ -1,0 +1,104 @@
+<trait name="stddev" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			standard
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			autoconf
+		</package>
+		<package action="install">
+			automake1.4
+		</package>
+		<package action="install">
+			automake1.6
+		</package>
+		<package action="install">
+			automake1.7
+		</package>
+		<package action="install">
+			bin86
+		</package>
+		<package action="install">
+			binutils
+		</package>
+		<package action="install">
+			bison
+		</package>
+		<package action="install">
+			ccache
+		</package>
+		<package action="install">
+			cvs
+		</package>
+		<package action="install">
+			debhelper
+		</package>
+		<package action="install">
+			debnest
+		</package>
+		<package action="install">
+			devscripts
+		</package>
+		<package action="install">
+			dh-buildinfo
+		</package>
+		<package action="install">
+			dh-make
+		</package>
+		<package action="install">
+			distcc
+		</package>
+		<package action="install">
+			fakeroot
+		</package>
+		<package action="install">
+			flex
+		</package>
+		<package action="install">
+			g++
+		</package>
+		<package action="install">
+			g++-2.95
+		</package>
+		<package action="install">
+			g++-3.3
+		</package>
+		<package action="install">
+			gcc
+		</package>
+		<package action="install">
+			gcc-2.95
+		</package>
+		<package action="install">
+			gcc-3.3
+		</package>
+		<package action="install">
+			gcc-3.3-base
+		</package>
+		<package action="install">
+			gdb
+		</package>
+		<package action="install">
+			linda
+		</package>
+		<package action="install">
+			lintian
+		</package>
+		<package action="install">
+			make
+		</package>
+		<package action="install">
+			pychecker
+		</package>
+		<package action="install">
+			rcs
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

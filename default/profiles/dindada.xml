@@ -1,0 +1,38 @@
+	<profile name="dindada" suite="sarge">
+		<traits>
+			<trait ord="50">
+				extended
+			</trait>
+			<trait ord="50">
+				paella_dbserver
+			</trait>
+			<trait ord="99">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				enpassant
+			</family>
+			<family>
+				insecure
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="dhcp_prepend_dns" trait="default">
+				prepend domain-name-servers 127.0.0.1;
+			</profile_variable>
+			<profile_variable name="dhcp_supersede_domain" trait="default">
+				supersede domain-name &quot;enpassant&quot;;
+			</profile_variable>
+			<profile_variable name="install_diskless" trait="diskless_server">
+				true
+			</profile_variable>
+			<profile_variable name="hostname" trait="global">
+				dindada
+			</profile_variable>
+			<profile_variable name="local_address" trait="global">
+				10.0.0.1
+			</profile_variable>
+		</environ>
+	</profile>

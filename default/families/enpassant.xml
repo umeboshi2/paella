@@ -1,0 +1,272 @@
+	<family name="enpassant">
+		<parents/>
+		<environ>
+			<family_variable name="adduser_skel" trait="base">
+				/freespace/nfsroots/dododo/etc/skel
+			</family_variable>
+			<family_variable name="user_umask" trait="base">
+				007
+			</family_variable>
+			<family_variable name="diskless_kernel" trait="boot_server">
+				kernel-image-2.6.5installer
+			</family_variable>
+			<family_variable name="label" trait="boot_server">
+				installer
+			</family_variable>
+			<family_variable name="mount_devfs" trait="boot_server">
+				mount
+			</family_variable>
+			<family_variable name="diskless_profile" trait="default">
+				dododo
+			</family_variable>
+			<family_variable name="diskless_roots" trait="default">
+				/freespace/nfsroots
+			</family_variable>
+			<family_variable name="gdm_bgprog" trait="desktop">
+				/usr/lib/xscreensaver/squiral -root
+			</family_variable>
+			<family_variable name="gdm_bgtype" trait="desktop">
+				0
+			</family_variable>
+			<family_variable name="domain" trait="diskless">
+				$global_domain
+			</family_variable>
+			<family_variable name="maildomain" trait="diskless">
+				$global_domain
+			</family_variable>
+			<family_variable name="mailroute" trait="diskless">
+				santa
+			</family_variable>
+			<family_variable name="master_host" trait="diskless">
+				santa
+			</family_variable>
+			<family_variable name="nameserver" trait="diskless">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="nfshomedir" trait="diskless">
+				/home
+			</family_variable>
+			<family_variable name="nfshostdir" trait="diskless">
+				/freespace/nfsroots
+			</family_variable>
+			<family_variable name="nfsimagedir" trait="diskless">
+				/freespace/nfsroots/dododo
+			</family_variable>
+			<family_variable name="nfsserver" trait="diskless">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="use_devfs" trait="diskless">
+				no
+			</family_variable>
+			<family_variable name="install_diskless" trait="diskless_server">
+				false
+			</family_variable>
+			<family_variable name="local_domains" trait="exim">
+				$global_domain
+			</family_variable>
+			<family_variable name="maildomain" trait="exim">
+				$global_domain
+			</family_variable>
+			<family_variable name="qualifydomain" trait="exim">
+				$global_domain
+			</family_variable>
+			<family_variable name="relay_local_network" trait="exim">
+				$default_local_network_bitmask
+			</family_variable>
+			<family_variable name="admin_path" trait="fileserver">
+				admin
+			</family_variable>
+			<family_variable name="base_path" trait="fileserver">
+				/freespace/shared
+			</family_variable>
+			<family_variable name="common_path" trait="fileserver">
+				common
+			</family_variable>
+			<family_variable name="office_path" trait="fileserver">
+				office
+			</family_variable>
+			<family_variable name="share_path" trait="fileserver">
+				share
+			</family_variable>
+			<family_variable name="forward1_accept" trait="firewall">
+				#ACCEPT
+			</family_variable>
+			<family_variable name="forward1_ip" trait="firewall">
+				10.0.0.2
+			</family_variable>
+			<family_variable name="forward1_ports" trait="firewall">
+				smtp,ssh,https,http
+			</family_variable>
+			<family_variable name="forward2_accept" trait="firewall">
+				#ACCEPT
+			</family_variable>
+			<family_variable name="forward2_ip" trait="firewall">
+				10.0.0.2
+			</family_variable>
+			<family_variable name="forward2_ports" trait="firewall">
+				smtp,ssh,https,http
+			</family_variable>
+			<family_variable name="internet_interface" trait="firewall">
+				eth0
+			</family_variable>
+			<family_variable name="isp_address" trait="firewall">
+				192.168.9.2
+			</family_variable>
+			<family_variable name="isp_gateway" trait="firewall">
+				192.168.9.1
+			</family_variable>
+			<family_variable name="isp_netmask" trait="firewall">
+				255.255.255.252
+			</family_variable>
+			<family_variable name="local_interface" trait="firewall">
+				eth1
+			</family_variable>
+			<family_variable name="redirect_squid" trait="firewall">
+				REDIRECT
+			</family_variable>
+			<family_variable name="startup" trait="firewall">
+				1
+			</family_variable>
+			<family_variable name="adminuser" trait="global">
+				umeboshi
+			</family_variable>
+			<family_variable name="domain" trait="global">
+				enpassant
+			</family_variable>
+			<family_variable name="install_opencd" trait="global">
+				false
+			</family_variable>
+			<family_variable name="local_address" trait="global">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="local_netmask" trait="global">
+				255.0.0.0
+			</family_variable>
+			<family_variable name="local_network" trait="global">
+				10.0.0.0
+			</family_variable>
+			<family_variable name="local_network_cidr" trait="global">
+				10.0.0.0/8
+			</family_variable>
+			<family_variable name="rev_local_zone" trait="global">
+				10
+			</family_variable>
+			<family_variable name="cursor_theme" trait="kde">
+				redglass
+			</family_variable>
+			<family_variable name="general_font" trait="kde">
+				helvetica,12,-1,5,50,0,0,0,0,0
+			</family_variable>
+			<family_variable name="knotes_font" trait="kde">
+				helvetica,10,-1,5,50,0,0,0,0,0
+			</family_variable>
+			<family_variable name="admin" trait="ldap_common">
+				admin
+			</family_variable>
+			<family_variable name="admin_base" trait="ldap_common">
+				mainoffice
+			</family_variable>
+			<family_variable name="adminbinddn" trait="ldap_common">
+				cn=admin,dc=enpassant
+			</family_variable>
+			<family_variable name="adminpw" trait="ldap_common">
+				a
+			</family_variable>
+			<family_variable name="basedn" trait="ldap_common">
+				dc=enpassant
+			</family_variable>
+			<family_variable name="ldap_host" trait="ldap_common">
+				santa.enpassant
+			</family_variable>
+			<family_variable name="ldap_uris" trait="ldap_common">
+				ldap://santa.enpassant
+			</family_variable>
+			<family_variable name="nss" trait="ldap_common">
+				nss
+			</family_variable>
+			<family_variable name="nssbinddn" trait="ldap_common">
+				cn=nss,dc=enpassant
+			</family_variable>
+			<family_variable name="nsspw" trait="ldap_common">
+				a
+			</family_variable>
+			<family_variable name="nsssecret" trait="ldap_common">
+				{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+			</family_variable>
+			<family_variable name="rootbinddn" trait="ldap_common">
+				cn=admin,dc=enpassant
+			</family_variable>
+			<family_variable name="secret" trait="ldap_common">
+				{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+			</family_variable>
+			<family_variable name="basedn" trait="ldap_server">
+				dc=enpassant
+			</family_variable>
+			<family_variable name="genericpw" trait="ldap_server">
+				e2NyeXB0fSQxJGtGWWhPWVJrJE1kWHNWS3dpOGFZOWMzSllIYkxSLi4=
+			</family_variable>
+			<family_variable name="internal_dn" trait="ldap_server">
+				dc=enpassant
+			</family_variable>
+			<family_variable name="lam_masterpw" trait="ldap_server">
+				lam
+			</family_variable>
+			<family_variable name="lam_profilepw" trait="ldap_server">
+				a
+			</family_variable>
+			<family_variable name="ldapsecret" trait="ldap_server">
+				ldapp22wd
+			</family_variable>
+			<family_variable name="rootbinddn" trait="ldap_server">
+				cn=batman,dc=enpassant
+			</family_variable>
+			<family_variable name="rootpw" trait="ldap_server">
+				{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+			</family_variable>
+			<family_variable name="sysgroup" trait="ldap_server">
+				doozer
+			</family_variable>
+			<family_variable name="mainserver" trait="localnet">
+				santa
+			</family_variable>
+			<family_variable name="static_hosts" trait="localnet">
+				bard, shuttle
+			</family_variable>
+			<family_variable name="static_ips" trait="localnet">
+				10.0.0.12, 10.0.0.3
+			</family_variable>
+			<family_variable name="static_macs" trait="localnet">
+				00:40:45:12:54:62, 00:30:1b:3b:73:45
+			</family_variable>
+			<family_variable name="allow_update" trait="nameserver">
+				$global_local_network_cidr
+			</family_variable>
+			<family_variable name="domain" trait="nameserver">
+				$base_domain
+			</family_variable>
+			<family_variable name="reversed_local_address" trait="nameserver">
+				1.0.0.10
+			</family_variable>
+			<family_variable name="reversed_zone" trait="nameserver">
+				10
+			</family_variable>
+			<family_variable name="dbhost" trait="paella_common">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="debrepos_host" trait="paella_common">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="log_host" trait="paella_common">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="debrepos_on_usbdisk" trait="paella_dbserver">
+				true
+			</family_variable>
+			<family_variable name="basedn" trait="workstation">
+				dc=enpassant
+			</family_variable>
+			<family_variable name="ldap_uris" trait="workstation">
+				ldap://santa.enpassant
+			</family_variable>
+		</environ>
+	</family>

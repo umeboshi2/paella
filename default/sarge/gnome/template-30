@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="object_type" mtime="1081569137" schema="/schemas/apps/panel/objects/object_type" muser="root" type="string">
+<stringvalue>menu-object</stringvalue>
+</entry>
+<entry name="toplevel_id" mtime="1081569137" schema="/schemas/apps/panel/objects/toplevel_id" muser="root" type="string">
+<stringvalue>command_panel</stringvalue>
+</entry>
+<entry name="position" mtime="1081569137" schema="/schemas/apps/panel/objects/position" muser="root" type="int" value="-4"/>
+<entry name="panel_right_stick" mtime="1081569137" schema="/schemas/apps/panel/objects/panel_right_stick_type" muser="root" type="bool" value="false"/>
+<entry name="locked" mtime="1081569137" schema="/schemas/apps/panel/objects/locked" muser="root" type="bool" value="true"/>
+</gconf>

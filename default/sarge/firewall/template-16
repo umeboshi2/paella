@@ -1,0 +1,52 @@
+#
+# Shorewall 1.4 -- /etc/shorewall/tos
+#
+#	This file defines rules for setting Type Of Service (TOS)
+#
+# Columns are:
+#
+#	SOURCE		Name of a zone declared in /etc/shorewall/zones, "all"
+#			or $FW.
+#
+#			If not "all" or $FW, may optionally be followed by
+#			":" and an IP address, a MAC address, a subnet
+#                       specification or the name of an interface.
+#
+#			Example: loc:192.168.2.3
+#
+#			MAC addresses must be prefixed with "~" and use
+#			"-" as a separator.
+#
+#			Example: ~00-A0-C9-15-39-78
+#
+#	DEST		Name of a zone declared in /etc/shorewall/zones, "all"
+#			or $FW.
+#
+#			If not "all" or $FW, may optionally be followed by
+#			":" and an IP address or a subnet specification
+#
+#			Example: loc:192.168.2.3
+#
+#	PROTOCOL	Protocol.
+#
+#	SOURCE PORTS	Source port or port range. If all ports, use "-".
+#
+#	DEST PORTS	Destination port or port range. If all ports, use "-"
+#
+#	TOS		Type of service. Must be one of the following:
+#
+#				Minimize-Delay (16)
+#				Maximize-Throughput (8)
+#				Maximize-Reliability (4)
+#				Minimize-Cost (2)
+#				Normal-Service (0)
+#
+##############################################################################
+#SOURCE DEST		PROTOCOL	SOURCE PORTS	DEST PORTS	TOS
+all	all		tcp		-		ssh		16
+all	all		tcp		ssh		-		16
+all	all		tcp		-		ftp		16
+all	all		tcp		ftp		-		16
+all	all		tcp		ftp-data	-		8
+all	all		tcp		-		ftp-data	8
+#LAST LINE -- Add your entries above -- DO NOT REMOVE

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Shutdown of the system due to power failure
+
+i=1
+while true; do
+	echo -en "\033[10;200]\033[11;300]\a"
+	sleep 6
+	let i=$i+1
+	if [ $i -gt 10 ]; then
+		break
+	fi
+done
+
+i=1
+while true; do
+	echo -en "\033[10;500]\033[11;200]\a"
+	sleep 2
+	let i=$i+1
+	if [ $i -gt 30 ]; then
+		break
+	fi
+done
+
+i=1
+while true; do
+	echo -en "\033[10;800]\033[11;100]\a"
+	sleep 1
+	let i=$i+1
+	if [ $i -gt 60 ]; then
+		break
+	fi
+done
+
+for tone in 524 491 440 393 349 328 295 ; do
+	echo -en "\033[10;${tone}]\\033[11;50]\a"
+	sleep 1
+done
+
+init 0

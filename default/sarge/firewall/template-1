@@ -1,0 +1,13 @@
+# Used by ifup(8) and ifdown(8). See the interfaces(5) manpage or
+# /usr/share/doc/ifupdown/examples for more information.
+auto lo <--|firewall_internet_interface|--> <--|firewall_local_interface|--> 
+iface lo inet loopback
+iface <--|firewall_internet_interface|--> inet dhcp
+#iface <--|firewall_internet_interface|--> inet static
+#	address <--|firewall_isp_address|-->
+#	netmask <--|firewall_isp_netmask|-->
+#	gateway <--|firewall_isp_gateway|-->
+iface <--|firewall_local_interface|--> inet static
+	address <--|default_local_address|-->
+	netmask <--|default_local_netmask|-->
+

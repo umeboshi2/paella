@@ -1,0 +1,119 @@
+Name: adduser/homedir-changed
+Template: adduser/homedir-permission
+Value: true
+Owners: adduser
+
+Name: adduser/homedir-permission
+Template: adduser/homedir-permission
+Value: true
+Owners: adduser
+
+Name: console-data/keymap/family
+Template: console-data/keymap/family
+Value: qwerty
+Owners: console-common, console-data
+Flags: seen
+Variables:
+ choices = azerty, dvorak, fgGIod, qwerty, qwertz
+
+Name: console-data/keymap/policy
+Template: console-data/keymap/policy
+Value: Select keymap from arch list
+Owners: console-common, console-data
+Flags: seen
+
+Name: console-data/keymap/qwerty/layout
+Template: console-data/keymap/template/layout
+Value: US american
+Owners: console-data
+Flags: seen
+Variables:
+ choices = Brazilian, British, Bulgarian, Canadian, Czech, Danish, Dutch, Estonian, Finnish, Greek, Hebrew, Hungarian, Icelandic, Italian, Japanese, Latin American, Latvian, Lithuanian, Macedonian, Norvegian, Norwegian, Polish, Portugese, Romanian, Russian, Slovak, Spanish, Swedish, Turkish, US american, Ukrainian
+
+Name: console-data/keymap/qwerty/us_american/standard/keymap
+Template: console-data/keymap/template/keymap
+Value: Standard
+Owners: console-data
+Flags: seen
+Variables:
+ choices = Standard, US International (ISO 8859-1), US International (ISO 8859-15), With latin1
+
+Name: console-data/keymap/qwerty/us_american/variant
+Template: console-data/keymap/template/variant
+Value: Standard
+Owners: console-data
+Flags: seen
+Variables:
+ choices = Apple USB, Standard
+
+Name: debconf/frontend
+Template: debconf/frontend
+Value: <--|base_debconf_frontend|-->
+Owners: debconf
+Flags: seen
+
+Name: debconf/priority
+Template: debconf/priority
+Value: medium
+Owners: debconf
+Flags: seen
+
+Name: debconf/showold
+Template: debconf/showold
+Value: false
+Owners: debconf
+Flags: seen
+
+Name: less/add_mime_handler
+Template: less/add_mime_handler
+Value: true
+Owners: less
+Flags: seen
+
+Name: man-db/install-setuid
+Template: man-db/install-setuid
+Value: false
+Owners: man-db
+Flags: seen
+
+Name: netbase/ipv6-hosts
+Template: netbase/ipv6-hosts
+Value: false
+Owners: netbase
+Flags: seen
+
+Name: netbase/spoofprot/pre-2.2-interfaces
+Template: netbase/spoofprot/pre-2.2-interfaces
+Value: eth0 eth1 ppp0
+Owners: netbase
+Flags: seen
+
+Name: netbase/spoofprot/pre-2.2-ip
+Template: netbase/spoofprot/pre-2.2-ip
+Value: 127.0.0.1/8
+Owners: netbase
+Flags: seen
+
+Name: netkit-inetd/inetd-dos-services
+Template: netkit-inetd/inetd-dos-services
+Value: true
+Owners: netkit-inetd
+Flags: seen
+
+Name: setserial/autosave-types
+Template: setserial/autosave-types
+Value: autosave once
+Owners: setserial
+
+Name: shared/ntp/servers
+Template: shared/ntp/servers
+Value: tock.usno.navy.mil
+Owners: ntp-refclock, ntpdate
+Flags: seen
+
+Name: shared/ntp/update-conf
+Template: shared/ntp/update-conf
+Value: true
+Owners: ntp-refclock
+Flags: seen
+

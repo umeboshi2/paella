@@ -1,0 +1,428 @@
+#! /bin/sh 
+
+set -e
+
+# This will be replaced with debian/slapd.scripts-common which includes
+# various helper functions and $OLD_VERSION and $SLAPD_CONF
+# This file can be included with #SCRIPTSCOMMON#
+
+# Make the version we are upgrading from globally available
+OLD_VERSION="$2"
+
+# Source the init script configuration
+if [ -f "/etc/default/slapd" ]; then
+  . /etc/default/slapd
+fi
+
+# Load the default location of the slapd config file
+if [ -z "$SLAPD_CONF" ]; then
+  SLAPD_CONF="/etc/ldap/slapd.conf"
+fi
+
+# Check if we are upgrading from a version prior to OpenLDAP 2.1
+upgrading_version_pre21() {
+  if dpkg --compare-versions "$OLD_VERSION" lt-nl 2.1; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# slapd supports continuation lines in the slapd.conf. Continuation lines 
+# start with spaces and are merged with the preceding line. This function
+# uses perl to merge physical lines into logical lines as seen by the 
+# slapd config parser.
+merge_logical_lines() {
+  perl -pe 'BEGIN { undef $/ }; s/\n(?!\n)\s+/ /g;' 
+}
+
+# Directory names are whitespace-sensitive, but suffixes are not.  Discard
+# whitespace, so we can create cleaner backup directory names.
+canonical_suffix() {
+  eval echo $1 | sed -e 's/[[:space:]]+//g'
+}
+
+# Check if upgrading a database in the named backend is supported by
+# our scripts.
+supported_backend() {
+  case "$1" in ldbm|bdb) return 0; esac
+  return 1
+}
+
+# Print out the information about one database
+write_database_info() {
+  backend=$1
+  suffix=$2
+  directory=$3
+
+  if supported_backend "$backend"; then
+    # If no directory was given use the compiled in value
+    if [ -z "$directory" ]; then
+      # TODO: This should be somewhere in /var - needs tweaking of 
+      # configure.options
+      directory=/usr/share/ldap/openldap-data
+    fi
+    echo $backend '"'$suffix'"' '"'$directory'"'
+  else
+    echo "Warning: Backend $backend not supported by automatic upgrade." >&2
+  fi
+}
+
+# Get the list of configured databases from the slapd configuration file
+get_database_list() {
+  (merge_logical_lines < $SLAPD_CONF && echo database) | \
+    while read command data; do
+      case $command in
+      database)
+        # Write information about previous database section if any
+        if [ -n "$backend" ] && [ -n "$suffix" ]; then
+	  write_database_info "$backend" "$suffix" "$directory"
+	fi
+	backend=$data
+	suffix=""
+	directory=""
+        ;;
+      suffix)
+        suffix=`canonical_suffix "$data"`
+        ;;
+      directory)
+        directory=`eval echo $data`
+        ;;
+      esac
+    done
+}
+
+# Check if this is the initial configuration and not an upgrade of an 
+# existing configuration
+is_initial_configuration() {
+  # Plain installation
+  if [ "$1" = configure ] && [ -z "$2" ]; then
+    return 0
+  fi
+  # Configuration via dpkg-reconfigure
+  if [ "$1" = reconfigure ] || [ "$DEBCONF_RECONFIGURE" ]; then
+    return 0
+  fi
+  return 1
+}
+
+# Check, if the user wants an LDIF dump of the directory
+# XXX: Currently dumps unconditionally
+ldif_dump_wanted() {
+  return 0
+}
+
+# Ask for the filename of the dump file
+# XXX: Currently just uses /var/backups/ldap/$OLD_VERSION/slapd-${suffix}-slapcat.ldif
+ldif_dump_location() {
+  local suffix=$1
+  echo "/var/backups/ldap/$OLD_VERSION/slapd-${suffix}-slapcat.ldif"
+}
+
+# Create directory for dump file
+create_ldif_dump_location() {
+  # Make our backup directory if it does not exist already
+  if [ -d /var/backups/ldap ]; then
+    chmod 700 /var/backups/ldap
+  else
+    mkdir -p -m 700 /var/backups/ldap
+  fi
+  mkdir -p -m 700 /var/backups/ldap/$OLD_VERSION/
+}
+
+
+# Check if the user wants to configure everything himself
+manual_configuration_wanted() {
+  db_get slapd/no_configuration
+  if [ "$RET" = "true" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# Create a new configuration and directory
+create_new_configuration() {
+  db_get slapd/domain
+  # For the domain really.argh.org we create the basedn 
+  # dc=really,dc=argh,dc=org with the dc entry dc: really
+  basedn="dc=`echo $RET|sed 's/\./,dc=/g'`"
+  dc="`echo $RET|sed 's/\..*$//'`"
+
+  # Make sure the daemon is shut down when doing
+  # a reconfigure.  No daemon should be running
+  # during an initial install.
+  if [ "$1" = reconfigure ] || [ "$DEBCONF_RECONFIGURE" ]; then
+    invoke-rc.d slapd stop
+  fi
+
+  create_new_slapd_conf "$basedn"
+  create_new_directory "$basedn" "$dc"
+}
+
+# Creates a new slapd.conf for the suffix given
+create_new_slapd_conf() {
+  basedn=$1
+  if [ -e "$SLAPD_CONF" ]; then
+    return
+  fi
+
+  TMPFILE=`mktemp -q ${SLAPD_CONF}.XXXXXX`
+  echo -n "Creating initial slapd configuration... "
+  sed -e "s/@SUFFIX@/$basedn/g" -e "s/@ADMIN@/cn=admin,$basedn/g" \
+      </usr/share/slapd/slapd.conf >$TMPFILE
+  mv $TMPFILE $SLAPD_CONF
+  echo "done"
+}
+
+# Create a new directory. Takes the basedn and the dc value of that entry.
+# Other information is extracted from debconf.
+create_new_directory() {
+  basedn=$1
+  dc=$2
+
+  db_get shared/organization
+  organization="$RET"
+  db_get slapd/internal/adminpw
+  adminpass="$RET"
+ 
+  echo -n "Creating initial LDAP directory... "
+  touch /var/lib/slapd/suffix_change
+
+  cat <<EOF | slapadd
+dn: $basedn
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: $organization
+dc: $dc
+
+dn: cn=admin,$basedn
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
+userPassword: {crypt}$adminpass
+
+EOF
+
+  echo "done"
+}
+
+# On upgrades from pre-2.1 we might have to update the configuration 
+# file for loading the backend modules.
+autoconfigure_modules() {
+  # If the modulepath directive is already used in slapd.conf we assume 
+  # that the configuration was already adjusted
+  if  grep -q ^modulepath $SLAPD_CONF; then return 0; fi
+
+  # If the user does not want us to do the module config we bail out 
+  db_get slapd/autoconf_modules || true
+  if [ "$RET" != "true" ]; then return 0; fi
+
+  # We really are allowed to update...
+  echo -n "Updating config for dynamic backends... "
+  TMPFILE=`mktemp -q ${SLAPD_CONF}.XXXXXX`
+  chmod --reference=$SLAPD_CONF $TMPFILE
+  cat <<EOF >$TMPFILE
+# Loading of backend modules - automatically generated
+
+modulepath      /usr/lib/ldap
+EOF
+  merge_logical_lines < $SLAPD_CONF | \
+    sed -n 's/^database[[:space:]]\+\([a-z]\+\)/moduleload      back_\1/p' \
+    >>$TMPFILE
+  echo >>$TMPFILE
+  cat $SLAPD_CONF >>$TMPFILE
+  mv $TMPFILE $SLAPD_CONF
+  echo done
+}
+
+
+# Adds the "allow bind_v2" directive to the configuration if the user decided
+# he wants to have ldap v2 enabled.
+configure_v2_protocol_support() {
+  db_get slapd/allow_ldap_v2
+  if [ "$RET" != "true" ]; then
+    return 0
+  fi
+
+  echo -n "Enabling LDAPv2 support... "
+
+  # Check if already enabled
+  if merge_logical_lines < $SLAPD_CONF | \
+  	grep -q -E '^allow[[:space:]][^#]*bind_v2'; then
+    echo "already enabled"
+    return 0
+  fi
+
+  # Create a temporary file for the new config
+  TMPFILE=`mktemp -q ${SLAPD_CONF}.XXXXXX`
+  chmod --reference=$SLAPD_CONF $TMPFILE
+
+  # If there is an existing global allow command, add our option
+  if extend_existing_allow_directive < $SLAPD_CONF > $TMPFILE; then
+    # Succeeded
+    echo "updated existing allow line."
+  else
+    # That failed, so we have to add a new line for it
+    echo '# Allow LDAPv2 binds' > $TMPFILE
+    echo 'allow bind_v2' >> $TMPFILE
+    echo >> $TMPFILE
+    cat $SLAPD_CONF >> $TMPFILE
+    echo "done"
+  fi
+
+  # Activate the new configuration file
+  mv $TMPFILE $SLAPD_CONF
+}
+
+# Filter the config file for an allow directive and add "bind_v2" to it
+# if found.
+extend_existing_allow_directive() {
+  script='
+    $done = 0;
+    while (<>) {
+      $done = 1 if s/^allow/allow bind_v2/;
+      last if m/^database/;
+      print;
+    }
+    exit ! $done;'
+
+  if perl -e "$script"; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# Check if the preinst slapcat worked or not, if not, go ahead and
+# attempt to slapcat here with the new version of slapcat
+export_database() {
+  suffix="$1"
+  location="$2"
+
+  if [ ! -e "$location" ]; then
+    echo -n "  Dumping directory to $location with new slapcat... "
+    slapcat -b "$suffix" > "$location" || SLAPCAT_FAIL=1
+    if [ "$SLAPCAT_FAIL" = "1" ]; then
+      echo "failed"
+      rm -f "$location"
+      db_input high slapd/upgrade_slapcat_failure || true
+    else
+      echo "done"
+    fi
+  fi
+}
+
+# Fix the directory when upgrading from before 2.1 and the root
+# dn has no structural objectclass
+fix_ldif() {
+  location="$1"
+  fixed_location="$2"
+
+  # We should now have a valid ldif file, created either in the
+  # preinst or above.  If we don't, then the user has been
+  # notified and just give up.
+
+  if [ -e "$location" ]; then
+    db_get shared/organization
+    organization="$RET"
+    if [ -z "$organization" ]; then organization=Unknown; fi
+    /usr/share/slapd/fix_ldif -w -o "$organization" < "$location" > "$fixed_location"
+  fi
+}
+
+move_old_database_directory_away() {
+  suffix=$1
+  directory=$2
+
+  if [ -n "$directory" ]; then
+    echo -n "  Moving old database files to /var/backups/ldap/$OLD_VERSION/... "
+    mkdir -p "/var/backups/ldap/$OLD_VERSION/$suffix"
+    mv "$directory"/* "/var/backups/ldap/$OLD_VERSION/$suffix/"
+    echo "done"
+  fi
+}
+
+# If a dump file from the old version exists we want to recreate the
+# directory from it
+import_database() {
+  suffix="$1"
+  location="$2"
+
+  if [ -e "$location" ]; then
+    echo -n "  Recreating directory from $location... "
+    SLAPADD_FAIL=0
+    slapadd -b "$suffix" -u -l "$location" || SLAPADD_FAIL=1
+    if [ "$SLAPADD_FAIL" = "1" ]; then
+      echo "failed"
+      db_input high slapd/upgrade_slapadd_failure || true
+    else
+      slapadd -b "$suffix" -l "$location"
+      echo "done"
+    fi
+  fi
+}
+
+
+# MAIN
+
+. /usr/share/debconf/confmodule
+
+if is_initial_configuration "$@"; then
+  if manual_configuration_wanted; then
+    echo "Omitting slapd configuration as requested."
+  else
+    create_new_configuration
+  fi
+fi
+
+configure_v2_protocol_support
+
+if upgrading_version_pre21; then
+  autoconfigure_modules
+
+  get_database_list | while read backend suffix directory
+  do
+    suffix=`eval echo $suffix`
+    directory=`eval echo $directory`
+    echo "Processing directory $suffix..."
+
+    location=`ldif_dump_location "$suffix"`
+    # XXX: to be truly idempotent, we should make sure we don't try to
+    # overwrite this ldif file on a second pass after already having
+    # moved some of the files aside below.
+  
+    if [ ! -f "/var/lib/slapd/upgrade_2.0-$suffix" ]; then
+      if ldif_dump_wanted; then
+        export_database "$suffix" "$location"
+        fix_ldif "$location" "${location}.fixed"
+      fi
+      move_old_database_directory_away "$suffix" "$directory"
+      touch "/var/lib/slapd/upgrade_2.0-$suffix"
+    fi
+    import_database "$suffix" "${location}.fixed"
+
+  # Since this is actually a subshell, we need to explicitly
+  # call exit: otherwise, the errors won't be caught, and the rm command
+  # below gets run!
+  done || exit $?
+  
+fi
+
+db_stop || true
+
+# Automatically added by dh_installinit
+if [ -x "/etc/init.d/slapd" ]; then
+	update-rc.d slapd defaults 19 80 >/dev/null
+	#if [ -x /usr/sbin/invoke-rc.d ]; then
+	#	invoke-rc.d slapd start
+	#else
+	#	/etc/init.d/slapd start
+	#fi
+fi
+# End automatically added section
+
+
+rm -f /var/lib/slapd/upgrade_2.0-*

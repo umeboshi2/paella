@@ -1,0 +1,29 @@
+<trait name="webbrowser" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			mozilla-firebird
+		</package>
+		<package action="install">
+			mozilla-mozgest
+		</package>
+		<package action="install">
+			mozilla-psm
+		</package>
+		<package action="install">
+			mozilla-stumbleupon
+		</package>
+		<package action="install">
+			mozilla-tabextensions
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,27 @@
+<trait name="um_base" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+	</packages>
+	<environ>
+		<host_mount>
+			/host	/home	hostfs	defaults	0	0
+		</host_mount>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="base-files">
+			etc/fstab
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

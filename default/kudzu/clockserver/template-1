@@ -1,0 +1,17 @@
+# /etc/ntp.conf, configuration for ntpd
+
+# ntpd will use syslog() if logfile is not defined
+#logfile /var/log/ntpd
+
+driftfile /var/lib/ntp/ntp.drift
+statsdir /var/log/ntpstats/
+
+statistics loopstats peerstats clockstats
+filegen loopstats file loopstats type day enable
+filegen peerstats file peerstats type day enable
+filegen clockstats file clockstats type day enable
+
+### lines starting 'server' are auto generated,
+### use dpkg-reconfigure to modify those lines.
+
+server <--|clockserver_server|-->

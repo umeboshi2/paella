@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "default script initiated"
+#update-alternatives --install /usr/bin/x-window-manager x-window-manager /usr/bin/icewm 80
+update-alternatives --set x-terminal-emulator /usr/X11R6/bin/xterm

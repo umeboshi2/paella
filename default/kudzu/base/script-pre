@@ -1,0 +1,36 @@
+#!/usr/bin/python
+import os
+from os.path import join
+from paella.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+it.set_trait('base')
+cmd = 'apt-get -y update'
+os.system('chroot %s %s' % (it.target, cmd))
+mirrors = join(it.target, 'mirrors')
+makepaths(mirrors)
+media = join(it.target, 'media')
+makepaths(media)
+makepaths(join(media, 'cdrom'))
+makepaths(join(media, 'usbdisk'))
+makepaths(join(media, 'cf'))
+makepaths(join(media, 'sd'))
+
+if 'localnet' in it.traitlist:
+    it.set_trait('localnet')
+    common = it.get('localnet_fs_common_dir')
+    share = it.get('localnet_fs_share_dir')
+    office = it.get('localnet_fs_office_dir')
+    admin = it.get('localnet_fs_admin_dir')
+    dirlist = [common, share, office, admin]
+    if 'fileserver' in it.traitlist:
+        it.set_trait('fileserver')
+        bpath = it.get('localnet_fs_base_path')
+        for dir in dirlist:
+            cmd = 'ln -s %s %s' % (join(bpath, dir), join('/mirrors', dir))
+            os.system('chroot %s %s' % (it.target, cmd))
+    else:
+        for dir in dirlist:
+            makepaths(join(mirrors, dir))
+                

@@ -1,0 +1,34 @@
+<trait name="um_builder" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			builder
+		</parent>
+		<parent>
+			um_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			devscripts
+		</package>
+		<package action="install">
+			fakeroot
+		</package>
+	</packages>
+	<environ>
+		<hostname>
+			umwbuild
+		</hostname>
+		<repository_host>
+			umhead
+		</repository_host>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="dput">
+			etc/dput.cf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,100 @@
+# /etc/postgresql/postmaster.conf
+#
+# Copyright (c) Oliver Elphick 1997, 2001
+# Part of the Debian package, postgresql. The Debian packaging is
+# licensed under GPL v.2
+#
+# This is the configurable initialisation of the postgresql package
+# The defaults are shown, but are commented out.
+#
+# As of release 7.1, many parameters may now be found in
+# /etc/postgresql/postgresql.conf.  To avoid confusion, these can
+# no longer be set here, even though the command line options that
+# used to control them do still exist.
+#
+
+POSTGRES_HOME=`getent passwd postgres | awk -F: '{print $6}' | head -1`
+if [ -z "$POSTGRES_HOME" ]
+then
+    POSTGRES_HOME=/var/lib/postgres
+fi
+
+# Where to find the PostgreSQL database files, including those that
+# define PostgresSQL users and permissions.
+POSTGRES_DATA=/var/lib/postgres/data
+
+# Any special options to pass to the postmaster through pg_ctl's -o option.
+# This may include such options as "-h hostname", for which there is no
+# parameter defined.  However most options can be set by editing
+# postgresql.conf appropriately.  
+POSTMASTER_OPTIONS=""
+
+# Minimum number of entries in the kernel file table.  If the table size is
+# lower, postgresql.startup attempts to increase it by writing this parameter 
+# into /proc/sys/kernel/file-max.  This is only effective if the kernel has
+# been compiled to support run-time configuration.
+# KERNEL_FILE_MAX=1032
+
+
+# Where to send logging and debugging traces.  By default, very little
+# should appear here, because SYSLOG is set to 2 in postgresql.conf, so
+# that all messages are sent to syslog only.
+#
+# If you change this, remember to change /etc/logrotate.d/postgresql too.
+# POSTGRES_LOG=/var/log/postgresql/postgres.log
+
+# Autovacuuming
+# A PostgreSQL database must be vacuumed regularly in order to clear away
+# deleted rows and update table statistics (which are used by the planner
+# to select the fastest possible query plans).
+# 
+# To use autovacuuming, you must have the postgresql-contrib package
+# installed.  You must also set AUTOVACUUM to yes in this file.
+#
+# Autovacuuming requires the following options in postgresql.conf:
+#  stats_start_collector = true
+#  stats_row_level = true
+#
+# If autovacuuming is running, the do.maintenance script, which is run from
+# cron, will not do vacuuming unless it is given the -F (force) option.
+#
+AUTOVACUUM=yes
+# 
+# Autovacuum options
+# Debug level
+#   0 silent, 1 basic info, 2 more debug info,  etc...
+# AVAC_DEBUG=1
+
+# Autovacuum sleep
+#  The daemon sleeps between database checks so as not to impose an
+#  excessive load on the system.  The length of each sleep is
+#  $AVAC_SLEEP_BASE + ($AVAC_SLEEP_SCALE * length of previous loop)
+# Sleep base
+#  The base number of seconds to sleep between database scans
+# AVAC_SLEEP_BASE=300
+# Sleep scaling factor
+# AVAC_SLEEP_SCALE=2
+
+# Vacuum threshold
+#  The daemon does a vacuum for any table if
+#        the number of (deletes + updates) > VacuumThreshold
+#  where VacuumThreshold = $AVAC_VAC_BASE + ($AVAC_VAC_SCALE * row count)
+# Vacuum base threshold
+# AVAC_VAC_BASE=1000
+# Vacuum scaling factor
+# AVAC_VAC_SCALE=2
+
+# Analyse threshold
+#  Since analysing is much cheaper than vacuuming, the default values are
+#  half those for vacuuming.  The daemon does an analyse for any table if
+#        the number of (inserts + deletes + updates) > AnalyseThreshold
+#  where AnalyseThreshold = $AVAC_ANAL_BASE + ($AVAC_ANAL_SCALE * row count)
+# Analyse base threshold
+# AVAC_ANAL_BASE=500
+
+# Analyse scaling factor
+# AVAC_ANAL_SCALE=1
+
+# Log file path
+# AVAC_LOG=/var/log/postgresql/autovacuum_log
+

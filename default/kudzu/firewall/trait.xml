@@ -1,0 +1,126 @@
+<trait name="firewall" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			ipsec
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			iproute
+		</package>
+		<package action="install">
+			iptables
+		</package>
+		<package action="install">
+			shorewall
+		</package>
+	</packages>
+	<environ>
+		<forward1_accept>
+			#ACCEPT
+		</forward1_accept>
+		<forward1_ip>
+			10.0.0.2
+		</forward1_ip>
+		<forward1_ports>
+			smtp,ssh,https,http
+		</forward1_ports>
+		<forward2_accept>
+			#ACCEPT
+		</forward2_accept>
+		<forward2_ip>
+			10.0.0.2
+		</forward2_ip>
+		<forward2_ports>
+			smtp,ssh,https,http
+		</forward2_ports>
+		<internet_interface>
+			eth0
+		</internet_interface>
+		<isp_address>
+			192.168.9.2
+		</isp_address>
+		<isp_gateway>
+			192.168.9.1
+		</isp_gateway>
+		<isp_netmask>
+			255.255.255.252
+		</isp_netmask>
+		<local_interface>
+			eth1
+		</local_interface>
+		<redirect_squid>
+			#REDIRECT
+		</redirect_squid>
+		<startup>
+			1
+		</startup>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="shorewall">
+			etc/default/shorewall
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="shorewall">
+			etc/network/interfaces
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="shorewall">
+			etc/resolv.conf
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/accounting
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/common.def
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/hosts
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/interfaces
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/maclist
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/masq
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/modules
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/nat
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/params
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/policy
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/rfc1918
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/rules
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/tcrules
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/tos
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/tunnels
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="shorewall">
+			etc/shorewall/zones
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

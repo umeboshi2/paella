@@ -1,0 +1,45 @@
+<trait name="um_nameserver" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			dhcp_server
+		</parent>
+		<parent>
+			nameserver
+		</parent>
+		<parent>
+			um_default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			bind9
+		</package>
+		<package action="install">
+			bind9-host
+		</package>
+	</packages>
+	<environ>
+		<local_nameserver>
+			192.168.0.1
+		</local_nameserver>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="bind9">
+			etc/bind/named.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="bind9">
+			etc/dhcp3/dhcpd.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="bind9">
+			etc/network/interfaces
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="bind9">
+			etc/resolv.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

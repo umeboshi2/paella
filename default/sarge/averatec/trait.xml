@@ -1,0 +1,454 @@
+<trait name="averatec" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			laptop
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			fxload
+		</package>
+		<package action="install">
+			hotplug
+		</package>
+		<package action="install">
+			kdm
+		</package>
+		<package action="install">
+			powernowd
+		</package>
+		<package action="install">
+			sg3-utils
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/X11/XF86Config-4
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/X11/XF86Config-4.orig
+		</template>
+		<template grp_owner="root" mode="0100740" owner="root" package="kdm">
+			etc/acpi/default.sh
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/acpi/events/powerbtn
+		</template>
+		<template grp_owner="root" mode="0100740" owner="root" package="kdm">
+			etc/acpi/lid.sh
+		</template>
+		<template grp_owner="root" mode="0100755" owner="root" package="kdm">
+			etc/acpi/powerbtn.sh
+		</template>
+		<template grp_owner="root" mode="0100755" owner="root" package="kdm">
+			etc/acpi/powerbtn.sh.orig
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/bootcd/bootcdwrite.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/acpid
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/cdrecord
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/dhcp3-server
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/nfs-common
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/nfs-kernel-server
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/sleepd
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/dhclient.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/dhcp3/dhcpd.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/dput.cf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/exports
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/gkrellmd.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/hostname
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/ldap/ldap.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/lilo.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/modules
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/network/interfaces
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/paellarc
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/syslog.conf
+		</template>
+		<template grp_owner="root" mode="0100754" owner="root" package="kdm">
+			usr/sbin/sleep_shutdown.sh
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/burlywood4/gtk-2.0/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/burlywood4/gtk/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/cornsilk/gtk-2.0/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/cornsilk/gtk/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/indianred3/gtk-2.0/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/indianred3/gtk/gtkrc
+		</template>
+	</templates>
+	<debconfiguration>
+		<debconf trait="averatec">
+			<name>
+				discover/manage_cdrom_devices
+			</name>
+			<template>
+				discover/manage_cdrom_devices
+			</template>
+			<owners>
+				discover
+			</owners>
+			<value>
+				false
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				exim4/dc_eximconfig_configtype
+			</name>
+			<template>
+				exim4/dc_eximconfig_configtype
+			</template>
+			<owners>
+				exim4-config
+			</owners>
+			<value>
+				local
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				exim4/dc_local_interfaces
+			</name>
+			<template>
+				exim4/dc_local_interfaces
+			</template>
+			<owners>
+				exim4-config
+			</owners>
+			<value>
+				127.0.0.1
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				exim4/mailname
+			</name>
+			<template>
+				exim4/mailname
+			</template>
+			<owners>
+				exim4-config
+			</owners>
+			<value>
+				averatec
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				tzconfig/geographic_area
+			</name>
+			<template>
+				tzconfig/geographic_area
+			</template>
+			<owners>
+				base-config
+			</owners>
+			<value>
+				US
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				tzconfig/gmt
+			</name>
+			<template>
+				tzconfig/gmt
+			</template>
+			<owners>
+				base-config
+			</owners>
+			<value>
+				true
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/device/driver
+			</name>
+			<template>
+				xserver-xfree86/config/device/driver
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				savage
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/display/default_depth
+			</name>
+			<template>
+				xserver-xfree86/config/display/default_depth
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				24
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/display/modes
+			</name>
+			<template>
+				xserver-xfree86/config/display/modes
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				1024x768, 800x600, 640x480
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/inputdevice/keyboard/layout
+			</name>
+			<template>
+				xserver-xfree86/config/inputdevice/keyboard/layout
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				us
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/inputdevice/keyboard/model
+			</name>
+			<template>
+				xserver-xfree86/config/inputdevice/keyboard/model
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				pc104
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/inputdevice/keyboard/rules
+			</name>
+			<template>
+				xserver-xfree86/config/inputdevice/keyboard/rules
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				xfree86
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/inputdevice/mouse/emulate3buttons
+			</name>
+			<template>
+				xserver-xfree86/config/inputdevice/mouse/emulate3buttons
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				true
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/inputdevice/mouse/port
+			</name>
+			<template>
+				xserver-xfree86/config/inputdevice/mouse/port
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				/dev/psaux
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/inputdevice/mouse/protocol
+			</name>
+			<template>
+				xserver-xfree86/config/inputdevice/mouse/protocol
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				PS/2
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/inputdevice/mouse/zaxismapping
+			</name>
+			<template>
+				xserver-xfree86/config/inputdevice/mouse/zaxismapping
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				true
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/modules
+			</name>
+			<template>
+				xserver-xfree86/config/modules
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				GLcore, bitmap, dbe, ddc, dri, extmod, freetype, glx, int10, record, speedo, type1, vbe
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/monitor/horiz-sync
+			</name>
+			<template>
+				xserver-xfree86/config/monitor/horiz-sync
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				28-50
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/monitor/lcd
+			</name>
+			<template>
+				xserver-xfree86/config/monitor/lcd
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				true
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/monitor/selection-method
+			</name>
+			<template>
+				xserver-xfree86/config/monitor/selection-method
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				Advanced
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/monitor/vert-refresh
+			</name>
+			<template>
+				xserver-xfree86/config/monitor/vert-refresh
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				43-75
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/write_dri_section
+			</name>
+			<template>
+				xserver-xfree86/config/write_dri_section
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				true
+			</value>
+		</debconf>
+		<debconf trait="averatec">
+			<name>
+				xserver-xfree86/config/write_files_section
+			</name>
+			<template>
+				xserver-xfree86/config/write_files_section
+			</template>
+			<owners>
+				xserver-xfree86
+			</owners>
+			<value>
+				true
+			</value>
+		</debconf>
+	</debconfiguration>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

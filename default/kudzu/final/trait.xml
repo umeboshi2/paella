@@ -1,0 +1,20 @@
+<trait name="final" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+		<script name="post"/>
+	</scripts>
+</trait>

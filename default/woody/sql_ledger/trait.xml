@@ -1,0 +1,32 @@
+<trait name="sql_ledger" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			postgres
+		</parent>
+		<parent>
+			webserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			libdbd-pg-perl
+		</package>
+		<package action="install">
+			libdbi-perl
+		</package>
+		<package action="install">
+			libpgperl
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="libdbd-pg-perl">
+			etc/apache/httpd.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

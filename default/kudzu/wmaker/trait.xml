@@ -1,0 +1,28 @@
+<trait name="wmaker" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			wmaker
+		</package>
+		<package action="install">
+			wmaker-data
+		</package>
+		<package action="install">
+			wmakerconf
+		</package>
+		<package action="install">
+			wmakerconf-data
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

@@ -1,0 +1,30 @@
+<trait name="ipsec" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			freeswan
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="freeswan">
+			etc/ipsec.conf
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="freeswan">
+			etc/ipsec.d/private/umhostKey.pem
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="freeswan">
+			etc/ipsec.d/umhostCert.pem
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="freeswan">
+			etc/ipsec.secrets
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,52 @@
+<trait name="nameserver" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			bind9
+		</package>
+		<package action="install">
+			bind9-host
+		</package>
+	</packages>
+	<environ>
+		<allow_update>
+			10.0.0.0/32
+		</allow_update>
+		<dns1>
+			208.24.218.3
+		</dns1>
+		<dns2>
+			208.24.218.5
+		</dns2>
+		<domain>
+			gregscomputerservice.com
+		</domain>
+		<reversed_local_address>
+			1.0.168.192
+		</reversed_local_address>
+		<reversed_zone>
+			0.168.192
+		</reversed_zone>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="bind9">
+			etc/bind/named.conf
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="bind9">
+			etc/bind/rndc.key
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="bind9">
+			var/cache/bind/localdomain.hosts
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="bind9">
+			var/cache/bind/localdomain.rev
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

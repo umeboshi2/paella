@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="name_16" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_15" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_14" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_13" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_12" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_11" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_10" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_9" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_8" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_7" mtime="1081569248" schema="/schemas/apps/metacity/workspace_names/name"/>
+<entry name="name_1" mtime="1079727969" schema="/schemas/apps/metacity/workspace_names/name" type="string">
+<stringvalue><--|gnome_workspace1|--></stringvalue>
+</entry>
+<entry name="name_2" mtime="1079727986" schema="/schemas/apps/metacity/workspace_names/name" type="string">
+<stringvalue><--|gnome_workspace2|--></stringvalue>
+</entry>
+<entry name="name_3" mtime="1079727991" schema="/schemas/apps/metacity/workspace_names/name" type="string">
+<stringvalue><--|gnome_workspace3|--></stringvalue>
+</entry>
+<entry name="name_4" mtime="1079727997" schema="/schemas/apps/metacity/workspace_names/name" type="string">
+<stringvalue><--|gnome_workspace4|--></stringvalue>
+</entry>
+<entry name="name_5" mtime="1079728005" schema="/schemas/apps/metacity/workspace_names/name" type="string">
+<stringvalue><--|gnome_workspace5|--></stringvalue>
+</entry>
+<entry name="name_6" mtime="1079728009" schema="/schemas/apps/metacity/workspace_names/name" type="string">
+<stringvalue><--|gnome_workspace6|--></stringvalue>
+</entry>
+</gconf>

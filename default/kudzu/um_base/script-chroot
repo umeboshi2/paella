@@ -1,0 +1,10 @@
+#!/bin/bash
+#initscripts="klogd"
+#for script in $initscripts
+#    do
+#    mv /etc/init.d/$script /etc/init.d/$script'.orig'
+#    update-rc.d $script remove
+#    mv /etc/init.d/$script'.orig' /etc/init.d/$script
+#    done
+echo 'nothing to do anymore'
+

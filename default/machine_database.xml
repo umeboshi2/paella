@@ -1,0 +1,595 @@
+<machine_database>
+	<machines>
+		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="bard" profile="kbard">
+			bard
+		</machine>
+		<machine filesystem="default" kernel="kernel-image-2.4.24stdinstall" machine_type="bard" profile="mbuild">
+			bardbuilder
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.4.18-bf2.4" machine_type="bard" profile="bard">
+			bardstable
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="shuttle_sg40" profile="dindada">
+			dindada
+		</machine>
+		<machine filesystem="default" kernel="kernel-image-2.6.4-1-686" machine_type="emach_t1100" profile="mainserver">
+			emach
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="bard" profile="plaptop">
+			plaptop
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.6.7-1-k7" machine_type="shuttle_sg40" profile="desktest">
+			shuttle1
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.4.26-1-k7" machine_type="shuttle_2sg40" profile="skeleton">
+			shuttle2
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="shuttle_sg40" profile="quick">
+			shuttle3
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.4.24stdinstall" machine_type="shuttle_sg40" profile="desktest">
+			shuttle_one
+		</machine>
+		<machine filesystem="freespace" kernel="kernel-image-2.4.25-1-k7" machine_type="zathras" profile="zathras">
+			zathras
+		</machine>
+	</machines>
+	<machine_types>
+		<machine_type name="bard">
+			<machine_disk device="/dev/hda" diskname="bard"/>
+			<module machine_type="bard" order="0">
+				via82cxxx_audio
+			</module>
+			<module machine_type="bard" order="1">
+				mousedev
+			</module>
+			<module machine_type="bard" order="2">
+				evdev
+			</module>
+			<module machine_type="bard" order="3">
+				psmouse
+			</module>
+			<module machine_type="bard" order="4">
+				via-rhine
+			</module>
+			<module machine_type="bard" order="5">
+				ac
+			</module>
+			<module machine_type="bard" order="6">
+				battery
+			</module>
+			<module machine_type="bard" order="7">
+				thermal
+			</module>
+			<module machine_type="bard" order="8">
+				processor
+			</module>
+			<module machine_type="bard" order="9">
+				powernow_k7
+			</module>
+			<module machine_type="bard" order="10">
+				cpufreq_powersave
+			</module>
+			<module machine_type="bard" order="11">
+				cpufreq_userspace
+			</module>
+			<module machine_type="bard" order="12">
+				ohci_hcd
+			</module>
+			<module machine_type="bard" order="13">
+				ehci_hcd
+			</module>
+			<module machine_type="bard" order="14">
+				usb_storage
+			</module>
+			<module machine_type="bard" order="15">
+				sr_mod
+			</module>
+			<module machine_type="bard" order="16">
+				ide-scsi
+			</module>
+		</machine_type>
+		<machine_type name="compaqhack">
+			<machine_disk device="/dev/hda" diskname="st20g"/>
+		</machine_type>
+		<machine_type name="emach_t1100">
+			<machine_disk device="/dev/hda" diskname="quantum20g"/>
+		</machine_type>
+		<machine_type name="gregbuilt">
+			<machine_disk device="/dev/hda" diskname="wd20g"/>
+		</machine_type>
+		<machine_type name="premio">
+			<machine_disk device="/dev/hda" diskname="deaddisk"/>
+		</machine_type>
+		<machine_type name="roujin">
+			<machine_disk device="/dev/hda" diskname="ibm"/>
+		</machine_type>
+		<machine_type name="shuttle">
+			<machine_disk device="/dev/hda" diskname="thinmax"/>
+			<machine_disk device="/dev/hdc" diskname="thinmax"/>
+		</machine_type>
+		<machine_type name="shuttle_2sg40">
+			<machine_disk device="/dev/hda" diskname="sg40fs"/>
+			<machine_disk device="/dev/hdc" diskname="sg40fs"/>
+			<module machine_type="shuttle_2sg40" order="0">
+				via82cxxx
+			</module>
+			<module machine_type="shuttle_2sg40" order="1">
+				ide-generic
+			</module>
+			<module machine_type="shuttle_2sg40" order="2">
+				ide-disk
+			</module>
+			<module machine_type="shuttle_2sg40" order="3">
+				mousedev
+			</module>
+			<module machine_type="shuttle_2sg40" order="4">
+				joydev
+			</module>
+			<module machine_type="shuttle_2sg40" order="5">
+				hid
+			</module>
+			<module machine_type="shuttle_2sg40" order="6">
+				8139too
+			</module>
+			<module machine_type="shuttle_2sg40" order="7">
+				psmouse
+			</module>
+			<module machine_type="shuttle_2sg40" order="8">
+				tulip
+			</module>
+			<module machine_type="shuttle_2sg40" order="9">
+				uhci-hcd
+			</module>
+			<module machine_type="shuttle_2sg40" order="10">
+				ehci-hcd
+			</module>
+			<module machine_type="shuttle_2sg40" order="11">
+				usb-storage
+			</module>
+			<module machine_type="shuttle_2sg40" order="12">
+				sd_mod
+			</module>
+		</machine_type>
+		<machine_type name="shuttle_bob">
+			<machine_disk device="/dev/hda" diskname="max250fs"/>
+		</machine_type>
+		<machine_type name="shuttle_max120">
+			<machine_disk device="/dev/hda" diskname="max120fs"/>
+		</machine_type>
+		<machine_type name="shuttle_sg40">
+			<machine_disk device="/dev/hda" diskname="sg40fs"/>
+			<module machine_type="shuttle_sg40" order="0">
+				via82cxxx
+			</module>
+			<module machine_type="shuttle_sg40" order="1">
+				ide-generic
+			</module>
+			<module machine_type="shuttle_sg40" order="2">
+				ide-disk
+			</module>
+			<module machine_type="shuttle_sg40" order="3">
+				mousedev
+			</module>
+			<module machine_type="shuttle_sg40" order="4">
+				joydev
+			</module>
+			<module machine_type="shuttle_sg40" order="5">
+				hid
+			</module>
+			<module machine_type="shuttle_sg40" order="6">
+				8139too
+			</module>
+			<module machine_type="shuttle_sg40" order="7">
+				psmouse
+			</module>
+			<module machine_type="shuttle_sg40" order="8">
+				tulip
+			</module>
+			<module machine_type="shuttle_sg40" order="9">
+				uhci-hcd
+			</module>
+			<module machine_type="shuttle_sg40" order="10">
+				ehci-hcd
+			</module>
+			<module machine_type="shuttle_sg40" order="11">
+				usb-storage
+			</module>
+			<module machine_type="shuttle_sg40" order="12">
+				sd_mod
+			</module>
+		</machine_type>
+		<machine_type name="shuttle_sg80">
+			<machine_disk device="/dev/hda" diskname="sg80fs"/>
+			<module machine_type="shuttle_sg80" order="0">
+				via82cxxx
+			</module>
+			<module machine_type="shuttle_sg80" order="1">
+				ide-generic
+			</module>
+			<module machine_type="shuttle_sg80" order="2">
+				ide-disk
+			</module>
+			<module machine_type="shuttle_sg80" order="3">
+				mousedev
+			</module>
+			<module machine_type="shuttle_sg80" order="4">
+				joydev
+			</module>
+			<module machine_type="shuttle_sg80" order="5">
+				hid
+			</module>
+			<module machine_type="shuttle_sg80" order="6">
+				8139too
+			</module>
+			<module machine_type="shuttle_sg80" order="7">
+				psmouse
+			</module>
+			<module machine_type="shuttle_sg80" order="8">
+				tulip
+			</module>
+			<module machine_type="shuttle_sg80" order="9">
+				uhci-hcd
+			</module>
+			<module machine_type="shuttle_sg80" order="10">
+				ehci-hcd
+			</module>
+			<module machine_type="shuttle_sg80" order="11">
+				usb-storage
+			</module>
+			<module machine_type="shuttle_sg80" order="12">
+				sd_mod
+			</module>
+		</machine_type>
+		<machine_type name="zathras">
+			<machine_disk device="/dev/hda" diskname="max120fs"/>
+			<module machine_type="zathras" order="0">
+				via82cxxx
+			</module>
+			<module machine_type="zathras" order="1">
+				tulip
+			</module>
+			<module machine_type="zathras" order="2">
+				b44
+			</module>
+		</machine_type>
+	</machine_types>
+	<disks>
+		<diskname name="bard">
+			<partition Id="83" partition="1" size="385497" start="63"/>
+			<partition Id="5" partition="2" size="58219560" start="385560"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="7614747" start="385623"/>
+			<partition Id="83" partition="6" size="2923767" start="8000433"/>
+			<partition Id="83" partition="7" size="979902" start="10924263"/>
+			<partition Id="83" partition="8" size="45704862" start="11904228"/>
+			<partition Id="82" partition="9" size="995967" start="57609153"/>
+		</diskname>
+		<diskname name="deaddisk">
+			<partition Id="83" partition="1" size="192717" start="63"/>
+			<partition Id="5" partition="2" size="26218080" start="192780"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6843627" start="192843"/>
+			<partition Id="83" partition="6" size="4883697" start="7036533"/>
+			<partition Id="83" partition="7" size="13671252" start="11920293"/>
+			<partition Id="82" partition="8" size="819252" start="25591608"/>
+		</diskname>
+		<diskname name="ibm">
+			<partition Id="83" partition="1" size="979902" start="63"/>
+			<partition Id="5" partition="2" size="79425360" start="979965"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="8787492" start="980028"/>
+			<partition Id="83" partition="6" size="4883697" start="9767583"/>
+			<partition Id="83" partition="7" size="63794052" start="14651343"/>
+			<partition Id="82" partition="8" size="1959867" start="78445458"/>
+		</diskname>
+		<diskname name="mache">
+			<partition Id="83" partition="1" size="289107" start="63"/>
+			<partition Id="5" partition="2" size="77850990" start="289170"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="9767457" start="289233"/>
+			<partition Id="83" partition="6" size="5863662" start="10056753"/>
+			<partition Id="83" partition="7" size="1959867" start="15920478"/>
+			<partition Id="83" partition="8" size="58203432" start="17880408"/>
+			<partition Id="82" partition="9" size="2056257" start="76083903"/>
+		</diskname>
+		<diskname name="max120fs">
+			<partition Id="83" partition="1" size="781137" start="63"/>
+			<partition Id="5" partition="2" size="239340528" start="781200"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="8788689" start="781263"/>
+			<partition Id="83" partition="6" size="14648193" start="9570015"/>
+			<partition Id="83" partition="7" size="9765441" start="24218271"/>
+			<partition Id="83" partition="8" size="205078545" start="33983775"/>
+			<partition Id="82" partition="9" size="1059345" start="239062383"/>
+		</diskname>
+		<diskname name="max160">
+			<partition Id="83" partition="1" size="979902" start="63"/>
+			<partition Id="5" partition="2" size="319179420" start="979965"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="8787492" start="980028"/>
+			<partition Id="83" partition="6" size="14651217" start="9767583"/>
+			<partition Id="83" partition="7" size="294921207" start="24418863"/>
+			<partition Id="82" partition="8" size="819252" start="319340133"/>
+		</diskname>
+		<diskname name="max160fs">
+			<partition Id="83" partition="1" size="979902" start="63"/>
+			<partition Id="5" partition="2" size="319179420" start="979965"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="8787492" start="980028"/>
+			<partition Id="83" partition="6" size="14651217" start="9767583"/>
+			<partition Id="83" partition="7" size="4883697" start="24418863"/>
+			<partition Id="83" partition="8" size="289844667" start="29302623"/>
+			<partition Id="82" partition="9" size="1012032" start="319147353"/>
+		</diskname>
+		<diskname name="max20">
+			<partition Id="83" partition="1" size="982737" start="63"/>
+			<partition Id="5" partition="2" size="39024720" start="982800"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6834177" start="982863"/>
+			<partition Id="83" partition="6" size="4883697" start="7817103"/>
+			<partition Id="83" partition="7" size="26369217" start="12700863"/>
+			<partition Id="82" partition="8" size="937377" start="39070143"/>
+		</diskname>
+		<diskname name="max250fs">
+			<partition Id="83" partition="1" size="578277" start="63"/>
+			<partition Id="5" partition="2" size="489645135" start="578340"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="9767457" start="578403"/>
+			<partition Id="83" partition="6" size="8787492" start="10345923"/>
+			<partition Id="83" partition="7" size="19534977" start="19133478"/>
+			<partition Id="83" partition="8" size="450189432" start="38668518"/>
+			<partition Id="82" partition="9" size="1365462" start="488858013"/>
+		</diskname>
+		<diskname name="oldeight">
+			<partition Id="83" partition="1" size="982737" start="63"/>
+			<partition Id="5" partition="2" size="15528240" start="982800"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6834177" start="982863"/>
+			<partition Id="83" partition="6" size="4883697" start="7817103"/>
+			<partition Id="83" partition="7" size="2933217" start="12700863"/>
+			<partition Id="82" partition="8" size="876897" start="15634143"/>
+		</diskname>
+		<diskname name="quantum10g">
+			<partition Id="83" partition="1" size="786177" start="63"/>
+			<partition Id="5" partition="2" size="19247760" start="786240"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="8784657" start="786303"/>
+			<partition Id="83" partition="6" size="4883697" start="9571023"/>
+			<partition Id="83" partition="7" size="4883697" start="14454783"/>
+			<partition Id="82" partition="8" size="695457" start="19338543"/>
+		</diskname>
+		<diskname name="quantum20g">
+			<partition Id="83" partition="1" size="787122" start="63"/>
+			<partition Id="5" partition="2" size="39343185" start="787185"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6843627" start="787248"/>
+			<partition Id="83" partition="6" size="8787492" start="7630938"/>
+			<partition Id="83" partition="7" size="23053212" start="16418493"/>
+			<partition Id="82" partition="8" size="658602" start="39471768"/>
+		</diskname>
+		<diskname name="sg40">
+			<partition Id="83" partition="1" size="979902" start="63"/>
+			<partition Id="5" partition="2" size="77176260" start="979965"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6843627" start="980028"/>
+			<partition Id="83" partition="6" size="4883697" start="7823718"/>
+			<partition Id="83" partition="7" size="64468782" start="12707478"/>
+			<partition Id="82" partition="8" size="979902" start="77176323"/>
+		</diskname>
+		<diskname name="sg40fs">
+			<partition Id="83" partition="1" size="979902" start="63"/>
+			<partition Id="5" partition="2" size="77176260" start="979965"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6843627" start="980028"/>
+			<partition Id="83" partition="6" size="4883697" start="7823718"/>
+			<partition Id="83" partition="7" size="3903732" start="12707478"/>
+			<partition Id="83" partition="8" size="60564987" start="16611273"/>
+			<partition Id="82" partition="9" size="979902" start="77176323"/>
+		</diskname>
+		<diskname name="sg80fs">
+			<partition Id="83" partition="1" size="385497" start="63"/>
+			<partition Id="5" partition="2" size="155910825" start="385560"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6843627" start="385623"/>
+			<partition Id="83" partition="6" size="4883697" start="7229313"/>
+			<partition Id="83" partition="7" size="3903732" start="12113073"/>
+			<partition Id="83" partition="8" size="139299552" start="16016868"/>
+			<partition Id="82" partition="9" size="979902" start="155316483"/>
+		</diskname>
+		<diskname name="st20g">
+			<partition Id="83" partition="1" size="787122" start="63"/>
+			<partition Id="5" partition="2" size="38315025" start="787185"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6843627" start="787248"/>
+			<partition Id="83" partition="6" size="8787492" start="7630938"/>
+			<partition Id="83" partition="7" size="21478842" start="16418493"/>
+			<partition Id="82" partition="8" size="1204812" start="37897398"/>
+		</diskname>
+		<diskname name="thinmax">
+			<partition Id="83" partition="1" size="385497" start="63"/>
+			<partition Id="5" partition="2" size="79907310" start="385560"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="8787492" start="385623"/>
+			<partition Id="83" partition="6" size="4883697" start="9173178"/>
+			<partition Id="83" partition="7" size="65432682" start="14056938"/>
+			<partition Id="82" partition="8" size="803187" start="79489683"/>
+		</diskname>
+		<diskname name="thinmax_bob">
+			<partition Id="83" partition="1" size="781137" start="63"/>
+			<partition Id="5" partition="2" size="79512048" start="781200"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="7811937" start="781263"/>
+			<partition Id="83" partition="6" size="6836193" start="8593263"/>
+			<partition Id="83" partition="7" size="7811937" start="15429519"/>
+			<partition Id="83" partition="8" size="54610353" start="23241519"/>
+			<partition Id="82" partition="9" size="2441313" start="77851935"/>
+		</diskname>
+		<diskname name="wd20g">
+			<partition Id="83" partition="1" size="385497" start="63"/>
+			<partition Id="5" partition="2" size="38716650" start="385560"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="6843627" start="385623"/>
+			<partition Id="83" partition="6" size="4883697" start="7229313"/>
+			<partition Id="83" partition="7" size="25977042" start="12113073"/>
+			<partition Id="82" partition="8" size="1012032" start="38090178"/>
+		</diskname>
+		<diskname name="wd80">
+			<partition Id="83" partition="1" size="979902" start="63"/>
+			<partition Id="5" partition="2" size="155316420" start="979965"/>
+			<partition Id="0" partition="3" size="0" start="0"/>
+			<partition Id="0" partition="4" size="0" start="0"/>
+			<partition Id="83" partition="5" size="8787492" start="980028"/>
+			<partition Id="83" partition="6" size="4883697" start="9767583"/>
+			<partition Id="83" partition="7" size="140632947" start="14651343"/>
+			<partition Id="82" partition="8" size="1012032" start="155284353"/>
+		</diskname>
+	</disks>
+	<mounts>
+		<mount dump="0" fstype="iso9660" mnt_name="default_cdrom" mnt_opts="defaults,ro,user,noauto" mnt_point="/cdrom" pass="0"/>
+		<mount dump="0" fstype="iso9660" mnt_name="default_cdrom2" mnt_opts="defaults,ro,user,noauto" mnt_point="/cdrom" pass="0"/>
+		<mount dump="0" fstype="iso9660" mnt_name="default_cdrom3" mnt_opts="defaults,ro,user,noauto" mnt_point="/sd" pass="0"/>
+		<mount dump="0" fstype="reiserfs" mnt_name="default_freespace" mnt_opts="defaults" mnt_point="/freespace" pass="0"/>
+		<mount dump="0" fstype="reiserfs" mnt_name="default_home" mnt_opts="defaults" mnt_point="/home" pass="0"/>
+		<mount dump="0" fstype="reiserfs" mnt_name="default_mirrors" mnt_opts="defaults" mnt_point="/mirrors" pass="0"/>
+		<mount dump="0" fstype="proc" mnt_name="default_proc" mnt_opts="defaults" mnt_point="/proc" pass="0"/>
+		<mount dump="0" fstype="reiserfs" mnt_name="default_root" mnt_opts="defaults" mnt_point="/" pass="0"/>
+		<mount dump="0" fstype="sysfs" mnt_name="default_sys" mnt_opts="defaults" mnt_point="/sys" pass="0"/>
+		<mount dump="0" fstype="tmpfs" mnt_name="default_tmp" mnt_opts="defaults" mnt_point="/tmp" pass="0"/>
+		<mount dump="0" fstype="tmpfs" mnt_name="default_usbdisk" mnt_opts="defaults,ro,user,noauto" mnt_point="/media/usbdisk" pass="0"/>
+		<mount dump="0" fstype="reiserfs" mnt_name="default_usr" mnt_opts="defaults" mnt_point="/usr" pass="0"/>
+		<mount dump="0" fstype="reiserfs" mnt_name="default_var" mnt_opts="defaults" mnt_point="/var" pass="0"/>
+		<mount dump="0" fstype="reiserfs" mnt_name="hard_tmp" mnt_opts="defaults" mnt_point="/tmp" pass="0"/>
+	</mounts>
+	<filesystems>
+		<filesystem name="another"/>
+		<filesystem name="default">
+			<filesystem_mount mnt_name="default_home" ord="6" partition="7"/>
+			<filesystem_mount mnt_name="default_proc" ord="2" partition="0"/>
+			<filesystem_mount mnt_name="default_root" ord="1" partition="1"/>
+			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0"/>
+			<filesystem_mount mnt_name="default_usr" ord="4" partition="5"/>
+			<filesystem_mount mnt_name="default_var" ord="5" partition="6"/>
+		</filesystem>
+		<filesystem name="dindada">
+			<filesystem_mount mnt_name="default_freespace" ord="7" partition="8"/>
+			<filesystem_mount mnt_name="default_home" ord="6" partition="7"/>
+			<filesystem_mount mnt_name="default_proc" ord="2" partition="0"/>
+			<filesystem_mount mnt_name="default_root" ord="1" partition="1"/>
+			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0"/>
+			<filesystem_mount mnt_name="default_usbdisk" ord="8" partition="0"/>
+			<filesystem_mount mnt_name="default_usr" ord="4" partition="5"/>
+			<filesystem_mount mnt_name="default_var" ord="5" partition="6"/>
+		</filesystem>
+		<filesystem name="freespace">
+			<filesystem_mount mnt_name="default_freespace" ord="7" partition="8"/>
+			<filesystem_mount mnt_name="default_home" ord="6" partition="7"/>
+			<filesystem_mount mnt_name="default_proc" ord="2" partition="0"/>
+			<filesystem_mount mnt_name="default_root" ord="1" partition="1"/>
+			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0"/>
+			<filesystem_mount mnt_name="default_usr" ord="4" partition="5"/>
+			<filesystem_mount mnt_name="default_var" ord="5" partition="6"/>
+		</filesystem>
+		<filesystem name="mirrors_server">
+			<filesystem_mount mnt_name="default_home" ord="6" partition="7"/>
+			<filesystem_mount mnt_name="default_mirrors" ord="7" partition="8"/>
+			<filesystem_mount mnt_name="default_proc" ord="2" partition="0"/>
+			<filesystem_mount mnt_name="default_root" ord="1" partition="1"/>
+			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0"/>
+			<filesystem_mount mnt_name="default_usr" ord="4" partition="5"/>
+			<filesystem_mount mnt_name="default_var" ord="5" partition="6"/>
+		</filesystem>
+		<filesystem name="newfs">
+			<filesystem_mount mnt_name="default_proc" ord="2" partition="0"/>
+			<filesystem_mount mnt_name="default_root" ord="1" partition="1"/>
+			<filesystem_mount mnt_name="default_usr" ord="3" partition="5"/>
+		</filesystem>
+	</filesystems>
+	<kernels>
+		<kernel>
+			kernel-image-2.4.17-bf2.4
+		</kernel>
+		<kernel>
+			kernel-image-2.4.18-686
+		</kernel>
+		<kernel>
+			kernel-image-2.4.18-bf2.4
+		</kernel>
+		<kernel>
+			kernel-image-2.4.22bard
+		</kernel>
+		<kernel>
+			kernel-image-2.4.24-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.4.24stdinstall
+		</kernel>
+		<kernel>
+			kernel-image-2.4.25-1-686
+		</kernel>
+		<kernel>
+			kernel-image-2.4.25-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.4.25roujin
+		</kernel>
+		<kernel>
+			kernel-image-2.4.26-1-686
+		</kernel>
+		<kernel>
+			kernel-image-2.4.26-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.4.27-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.6.2-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.6.3-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.6.3-1-k7-smp
+		</kernel>
+		<kernel>
+			kernel-image-2.6.3bard
+		</kernel>
+		<kernel>
+			kernel-image-2.6.4-1-686
+		</kernel>
+		<kernel>
+			kernel-image-2.6.4-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.6.4installer
+		</kernel>
+		<kernel>
+			kernel-image-2.6.5-1-k7
+		</kernel>
+		<kernel>
+			kernel-image-2.6.7-1-686
+		</kernel>
+		<kernel>
+			kernel-image-2.6.7-1-k7
+		</kernel>
+	</kernels>
+</machine_database>

@@ -1,0 +1,47 @@
+<trait name="xemacs" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			debview
+		</package>
+		<package action="install">
+			tramp
+		</package>
+		<package action="install">
+			xemacs21
+		</package>
+		<package action="install">
+			xemacs21-basesupport
+		</package>
+		<package action="install">
+			xemacs21-basesupport-el
+		</package>
+		<package action="install">
+			xemacs21-bin
+		</package>
+		<package action="install">
+			xemacs21-mule
+		</package>
+		<package action="install">
+			xemacs21-mulesupport
+		</package>
+		<package action="install">
+			xemacs21-mulesupport-el
+		</package>
+		<package action="install">
+			xemacs21-support
+		</package>
+		<package action="install">
+			xemacs21-supportel
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,5 @@
+# mount point for devfs
+MOUNTPOINT=/dev
+
+# mount on boot?
+MOUNT=yes

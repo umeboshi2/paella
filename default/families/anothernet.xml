@@ -1,0 +1,11 @@
+	<family name="anothernet">
+		<parents/>
+		<environ>
+			<family_variable name="allow_update" trait="nameserver">
+				10.0.0.0/32
+			</family_variable>
+			<family_variable name="reversed_zone" trait="nameserver">
+				0.168.192
+			</family_variable>
+		</environ>
+	</family>

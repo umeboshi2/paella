@@ -1,0 +1,29 @@
+<trait name="local_website" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			webserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			doc-central
+		</package>
+		<package action="install">
+			plone
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="plone">
+			etc/zopectl/default.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="plone">
+			etc/zopectl/zopectlrc
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

@@ -1,0 +1,67 @@
+<trait name="diskless_server" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			nfs_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			diskless
+		</package>
+		<package action="install">
+			nis
+		</package>
+	</packages>
+	<environ>
+		<netmask>
+			255.0.0.0
+		</netmask>
+		<nis_domain>
+			homeland
+		</nis_domain>
+		<nis_netword>
+			10.0.0.0
+		</nis_netword>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100600" owner="root" package="diskless">
+			var/cache/debconf/config.dat
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/default/nis
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/defaultdomain
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/host.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/hosts
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/nsswitch.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/yp.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/ypserv.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			etc/ypserv.securenets
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			var/yp/Makefile
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="nis">
+			var/yp/nicknames
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+		<script name="post"/>
+	</scripts>
+</trait>

@@ -1,0 +1,12 @@
+divert(-1)dnl
+define(<[image_master]>,<[<--|diskless_master_host|-->]>)
+define(<[image_nfsserver]>,<[<--|diskless_nfsserver|-->]>)
+define(<[image_nfsimagedir]>,<[<--|diskless_nfsimagedir|-->]>)
+define(<[image_nfshostsdir]>,<[<--|diskless_nfshostdir|-->]>)
+define(<[image_nfshomedir]>,<[<--|diskless_nfshomedir|-->]>)
+define(<[image_nameserver]>,<[<--|diskless_nameserver|-->]>)
+define(<[image_domain]>,<[<--|diskless_domain|-->]>)
+define(<[image_maildomain]>,<[<--|diskless_maildomain|-->]>)
+define(<[image_mailroute]>,<[<--|diskless_mailroute|-->]>)
+define(<[image_devfs]>,<[no]>)
+divert(0)dnl

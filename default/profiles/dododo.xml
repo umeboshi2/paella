@@ -1,0 +1,16 @@
+	<profile name="dododo" suite="sarge">
+		<traits>
+			<trait ord="0">
+				paella_nfsroot
+			</trait>
+		</traits>
+		<families>
+			<family>
+				enpassant
+			</family>
+			<family>
+				insecure
+			</family>
+		</families>
+		<environ/>
+	</profile>

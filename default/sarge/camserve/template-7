@@ -1,0 +1,25 @@
+<?php
+   
+
+echo "<html><title>Admin Page</title><center><table width='100%'>";
+
+$db = pg_connect("dbname='kennelauth'");
+$result=pg_fetch_all(pg_query($db, "select * from valid_users where checkout >= CURRENT_TIMESTAMP and checkin <= CURRENT_TIMESTAMP"));
+if (!($result))
+  {
+    echo "<tr>There are no users registered for any of the kennels at this time.<br><br><br</tr>";
+  }
+ else
+   {
+     echo"<tr><font size=14pt>Kennel Registrar</font></br></br></br></br></tr>";
+     echo"<tr><table width=800 cellspacing=5 border=2>";
+     foreach ($result as $auser)
+       {
+	 echo "<tr><td><a target=\"_blank\" href=\"../kennel{$auser['kennel']}/\"> Kennel ".$auser['kennel']."</a></td><td>".$auser['userlogin']."</td><td>".substr($auser['checkin'],0,10)."</td><td>".substr($auser['checkout'],0,10)."</td></tr>";
+       }
+     echo "</table></tr></br></br></br></br>";
+     }
+
+echo "<tr><form action=\"doadduser.php\"><input type=\"submit\" value=\"Add an Animal\" method=\"get\"><br><br><br></tr>";
+echo "</table></html>";
+?>

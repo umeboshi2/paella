@@ -1,0 +1,9 @@
+auto lo eth0
+iface lo inet loopback
+iface eth0 inet static
+	address <--|default_local_address|-->
+	netmask <--|default_local_netmask|-->
+	gateway <--|dhcp_server_main_router|-->
+
+
+

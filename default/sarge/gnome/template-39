@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="alive" mtime="1081564863" muser="crybaby" type="bool" value="true"/>
+<entry name="timeout_id" mtime="1081564863" muser="crybaby" type="int" value="0"/>
+<entry name="hidden" mtime="1081565012" muser="crybaby" type="bool" value="false"/>
+<entry name="shaded" mtime="1081565227" muser="crybaby" type="bool" value="false"/>
+<entry name="sticky" mtime="1081564863" muser="crybaby" type="bool" value="false"/>
+<entry name="lowered" mtime="1081565228" muser="crybaby" type="bool" value="false"/>
+<entry name="font_name" mtime="1081564863" muser="crybaby" type="string">
+<stringvalue>Sans 8</stringvalue>
+</entry>
+<entry name="alarm_active" mtime="1081564863" muser="crybaby" type="bool" value="false"/>
+<entry name="alarm_time" mtime="1081564863" muser="crybaby" type="int" value="1081564863"/>
+<entry name="alarm_repeat" mtime="1081564863" muser="crybaby" type="int" value="0"/>
+<entry name="alarm_use_sound" mtime="1081564863" muser="crybaby" type="bool" value="false"/>
+<entry name="alarm_sound_filename" mtime="1081564863" muser="crybaby" type="string">
+<stringvalue>/usr/share/sounds/goat_bleat.au</stringvalue>
+</entry>
+<entry name="alarm_use_message" mtime="1081564863" muser="crybaby" type="bool" value="true"/>
+<entry name="alarm_message" mtime="1081564863" muser="crybaby" type="string">
+<stringvalue>Alarm Triggered!</stringvalue>
+</entry>
+<entry name="fg_r" mtime="1081564863" muser="crybaby" type="int" value="0"/>
+<entry name="fg_g" mtime="1081564863" muser="crybaby" type="int" value="0"/>
+<entry name="fg_b" mtime="1081564863" muser="crybaby" type="int" value="0"/>
+<entry name="bg_r" mtime="1081564863" muser="crybaby" type="int" value="65535"/>
+<entry name="bg_g" mtime="1081564863" muser="crybaby" type="int" value="65535"/>
+<entry name="bg_b" mtime="1081564863" muser="crybaby" type="int" value="0"/>
+<entry name="width" mtime="1081565256" muser="crybaby" type="int" value="169"/>
+<entry name="height" mtime="1081565256" muser="crybaby" type="int" value="287"/>
+<entry name="workspace" mtime="1081564863" muser="crybaby" type="int" value="0"/>
+<entry name="x" mtime="1081565256" muser="crybaby" type="int" value="5"/>
+<entry name="y" mtime="1081565256" muser="crybaby" type="int" value="454"/>
+<entry name="text" mtime="1081565256" muser="crybaby" type="string">
+<stringvalue>(win) is windows key
+
+(win)+(arrow key) to move between workspaces
+
+(win)+(pageup) to maximize, un-maximaze a window
+
+(win)+(pagedown) to minimize a window
+
+Hold (win) and press the left mouse button anywhere in a window to move it.
+
+Hold (win) and press the right mouse button anywhere in a window to resize it.</stringvalue>
+</entry>
+<entry name="title" mtime="1081564902" muser="crybaby" type="string">
+<stringvalue>windows key</stringvalue>
+</entry>
+<entry name="raised" mtime="1081564929" muser="crybaby" type="bool" value="false"/>
+<entry name="popup" mtime="1081565012" muser="crybaby" type="bool" value="false"/>
+</gconf>

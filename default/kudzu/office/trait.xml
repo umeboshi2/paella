@@ -1,0 +1,116 @@
+<trait name="office" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			desktop
+		</parent>
+		<parent>
+			graphics_editor
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			barcode
+		</package>
+		<package action="install">
+			ca-certificates
+		</package>
+		<package action="install">
+			evolution
+		</package>
+		<package action="install">
+			filelight
+		</package>
+		<package action="install">
+			gaim
+		</package>
+		<package action="install">
+			glabels
+		</package>
+		<package action="install">
+			gnomesword
+		</package>
+		<package action="install">
+			gnucash
+		</package>
+		<package action="install">
+			gqview
+		</package>
+		<package action="install">
+			kdvi
+		</package>
+		<package action="install">
+			kfocus
+		</package>
+		<package action="install">
+			kile
+		</package>
+		<package action="install">
+			koffice
+		</package>
+		<package action="install">
+			meld
+		</package>
+		<package action="install">
+			mpage
+		</package>
+		<package action="install">
+			oooqs-kde
+		</package>
+		<package action="install">
+			openoffice.org
+		</package>
+		<package action="install">
+			openoffice.org-bin
+		</package>
+		<package action="install">
+			openoffice.org-debian-files
+		</package>
+		<package action="install">
+			openoffice.org-l10n-en
+		</package>
+		<package action="install">
+			openoffice.org-thesaurus-en-us
+		</package>
+		<package action="install">
+			pdftk
+		</package>
+		<package action="install">
+			planner
+		</package>
+		<package action="install">
+			routeplanner-gnome
+		</package>
+		<package action="install">
+			rubrica
+		</package>
+		<package action="install">
+			sword-comm-mhcc
+		</package>
+		<package action="install">
+			sword-comm-pers
+		</package>
+		<package action="install">
+			sword-dict-naves
+		</package>
+		<package action="install">
+			sword-text-web
+		</package>
+		<package action="install">
+			texmacs
+		</package>
+		<package action="install">
+			wv
+		</package>
+		<package action="install">
+			xpdf-reader
+		</package>
+		<package action="install">
+			xpdf-utils
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

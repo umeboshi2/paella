@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="toplevel_id" mtime="1079652711" schema="/schemas/apps/panel/objects/toplevel_id" muser="root" type="string">
+<stringvalue>top_panel</stringvalue>
+</entry>
+<entry name="bonobo_iid" mtime="1079652711" schema="/schemas/apps/panel/objects/bonobo_iid" muser="root" type="string">
+<stringvalue>OAFIID:GNOME_MixerApplet</stringvalue>
+</entry>
+<entry name="panel_right_stick" mtime="1079652711" schema="/schemas/apps/panel/objects/panel_right_stick" muser="root" type="bool" value="true"/>
+<entry name="locked" mtime="1079652711" schema="/schemas/apps/panel/objects/locked" muser="root" type="bool" value="true"/>
+<entry name="position" mtime="1079652711" schema="/schemas/apps/panel/objects/position" muser="root" type="int" value="1"/>
+<entry name="object_type" mtime="1079652711" schema="/schemas/apps/panel/objects/object_type" muser="root" type="string">
+<stringvalue>bonobo-applet</stringvalue>
+</entry>
+<entry name="action_type" mtime="1079652711" schema="/schemas/apps/panel/objects/action_type"/>
+<entry name="use_custom_icon" mtime="1079652711" schema="/schemas/apps/panel/objects/use_custom_icon"/>
+<entry name="attached_toplevel_id" mtime="1079652711" schema="/schemas/apps/panel/objects/attached_toplevel_id"/>
+<entry name="launcher_location" mtime="1079652711" schema="/schemas/apps/panel/objects/launcher_location"/>
+<entry name="custom_icon" mtime="1079652711" schema="/schemas/apps/panel/objects/custom_icon"/>
+<entry name="tooltip" mtime="1079652711" schema="/schemas/apps/panel/objects/tooltip"/>
+<entry name="use_menu_path" mtime="1079652711" schema="/schemas/apps/panel/objects/use_menu_path"/>
+<entry name="menu_path" mtime="1079652711" schema="/schemas/apps/panel/objects/menu_path"/>
+</gconf>

@@ -1,0 +1,26 @@
+<trait name="mysql" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			mysql-client
+		</package>
+		<package action="install">
+			mysql-common
+		</package>
+		<package action="install">
+			mysql-server
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,392 @@
+<trait name="xgames" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			adonthell
+		</package>
+		<package action="install">
+			adonthell-data
+		</package>
+		<package action="install">
+			amphetamine
+		</package>
+		<package action="install">
+			amphetamine-data
+		</package>
+		<package action="install">
+			atlantik
+		</package>
+		<package action="install">
+			atlantikdesigner
+		</package>
+		<package action="install">
+			attal
+		</package>
+		<package action="install">
+			bb
+		</package>
+		<package action="install">
+			beneath-a-steel-sky
+		</package>
+		<package action="install">
+			boson
+		</package>
+		<package action="install">
+			boson-base
+		</package>
+		<package action="install">
+			boson-data
+		</package>
+		<package action="install">
+			boson-music
+		</package>
+		<package action="install">
+			burgerspace
+		</package>
+		<package action="install">
+			corewars
+		</package>
+		<package action="install">
+			cuyo
+		</package>
+		<package action="install">
+			egoboo
+		</package>
+		<package action="install">
+			egoboo-data
+		</package>
+		<package action="install">
+			enigma
+		</package>
+		<package action="install">
+			falconseye
+		</package>
+		<package action="install">
+			falconseye-data
+		</package>
+		<package action="install">
+			fcmp
+		</package>
+		<package action="install">
+			freeciv
+		</package>
+		<package action="install">
+			freeciv-client-gtk
+		</package>
+		<package action="install">
+			freeciv-data
+		</package>
+		<package action="install">
+			freeciv-server
+		</package>
+		<package action="install">
+			freecraft
+		</package>
+		<package action="install">
+			freedroid
+		</package>
+		<package action="install">
+			freedroid-data
+		</package>
+		<package action="install">
+			frozen-bubble
+		</package>
+		<package action="install">
+			frozen-bubble-data
+		</package>
+		<package action="install">
+			geki2
+		</package>
+		<package action="install">
+			geki3
+		</package>
+		<package action="install">
+			gemdropx
+		</package>
+		<package action="install">
+			gl-117
+		</package>
+		<package action="install">
+			gltron
+		</package>
+		<package action="install">
+			grande
+		</package>
+		<package action="install">
+			heroes-common
+		</package>
+		<package action="install">
+			heroes-data
+		</package>
+		<package action="install">
+			heroes-sdl
+		</package>
+		<package action="install">
+			heroes-sound-effects
+		</package>
+		<package action="install">
+			heroes-sound-tracks
+		</package>
+		<package action="install">
+			ire
+		</package>
+		<package action="install">
+			ire-ed
+		</package>
+		<package action="install">
+			ire-rotj
+		</package>
+		<package action="install">
+			jumpnbump
+		</package>
+		<package action="install">
+			jumpnbump-levels
+		</package>
+		<package action="install">
+			kenolaba
+		</package>
+		<package action="install">
+			ketm
+		</package>
+		<package action="install">
+			ketm-data
+		</package>
+		<package action="install">
+			kfouleggs
+		</package>
+		<package action="install">
+			kobodeluxe
+		</package>
+		<package action="install">
+			kolf
+		</package>
+		<package action="install">
+			konquest
+		</package>
+		<package action="install">
+			koules
+		</package>
+		<package action="install">
+			lincity
+		</package>
+		<package action="install">
+			mirrormagic
+		</package>
+		<package action="install">
+			mirrormagic-data
+		</package>
+		<package action="install">
+			nethack
+		</package>
+		<package action="install">
+			nethack-common
+		</package>
+		<package action="install">
+			nethack-console
+		</package>
+		<package action="install">
+			nethack-qt
+		</package>
+		<package action="install">
+			nethack-x11
+		</package>
+		<package action="install">
+			nighthawk
+		</package>
+		<package action="install">
+			pathological
+		</package>
+		<package action="install">
+			pathological-music
+		</package>
+		<package action="install">
+			penguin-command
+		</package>
+		<package action="install">
+			pinball
+		</package>
+		<package action="install">
+			pinball-data
+		</package>
+		<package action="install">
+			pingus
+		</package>
+		<package action="install">
+			pingus-data
+		</package>
+		<package action="install">
+			pipenightdreams
+		</package>
+		<package action="install">
+			pipenightdreams-data
+		</package>
+		<package action="install">
+			powermanga
+		</package>
+		<package action="install">
+			powermanga-data
+		</package>
+		<package action="install">
+			pydance
+		</package>
+		<package action="install">
+			pydance-music
+		</package>
+		<package action="install">
+			pysol
+		</package>
+		<package action="install">
+			pysol-cardsets
+		</package>
+		<package action="install">
+			race
+		</package>
+		<package action="install">
+			race-data
+		</package>
+		<package action="install">
+			rafkill
+		</package>
+		<package action="install">
+			rafkill-data
+		</package>
+		<package action="install">
+			realtimebattle
+		</package>
+		<package action="install">
+			sabre
+		</package>
+		<package action="install">
+			sabre-common
+		</package>
+		<package action="install">
+			slune
+		</package>
+		<package action="install">
+			snes9express
+		</package>
+		<package action="install">
+			snes9x-common
+		</package>
+		<package action="install">
+			snes9x-opengl
+		</package>
+		<package action="install">
+			snes9x-x
+		</package>
+		<package action="install">
+			solarwolf
+		</package>
+		<package action="install">
+			sopwith
+		</package>
+		<package action="install">
+			space-orbit
+		</package>
+		<package action="install">
+			spacearyarya
+		</package>
+		<package action="install">
+			starvoyager
+		</package>
+		<package action="install">
+			starvoyager-data
+		</package>
+		<package action="install">
+			stax
+		</package>
+		<package action="install">
+			tenmado
+		</package>
+		<package action="install">
+			thrust
+		</package>
+		<package action="install">
+			toppler
+		</package>
+		<package action="install">
+			trophy
+		</package>
+		<package action="install">
+			trophy-data
+		</package>
+		<package action="install">
+			tuxpuck
+		</package>
+		<package action="install">
+			tuxracer
+		</package>
+		<package action="install">
+			tuxracer-data
+		</package>
+		<package action="install">
+			uqm
+		</package>
+		<package action="install">
+			uqm-content
+		</package>
+		<package action="install">
+			vectoroids
+		</package>
+		<package action="install">
+			vegastrike
+		</package>
+		<package action="install">
+			vegastrike-data
+		</package>
+		<package action="install">
+			wesnoth
+		</package>
+		<package action="install">
+			wesnoth-data
+		</package>
+		<package action="install">
+			wing
+		</package>
+		<package action="install">
+			wing-data
+		</package>
+		<package action="install">
+			xarchon
+		</package>
+		<package action="install">
+			xarchon-theme-default
+		</package>
+		<package action="install">
+			xbubble
+		</package>
+		<package action="install">
+			xbubble-data
+		</package>
+		<package action="install">
+			xfrisk
+		</package>
+		<package action="install">
+			xjewel
+		</package>
+		<package action="install">
+			xjig
+		</package>
+		<package action="install">
+			xpuyopuyo
+		</package>
+		<package action="install">
+			xsabre
+		</package>
+		<package action="install">
+			xscorch
+		</package>
+		<package action="install">
+			xsoldier
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

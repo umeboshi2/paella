@@ -1,0 +1,53 @@
+--- ^.*\~$
+--- ^.*\.bak$
+--- ^.*\.swp$
+--- ^.*\.old$
+--- ^.*\.dpkg-.*$
+--- ^.*\.ai-.*$
+--- ^.*/\.nfs.*$
+--- ^.*/lost\+found$
+--- ^/rules$
+
+d-- =/
+
+d-- =/etc
+--- =/etc/.pwd.lock
+--- =/etc/ioctl.save
+--- =/etc/passwd-
+--- =/etc/group-
+--- =/etc/diskless-image
+dc- ^/etc/terminfo/.*$
+dc- ^/etc/.*$
+
+ifelse(image_devfs,<[yes]>,<[dnl]>,<[
+dc- =/dev
+dc- ^/dev/.*$]>)
+
+ 
+ 
+dc- =/var 
+dc- ^/var/lib/menu-xdg/.*$ 
+dc- ^/var/lib/gnome/.*$ 
+dc- ^/var/lib/texmf/.*$ 
+dc- ^/var/lib/enlightentment/.*$ 
+dc- ^/var/lib/scrollkeeper/.*$ 
+dc- ^/var/lib/mozilla/.*$ 
+dc- ^/var/lib/mozilla-thunderbird/.*$ 
+dc- ^/var/lib/mozilla-firefox/.*$ 
+dc- ^/var/lib/defoma/.*$ 
+dc- ^/var/lib/dictionaries/.*$ 
+dc- ^/var/lib/xml-core/.*$ 
+dc- ^/var/cache/fonts/.*$ 
+dc- ^/var/cache/xfstt/.*$ 
+dc- ^/var/cache/dictionaries-common/.*$ 
+ 
+#dc- ^/var/.*$ 
+# only copy directories under var 
+dc- [dir] ^/var/.*$ 
+--- ^/var/.*$ 
+ 
+ 
+ 
+-c- =/tmp 
+
+---

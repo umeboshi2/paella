@@ -1,0 +1,82 @@
+<trait name="ldap_common" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ldap-utils
+		</package>
+		<package action="install">
+			libnss-ldap
+		</package>
+		<package action="install">
+			libpam-ldap
+		</package>
+	</packages>
+	<environ>
+		<admin>
+			admin
+		</admin>
+		<admin_base>
+			mainoffice
+		</admin_base>
+		<adminbinddn>
+			cn=admin,dc=umdomain
+		</adminbinddn>
+		<adminpw>
+			a
+		</adminpw>
+		<basedn>
+			dc=umdomain
+		</basedn>
+		<ldap_host>
+			umhead.umdomain
+		</ldap_host>
+		<ldap_uris>
+			ldap://umhead
+		</ldap_uris>
+		<nss>
+			nss
+		</nss>
+		<nssbinddn>
+			cn=nss,dc=umdomain
+		</nssbinddn>
+		<nsspw>
+			a
+		</nsspw>
+		<nsssecret>
+			{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+		</nsssecret>
+		<rootbinddn>
+			cn=admin,dc=umdomain
+		</rootbinddn>
+		<secret>
+			{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+		</secret>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="libnss-ldap">
+			root/paella/real_templates/etc/libnss-ldap.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="libnss-ldap">
+			root/paella/real_templates/etc/nsswitch.conf
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="libpam-ldap">
+			etc/ldap.secret
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/ldap/ldap.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="libpam-ldap">
+			root/paella/real_templates/etc/pam_ldap.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,9 @@
+Name: ipopd/protocol
+Template: ipopd/protocol
+Owners: ipopd
+
+Name: libc-client/plaintext
+Template: libc-client/plaintext
+Value: true
+Owners: libc-client2002edebian
+Flags: seen

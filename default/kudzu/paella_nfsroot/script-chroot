@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "paella_nfsroot script initiated"
+echo "this script is almost deprecated"
+
+#apt-get -y update
+#apt-get -y install paella-installer 
+#update-rc.d -f checkroot.sh remove
+#update-rc.d -f checkfs.sh remove
+#update-rc.d -f networking remove
+#update-rc.d -n remount_rootnfs.sh start 01 S .
+
+rm /etc/hostname

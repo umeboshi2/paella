@@ -1,0 +1,11 @@
+# Used by ifup(8) and ifdown(8). See the interfaces(5) manpage or
+# /usr/share/doc/ifupdown/examples for more information.
+auto lo eth0 tap1
+iface lo inet loopback
+iface eth0 inet dhcp
+iface tap1 inet static
+	address 10.0.1.1
+	netmask 255.255.255.0
+	tunctl_user umeboshi
+	uml_proxy_arp bard
+	uml_proxy_ether eth0

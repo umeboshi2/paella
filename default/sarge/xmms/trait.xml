@@ -1,0 +1,51 @@
+<trait name="xmms" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			gkrellm
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			aumix-gtk
+		</package>
+		<package action="install">
+			gdancer
+		</package>
+		<package action="install">
+			gkrellm-volume
+		</package>
+		<package action="install">
+			gkrellmms
+		</package>
+		<package action="install">
+			xmms
+		</package>
+		<package action="install">
+			xmms-kjofol
+		</package>
+		<package action="install">
+			xmms-kjofol-skins
+		</package>
+		<package action="install">
+			xmms-modplug
+		</package>
+		<package action="install">
+			xmms-osd-plugin
+		</package>
+		<package action="install">
+			xmms-shell
+		</package>
+		<package action="install">
+			xmms-sid
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="aumix-gtk">
+			etc/default/aumix
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,4 @@
+#!/bin/bash
+touch /etc/networks
+echo '+::::::' >> /etc/passwdchroot nisclient
+/etc/init.d/nis stop

@@ -1,0 +1,94 @@
+<trait name="diskless" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			workstation
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			diskless-image-simple
+		</package>
+		<package action="install">
+			module-init-tools
+		</package>
+	</packages>
+	<environ>
+		<domain>
+			gregscomputerservice.com
+		</domain>
+		<maildomain>
+			gregscomputerservice.com
+		</maildomain>
+		<mailroute>
+			paella
+		</mailroute>
+		<master_host>
+			master
+		</master_host>
+		<nameserver>
+			10.0.0.1
+		</nameserver>
+		<nfshomedir>
+			/home
+		</nfshomedir>
+		<nfshostdir>
+			/var/lib/diskless/default
+		</nfshostdir>
+		<nfsimagedir>
+			/var/lib/diskless/default/root
+		</nfsimagedir>
+		<nfsserver>
+			10.0.0.2
+		</nfsserver>
+		<use_devfs>
+			no
+		</use_devfs>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="diskless-image-simple">
+			etc/diskless-image/config
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="diskless-image-simple">
+			etc/diskless-image/config.m4
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="diskless-image-simple">
+			etc/diskless-image/config.sh
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="diskless-image-simple">
+			etc/diskless-image/exports
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/rules-image
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/rules-template
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/template/etc/dhclient.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/template/etc/diskless-host/exports
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/template/etc/fstab
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/template/etc/hostname
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/template/etc/mailname
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="diskless-image-simple">
+			usr/lib/diskless-image/template/etc/motd
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="diskless-image-simple">
+			var/cache/debconf/config.dat
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
+</trait>

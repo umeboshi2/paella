@@ -1,0 +1,111 @@
+<trait name="paella_laptop" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			desktop
+		</parent>
+		<parent>
+			dhcp_server
+		</parent>
+		<parent>
+			diskless_server
+		</parent>
+		<parent>
+			firewall
+		</parent>
+		<parent>
+			kde
+		</parent>
+		<parent>
+			laptop
+		</parent>
+		<parent>
+			ldap_server
+		</parent>
+		<parent>
+			nameserver
+		</parent>
+		<parent>
+			nettools
+		</parent>
+		<parent>
+			nfs_server
+		</parent>
+		<parent>
+			office
+		</parent>
+		<parent>
+			paella_devel
+		</parent>
+		<parent>
+			samba
+		</parent>
+		<parent>
+			webbrowser
+		</parent>
+		<parent>
+			webserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			bootcd
+		</package>
+		<package action="install">
+			cdrecord
+		</package>
+		<package action="install">
+			laptop-net
+		</package>
+		<package action="install">
+			tftpd-hpa
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/apache2/apache2.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/default/dhcp3-server
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/default/laptop-net
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/default/nfs-common
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/default/nfs-kernel-server
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/default/shorewall
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/default/uml-utilities
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/dhcp3/dhcpd.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/exports
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/inetd.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/laptop-net/schemes
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="laptop-net">
+			etc/paellarc
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="laptop-net">
+			etc/shorewall/rules
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="laptop-net">
+			etc/shorewall/shorewall.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

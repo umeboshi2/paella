@@ -1,0 +1,3 @@
+<--|diskless_nfsimagedir|--> <ipaddress>(rw no_root_squash async)
+<--|localnet_fileserver|-->:<--|localnet_fs_base_path|-->/<--|localnet_fs_common_dir|-->	<ipaddress>(ro async)
+<--|localnet_fileserver|-->:<--|localnet_fs_base_path|-->/<--|localnet_fs_share_dir|-->	<ipaddress>(rw async)

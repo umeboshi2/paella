@@ -1,0 +1,2 @@
+SENDMAILTO=<--|default_logcheck_email|-->
+DATE=`date +'%Y/%m/%d %H:%M'`

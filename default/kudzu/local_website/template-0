@@ -1,0 +1,83 @@
+# -----------------------------------------------------------------------------
+# First coded by Luca - De Whiskey's - De Vitis <luca@debian.org>
+# -----------------------------------------------------------------------------
+# $Id: default.conf,v 1.1 2003/10/16 16:54:45 luca Exp $
+#
+#   Copyright (C) 2003 Luca - De Whiskey's - De Vitis <luca@debian.org>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# Example configuration file for zopectl script.
+
+[DEFAULT]
+# -----------------------------------------------------------------------------
+# You may define your own options to use for replacement in other part of
+# this file.
+# -----------------------------------------------------------------------------
+#
+# Run-Path: /var/run/zope
+# Lib-Path: /var/lib/zope
+# Log-Path: /var/log/zope
+#
+# -----------------------------------------------------------------------------
+# Options set in this section will override values in the 'instances' section
+# of zopectlrc.
+# -----------------------------------------------------------------------------
+#
+# Name: test
+# Instance-Home: %(lib-path)s/instance/%(name)s
+# Access-File: %(instance-home)s/access
+# PCGI-Resource-File: %(lib-path)s/cgi-bin/%(name)s
+# Log-File: %(log-path)s/Z2-%(name)s.log
+# Detailed-Log-File: %(log-path)s/Z2-%(name)s-detailed.log
+# PID-File: %(run-path)s/pid/%(name)s
+# User: testuser
+# Group: testgroup
+#
+
+[Zope]
+# Each file may describe more instances: one for each section.
+# Options names are not key-sensitive, but values do.
+# Missing Options implies default values.
+# See zopectl(8) man page for a comprehensive list of options.
+Name: default
+HTTP-Port: 9673
+FTP-Port: 8021
+# WebDAV-Port: 9674
+# Monitor-Port: 9675
+# ICP-Port: 9676
+# Listen: 127.0.0.1
+# DNS: 127.0.0.2
+# Number-Of-Tread: 4
+# Check-Interval: 500
+# Force-HTTP-Connection-Close: no
+# Locale: en_US
+
+# The one below is a testing instance I use.
+# [Zope2]
+# 
+# Name: default2
+# HTTP-Port: 9773
+# FTP-Port: 9021
+# WebDAV-Port: 9774
+# Monitor-Port: 9775
+# ICP-Port: 9776
+# Listen: 127.0.0.3
+# DNS: 127.0.0.4
+# Number-Of-Tread: 8
+# Check-Interval: 800
+# Force-HTTP-Connection-Close: yes
+# Locale: it_IT@euro
+# 

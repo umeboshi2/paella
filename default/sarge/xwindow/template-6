@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/X11/X -dpi <--|xwindow_xserver_dpi|--> -nolisten tcp

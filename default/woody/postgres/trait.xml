@@ -1,0 +1,23 @@
+<trait name="postgres" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			postgresql-client
+		</package>
+	</packages>
+	<environ>
+		<trusted_hosts>
+			host	all	all		10.0.0.0		255.0.0.0	trust
+		</trusted_hosts>
+	</environ>
+	<templates/>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

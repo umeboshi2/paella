@@ -1,0 +1,29 @@
+	<profile name="test_extended" suite="sarge">
+		<traits>
+			<trait ord="0">
+				extended
+			</trait>
+			<trait ord="99">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				insecure
+			</family>
+			<family>
+				nielsen
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="install_diskless" trait="diskless_server">
+				false
+			</profile_variable>
+			<profile_variable name="hostname" trait="global">
+				maintest
+			</profile_variable>
+			<profile_variable name="install_opencd" trait="global">
+				false
+			</profile_variable>
+		</environ>
+	</profile>

@@ -1,0 +1,22 @@
+#!/bin/bash
+echo "camserve chroot script initiated"
+mount proc /proc -t proc
+#init 2
+# enable apache modules
+modules-config apache enable libproxy
+modules-config apache enable mod_auth_pgsql
+# enable camserve in apache config
+ln -s /etc/camserve/*.conf /etc/apache/conf.d/
+ln -s /etc/camserve/*.conf /etc/apache-ssl/conf.d/
+
+# initialize database and users
+/etc/init.d/postgresql start
+#sleep 10
+su --command "/usr/lib/postgresql/bin/createlang -d template1 plpgsql" postgres
+su postgres createdb kennelauth
+su --command "createuser -D -A www-data" postgres
+su --command "createuser -a -d umeboshi" postgres
+cat /root/paella/kennelauth.schema | su postgres psql kennelauth
+/etc/init.d/postgresql stop
+umount /proc
+exit 0

@@ -1,0 +1,19 @@
+# defauld paella boot server config
+default installer
+prompt 1
+say "--------------------------"
+say "Paella Network Boot Server"
+say "--------------------------"
+say "mem for memtest(not here)"
+say "enter for paella installer"
+say "autoboot in 10 seconds"
+DISPLAY boot.msg
+f1 boot.msg
+f2 say "help me"
+timeout 100
+
+label installer
+kernel vmlinuz-installer
+append initrd=initrd.img netdev=probe ip=dhcp devfs=nomount  root=/dev/nfs  vga=ask
+
+

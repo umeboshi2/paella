@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "base script initiated"
+apt-get -y update
+#dselect update
+echo "doing upgrade"
+#dselect install
+apt-get -y upgrade
+

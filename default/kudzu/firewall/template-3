@@ -1,0 +1,73 @@
+#
+# Shorewall version 1.4 - Accounting File
+#
+# /etc/shorewall/accounting
+#
+#	Accounting rules exist simply to count packets and bytes in categories
+#	that you define in this file. You may display these rules and their
+#	packet and byte counters using the "shorewall show accounting" command.
+#
+#	Please see http://shorewall.net/Accounting.html for examples and 
+#	additional information about how to use this file.
+#
+#
+# Columns are:
+#
+#	ACTION	      - What to do when a match is found.
+#
+#				COUNT	- Simply count the match and continue
+#					  with the next rule
+#				DONE	- Count the match and don't attempt
+#					  to match any other accounting rules
+#					  in the chain specified in the CHAIN
+#					  column.
+#				<chain>[:COUNT] 
+#					- Where <chain> is the name of
+#					  a chain. Shorewall will create
+#					  the chain automatically if it
+#					  doesn't already exist. Causes
+#					  a jump to that chain. If :COUNT
+#					  is including, a counting rule
+#					  matching this record will be
+#				          added to <chain>
+#
+#	CHAIN	      - The name of a chain. If specified as "-" the 
+#			'accounting' chain is assumed. This is the chain
+#			where the accounting rule is added. The chain will
+#			be created if it doesn't already exist.
+# 
+#	SOURCE	      - Packet Source
+#
+#			The name of an interface, an address (host or net) or
+#			an interface name followed by ":"
+#			and a host or net address. 
+#
+#	DESTINATION   - Packet Destination
+#
+#			Format the same as the SOURCE column.
+#
+#	PROTOCOL	A protocol name (from /etc/protocols), a protocol
+#			number.
+#
+#	DEST PORT	Destination Port number
+#
+#			Service name from /etc/services or port number. May
+#			only be specified if the protocol is TCP or UDP (6
+#			or 17). 
+#
+#	SOURCE PORT	Source Port number
+#
+#			Service name from /etc/services or port number. May
+#			only be specified if the protocol is TCP or UDP (6
+#			or 17).
+#
+#	In all of the above columns except ACTION and CHAIN, the values "-",
+#	"any" and "all" may be used as wildcards
+#
+#	Please see http://shorewall.net/Accounting.html for examples and 
+#	additional information about how to use this file.
+#
+#ACTION	CHAIN 	SOURCE		DESTINATION	PROTO	DEST	   	SOURCE
+#							PORT		PORT
+#
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

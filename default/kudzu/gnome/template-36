@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="height" mtime="1081569276" schema="/schemas/apps/goats/defaults/height" type="int" value="100"/>
+<entry name="width" mtime="1081569276" schema="/schemas/apps/goats/defaults/width" type="int" value="80"/>
+<entry name="use_alarm_sound" mtime="1081569276" schema="/schemas/apps/goats/defaults/use_alarm_sound"/>
+<entry name="alarm_sound_filename" mtime="1081569276" schema="/schemas/apps/goats/defaults/alarm_sound_filename"/>
+<entry name="sticky" mtime="1081569276" schema="/schemas/apps/goats/defaults/sticky" type="bool" value="false"/>
+<entry name="font_name" mtime="1081569276" schema="/schemas/apps/goats/defaults/font_name" type="string"><stringvalue>Sans 8</stringvalue></entry>
+<entry name="bg" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg"/>
+<entry name="bg1_r" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg1_r"/>
+<entry name="bg1_g" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg1_g"/>
+<entry name="bg1_b" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg1_b"/>
+<entry name="bg2_r" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg2_r"/>
+<entry name="bg2_g" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg2_g"/>
+<entry name="bg2_b" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg2_b"/>
+<entry name="bg3_r" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg3_r"/>
+<entry name="bg3_g" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg3_g"/>
+<entry name="bg3_b" mtime="1081569276" schema="/schemas/apps/goats/defaults/bg3_b"/>
+<entry name="fg_r" mtime="1081569276" schema="/schemas/apps/goats/defaults/fg_r"/>
+<entry name="fg_g" mtime="1081569276" schema="/schemas/apps/goats/defaults/fg_g"/>
+<entry name="fg_b" mtime="1081569276" schema="/schemas/apps/goats/defaults/fg_b"/>
+</gconf>

@@ -1,0 +1,61 @@
+<trait name="firewall" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			ipsec
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			iproute
+		</package>
+		<package action="install">
+			iptables
+		</package>
+		<package action="install">
+			shorewall
+		</package>
+	</packages>
+	<environ>
+		<internet_interface>
+			eth0
+		</internet_interface>
+		<isp_address>
+			192.168.9.2
+		</isp_address>
+		<isp_gateway>
+			192.168.9.1
+		</isp_gateway>
+		<isp_netmask>
+			255.255.255.252
+		</isp_netmask>
+		<local_interface>
+			eth1
+		</local_interface>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="iptables">
+			etc/network/interfaces
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="shorewall">
+			etc/resolv.conf
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="shorewall">
+			etc/shorewall/interfaces
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="shorewall">
+			etc/shorewall/masq
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="shorewall">
+			etc/shorewall/policy
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="shorewall">
+			etc/shorewall/rules
+		</template>
+		<template grp_owner="root" mode="0100600" owner="root" package="shorewall">
+			etc/shorewall/zones
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

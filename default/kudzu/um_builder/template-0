@@ -1,0 +1,37 @@
+# Example dput.cf that defines the host that can be used
+# with dput for uploading.
+
+[DEFAULT]
+login = <--|base_adminuser|-->
+method = scp
+hash = md5
+allow_unsigned_uploads = 1
+run_lintian = 0
+run_dinstall = 0
+check_version = 0
+scp_compress = 0
+post_upload_command =
+pre_upload_command =
+passive_ftp = 0
+default_host_main =
+default_host_non-us =
+fqdn = <--|um_builder_repository_host|-->.<--|base_domain|-->
+incoming = /mirrors/debian/local/mini-dinstall/incoming
+allow_non-us_software = 1
+
+
+[local]
+fqdn = <--|um_builder_repository_host|-->.<--|base_domain|-->
+incoming = /mirrors/debian/local/mini-dinstall/incoming
+
+[questron]
+fqdn = <--|um_builder_repository_host|-->.<--|base_domain|-->
+incoming = /mirrors/debian/local/mini-dinstall/incoming
+
+[unstable]
+fqdn = <--|um_builder_repository_host|-->.<--|base_domain|-->
+incoming = /mirrors/debian/local/mini-dinstall/incoming
+
+[stable]
+fqdn = <--|um_builder_repository_host|-->.<--|base_domain|-->
+incoming = /mirrors/debian/local/mini-dinstall/incoming

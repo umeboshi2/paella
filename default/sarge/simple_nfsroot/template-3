@@ -1,0 +1,4 @@
+echo "Remounting nfsroot rw"
+mount -o remount,rw /
+umount /proc
+mount /proc

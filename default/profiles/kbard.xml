@@ -1,0 +1,430 @@
+	<profile name="kbard" suite="kardinal">
+		<traits>
+			<trait ord="50">
+				paella_laptop
+			</trait>
+			<trait ord="50">
+				ume_desktop
+			</trait>
+			<trait ord="70">
+				averatec
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="adminuser_passwd_opt" trait="base">
+				PASSWD
+			</profile_variable>
+			<profile_variable name="distribution" trait="base">
+				Bard/Debian
+			</profile_variable>
+			<profile_variable name="issue_release" trait="base">
+				testing/bard
+			</profile_variable>
+			<profile_variable name="root_password" trait="base">
+				$$1$IImobcMx$4Lsn4oHhM7L9pNYZNP7zz/
+			</profile_variable>
+			<profile_variable name="root_umask" trait="base">
+				022
+			</profile_variable>
+			<profile_variable name="timezone" trait="base">
+				US/Central
+			</profile_variable>
+			<profile_variable name="usiso8859_15" trait="base">
+				en_US.ISO-8859-15 ISO-8859-15
+			</profile_variable>
+			<profile_variable name="usutf8" trait="base">
+				en_US.UTF-8 UTF-8
+			</profile_variable>
+			<profile_variable name="dhclient_require" trait="default">
+				#require subnet-mask, domain-name-servers;
+			</profile_variable>
+			<profile_variable name="dhcp_prepend_dns" trait="default">
+				#prepend domain-name-servers 127.0.0.1;
+			</profile_variable>
+			<profile_variable name="dhcp_supersede_domain" trait="default">
+				#supersede domain-name &quot;fugue.com home.vix.com&quot;;
+			</profile_variable>
+			<profile_variable name="diskless_profile" trait="default">
+				dless
+			</profile_variable>
+			<profile_variable name="diskless_roots" trait="default">
+				/freespace/nfsroots
+			</profile_variable>
+			<profile_variable name="fake_mac" trait="default">
+				#send dhcp-client-identifier 1:0:a0:24:ab:fb:9c
+			</profile_variable>
+			<profile_variable name="hostconf_order" trait="default">
+				hosts,bind
+			</profile_variable>
+			<profile_variable name="local_address" trait="default">
+				10.0.0.1
+			</profile_variable>
+			<profile_variable name="local_netmask" trait="default">
+				$global_local_network
+			</profile_variable>
+			<profile_variable name="local_network" trait="default">
+				$global_local_network
+			</profile_variable>
+			<profile_variable name="local_network_bitmask" trait="default">
+				$global_local_network_cidr
+			</profile_variable>
+			<profile_variable name="lochost_in_hostsfile" trait="default">
+				127.0.0.1
+			</profile_variable>
+			<profile_variable name="logcheck_email" trait="default">
+				root
+			</profile_variable>
+			<profile_variable name="logrotate_rotate" trait="default">
+				10
+			</profile_variable>
+			<profile_variable name="logrotate_weeks" trait="default">
+				10
+			</profile_variable>
+			<profile_variable name="reversed_local_zone" trait="default">
+				10
+			</profile_variable>
+			<profile_variable name="sshd_allowusers" trait="default">
+				umeboshi
+			</profile_variable>
+			<profile_variable name="sshd_authkeys" trait="default">
+				%h/.ssh/authorized_keys
+			</profile_variable>
+			<profile_variable name="sshd_motd" trait="default">
+				yes
+			</profile_variable>
+			<profile_variable name="sshd_permitrootlogin" trait="default">
+				no
+			</profile_variable>
+			<profile_variable name="sshd_pwauth" trait="default">
+				no
+			</profile_variable>
+			<profile_variable name="sshd_x11forward" trait="default">
+				no
+			</profile_variable>
+			<profile_variable name="ssl_countryName" trait="default">
+				US
+			</profile_variable>
+			<profile_variable name="ssl_emailAddress" trait="default">
+				umeboshi@gregscomputerservice.com
+			</profile_variable>
+			<profile_variable name="ssl_localityName" trait="default">
+				Hattiesburg
+			</profile_variable>
+			<profile_variable name="ssl_orgName" trait="default">
+				Greg's Computer Service
+			</profile_variable>
+			<profile_variable name="ssl_orgunitName" trait="default">
+				Paella
+			</profile_variable>
+			<profile_variable name="ssl_stateName" trait="default">
+				Mississippi
+			</profile_variable>
+			<profile_variable name="desktop1" trait="desktop">
+				main
+			</profile_variable>
+			<profile_variable name="desktop2" trait="desktop">
+				email
+			</profile_variable>
+			<profile_variable name="desktop3" trait="desktop">
+				chat
+			</profile_variable>
+			<profile_variable name="desktop4" trait="desktop">
+				misc
+			</profile_variable>
+			<profile_variable name="desktop5" trait="desktop">
+				create
+			</profile_variable>
+			<profile_variable name="desktop6" trait="desktop">
+				music
+			</profile_variable>
+			<profile_variable name="gdm_bgprog" trait="desktop">
+				/usr/lib/xscreensaver/circuit -root
+			</profile_variable>
+			<profile_variable name="gdm_bgtype" trait="desktop">
+				0
+			</profile_variable>
+			<profile_variable name="kmods" trait="desktop">
+				psmouse, mousedev, hid, ohci-hcd, uhci-hcd, ehci-hcd
+			</profile_variable>
+			<profile_variable name="authoritative" trait="dhcp_server">
+				#authoritative
+			</profile_variable>
+			<profile_variable name="ddns_update_style" trait="dhcp_server">
+				interim
+			</profile_variable>
+			<profile_variable name="default_lease_time" trait="dhcp_server">
+				600
+			</profile_variable>
+			<profile_variable name="main_netmask" trait="dhcp_server">
+				255.0.0.0
+			</profile_variable>
+			<profile_variable name="main_range" trait="dhcp_server">
+				10.0.0.51 10.0.0.253
+			</profile_variable>
+			<profile_variable name="main_router" trait="dhcp_server">
+				10.0.0.1
+			</profile_variable>
+			<profile_variable name="main_subnet" trait="dhcp_server">
+				10.0.0.0
+			</profile_variable>
+			<profile_variable name="max_lease_time" trait="dhcp_server">
+				7200
+			</profile_variable>
+			<profile_variable name="network_interfaces" trait="dhcp_server">
+				eth1
+			</profile_variable>
+			<profile_variable name="diskless_profile" trait="diskless_server">
+				$default_diskless_profile
+			</profile_variable>
+			<profile_variable name="diskless_roots_path" trait="diskless_server">
+				$default_diskless_roots
+			</profile_variable>
+			<profile_variable name="install_diskless" trait="diskless_server">
+				false
+			</profile_variable>
+			<profile_variable name="base_path" trait="fileserver">
+				/freespace/shared
+			</profile_variable>
+			<profile_variable name="startup" trait="firewall">
+				0
+			</profile_variable>
+			<profile_variable name="bigfont" trait="gkrellm">
+				Sans 11
+			</profile_variable>
+			<profile_variable name="lgfont" trait="gkrellm">
+				Sans 9
+			</profile_variable>
+			<profile_variable name="medfont" trait="gkrellm">
+				Sans 10
+			</profile_variable>
+			<profile_variable name="smfont" trait="gkrellm">
+				Sans 9
+			</profile_variable>
+			<profile_variable name="theme" trait="gkrellm">
+				Jewel_gkrellm
+			</profile_variable>
+			<profile_variable name="adminuser" trait="global">
+				umeboshi
+			</profile_variable>
+			<profile_variable name="domain" trait="global">
+				enpassant
+			</profile_variable>
+			<profile_variable name="hostname" trait="global">
+				bard
+			</profile_variable>
+			<profile_variable name="install_opencd" trait="global">
+				false
+			</profile_variable>
+			<profile_variable name="local_address" trait="global">
+				10.0.0.1
+			</profile_variable>
+			<profile_variable name="local_netmask" trait="global">
+				255.0.0.0
+			</profile_variable>
+			<profile_variable name="local_network" trait="global">
+				10.0.0.0
+			</profile_variable>
+			<profile_variable name="local_network_cidr" trait="global">
+				10.0.0.0/8
+			</profile_variable>
+			<profile_variable name="rev_local_zone" trait="global">
+				10
+			</profile_variable>
+			<profile_variable name="windowmanager" trait="global">
+				enlightenment
+			</profile_variable>
+			<profile_variable name="colorscheme" trait="kde">
+				Mine Green.kcsrc
+			</profile_variable>
+			<profile_variable name="cursor_theme" trait="kde">
+				whiteglass
+			</profile_variable>
+			<profile_variable name="fixed_font" trait="kde">
+				courier,9,-1,5,50,0,0,0,0,0
+			</profile_variable>
+			<profile_variable name="general_font" trait="kde">
+				helvetica,10,-1,5,50,0,0,0,0,0
+			</profile_variable>
+			<profile_variable name="icon_theme" trait="kde">
+				noia_kde_100
+			</profile_variable>
+			<profile_variable name="kdesktop_fm_standard_font" trait="kde">
+				helvetica,12,-1,5,50,0,0,0,0,0
+			</profile_variable>
+			<profile_variable name="knotes_font" trait="kde">
+				helvetica,8,-1,5,50,0,0,0,0,0
+			</profile_variable>
+			<profile_variable name="knotes_titlefont" trait="kde">
+				helvetica,10,-1,5,75,0,0,0,0,0
+			</profile_variable>
+			<profile_variable name="ksplash_theme" trait="kde">
+				DebianEvolution
+			</profile_variable>
+			<profile_variable name="menu_font" trait="kde">
+				$kde_general_font
+			</profile_variable>
+			<profile_variable name="taskbar_font" trait="kde">
+				helvetica,11,-1,5,50,0,0,0,0,0
+			</profile_variable>
+			<profile_variable name="toolbar_font" trait="kde">
+				$kde_general_font
+			</profile_variable>
+			<profile_variable name="wm_active_font" trait="kde">
+				helvetica,10,-1,5,75,0,0,0,0,0
+			</profile_variable>
+			<profile_variable name="boot_server" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="cidr" trait="localnet">
+				10.0.0.0/8
+			</profile_variable>
+			<profile_variable name="dbserver" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="dhcp_server" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="dictserver" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="diskless_server" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="dl_hosts_path" trait="localnet">
+				/freespace/nfsroots
+			</profile_variable>
+			<profile_variable name="domain" trait="localnet">
+				mydomain
+			</profile_variable>
+			<profile_variable name="fileserver" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="firewall" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="first_dynhost" trait="localnet">
+				10.0.0.51
+			</profile_variable>
+			<profile_variable name="fs_admin_dir" trait="localnet">
+				admin
+			</profile_variable>
+			<profile_variable name="fs_base_path" trait="localnet">
+				/freespace/shared
+			</profile_variable>
+			<profile_variable name="fs_common_dir" trait="localnet">
+				common
+			</profile_variable>
+			<profile_variable name="fs_home_path" trait="localnet">
+				/home
+			</profile_variable>
+			<profile_variable name="fs_office_dir" trait="localnet">
+				office
+			</profile_variable>
+			<profile_variable name="fs_share_dir" trait="localnet">
+				share
+			</profile_variable>
+			<profile_variable name="last_dynhost" trait="localnet">
+				10.0.0.253
+			</profile_variable>
+			<profile_variable name="ldap_server" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="mainserver" trait="localnet">
+				mainserver
+			</profile_variable>
+			<profile_variable name="nameserver" trait="localnet">
+				10.0.0.1
+			</profile_variable>
+			<profile_variable name="netmask" trait="localnet">
+				255.0.0.0
+			</profile_variable>
+			<profile_variable name="network" trait="localnet">
+				10.0.0.0
+			</profile_variable>
+			<profile_variable name="ntpserver" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="rev_zone" trait="localnet">
+				10
+			</profile_variable>
+			<profile_variable name="samba_server" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="squid_server" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="static_hosts" trait="localnet">
+				None
+			</profile_variable>
+			<profile_variable name="static_ips" trait="localnet">
+				10.0.0.12
+			</profile_variable>
+			<profile_variable name="static_macs" trait="localnet">
+				None
+			</profile_variable>
+			<profile_variable name="webserver" trait="localnet">
+				$localnet_mainserver
+			</profile_variable>
+			<profile_variable name="allow_update" trait="nameserver">
+				$global_local_network_cidr
+			</profile_variable>
+			<profile_variable name="dns1" trait="nameserver">
+				_unused_
+			</profile_variable>
+			<profile_variable name="dns2" trait="nameserver">
+				_unused_
+			</profile_variable>
+			<profile_variable name="domain" trait="nameserver">
+				$base_domain
+			</profile_variable>
+			<profile_variable name="reversed_local_address" trait="nameserver">
+				1.0.0.10
+			</profile_variable>
+			<profile_variable name="reversed_zone" trait="nameserver">
+				10
+			</profile_variable>
+			<profile_variable name="depth" trait="xwindow">
+				24
+			</profile_variable>
+			<profile_variable name="driver" trait="xwindow">
+				savage
+			</profile_variable>
+			<profile_variable name="horiz_sync" trait="xwindow">
+				28-50
+			</profile_variable>
+			<profile_variable name="lcd" trait="xwindow">
+				true
+			</profile_variable>
+			<profile_variable name="modules" trait="xwindow">
+				GLcore, bitmap, dbe, ddc, dri, extmod, freetype, glx, int10, record, speedo, type1, vbe, xtt
+			</profile_variable>
+			<profile_variable name="mouse_device" trait="xwindow">
+				/dev/input/mice
+			</profile_variable>
+			<profile_variable name="mouse_protocol" trait="xwindow">
+				PS/2
+			</profile_variable>
+			<profile_variable name="nice_value" trait="xwindow">
+				0
+			</profile_variable>
+			<profile_variable name="resolutions" trait="xwindow">
+				1024x768, 800x600, 640x480
+			</profile_variable>
+			<profile_variable name="tt_backend" trait="xwindow">
+				xtt
+			</profile_variable>
+			<profile_variable name="vert_refresh" trait="xwindow">
+				43-75
+			</profile_variable>
+			<profile_variable name="xfstt_tcp" trait="xwindow">
+				true
+			</profile_variable>
+			<profile_variable name="xserver_dpi" trait="xwindow">
+				75
+			</profile_variable>
+			<profile_variable name="xtt_vl" trait="xwindow">
+				false
+			</profile_variable>
+		</environ>
+	</profile>

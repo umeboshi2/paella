@@ -1,0 +1,16 @@
+	<profile name="skeleton" suite="sarge">
+		<traits>
+			<trait ord="50">
+				default
+			</trait>
+			<trait ord="99">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				skeleton
+			</profile_variable>
+		</environ>
+	</profile>

@@ -1,0 +1,33 @@
+#!/usr/bin/python
+import os
+from os.path import isdir, isfile, join
+from paella.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+it.set_trait('final')
+sections = it.default.sections()
+admin_sections = [x for x in sections if x[:10] == 'adminuser_']
+admins = [it.default.get(x, 'user') for x in admin_sections]
+print 'admins', admins
+homepath = it.get('base_homepath')
+skel = it.get('base_adduser_skel')
+while skel[0] == '/':
+    skel = skel[1:]
+tskel = join(it.target, skel)
+rhomepath = homepath
+while rhomepath[0] == '/':
+    rhomepath = rhomepath[1:]
+    
+for s in admin_sections:
+    user = it.default.get(s, 'user')
+    uid = it.default.get(s, 'uid')
+    gid = '50'
+    shell = '/bin/bash'
+    hpath = join(homepath, user)
+    fhpath = join(it.target, rhomepath, user)
+    makepaths(fhpath)
+    os.system('rsync -av %s/ %s/' % (tskel, fhpath))
+    os.system('chown -R %s:%s %s' % (uid, gid, fhpath))
+print 'final script is finished.'
+print 'profile should be complete'

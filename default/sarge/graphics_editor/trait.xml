@@ -1,0 +1,35 @@
+<trait name="graphics_editor" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			gimp1.2
+		</package>
+		<package action="install">
+			gocr
+		</package>
+		<package action="install">
+			gocr-gtk
+		</package>
+		<package action="install">
+			imagemagick
+		</package>
+		<package action="install">
+			pngcrush
+		</package>
+		<package action="install">
+			qiv
+		</package>
+		<package action="install">
+			sodipodi
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

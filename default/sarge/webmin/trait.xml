@@ -1,0 +1,42 @@
+<trait name="webmin" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+		<parent>
+			webserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			webmin
+		</package>
+		<package action="install">
+			webmin-core
+		</package>
+	</packages>
+	<environ>
+		<admin_password>
+			YD52jq/nPegVE:0::
+		</admin_password>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0600" owner="root" package="webmin">
+			etc/webmin/miniserv.conf
+		</template>
+		<template grp_owner="root" mode="0640" owner="root" package="webmin">
+			etc/webmin/miniserv.users
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="webmin">
+			var/cache/debconf/config.dat
+		</template>
+		<template grp_owner="root" mode="0755" owner="root" package="webmin">
+			var/lib/dpkg/info/webmin.postinst
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

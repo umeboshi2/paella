@@ -1,0 +1,804 @@
+	<family name="standard">
+		<parents/>
+		<environ>
+			<family_variable name="adduser_dirmode" trait="base">
+				0750
+			</family_variable>
+			<family_variable name="adduser_grouphomes" trait="base">
+				no
+			</family_variable>
+			<family_variable name="adduser_skel" trait="base">
+				/etc/skel
+			</family_variable>
+			<family_variable name="adminuser" trait="base">
+				$global_adminuser
+			</family_variable>
+			<family_variable name="adminuser_passwd_opt" trait="base">
+				NOPASSWD
+			</family_variable>
+			<family_variable name="debconf_frontend" trait="base">
+				Dialog
+			</family_variable>
+			<family_variable name="distribution" trait="base">
+				Paella/Debian
+			</family_variable>
+			<family_variable name="domain" trait="base">
+				$global_domain
+			</family_variable>
+			<family_variable name="homepath" trait="base">
+				/home
+			</family_variable>
+			<family_variable name="hostname" trait="base">
+				$global_hostname
+			</family_variable>
+			<family_variable name="issue_release" trait="base">
+				testing/unstable
+			</family_variable>
+			<family_variable name="mailname" trait="base">
+				$global_hostname
+			</family_variable>
+			<family_variable name="ntpserver" trait="base">
+				ntp.pool.org
+			</family_variable>
+			<family_variable name="root_password" trait="base">
+				$$1$IImobcMx$4Lsn4oHhM7L9pNYZNP7zz/
+			</family_variable>
+			<family_variable name="root_umask" trait="base">
+				022
+			</family_variable>
+			<family_variable name="timezone" trait="base">
+				US/Central
+			</family_variable>
+			<family_variable name="user_umask" trait="base">
+				007
+			</family_variable>
+			<family_variable name="usiso8859_15" trait="base">
+				#en_US.ISO-8859-15 ISO-8859-15
+			</family_variable>
+			<family_variable name="usutf8" trait="base">
+				#en_US.UTF-8 UTF-8
+			</family_variable>
+			<family_variable name="local_debroot" trait="builder">
+				/mirrors/debian
+			</family_variable>
+			<family_variable name="mount_on_boot" trait="builder">
+				no
+			</family_variable>
+			<family_variable name="cdr_device" trait="cdburner">
+				0,0,0
+			</family_variable>
+			<family_variable name="cdr_fifosize" trait="cdburner">
+				4m
+			</family_variable>
+			<family_variable name="cdr_speed" trait="cdburner">
+				4
+			</family_variable>
+			<family_variable name="kmods" trait="cdburner">
+				ide-scsi, sr_mod, sg
+			</family_variable>
+			<family_variable name="server" trait="clockserver">
+				pool.ntp.org
+			</family_variable>
+			<family_variable name="admin_pubkey" trait="default">
+				ssh-dss AAAAB3NzaC1kc3MAAACBAKSA7RKQg+o1rsnnFfpLY4xagx5ip/k/Fo3K/qFrpeY1lpgw6mzkHTvyDf6HC+7WwpkSnEwaC5h5Hc6V7O/zY5lyws9wvZvRVi5JyujlQXy+EBLR6EqWVx0lqnKknGKiiWEPkOn12wDj0awqcI2NZibAgv2RTN9X1KQcag/y67cTAAAAFQCO4O0XWyF1iuqCP4ePtcEmicl+EQAAAIBBmiJRMErhADMeXVtyt9g/gsTlwQFn4qCZqc/Kf8/2YhdVcpWi6jYicvUy3JQH20Itw+FLcog7CUihmX+N7qaR5QEbeE12t+LIwdoCs3egtmeKjGv65lWBJO8Y+/Fa2MjLcm9sAsfYJlpv4XYXW4BUHkmpVNh4E8EbRUTNX1E9cQAAAIAm8FYgEG1Cg+LkpTqPkBqF6L+aSvys+d0KERJrPt2xmHyzcXY2tnYAnQi+aQm8GrlvfcPwllAZzXRjC05ipyT1un7MCdChvAAY/7xaplN33zpKtdf9M0Bso7guWJd882ry8RCY8yk95WKq8iuWV+JyW0f6S8Y/kPMWpYSlTaAncQ== umeboshi@roujin
+			</family_variable>
+			<family_variable name="dhclient_require" trait="default">
+				#require subnet-mask, domain-name-servers;
+			</family_variable>
+			<family_variable name="dhcp_prepend_dns" trait="default">
+				#prepend domain-name-servers 127.0.0.1;
+			</family_variable>
+			<family_variable name="dhcp_supersede_domain" trait="default">
+				#supersede domain-name &quot;fugue.com home.vix.com&quot;;
+			</family_variable>
+			<family_variable name="diskless_profile" trait="default">
+				dless
+			</family_variable>
+			<family_variable name="diskless_roots" trait="default">
+				/freespace/nfsroots
+			</family_variable>
+			<family_variable name="fake_mac" trait="default">
+				#send dhcp-client-identifier 1:0:a0:24:ab:fb:9c
+			</family_variable>
+			<family_variable name="host_dsa_key" trait="default">
+				MIIBugIBAAKBgQCssom8AhUWalnGG05qKbVG8Vw1iqZ7mWwlH0jnM05QTYQSNke5
+wSduEwTY19jUAJ9kOSOuusZfdX1c+aLqwUfKbsf1b70kfg5Ib0jcg4fVrEa4n9Qa
+93oCMMdzjaA2QZh07XBs/fA012cFcrujde7OPfJDQM7SkY9aaPCNaaQMYwIVAP+R
+9SMVNoa/VfFsJegp4k/dSsvbAoGAUrrD24NvVE7v8E6Ahni/M0X/ecObAuriKP7S
+djoVZWCGq5bZJJiK8r4HAJYCb+9KwU+gvtK++KPMkbYh7Yw/MBDgCrWIm0tg04zn
+wK8JgbPh/truMXQ4OhPDRlrHjNdN/CEYYNV20VKSMjmrx4gNIJkVYLnevFX59j+q
+C4HZnekCgYBAkQsuGAPI3iVtuo9urtv7Xw/EEghGJ1WJ5TZaPHP/ZIat9yZO37Jy
+u48AwVv+W2h6tYlYTHF01hfRim3mYhxv1HvoNok1cg5gZ9nkn3Q2kc3PDHxT/YTW
+axBJF8FjbqdBoLwqkclFZh1x0uFzWvFmM6ldMHG7GCrwAEtwOlq7ZAIUU7fNuJSJ
+qD2cfPM2ncwLs0qBBWM=
+			</family_variable>
+			<family_variable name="host_dsa_pub" trait="default">
+				ssh-dss AAAAB3NzaC1kc3MAAACBAKyyibwCFRZqWcYbTmoptUbxXDWKpnuZbCUfSOczTlBNhBI2R7nBJ24TBNjX2NQAn2Q5I666xl91fVz5ourBR8pux/VvvSR+DkhvSNyDh9WsRrif1Br3egIwx3ONoDZBmHTtcGz98DTXZwVyu6N17s498kNAztKRj1po8I1ppAxjAAAAFQD/kfUjFTaGv1XxbCXoKeJP3UrL2wAAAIBSusPbg29UTu/wToCGeL8zRf95w5sC6uIo/tJ2OhVlYIarltkkmIryvgcAlgJv70rBT6C+0r74o8yRtiHtjD8wEOAKtYibS2DTjOfArwmBs+H+2u4xdDg6E8NGWseM1038IRhg1XbRUpIyOavHiA0gmRVgud68Vfn2P6oLgdmd6QAAAIBAkQsuGAPI3iVtuo9urtv7Xw/EEghGJ1WJ5TZaPHP/ZIat9yZO37Jyu48AwVv+W2h6tYlYTHF01hfRim3mYhxv1HvoNok1cg5gZ9nkn3Q2kc3PDHxT/YTWaxBJF8FjbqdBoLwqkclFZh1x0uFzWvFmM6ldMHG7GCrwAEtwOlq7ZA== root@(none)
+			</family_variable>
+			<family_variable name="host_rsa_key" trait="default">
+				MIICWwIBAAKBgQDf3VHvvP/05R+U9PpjVIzYfyXyPXwuCSJQRvsEYpSb0NuWJGZD
+OYPdBDmjpqhNAxwcNJxgAPEAVEn+pLrU3zQ3SA3SscN0IpqnwNNVz4KIliDB9Cvc
+GmTQjNNIFQZFFdzMM6+gNTyUxPsccoSvHs0flrB2D9blIPhrMp4xK1yc8wIBIwKB
+gHmGxhRt6giZo24elo2xjkmkG+nm3QMMRdPOwsfdvmM23ZqmC6DWFGIJm6H7Yq12
+t30Gngg7BnyFh0EXmJ9x2oNlBIICMkUKBCTwLM32LV40lzgFP38cFEkbQTKQQiNn
+sfRPifAZNyj8c3/6HegqVTOv/3eh+yE0gulEzGXkNWHzAkEA8cn+hrKUhB4lV1we
+sGnRYTZt1uyyXYTej1mJ30u7vfgmUnhJR81XQ/Jg5GdCmRYqF03flV2GY4LZ5e2O
+/zv3DQJBAO0FoU9w5y24Pl4yJ4IIgu78MEl5WokmXdi+Rh6EEjqPXRjNdDg/hja6
+tNxSHypCbdzc1Qy4PIUmGX0dKdiV4/8CQQClzFbCw5kKI0zOMIoSkbQlZya/Qzh6
+pEDXU1c6CAu1dvW05MSJAdVwa7Anl0OcLHSiRAcHVhMCaFrmzsh0gOPrAkEAooeE
+jj7KaH5Wpv3R8sQCAvYSe4Zp96VHqpEaI43DW1r+AmD/PINUt9B8BMqZBwj64Jdt
+hRCehzARel0kAjrlewJAOblurXAfvnrm+Mxbpyzg/jtsxk3SJoeh3d+ggqhczpdE
+vjBedRRoANIqD3XgcLG+NAd/eq8+enBBhVVcEiAOaQ==
+			</family_variable>
+			<family_variable name="host_rsa_pub" trait="default">
+				ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA391R77z/9OUflPT6Y1SM2H8l8j18LgkiUEb7BGKUm9DbliRmQzmD3QQ5o6aoTQMcHDScYADxAFRJ/qS61N80N0gN0rHDdCKap8DTVc+CiJYgwfQr3Bpk0IzTSBUGRRXczDOvoDU8lMT7HHKErx7NH5awdg/W5SD4azKeMStcnPM= root@(none)
+			</family_variable>
+			<family_variable name="hostconf_order" trait="default">
+				hosts,bind
+			</family_variable>
+			<family_variable name="local_address" trait="default">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="local_netmask" trait="default">
+				$global_local_network
+			</family_variable>
+			<family_variable name="local_network" trait="default">
+				$global_local_network
+			</family_variable>
+			<family_variable name="local_network_bitmask" trait="default">
+				$global_local_network_cidr
+			</family_variable>
+			<family_variable name="lochost_in_hostsfile" trait="default">
+				127.0.0.1
+			</family_variable>
+			<family_variable name="logcheck_email" trait="default">
+				root
+			</family_variable>
+			<family_variable name="logrotate_rotate" trait="default">
+				10
+			</family_variable>
+			<family_variable name="logrotate_weeks" trait="default">
+				10
+			</family_variable>
+			<family_variable name="prepend_nameservers" trait="default">
+				#prepend domain-name-servers 127.0.0.1
+			</family_variable>
+			<family_variable name="request_options" trait="default">
+				#request subnet-mask, broadcast-address, time-offset, routers,
+#	domain-name, domain-name-servers, host-name;
+			</family_variable>
+			<family_variable name="reversed_local_zone" trait="default">
+				0.168.192
+			</family_variable>
+			<family_variable name="sshd_allowusers" trait="default">
+				umeboshi ggprine
+			</family_variable>
+			<family_variable name="sshd_authkeys" trait="default">
+				%h/.ssh/authorized_keys
+			</family_variable>
+			<family_variable name="sshd_motd" trait="default">
+				yes
+			</family_variable>
+			<family_variable name="sshd_permitrootlogin" trait="default">
+				no
+			</family_variable>
+			<family_variable name="sshd_pwauth" trait="default">
+				yes
+			</family_variable>
+			<family_variable name="sshd_x11forward" trait="default">
+				no
+			</family_variable>
+			<family_variable name="ssl_countryName" trait="default">
+				US
+			</family_variable>
+			<family_variable name="ssl_emailAddress" trait="default">
+				umeboshi@gregscomputerservice.com
+			</family_variable>
+			<family_variable name="ssl_localityName" trait="default">
+				Hattiesburg
+			</family_variable>
+			<family_variable name="ssl_orgName" trait="default">
+				Greg's Computer Service
+			</family_variable>
+			<family_variable name="ssl_orgunitName" trait="default">
+				Paella
+			</family_variable>
+			<family_variable name="ssl_stateName" trait="default">
+				Mississippi
+			</family_variable>
+			<family_variable name="standard_key" trait="default">
+				ozEDawrG84aUSAf+JXf55hsw8RCT6OSKxQOzce25GZxd8UbXFZviDLgt gcehytZ49SQDHIbqp6txteVtO3k3sA==
+			</family_variable>
+			<family_variable name="standard_key_name" trait="default">
+				standard
+			</family_variable>
+			<family_variable name="desktop1" trait="desktop">
+				main
+			</family_variable>
+			<family_variable name="desktop2" trait="desktop">
+				email
+			</family_variable>
+			<family_variable name="desktop3" trait="desktop">
+				chat
+			</family_variable>
+			<family_variable name="desktop4" trait="desktop">
+				misc
+			</family_variable>
+			<family_variable name="desktop5" trait="desktop">
+				create
+			</family_variable>
+			<family_variable name="desktop6" trait="desktop">
+				music
+			</family_variable>
+			<family_variable name="gdm_bgprog" trait="desktop">
+				/usr/lib/xscreensaver/squiral -root
+			</family_variable>
+			<family_variable name="gdm_bgtype" trait="desktop">
+				0
+			</family_variable>
+			<family_variable name="kmods" trait="desktop">
+				psmouse, mousedev, hid
+			</family_variable>
+			<family_variable name="authoritative" trait="dhcp_server">
+				#authoritative
+			</family_variable>
+			<family_variable name="ddns_update_style" trait="dhcp_server">
+				interim
+			</family_variable>
+			<family_variable name="default_lease_time" trait="dhcp_server">
+				600
+			</family_variable>
+			<family_variable name="main_netmask" trait="dhcp_server">
+				255.0,0,0
+			</family_variable>
+			<family_variable name="main_range" trait="dhcp_server">
+				10.0.0.51 10.0.0.253
+			</family_variable>
+			<family_variable name="main_router" trait="dhcp_server">
+				10.0.0.1
+			</family_variable>
+			<family_variable name="main_subnet" trait="dhcp_server">
+				10.0.0.0
+			</family_variable>
+			<family_variable name="max_lease_time" trait="dhcp_server">
+				7200
+			</family_variable>
+			<family_variable name="network_interfaces" trait="dhcp_server">
+				eth1
+			</family_variable>
+			<family_variable name="demand" trait="dialup">
+				demand
+			</family_variable>
+			<family_variable name="isp_number" trait="dialup">
+				1234567
+			</family_variable>
+			<family_variable name="password" trait="dialup">
+				password
+			</family_variable>
+			<family_variable name="persist" trait="dialup">
+				#persist
+			</family_variable>
+			<family_variable name="serial_device" trait="dialup">
+				/dev/ttyS0
+			</family_variable>
+			<family_variable name="user" trait="dialup">
+				pppuser
+			</family_variable>
+			<family_variable name="master_host" trait="diskless">
+				master
+			</family_variable>
+			<family_variable name="nfshomedir" trait="diskless">
+				$localnet_fs_home_path
+			</family_variable>
+			<family_variable name="nfshostdir" trait="diskless">
+				$localnet_dl_hosts_path
+			</family_variable>
+			<family_variable name="nfsimagedir" trait="diskless">
+				/freespace/nfsroots/dless
+			</family_variable>
+			<family_variable name="use_devfs" trait="diskless">
+				no
+			</family_variable>
+			<family_variable name="diskless_profile" trait="diskless_server">
+				$default_diskless_profile
+			</family_variable>
+			<family_variable name="diskless_roots_path" trait="diskless_server">
+				$default_diskless_roots
+			</family_variable>
+			<family_variable name="install_diskless" trait="diskless_server">
+				true
+			</family_variable>
+			<family_variable name="netmask" trait="diskless_server">
+				255.0.0.0
+			</family_variable>
+			<family_variable name="nis_domain" trait="diskless_server">
+				homeland
+			</family_variable>
+			<family_variable name="nis_netword" trait="diskless_server">
+				10.0.0.0
+			</family_variable>
+			<family_variable name="tooltips" trait="enlightenment">
+				__OFF
+			</family_variable>
+			<family_variable name="local_domains" trait="exim">
+				gregscomputerservice.com
+			</family_variable>
+			<family_variable name="maildomain" trait="exim">
+				gregscomputerservice.com
+			</family_variable>
+			<family_variable name="qualifydomain" trait="exim">
+				gregscomputerservice.com
+			</family_variable>
+			<family_variable name="relay_local_network" trait="exim">
+				$default_local_network_bitmask
+			</family_variable>
+			<family_variable name="admin_path" trait="fileserver">
+				admin
+			</family_variable>
+			<family_variable name="base_path" trait="fileserver">
+				/freespace/shared
+			</family_variable>
+			<family_variable name="common_path" trait="fileserver">
+				common
+			</family_variable>
+			<family_variable name="office_path" trait="fileserver">
+				office
+			</family_variable>
+			<family_variable name="share_path" trait="fileserver">
+				share
+			</family_variable>
+			<family_variable name="forward1_accept" trait="firewall">
+				#ACCEPT
+			</family_variable>
+			<family_variable name="forward1_ip" trait="firewall">
+				10.0.0.2
+			</family_variable>
+			<family_variable name="forward1_ports" trait="firewall">
+				smtp,ssh,https,http
+			</family_variable>
+			<family_variable name="forward2_accept" trait="firewall">
+				#ACCEPT
+			</family_variable>
+			<family_variable name="forward2_ip" trait="firewall">
+				10.0.0.2
+			</family_variable>
+			<family_variable name="forward2_ports" trait="firewall">
+				smtp,ssh,https,http
+			</family_variable>
+			<family_variable name="internet_interface" trait="firewall">
+				eth0
+			</family_variable>
+			<family_variable name="isp_address" trait="firewall">
+				192.168.9.2
+			</family_variable>
+			<family_variable name="isp_gateway" trait="firewall">
+				192.168.9.1
+			</family_variable>
+			<family_variable name="isp_netmask" trait="firewall">
+				255.255.255.252
+			</family_variable>
+			<family_variable name="local_interface" trait="firewall">
+				eth1
+			</family_variable>
+			<family_variable name="redirect_squid" trait="firewall">
+				#REDIRECT
+			</family_variable>
+			<family_variable name="startup" trait="firewall">
+				1
+			</family_variable>
+			<family_variable name="bfm_launch" trait="gkrellm">
+				x-terminal-emulator  -e bash -c &quot;ps aufx | pager&quot;
+			</family_variable>
+			<family_variable name="bigfont" trait="gkrellm">
+				Sans 11
+			</family_variable>
+			<family_variable name="cpu_launch" trait="gkrellm">
+				x-terminal-emulator -e bash -c &quot;cat /proc/cpuinfo | pager&quot;
+			</family_variable>
+			<family_variable name="disk_launch" trait="gkrellm">
+				x-terminal-emulator -e bash -c &quot;watch -n1 df -h&quot;
+			</family_variable>
+			<family_variable name="lgfont" trait="gkrellm">
+				Sans 9
+			</family_variable>
+			<family_variable name="medfont" trait="gkrellm">
+				Sans 10
+			</family_variable>
+			<family_variable name="mem_launch" trait="gkrellm">
+				x-terminal-emulator -e bash -c &quot;watch -n1 cat /proc/meminfo&quot;
+			</family_variable>
+			<family_variable name="proc_launch" trait="gkrellm">
+				x-terminal-emulator -e top
+			</family_variable>
+			<family_variable name="smfont" trait="gkrellm">
+				Sans 9
+			</family_variable>
+			<family_variable name="theme" trait="gkrellm">
+				Jewel_gkrellm
+			</family_variable>
+			<family_variable name="uptime_launch" trait="gkrellm">
+				x-terminal-emulator
+			</family_variable>
+			<family_variable name="adminuser" trait="global">
+				umeboshi
+			</family_variable>
+			<family_variable name="common_install_export" trait="global">
+				/freespace/shared/common
+			</family_variable>
+			<family_variable name="common_install_msttfpath" trait="global">
+				various-binaries/msttfonts
+			</family_variable>
+			<family_variable name="common_install_opencdiso" trait="global">
+				various-binaries/isos/TheOpenCD-v1.4.iso
+			</family_variable>
+			<family_variable name="common_install_server" trait="global">
+				zathras.frobozz.gue
+			</family_variable>
+			<family_variable name="install_opencd" trait="global">
+				false
+			</family_variable>
+			<family_variable name="windowmanager" trait="global">
+				enlightenment
+			</family_variable>
+			<family_variable name="gtktheme" trait="gnome">
+				Smooth-Peachy-Clean
+			</family_variable>
+			<family_variable name="icon_theme" trait="gnome">
+				Flat-Blue
+			</family_variable>
+			<family_variable name="metacity_theme" trait="gnome">
+				Bright
+			</family_variable>
+			<family_variable name="terminal" trait="gnome">
+				x-terminal-emulator
+			</family_variable>
+			<family_variable name="workspace1" trait="gnome">
+				$desktop_desktop1
+			</family_variable>
+			<family_variable name="workspace2" trait="gnome">
+				$desktop_desktop2
+			</family_variable>
+			<family_variable name="workspace3" trait="gnome">
+				$desktop_desktop3
+			</family_variable>
+			<family_variable name="workspace4" trait="gnome">
+				$desktop_desktop4
+			</family_variable>
+			<family_variable name="workspace5" trait="gnome">
+				$desktop_desktop5
+			</family_variable>
+			<family_variable name="workspace6" trait="gnome">
+				$desktop_desktop6
+			</family_variable>
+			<family_variable name="create_rsa_key" trait="ipsec">
+				true
+			</family_variable>
+			<family_variable name="enable_oe" trait="ipsec">
+				false
+			</family_variable>
+			<family_variable name="existing_x509_certificate" trait="ipsec">
+				true
+			</family_variable>
+			<family_variable name="existing_x509_certificate_filename" trait="ipsec">
+				/etc/ssl/cacert.crt
+			</family_variable>
+			<family_variable name="existing_x509_key_filename" trait="ipsec">
+				/etc/ssl/private/secreckey.pem
+			</family_variable>
+			<family_variable name="restart" trait="ipsec">
+				true
+			</family_variable>
+			<family_variable name="rsa_key_length" trait="ipsec">
+				2048
+			</family_variable>
+			<family_variable name="rsa_key_type" trait="ipsec">
+				x509
+			</family_variable>
+			<family_variable name="start_level" trait="ipsec">
+				earliest
+			</family_variable>
+			<family_variable name="colorscheme" trait="kde">
+				Mine Green.kcsrc
+			</family_variable>
+			<family_variable name="icon_theme" trait="kde">
+				noia_kde_100
+			</family_variable>
+			<family_variable name="ksplash_theme" trait="kde">
+				DebianEvolution
+			</family_variable>
+			<family_variable name="admin" trait="ldap_common">
+				admin
+			</family_variable>
+			<family_variable name="admin_base" trait="ldap_common">
+				mainoffice
+			</family_variable>
+			<family_variable name="adminbinddn" trait="ldap_common">
+				cn=admin,dc=umdomain
+			</family_variable>
+			<family_variable name="adminpw" trait="ldap_common">
+				a
+			</family_variable>
+			<family_variable name="basedn" trait="ldap_common">
+				dc=umdomain
+			</family_variable>
+			<family_variable name="ldap_host" trait="ldap_common">
+				umhead.umdomain
+			</family_variable>
+			<family_variable name="ldap_uris" trait="ldap_common">
+				ldap://umhead
+			</family_variable>
+			<family_variable name="nss" trait="ldap_common">
+				nss
+			</family_variable>
+			<family_variable name="nssbinddn" trait="ldap_common">
+				cn=nss,dc=umdomain
+			</family_variable>
+			<family_variable name="nsspw" trait="ldap_common">
+				a
+			</family_variable>
+			<family_variable name="nsssecret" trait="ldap_common">
+				{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+			</family_variable>
+			<family_variable name="rootbinddn" trait="ldap_common">
+				cn=admin,dc=umdomain
+			</family_variable>
+			<family_variable name="secret" trait="ldap_common">
+				{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+			</family_variable>
+			<family_variable name="genericpw" trait="ldap_server">
+				e2NyeXB0fSQxJGtGWWhPWVJrJE1kWHNWS3dpOGFZOWMzSllIYkxSLi4=
+			</family_variable>
+			<family_variable name="ldapsecret" trait="ldap_server">
+				ldapp22wd
+			</family_variable>
+			<family_variable name="rootpw" trait="ldap_server">
+				{MD5}DMF1ucDxtqgxw5niaXcmYQ==
+			</family_variable>
+			<family_variable name="sysgroup" trait="ldap_server">
+				office
+			</family_variable>
+			<family_variable name="dl_hosts_path" trait="localnet">
+				/freespace/nfsroots
+			</family_variable>
+			<family_variable name="fs_admin_dir" trait="localnet">
+				admin
+			</family_variable>
+			<family_variable name="fs_base_path" trait="localnet">
+				/freespace/shared
+			</family_variable>
+			<family_variable name="fs_common_dir" trait="localnet">
+				common
+			</family_variable>
+			<family_variable name="fs_home_path" trait="localnet">
+				/home
+			</family_variable>
+			<family_variable name="fs_office_dir" trait="localnet">
+				office
+			</family_variable>
+			<family_variable name="fs_share_dir" trait="localnet">
+				share
+			</family_variable>
+			<family_variable name="allow_update" trait="nameserver">
+				$global_local_network_cidr
+			</family_variable>
+			<family_variable name="dns1" trait="nameserver">
+				208.24.218.3
+			</family_variable>
+			<family_variable name="dns2" trait="nameserver">
+				208.24.218.5
+			</family_variable>
+			<family_variable name="domain" trait="nameserver">
+				$base_domain
+			</family_variable>
+			<family_variable name="reversed_local_address" trait="nameserver">
+				1.0.0.10
+			</family_variable>
+			<family_variable name="reversed_zone" trait="nameserver">
+				0.168.192
+			</family_variable>
+			<family_variable name="ypserver" trait="nisclient">
+				umhead
+			</family_variable>
+			<family_variable name="log_statement" trait="postgres">
+				false
+			</family_variable>
+			<family_variable name="max_connections" trait="postgres">
+				100
+			</family_variable>
+			<family_variable name="password_encryption" trait="postgres">
+				true
+			</family_variable>
+			<family_variable name="shared_buffers" trait="postgres">
+				1000
+			</family_variable>
+			<family_variable name="sort_mem" trait="postgres">
+				1024
+			</family_variable>
+			<family_variable name="ssl" trait="postgres">
+				false
+			</family_variable>
+			<family_variable name="trusted_hosts" trait="postgres">
+				host	all	all		10.0.0.0		255.0.0.0	trust
+			</family_variable>
+			<family_variable name="vacuum_mem" trait="postgres">
+				8192
+			</family_variable>
+			<family_variable name="common_path" trait="samba">
+				$fileserver_common_path
+			</family_variable>
+			<family_variable name="domain_master" trait="samba">
+				auto
+			</family_variable>
+			<family_variable name="local_master" trait="samba">
+				yes
+			</family_variable>
+			<family_variable name="oslevel" trait="samba">
+				20
+			</family_variable>
+			<family_variable name="preferred_master" trait="samba">
+				auto
+			</family_variable>
+			<family_variable name="security" trait="samba">
+				share
+			</family_variable>
+			<family_variable name="share_comment" trait="samba">
+				shared space
+			</family_variable>
+			<family_variable name="shared_path" trait="samba">
+				$fileserver_share_path
+			</family_variable>
+			<family_variable name="workgroup" trait="samba">
+				workgroup
+			</family_variable>
+			<family_variable name="paella_bootfile" trait="shishi">
+				pxelinux.0
+			</family_variable>
+			<family_variable name="paella_desktop" trait="shishi">
+				roujin
+			</family_variable>
+			<family_variable name="paella_desktop_hwaddr" trait="shishi">
+				00:E0:81:24:69:30
+			</family_variable>
+			<family_variable name="paella_desktop_ip" trait="shishi">
+				192.168.0.6
+			</family_variable>
+			<family_variable name="paella_laptop" trait="shishi">
+				bard
+			</family_variable>
+			<family_variable name="paella_laptop_hwaddr" trait="shishi">
+				00:40:45:12:54:62
+			</family_variable>
+			<family_variable name="paella_laptop_ip" trait="shishi">
+				192.168.0.12
+			</family_variable>
+			<family_variable name="paella_mainhost" trait="shishi">
+				zathras
+			</family_variable>
+			<family_variable name="paella_mainhost_hwaddr" trait="shishi">
+				00:03:6D:15:83:5A
+			</family_variable>
+			<family_variable name="paella_mainhost_ip" trait="shishi">
+				192.168.0.2
+			</family_variable>
+			<family_variable name="paella_rootpath" trait="shishi">
+				/freespace/nfsroot
+			</family_variable>
+			<family_variable name="host_dsa_key" trait="sshd_test">
+				MIIBugIBAAKBgQCssom8AhUWalnGG05qKbVG8Vw1iqZ7mWwlH0jnM05QTYQSNke5
+wSduEwTY19jUAJ9kOSOuusZfdX1c+aLqwUfKbsf1b70kfg5Ib0jcg4fVrEa4n9Qa
+93oCMMdzjaA2QZh07XBs/fA012cFcrujde7OPfJDQM7SkY9aaPCNaaQMYwIVAP+R
+9SMVNoa/VfFsJegp4k/dSsvbAoGAUrrD24NvVE7v8E6Ahni/M0X/ecObAuriKP7S
+djoVZWCGq5bZJJiK8r4HAJYCb+9KwU+gvtK++KPMkbYh7Yw/MBDgCrWIm0tg04zn
+wK8JgbPh/truMXQ4OhPDRlrHjNdN/CEYYNV20VKSMjmrx4gNIJkVYLnevFX59j+q
+C4HZnekCgYBAkQsuGAPI3iVtuo9urtv7Xw/EEghGJ1WJ5TZaPHP/ZIat9yZO37Jy
+u48AwVv+W2h6tYlYTHF01hfRim3mYhxv1HvoNok1cg5gZ9nkn3Q2kc3PDHxT/YTW
+axBJF8FjbqdBoLwqkclFZh1x0uFzWvFmM6ldMHG7GCrwAEtwOlq7ZAIUU7fNuJSJ
+qD2cfPM2ncwLs0qBBWM=
+			</family_variable>
+			<family_variable name="host_dsa_pub" trait="sshd_test">
+				ssh-dss AAAAB3NzaC1kc3MAAACBAKyyibwCFRZqWcYbTmoptUbxXDWKpnuZbCUfSOczTlBNhBI2R7nBJ24TBNjX2NQAn2Q5I666xl91fVz5ourBR8pux/VvvSR+DkhvSNyDh9WsRrif1Br3egIwx3ONoDZBmHTtcGz98DTXZwVyu6N17s498kNAztKRj1po8I1ppAxjAAAAFQD/kfUjFTaGv1XxbCXoKeJP3UrL2wAAAIBSusPbg29UTu/wToCGeL8zRf95w5sC6uIo/tJ2OhVlYIarltkkmIryvgcAlgJv70rBT6C+0r74o8yRtiHtjD8wEOAKtYibS2DTjOfArwmBs+H+2u4xdDg6E8NGWseM1038IRhg1XbRUpIyOavHiA0gmRVgud68Vfn2P6oLgdmd6QAAAIBAkQsuGAPI3iVtuo9urtv7Xw/EEghGJ1WJ5TZaPHP/ZIat9yZO37Jyu48AwVv+W2h6tYlYTHF01hfRim3mYhxv1HvoNok1cg5gZ9nkn3Q2kc3PDHxT/YTWaxBJF8FjbqdBoLwqkclFZh1x0uFzWvFmM6ldMHG7GCrwAEtwOlq7ZA== root@(none)
+			</family_variable>
+			<family_variable name="host_rsa_key" trait="sshd_test">
+				MIICWwIBAAKBgQDf3VHvvP/05R+U9PpjVIzYfyXyPXwuCSJQRvsEYpSb0NuWJGZD
+OYPdBDmjpqhNAxwcNJxgAPEAVEn+pLrU3zQ3SA3SscN0IpqnwNNVz4KIliDB9Cvc
+GmTQjNNIFQZFFdzMM6+gNTyUxPsccoSvHs0flrB2D9blIPhrMp4xK1yc8wIBIwKB
+gHmGxhRt6giZo24elo2xjkmkG+nm3QMMRdPOwsfdvmM23ZqmC6DWFGIJm6H7Yq12
+t30Gngg7BnyFh0EXmJ9x2oNlBIICMkUKBCTwLM32LV40lzgFP38cFEkbQTKQQiNn
+sfRPifAZNyj8c3/6HegqVTOv/3eh+yE0gulEzGXkNWHzAkEA8cn+hrKUhB4lV1we
+sGnRYTZt1uyyXYTej1mJ30u7vfgmUnhJR81XQ/Jg5GdCmRYqF03flV2GY4LZ5e2O
+/zv3DQJBAO0FoU9w5y24Pl4yJ4IIgu78MEl5WokmXdi+Rh6EEjqPXRjNdDg/hja6
+tNxSHypCbdzc1Qy4PIUmGX0dKdiV4/8CQQClzFbCw5kKI0zOMIoSkbQlZya/Qzh6
+pEDXU1c6CAu1dvW05MSJAdVwa7Anl0OcLHSiRAcHVhMCaFrmzsh0gOPrAkEAooeE
+jj7KaH5Wpv3R8sQCAvYSe4Zp96VHqpEaI43DW1r+AmD/PINUt9B8BMqZBwj64Jdt
+hRCehzARel0kAjrlewJAOblurXAfvnrm+Mxbpyzg/jtsxk3SJoeh3d+ggqhczpdE
+vjBedRRoANIqD3XgcLG+NAd/eq8+enBBhVVcEiAOaQ==
+			</family_variable>
+			<family_variable name="host_rsa_pub" trait="sshd_test">
+				ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA391R77z/9OUflPT6Y1SM2H8l8j18LgkiUEb7BGKUm9DbliRmQzmD3QQ5o6aoTQMcHDScYADxAFRJ/qS61N80N0gN0rHDdCKap8DTVc+CiJYgwfQr3Bpk0IzTSBUGRRXczDOvoDU8lMT7HHKErx7NH5awdg/W5SD4azKeMStcnPM= root@(none)
+			</family_variable>
+			<family_variable name="frotz_background_color" trait="textgames">
+				blue
+			</family_variable>
+			<family_variable name="frotz_foreground_color" trait="textgames">
+				white
+			</family_variable>
+			<family_variable name="host_mount" trait="um_base">
+				/host	/home	hostfs	defaults	0	0
+			</family_variable>
+			<family_variable name="hostname" trait="um_builder">
+				umwbuild
+			</family_variable>
+			<family_variable name="repository_host" trait="um_builder">
+				umhead
+			</family_variable>
+			<family_variable name="address" trait="um_repository">
+				10.0.1.100
+			</family_variable>
+			<family_variable name="hostname" trait="um_repository">
+				umrepos
+			</family_variable>
+			<family_variable name="nfshost" trait="um_repository">
+				paella
+			</family_variable>
+			<family_variable name="root_device" trait="um_repository">
+				/dev/ubd0
+			</family_variable>
+			<family_variable name="depth" trait="vnc_server">
+				24
+			</family_variable>
+			<family_variable name="geometry" trait="vnc_server">
+				1024x768
+			</family_variable>
+			<family_variable name="admin_password" trait="webmin">
+				YD52jq/nPegVE:0::
+			</family_variable>
+			<family_variable name="basedn" trait="workstation">
+				dc=umdomain
+			</family_variable>
+			<family_variable name="ldap_uris" trait="workstation">
+				ldap://umhead
+			</family_variable>
+			<family_variable name="depth" trait="xwindow">
+				24
+			</family_variable>
+			<family_variable name="driver" trait="xwindow">
+				vesa
+			</family_variable>
+			<family_variable name="horiz_sync" trait="xwindow">
+				28-50
+			</family_variable>
+			<family_variable name="lcd" trait="xwindow">
+				false
+			</family_variable>
+			<family_variable name="modules" trait="xwindow">
+				GLcore, bitmap, dbe, ddc, dri, extmod, freetype, glx, int10, record, speedo, type1, vbe, xtt
+			</family_variable>
+			<family_variable name="mouse_device" trait="xwindow">
+				/dev/input/mice
+			</family_variable>
+			<family_variable name="mouse_protocol" trait="xwindow">
+				PS/2
+			</family_variable>
+			<family_variable name="nice_value" trait="xwindow">
+				-10
+			</family_variable>
+			<family_variable name="resolutions" trait="xwindow">
+				1024x768, 800x600, 640x480
+			</family_variable>
+			<family_variable name="tt_backend" trait="xwindow">
+				xtt
+			</family_variable>
+			<family_variable name="vert_refresh" trait="xwindow">
+				43-75
+			</family_variable>
+			<family_variable name="xfstt_tcp" trait="xwindow">
+				true
+			</family_variable>
+			<family_variable name="xserver_dpi" trait="xwindow">
+				75
+			</family_variable>
+			<family_variable name="xtt_vl" trait="xwindow">
+				false
+			</family_variable>
+		</environ>
+	</family>

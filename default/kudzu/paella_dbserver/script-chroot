@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "paella_dbserver script initiated"
+mount proc /proc -t proc
+#init 2
+/etc/init.d/postgresql start
+#sleep 10
+su --command "/usr/lib/postgresql/bin/createlang -d template1 plpgsql" postgres
+su postgres createdb paella
+su --command "createuser -D -A umeboshi" postgres
+su --command "createuser -a -d paella" postgres
+if [ -d /freespace/debian ]; then
+    ln -s /freespace/debian /var/www
+fi
+/etc/init.d/postgresql stop
+umount /proc

@@ -1,0 +1,39 @@
+<trait name="fileserver" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+	</packages>
+	<environ>
+		<admin_path>
+			admin
+		</admin_path>
+		<base_path>
+			/home/shared
+		</base_path>
+		<common_path>
+			common
+		</common_path>
+		<office_path>
+			office
+		</office_path>
+		<share_path>
+			share
+		</share_path>
+	</environ>
+	<templates/>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+		<script name="pre"/>
+	</scripts>
+</trait>

@@ -1,0 +1,63 @@
+#
+# Shorewall 1.4 -- RFC1918 File
+#
+# /etc/shorewall/rfc1918
+#
+# Lists the subnetworks that are blocked by the 'norfc1918' interface option.
+#
+# The default list includes those IP addresses listed in RFC 1918, those listed
+# as 'reserved' by the IANA, the DHCP Autoconfig class B, and the class C
+# reserved for use in documentation and examples.
+#
+# Columns are:
+#
+# 	SUBNET		The subnet (host addresses also allowed)
+#	TARGET		Where to send packets to/from this subnet
+#			RETURN	- let the packet be processed normally
+#			DROP	- silently drop the packet
+#			logdrop - log then drop
+#
+###############################################################################
+#SUBNET			TARGET
+255.255.255.255		RETURN		# We need to allow limited broadcast
+169.254.0.0/16		DROP		# DHCP autoconfig
+172.16.0.0/12		logdrop		# RFC 1918
+192.0.2.0/24		logdrop		# Example addresses (RFC 3330)
+192.168.0.0/16		logdrop		# RFC 1918
+#
+# The following are generated with the help of the Python program found at:
+#
+#	http://www.shorewall.net/pub/shorewall/contrib/iana_reserved/
+#
+# The program was contributed by Andy Wiggin
+#
+0.0.0.0/7		logdrop		# Reserved
+2.0.0.0/8		logdrop		# Reserved
+5.0.0.0/8		logdrop		# Reserved
+7.0.0.0/8		logdrop		# Reserved
+10.0.0.0/8		logdrop		# Reserved
+23.0.0.0/8		logdrop		# Reserved
+27.0.0.0/8		logdrop		# Reserved
+31.0.0.0/8		logdrop		# Reserved
+36.0.0.0/7		logdrop		# Reserved
+39.0.0.0/8		logdrop		# Reserved
+41.0.0.0/8		logdrop		# Reserved
+42.0.0.0/8		logdrop		# Reserved
+49.0.0.0/8		logdrop		# JTC - Returned to IANA Mar 98
+50.0.0.0/8		logdrop		# JTC - Returned to IANA Mar 98
+58.0.0.0/7		logdrop		# Reserved
+71.0.0.0/8		logdrop		# Reserved
+72.0.0.0/5		logdrop		# Reserved
+85.0.0.0/8		logdrop		# Reserved
+86.0.0.0/7		logdrop		# Reserved
+88.0.0.0/5		logdrop		# Reserved
+96.0.0.0/3		logdrop		# Reserved
+127.0.0.0/8		logdrop		# Loopback
+197.0.0.0/8		logdrop		# Reserved
+198.18.0.0/15		logdrop		# Reserved
+223.0.0.0/8		logdrop		# Reserved - Returned by APNIC in 2003
+240.0.0.0/4		logdrop		# Reserved
+#
+# End of generated entries
+#
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

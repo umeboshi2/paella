@@ -1,0 +1,23 @@
+<trait name="maverick" suite="woody">
+	<description/>
+	<parents>
+		<parent>
+			um_builder
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="base-files">
+			etc/apt/sources.list
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

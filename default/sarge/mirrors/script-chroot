@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "adding mirror directories"
+echo "DEPRECATED, FIXME"
+exit 1
+
+mkdir /mirrors
+mkdir -p /mirrors/share
+mkdir -p /mirrors/common
+mkdir -p /mirrors/bkups
+mkdir -p /mirrors/debian
+chmod 777 /mirrors/share
+chmod 777 /mirrors/bkups
+
+echo 'paella:/mirrors/share /mirrors/share nfs defaults,nolock 0 0' >> /etc/fstab
+echo 'paella:/mirrors/common /mirrors/common nfs defaults,nolock 0 0' >> /etc/fstab
+echo 'paella:/mirrors/bkups /mirrors/bkups nfs defaults,nolock 0 0' >> /etc/fstab
+echo 'paella:/mirrors/debian/sid-mirror /mirrors/debian nfs defaults,nolock 0 0' >> /etc/fstab

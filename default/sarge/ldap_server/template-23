@@ -1,0 +1,9 @@
+dn: uid=jdoe,ou=people,<--|ldap_common_basedn|-->
+uid: jdoe
+cn: Jane Doe
+uidNumber: 1001
+gidNumber: 100
+homeDirectory: /home/jdoe
+userPassword: password
+loginShell: /bin/bash
+objectClass: posixAccount

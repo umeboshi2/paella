@@ -1,0 +1,7 @@
+# Options to pass to uml_switch.
+# For preconfigured tap setup, see
+# /usr/share/doc/uml-utilities/examples/interfaces.example
+#UML_SWITCH_OPTIONS="-tap tap0"
+
+# User as which to run uml_switch
+#UML_SWITCH_USER="uml-net"

@@ -1,0 +1,61 @@
+<trait name="paella_dbserver" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			boot_server
+		</parent>
+		<parent>
+			diskless_server
+		</parent>
+		<parent>
+			paella_common
+		</parent>
+		<parent>
+			postgres
+		</parent>
+		<parent>
+			subversion
+		</parent>
+		<parent>
+			webserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			paella-admin
+		</package>
+		<package action="install">
+			paella-installer
+		</package>
+		<package action="install">
+			paella-uml
+		</package>
+		<package action="install">
+			postgresql
+		</package>
+		<package action="install">
+			postgresql-client
+		</package>
+		<package action="install">
+			postgresql-contrib
+		</package>
+	</packages>
+	<environ>
+		<debrepos_on_usbdisk>
+			false
+		</debrepos_on_usbdisk>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="paella-admin">
+			etc/paellarc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="postgresql">
+			etc/postgresql/pg_hba.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts>
+		<script name="chroot"/>
+		<script name="pre"/>
+	</scripts>
+</trait>

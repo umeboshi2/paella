@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="draw_background" mtime="1081569131" schema="/schemas/desktop/gnome/background/draw_background"/>
+<entry name="picture_options" mtime="1081569131" schema="/schemas/desktop/gnome/background/picture_options"/>
+<entry name="picture_filename" mtime="1081569131" schema="/schemas/desktop/gnome/background/picture_filename"/>
+<entry name="picture_opacity" mtime="1081569131" schema="/schemas/desktop/gnome/background/picture_opacity"/>
+<entry name="primary_color" mtime="1081569131" schema="/schemas/desktop/gnome/background/primary_color"/>
+<entry name="secondary_color" mtime="1081569131" schema="/schemas/desktop/gnome/background/secondary_color"/>
+<entry name="color_shading_type" mtime="1081569131" schema="/schemas/desktop/gnome/background/color_shading_type"/>
+</gconf>

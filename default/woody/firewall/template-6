@@ -1,0 +1,14 @@
+#
+# Shorewall 1.2 /etc/shorewall/zones
+#
+# This file determines your network zones. Columns are:
+#
+#	ZONE		Short name of the zone
+#	DISPLAY		Display name of the zone
+#	COMMENTS	Comments about the zone
+#
+#ZONE	DISPLAY		COMMENTS
+net	Net		Internet 
+loc	Local		Local networks
+dmz	DMZ		Demilitarized zone
+#LAST LINE - ADD YOUR ENTRIES ABOVE THIS ONE - DO NOT REMOVE

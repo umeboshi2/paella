@@ -1,0 +1,70 @@
+<trait name="postgres" suite="kudzu">
+	<description/>
+	<parents>
+		<parent>
+			default
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			paella-db
+		</package>
+		<package action="install">
+			postgresql
+		</package>
+		<package action="install">
+			postgresql-client
+		</package>
+		<package action="install">
+			postgresql-contrib
+		</package>
+	</packages>
+	<environ>
+		<log_statement>
+			false
+		</log_statement>
+		<max_connections>
+			100
+		</max_connections>
+		<password_encryption>
+			true
+		</password_encryption>
+		<shared_buffers>
+			1000
+		</shared_buffers>
+		<sort_mem>
+			1024
+		</sort_mem>
+		<ssl>
+			false
+		</ssl>
+		<trusted_hosts>
+			host	all	all		10.0.0.0		255.0.0.0	trust
+		</trusted_hosts>
+		<vacuum_mem>
+			8192
+		</vacuum_mem>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="postgresql">
+			etc/postgresql/pg_hba.conf
+		</template>
+		<template grp_owner="postgres" mode="0644" owner="postgres" package="postgresql">
+			etc/postgresql/pg_ident.conf
+		</template>
+		<template grp_owner="postgres" mode="0644" owner="postgres" package="postgresql">
+			etc/postgresql/postgresql.conf
+		</template>
+		<template grp_owner="postgres" mode="0644" owner="postgres" package="postgresql">
+			etc/postgresql/postgresql.env
+		</template>
+		<template grp_owner="postgres" mode="0644" owner="postgres" package="postgresql">
+			etc/postgresql/postmaster.conf
+		</template>
+	</templates>
+	<debconfiguration/>
+	<scripts/>
+</trait>

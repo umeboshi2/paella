@@ -1,0 +1,2 @@
+# Set to "true" if warnquota should be run in cron.daily
+run_warnquota=

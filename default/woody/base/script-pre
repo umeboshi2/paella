@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+import os, sys
+
+from paella.base.config import Configuration
+sources_list = '/tmp/target/etc/apt/sources.list'
+print 'adding maverick to --> %s' % sources_list
+cfg = Configuration('repos')
+local = cfg['local_http'] + '/local'
+srcline = 'deb %s maverick/\n' % local
+source_lines = [line for line in file(sources_list)]
+source_lines.append(srcline)
+sources = file(sources_list, 'w')
+sources.writelines(source_lines)
+sources.close()
+print 'maverick added to sources'

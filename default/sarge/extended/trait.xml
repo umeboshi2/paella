@@ -1,0 +1,34 @@
+<trait name="extended" suite="sarge">
+	<description/>
+	<parents>
+		<parent>
+			boot_server
+		</parent>
+		<parent>
+			dictionary
+		</parent>
+		<parent>
+			diskless_server
+		</parent>
+		<parent>
+			ircserver
+		</parent>
+		<parent>
+			ldap_server
+		</parent>
+		<parent>
+			nfs_server
+		</parent>
+		<parent>
+			postgres
+		</parent>
+		<parent>
+			standard
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<debconfiguration/>
+	<scripts/>
+</trait>

@@ -1,0 +1,24 @@
+$ttl 38400
+gregscomputerservice.com.	IN	SOA	shishi. root (
+			1051630525
+			10800
+			3600
+			604800
+			38400 )
+gregscomputerservice.com.	IN	NS	shishi.
+gregscomputerservice.com.	IN	MX	10	paella.gregscomputerservice.com.
+shishi.gregscomputerservice.com.	IN	A	10.0.0.1
+paella.gregscomputerservice.com.	IN	A	10.0.0.2
+bard.gregscomputerservice.com.	IN	A	10.0.0.12
+premio.gregscomputerservice.com.	IN	A	10.0.0.3
+myeye.gregscomputerservice.com.	IN	A	10.0.0.4
+spike.gregscomputerservice.com.	IN	A	10.0.0.5
+roujin.gregscomputerservice.com.	IN	A	10.0.0.6
+mach-e.gregscomputerservice.com.	IN	A	10.0.0.7
+jukebox.gregscomputerservice.com.	IN	A	10.0.0.8
+
+
+
+bailey.gregscomputerservice.com.	IN	A	10.0.0.40
+
+
