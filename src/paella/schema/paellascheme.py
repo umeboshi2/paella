@@ -15,6 +15,7 @@ from paella.sqlgen.admin import grant_public
 
 from paella.db.lowlevel import OperationalError
 from paella.db.midlevel import StatementCursor
+from paella.db.plsql import pgsql_delete
 
 from paella_tables import suite_tables, primary_tables, primary_sequences
 from paella_tables import packages_columns, SCRIPTS
@@ -38,19 +39,6 @@ plpgsql_delete_trait = """create or replace function delete_trait(varchar, varch
 	end ;
 ' language 'plpgsql';
 """
-def pgsql_delete(name, tables, key):
-    lines = []
-    lines.append('create or replace function %s(varchar)' % name)
-    lines.append("returns integer as '")
-    lines.append('begin')
-    for table in tables:
-        line = "delete from %s where %s = $1 ;" % (table, key)
-        lines.append(line)
-    lines.append('return 0 ;')
-    lines.append('end ;')
-    lines.append("' language 'plpgsql';")
-    return '\n'.join(lines) + '\n'
-
 def pgsql_delete_family():
     tables = ['family_environment', 'family_parent', 'families']
     return pgsql_delete('delete_family', tables, 'family')
