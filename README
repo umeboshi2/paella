@@ -1,0 +1,183 @@
+this project is based heavily on fai (fully automatic install) by Thomas Lange
+fai's homepage -- http://www.informatik.uni-koeln.de/fai/
+
+unlike fai, paella will be able to install different suites simultaneously.
+it uses a postgres database to store most of the configuration,
+excepting file templates.
+there are tools (sad ones now) that will help create configurations, and 
+portably backup/restore tham.
+
+there are a couple little modules to help mirror/sync a debian mirror.
+it is planned to be able to create/sync a partial binary repository,
+and create/sync a partial source repository complete with its
+build-deps.
+
+the nfsroot installer is planned to be sid based, while the nfs/postgres server
+will run woody
+
+python 2.3 is required now
+
+the project is still young,
+so don't laugh too hard (i'm just a newbie) :)
+
+btw, this system isn't really designed for beowulf clusters, but for creating and
+managing very complex network/system configurations, and migrating installations
+by just keeping track of packages/configs/data rather than system images and
+complete backups
+
+
+the paella database has two basic objects profiles and traits
+
+a trait is a collection of packages, templates, and an environment
+	a trait can have parents (dependencies)
+	a trait environment is a collection of name, value pairs for that trait,
+	and its parents.
+
+each package in a template has a action to be performed on it.
+
+the action is generally install (but remove is also supported)
+
+the templates are like templated conffiles with tags that are
+subsituted with the environment
+
+
+
+
+quick setup
+
+You need to be running woody on a server for nfs and postgres.The newer postgres 
+checks for constraints before table drops,and the code doen't reflect that yet.  The 
+sid and sarge nfs serverslock up and require restarting more than the woody (don't 
+know why yet).You may also need apache running on a server. (I find that the 
+umlinstalls are slightly easier with http:, than file: for apt).You also need a sid workstation 
+to do the development on.a lot of the paths and names are in the paellarc file
+if its hardcoded elsewhere its a bug
+
+On the nfs server:	/etc/exports -- /mirrors/debian workstation(rw) -- 
+			for updating the mirror
+			/mirrors/debian *(ro)                        
+			/mirrors/backups *(rw,no_root_squash)
+				for tarring / in uml
+On the postgres server:
+	the dbname is is the config file and can be different
+	same for the database users
+
+	edit /etc/postgresql/pg_hbs.conf
+	sudo -u postgres createuser -A -D $USER
+	sudo -u postgres createuser -A -D installer
+	sudo -u postgres createdb paella
+
+On the sid workstation:
+	you need the depends in the debian/control file for all of the packages
+	the uml code is currently set to look at your local python path,so you 
+	can work from the cvs workspace, so package installation is not necessary. 
+	if you want to install the packages the pythonpath inpaellarc will override 
+	the installed path when booting the uml objects.
+
+workspace is not in config except possibly in the defaults section
+
+mkdir ~/workspace
+cd ~/workspace
+cvs co paella
+eitther 
+	export PYTHONPATH=/full/path/to/workspace/paella/src
+or
+	cd paella; fakeroot dpkg-buildpackage ; sudo debi
+
+cd ~/workspace/paella
+
+making a mirror
+
+long way -- 
+	python -i src/paella/debian/repos_stable.py
+	rs = RepositorySource('deb http://debianmirror/debian suite main contrib 
+		non-free')
+		
+	or rs.uri = 'http://debmirror/debian woody main contrib non-free'
+	rs -- remote source
+	ls -- local source
+	ls.uri = 'file://mirrors/debian'
+	ls.suite = rs.suite = 'woody'
+	rs.set_path()
+	ls.set_path()
+	rr = RemoteRepos(rs, ls)
+	rr.update()
+	rr.check()
+	rr.sync()
+
+short way --        
+	look at src/paella/debian/repos_stable.py - esp. update_suite function
+	and update_suites() -- warning, this get deb-src too
+	write a quick script that will get the repositories you want
+
+
+
+here's how i create a database
+setup sudo on the dbhost
+ssh dbhost
+	sudo ls
+	exit
+then right afer
+ssh dbhost sudo -u postgres createdb dbname
+if you don't login and sudo first, your password will be displayed in
+the open on the ssh sudo command
+
+
+take the interactive.obj.py from
+http://www.daa.com.au/pipermail/pygtk/attachments/20030506/2048eadb/interactive.obj
+and rename it to gpython or something
+chmod +x it and place it in your $PATH
+
+paella/src/test/interactive.py
+is my startup script, you should edit this as you
+wish, but you'll probably want to let the Manager run
+
+when ready run gpython interactive.py
+
+if you don't want to use the interactive shell, look at the interactive.py,
+write a simple script that sets up a connection and run the manager
+
+
+in the manager connect to an empty database, then select
+database->restore in the menu, then select the database.xml file
+after that, select edit->templates from the manager menu
+the only suites in the tarball are woody and sid
+in the left panel of the template manager right click and updatedir
+
+updatedir  -- already has trait info in database is is just updating the
+	templates from the tarball in the directory of the file 	
+	selection dialog.  (you have to select a file, but the function
+	works on the directory the file is in.
+
+
+starting with a blank database:
+	there is a blank.xml file in the config/share/databases 	directory that
+you can restore from.  then in the 
+	template manager you can use importdir to import the
+	traits similiar to updatedir mentioned above.
+
+you will want to modify these traits specifically --
+	sshd_test, ume_testuser, and ume_testhome
+	you will also want to modify the scripts
+	for these in config/scripts/traits/$trait
+ --design feature--
+		the trait scripts should be in the trait tarball
+		with the name postinst (as that is when they are
+		executed).
+
+You may only have to use the woody and sid suites if you manipulate the
+config, and the blank.xml
+woody is practically necessary, as it's stable and always works
+the main reason there are no sarge templates is because it currently
+won't debootstrap properly
+sid is also needed, because the installer needs to be sid
+
+
+the profile was chosen to be the singlemost install unit.  This means
+that paella can only install profiles.  A profile is a collection of
+traits and an enviroment. Profile overrides traits.  So a variable in
+the profile enviroment overrides all of the corresponding trait
+enviroments in that profile.  So, the trait enviroments can be seen as
+default values and the profiles are more specific.  Currently, there is
+little support for profile environments (but, it's part of the design).
+

@@ -1,0 +1,26 @@
+#!/usr/bin/python2.3
+import os, sys
+from xml.dom.minidom import parse
+
+from paella.base import Error
+from paella.profile.base import PaellaConnection, PaellaConfig
+from paella.profile.xmlparse import ProfileParser
+from paella.profile.profile import PaellaProfiles
+
+
+cfg = PaellaConfig()
+conn = PaellaConnection(cfg)
+args = sys.argv[1:]
+path = args[0]
+
+
+
+xml = parse(file(path))
+elements = xml.getElementsByTagName('profile')
+if len(elements) != 1:
+    raise Error, 'bad profile number %s' % len(elements)
+element = elements[0]
+parsed = ProfileParser(element)
+profiles = PaellaProfiles(conn)
+profiles.insert_profile(parsed)
+

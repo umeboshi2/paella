@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from paella.base import Error, debug
+from paella.profile.base import PaellaConfig, PaellaConnection
+from paella.profile.profile import PaellaProcessor
+from paella.uml.bootstrap import make_base
+
+parser = OptionParser()
+parser.add_option('--mirror', action='store', type='string', dest='remote',
+                  default='http://paella/debian')
+parser.add_option('--database', action='store', type='string', dest='dbname',
+                  default='paella')
+parser.add_option('--host', action='store', type='string', dest='dbhost',
+                  default='localhost')
+parser.add_option('--user', action='store', type='string', dest='dbusername',
+                  default=os.environ['USER'])
+
+opts, args = parser.parse_args(sys.argv[1:])
+dsn = dict(dbusername=opts.dbusername,
+           dbhost=opts.dbhost,
+           dbname=opts.dbname,
+           dbpassword=None)
+conn = PaellaConnection(dsn)
+#processor = PaellaProcessor(conn)
+#processor.create(os.getcwd()+'/database.xml')
+print 'not working at the moment, use the gui'

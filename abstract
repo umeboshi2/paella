@@ -1,0 +1,65 @@
+abstract
+
+Paella is system for creating/installing customized debian systems.
+There are no current plans for configuration updates on live systems,
+that's not it's initial purpose, although it may be extended later.
+
+Paella is still in a planning state, and the configuration ability is 
+real simple right now.
+
+Inspiration for paella comes from many places:
+
+debconf -- an important abstract configuration system
+	which is sadly not yet supported by paella (can somebody help me?)
+	debconf is fully planned to be supported, i just haven't
+	figured out the best way to template a debconf template
+	and whether to crete a flat db, use a dir/db over nfs, or
+	ldap (which sounds like the best shot, though i'm unfamiliar with it)
+	paella is not a replacement for debconf.
+
+fai -- fully automatic install
+	an excellent installer, with the capability of bootstrapping
+	an entire network!  paella was going to just complement fai,
+	but I'm starting to prefer the configuration layout i'm planning,
+	so paella will probably completely replace fai
+
+Knoppix -- and Morphix, Gnoppix, and other live cd's
+	paella will eventually be a jigdo-ish like description
+	of the cd, so it will be easier to construct the cd's
+	from a local repository, and modify them before creation
+
+OpenZaurus -- and Matt Zimmerman's efforts with debian-handhelds
+	building oz is a pita, i'm not used to bitkeeper and I can't
+	find a specific build-root for a specific release.  It's like the 
+	source is available, but not specifically per package.  Overall
+	though, i have found the openzaurus cross compiling solution
+	to be the most preferable way to build source for an
+	embedded device.  My solution now is to use paella,
+	and pbuilder (thanks, for the work in getting so many
+	packages to autobuild! ;)) to define, bootstrap, and control
+	cross compiling pbuilders with autobuilt toolchains.  This should
+	make it easier to script autobuilds of an embedded systems,
+	patches and all :)
+
+Demudi, Debian-Lex, ...
+	I think paella can be very instrumental in helping configure and
+	install a custom network on a per network type basis, (i.e. what
+	machines are on the network and what are there jobs, expected
+	activities, etc.  I am also thinking of networks with custom configured
+	roaming pda's, laptops, or whatever can take a debian system
+
+and that is also probably the order i will be working in.
+
+I am aware that customized packages can be made and distributed (like
+tasksel and jablicator), but it is not paella's designed purpose to be used
+in that manner.  Once paella is done configuring and installing, it should leave
+no trace of itself.  The user should be left with a clean, customized debian 
+system.  This is mainly a tool meant for somebody who is going to be creating,
+configuring, and installing many debian systems.
+
+I have tried to make a common denominator that most of these pojects share,
+but seem to be missing.
+
+My urgent need to get this system working so i can starting earning a living
+with it, has caused to code to wind up a bit sloppy. Sorry.
+

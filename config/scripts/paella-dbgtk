@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from paella.base import Error, debug
+from paella.profile.base import PaellaConfig, PaellaConnection
+
+from paella.dbgtk.base import ListWin, BrowserWin
+from paella.dbgtk.base import TableEditor, RelationalBrowser
+from paella.dbgtk.base import DatabaseManager
+
+from gtk import mainloop, mainquit
+
+cfg = PaellaConfig('database')
+
+
+
+m = DatabaseManager(cfg['dbhost'], cfg['dbusername'])
+win = BrowserWin(None, m)
+
+win.connect('destroy', mainquit)
+
+mainloop()

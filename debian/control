@@ -1,0 +1,152 @@
+Source: paella
+Section: unknown
+Priority: optional
+Maintainer: Debian User <umeboshi@gregscomputerservice.com>
+Build-Depends: debhelper (>> 4.0.0), python2.3, python2.3-dev
+Standards-Version: 3.5.8
+
+Package: paella
+Section: admin
+Architecture: all
+Priority: extra
+Depends: paella-paelladb
+Description: meta-package for default paella packages
+    Paella is a installation/configuration management system
+    centered on being able to easily define, configure, maintain and
+    update systems and networks.  Tries to not reinvent too many
+    wheels, and works hand in hand with fai.  It is planned to be
+    extended to work with buildroots and embedded systems.
+
+Package: paella-base
+Section: admin
+Priority: optional
+Architecture: all
+Depends: python (>= 2.3), python2.3-pycurl, python2.3-xml
+Description: base utils for paella
+    This package is responsible for initial setup of the paella 
+    environment. (need to ask for pghost, etc..)
+
+Package: paella-contrib
+Section: admin
+Priority: optional
+Architecture: all
+Depends: paella-base
+Description: other people's code that paella uses
+    This is where paella tries not to reinvent wheels.
+    this package will be optional soon
+
+Package: paella-db
+Section: admin
+Priority: optional
+Architecture: all
+Depends: python-sqlite, paella-sqlgen  
+Description: paella's databse interface
+    Paella can connect to a Postgres database by default.
+    There is also code to allow it to easily connect to a sqlite
+    database.  The sqlite options are much more limited and there
+    is no real support for differentiating the db's now.  Postgres
+    is intended to be the main database, with sqlite just used
+    for disconnected machines
+
+Package: paella-debian
+Section: admin
+Priority: optional
+Architecture: all
+Depends: paella-base, python-apt, paella-db, debootstrap, debconf-utils
+Description: Documentation for paella
+    many class and functions for use with debian related
+    activities (dpkg, package repositories, debconf, etc.)
+
+Package: paella-gtk
+Section: admin
+Priority: optional
+Architecture: all
+Depends: paella-base, python-gtk2
+Description: gui widgets needed by paella
+    This package contains the strictly gui gtk-wrappers that
+    paella needs for its gui programs.  This package may eventually
+    depend on python-glade2, if i decide to use it to help build
+    interface sekeletons
+
+Package: paella-dbgtk
+Section: admin
+Priority: optional
+Architecture: all
+Depends: paella-gtk, paella-db
+Description: db connected gui widgets needed by paella
+    This package contains gtk objects that have connections
+    to a postgres database making it easier to develop customized
+    widgets.
+
+Package: paella-sqlgen
+Section: admin
+Priority: optional
+Architecture: all
+Depends: paella-base, python-pgsql
+Description: sql statement helper
+    A little sql statement creator package.  The clause and table joining
+    is planned to get more involved.  This package will always have from simple
+    to complex at the developers choice
+
+Package: paella-installer
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-paelladb, python-parted, reiserfsprogs, xfsprogs, paella-contrib, hdparm, mdadm, mkisofs, gawk
+Description: package for nfsroot installer
+    This package should be installed on the nfsroot installer
+
+Package: paella-uml
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-installer, user-mode-linux, umlrun
+Description: package for running installs
+    This is the uml module for installing in userland.  This module is used
+    to create the nfsroot installer.
+
+Package: paella-admin
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-uml, paella-paelladb, paella-dbgtk, xxdiff
+Description: package for configuration of profiles
+    This package should be installed on the developer's machine
+
+Package: paella-paelladb
+Section: extra
+Priority: optional
+Architecture: all
+Depends: paella-debian, paella-dbgtk, python-kjbuckets
+Replaces: paella-machines, paella-schema, paella-profile
+Description: skeletons for database generation
+    classes and functions to help create database schemas,
+    generate and primer the databases.
+    This is the main package with the paella configuration applications
+    in it.  Remember, right now there is only gui and management for the
+    database, the config directory is not packaged yet.
+    machine definitions, filesystems, mounts,
+    kernels modules, and other things that need 
+    to be kept track of on physical machines.
+    (fixme)
+
+Package: paella-debrepos
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-debian, mini-dinstall, dnotify
+Description: maintain debian a repository
+    this is a set of scripts to maintain a debian
+    repository.
+
+Package: paella-kernelbuilder
+Section: devel
+Priority: extra
+Architecture: all
+Depends: paella-base, kernel-package
+Description: build a bunch of kernels
+    the kernelbuilder is a system using make-kpkg to
+    maintain many different kernels.  For each kernel
+    you can define the version and patches.  You can 
+    then use debuild to build the packages, and dput
+    to upload them to a repository.

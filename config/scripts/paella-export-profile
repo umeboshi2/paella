@@ -1,0 +1,16 @@
+#!/usr/bin/python2.3
+import os, sys
+from paella.profile.base import PaellaConnection, PaellaConfig
+from paella.profile.profile import PaellaProfiles
+
+cfg = PaellaConfig()
+conn = PaellaConnection(cfg)
+args = sys.argv[1:]
+profile = args[0]
+
+
+profiles = PaellaProfiles(conn)
+tfile = file(profile + '.xml', 'w')
+xml = profiles.export_profile(profile)
+xml.writexml(tfile, indent='\t', newl='\n', addindent='\t')
+tfile.close()

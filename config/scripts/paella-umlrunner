@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from paella.base import Error, debug
+from paella.uml.umlrunner import backup, install, restore, run, extract
+
+
+
+parser = OptionParser()
+parser.add_option('--basefile', action='store', type='string', dest='basefile',
+                  default='')
+parser.add_option('--initscript', action='store', type='string', dest='initscript',
+                  default='')
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+
+command = args[0]
+machine = args[1]
+basefile = opts.basefile
+if not basefile:
+    basefile = None
+
+if command == 'backup':
+    backup(machine)
+elif command == 'install':
+    install(machine, basefile=basefile)
+elif command == 'restore':
+    restore(machine, basefile=basefile)
+elif command == 'run':
+    initscript = opts.initscript
+    if not initscript:
+        initscript = None
+    run(machine, init=initscript)
+elif command == 'extract':
+    extract(machine, args[2])
+else:
+    print 'bad command %s' % command
+
+    

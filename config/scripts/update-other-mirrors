@@ -1,0 +1,43 @@
+#!/bin/bash
+mirrors=/mirrors/debian/other
+
+svn_woody=http://people.debian.org/~cjwatson/subversion-woody/
+knoppix=http://developer.linuxtag.net/knoppix/
+marillat=http://marillat.free.fr/
+logilab=http://www.logilab.org/ftp/pub/debian
+
+mirror_repos () {
+    _here=`pwd`
+    cd $1
+    paella-mirror-repos --mirror=$2 --type=$3
+    cd $_here
+}
+
+knoppix_dir=knoppix
+svn_woody_dir=subversion-woody
+marillat_dir=marillat
+logilab_dir=logilab
+
+mirror_repos $mirrors/$knoppix_dir $knoppix binary
+mirror_repos $mirrors/$knoppix_dir $knoppix source
+mirror_repos $mirrors/$svn_woody_dir $svn_woody binary
+mirror_repos $mirrors/$svn_woody_dir $svn_woody source
+
+
+_here=`pwd`
+marillat_distpath=dists/unstable/main/binary-i386
+cd $mirrors/$marillat_dir
+echo `pwd`
+echo 'htllo'
+paella-mirror-repos --mirror=$marillat --type=binary --distpath=$marillat_distpath
+cd $_here
+
+_here=`pwd`
+logilab_distpath=unstable
+cd $mirrors/$logilab_dir
+echo `pwd`
+echo $logilab
+echo $logilab_distpath
+echo $logilab_dir
+paella-mirror-repos --mirror=$logilab --type=binary --distpath=$logilab_distpath
+cd $_here

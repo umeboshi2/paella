@@ -1,0 +1,7 @@
+config/share/mini-dinstall.conf etc
+config/scripts/paella-update-debrepos usr/bin
+config/scripts/paella-backup-debrepos usr/bin
+config/scripts/paella-update-other-mirrors usr/bin
+
+
+

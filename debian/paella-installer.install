@@ -1,0 +1,5 @@
+config/scripts/paella-submit-diskconfig usr/bin
+config/scripts/paella-chroot-install usr/sbin
+config/scripts/paella-nfsinstaller usr/sbin
+
+

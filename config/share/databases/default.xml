@@ -1,0 +1,152 @@
+	<paelladatabase>
+		<suites>
+			<suite local="f" name="sarge" nonus="f" updates="f"/>
+			<suite local="f" name="sid" nonus="f" updates="f"/>
+			<suite local="f" name="woody" nonus="t" updates="f"/>
+		</suites>
+		<profiles>
+			<profile name="default" suite="sid">
+				<traits>
+					<trait ord="0">
+						base
+					</trait>
+				</traits>
+				<environ/>
+			</profile>
+			<profile name="toolchainbuilder" suite="sid">
+				<traits>
+					<trait ord="0">
+						toolchain
+					</trait>
+				</traits>
+				<environ/>
+			</profile>
+		</profiles>
+		<traits suite="sarge"/>
+		<traits suite="sid">
+			<trait name="base" suite="sid">
+				<description/>
+				<parents/>
+				<packages>
+					<package action="install">
+						adduser
+					</package>
+					<package action="install">
+						base-files
+					</package>
+					<package action="install">
+						bash
+					</package>
+					<package action="install">
+						debconf-utils
+					</package>
+					<package action="install">
+						initscripts
+					</package>
+					<package action="install">
+						libc6
+					</package>
+					<package action="install">
+						libpam-modules
+					</package>
+					<package action="install">
+						libpam-runtime
+					</package>
+					<package action="install">
+						login
+					</package>
+					<package action="install">
+						modutils
+					</package>
+					<package action="install">
+						passwd
+					</package>
+					<package action="install">
+						procps
+					</package>
+					<package action="install">
+						sysv-rc
+					</package>
+				</packages>
+				<environ>
+					<debian_version>
+						testing/unstable
+					</debian_version>
+					<umask>
+						027
+					</umask>
+				</environ>
+				<templates>
+					<template grp_owner="root" mode="0100644" owner="root" package="base-files">
+						etc/debian_version
+					</template>
+					<template grp_owner="root" mode="0100644" owner="root" package="base-files">
+						etc/issue
+					</template>
+					<template grp_owner="root" mode="0100644" owner="root" package="base-files">
+						etc/profile
+					</template>
+					<template grp_owner="root" mode="0100644" owner="root" package="bash">
+						etc/bash.bashrc
+					</template>
+					<template grp_owner="root" mode="0100755" owner="root" package="initscripts">
+						etc/init.d/halt
+					</template>
+					<template grp_owner="root" mode="0100644" owner="root" package="login">
+						etc/login.defs
+					</template>
+					<template grp_owner="root" mode="0100755" owner="root" package="sysv-rc">
+						etc/init.d/rcS
+					</template>
+				</templates>
+			</trait>
+			<trait name="builder" suite="sid">
+				<description/>
+				<parents>
+					<parent>
+						base
+					</parent>
+				</parents>
+				<packages>
+					<package action="install">
+						autoconf
+					</package>
+					<package action="install">
+						automake1.4
+					</package>
+					<package action="install">
+						automake1.6
+					</package>
+					<package action="install">
+						automake1.7
+					</package>
+					<package action="install">
+						bison
+					</package>
+					<package action="install">
+						build-essential
+					</package>
+					<package action="install">
+						debhelper
+					</package>
+					<package action="install">
+						fakeroot
+					</package>
+				</packages>
+				<environ/>
+				<templates/>
+			</trait>
+			<trait name="toolchain" suite="sid">
+				<description/>
+				<parents/>
+				<packages>
+					<package action="install">
+						toolchain-source
+					</package>
+				</packages>
+				<environ/>
+				<templates/>
+			</trait>
+		</traits>
+		<traits suite="woody"/>
+	</paelladatabase>

@@ -1,0 +1,93 @@
+#configuration file for umlmachines
+[DEFAULT]
+_myhome:		/home/umeboshi
+_workspace:		%(_myhome)s/workspace
+_config_path:		%(_workspace)s/paella/config
+_script_path:		%(_config_path)s/scripts
+_freespace:		/freespace
+_basepath:		%(_freespace)s/roots
+
+_base_logfile:		paellalog/uml-installer.log
+
+
+host_LOGFILE:		/mirrors/bkups/%(_base_logfile)s.host
+
+#this is the script that the umlmachine runs
+uml_initscript:			%(_script_path)s/paella-init
+
+
+#uml network options
+
+uml_socket:		/tmp/uml.ctl
+host_tun_iface:		tap1
+host_tun_addr:		10.0.1.1
+#--# this can be either static or dhcp
+guest_eth_ifconfig:		static
+#--#
+guest_eth_netmask:	255.255.255.0
+guest_eth_addr:		10.0.1.2
+
+#uml installer needs to read this file
+paellarc:			%(_myhome)s/.paellarc
+
+
+#other uml kernel options --
+uopt_python_path:		%(_workspace)s/paella/src
+
+
+#all umlmachines read this option
+uopt_umlconfig:		%(_myhome)s/.umlmachines.conf
+
+uopt_LOGFILE:		/mnt/mirrors/bkups/%(_base_logfile)s
+
+#regular uml kernel options
+uopt_eth0:			daemon,,,%(uml_socket)s
+uopt_con:			pts
+uopt_con0:			fd:0,fd:1
+uopt_con1:			xterm
+uopt_mem:			64M
+
+
+#profile is used to install to a new basefile
+profile:			_no_profile_
+
+#size in MB of basefile
+basefile_size:		3000
+
+[umlmachines]
+bootstrap_basepath:	%(_basepath)s/bases
+bootstrap_debmirror:	http://192.168.0.2/debian
+backup_filesystem:		hostfs
+#hostfs_backup_path:	%(_basepath)s/bkups
+hostfs_backup_path:	/mirrors/bkups
+nfs_backup_export:	192.168.0.2:/freespace/shared/bkups
+
+
+#machines go below here
+###
+
+
+[nameserver]
+profile:			umns
+basefile:			%(_basepath)s/umns
+uopt_eth0:			daemon,fe:fd:00:00:00:50,,%(uml_socket)s
+uopt_mem:				32M
+
+
+[umtest]
+profile:			umtest
+basefile:			%(_basepath)s/umtest
+uopt_eth0:			daemon,fe:fd:00:00:00:93,,%(uml_socket)s
+
+[ummain]
+profile:			ummain
+basefile:			%(_basepath)s/ummain
+uopt_eth0:			daemon,fe:fd:00:00:00:54,,%(uml_socket)s
+uopt_mem:			128M
+basefile_size:		4500
+
+[um_desktop]
+uopt_eth0:			daemon,fe:fd:00:00:00:66,,%(uml_socket)s
+profile:			umedesktop
+basefile:			%(_basepath)s/um_desktop
+uopt_mem:		128M

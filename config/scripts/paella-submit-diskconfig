@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from paella.base import Error, debug
+from paella.profile.base import PaellaConnection, PaellaConfig
+from paella.installer.cfdisk import DiskManager
+from paella.db.midlevel import StatementCursor
+from paella.sqlgen.clause import Eq
+
+parser = OptionParser()
+opts, args = parser.parse_args(sys.argv[1:])
+
+diskname = args[0]
+devices = args[1:]
+
+cfg = PaellaConfig()
+conn = PaellaConnection(cfg)
+
+dm = DiskManager(conn)
+
+
+for device in devices:
+    dm.submit_partitions(diskname, device)
+    
+        

@@ -1,0 +1,10 @@
+#!/usr/bin/python2.3
+import sys
+
+from paella.profile.base import PaellaConfig
+from paella.installer.nfsbootcd import make_image
+    
+if __name__ == '__main__':
+    cfg = PaellaConfig()
+    kernel = sys.argv[1]
+    make_image(kernel=kernel)

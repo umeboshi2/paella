@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from paella.profile.base import PaellaConfig
+
+config = PaellaConfig('debrepos')
+
+class OtherRepos(object):
+    def __init__(self, uri, localpath, types, distpath=None):
+        object.__init__(self)
+        self.uri = uri
+        self.localpath = localpath
+        self.types = types
+        self.distpath = distpath
+        
+def mirror_repos(localpath, mirror, rtype, distpath=None):
+    here = os.getcwd()
+    os.chdir(join(config['other_repos'], localpath))
+    args = '--mirror=%s --type=%s' % (mirror, rtype)
+    if distpath is not None:
+        args += ' --distpath=%s' % distpath
+    os.system('paella-mirror-repos %s' %args)
+    os.chdir(here)
+
+def get_repos(name):
+    section = 'other_repos__%s' % name
+    cfg = PaellaConfig(section)
+    uri = cfg['uri']
+    localpath = cfg['localpath']
+    types = cfg['types']
+    distpath = None
+    if cfg.has_option(section, 'distpath'):
+        distpath = cfg['distpath']
+    return OtherRepos(uri, localpath, types, distpath=distpath)
+
+def mirror_other_repos(other):
+    if other.types in ['binary', 'both']:
+        mirror_repos(other.localpath, other.uri, 'binary', distpath=other.distpath)
+    if other.types in ['source', 'both']:
+        mirror_repos(other.localpath, other.uri, 'source', distpath=other.distpath)
+
+
+parser = OptionParser()
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+if __name__ == '__main__':
+    names = config.get_list('other_repos_names')
+    others = dict([(name, get_repos(name)) for name in names])
+    for name in others:
+        mirror_other_repos(others[name])

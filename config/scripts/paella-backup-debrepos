@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from paella.debian.base import make_source
+from paella.debian.backup_repos import BackupRepos
+
+from paella.profile.base import PaellaConfig
+
+config = PaellaConfig('debrepos')
+
+#SUITES=['woody', 'sarge', 'sid']
+SUITES = config.get_list('official_suites')
+SUITES += config.get_list('local_suites')
+SID_SUITES = config.get_list('sid_suites')
+if os.environ.has_key('SUITES'):
+    SUITES=os.environ['SUITES'].split()
+repos_root = 'file:' + config['repos_root']
+
+parser = OptionParser()
+
+parser.add_option('-l', '--local', action='store', type='string', dest='local',
+                  default=repos_root)
+parser.add_option('-q', '--quick', action='store_true', dest='quick',
+                  default=False)
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+def backup_repository(source):
+    brepos = BackupRepos(source)
+    s = make_source(source)
+    if s.suite in SID_SUITES:
+        brepos.update(both_zips=True)
+    else:
+        brepos.update(both_zips=False)
+    brepos.check()
+    brepos.sync()
+    
+def backup_repository_and_sources(source):
+    if source.type == 'deb-src':
+        source.type = 'deb'
+        print 'source changed', str(source)
+    backup_repository(str(source))
+    source.type = 'deb-src'
+    backup_repository(str(source))
+
+for suite in SUITES:
+    source = 'deb %s %s main contrib non-free' % (opts.local, suite)
+    source = make_source(source)
+    print source
+    backup_repository_and_sources(source)
+    if suite in ['woody', 'maverick']:
+        source.suite = join(suite, 'non-US')
+        backup_repository_and_sources(source)
+    if suite in ['woody', 'sarge']:
+        source.suite = join(suite, 'updates')
+        backup_repository_and_sources(source)
+        
+
+
+
+
+
+
+
+
+
+command = 'paella-update-repos --local=%s' % opts.local
+if opts.quick:
+    command += ' -q'
+    
+main = 'http://ftp.us.debian.org/debian'
+nonus = 'http://nonus.debian.org/'
+security = 'http://security.debian.org'
+

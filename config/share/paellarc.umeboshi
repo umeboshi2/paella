@@ -1,0 +1,108 @@
+#configuration file for paella
+[DEFAULT]
+sarge_common:		true
+sarge_local:		true
+questron_common:		true
+questron_local:		true
+maverick_local:		true
+gunny_common:		true
+gunny_local:		true
+kardinal_common:		true
+kardinal_local:		true
+__myhome:		/home/umeboshi
+
+[database]
+#database info
+#dbhost:			roujin
+#dbhost:			192.168.0.2
+dbhost:			zathras
+#dbhost:			dindada
+dbname:			paella
+dbusername:		umeboshi
+dbpassword:		apassword
+import_path:		/home/umeboshi/vault/concord
+export_path:		/mirrors/bkups/main/backup
+autocommit:		true
+
+[debrepos]
+repos_host:		192.168.0.2
+debroot:			/debian
+repos_root:		/freespace/debian
+official_suites:		woody,sarge,sid
+local_suites:		maverick,questron,gunny,kardinal
+sid_suites:		sid,questron,kardinal
+http_mirror:		http://%(repos_host)s%(debroot)s
+
+official_main:		http://ftp.us.debian.org/debian
+official_nonus:		http://nonus.debian.org/
+official_security:		http://security.debian.org
+
+other_repos:		%(repos_root)/other
+other_repos_names:	svn_woody,knoppix,marillat,logilab,marillat_src
+
+
+[installer]
+
+[management_gui]
+env_editor_size:	500, 400
+
+bkuptarball_path:		/mirrors/bkups
+management_suites:	sarge, kudzu
+default_profile_suite:	gunny
+template_profile:		skeleton
+client_path:		/home/umeboshi/vault/clients
+
+#manager_pos:		1122, 775
+manager_pos:		0, 1075
+manager_size:		170, 200
+maverick_pos:		750, 0
+woody_pos:		750, 0
+sarge_pos:		750, 0
+gunny_pos:		750, 50
+questron_pos:		750, 100
+kardinal_pos:		750, 100
+kudzu_pos:		750, 100
+
+
+[launcher]
+position:		0, 700
+size:		45, 100
+orientation:	vertical
+num_cols:	3
+num_rows:	4
+
+
+
+[other_repos__svn_woody]
+uri:			http://people.debian.org/~cjwatson/subversion-woody/
+localpath:			subversion-woody
+types:			both
+
+[other_repos__knoppix]
+uri:			http://developer.linuxtag.net/knoppix/
+localpath:			knoppix
+types:			both
+
+[other_repos__marillat_old]
+uri:			http://marillat.free.fr/
+localpath:			marillat
+distpath:			dists/unstable/main/binary-i386
+types:			binary
+
+[other_repos__logilab]
+uri:			http://www.logilab.org/ftp/pub/debian
+localpath:			logilab
+distpath:			unstable
+types:			binary
+
+[other_repos__marillat]
+uri:			ftp://ftp.nerim.net/debian-marillat/
+localpath:			nerim
+distpath:			dists/unstable/main/binary-i386
+types:			binary
+
+[other_repos__marillat_src]
+uri:			ftp://ftp.nerim.net/debian-marillat/
+localpath:			nerim
+distpath:			dists/unstable/main/source
+types:			source

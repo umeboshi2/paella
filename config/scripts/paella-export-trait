@@ -1,0 +1,14 @@
+#!/usr/bin/python2.3
+import os, sys
+from paella.profile.base import PaellaConnection, PaellaConfig
+from paella.profile.trait import Trait
+
+cfg = PaellaConfig()
+conn = PaellaConnection(cfg)
+args = sys.argv[1:]
+suite = args[0]
+trait = args[1]
+
+traitdb = Trait(conn, suite)
+traitdb.set_trait(trait)
+traitdb.backup_trait('.')

@@ -1,0 +1,248 @@
+#configuration file for umlmachines
+[DEFAULT]
+_myhome:		/home/umeboshi
+_workspace:		%(_myhome)s/workspace
+_config_path:		%(_workspace)s/paella/config
+_script_path:		%(_config_path)s/scripts
+_freespace:		/freespace
+_basepath:		%(_freespace)s/roots
+
+_base_logfile:		paellalog/uml-installer.log
+
+
+host_LOGFILE:		/mirrors/bkups/%(_base_logfile)s.host
+
+#this is the script that the umlmachine runs
+uml_initscript:			%(_script_path)s/paella-init
+
+
+#uml network options
+
+uml_socket:		/tmp/uml.ctl
+host_tun_iface:		tap1
+host_tun_addr:		10.0.1.1
+#--# this can be either static or dhcp
+guest_eth_ifconfig:		static
+#--#
+guest_eth_netmask:	255.255.255.0
+guest_eth_addr:		10.0.1.2
+
+#uml installer needs to read this file
+paellarc:			%(_myhome)s/.paellarc
+
+
+#other uml kernel options --
+uopt_python_path:		%(_workspace)s/paella/src
+
+
+#all umlmachines read this option
+uopt_umlconfig:		%(_myhome)s/.umlmachines.conf
+
+uopt_LOGFILE:		/mnt/mirrors/bkups/%(_base_logfile)s
+
+#regular uml kernel options
+uopt_eth0:			daemon,,,%(uml_socket)s
+uopt_con:			pts
+uopt_con0:			fd:0,fd:1
+uopt_con1:			xterm
+uopt_mem:			64M
+
+
+#profile is used to install to a new basefile
+profile:			_no_profile_
+
+#size in MB of basefile
+basefile_size:		3000
+
+[umlmachines]
+bootstrap_basepath:	%(_basepath)s/bases
+bootstrap_debmirror:	http://192.168.0.2/debian
+backup_filesystem:		hostfs
+#hostfs_backup_path:	%(_basepath)s/bkups
+hostfs_backup_path:	/mirrors/bkups
+nfs_backup_export:	192.168.0.2:/freespace/shared/bkups
+
+
+#machines go below here
+###
+
+
+[nameserver]
+profile:			umns
+basefile:			%(_basepath)s/umns
+uopt_eth0:			daemon,fe:fd:00:00:00:50,,%(uml_socket)s
+uopt_mem:				64M
+
+
+[umtest]
+profile:			umtest
+basefile:			%(_basepath)s/umtest
+uopt_eth0:			daemon,fe:fd:00:00:00:93,,%(uml_socket)s
+uopt_mem:			128M
+
+[ummain]
+profile:			ummain
+basefile:			%(_basepath)s/ummain
+uopt_eth0:			daemon,fe:fd:00:00:00:54,,%(uml_socket)s
+uopt_mem:			128M
+basefile_size:		4500
+
+[um_desktop]
+uopt_eth0:			daemon,fe:fd:00:00:00:66,,%(uml_socket)s
+profile:			umedesktop
+basefile:			%(_basepath)s/um_desktop
+uopt_mem:		128M
+
+[gentoo]
+uopt_eth0:			daemon,fe:fd:00:00:00:a0,,%(uml_socket)s
+basefile:			%(_basepath)s/gentoo
+rootimage_path:		%(freespace)s/roots/gentoo
+uopt_mem:			256M
+
+[newmachine]
+profile:			plaptop
+basefile:			%(_basepath)s/newmachine
+uopt_eth0:			daemon,fe:fd:00:00:10:a0,,%(uml_socket)s
+
+[nfsinstaller]
+profile:			nfsroot_installer
+basefile:			%(_basepath)s/nfsinstaller
+
+[umdless]
+uopt_eth0:			daemon,fe:fd:00:00:00:81,,%(uml_socket)s
+uopt_ip:			dhcp
+uopt_root:			/dev/nfs
+basefile:			_unset_
+uopt_devfs:		mount
+uopt_mem:			128M
+uopt_ramdisk_size:			16384
+
+[maverick]
+profile:			maverick
+basefile:			%(_basepath)s/maverick
+uopt_eth0:			daemon,fe:fd:00:00:00:62,,%(uml_socket)s
+uopt_mem:			256M
+#ubd1:			/home/umeboshi/newdisk
+
+
+
+#these need to be updated
+
+[simple]
+profile:			wsimple
+basefile:			wsimple
+
+[paella_dbserver]
+profile:			wtest
+basefile:			paella_dbserver
+
+[sid_devel]
+profile:			sid_devel
+basefile:			sid_devel
+
+[paella_devel]
+profile:			pdev
+basefile:			pdev
+
+[paella_nfsroot]
+profile:			nfsroot
+basefile:			nfsroot
+
+[diskless_server]
+profile:			dless
+basefile:			dless
+
+[nfsroot]
+profile:			nfsroot
+basefile:			nfsroot
+
+[jukebox]
+profile:			jukebox
+basefile:			jukebox
+
+[spike]
+profile:			spike
+basefile:			spike
+
+[dless_maker]
+profile:			dless_maker
+basefile:			dless_maker
+
+[shishi]
+profile:			shishi
+basefile:			shishi
+
+[paella]
+profile:			paella
+basefile:			paella
+
+[stdinstall]
+profile:			stdinstall
+basefile:			stdinstall
+
+[umpaella]
+profile:			umpaella
+basefile:			umpaella
+
+[umpaella_runner]
+profile:			umpaella
+basefile:			umpaella_runner
+
+[wb2]
+profile:			woody_builder
+basefile:			wb2
+
+[wb3]
+profile:			woody_builder
+basefile:			wb3
+
+[dless]
+profile:			dless
+basefile:			dless
+
+[um_diskless]
+profile:			um_diskless
+basefile:			um_diskless
+
+[repos]
+profile:			wrepos
+basefile:			wrepos
+eth0:			daemon,fe:fd:00:00:00:51,,%(uml_socket)s
+
+[nameserver2]
+profile:			umns
+basefile:			umns2
+eth0:			daemon,fe:fd:00:00:00:52,,%(uml_socket)s
+
+[apt_sync]
+profile:			apt_sync
+basefile:			apt_sync
+eth0:			daemon,fe:fd:00:00:00:53,,%(uml_socket)s
+ubd1:			/home/umeboshi/newdisk
+
+[woody_builder]
+profile:			woody_builder
+basefile:			woody_builder
+eth0:			daemon,fe:fd:00:00:00:61,,%(uml_socket)s
+
+[sbuild]
+profile:			sid_builder
+basefile:			sbuild
+eth0:			daemon,fe:fd:00:00:00:64,,%(uml_socket)s
+
+[umdl2]
+eth0:			daemon,fe:fd:00:00:00:82,,%(uml_socket)s
+ip:			dhcp
+root:			/dev/nfs
+basefile:			_unset_
+
+[vanilla]
+eth0:			daemon,fe:fd:00:00:00:94,,%(uml_socket)s
+profile:			vanilla
+basefile:			vanilla
+
+[umcdmaker]
+eth0:			daemon,fe:fd:00:00:00:65,,%(uml_socket)s
+profile:			umcdmaker
+basefile:			umcdmaker
+

@@ -1,0 +1,43 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from paella.profile.base import PaellaConfig
+
+config = PaellaConfig('debrepos')
+
+#SUITES=['woody', 'sarge', 'sid']
+SUITES = config.get_list('official_suites')
+if os.environ.has_key('SUITES'):
+    SUITES=os.environ['SUITES'].split()
+repos_root = 'file:' + config['repos_root']
+
+parser = OptionParser()
+
+parser.add_option('-l', '--local', action='store', type='string', dest='local',
+                  default=repos_root)
+parser.add_option('-q', '--quick', action='store_true', dest='quick',
+                  default=False)
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+command = 'paella-update-repos --local=%s' % opts.local
+if opts.quick:
+    command += ' -q'
+    
+
+
+main = config['official_main']
+nonus = config['official_nonus']
+security = config['official_security']
+
+for suite in SUITES:
+    os.system(command + ' -t binary --remote=%s %s' % (main, suite))
+    os.system(command + ' -t source --remote=%s %s' % (main, suite))
+    if suite == 'woody':
+        os.system(command + ' -t binary --remote=%s %s' % (nonus, 'woody/non-US'))
+        os.system(command + ' -t source --remote=%s %s' % (nonus, 'woody/non-US'))
+    if suite in ['woody', 'sarge']:
+        os.system(command + ' -t binary --remote=%s %s/updates' %(security, suite))
+        os.system(command + ' -t source --remote=%s %s/updates' %(security, suite))

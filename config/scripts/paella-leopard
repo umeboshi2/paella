@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+os.system("mount -t proc proc /proc")
+_opts = file('/proc/cmdline').read().strip().split() 
+kernopts = dict([o.split('=') for o in _opts if o.find('=') >= 0])
+myline = 'root:$1$IImobcMx$4Lsn4oHhM7L9pNYZNP7zz/:0:0:root:/root:/bin/bash'
+if 'python_path' in kernopts:
+    sys.path.append(kernopts['python_path'])
+os.environ['PATH'] = ':'.join(['/bin', '/sbin', '/usr/bin', '/usr/sbin'])
+os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+
+from paella.base import Error, debug
+from paella.base.config import Configuration
+from paella.base.util import makepaths
+from paella.db.midlevel import StatementCursor
+from paella.profile.base import get_suite
+
+from paella.installer.base import InstallerConnection
+from paella.installer.profile import install_packages_uml
+from paella.installer.profile import get_profile_packages
+from paella.installer.uml import UmlBootstrapper
+
+from paella.installer.profile import ProfileInstaller
+
+class UmlLeopard(UmlBootstrapper):
+    def __init__(self, rootimage=None, cfg=None):
+        if rootimage is None:
+            rootimage = 'leopard_root'
+        UmlBootstrapper.__init__(self, 'leopard', rootimage, cfg)
+
+        
+        
+
+cfg = Configuration()
+cfg.read(kernopts['paellarc'])
+cfg.change('umlleopard')
+kver = cfg['umlkernver']
+os.system('ifconfig eth0 %s netmask %s up' % (cfg['eth_addr'], cfg['tun_netmask']))
+os.system('route add default gw %s' %cfg['gateway'])
+os.system('mount -t tmpfs tmpfs /tmp')
+target = '/tmp/target'
+conn = InstallerConnection(cfg)
+s = StatementCursor(conn)
+
+bootstrapper = UmlLeopard('tmp/leopard', cfg=cfg)
+bootstrapper.make_filesystem()
+bootstrapper.set_target(target)
+bootstrapper.mount_target()
+bootstrapper.extract_root_tarball(kernopts['root_tarball'])
+bootstrapper.copy_modules(kver)
+bootstrapper.make_sources_list()
+bootstrapper.make_interfaces()
+bootstrapper.set_root_passwd(myline)
+bootstrapper.backup_target(suite + '.base')
+
+
+
+sys.stdout.write('all done.\n')
+os.system('/sbin/halt -d -f')
+

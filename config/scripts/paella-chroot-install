@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from paella.base import Error, debug
+from paella.base.util import makepaths
+from paella.db.midlevel import StatementCursor
+from paella.profile.base import get_suite, PaellaConfig
+
+from paella.installer.base import InstallerConnection
+from paella.installer.profile import install_packages_uml
+from paella.installer.profile import get_profile_packages
+
+from paella.installer.chroot import ChrootInstaller
+
+if os.getuid():
+    raise Error, 'need to be root'
+
+cfg = PaellaConfig()
+conn = InstallerConnection(cfg)
+s = StatementCursor(conn)
+
+profile = sys.argv[1]
+target = sys.argv[2]
+
+print "installing %s to %s" % (profile, target)
+i = ChrootInstaller(conn, cfg)
+i.install(profile, target)
+
+
+
+
+
+sys.stdout.write('all done.\n')
+
+

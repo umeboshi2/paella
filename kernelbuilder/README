@@ -1,0 +1,16 @@
+my kernel builder
+
+
+for building modules:
+---------------
+
+cd /usr/src
+gzip -cd pcmcia-cs.tar.gz | tar xv
+
+this make /usr/src/modules
+
+cd /usr/src/modules
+apt-get source linux-wlan-ng
+
+cd /usr/src
+and unpack other modules

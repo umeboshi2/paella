@@ -1,0 +1,51 @@
+
+bind - /etc/bind/named.conf
+	add doman, and reverse
+	add the config files to /var/cache/bind
+
+
+
+
+classification:
+
+Network:
+	services -- [sshd, domain, http]
+	domain_name -- mydomain.org
+	servers: -- hosts that provide services
+
+
+Service:
+	name:	http
+	port:	80
+	service_zones:	local, lan, internet
+	host:	webserver
+
+
+	
+Repos -- has manager
+local -- is repos
+remote -- is repos
+
+sudo apt-get install kernel-source-2.4.22 modutils kernel-package bin86 fakeroot pcmcia-source
+sudo apt-get install lynx
+paella-make-base woody && paella-make-base sarge && paella-make-base sid
+paella-umlrunner install nfsinstaller
+lynx 10.0.1.1/debian
+
+sudo swapon /dev/hda9
+sudo dpkg-reconfigure cdrecord 
+uml_switch -tap tap1
+cd spool/bootcd/
+cdrecord cdimage.iso 
+cdrecord blank=fast
+python -i /usr/bin/paella-update-repos woody --local file:/freespace/debian
+sudo apt-get install dput 
+sudo apt-get install python2.3-dev 
+sudo apt-get install mini-dinstall 
+sudo apt-get install devscripts
+
+
+
+traits--
+new subversion config
+add fortunes trait

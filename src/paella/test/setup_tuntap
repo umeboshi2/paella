@@ -1,0 +1,7 @@
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+echo '1' > /proc/sys/net/ipv4/ip_forward 
+tunctl -u umeboshi -t tap1
+tunctl -t tap1 -u 1000 
+echo  '1' > /proc/sys/net/ipv4/conf/tap1/proxy_arp 
+arp -Ds 10.0.1.1 eth0 pub
+route add -host 10.0.1.1 dev tap1

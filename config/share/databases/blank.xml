@@ -1,0 +1,9 @@
+	<paelladatabase>
+		<suites>
+			<suite local="f" name="sid" nonus="f" updates="f"/>
+			<suite local="f" name="sarge" nonus="f" updates="f"/>
+			<suite local="f" name="woody" nonus="t" updates="f"/>
+		</suites>
+		<profiles/>
+	</paelladatabase>
+
