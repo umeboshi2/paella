@@ -2,13 +2,8 @@
 [DEFAULT]
 sarge_common:		true
 sarge_local:		true
-questron_common:		true
-questron_local:		true
-maverick_local:		true
-gunny_common:		true
-gunny_local:		true
-kardinal_common:		true
-kardinal_local:		true
+kudzu_common:		true
+
 __myhome:		/home/umeboshi
 
 [database]
@@ -17,8 +12,8 @@ dbhost:			localhost
 dbname:			paella
 dbusername:		paella
 dbpassword:		apassword
-import_path:		/mirrors/bkups/main/concord
-export_path:		/mirrors/bkups/main/backup
+import_path:		/usr/share/paella/defaultdb
+export_path:		/usr/share/paella/defaultdb
 autocommit:		true
 
 [debrepos]
@@ -35,7 +30,7 @@ official_nonus:		http://nonus.debian.org/
 official_security:		http://security.debian.org
 
 other_repos:		%(repos_root)/other
-other_repos_names:	svn_woody,knoppix,marillat,logilab,marillat_src
+other_repos_names:	knoppix,marillat,logilab,marillat_src
 
 
 [installer]
@@ -70,21 +65,10 @@ num_rows:	4
 
 
 
-[other_repos__svn_woody]
-uri:			http://people.debian.org/~cjwatson/subversion-woody/
-localpath:			subversion-woody
-types:			both
-
 [other_repos__knoppix]
 uri:			http://developer.linuxtag.net/knoppix/
 localpath:			knoppix
 types:			both
-
-[other_repos__marillat_old]
-uri:			http://marillat.free.fr/
-localpath:			marillat
-distpath:			dists/unstable/main/binary-i386
-types:			binary
 
 [other_repos__logilab]
 uri:			http://www.logilab.org/ftp/pub/debian

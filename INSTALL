@@ -1,0 +1,32 @@
+In order to get paella to work properly, many things must be setup.
+
+You need a machine that will be a webserver (for apt and debootstrap).
+You need a machine with around 20~40GB of free space.  This is dependant on
+how many suites you want to keep in the repository, and if you want to use the
+paella mirroring scripts.  As of now the mirroring scripts grab everything out of the
+Packages or Sources files (or both), and maintain a full (i386) mirror based on the contents.
+
+If you would like to have only partial mirrors by using apt-move or something similar,
+the resulting mirror MUST work with debootstrap on the suites/dists that you mirror.
+I used to use apt-move to keep partial mirrors, but I had a difficult time using debootstrap
+with those mirrors, because apt-move wouldn't mirror Release files or something like that.
+This might be fixed by now, as it was quite some time ago that I set the mirroring up.
+
+On the machine that the debian mirror resides is where the paella-debrepos package should
+be installed.  The debrepos package doesn't currently setup the user, so you will need to
+
+adduser --system debrepos --no-create-home --home $debian_root
+
+where debian_root is the root of your mirror.
+
+as the debrepos user create $debian_root/local
+this will be the local repository.  The debrepos package does setup init scripts for mini-dinstall,
+which it depends on.  mini-dinstall is run as the debrepos user, and the debrepos package has
+a default config for it.
+Currently paella uses these suite attributes -- local and common.
+common is a repository for packages shared between suites, like documents and themes.
+common is in $debian_root/local/common
+
+local is a repository specifcally for that suite.
+local is in $debian_root/local/$suite
+
