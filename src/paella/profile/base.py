@@ -92,7 +92,7 @@ class Traits(StatementCursor):
         
 
     def list(self):
-        return [x.trait for x in self.select()]
+        return [x.trait for x in self.select(order=['trait'])]
     
 
 class TraitEnvironment(Environment):

@@ -84,6 +84,16 @@ class TraitList(KListView):
         elif self.ftype == 'script':
             self.scripts.set_trait(item.trait)
             return self.scripts.scriptdata(item.row.script)
+
+    def updateData(self, data):
+        item = self.currentItem()
+        row = item.row
+        if self.ftype == 'template':
+            self.templates.set_trait(item.trait)
+            self.templates.update_templatedata(row.package, row.template, data)
+        elif self.ftype == 'script':
+            self.scripts.set_trait(item.trait)
+            self.scripts.update_scriptdata(row.script, data)
         
 class SuiteTraitCombo(QWidget):
     def __init__(self, app, parent, name='SuiteTraitCombo'):
@@ -122,7 +132,7 @@ class SuiteTraitCombo(QWidget):
         return self.listView.getData()
 
     def updateData(self, data):
-        pass
+        self.listView.updateData(data)
     
 class BaseDifferWidget(QWidget):
     def __init__(self, app, parent, name='BaseDiffer'):
@@ -143,6 +153,13 @@ class BaseDifferWidget(QWidget):
         rdata = self.rightBox.getData()
         differ = Differ(ldata, rdata)
         differ.diff()
+        if differ.isdifferent('left', ldata):
+            newdata = differ.get_data('left')
+            self.leftBox.updateData(newdata)
+        if differ.isdifferent('right', rdata):
+            newdata = differ.get_data('right')
+            self.rightBox.updateData(newdata)
+            
         
     
 class DifferWin(KMainWindow):

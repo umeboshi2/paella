@@ -1,10 +1,13 @@
 from xml.dom.minidom import Element
 
-from paella.base.xmlfile import TableElement
-from midlevel import StatementCursor
+#from paella.base.xmlfile import TableElement
+#from midlevel import StatementCursor
+#####################
+#####################
+#####################
+#####################
+#this module isn't called or needed
 
-
-            
 #generate xml        
 class XmlDatabase(object):
     def __init__(self, conn, path):
