@@ -12,12 +12,11 @@ from kdeui import KListView, KStdGuiItem
 from kdeui import KPushButton, KStatusBar
 from kdeui import KColorButton
 
-from konsultant.base import NoExistError
-from konsultant.sqlgen.clause import Eq, In
+from paella.base import NoExistError
+from paella.sqlgen.clause import Eq, In
 
-from konsultant.base.gui import MainWindow, MimeSources
-from konsultant.base.gui import SimpleRecord, SimpleRecordDialog
-from konsultant.db.xmlgen import AddressSelectDoc, AddressLink
+from paella.kde.base.gui import MainWindow, MimeSources
+from paella.kde.base.gui import SimpleRecord, SimpleRecordDialog
 
 class SimpleWindow(MainWindow):
     def __init__(self, app, parent, name):

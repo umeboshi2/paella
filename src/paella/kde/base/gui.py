@@ -14,8 +14,7 @@ from kdeui import KTextBrowser, KPopupMenu
 from kdeui import KStdAction
 from kdeui import KTabWidget
 
-from konsultant.base.actions import EditAddresses, ManageClients
-from konsultant.base.config import DefaultSkeleton, KonsultantConfig
+from paella.kde.base.actions import EditAddresses, ManageClients
 
 class MimeSources(QMimeSourceFactory):
     def __init__(self):
