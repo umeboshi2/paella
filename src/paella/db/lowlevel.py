@@ -21,12 +21,13 @@ class LocalConnection(Connection_lite):
         
 
 class BasicConnection(Connection):
-    def __init__(self, user=None, host=None, dbname=None, passwd=None):
+    def __init__(self, user=None, host=None, dbname=None, passwd=None,
+                 port=5432):
         if passwd:
-            conninfo = 'user=%s host=%s dbname=%s password=%s' \
-                       %(user, host, dbname, passwd)
+            conninfo = 'user=%s host=%s dbname=%s password=%s port=%s' \
+                       %(user, host, dbname, passwd, str(port))
         else:
-            conninfo = 'user=%s host=%s dbname=%s' %(user, host, dbname)
+            conninfo = 'user=%s host=%s dbname=%s port=%s' %(user, host, dbname, str(port))
         Connection.__init__(self, conninfo)
 
     def createfile(self, mode=00644):

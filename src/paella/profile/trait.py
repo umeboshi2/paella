@@ -4,7 +4,6 @@ from sets import Set
 from xml.dom.minidom import Element
 from tarfile import TarFile
 from xml.dom.minidom import parse as parse_file
-import tempfile
 
 from kjbuckets import kjGraph
 

@@ -104,7 +104,7 @@ class Column(object):
             col += ' NOT NULL'
         if con.unique:
             col += ' UNIQUE'
-        if con.default or con.default == False:
+        if con.default is not None or con.default == False:
             if con.default_raw:
                 col += " DEFAULT %s" % con.default
             else:
