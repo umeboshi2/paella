@@ -89,7 +89,7 @@ class PaellaMainWindow(KMainWindow):
         machine_folder.machines = True
         differ_folder = KListViewItem(self.listView, 'differs')
         differ_folder.differs = True
-        for dtype in ['template', 'script', 'family']:
+        for dtype in ['trait', 'family']:
             item = KListViewItem(differ_folder, dtype)
             item.dtype = dtype
         
@@ -106,7 +106,7 @@ class PaellaMainWindow(KMainWindow):
             MachineMainWindow(self.app, self)
         elif hasattr(current, 'dtype'):
             print 'differ', current.dtype
-            DifferWin(self.app, self)
+            DifferWin(self.app, self, current.dtype)
             
     def slotManageFamilies(self):
         print 'running families'

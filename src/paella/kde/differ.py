@@ -94,7 +94,31 @@ class TraitList(KListView):
         elif self.ftype == 'script':
             self.scripts.set_trait(item.trait)
             self.scripts.update_scriptdata(row.script, data)
+
+class FamilyList(KListView):
+    def __init__(self, app, parent, name='FamilyList'):
+        KListView.__init__(self, parent, name)
+        dbwidget(self, app)
+        self.family = Family(self.conn)
         
+        self.setRootIsDecorated(True)
+        self.addColumn('family')
+        self.refreshlistView()
+        
+    def refreshlistView(self):
+        self.clear()
+        rows = self.family.family_rows()
+        for row in rows:
+            item = KListViewItem(self, row.family)
+            item.family = row.family
+
+    def getData(self):
+        item = self.currentItem()
+        return FamilyVariablesConfig(self.conn, item.family)
+    
+    def updateData(self, data):
+        pass
+    
 class SuiteTraitCombo(QWidget):
     def __init__(self, app, parent, name='SuiteTraitCombo'):
         QWidget.__init__(self, parent, name)
@@ -135,11 +159,16 @@ class SuiteTraitCombo(QWidget):
         self.listView.updateData(data)
     
 class BaseDifferWidget(QWidget):
-    def __init__(self, app, parent, name='BaseDiffer'):
+    def __init__(self, app, parent, dtype='trait', name='BaseDiffer'):
         QWidget.__init__(self, parent, name)
         dbwidget(self, app)
-        self.leftBox = SuiteTraitCombo(self.app, self, 'leftBox')
-        self.rightBox = SuiteTraitCombo(self.app, self, 'rightBox')
+        self.dtype = dtype
+        if dtype == 'trait':
+            boxtype = SuiteTraitCombo
+        elif dtype == 'family':
+            boxtype = FamilyList
+        self.leftBox = boxtype(self.app, self, 'leftBox')
+        self.rightBox = boxtype(self.app, self, 'rightBox')
         self.vbox = QVBoxLayout(self)
         self.list_hbox = QHBoxLayout(self.vbox, 5)
         self.list_hbox.addWidget(self.leftBox)
@@ -151,24 +180,27 @@ class BaseDifferWidget(QWidget):
         #right_item = self.rightBox.currentItem()
         ldata = self.leftBox.getData()
         rdata = self.rightBox.getData()
-        differ = Differ(ldata, rdata)
-        differ.diff()
-        if differ.isdifferent('left', ldata):
-            newdata = differ.get_data('left')
-            self.leftBox.updateData(newdata)
-        if differ.isdifferent('right', rdata):
-            newdata = differ.get_data('right')
-            self.rightBox.updateData(newdata)
+        if self.dtype == 'trait':
+            differ = Differ(ldata, rdata)
+            differ.diff()
+            if differ.isdifferent('left', ldata):
+                newdata = differ.get_data('left')
+                self.leftBox.updateData(newdata)
+            if differ.isdifferent('right', rdata):
+                newdata = differ.get_data('right')
+                self.rightBox.updateData(newdata)
+        elif self.dtype == 'family':
+            ldata.diff(rdata)
             
         
     
 class DifferWin(KMainWindow):
-    def __init__(self, app, parent):
+    def __init__(self, app, parent, dtype):
         KMainWindow.__init__(self, parent)
         #self.app = app
         dbwidget(self, app)
         
-        self.mainView = BaseDifferWidget(self.app, self)
+        self.mainView = BaseDifferWidget(self.app, self, dtype)
         self.initActions()
         self.initMenus()
         self.initToolbar()
