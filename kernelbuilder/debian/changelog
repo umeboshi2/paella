@@ -1,3 +1,17 @@
+paella-kernels (0.1-5) common; urgency=low
+
+  * make initrd=false in whopper
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  1 Nov 2004 02:22:01 -0600
+
+paella-kernels (0.1-4) common; urgency=low
+
+  * adding whopper
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  1 Nov 2004 02:02:03 -0600
+
 paella-kernels (0.1-3) common; urgency=low
 
   * updating kernels, added 2.6.5 for installer

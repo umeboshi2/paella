@@ -118,10 +118,12 @@ def build_kernel(flavor):
         print 'waiting for unpack', kernel
         sleep(2)
     if not isfile('stamp_build_%s' %flavor):
-        os.environ['CONCURRENCY_LEVEL'] = '30'
+        os.environ['CONCURRENCY_LEVEL'] = '3'
         config.change(flavor)
         bdir = build_dir(flavor)
+        print 'test initrd'
         if config['initrd'] == 'true':
+            print 'doint initrd'
             os.environ['INITRD_OK'] = 'true'
         if not isdir(bdir):
             make_build_dir(flavor)
