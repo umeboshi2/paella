@@ -63,3 +63,10 @@ but seem to be missing.
 My urgent need to get this system working so i can starting earning a living
 with it, has caused to code to wind up a bit sloppy. Sorry.
 
+UPDATE:
+The system is working well enough to make a living with it.
+The livecd idea hasn't been touched on much, though there is a description
+of the process of bootstrapping a new base Knoppix cd in this tree.  There is
+a script called 'setup-livecd-tree' in the script directory that can be used after
+a debootstrap to setup a small livecd system (doesn't make the iso, just the
+system).

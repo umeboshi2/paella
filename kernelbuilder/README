@@ -1,5 +1,11 @@
 my kernel builder
 
+USAGE:
+	python make <section> 
+where <section> is a section in kernels.conf
+OR:
+	debuild
+builds all kernels marked in kernels.conf 
 
 for building modules:
 ---------------

@@ -23,6 +23,8 @@ def tuplize_dict(adict):
         klist.append(k)
         if type(v) in [int, long]:
             vlist.append(str(v))
+        elif v is None:
+            vlist.append('NULL')
         else:
             vlist.append(quote(str(v)))
     return tuple(map(make_tuple, [klist, vlist]))
