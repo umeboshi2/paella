@@ -33,47 +33,6 @@ there is information about the structure of the database in the document section
 of the berlios site.
 
 
-
-quick setup
-
-You need to be running sarge+ on a server for nfs and postgres. The newer postgres 
-checks for constraints before table drops,and the code doen't reflect that yet.  (and still doesn't)
-You may also need apache running on a server. You also need a sid workstation to do
-administration with.
-
-
-To create a new database:
-	on server:
-	if you want plpgsql in all new databases:
-		as posgres user, createlang -d template1 plpgsql
-	else:
-		createlang -d $dbname plpgsql
-	createdb $dbname
-	
-	on admin staion:
-	edit .paellarc to config db connection
-	also config import_path (default /usr/share/paella/defaultdb)
-	IMPORTANT:
-		ugly hardcoded debian mirror,
-		need debian mirror on local filesystem (or nfs).
-		also needs to be in /mirrors/debian
-	Note:
-		need to fix this soon.
-	type paella-admin
-	menu->database->restore
-	double-click database.xml
-
-
-
-
-starting with a blank database:
-	there is a blank.xml file in the config/share/databases 	
-	directory that you can restore from.  then in the 
-	template manager you can use importdir to import the
-	traits similiar to updatedir mentioned above.
-
-
-
 the profile was chosen to be the singlemost install unit.  This means
 that paella can only install profiles.  A profile is a collection of
 traits and an enviroment. Profile overrides traits.  So a variable in

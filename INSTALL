@@ -1,32 +1,116 @@
 In order to get paella to work properly, many things must be setup.
 
-You need a machine that will be a webserver (for apt and debootstrap).
-You need a machine with around 20~40GB of free space.  This is dependant on
-how many suites you want to keep in the repository, and if you want to use the
-paella mirroring scripts.  As of now the mirroring scripts grab everything out of the
-Packages or Sources files (or both), and maintain a full (i386) mirror based on the contents.
+You need a machine that will be a webserver (for apt and
+debootstrap).  You need a machine with around 20~40GB of free space.
+This is dependant on how many suites you want to keep in the
+repository, and if you want to use the paella mirroring scripts.  As
+of now the mirroring scripts grab everything out of the Packages or
+Sources files (or both), and maintain a full (i386) mirror based on
+the contents.
 
-If you would like to have only partial mirrors by using apt-move or something similar,
-the resulting mirror MUST work with debootstrap on the suites/dists that you mirror.
-I used to use apt-move to keep partial mirrors, but I had a difficult time using debootstrap
-with those mirrors, because apt-move wouldn't mirror Release files or something like that.
-This might be fixed by now, as it was quite some time ago that I set the mirroring up.
+If you would like to have only partial mirrors by using apt-move or
+something similar, the resulting mirror MUST work with debootstrap on
+the suites/dists that you mirror.  I used to use apt-move to keep
+partial mirrors, but I had a difficult time using debootstrap with
+those mirrors, because apt-move wouldn't mirror Release files or
+something like that.  This might be fixed by now, as it was quite some
+time ago that I set the mirroring up.
 
-On the machine that the debian mirror resides is where the paella-debrepos package should
-be installed.  The debrepos package doesn't currently setup the user, so you will need to
+On the machine that the debian mirror resides is where the
+paella-debrepos package should be installed.  The debrepos package
+doesn't currently setup the user, so you will need to
 
 adduser --system debrepos --no-create-home --home $debian_root
 
-where debian_root is the root of your mirror.
+where $debian_root is the root of your mirror.
 
 as the debrepos user create $debian_root/local
-this will be the local repository.  The debrepos package does setup init scripts for mini-dinstall,
-which it depends on.  mini-dinstall is run as the debrepos user, and the debrepos package has
-a default config for it.
-Currently paella uses these suite attributes -- local and common.
-common is a repository for packages shared between suites, like documents and themes.
+   this will be the local repository.
+
+The debrepos package does setup init scripts for mini-dinstall, which
+it depends on.  mini-dinstall is run as the debrepos user, and the
+debrepos package has a default config for it. Currently paella uses
+these suite attributes -- local and common.
+
+common is a repository for packages shared between suites, like
+documents and themes.
 common is in $debian_root/local/common
 
 local is a repository specifcally for that suite.
 local is in $debian_root/local/$suite
 
+
+quick setup
+
+You need to be running sarge+ on a server for nfs and postgres. The
+newer postgres checks for constraints before table drops,and the code
+doen't reflect that yet.  (and still doesn't)  You may also need
+apache running on a server. You also need a sid workstation to do
+administration with.
+
+
+To create a new database:
+	on server:
+	if you want plpgsql in all new databases:
+		as posgres user, createlang -d template1 plpgsql
+	else:
+		createlang -d $dbname plpgsql
+	createdb $dbname
+	
+	on admin staion:
+	edit .paellarc to config db connection
+	also config import_path (default /usr/share/paella/defaultdb)
+	IMPORTANT:
+		ugly hardcoded debian mirror,
+		need debian mirror on local filesystem (or nfs).
+		also needs to be in /mirrors/debian
+	Note:
+		need to fix this soon.
+	Workaround:
+		add $debian_root to /etc/exports (ro), and mount it on
+		the admin staion.
+	type paella-admin
+	menu->database->restore
+	double-click database.xml
+
+WARNING:
+the defaultdb contains a suite named kudzu.  kudzu is basically just a
+copy of sid -- 
+     cp $debian_root/dists/sid $debian_root/dists/kudzu
+
+i do this to be able to keep sid updated without breaking the installs
+when the package structure changes.  Also for paella to debootstrap
+kudzu, apt-get source debootstrap.  In the source directory cp the sid
+debootstrap script to kudzu, and edit the Makefile appropriately. dch
+-i and change the distribution field from unstable to common.  Run
+debuild and dput the changes file to your newly made local repository.
+
+Note:
+	You will need dput and devscripts on the admin station.
+Remember paella is not just a simple installer, but also a system
+design helper, so you are kind of expected to be maintaining
+backports, special packages, etc.  For example, my ldap configuration
+depends on the adduser-ldap on alioth, which is located.
+
+You can see how I layout the repository at:
+http://gregscomputerservice.com/debian
+You can also find an example debootstrap at:
+http://gregscomputerservice.com/debian/local/common
+
+
+
+starting with a blank database:
+	there is a blank.xml file in the config/share/databases 	
+	directory that you can restore from.  then in the 
+	template manager you can use importdir to import the
+	traits similiar to updatedir mentioned above.
+
+
+
+There is currently a chicken-egg problem with paella, as the defaultdb
+has the configuration for the default installer, but you need paella
+to use it.
+
+The thing to do is:
+paella-chroot-install <profile> somewhere
+i'll write more about this part another day.
