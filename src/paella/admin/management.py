@@ -118,7 +118,8 @@ class Manager(CommandBoxWindow):
         self.cfg = PaellaConfig('database')
         self.dialogs = {}.fromkeys(['dbname', 'suitemanager'])
         apps = ['profiles', 'families', 'suitemanager', 'traitmanager', 'machines',
-                'traits', 'tdiff', 'sdiff', 'fdiff', 'default_environment', 'clients']
+                'traits', 'tdiff', 'sdiff', 'fdiff', 'default_environment', 'clients',
+                'browser']
         self.workspace = {}.fromkeys(apps)
         self.add_menu(dbcommands, 'database', self.database_command)
         self.add_menu(self.workspace.keys(), 'edit', self.edit_command)
@@ -176,6 +177,12 @@ class Manager(CommandBoxWindow):
             self.workspace[data] = DefEnvEditor(self.conn)
         elif data == 'clients':
             self.workspace[data] = ClientManager(self.conn)
+        elif data == 'browser':
+            self.workspace[data] = 'working'
+            print data
+            os.spawnlpe(os.P_NOWAIT, '/home/umeboshi/bin/paella-kde-management',
+                        '--display :0', os.environ)
+            print data, 'running'
         else:
             dialogs.Message('bad command %s' % data)
         

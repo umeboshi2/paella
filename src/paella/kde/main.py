@@ -15,6 +15,8 @@ from paella.profile.base import PaellaConnection
 from paella.db.midlevel import StatementCursor
 from paella.kde.base import MainWindow
 from paella.kde.trait import TraitMainWindow
+from paella.kde.profile import ProfileMainWindow
+from paella.kde.family import FamilyMainWindow
 
 class PaellaMainApplication(KApplication):
     def __init__(self, *args):
@@ -64,10 +66,18 @@ class PaellaMainWindow(KMainWindow):
         for row in self.cursor.select(table='suites'):
             item = KListViewItem(suite_folder, row.suite)
             item.suite = row.suite
-
+        profile_folder = KListViewItem(self.listView, 'profiles')
+        profile_folder.profiles = True
+        family_folder = KListViewItem(self.listView, 'families')
+        family_folder.families = True
+        
     def selectionChanged(self):
         current = self.listView.currentItem()
         if hasattr(current, 'suite'):
             print 'suite is', current.suite
             TraitMainWindow(self.app, self, current.suite)
-            
+        elif hasattr(current, 'profiles'):
+            ProfileMainWindow(self.app, self)
+        elif hasattr(current, 'families'):
+            print 'running families'
+            FamilyMainWindow(self.app, self)

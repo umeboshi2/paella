@@ -165,9 +165,6 @@ class ProfileEnvironment(object):
             data = TraitEnvironment(self.conn, self.env.suite, trait)
             new_items = [(k,v) for k,v in data.items() if k not in self.env.keys()]
             self.env.update(dict(new_items))
-            
-
-
 
 class Profile(StatementCursor):
     def __init__(self, conn):

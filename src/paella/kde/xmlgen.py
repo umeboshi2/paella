@@ -7,6 +7,8 @@ from konsultant.base.xmlgen import BR, HR, Bold, TR, TD, Paragraph
 from konsultant.base.xmlgen import SimpleTitleElement, RecordElement
 
 from paella.profile.trait import Trait
+from paella.profile.profile import Profile
+from paella.profile.family import Family
 
 class BaseDocument(BaseElement):
     def __init__(self, app, **atts):
@@ -20,12 +22,9 @@ class BaseDocument(BaseElement):
         while self.body.hasChildNodes():
             del self.body.childNodes[0]
 
-class TxtTD(TD):
+class TxtTD(TextElement):
     def __init__(self, text):
-        TD.__init__(self)
-        node = Text()
-        node.data = text
-        self.appendChild(node)
+        TextElement.__init__(self, 'td', text)
         
 class TraitEnvTable(RecordElement):
     def __init__(self, trait, env, **atts):
@@ -43,7 +42,6 @@ class PackageTable(BaseElement):
     def __init__(self, rows, **atts):
         BaseElement.__init__(self, 'table', **atts)
         for row in rows:
-            print row
             trow = TR()
             p = TxtTD(row.package)
             trow.appendChild(p)
@@ -55,7 +53,6 @@ class TemplateTable(BaseElement):
     def __init__(self, rows, **atts):
         BaseElement.__init__(self, 'table', **atts)
         for row in rows:
-            print row
             trow = TR()
             fake_template = ',,,'.join([row.package, row.template.replace('.', ',')])
             ta = Anchor('show.template.%s' % fake_template, row.template)
@@ -79,11 +76,8 @@ class TraitDoc(BaseDocument):
         self.body.appendChild(title)
         plist = UnorderedList()
         parents = self.trait.parents(trait=trait)
-        print self.trait.suite
-        print parents, trait
         self.body.appendChild(SectionTitle('Parents'))
         for parent in parents:
-            print 'trait parent', trait, parent
             pp = Anchor('show.parent.%s' % parent, parent)
             plist.appendChild(ListItem(pp))
         self.body.appendChild(plist)
@@ -99,7 +93,6 @@ class TraitDoc(BaseDocument):
         self.body.appendChild(SectionTitle('Variables', href='foo.var.ick'))
         if len(self.trait.environ.keys()):
             env = TraitEnvTable(trait, self.trait.environ, bgcolor='MistyRose3')
-            print 'env', self.trait.environ.keys()
             self.body.appendChild(env)
         self.body.appendChild(SectionTitle('Scripts'))
         slist = UnorderedList()
@@ -109,3 +102,80 @@ class TraitDoc(BaseDocument):
             slist.appendChild(ListItem(sa))
         self.body.appendChild(slist)
         
+class TraitTable(BaseElement):
+    def __init__(self, rows, **atts):
+        BaseElement.__init__(self, 'table', **atts)
+        hrow = TR()
+        hrow.appendChild(TxtTD(Bold('Trait')))
+        hrow.appendChild(TxtTD(Bold('Order')))
+        self.appendChild(hrow)
+        for row in rows:
+            trow = TR()
+            trow.appendChild(TxtTD(row.trait))
+            trow.appendChild(TxtTD(row.ord))
+            self.appendChild(trow)
+
+class PVarTable(BaseElement):
+    def __init__(self, rows, **atts):
+        BaseElement.__init__(self, 'table', **atts)
+        hrow = TR(bgcolor='MistyRose3')
+        hrow.appendChild(TxtTD('Trait'))
+        hrow.appendChild(TxtTD('Name'))
+        hrow.appendChild(TxtTD('Value'))
+        self.appendChild(hrow)
+        for row in rows:
+            trow = TR()
+            trow.appendChild(TxtTD(row.trait))
+            trow.appendChild(TxtTD(row.name))
+            trow.appendChild(TxtTD(row.value))
+            self.appendChild(trow)
+            
+class ProfileDoc(BaseDocument):
+    def __init__(self, app, **atts):
+        BaseDocument.__init__(self, app, **atts)
+        self.profile = Profile(self.conn)
+
+    def set_profile(self, profile):
+        self.clear_body()
+        self.profile.set_profile(profile)
+        title = SimpleTitleElement('Profile:  %s' % profile, bgcolor='IndianRed',
+                                   width='100%')
+        self.body.appendChild(title)
+        rows = self.profile.get_trait_rows()
+        self.body.appendChild(SectionTitle('Traits'))
+        if len(rows):
+            self.body.appendChild(TraitTable(rows, bgcolor='IndianRed1'))
+        self.body.appendChild(SectionTitle('Variables'))
+        erows = self.profile._env.get_rows()
+        if len(erows):
+            self.body.appendChild(PVarTable(erows, bgcolor='MistyRose2'))
+        self.body.appendChild(SectionTitle('Families'))
+        families = self.profile.get_families()
+        flist = UnorderedList()
+        for f in families:
+            flist.appendChild(ListItem(f))
+        self.body.appendChild(flist)
+        
+class FamilyDoc(BaseDocument):
+    def __init__(self, app, **atts):
+        BaseDocument.__init__(self, app, **atts)
+        self.family = Family(self.conn)
+        
+    def set_family(self, family):
+        self.family.set_family(family)
+        parents = self.family.parents()
+        erows = self.family.environment_rows()
+        self.clear_body()
+        title = SimpleTitleElement('Family:  %s' % family, bgcolor='IndianRed',
+                                   width='100%')
+        self.body.appendChild(title)
+        self.body.appendChild(SectionTitle('Parents'))
+        if len(parents):
+            plist = UnorderedList()
+            for p in parents:
+                plist.appendChild(ListItem(p))
+            self.body.appendChild(plist)
+        self.body.appendChild(SectionTitle('Variables'))
+        if len(erows):
+            self.body.appendChild(PVarTable(erows, bgcolor='MistyRose2'))
+            
