@@ -18,11 +18,13 @@ from kommon.base.gui import MainWindow
 from kommon.db import BaseDatabase
 
 from paella.kde.base.actions import ManageFamilies
+from paella.kde.base.actions import EditTemplateAction
 from paella.kde.trait import TraitMainWindow
 from paella.kde.profile import ProfileMainWindow
 from paella.kde.family import FamilyMainWindow
 from paella.kde.machine import MachineMainWindow
 from paella.kde.differ import DifferWin
+from paella.kde.environ import DefEnvWin
 
 class PaellaMainApplication(KApplication):
     def __init__(self, *args):
@@ -59,20 +61,24 @@ class PaellaMainWindow(KMainWindow):
     def initActions(self):
         collection = self.actionCollection()
         self.manageFamiliesAction = ManageFamilies(self.slotManageFamilies, collection)
+        self.editTemplatesAction = EditTemplateAction(self.slotEditTemplates, collection)
         self.quitAction = KStdAction.quit(self.app.quit, collection)
        
     def initMenus(self):
         mainMenu = KPopupMenu(self)
-        menus = [mainMenu]
+        actions = [self.manageFamiliesAction,
+                   self.editTemplatesAction,
+                   self.quitAction]
         self.menuBar().insertItem('&Main', mainMenu)
         self.menuBar().insertItem('&Help', self.helpMenu(''))
-        for menu in menus:
-            self.manageFamiliesAction.plug(menu)
-            self.quitAction.plug(menu)
+        for action in actions:
+            action.plug(mainMenu)
             
     def initToolbar(self):
         toolbar = self.toolBar()
-        actions = [self.manageFamiliesAction, self.quitAction]
+        actions = [self.manageFamiliesAction,
+                   self.editTemplatesAction,
+                   self.quitAction]
         for action in actions:
             action.plug(toolbar)
             
@@ -92,7 +98,12 @@ class PaellaMainWindow(KMainWindow):
         for dtype in ['trait', 'family']:
             item = KListViewItem(differ_folder, dtype)
             item.dtype = dtype
-        
+        environ_folder = KListViewItem(self.listView, 'environ')
+        environ_folder.environ = True
+        for etype in ['default', 'current']:
+            item = KListViewItem(environ_folder, etype)
+            item.etype = etype
+            
     def selectionChanged(self):
         current = self.listView.currentItem()
         if hasattr(current, 'suite'):
@@ -107,8 +118,12 @@ class PaellaMainWindow(KMainWindow):
         elif hasattr(current, 'dtype'):
             print 'differ', current.dtype
             DifferWin(self.app, self, current.dtype)
+        elif hasattr(current, 'etype'):
+            DefEnvWin(self.app, self, current.etype)
             
     def slotManageFamilies(self):
         print 'running families'
         FamilyMainWindow(self.app, self)
             
+    def slotEditTemplates(self):
+        print 'edit templates'

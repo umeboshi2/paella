@@ -3,14 +3,16 @@ import re
 
 from qt import SLOT, SIGNAL, Qt
 from qt import QSyntaxHighlighter
-from qt import QColor
+from qt import QColor, QWidget
+from qt import QVBoxLayout, QHBoxLayout
+from qt import QSplitter
 from qtext import QextScintilla, QextScintillaLexer
 from qtext import QextScintillaLexerPython
+
 from kdeui import KMainWindow
 from kdeui import KPopupMenu
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
-
 from kfile import KFileDialog
 
 from paella.base.template import Template
@@ -22,24 +24,13 @@ from kommon.pdb.midlevel import StatementCursor
 from kommon.base.gui import MainWindow, SimpleSplitWindow
 from kommon.base.gui import ViewWindow
 from kommon.db.gui import ViewBrowser
-from paella.kde.xmlgen import TraitDoc, PackageDoc
-
 from kommon.db.gui import RecordSelector
 
 from paella.kde.base import RecordSelectorWindow
-
-class TemplateHighlighter(QSyntaxHighlighter):
-    def highlightParagraph(self, text, endStateOfLastPara):
-        text = str(text)
-        template = Template()
-        template.set_template(text)
-        for span in template.spans():
-            font = self.textEdit().currentFont()
-            font.setBold(True)
-            color =QColor('purple')
-            length = span[1] - span[0]
-            self.setFormat(span[0], length, font, color)
-        return 0
+from paella.kde.xmlgen import TraitDoc, PackageDoc
+from paella.kde.db.gui import dbwidget
+#from paella.kde.differ import TraitList
+from paella.kde.template import TemplateEditorWindow
 
 class AnotherView(QextScintilla):
     def __init__(self, app, parent):
@@ -56,12 +47,6 @@ class AnotherView(QextScintilla):
             self.setLexer(self.lex)
         QextScintilla.setText(self, text)
 
-class SimpleEdit(KTextEdit):
-    def __init__(self, app, parent):
-        KTextEdit.__init__(self, parent)
-        self.app = app
-        self.hl = TemplateHighlighter(self)
-        
 class PackageView(ViewBrowser):
     def __init__(self, app, parent):
         ViewBrowser.__init__(self, app, parent, PackageDoc)
@@ -121,15 +106,16 @@ class TraitView(ViewBrowser):
                 self._url_error(url)
         elif action == 'edit':
             if context == 'templates':
-                win = KFileDialog('.', '*', self, 'hello file dialog', False)
-                win.show()
+                #win = KFileDialog('.', '*', self, 'hello file dialog', False)
+                #win.show()
+                win = TemplateEditorWindow(self.app, self.parent(), self.doc.suite)
             elif context == 'packages':
                 win = PackageSelectorWindow(self.app, self.parent(), self.doc.suite)
             else:
                 self._url_error(url)
         else:
             self._url_error(url)
-            
+
 class TraitMainWindow(SimpleSplitWindow):
     def __init__(self, app, parent, suite):
         SimpleSplitWindow.__init__(self, app, parent, TraitView, 'TraitMainWindow')

@@ -1,17 +1,27 @@
-from qt import SIGNAL, SLOT, Qt
-from qt import QMimeSourceFactory, QSplitter
-from qt import QGridLayout
-from qt import QFrame, QPushButton
-from qt import QLabel, QString
+from kdeui import KDialogBase
+from kdeui import KListView, KListViewItem
 
-from kdeui import KDialogBase, KLineEdit
-from kdeui import KMainWindow, KTextBrowser
-from kdeui import KStdAction, KMessageBox
-from kdeui import KListViewItem
-from kdeui import KListView, KStdGuiItem
-from kdeui import KPushButton, KStatusBar
-from kdeui import KColorButton
+from paella.profile.base import Suites
 
-from paella.base import NoExistError
-from paella.sqlgen.clause import Eq, In
-
+def dbwidget(widget, app):
+    widget.app = app
+    widget.conn = app.conn
+    widget.db = app.db
+    
+class SuiteSelector(KDialogBase):
+    def __init__(self, app, parent):
+        KDialogBase.__init__(self, parent, 'SuiteSelector')
+        dbwidget(self, app)
+        self.suites = Suites(self.conn)
+        self.listView = KListView(self)
+        self.listView.addColumn('suite')
+        self.setMainWidget(self.listView)
+        self.refreshlistView()
+        self.show()
+        
+    def refreshlistView(self):
+        self.listView.clear()
+        for suite in self.suites.list():
+            item = KListViewItem(self.listView, suite)
+            item.suite = suite
+            

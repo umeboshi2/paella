@@ -382,6 +382,11 @@ class DefaultEnvironment(VariablesConfig):
         VariablesConfig.__init__(self, conn, 'default_environment',
                                  'section', option='option')
         
+class CurrentEnvironment(VariablesConfig):
+    def __init__(self, conn):
+        VariablesConfig.__init__(self, conn, 'current_environment',
+                                 'hostname', option='name')
+        
 
 class Differ(object):
     def __init__(self, left='', right=''):

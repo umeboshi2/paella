@@ -25,11 +25,7 @@ from paella.profile.trait import TraitTemplate, TraitScript
 from paella.profile.family import Family, FamilyVariablesConfig
 
 from paella.kde.base.actions import DiffAction
-
-def dbwidget(widget, app):
-    widget.app = app
-    widget.conn = app.conn
-    widget.db = app.db
+from paella.kde.db.gui import dbwidget
     
 class SuiteCombo(MyCombo):
     def __init__(self, parent, suites, name='SuiteCombo'):
@@ -212,7 +208,7 @@ class DifferWin(KMainWindow):
     def initActions(self):
         collection = self.actionCollection()
         self.diffAction = DiffAction(self.mainView.slotDiff, collection)
-        self.quitAction = KStdAction.quit(self.app.quit, collection)
+        self.quitAction = KStdAction.quit(self.close, collection)
        
     def initMenus(self):
         mainMenu = KPopupMenu(self)
