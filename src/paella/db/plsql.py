@@ -1,6 +1,6 @@
 def header(name, params, returns):
     lines = []
-    lines.append('create or replace function %s(%s)' % (name, ','.join(params))
+    lines.append('create or replace function %s(%s)' % (name, ','.join(params)))
     lines.append("returns %s as '" % returns)
     return lines
 
