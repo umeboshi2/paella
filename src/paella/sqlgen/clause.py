@@ -75,8 +75,11 @@ class Like(CondOp):
 
 class _In(CondOp):
     def __init__(self, left, right, quoted=False, op='in'):
-        joined = ', '.join(map(quote, map(str, right)))
-        right_expr = paren(joined)
+        if type(right) is str:
+            right_expr = paren(right)
+        else:
+            joined = ', '.join(map(quote, map(str, right)))
+            right_expr = paren(joined)
         CondOp.__init__(self, left, right_expr, op, quoted=quoted)
 
 class In(_In):
