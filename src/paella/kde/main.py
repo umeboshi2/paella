@@ -6,14 +6,16 @@ from kdecore import KStandardDirs
 from kdecore import KLockFile
 
 from kdeui import KMainWindow, KSystemTray
-from kdeui import KPopupMenu
+from kdeui import KPopupMenu, KStdAction
 
 from kdeui import KListView, KListViewItem
 
 from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
-from paella.db.midlevel import StatementCursor
-from paella.kde.base import MainWindow
+
+from kommon.pdb.midlevel import StatementCursor
+from kommon.base.gui import MainWindow
+
 from paella.kde.trait import TraitMainWindow
 from paella.kde.profile import ProfileMainWindow
 from paella.kde.family import FamilyMainWindow
@@ -51,17 +53,23 @@ class PaellaMainWindow(KMainWindow):
                      SIGNAL('selectionChanged()'), self.selectionChanged)
 
     def initActions(self):
-        collection = self.actionCollection()
-        
+        collection = self.actionCollection() 
+        self.quitAction = KStdAction.quit(self.app.quit, collection)
+       
     def initMenus(self):
         mainMenu = KPopupMenu(self)
         menus = [mainMenu]
         self.menuBar().insertItem('&Main', mainMenu)
         self.menuBar().insertItem('&Help', self.helpMenu(''))
-
+        for menu in menus:
+            self.quitAction.plug(menu)
+            
     def initToolbar(self):
         toolbar = self.toolBar()
-        
+        actions = [self.quitAction]
+        for action in actions:
+            action.plug(toolbar)
+            
     def refreshListView(self):
         suite_folder = KListViewItem(self.listView, 'suites')
         for row in self.cursor.select(table='suites'):

@@ -9,9 +9,10 @@ from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
 from paella.profile.trait import Trait
 from paella.profile.profile import Profile
-from paella.db.midlevel import StatementCursor
-from paella.kde.base import MainWindow, SimpleSplitWindow
-from paella.kde.base import ViewBrowser, ViewWindow
+
+from kommon.pdb.midlevel import StatementCursor
+from kommon.base.gui import MainWindow, SimpleSplitWindow
+from kommon.base.gui import ViewBrowser, ViewWindow
 from paella.kde.xmlgen import ProfileDoc
 
 class SimpleEdit(KTextEdit):

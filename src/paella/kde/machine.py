@@ -10,11 +10,13 @@ from paella.profile.base import PaellaConnection
 from paella.profile.trait import Trait
 from paella.machines.machine import MachineHandler
 
-from paella.db.midlevel import StatementCursor
-from paella.kde.base import MainWindow, SimpleSplitWindow
-from paella.kde.base import ViewBrowser, ViewWindow
-from paella.kde.base import RecordSelector
+from kommon.pdb.midlevel import StatementCursor
+from kommon.base.gui import MainWindow, SimpleSplitWindow
+from kommon.base.gui import ViewBrowser, ViewWindow
+from kommon.db.gui import RecordSelector
+
 from paella.kde.base import RecordSelectorWindow
+
 from paella.kde.xmlgen import MachineDoc
 
 #from konsultant.db.gui import RecordSelector

@@ -8,9 +8,10 @@ from kdeui import KListView, KListViewItem
 from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
 from paella.profile.family import Family
-from paella.db.midlevel import StatementCursor
-from paella.kde.base import MainWindow, SimpleSplitWindow
-from paella.kde.base import ViewBrowser, ViewWindow
+
+from kommon.pdb.midlevel import StatementCursor
+from kommon.base.gui import MainWindow, SimpleSplitWindow
+from kommon.base.gui import ViewBrowser, ViewWindow
 from paella.kde.xmlgen import FamilyDoc
 
 class SimpleEdit(KTextEdit):

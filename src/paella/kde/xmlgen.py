@@ -1,10 +1,10 @@
 from xml.dom.minidom import Text
 
-from paella.kde.base.xmlgen import BaseElement, TextElement
-from paella.kde.base.xmlgen import Anchor, Html, Body
-from paella.kde.base.xmlgen import ListItem, UnorderedList
-from paella.kde.base.xmlgen import BR, HR, Bold, TR, TD, Paragraph
-from paella.kde.base.xmlgen import SimpleTitleElement, RecordElement
+from kommon.base.xmlgen import BaseElement, TextElement
+from kommon.base.xmlgen import Anchor, Html, Body
+from kommon.base.xmlgen import ListItem, UnorderedList
+from kommon.base.xmlgen import BR, HR, Bold, TR, TD, Paragraph
+from kommon.base.xmlgen import SimpleTitleElement, RecordElement
 
 from paella.profile.trait import Trait
 from paella.profile.profile import Profile
