@@ -150,3 +150,14 @@ Description: build a bunch of kernels
     you can define the version and patches.  You can 
     then use debuild to build the packages, and dput
     to upload them to a repository.
+
+Package: paella-defaultdb
+Section: devel
+Priority: extra
+Architecture: all
+Depends: paella-base
+Description: a default database to start with
+    The provided default database should contain
+    enough toget started.  Included are profiles and
+    traits designed to create a paella installer system.
+
