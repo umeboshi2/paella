@@ -2,9 +2,6 @@ import os
 from os.path import join
 import commands
 
-from parted import Disk, Partition, Device
-import parted
-
 from paella.base.util import makepaths
 from paella.contrib.pyparsing import Word, alphas, Literal, nums, Suppress
 from paella.contrib.pyparsing import restOfLine, Optional, Dict, ZeroOrMore

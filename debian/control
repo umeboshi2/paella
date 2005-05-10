@@ -92,7 +92,7 @@ Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-paelladb, python-parted, reiserfsprogs, xfsprogs, paella-contrib, hdparm, mdadm, mkisofs, gawk
+Depends: paella-paelladb, reiserfsprogs, xfsprogs, paella-contrib, hdparm, mdadm, mkisofs, gawk
 Description: package for nfsroot installer
     This package should be installed on the nfsroot installer
 
