@@ -1,3 +1,11 @@
+paella (0.6-2) common; urgency=low
+
+  * removed dependency on parted
+  * fixed plsql bug
+  
+
+ -- Joseph Rawson <umeboshi@bard>  Thu, 12 May 2005 21:02:04 -0500
+
 paella (0.6-1) common; urgency=low
 
   * updating documentation, and default configuration
