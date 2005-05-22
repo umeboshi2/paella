@@ -4,5 +4,5 @@ Priority: optional
 Maintainer: Joseph Rawson <umeboshi@gregscomputerservice.com>
 Build-Depends: debhelper (>= 4.0.0)
 Standards-Version: 3.6.0
-Build-Depends: modutils, kernel-package, debhelper, bin86, fakeroot, kernel-source-2.6.3,kernel-source-2.4.25,kernel-patch-cryptoloop,kernel-patch-debianlogo,kernel-patch-skas,kernel-patch-uml
+Build-Depends: modutils, kernel-package, debhelper, bin86, fakeroot, kernel-source-2.6.8,kernel-source-2.4.27,kernel-patch-cryptoloop,kernel-patch-debianlogo,kernel-patch-skas,kernel-patch-uml
 

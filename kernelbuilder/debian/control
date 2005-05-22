@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Joseph Rawson <umeboshi@gregscomputerservice.com>
 Build-Depends: debhelper (>= 4.0.0)
 Standards-Version: 3.6.0
-Build-Depends: modutils, kernel-package, debhelper, bin86, fakeroot, kernel-source-2.6.3,kernel-source-2.4.25,kernel-patch-cryptoloop,kernel-patch-debianlogo,kernel-patch-skas,kernel-patch-uml
+Build-Depends: modutils, kernel-package, debhelper, bin86, fakeroot, kernel-source-2.6.8,kernel-source-2.4.27,kernel-patch-cryptoloop,kernel-patch-debianlogo,kernel-patch-skas,kernel-patch-uml
 
-Package: kernel-image-2.6.7installer
+Package: kernel-image-2.6.8installer
 Architecture: i386
 Section: base
 Priority: optional
@@ -17,7 +17,7 @@ Description: This is the nfsroot installer kernel.
  This package contains the kernel used for the paella
  nfs installer.
 
-Package: kernel-image-2.6.7roujin
+Package: kernel-image-2.6.8roujin
 Architecture: i386
 Section: base
 Priority: optional
@@ -27,7 +27,7 @@ Suggests: lilo (>= 19.1) | grub
 Description: This is my desktop
  This package contains the kernel used for my desktop.
 
-Package: kernel-image-2.6.7bard
+Package: kernel-image-2.6.8bard
 Architecture: i386
 Section: base
 Priority: optional
@@ -37,7 +37,7 @@ Suggests: lilo (>= 19.1) | grub
 Description: This is my laptop
  This package contains the kernel used for my laptop.
 
-Package: kernel-image-2.6.7diskless
+Package: kernel-image-2.6.8diskless
 Architecture: i386
 Section: base
 Priority: optional
@@ -58,7 +58,7 @@ Description: This is the kernel for a generic server
  This kernel is designed for an arbitrary server.
  This kernel is used in the standard installs.
 
-Package: kernel-image-2.6.7shuttl
+Package: kernel-image-2.6.8shuttl
 Architecture: i386
 Section: base
 Priority: optional
