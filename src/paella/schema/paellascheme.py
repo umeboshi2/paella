@@ -1,9 +1,11 @@
 import os
 
 from paella.base import Error, debug
-from paella.base.util import ujoin
+from paella.base.util import ujoin, makepaths
+from paella.base.util import readfile, wget, strfile
 
 from paella.debian.repos import LocalRepos
+from paella.debian.repos import RemoteRepos
 
 from paella.sqlgen.classes import Column, Table
 from paella.sqlgen.defaults import Text, DefaultNamed, Bool
@@ -145,29 +147,51 @@ def make_suite(cursor, suite):
     map(cursor.create_table, tables)
     cursor.execute(grant_public([x.name for x in tables]))
 
+def update_uri(source, ext):
+        source.uri = os.path.join(source.uri, ext)
+
+def update_remote_uri(repos, ext):
+    update_uri(repos.source, ext)
+    update_uri(repos.local.source, ext)
+    
+def update_local_packagelist(repos, localdist, localsuite):
+    repos.source.sections = []
+    repos.local.source.sections = []
+    update_remote_uri(repos, localdist)
+    repos.source.suite = localsuite
+    repos.local.source.suite = localsuite
+    rurl = os.path.join(repos.source.uri, repos.source.suite, 'Packages.gz')
+    lpath = os.path.join(repos.local.source.uri, repos.local.source.suite, 'Packages.gz')[5:]
+    makepaths(os.path.dirname(lpath))
+    if not os.path.isfile(lpath):
+        print rurl, lpath, 'rurl, lpath'
+        wget(rurl, lpath)
+
 def insert_packages(cfg, cursor, suite, quick=False):
-    source = 'deb file:/mirrors/debian %s main contrib non-free' %suite
-    rp = LocalRepos(source)
-    rp.parse_release()
-    insert_suite_packages(cursor, rp)
+    source = 'deb %s %s main contrib non-free' % (cfg.get('debrepos', 'http_mirror'), suite)
+    lsource = 'deb file:/tmp/paellamirror %s main contrib non-free' % suite
+    #source = 'deb file:/mirrors/debian %s main contrib non-free' %suite
+    rp = RemoteRepos(source, lsource)
+    rp.update()
+    rp.local.parse_release()
+    insert_suite_packages(cursor, rp.local)
     suites = cursor.as_dict('suites', 'suite')
     if suites[suite]['nonus'] == True:
         rp.source.suite += "/non-US"
+        rp.local.source.suite += "/non-US"
         rp.source.set_path()
-        rp.parse_release()
-        insert_suite_packages(cursor, rp, quick=quick)
+        rp.local.source.set_path()
+        rp.update()
+        rp.local.parse_release()
+        insert_suite_packages(cursor, rp.local, quick=quick)
     if suites[suite]['local'] == True:
-        rp = LocalRepos(source)
-        rp.source.sections = []
-        rp.source.uri = os.path.join(rp.source.uri, 'local')
-        rp.source.suite += '/'
-        insert_more_packages(cursor, rp, suite=suite, quick=quick)
+        rp = RemoteRepos(source, lsource)
+        update_local_packagelist(rp, 'local', '%s/' % suite)
+        insert_more_packages(cursor, rp.local, suite=suite, quick=quick)
     if suites[suite]['common'] == True:
-        rp = LocalRepos(source)
-        rp.source.sections = []
-        rp.source.uri = os.path.join(rp.source.uri, 'local')
-        rp.source.suite = 'common/'
-        insert_more_packages(cursor, rp, suite=suite, quick=quick)
+        rp = RemoteRepos(source, lsource)
+        update_local_packagelist(rp, 'local', 'common/')
+        insert_more_packages(cursor, rp.local, suite=suite, quick=quick)
 
 def start_schema(conn):
     cursor = StatementCursor(conn, 'start_schema')
