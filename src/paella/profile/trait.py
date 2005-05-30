@@ -477,6 +477,8 @@ class Trait(object):
             return rows
 
     def packages(self, trait=None, action=False):
+        if trait is None:
+            trait = self.current_trait
         rows = self._packages.packages([trait])
         if action:
             return rows
