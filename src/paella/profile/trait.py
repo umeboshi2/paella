@@ -128,11 +128,19 @@ class TraitParent(_TraitRelation):
         self.insert('parent', parents)
         
 
-    def delete(self, parents):
+    def delete(self, parents=[]):
         print parents, 'PARENTS'
         clause = In('parent', parents) & Eq('trait', self.current_trait)
         self.cmd.delete(clause=clause)
         self.reset_clause()
+
+    def delete_trait(self, trait=None):
+        if trait is None:
+            trait = self.current_trait
+        clause = Eq('trait', trait)
+        self.cmd.delete(clause=clause)
+        self.reset_clause()
+        
         
 class TraitTemplate(_TraitRelation):
     def __init__(self, conn, suite):

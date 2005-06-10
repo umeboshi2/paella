@@ -182,12 +182,15 @@ class NewInstaller(object):
         if self._raid_setup:
             mdpath = join(self.target, 'etc/mdadm')
             makepaths(mdpath)
-            mdconf = file(join(mdpath, 'mdadm.conf'), 'w')
+            mdconfname = join(mdpath, 'mdadm.conf')
+            mdconf = file(mdconfname, 'w')
             for diskname in self._raid_drives:
                 devices = ['%s*' % d for d in self._raid_drives[diskname]]
                 line = 'DEVICE %s' % ' '.join(devices)
                 mdconf.write(line + '\n')
-            arrdata = commands.getoutput('mdadm -E -s')
+            mdconf.close()
+            mdconf = file(mdconfname, 'a')
+            arrdata = commands.getoutput('mdadm -E --config=%s -s' % mdconfname)
             mdconf.write(arrdata + '\n')
             mdconf.write('\n')
             mdconf.close()

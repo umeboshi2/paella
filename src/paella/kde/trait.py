@@ -31,6 +31,7 @@ from paella.kde.xmlgen import TraitDoc, PackageDoc
 from paella.kde.db.gui import dbwidget
 #from paella.kde.differ import TraitList
 from paella.kde.template import TemplateEditorWindow
+from paella.kde.template import SimpleEdit
 
 class AnotherView(QextScintilla):
     def __init__(self, app, parent):

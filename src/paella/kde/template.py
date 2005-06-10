@@ -26,7 +26,7 @@ class TemplateHighlighter(QSyntaxHighlighter):
         for span in template.spans():
             font = self.textEdit().currentFont()
             font.setBold(True)
-            color =QColor('purple')
+            color =QColor('blue')
             length = span[1] - span[0]
             self.setFormat(span[0], length, font, color)
         return 0
