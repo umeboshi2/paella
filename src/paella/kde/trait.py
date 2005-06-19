@@ -20,11 +20,11 @@ from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
 from paella.profile.trait import Trait
 
-from kommon.pdb.midlevel import StatementCursor
-from kommon.base.gui import MainWindow, SimpleSplitWindow
-from kommon.base.gui import ViewWindow
-from kommon.db.gui import ViewBrowser
-from kommon.db.gui import RecordSelector
+from useless.db.midlevel import StatementCursor
+from useless.kbase.gui import MainWindow, SimpleSplitWindow
+from useless.kbase.gui import ViewWindow
+from useless.kdb.gui import ViewBrowser
+from useless.kdb.gui import RecordSelector
 
 from paella.kde.base import RecordSelectorWindow
 from paella.kde.xmlgen import TraitDoc, PackageDoc

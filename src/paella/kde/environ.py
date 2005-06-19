@@ -2,23 +2,16 @@ from ConfigParser import RawConfigParser
 
 from qt import SIGNAL, SLOT, Qt
 from qt import QWidget
-#from qt import QVBoxLayout, QHBoxLayout
 
 from kdeui import KMainWindow, KPushButton
 from kdeui import KListView, KListViewItem
 from kdeui import KStdAction, KPopupMenu
-#from kdeui import KComboBox
-#from kommon.base.gui import MyCombo
 from kfile import KFileDialog
 
 from paella.sqlgen.clause import Eq
 from paella.db.midlevel import StatementCursor
 from paella.profile.base import DefaultEnvironment
 from paella.profile.base import CurrentEnvironment
-
-#from paella.profile.base import Differ, Suites, Traits
-#from paella.profile.trait import TraitTemplate, TraitScript
-#from paella.profile.family import Family, FamilyVariablesConfig
 
 from paella.kde.db.gui import dbwidget
 from paella.kde.base.actions import EditAction

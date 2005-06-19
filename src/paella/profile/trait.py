@@ -451,7 +451,7 @@ class TraitDebconf(_TraitRelation):
         return all_owners
     
 class Trait(object):
-    def __init__(self, conn, suite='woody'):
+    def __init__(self, conn, suite='sarge'):
         object.__init__(self)
         self.conn = conn
         self.suite = suite

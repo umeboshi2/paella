@@ -10,16 +10,14 @@ from paella.profile.base import PaellaConnection
 from paella.profile.trait import Trait
 from paella.machines.machine import MachineHandler
 
-from kommon.pdb.midlevel import StatementCursor
-from kommon.base.gui import MainWindow, SimpleSplitWindow
-from kommon.base.gui import ViewWindow
-from kommon.db.gui import RecordSelector, ViewBrowser
+from useless.db.midlevel import StatementCursor
+from useless.kbase.gui import MainWindow, SimpleSplitWindow
+from useless.kbase.gui import ViewWindow
+from useless.kdb.gui import RecordSelector, ViewBrowser
 
 from paella.kde.base import RecordSelectorWindow
 
 from paella.kde.xmlgen import MachineDoc
-
-#from konsultant.db.gui import RecordSelector
 
 class SimpleEdit(KTextEdit):
     def __init__(self, app, parent):
@@ -92,6 +90,10 @@ class MachineMainWindowOrig(SimpleSplitWindow):
 class MachineMainWindow(RecordSelectorWindow):
     def __init__(self, app, parent):
         RecordSelectorWindow.__init__(self, app, parent, MachineSelector, 'MachineMainWindow')
+
+    def selectionChanged(self):
+        current = self.listView.currentItem()
+        self.view.set_machine(current.machine)
         
 if __name__ == '__main__':
     cfg = PaellaConfig()

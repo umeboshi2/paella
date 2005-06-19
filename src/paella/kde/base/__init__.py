@@ -63,6 +63,7 @@ class SimpleRecordDialog(KDialogBase):
         self.showButtonApply(False)
         self.setButtonOKText('insert', 'insert')
         self.show()
+
 class RecordSelectorWindow(KMainWindow):
     def __init__(self, app, parent, recselector, name):
         KMainWindow.__init__(self, parent, name)

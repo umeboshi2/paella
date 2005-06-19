@@ -1,22 +1,13 @@
-#from qt import QSplitter, QPixmap, QGridLayout
-#from qt import QLabel, QFrame, QString
 from qt import SIGNAL, SLOT, Qt
-#from qt import QMimeSourceFactory
-#from qt import QCheckBox
 from qt import QWidget
 from qt import QVBoxLayout, QHBoxLayout
 
-#from kdecore import KConfigDialogManager
-#from kdecore import KAboutData
 from kdeui import KMainWindow, KPushButton
-#from kdeui import KMessageBox, KAboutDialog
 from kdeui import KListView, KListViewItem
-#from kdeui import KDialogBase, KLineEdit
-#from kdeui import KTextBrowser, KPopupMenu
 from kdeui import KStdAction, KPopupMenu
-#from kdeui import KTabWidget
 from kdeui import KComboBox
-from kommon.base.gui import MyCombo
+
+from useless.kbase.gui import MyCombo
 
 from paella.sqlgen.clause import Eq
 

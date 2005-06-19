@@ -13,9 +13,9 @@ from kdeui import KListView, KListViewItem
 from paella.profile.base import PaellaConfig
 from paella.profile.base import PaellaConnection
 
-from kommon.pdb.midlevel import StatementCursor
-from kommon.base.gui import MainWindow
-from kommon.db import BaseDatabase
+from useless.db.midlevel import StatementCursor
+from useless.kbase.gui import MainWindow
+from useless.kdb import BaseDatabase
 
 from paella.kde.base.actions import ManageFamilies
 from paella.kde.base.actions import EditTemplateAction
