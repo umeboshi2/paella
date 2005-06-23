@@ -2,14 +2,14 @@ import os
 from os.path import join
 import commands
 
-from paella.base.util import makepaths
+from useless.base.util import makepaths
 from paella.contrib.pyparsing import Word, alphas, Literal, nums, Suppress
 from paella.contrib.pyparsing import restOfLine, Optional, Dict, ZeroOrMore
 from paella.contrib.pyparsing import Group
 
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.statement import Statement
-from paella.sqlgen.clause import Eq
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.statement import Statement
+from useless.sqlgen.clause import Eq
 
 
 

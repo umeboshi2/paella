@@ -6,9 +6,9 @@ import email
 from apt_pkg import ParseTagFile
 
 
-from paella.base import debug, Error
-from paella.base.util import gunzip, bunzip
-from paella.base.util import readfile
+from useless.base import debug, Error
+from useless.base.util import gunzip, bunzip
+from useless.base.util import readfile
 
 SRCPATH = 'source'
 

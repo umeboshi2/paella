@@ -1,7 +1,7 @@
 import os, sys
 from os.path import isfile, isdir, join
 
-from paella.base.util import makepaths
+from useless.base.util import makepaths
 
 from paella.debian.dpkgdeb import DpkgDeb
 from paella.profile.base import PaellaConfig

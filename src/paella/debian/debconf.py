@@ -5,8 +5,8 @@ import rfc822
 from apt_pkg import ParseTagFile
 
 
-from paella.base import debug, Error
-from paella.base.util import strfile
+from useless.base import debug, Error
+from useless.base.util import strfile
 
 
 def _parse_tagfile(filename, function):

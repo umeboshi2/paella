@@ -1,14 +1,14 @@
 from pyPgSQL.libpq import IntegrityError, OperationalError
-from paella.base import Error
-from paella.db.pg_special import get_pkey_info, get_attributes
-from paella.db.lowlevel import BaseConnection
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq, SimpleClause
-from paella.gtk.middle import ListNoteBook, ScrollCList
-from paella.gtk.windows import CommandBoxWindow
-from paella.gtk.helpers import HasDialogs, make_menu, HasListbox
-from paella.gtk import dialogs
-from paella.gtk.dialog_helpers import get_single_row
+from useless.base import Error
+from useless.db.pg_special import get_pkey_info, get_attributes
+from useless.db.lowlevel import BaseConnection
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq, SimpleClause
+from useless.gtk.middle import ListNoteBook, ScrollCList
+from useless.gtk.windows import CommandBoxWindow
+from useless.gtk.helpers import HasDialogs, make_menu, HasListbox
+from useless.gtk import dialogs
+from useless.gtk.dialog_helpers import get_single_row
 from gtk import ScrolledWindow
 
 def make_record_dialog(parent, name, row, okfun, pkey, fields, cdata):
@@ -291,8 +291,8 @@ class BrowserWin(CommandBoxWindow):
         self.vbox.add(self.browser)
 
 if __name__ == '__main__':
-    from paella.base.config import Configuration
-    from paella.db.lowlevel import QuickConn
+    from useless.base.config import Configuration
+    from useless.db.lowlevel import QuickConn
     from gtk import mainloop, mainquit
     from paella.profile.base import PaellaConnection
     conn = PaellaConnection()

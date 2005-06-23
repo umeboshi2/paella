@@ -2,9 +2,9 @@ import os
 from os.path import isfile, join, dirname
 import tarfile
 
-from paella.base.defaults import MB
-from paella.base.util import makepaths
-from paella.base.tarball import make_tarball
+from useless.base.defaults import MB
+from useless.base.util import makepaths
+from useless.base.tarball import make_tarball
 
 from paella.debian.base import RepositorySource, debootstrap
 from paella.profile.base import get_suite

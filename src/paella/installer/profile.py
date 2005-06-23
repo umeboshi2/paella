@@ -2,10 +2,10 @@ import os
 from os.path import isdir, isfile, join, basename, dirname
 import logging
 
-from paella.base import UnbornError, Log
-from paella.base.util import ujoin, makepaths
+from useless.base import UnbornError, Log
+from useless.base.util import ujoin, makepaths
 
-from paella.db.midlevel import Environment
+from useless.db.midlevel import Environment
 
 from paella.debian.base import RepositorySource
 from paella.debian.debconf import install_debconf
@@ -153,8 +153,8 @@ def install_packages_uml(conn, suite, profile, target):
     os.system('chroot %s apt-get -y install %s' % (target, packages))
               
 if __name__ == '__main__':
-    from paella.db.midlevel import StatementCursor
-    from paella.db.midlevel import Environment, TableDict
+    from useless.db.midlevel import StatementCursor
+    from useless.db.midlevel import Environment, TableDict
     from base import PaellaConnection
     c = PaellaConnection()
     cfg = PaellaConfig()

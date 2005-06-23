@@ -7,14 +7,14 @@ from xml.dom.minidom import parse as parse_file
 
 from kjbuckets import kjGraph
 
-from paella.base import ExistsError, UnbornError, Error, debug
-from paella.base.xmlfile import TextElement
-from paella.base.util import ujoin, makepaths, filecopy, strfile, RefDict
-from paella.base.tarball import make_tarball
+from useless.base import ExistsError, UnbornError, Error, debug
+from useless.base.xmlfile import TextElement
+from useless.base.util import ujoin, makepaths, filecopy, strfile, RefDict
+from useless.base.tarball import make_tarball
 
-from paella.sqlgen.clause import one_many, Eq, In, NotIn
+from useless.sqlgen.clause import one_many, Eq, In, NotIn
 
-from paella.db.midlevel import StatementCursor
+from useless.db.midlevel import StatementCursor
 
 from xmlparse import TraitParser
 

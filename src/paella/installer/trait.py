@@ -1,8 +1,8 @@
 import os
 from os.path import join, dirname, isfile, isdir
 
-from paella.base import Error
-from paella.base.util import makepaths
+from useless.base import Error
+from useless.base.util import makepaths
 from paella.debian.debconf import copy_configdb
 from paella.profile.trait import TraitPackage, TraitTemplate, TraitDebconf
 from paella.profile.trait import TraitScript

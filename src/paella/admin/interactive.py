@@ -1,11 +1,11 @@
-from paella.base.config import Configuration
-from paella.db.lowlevel import QuickConn
-from paella.db.midlevel import StatementCursor
+from useless.base.config import Configuration
+from useless.db.lowlevel import QuickConn
+from useless.db.midlevel import StatementCursor
 
-from paella.gtk import dialogs
-from paella.gtk.simple import SimpleMenu
-from paella.gtk.middle import ScrollCList
-from paella.gtk.windows import MenuWindow
+from useless.gtk import dialogs
+from useless.gtk.simple import SimpleMenu
+from useless.gtk.middle import ScrollCList
+from useless.gtk.windows import MenuWindow
 
 
 #statement_atts = ['select', 'update', 'insert', 'tables',

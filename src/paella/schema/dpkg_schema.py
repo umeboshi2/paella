@@ -1,7 +1,7 @@
 
-from paella.sqlgen.classes import Column, Table
-from paella.sqlgen.defaults import Text
-from paella.sqlgen.defaults import PkBigname, Bigname, Name, Num
+from useless.sqlgen.classes import Column, Table
+from useless.sqlgen.defaults import Text
+from useless.sqlgen.defaults import PkBigname, Bigname, Name, Num
 
 dpkg_tables = ['available', 'status', 'filelist', 'md5sums', 'conffiles']
 other_tables = ['current']

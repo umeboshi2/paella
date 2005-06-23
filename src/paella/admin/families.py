@@ -3,16 +3,16 @@ import os
 from operator import and_
 from sets import Set
 
-from paella.gtk.base import right_click_pressed, FlavoredTargets
-from paella.gtk.base import rowpacker, set_receive_targets
-from paella.gtk.simple import SimpleMenu, SimpleMenuBar
-from paella.gtk import dialogs
-from paella.gtk.middle import ListNoteBook, ScrollCList
-from paella.gtk.windows import CommandBoxWindow
-from paella.gtk.helpers import make_menu, right_click_menu, HasDialogs
+from useless.gtk.base import right_click_pressed, FlavoredTargets
+from useless.gtk.base import rowpacker, set_receive_targets
+from useless.gtk.simple import SimpleMenu, SimpleMenuBar
+from useless.gtk import dialogs
+from useless.gtk.middle import ListNoteBook, ScrollCList
+from useless.gtk.windows import CommandBoxWindow
+from useless.gtk.helpers import make_menu, right_click_menu, HasDialogs
 
-from paella.base import debug, Error
-from paella.sqlgen.clause import Eq
+from useless.base import debug, Error
+from useless.sqlgen.clause import Eq
 from paella.profile.family import Family, FamilyVariablesConfig
 
 from traitgen import DragListWindow

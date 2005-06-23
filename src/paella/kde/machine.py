@@ -1,7 +1,8 @@
 import os
 from qt import SLOT, SIGNAL, Qt
+from kdecore import KIconLoader
 from kdeui import KMainWindow
-from kdeui import KPopupMenu
+from kdeui import KPopupMenu, KStdAction
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 
@@ -16,8 +17,23 @@ from useless.kbase.gui import ViewWindow
 from useless.kdb.gui import RecordSelector, ViewBrowser
 
 from paella.kde.base import RecordSelectorWindow
+from paella.kde.base.actions import ManageMachinesAction
+from paella.kde.base.actions import ManageMachineTypesAction
+from paella.kde.base.actions import ManageFilesystemsAction
+from paella.kde.base.actions import ManageDisksAction
+from paella.kde.base.actions import ManageMountsAction
+from paella.kde.base.actions import ManageKernelsAction
 
 from paella.kde.xmlgen import MachineDoc
+
+ManageActions = {
+    'machine' : ManageMachinesAction,
+    'machine_type' : ManageMachineTypesAction,
+    'filesystem' : ManageFilesystemsAction,
+    'disk' : ManageDisksAction,
+    'mount' : ManageMountsAction,
+    'kernels' : ManageKernelsAction
+    }
 
 class SimpleEdit(KTextEdit):
     def __init__(self, app, parent):
@@ -46,54 +62,75 @@ class MachineView(ViewBrowser):
     def setSource(self, url):
         KMessageBox.information(self, 'called %s' % url)
 
-class MachineMainWindowOrig(SimpleSplitWindow):
+
+class MachineMainWindowOrig(RecordSelectorWindow):
     def __init__(self, app, parent):
-        SimpleSplitWindow.__init__(self, app, parent, MachineView, 'MachineMainWindow')
+        RecordSelectorWindow.__init__(self, app, parent,
+                                      MachineSelector, 'MachineMainWindow')
+
+    def selectionChanged(self):
+        current = self.listView.currentItem()
+        self.view.set_machine(current.machine)
+
+class MachineMainWindow(KMainWindow):
+    def __init__(self, app, parent):
+        KMainWindow.__init__(self, parent)
         self.app = app
+        self.icons = KIconLoader()
         self.initActions()
         self.initMenus()
         self.initToolbar()
         self.conn = app.conn
         self.cfg = app.cfg
-        self.machine = MachineHandler(self.conn)
         self.cursor = StatementCursor(self.conn)
-        self.refreshListView()
-        self.resize(600, 800)
-        self.setCaption('paella machines')
-        
+        #self.listView = KListView(self)
+        #self.listView.setRootIsDecorated(True)
+        #self.listView.addColumn('widget')
+        #self.setCentralWidget(self.listView)
+        #self.refreshListView()
+        #self.connect(self.listView,
+        #             SIGNAL('selectionChanged()'), self.selectionChanged)
+        self.show()
+
     def initActions(self):
         collection = self.actionCollection()
-        
+        self.quitAction = KStdAction.quit(self.app.quit, collection)
+        self._manage_actions = {}
+        for k,v in ManageActions.items():
+            self._manage_actions[k] = v(self.slotManageSomething, collection)
+            
     def initMenus(self):
         mainMenu = KPopupMenu(self)
-        menus = [mainMenu]
+        actions = self._manage_actions.values()
+        actions += [self.quitAction]
         self.menuBar().insertItem('&Main', mainMenu)
         self.menuBar().insertItem('&Help', self.helpMenu(''))
-
+        for action in actions:
+            action.plug(mainMenu)
+            
     def initToolbar(self):
         toolbar = self.toolBar()
-
-    def initlistView(self):
-        self.listView.setRootIsDecorated(True)
-        self.listView.addColumn('group')
-        
+        actions = self._manage_actions.values()
+        actions += [self.quitAction]
+        for action in actions:
+            action.plug(toolbar)
+            
     def refreshListView(self):
-        mrows = self.machine.mtypes.select(fields=['machine'], table='machines', order='machine')
-        for row in mrows:
-            item = KListViewItem(self.listView, row.machine)
-            item.machine = row.machine
-
+        machine_folder = KListViewItem(self.listView, 'machines')
+                    
     def selectionChanged(self):
         current = self.listView.currentItem()
-        self.view.set_machine(current.machine)
+        print current, dir(current)
+            
+    def slotManageFamilies(self):
+        print 'running families'
+        FamilyMainWindow(self.app, self)
+            
+    def slotEditTemplates(self):
+        print 'edit templates'
 
-class MachineMainWindow(RecordSelectorWindow):
-    def __init__(self, app, parent):
-        RecordSelectorWindow.__init__(self, app, parent, MachineSelector, 'MachineMainWindow')
-
-    def selectionChanged(self):
-        current = self.listView.currentItem()
-        self.view.set_machine(current.machine)
+    def slotManageSomething(self):
+        print 'manage something'
         
 if __name__ == '__main__':
     cfg = PaellaConfig()

@@ -1,6 +1,6 @@
 from xml.dom.minidom import Element
 
-from paella.base.xmlfile import TextElement, DictElement
+from useless.base.xmlfile import TextElement, DictElement
 
 
 #generate and reform xml

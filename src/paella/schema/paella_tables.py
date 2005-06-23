@@ -1,12 +1,12 @@
-from paella.base import Error, debug
-from paella.base.util import ujoin
+from useless.base import Error, debug
+from useless.base.util import ujoin
 
-from paella.sqlgen.classes import Table, Sequence
-from paella.sqlgen.defaults import Text, DefaultNamed, Bool, PkNum
-from paella.sqlgen.defaults import PkBigname, Bigname, Name, Num, Oid
-from paella.sqlgen.defaults import PkBignameTable, PkNameTable, PkName
-from paella.sqlgen.defaults import RelationalTable
-from paella.sqlgen.statement import Statement
+from useless.sqlgen.classes import Table, Sequence
+from useless.sqlgen.defaults import Text, DefaultNamed, Bool, PkNum
+from useless.sqlgen.defaults import PkBigname, Bigname, Name, Num, Oid
+from useless.sqlgen.defaults import PkBignameTable, PkNameTable, PkName
+from useless.sqlgen.defaults import RelationalTable
+from useless.sqlgen.statement import Statement
 
 PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
 SUITES = ['sid', 'woody'] 
@@ -449,8 +449,8 @@ def primary_tables():
 
 
 if __name__ == '__main__':
-    from paella.db.midlevel import StatementCursor
-    from paella.sqlgen.statement import Statement
+    from useless.db.midlevel import StatementCursor
+    from useless.sqlgen.statement import Statement
     from paella.debian.base import parse_packages, full_parse
     from paella.profile.base import PaellaConnection
     def dtable():

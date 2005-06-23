@@ -1,17 +1,17 @@
-from paella.base import Error, debug
+from useless.base import Error, debug
 
-from paella.base.util import ujoin
-from paella.base.defaults import DELIMITERS
+from useless.base.util import ujoin
+from useless.base.defaults import DELIMITERS
 
-from paella.gtk.base import right_click_pressed
-from paella.gtk.simple import SimpleMenu
-from paella.gtk.middle import ListNoteBook, FieldEntryVbox
-from paella.gtk.middle import RecordBox
-from paella.gtk.windows import MenuWindow
-from paella.gtk.helpers import populate_menu, make_menu
-from paella.gtk import dialogs
+from useless.gtk.base import right_click_pressed
+from useless.gtk.simple import SimpleMenu
+from useless.gtk.middle import ListNoteBook, FieldEntryVbox
+from useless.gtk.middle import RecordBox
+from useless.gtk.windows import MenuWindow
+from useless.gtk.helpers import populate_menu, make_menu
+from useless.gtk import dialogs
 
-from paella.db.midlevel import StatementCursor, Environment
+from useless.db.midlevel import StatementCursor, Environment
 
 from paella.profile.base import PaellaConnection, TraitEnvironment
 from paella.profile.base import get_suite, PaellaConfig

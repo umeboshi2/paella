@@ -1,22 +1,22 @@
 import os
 import tempfile
-from paella.base import Error, debug
+from useless.base import Error, debug
 
-from paella.base.util import ujoin
-from paella.base.defaults import DELIMITERS
+from useless.base.util import ujoin
+from useless.base.defaults import DELIMITERS
 
-from paella.gtk.base import right_click_pressed, select_a_file
-from paella.gtk.simple import SimpleMenu, TextScroll
-from paella.gtk.middle import ListNoteBook, FieldEntryVbox
-from paella.gtk.middle import RecordBox, ScrollCList
-from paella.gtk.windows import MenuWindow, CommandBoxWindow
-from paella.gtk.helpers import populate_menu, make_menu
-from paella.gtk import dialogs
+from useless.gtk.base import right_click_pressed, select_a_file
+from useless.gtk.simple import SimpleMenu, TextScroll
+from useless.gtk.middle import ListNoteBook, FieldEntryVbox
+from useless.gtk.middle import RecordBox, ScrollCList
+from useless.gtk.windows import MenuWindow, CommandBoxWindow
+from useless.gtk.helpers import populate_menu, make_menu
+from useless.gtk import dialogs
 
 from paella.debian.debconf import parse_debconf
 from paella.debian.debconf import parse_debconf_template
 
-from paella.db.midlevel import StatementCursor, Environment
+from useless.db.midlevel import StatementCursor, Environment
 
 from paella.profile.base import PaellaConnection, TraitEnvironment, Traits
 from paella.profile.trait import TraitDebconf

@@ -1,5 +1,5 @@
-from paella.base.xmlfile import ParserHelper
-from paella.base import Error
+from useless.base.xmlfile import ParserHelper
+from useless.base import Error
 
 from base import Mount, Partition, FilesystemMount, MachineDisk
 from base import Machine, MachineType, Disk, Filesystem, MachineModules

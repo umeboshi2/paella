@@ -1,9 +1,9 @@
 import os
 import commands
 
-from paella.base import Error
-from paella.base.defaults import MB
-from paella.base.util import makepaths
+from useless.base import Error
+from useless.base.defaults import MB
+from useless.base.util import makepaths
 from paella.installer.util import make_sources_list, set_root_passwd
 from paella.installer.util import myline, make_fstab, make_filesystem, mount_tmp
 from paella.installer.util import ready_base_for_install as _ready_base_for_install

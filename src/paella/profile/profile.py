@@ -6,15 +6,15 @@ from xml.dom.minidom import Element
 from xml.dom.minidom import parse as parse_file
 from xml.dom.minidom import parseString as parse_string
 
-from paella.base import UnbornError, Error, debug
-from paella.base.xmlfile import TextElement
-from paella.base.util import ujoin, makepaths
+from useless.base import UnbornError, Error, debug
+from useless.base.xmlfile import TextElement
+from useless.base.util import ujoin, makepaths
 
-from paella.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq
 
-from paella.db.midlevel import StatementCursor, SimpleRelation
-from paella.db.midlevel import Environment
-from paella.db.lowlevel import OperationalError
+from useless.db.midlevel import StatementCursor, SimpleRelation
+from useless.db.midlevel import Environment
+from useless.db.lowlevel import OperationalError
 
 from paella.schema.paellascheme import insert_packages, make_suite
 from paella.schema.paellascheme import start_schema

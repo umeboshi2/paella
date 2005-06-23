@@ -1,7 +1,7 @@
 import os
 from os.path import isfile, join, dirname
 
-from paella.base.util import makepaths
+from useless.base.util import makepaths
 from paella.debian.base import debootstrap, Debootstrap
 from paella.installer.util import remove_debs
 

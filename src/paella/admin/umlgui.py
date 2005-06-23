@@ -1,12 +1,12 @@
 import os
 from ConfigParser import RawConfigParser
 
-from paella.base import Error, debug
-from paella.base.config import Configure, list_rcfiles
+from useless.base import Error, debug
+from useless.base.config import Configure, list_rcfiles
 
-from paella.gtk import dialogs
-from paella.gtk.simple import TextScroll
-from paella.gtk.middle import ListNoteBook
+from useless.gtk import dialogs
+from useless.gtk.simple import TextScroll
+from useless.gtk.middle import ListNoteBook
 
 from gtk import mainloop, mainquit
 

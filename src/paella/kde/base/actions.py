@@ -2,7 +2,8 @@ from qt import QString
 from kdecore import KShortcut
 from kdeui import KGuiItem, KAction
 
-from kommon.base.actions import BaseItem
+from useless.kbase.actions import BaseItem
+
 class BaseAction(KAction):
     def __init__(self, item, name, slot, parent):
         cut = KShortcut()
@@ -77,3 +78,64 @@ class ChangeSuiteItem(BaseItem):
 class ChangeSuiteAction(BaseAction):
     def __init__(self, slot, parent):
         BaseAction.__init__(self, ChangeSuiteItem(), 'ChangeSuite', slot, parent)
+
+class ManageMachinesItem(BaseItem):
+    def __init__(self):
+        BaseItem.__init__(self, 'manage machines', 'camera',
+                          'manage machines', 'manage machines')
+
+class ManageMachinesAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageMachinesItem(), 'ManageMachines', slot, parent)
+
+class ManageMachineTypesItem(BaseItem):
+    def __init__(self):
+        comment = 'manage machine types'
+        BaseItem.__init__(self, comment, 'memory', comment, comment)
+
+class ManageMachineTypesAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageMachineTypesItem(), 'ManageMachineTypes',
+                            slot, parent)
+
+class ManageFilesystemsItem(BaseItem):
+    def __init__(self):
+        comment = 'manage filesystems'
+        BaseItem.__init__(self, comment, 'misc', comment, comment)
+
+class ManageFilesystemsAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageFilesystemsItem(), 'ManageFilesystems',
+                            slot, parent)
+
+class ManageDisksItem(BaseItem):
+    def __init__(self):
+        comment = 'manage disks'
+        BaseItem.__init__(self, comment, 'misc', comment, comment)
+
+class ManageDisksAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageDisksItem(), 'ManageDisks',
+                            slot, parent)
+
+class ManageMountsItem(BaseItem):
+    def __init__(self):
+        comment = 'manage mounts'
+        BaseItem.__init__(self, comment, 'misc', comment, comment)
+
+class ManageMountsAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageMountsItem(), 'ManageMounts',
+                            slot, parent)
+
+class ManageKernelsItem(BaseItem):
+    def __init__(self):
+        comment = 'manage kernels'
+        BaseItem.__init__(self, comment, 'misc', comment, comment)
+
+class ManageKernelsAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageKernelsItem(), 'ManageKernels',
+                            slot, parent)
+
+        

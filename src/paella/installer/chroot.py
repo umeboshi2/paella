@@ -1,12 +1,12 @@
 import os
 from os.path import join
 
-from paella.base import Error
-from paella.base.util import makepaths, runlog
+from useless.base import Error
+from useless.base.util import makepaths, runlog
 from paella.debian.base import debootstrap
 from paella.profile.base import PaellaConnection, get_suite, PaellaConfig
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq, Gt
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq, Gt
 
 
 #from base import Installer

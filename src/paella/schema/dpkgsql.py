@@ -1,10 +1,10 @@
-from paella.base.util import ujoin
+from useless.base.util import ujoin
 
 from paella.debian.dpkg import ConfigObject
 
-from paella.db.lowlevel import QuickConn
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.write import insert
+from useless.db.lowlevel import QuickConn
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.write import insert
 
 from paella.schema.dpkg_schema import FilelistTable, Md5sumsTable
 from paella.schema.dpkg_schema import StatusTable, AvailableTable
@@ -98,7 +98,7 @@ class DpkgDb(object):
         
     
 if __name__ == '__main__':
-    from paella.base.config import Configuration
+    from useless.base.config import Configuration
     cfg = Configuration()
     Host = cfg['dbhost']
     Dbname = 'sysconfig'

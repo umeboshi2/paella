@@ -1,13 +1,13 @@
 from pyPgSQL.libpq import IntegrityError, OperationalError
-from paella.db.pg_special import get_pkey_info, get_attributes
-from paella.db.lowlevel import BaseConnection
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq, SimpleClause
-from paella.gtk.middle import ListNoteBook, ScrollCList
-from paella.gtk.windows import CommandBoxWindow
-from paella.gtk.helpers import HasDialogs, make_menu, HasListbox
-from paella.gtk import dialogs
-from paella.gtk.dialog_helpers import get_single_row
+from useless.db.pg_special import get_pkey_info, get_attributes
+from useless.db.lowlevel import BaseConnection
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq, SimpleClause
+from useless.gtk.middle import ListNoteBook, ScrollCList
+from useless.gtk.windows import CommandBoxWindow
+from useless.gtk.helpers import HasDialogs, make_menu, HasListbox
+from useless.gtk import dialogs
+from useless.gtk.dialog_helpers import get_single_row
 from gtk import ScrolledWindow
 
 class RelationalBrowser(ListNoteBook, HasDialogs):
@@ -117,10 +117,10 @@ class RelationalBrowser(ListNoteBook, HasDialogs):
         
 
 if __name__ == '__main__':
-    from paella.base.config import Configuration
-    from paella.db.lowlevel import QuickConn
+    from useless.base.config import Configuration
+    from useless.db.lowlevel import QuickConn
     from gtk import mainloop, mainquit
-    from paella.profile.base import PaellaConnection
+    from useless.profile.base import PaellaConnection
     conn = PaellaConnection()
     te = TableEditor(conn, 'suites')
     te.connect('destroy', mainquit)

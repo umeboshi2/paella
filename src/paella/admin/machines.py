@@ -1,11 +1,11 @@
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 from paella.profile.base import Suites
 from paella.profile.trait import Trait
-from paella.gtk.middle import ListNoteBook, ScrollCList
-from paella.gtk.windows import CommandBoxWindow
-from paella.gtk.helpers import HasDialogs, make_menu, HasListbox
-from paella.gtk import dialogs
+from useless.gtk.middle import ListNoteBook, ScrollCList
+from useless.gtk.windows import CommandBoxWindow
+from useless.gtk.helpers import HasDialogs, make_menu, HasListbox
+from useless.gtk import dialogs
 from paella.dbgtk.base import TableEditor, BrowserWin
 from paella.dbgtk.simple import RelationalBrowser
 

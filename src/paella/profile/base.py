@@ -6,19 +6,19 @@ import tempfile
 
 from kjbuckets import kjGraph, kjSet
 
-from paella.base import Error, NoExistError
-from paella.base.util import ujoin, makepaths, md5sum, strfile
-from paella.base.objects import Parser
+from useless.base import Error, NoExistError
+from useless.base.util import ujoin, makepaths, md5sum, strfile
+from useless.base.objects import Parser
 
-from paella.sqlgen.clause import one_many, Eq, In, NotIn
+from useless.sqlgen.clause import one_many, Eq, In, NotIn
 
-from paella.base.config import Configuration, list_rcfiles
-from paella.base.template import Template as _Template
+from useless.base.config import Configuration, list_rcfiles
+from useless.base.template import Template as _Template
 
-from paella.db.lowlevel import QuickConn
-from paella.db.midlevel import StatementCursor
-from paella.db.midlevel import Environment, TableDict
-from paella.db.midlevel import SimpleRelation
+from useless.db.lowlevel import QuickConn
+from useless.db.midlevel import StatementCursor
+from useless.db.midlevel import Environment, TableDict
+from useless.db.midlevel import SimpleRelation
 
 class PaellaConfig(Configuration):
     def __init__(self, section=None, files=list_rcfiles('paellarc')):

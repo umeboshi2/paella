@@ -1,12 +1,12 @@
 import os
 from os.path import isdir, isfile, join, basename, dirname
 
-from paella.base import Log
-from paella.base.config import Configuration
-from paella.base.util import ujoin, makepaths, runlog
-from paella.base.objects import Parser
+from useless.base import Log
+from useless.base.config import Configuration
+from useless.base.util import ujoin, makepaths, runlog
+from useless.base.objects import Parser
 
-from paella.db.midlevel import Environment
+from useless.db.midlevel import Environment
 
 from paella.debian.base import debootstrap
 from paella.profile.base import get_traits, get_suite, PaellaConnection, PaellaConfig
@@ -102,8 +102,8 @@ class Modules(list):
             
               
 if __name__ == '__main__':
-    from paella.db.midlevel import StatementCursor
-    from paella.db.midlevel import Environment, TableDict
+    from useless.db.midlevel import StatementCursor
+    from useless.db.midlevel import Environment, TableDict
     c = PaellaConnection()
     tp = TraitParent(c, 'woody')
     pp = TraitPackage(c, 'woody')

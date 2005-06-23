@@ -1,8 +1,8 @@
 from xml.dom.minidom import Element
 
-from paella.base.xmlfile import TextElement, DictElement
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq, In
+from useless.base.xmlfile import TextElement, DictElement
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq, In
 
 
 class PartitionElement(Element):

@@ -1,9 +1,10 @@
 import os, sys, os.path
 from os.path import join
 
-from paella.db.midlevel import StatementCursor
+from useless.db.midlevel import StatementCursor
 from paella.installer.base import get_suite, InstallerConnection, PaellaConfig
 
+#this is all old fai code
 
 def probe_hardware(modules):
     os.system('modprobe -a %s' % ' '.join(modules))

@@ -1,22 +1,22 @@
 from os.path import join, expanduser, dirname
 import re
-from paella.base import Error, debug, NoFileError, ExistsError
-from paella.base.objects import DbBaseRow
-from paella.gtk.base import rowpacker, set_receive_targets
-from paella.gtk.windows import MenuWindow, CommandBoxWindow
-from paella.gtk.middle import ListNoteBook, ScrollCList
-from paella.gtk.middle import ListAboveNoteBook
-from paella.gtk import dialogs
-from paella.gtk.helpers import HasMenuDialog, make_menu
-from paella.gtk.helpers import HasDialogs
-from paella.gtk.utils import DownloadPoolBox
+from useless.base import Error, debug, NoFileError, ExistsError
+from useless.base.objects import DbBaseRow
+from useless.gtk.base import rowpacker, set_receive_targets
+from useless.gtk.windows import MenuWindow, CommandBoxWindow
+from useless.gtk.middle import ListNoteBook, ScrollCList
+from useless.gtk.middle import ListAboveNoteBook
+from useless.gtk import dialogs
+from useless.gtk.helpers import HasMenuDialog, make_menu
+from useless.gtk.helpers import HasDialogs
+from useless.gtk.utils import DownloadPoolBox
 
 from gtk import FileSelection, VPaned, Label, VBox
 from gtk import mainloop, mainquit, TRUE, FALSE
 from gtk import threads_enter, threads_leave
 from gtk import Window
 
-from paella.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq
 from paella.debian.base import RepositorySource, parse_sources_list
 from paella.debian.repos_base import RepositoryManager, RepositoryConnection
 from paella.debian.repos_local import LocalRepository

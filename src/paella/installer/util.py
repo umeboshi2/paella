@@ -1,7 +1,7 @@
 import os
 
-from paella.base import Error
-from paella.base.util import makepaths, runlog, echo
+from useless.base import Error
+from useless.base.util import makepaths, runlog, echo
 from paella.debian.base import RepositorySource
 
 from base import Modules

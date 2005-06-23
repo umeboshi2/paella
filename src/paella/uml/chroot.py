@@ -1,9 +1,9 @@
 import os
 from os.path import join
 
-from paella.base import Error
-from paella.base.util import makepaths, runlog
-from paella.base.util import parse_proc_mounts
+from useless.base import Error
+from useless.base.util import makepaths, runlog
+from useless.base.util import parse_proc_mounts
 
 from paella.installer.util import mount_tmp, backup_target_command
 from paella.installer.util import make_interfaces_simple, extract_tarball

@@ -5,12 +5,12 @@ from kjbuckets import kjGraph
 
 from xml.dom.minidom import parse as parse_file
 
-from paella.base import ExistsError, Error, debug, UnbornError
+from useless.base import ExistsError, Error, debug, UnbornError
 
-from paella.sqlgen.clause import Eq
-from paella.sqlgen.statement import Statement
-from paella.db.midlevel import StatementCursor, SimpleRelation
-from paella.db.midlevel import Environment, MultiEnvironment
+from useless.sqlgen.clause import Eq
+from useless.sqlgen.statement import Statement
+from useless.db.midlevel import StatementCursor, SimpleRelation
+from useless.db.midlevel import Environment, MultiEnvironment
 
 from base import VariablesConfig
 from base import Suites, make_deplist

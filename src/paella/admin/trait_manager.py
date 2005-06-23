@@ -1,10 +1,10 @@
 from paella.profile.base import Suites
 from paella.profile.trait import Trait
-from paella.gtk.middle import ScrollCList
-from paella.gtk.middle import ListNoteBook
-from paella.gtk.windows import CommandBoxWindow
-from paella.gtk.helpers import HasDialogs, make_menu
-from paella.gtk import dialogs
+from useless.gtk.middle import ScrollCList
+from useless.gtk.middle import ListNoteBook
+from useless.gtk.windows import CommandBoxWindow
+from useless.gtk.helpers import HasDialogs, make_menu
+from useless.gtk import dialogs
 
 from paella.admin.template import TemplateBrowser
 from paella.admin.scriptomatic import ScriptBrowser
@@ -88,7 +88,7 @@ class TraitManagerWin(CommandBoxWindow, HasDialogs):
 
 if __name__ == '__main__':
     from gtk import mainloop, mainquit
-    from paella.profile.base import PaellaConfig, PaellaConnection
+    from useless.profile.base import PaellaConfig, PaellaConnection
     cfg = PaellaConfig()
     conn = PaellaConnection(cfg)
     win = TraitManagerWin(conn)

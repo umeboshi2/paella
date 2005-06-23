@@ -2,8 +2,8 @@ import os
 from os.path import join, dirname
 
 from umlrun import UML
-from paella.base.config import Configuration
-from paella.base.util import runlog
+from useless.base.config import Configuration
+from useless.base.util import runlog
 from paella.installer.base import InstallerConnection
 from paella.profile.base import PaellaConfig
 

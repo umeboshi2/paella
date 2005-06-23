@@ -3,20 +3,20 @@ from os.path import join as pjoin
 from os.path import dirname, isfile
 from copy import deepcopy as copy
 
-from paella.base import Error, debug
-from paella.base.util import readfile, ujoin, makepaths
-from paella.base.util import writefile, strfile
-from paella.base.util import has_extension, get_sub_path
+from useless.base import Error, debug
+from useless.base.util import readfile, ujoin, makepaths
+from useless.base.util import writefile, strfile
+from useless.base.util import has_extension, get_sub_path
 
-from paella.base.config import Configuration
-from paella.base.defaults import DELIMITERS
+from useless.base.config import Configuration
+from useless.base.defaults import DELIMITERS
 
-from paella.gtk.simple import TextScroll, SimpleMenu, RadioMenu
-from paella.gtk.windows import MenuWindow
-from paella.gtk import dialogs
-from paella.gtk.helpers import populate_menu
+from useless.gtk.simple import TextScroll, SimpleMenu, RadioMenu
+from useless.gtk.windows import MenuWindow
+from useless.gtk import dialogs
+from useless.gtk.helpers import populate_menu
 
-from paella.db.midlevel import StatementCursor, Environment
+from useless.db.midlevel import StatementCursor, Environment
 
 from paella.profile.base import PaellaConnection
 from paella.profile.trait import TraitParent, TraitTemplate

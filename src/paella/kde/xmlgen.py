@@ -1,16 +1,51 @@
 from xml.dom.minidom import Text
 
-from kommon.base.xmlgen import BaseElement, TextElement
-from kommon.base.xmlgen import Anchor, Html, Body
-from kommon.base.xmlgen import ListItem, UnorderedList
-from kommon.base.xmlgen import BR, HR, Bold, TR, TD, Paragraph
-from kommon.base.xmlgen import SimpleTitleElement, RecordElement
+from useless.xmlgen.base import BaseElement, TextElement
+from useless.xmlgen.base import Anchor, Html, Body
+from useless.xmlgen.base import ListItem, UnorderedList
+from useless.xmlgen.base import BR, HR, Bold, TR, TD, Paragraph
+from useless.xmlgen.base import SimpleTitleElement
 
 from paella.db.midlevel import StatementCursor
 from paella.profile.trait import Trait
 from paella.profile.profile import Profile
 from paella.profile.family import Family
 from paella.machines.machine import MachineHandler
+
+class RecordElement(BaseElement):
+    def __init__(self, fields, idcol, action, record, **atts):
+        BaseElement.__init__(self, 'table', **atts)
+        self.record = record
+        refdata = None
+        if hasattr(record, '_refdata'):
+            refdata = record._refdata
+        for field in fields:
+            row = BaseElement('tr')
+            key = TD(bgcolor='DarkSeaGreen')
+            key.appendChild(Bold(field))
+            row.appendChild(key)
+            val = TD()
+            if refdata is not None and field in refdata.cols:
+                ridcol = refdata.cols[field]
+                refrec =  refdata.data[field][record[ridcol]]
+                node = refdata.object[field](refrec)
+                if action:
+                    url = '.'.join(map(str, [action, field, record[idcol]]))
+                    val.appendChild(Anchor(url, node))
+                else:
+                    val.appendChild(node)
+            elif action:
+                url = '.'.join(map(str, [action, field, record[idcol]]))
+                val.appendChild(Anchor(url, record[field]))
+            else:
+                node = Text()
+                node.data = record[field]
+                val.appendChild(node)
+            row.appendChild(val)
+            self.val = val
+            self.key = key
+            self.appendChild(row)
+
 class BaseDocument(BaseElement):
     def __init__(self, app, **atts):
         BaseElement.__init__(self, 'html', **atts)
@@ -50,11 +85,9 @@ class PackageTable(BaseElement):
             trow.appendChild(a)
             self.appendChild(trow)
 
-class PackageFieldTable(BaseElement):
-    def __init__(self, row, **atts):
+class BaseFieldTable(BaseElement):
+    def __init__(self, fields, row, **atts):
         BaseElement.__init__(self, 'table', **atts)
-        fields = ['package', 'priority', 'section', 'installedsize',
-                  'maintainer', 'version', 'description']
         for field in fields:
             trow = TR()
             p = TxtTD(field)
@@ -62,7 +95,18 @@ class PackageFieldTable(BaseElement):
             a = TxtTD(row[field])
             trow.appendChild(a)
             self.appendChild(trow)
-            
+        
+class PackageFieldTable(BaseFieldTable):
+    def __init__(self, row, **atts):
+        fields = ['package', 'priority', 'section', 'installedsize',
+                  'maintainer', 'version', 'description']
+        BaseFieldTable.__init__(self, fields, row, **atts)
+        
+class MachineFieldTable(BaseFieldTable):
+    def __init__(self, row, **atts):
+        fields = ['machine', 'machine_type', 'kernel', 'profile', 'filesystem']
+        BaseFieldTable.__init__(self, fields, row, **atts)
+
 class TemplateTable(BaseElement):
     def __init__(self, rows, **atts):
         BaseElement.__init__(self, 'table', **atts)
@@ -243,4 +287,11 @@ class MachineDoc(BaseDocument):
         self.body.appendChild(SectionTitle('Filesystem'))
         
     def set_clause(self, clause):
-        print clause, dir(clause)
+        print 'clause---->', clause, type(clause)
+        #self.machine.cursor.clause = clause
+        self.clear_body()
+        title = SimpleTitleElement('Machines', bgcolor='IndianRed', width='100%')
+        self.body.appendChild(title)
+        for row in self.machine.cursor.select(clause=clause):
+            self.body.appendChild(MachineFieldTable(row, bgcolor='MistyRose3'))
+            self.body.appendChild(HR())

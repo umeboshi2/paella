@@ -2,15 +2,15 @@ import os, sys
 from os.path import join, dirname
 from ConfigParser import RawConfigParser
 
-from paella.gtk import dialogs
-from paella.gtk.middle import ScrollCList, CommandBox
-from paella.gtk.windows import MenuWindow, CommandBoxWindow
+from useless.gtk import dialogs
+from useless.gtk.middle import ScrollCList, CommandBox
+from useless.gtk.windows import MenuWindow, CommandBoxWindow
 
 from gtk import FileSelection
 from gtk import mainloop, mainquit
 
-from paella.base import Error, debug
-from paella.db.midlevel import StatementCursor
+from useless.base import Error, debug
+from useless.db.midlevel import StatementCursor
 from paella.profile.base import PaellaConfig, PaellaConnection
 from paella.profile.base import DefaultEnvironment
 from paella.profile.profile import PaellaDatabase

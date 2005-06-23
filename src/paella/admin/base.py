@@ -1,19 +1,19 @@
 import os, sys
 from os.path import join, dirname
 
-from paella.gtk import dialogs
-from paella.gtk.middle import ScrollCList
-from paella.gtk.windows import MenuWindow
+from useless.gtk import dialogs
+from useless.gtk.middle import ScrollCList
+from useless.gtk.windows import MenuWindow
 
 from gtk import FileSelection
 from gtk import mainloop, mainquit
 
-from paella.base import Error, debug
-from paella.base.tarball import RootTarball
-from paella.base.util import get_sub_path
+from useless.base import Error, debug
+from useless.base.tarball import RootTarball
+from useless.base.util import get_sub_path
 
-from paella.db.lowlevel import QuickConn
-from paella.db.midlevel import StatementCursor
+from useless.db.lowlevel import QuickConn
+from useless.db.midlevel import StatementCursor
 
 
 from paella.profile.base import PaellaConfig

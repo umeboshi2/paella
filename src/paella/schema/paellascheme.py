@@ -1,23 +1,23 @@
 import os
 
-from paella.base import Error, debug
-from paella.base.util import ujoin, makepaths
-from paella.base.util import readfile, wget, strfile
+from useless.base import Error, debug
+from useless.base.util import ujoin, makepaths
+from useless.base.util import readfile, wget, strfile
 
 from paella.debian.repos import LocalRepos
 from paella.debian.repos import RemoteRepos
 
-from paella.sqlgen.classes import Column, Table
-from paella.sqlgen.defaults import Text, DefaultNamed, Bool
-from paella.sqlgen.defaults import PkBigname, Bigname, Name, Num
-from paella.sqlgen.defaults import PkBignameTable, PkNameTable, PkName
+from useless.sqlgen.classes import Column, Table
+from useless.sqlgen.defaults import Text, DefaultNamed, Bool
+from useless.sqlgen.defaults import PkBigname, Bigname, Name, Num
+from useless.sqlgen.defaults import PkBignameTable, PkNameTable, PkName
 
-from paella.sqlgen.statement import Statement
-from paella.sqlgen.admin import grant_public
+from useless.sqlgen.statement import Statement
+from useless.sqlgen.admin import grant_public
 
-from paella.db.lowlevel import OperationalError
-from paella.db.midlevel import StatementCursor
-from paella.db.plsql import pgsql_delete
+from useless.db.lowlevel import OperationalError
+from useless.db.midlevel import StatementCursor
+from useless.db.plsql import pgsql_delete
 
 from paella_tables import suite_tables, primary_tables, primary_sequences
 from paella_tables import packages_columns, SCRIPTS
@@ -231,8 +231,8 @@ def doall(conn, filename):
 
 
 if __name__ == '__main__':
-    from paella.db.lowlevel import QuickConn
-    from paella.db.midlevel import StatementCursor
+    from useless.db.lowlevel import QuickConn
+    from useless.db.midlevel import StatementCursor
     from paella.debian.base import parse_packages, full_parse
     #cmd = CommandCursor(c, 'dsfsdf')
     def dtable():

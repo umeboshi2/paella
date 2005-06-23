@@ -2,13 +2,13 @@ import os
 from ConfigParser import RawConfigParser
 import tempfile
 
-from paella.gtk.base import right_click_pressed, keysplitter, set_receive_targets
-from paella.gtk.simple import SimpleMenu, MyCombo, SimpleMenuBar
-from paella.gtk import dialogs
-from paella.gtk.middle import ListNoteBook, ScrollCList
-from paella.gtk.windows import CommandBoxWindow
-from paella.gtk.helpers import make_menu, HasDialogs
-from paella.gtk.dialog_helpers import get_single_row
+from useless.gtk.base import right_click_pressed, keysplitter, set_receive_targets
+from useless.gtk.simple import SimpleMenu, MyCombo, SimpleMenuBar
+from useless.gtk import dialogs
+from useless.gtk.middle import ListNoteBook, ScrollCList
+from useless.gtk.windows import CommandBoxWindow
+from useless.gtk.helpers import make_menu, HasDialogs
+from useless.gtk.dialog_helpers import get_single_row
 
 from gtk import mainloop, mainquit
 from gtk import MenuBar
@@ -16,15 +16,15 @@ from gtk import MenuBar
 from gtk.gdk import ACTION_COPY, ACTION_MOVE
 from gtk.gdk import BUTTON1_MASK
 
-from paella.base import debug
-from paella.base.util import ujoin
+from useless.base import debug
+from useless.base.util import ujoin
 
-from paella.db.midlevel import StatementCursor
-from paella.db.midlevel import TableRowDict, TableDict
-from paella.db.midlevel import Environment
-from paella.sqlgen.statement import Statement
-from paella.sqlgen.select import SimpleClause
-from paella.sqlgen.clause import Eq, In
+from useless.db.midlevel import StatementCursor
+from useless.db.midlevel import TableRowDict, TableDict
+from useless.db.midlevel import Environment
+from useless.sqlgen.statement import Statement
+from useless.sqlgen.select import SimpleClause
+from useless.sqlgen.clause import Eq, In
 
 from paella.profile.base import PaellaConnection, VariablesConfig
 from paella.profile.base import PaellaConfig

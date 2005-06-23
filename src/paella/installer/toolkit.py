@@ -1,6 +1,6 @@
 import os
 
-from paella.base.util import RefDict, str2list
+from useless.base.util import RefDict, str2list
 from paella.profile.base import PaellaConnection, PaellaConfig
 from paella.profile.base import get_suite, DefaultEnvironment
 from paella.profile.trait import TraitParent, Trait

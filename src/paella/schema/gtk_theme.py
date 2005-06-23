@@ -1,9 +1,9 @@
 
-from paella.gtk.theme import Rgbdb, Style, GtkrcTemplate
-from paella.gtk.theme import style_elements, _bg_widget
+from useless.gtk.theme import Rgbdb, Style, GtkrcTemplate
+from useless.gtk.theme import style_elements, _bg_widget
 
-from paella.sqlgen.defaults import NameTable
-from paella.sqlgen.write import insert, update
+from useless.sqlgen.defaults import NameTable
+from useless.sqlgen.write import insert, update
 
 
 class ThemeTable(NameTable):
@@ -39,7 +39,7 @@ def _setup_db(cursor):
         
         
 if __name__ == '__main__':
-    from paella.classes.config import Configuration
+    from useless.base.config import Configuration
     dsn = Configuration().get_dsn()
     dsn['dbname'] = 'themes'
     c = QuickConn(dsn)

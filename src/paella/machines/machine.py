@@ -1,7 +1,7 @@
 from xml.dom.minidom import parseString
 
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
 from xmlparse import MachineDatabaseParser
 

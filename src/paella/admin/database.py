@@ -1,12 +1,12 @@
 import os, sys
 from os.path import join, dirname
 
-from paella.base import Error, debug
-from paella.base.config import Configuration
-from paella.base.util import makepaths
+from useless.base import Error, debug
+from useless.base.config import Configuration
+from useless.base.util import makepaths
 
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq, In
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq, In
 
 from paella.profile.base import PaellaConfig, PaellaConnection, DefaultEnvironment
 from paella.profile.profile import PaellaDatabase, PaellaProcessor, PaellaProfiles
@@ -15,9 +15,9 @@ from paella.machines.xmlgen import ClientMachineDatabaseElement
 from paella.machines.xmlgen import MachineDatabaseElement
 from paella.machines.machine import MachineHandler
 
-from paella.gtk.middle import ListTextView, ScrollCList
-from paella.gtk.windows import CommandBoxWindow
-from paella.gtk import dialogs
+from useless.gtk.middle import ListTextView, ScrollCList
+from useless.gtk.windows import CommandBoxWindow
+from useless.gtk import dialogs
 
 class DatabaseManager(object):
     def __init__(self, conn):

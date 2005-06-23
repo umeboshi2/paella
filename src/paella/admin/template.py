@@ -3,20 +3,20 @@ from os.path import join, dirname, isfile, isdir
 from xmlrpclib import ServerProxy, SafeTransport
 import tempfile
 
-from paella.base import Error, debug, NoExistError, UnbornError
-from paella.base.util import ujoin, readfile, makepaths
-from paella.base.util import get_sub_path, writefile, strfile
-from paella.db.lowlevel import OperationalError
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq
+from useless.base import Error, debug, NoExistError, UnbornError
+from useless.base.util import ujoin, readfile, makepaths
+from useless.base.util import get_sub_path, writefile, strfile
+from useless.db.lowlevel import OperationalError
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
-from paella.gtk.base import select_a_file
-from paella.gtk.simple import SimpleMenu
-from paella.gtk.middle import ListNoteBook, ScrollCList, MyNotebook
-from paella.gtk.helpers import get_buffer_text, populate_menu, make_menu
-from paella.gtk.template import TemplateEditor
-from paella.gtk.windows import MenuWindow
-from paella.gtk import dialogs
+from useless.gtk.base import select_a_file
+from useless.gtk.simple import SimpleMenu
+from useless.gtk.middle import ListNoteBook, ScrollCList, MyNotebook
+from useless.gtk.helpers import get_buffer_text, populate_menu, make_menu
+from useless.gtk.template import TemplateEditor
+from useless.gtk.windows import MenuWindow
+from useless.gtk import dialogs
 
 from gtk import MenuItem, FileSelection, ScrolledWindow
 from gtk import TRUE, FALSE, mainquit, mainloop
@@ -718,7 +718,7 @@ class TemplateManager(MenuWindow):
 
         
 if __name__ == '__main__':
-    from paella.db.lowlevel import QuickConn
+    from useless.db.lowlevel import QuickConn
     g = PaellaConfig()
     conn = QuickConn(g)
     rconn = RepositoryConnection()

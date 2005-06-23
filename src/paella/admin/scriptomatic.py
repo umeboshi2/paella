@@ -1,17 +1,17 @@
 import os
 import tempfile
 
-from paella.base import Error, debug
-from paella.base.util import makepaths, ujoin, strfile
+from useless.base import Error, debug
+from useless.base.util import makepaths, ujoin, strfile
 
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
-from paella.gtk.helpers import make_menu, populate_menu
-from paella.gtk.simple import TextScroll, SimpleMenu
-from paella.gtk.middle import ListNoteBook, MyNotebook
-from paella.gtk.windows import MenuWindow
-from paella.gtk import dialogs
+from useless.gtk.helpers import make_menu, populate_menu
+from useless.gtk.simple import TextScroll, SimpleMenu
+from useless.gtk.middle import ListNoteBook, MyNotebook
+from useless.gtk.windows import MenuWindow
+from useless.gtk import dialogs
 
 from paella.schema.paella_tables import SCRIPTS
 from paella.profile.trait import TraitScript, Trait, Traits

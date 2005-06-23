@@ -12,12 +12,12 @@ from os import path, link
 
 #from apt_pkg import ParseTagFile
 
-#from paella.base import debug, Error, NoFileError
-#from paella.base.config import Configuration
-#from paella.base.util import readfile, wget, strfile
-from paella.base.util import md5sum as md5sum_base
-from paella.base.util import makepaths, check_file, get_file, get_url
-from paella.base.util import filecopy
+#from useless.base import debug, Error, NoFileError
+#from useless.base.config import Configuration
+#from useless.base.util import readfile, wget, strfile
+from useless.base.util import md5sum as md5sum_base
+from useless.base.util import makepaths, check_file, get_file, get_url
+from useless.base.util import filecopy
 
 from base import parse_packages, parse_sources
 from base import _Srcfile, full_parse, islocaluri

@@ -1,9 +1,9 @@
 import os, sys
 from kjbuckets import kjGraph, kjSet
 
-from paella.base.util import ujoin
-from paella.db.lowlevel import InstallerConnection
-from paella.db.midlevel import StatementCursor
+from useless.base.util import ujoin
+from useless.db.lowlevel import InstallerConnection
+from useless.db.midlevel import StatementCursor
 
 from base import TraitParent, TraitPackage
 from base import get_traits, get_suite

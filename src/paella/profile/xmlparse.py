@@ -1,8 +1,8 @@
 from xml.dom.minidom import parse as parse_file
 from xml.dom.minidom import parseString as parse_string
 
-from paella.base import Error, debug
-from paella.base.xmlfile import ParserHelper, DictElement
+from useless.base import Error, debug
+from useless.base.xmlfile import ParserHelper, DictElement
 
 from xmlgen import EnvironElement
 
