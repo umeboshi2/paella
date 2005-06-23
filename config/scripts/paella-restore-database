@@ -3,7 +3,7 @@ import os, sys
 from os.path import join
 from optparse import OptionParser
 
-from paella.base import Error, debug
+from useless.base import Error, debug
 from paella.profile.base import PaellaConfig, PaellaConnection
 from paella.profile.profile import PaellaProcessor
 from paella.uml.bootstrap import make_base

@@ -1,9 +1,10 @@
+#!/usr/bin/env python
 import os, sys
 
 from apt_pkg import ParseTagFile
 
-from paella.base import Error
-from paella.base.util import makepaths, gunzip, get_url, get_file
+from useless.base import Error
+from useless.base.util import makepaths, gunzip, get_url, get_file
 from paella.debian.base import make_pkg_item, make_src_item
 
 

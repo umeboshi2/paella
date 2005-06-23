@@ -10,10 +10,10 @@ if 'python_path' in kernopts:
 os.environ['PATH'] = ':'.join(['/bin', '/sbin', '/usr/bin', '/usr/sbin'])
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 
-from paella.base import Error, debug
-from paella.base.config import Configuration
-from paella.base.util import makepaths
-from paella.db.midlevel import StatementCursor
+from useless.base import Error, debug
+from useless.base.config import Configuration
+from useless.base.util import makepaths
+from useless.db.midlevel import StatementCursor
 from paella.profile.base import get_suite
 
 from paella.installer.base import InstallerConnection
@@ -23,8 +23,8 @@ from paella.installer.uml import UmlBootstrapper
 
 from paella.installer.profile import ProfileInstaller
 
-cfg = Configuration()
-cfg.read(kernopts['paellarc'])
+cfg = Configuration(files=[kernopts['paellarc']])
+#cfg.read(kernopts['paellarc'])
 cfg.change('pbootstrap')
 kver = cfg['umlkernver']
 os.system('ifconfig eth0 %s netmask %s up' % (cfg['eth_addr'], cfg['tun_netmask']))

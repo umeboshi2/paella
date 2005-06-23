@@ -3,10 +3,10 @@ from os.path import join, isfile, isdir
 from time import sleep
 import commands
 
-from paella.base import Error
-from paella.base.config import Configuration
+from useless.base import Error
+from useless.base.config import Configuration
 
-config = Configuration(files='./kernels.conf')
+config = Configuration(files=['./kernels.conf'])
 here = os.getcwd()
 
 def get_all_kernels():

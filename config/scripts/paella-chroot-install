@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import os, sys
 from os.path import join
-from paella.base import Error, debug
-from paella.base.util import makepaths
-from paella.db.midlevel import StatementCursor
+from useless.base import Error, debug
+from useless.base.util import makepaths
+from useless.db.midlevel import StatementCursor
 from paella.profile.base import get_suite, PaellaConfig
 
 from paella.installer.base import InstallerConnection

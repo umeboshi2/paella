@@ -21,7 +21,7 @@ Package: paella-base
 Section: admin
 Priority: optional
 Architecture: all
-Depends: python (>= 2.3), python2.3-pycurl, python2.3-xml
+Depends: useless-base
 Description: base utils for paella
     This package is responsible for initial setup of the paella 
     environment. (need to ask for pghost, etc..)
@@ -35,58 +35,24 @@ Description: other people's code that paella uses
     This is where paella tries not to reinvent wheels.
     this package will be optional soon
 
-Package: paella-db
-Section: admin
-Priority: optional
-Architecture: all
-Depends: python-sqlite, paella-sqlgen  
-Description: paella's databse interface
-    Paella can connect to a Postgres database by default.
-    There is also code to allow it to easily connect to a sqlite
-    database.  The sqlite options are much more limited and there
-    is no real support for differentiating the db's now.  Postgres
-    is intended to be the main database, with sqlite just used
-    for disconnected machines
-
 Package: paella-debian
 Section: admin
 Priority: optional
 Architecture: all
-Depends: paella-base, python-apt, paella-db, debootstrap, debconf-utils
+Depends: paella-base, python-apt, useless-db, debootstrap, debconf-utils
 Description: Documentation for paella
     many class and functions for use with debian related
     activities (dpkg, package repositories, debconf, etc.)
-
-Package: paella-gtk
-Section: admin
-Priority: optional
-Architecture: all
-Depends: paella-base, python-gtk2
-Description: gui widgets needed by paella
-    This package contains the strictly gui gtk-wrappers that
-    paella needs for its gui programs.  This package may eventually
-    depend on python-glade2, if i decide to use it to help build
-    interface sekeletons
 
 Package: paella-dbgtk
 Section: admin
 Priority: optional
 Architecture: all
-Depends: paella-gtk, paella-db
+Depends: paella-base, useless-gtk, useless-db
 Description: db connected gui widgets needed by paella
     This package contains gtk objects that have connections
     to a postgres database making it easier to develop customized
     widgets.
-
-Package: paella-sqlgen
-Section: admin
-Priority: optional
-Architecture: all
-Depends: paella-base, python-pgsql
-Description: sql statement helper
-    A little sql statement creator package.  The clause and table joining
-    is planned to get more involved.  This package will always have from simple
-    to complex at the developers choice
 
 Package: paella-installer
 Section: admin

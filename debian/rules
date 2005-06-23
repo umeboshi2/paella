@@ -71,16 +71,10 @@ install-indep:
 	rm -r build/
 	python setup.py contrib install --prefix=$(CURDIR)/debian/paella-contrib/usr
 	rm -r build/
-	python setup.py db install --prefix=$(CURDIR)/debian/paella-db/usr
-	rm -r build/
 	python setup.py debian install --prefix=$(CURDIR)/debian/paella-debian/usr
-	rm -r build/
-	python setup.py gtk install --prefix=$(CURDIR)/debian/paella-gtk/usr
 	rm -r build/
 	python setup.py dbgtk install --prefix=$(CURDIR)/debian/paella-dbgtk/usr
 	rm -r build/
-	python setup.py sqlgen install --prefix=$(CURDIR)/debian/paella-sqlgen/usr
-	rm -r build/	
 	python setup.py installer install --prefix=$(CURDIR)/debian/paella-installer/usr
 	rm -r build/	
 	python setup.py uml install --prefix=$(CURDIR)/debian/paella-uml/usr

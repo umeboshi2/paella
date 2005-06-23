@@ -13,10 +13,10 @@ os.environ['PATH'] = ':'.join(['/bin', '/sbin', '/usr/bin', '/usr/sbin'])
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 os.environ['LOGFILE'] = kernopts['LOGFILE']
 
-from paella.base import Error, debug
-from paella.base.config import Configuration
-from paella.base.util import makepaths
-from paella.db.midlevel import StatementCursor
+from useless.base import Error, debug
+from useless.base.config import Configuration
+from useless.base.util import makepaths
+from useless.db.midlevel import StatementCursor
 from paella.profile.base import get_suite, PaellaConfig
 
 from paella.uml.base import UmlConfig

@@ -3,11 +3,11 @@ import os, sys
 from os.path import join
 from optparse import OptionParser
 
-from paella.base import Error, debug
+from useless.base import Error, debug
 from paella.profile.base import PaellaConnection, PaellaConfig
 from paella.installer.cfdisk import DiskManager
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
 parser = OptionParser()
 opts, args = parser.parse_args(sys.argv[1:])
