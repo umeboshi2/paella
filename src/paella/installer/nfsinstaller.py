@@ -1,5 +1,5 @@
 import os
-from os.path import join
+from os.path import join, basename
 from time import sleep
 import commands
 
@@ -173,12 +173,21 @@ class NewInstaller(object):
         self._check_installer()
         runlog(debootstrap(self.suite, self.target, self.debmirror))
         self._bootstrapped = True
+
+    def make_disk_devices(self):
+        here = os.getcwd()
+        os.chdir(join(self.target, 'dev'))
+        for dev in map(basename, self.machine.get_disk_devices()):
+            runlog('echo making device %s with MAKEDEV' % dev)
+            runlog('./MAKEDEV %s' % dev)
+        os.chdir(here)
         
     def ready_base_for_install(self):
         self._check_bootstrap()
         self._check_installer()
         fstab = self.machine.make_fstab()
         ready_base_for_install(self.target, self.cfg, self.suite, fstab)
+        self.make_disk_devices()
         if self._raid_setup:
             mdpath = join(self.target, 'etc/mdadm')
             makepaths(mdpath)

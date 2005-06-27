@@ -229,11 +229,13 @@ class ProfileDoc(BaseDocument):
         #self.body.appendChild(SectionTitle('Traits'))
         if len(rows):
             self.body.appendChild(TraitTable(rows, bgcolor='IndianRed1'))
-        self.body.appendChild(SectionTitle('Variables'))
+        vtitle = Anchor('edit.variables.%s' % self.profile.current.profile, 'Variables')
+        self.body.appendChild(SectionTitle(vtitle))
         erows = self.profile._env.get_rows()
         if len(erows):
             self.body.appendChild(PVarTable(erows, bgcolor='MistyRose2'))
-        self.body.appendChild(SectionTitle('Families'))
+        etitle = Anchor('edit.families.%s' % self.profile.current.profile, 'Families')
+        self.body.appendChild(SectionTitle(etitle))
         families = self.profile.get_families()
         flist = UnorderedList()
         for f in families:

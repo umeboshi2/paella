@@ -53,7 +53,9 @@ class BaseMachineHandler(object):
         self._update_field_('machine', newname)
         self.set_machine(newname)
 
-        
+    def get_disk_devices(self):
+        return get_disk_devices(self.conn, self.current.machine_type)
+    
 def add_disk_to_machine_type(conn,
                              diskname, mtype, device='/dev/hda'):
     cursor = StatementCursor(conn)
@@ -96,8 +98,15 @@ def make_a_machine(conn, machine, mtype, profile, fs):
     data = dict(machine=machine, machine_type=mtype,
                 profile=profile, filesystem=fs)
     cursor.insert(table='machines', data=data)
-    
 
+def get_disk_devices(conn, mtype):
+    cursor = StatementCursor(conn)
+    table = 'machine_disks'
+    clause = Eq('machine_type', mtype)
+    rows = cursor.select(fields=['device'], table=table, clause=clause)
+    return [r.device for r in rows]
+
+    
 class MachineHandler(BaseMachineHandler):
     def add_disk_to_machine_type(self, diskname, mtype, device):
         self.mdisks.insert(data=dict(diskname=diskname, machine_type=mtype,

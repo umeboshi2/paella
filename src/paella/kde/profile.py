@@ -33,6 +33,7 @@ class TraitAssigner(BaseAssigner):
         self.profile.set_profile(profile)
         BaseAssigner.__init__(self, app, parent,
                               name='TraitAssigner', udbuttons=True)
+        self.connect(self, SIGNAL('okClicked()'), self.slotLaughAtMe)
         
     def initView(self):
         app = self.app
@@ -48,10 +49,17 @@ class TraitAssigner(BaseAssigner):
         abox = self.listBox.availableListBox()
         sbox = self.listBox.selectedListBox()
         for row in ptrows:
-            QListBoxText(sbox, row.trait)
+            r = QListBoxText(sbox, row.trait)
+            r.trait = row.trait
         for row in trows:
-            QListBoxText(abox, row.trait)
+            r = QListBoxText(abox, row.trait)
+            r.trait = row.trait
 
+    def slotLaughAtMe(self):
+        sbox = self.listBox.selectedListBox()
+        traits = [sbox.item(n).trait for n in range(sbox.numRows())] 
+        print 'laughing out loud', traits
+        
 class TraitAssignerOrig(KMainWindow):
     def __init__(self, app, parent, profile):
         KMainWindow.__init__(self, parent, 'TraitAssigner')
@@ -88,7 +96,6 @@ class TraitAssignerOrig(KMainWindow):
             QListBoxText(sbox, row.trait)
         for row in trows:
             QListBoxText(abox, row.trait)
-            
         
 class ProfileView(ViewBrowser):
     def __init__(self, app, parent):
@@ -105,21 +112,7 @@ class ProfileView(ViewBrowser):
     def setSource(self, url):
         action, context, id = str(url).split('.')
         if action == 'show':
-            if context == 'parent':
-                win = TraitMainWindow(self.app, self.parent(), self.doc.suite)
-                win.view.set_trait(id)
-            elif context == 'template':
-                fid = id.replace(',', '.')
-                package, template = fid.split('...')
-                win = ViewWindow(self.app, self.parent(), SimpleEdit, 'TemplateView')
-                templatefile = self.doc.trait._templates.templatedata(package, template)
-                win.view.setText(templatefile)
-                win.resize(600, 800)
-            elif context == 'script':
-                scriptfile = self.doc.trait._scripts.scriptdata(id)
-                win = ViewWindow(self.app, self.parent(), SimpleEdit, 'ScriptView')
-                win.view.setText(scriptfile)
-                win.resize(600, 800)
+            print 'unimpletmented'
         elif action == 'edit':
             if context == 'traits':
                 win = TraitAssigner(self.app, self.parent(), id)

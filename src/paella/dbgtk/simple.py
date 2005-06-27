@@ -9,6 +9,7 @@ from useless.gtk.helpers import HasDialogs, make_menu, HasListbox
 from useless.gtk import dialogs
 from useless.gtk.dialog_helpers import get_single_row
 from gtk import ScrolledWindow
+from base import make_record_dialog
 
 class RelationalBrowser(ListNoteBook, HasDialogs):
     def __init__(self, conn, maintable, reltable, pkey, fields):

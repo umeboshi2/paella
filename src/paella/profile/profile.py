@@ -242,7 +242,16 @@ class Profile(StatementCursor):
         self.set_profile(current.profile)
             
 
-        
+    def get_profile_list(self, suite=None):
+        if suite is None:
+            plist = [r.profile for r in self.select()]
+        elif suite == 'all':
+            plist = [(r.profile, r.suite) for r in self.select()]
+        else:
+            clause = Eq('suite', suite)
+            plist = [r.profile for r in self.select(clause=clause)]
+        return plist
+    
 #class Profile(object):
 #    def __init__(self, conn):
 #        object.__init__(self)

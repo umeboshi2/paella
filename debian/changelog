@@ -1,3 +1,11 @@
+paella (0.6.1-2) common; urgency=low
+
+  * added code to use MAKEDEV script to create disks to cope with
+  the new debootstrap packages
+  
+
+ -- Joseph Rawson <umeboshi@bard>  Mon, 27 Jun 2005 14:37:44 -0500
+
 paella (0.6.1-1) common; urgency=low
 
   * depending on useless
