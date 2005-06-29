@@ -187,15 +187,22 @@ class NewInstaller(object):
         self._make_generic_devices(devices)
 
     def make_tty_devices(self):
-        self._make_generic_devices(['tty'])
+        self._make_generic_devices(['console'])
+
+    def make_input_devices(self):
+        self._make_generic_devices(['input'])
+
+    def make_generic_devices(self):
+        #devices = ['std', 'console', 'pty', 'tap', 'sg', 'input', 'audio']
+        self._make_generic_devices(['generic'])
         
     def ready_base_for_install(self):
         self._check_bootstrap()
         self._check_installer()
         fstab = self.machine.make_fstab()
         ready_base_for_install(self.target, self.cfg, self.suite, fstab)
+        self.make_generic_devices()
         self.make_disk_devices()
-        self.make_tty_devices()
         if self._raid_setup:
             mdpath = join(self.target, 'etc/mdadm')
             makepaths(mdpath)
