@@ -9,10 +9,18 @@ What is Paella
 Objects and Definitions
 --------------------------------
 
+Suite
+-------
+A suite is a similiar to debian suites like woody or sarge.  A suite 
+can be used to make different versions of configuations, or different
+styles of design and configurations.  Traits are held in suites.
+
 Trait 
 ------
 A trait is the atomic unit that signifies a feature. 
-A trait can have packages, parents, templates, scripts and a set of variables.
+A trait belongs to a suite.  The table in the database that holds the list of traits
+is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
+and a set of variables.
 
 - parents
 
@@ -20,10 +28,10 @@ A trait can have packages, parents, templates, scripts and a set of variables.
     of its parents are processed.	     
   + parents are not required, but most traits should depend on a default
     trait.
-
   + no trait can be processed during the installation before all of its
     parents are processed. 
-
+    
+  
 - packages
 
   + this is a list of packages to install or remove 
@@ -63,13 +71,14 @@ A trait can have packages, parents, templates, scripts and a set of variables.
       The pre script is executed with an os.system. 
     - post is the very last action to perform in the trait 
       + post should be able to talk to database and environment 
+
  
 Family
 --------
 
 - A family is a collection of variables from different traits 
 
-  + a family can have parents 
+  + a family can have parents
   + a family is not tied to a suite 
 
 Profile
@@ -83,27 +92,50 @@ Profile
 	- the profile environment overrides the trait environments 
 	  and the family environment 
 
+
+Machine Database
+=================
+This section decribes the machine database part of paella.  Profile, traits, and families
+should not be machine specific.  The Machine database trying to be design to hold
+information about physical systems to install logical systems from.
+
 Machine Type
 -------------
+A machine type is going to be the main identifier of a particular type of machine.
+This currently includes disks and kernel modules.  The disks of a machine type are a
+list of tuples in the database (machine_type, diskname, device) .  The current policy is 
+to treat all devices of a certain  diskname as a raid1 array if there is more than one
+device.
 
-A machine type currently only describes the disks on the machine, and a list
-of kernel modules.
-current policy is to treat all devices of a certain diskname as a raid1 array 
-Kernel: 
-a kernel is simply the name of a kernel image package 
-the package must be installable by apt, in a chroot environment, on the target system. 
+
+
+Machine
+--------
+
+a machine contains 
+
+- a name 
+
+- a machine type 
+
+  + this is one of the machine types that are already defined
+
+- a kernel 
+  
+  + a kernel is simply the name of a kernel image package 
+  + the package must be installable by apt, in a chroot environment, on the target system. 
+
+- a filesystem 
+  
+  + a filesystem is a named ordered map of mounts to partition numbers 
+
+- a profile
+
+
 Mount: 
 a mount is named 
 a mount describes filesystem type, mount option, dump, pass and the mount point 
 Filesystem: 
-a filesystem is an ordered map of mounts to partition numbers 
 this is done on filesystem_mounts 
 the target fstab will be completely formed from the filesystem information 
-Machine: 
-a machine contains 
-a name 
-a machine type 
-a kernel 
-a filesystem 
-a profile
 
