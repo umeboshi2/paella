@@ -1,51 +1,109 @@
+Paella Notes
+===========================
 
-bind - /etc/bind/named.conf
-	add doman, and reverse
-	add the config files to /var/cache/bind
+What is Paella
+--------------------
 
+.. small overview of paella
 
+Objects and Definitions
+--------------------------------
 
+Trait 
+------
+A trait is the atomic unit that signifies a feature. 
+A trait can have packages, parents, templates, scripts and a set of variables.
 
-classification:
+- parents
 
-Network:
-	services -- [sshd, domain, http]
-	domain_name -- mydomain.org
-	servers: -- hosts that provide services
+  + no trait can be processed during the installation before all
+    of its parents are processed.	     
+  + parents are not required, but most traits should depend on a default
+    trait.
 
+  + no trait can be processed during the installation before all of its
+    parents are processed. 
 
-Service:
-	name:	http
-	port:	80
-	service_zones:	local, lan, internet
-	host:	webserver
+- packages
 
+  + this is a list of packages to install or remove 
+    - although other options are available, only install and remove are supported now 
+  + packages are not required 
+ 
+- templates 
 
-	
-Repos -- has manager
-local -- is repos
-remote -- is repos
+  + templates can have simple tags for variable substitution 
+  + templates store user/group and chmod permissions 
+  + a template must currently be attached to a package 
+    
+    - this feature should be removed, because traits that only need 
+      traits get vestigial packages assigned to them like base-files, 
+      initscripts, or bash 
+  + currently the var/cache/debconf/config.dat template is reserved 
+    for debconf 
 
-sudo apt-get install kernel-source-2.4.22 modutils kernel-package bin86 fakeroot pcmcia-source
-sudo apt-get install lynx
-paella-make-base woody && paella-make-base sarge && paella-make-base sid
-paella-umlrunner install nfsinstaller
-lynx 10.0.1.1/debian
+- environment 
 
-sudo swapon /dev/hda9
-sudo dpkg-reconfigure cdrecord 
-uml_switch -tap tap1
-cd spool/bootcd/
-cdrecord cdimage.iso 
-cdrecord blank=fast
-python -i /usr/bin/paella-update-repos woody --local file:/freespace/debian
-sudo apt-get install dput 
-sudo apt-get install python2.3-dev 
-sudo apt-get install mini-dinstall 
-sudo apt-get install devscripts
+  + a collection of name, value pairs for use in the templates and scripts 
+  + a trait's environment contains its parents' environment 
+  + a big python dictionary is made of the environment where the keys
+      are formed as "trait_name" where trait is the trait and name is the 
+      name of the variable.
 
+- scripts 
 
+  + a trait is not required to have a script 
+  + only three types of scripts are currently supported, pre, post, and chroot 
 
-traits--
-new subversion config
-add fortunes trait
+    - chroot is a special script that is run in a chrooted environment in the target area. 
+      This script should be aware of what's on the target system and only depend on 
+      those things. The script shouldn't connect to paella or depend on other installation 
+      tools not present in the target system. 
+    - pre is executed before anything else is processed in the trait. 
+      The pre script is executed with an os.system. 
+    - post is the very last action to perform in the trait 
+      + post should be able to talk to database and environment 
+ 
+Family
+--------
+
+- A family is a collection of variables from different traits 
+
+  + a family can have parents 
+  + a family is not tied to a suite 
+
+Profile
+-------
+
+- A profile is a collection of traits, and an environment
+
+  + Traits - the traits listed in the profile are ordered 
+  + Families - an unordered list of families 
+  + Environment
+	- the profile environment overrides the trait environments 
+	  and the family environment 
+
+Machine Type
+-------------
+
+A machine type currently only describes the disks on the machine, and a list
+of kernel modules.
+current policy is to treat all devices of a certain diskname as a raid1 array 
+Kernel: 
+a kernel is simply the name of a kernel image package 
+the package must be installable by apt, in a chroot environment, on the target system. 
+Mount: 
+a mount is named 
+a mount describes filesystem type, mount option, dump, pass and the mount point 
+Filesystem: 
+a filesystem is an ordered map of mounts to partition numbers 
+this is done on filesystem_mounts 
+the target fstab will be completely formed from the filesystem information 
+Machine: 
+a machine contains 
+a name 
+a machine type 
+a kernel 
+a filesystem 
+a profile
+
