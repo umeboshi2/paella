@@ -174,13 +174,20 @@ class NewInstaller(object):
         runlog(debootstrap(self.suite, self.target, self.debmirror))
         self._bootstrapped = True
 
-    def make_disk_devices(self):
+    def _make_generic_devices(self, devices):
         here = os.getcwd()
         os.chdir(join(self.target, 'dev'))
-        for dev in map(basename, self.machine.get_disk_devices()):
+        for dev in devices:
             runlog('echo making device %s with MAKEDEV' % dev)
             runlog('./MAKEDEV %s' % dev)
         os.chdir(here)
+
+    def make_disk_devices(self):
+        devices = map(basename, self.machine.get_disk_devices())
+        self._make_generic_devices(devices)
+
+    def make_tty_devices(self):
+        self._make_generic_devices(['tty'])
         
     def ready_base_for_install(self):
         self._check_bootstrap()
@@ -188,6 +195,7 @@ class NewInstaller(object):
         fstab = self.machine.make_fstab()
         ready_base_for_install(self.target, self.cfg, self.suite, fstab)
         self.make_disk_devices()
+        self.make_tty_devices()
         if self._raid_setup:
             mdpath = join(self.target, 'etc/mdadm')
             makepaths(mdpath)
