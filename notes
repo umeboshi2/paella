@@ -6,6 +6,12 @@ What is Paella
 
 .. small overview of paella
 
+Paella is a installation/configuration management system centered on 
+being able to easily define, configure, maintain and update systems and 
+networks.
+
+-------------------
+
 Objects and Definitions
 --------------------------------
 
@@ -15,6 +21,7 @@ A suite is a similiar to debian suites like woody or sarge.  A suite
 can be used to make different versions of configuations, or different
 styles of design and configurations.  Traits are held in suites.
 
+
 Trait 
 ------
 A trait is the atomic unit that signifies a feature. 
@@ -22,7 +29,7 @@ A trait belongs to a suite.  The table in the database that holds the list of tr
 is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
 and a set of variables.
 
-- parents
+- **parents**
 
   + no trait can be processed during the installation before all
     of its parents are processed.	     
@@ -32,13 +39,13 @@ and a set of variables.
     parents are processed. 
     
   
-- packages
+- **packages**
 
   + this is a list of packages to install or remove 
     - although other options are available, only install and remove are supported now 
   + packages are not required 
  
-- templates 
+- **templates** 
 
   + templates can have simple tags for variable substitution 
   + templates store user/group and chmod permissions 
@@ -50,7 +57,7 @@ and a set of variables.
   + currently the var/cache/debconf/config.dat template is reserved 
     for debconf 
 
-- environment 
+- **environment** 
 
   + a collection of name, value pairs for use in the templates and scripts 
   + a trait's environment contains its parents' environment 
@@ -58,7 +65,7 @@ and a set of variables.
       are formed as "trait_name" where trait is the trait and name is the 
       name of the variable.
 
-- scripts 
+- **scripts** 
 
   + a trait is not required to have a script 
   + only three types of scripts are currently supported, pre, post, and chroot 
@@ -114,22 +121,22 @@ Machine
 
 a machine contains 
 
-- a name 
+- a **name**
 
-- a machine type 
+- a **machine_type**
 
   + this is one of the machine types that are already defined
 
-- a kernel 
+- a **kernel** 
   
   + a kernel is simply the name of a kernel image package 
   + the package must be installable by apt, in a chroot environment, on the target system. 
 
-- a filesystem 
+- a **filesystem** 
   
   + a filesystem is a named ordered map of mounts to partition numbers 
 
-- a profile
+- a **profile**
 
 
 Mount: 
