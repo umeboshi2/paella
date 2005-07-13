@@ -1,1 +1,1 @@
-from kommon.base.xmlgen import BaseElement
+from useless.xmlgen.base import BaseElement

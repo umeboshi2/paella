@@ -31,6 +31,7 @@ class TraitList(KListView):
         self.scripts = None
         self.templates = None
         self.traits = None
+        self.trait = None
         self.setRootIsDecorated(True)
         self.addColumn('trait/file')
         self.addColumn('name')
@@ -42,14 +43,20 @@ class TraitList(KListView):
         self.traits = Traits(self.conn, suite)
         
 
+    def set_trait(self, trait):
+        self.trait = trait
+        
     def refreshlistView(self):
         self.clear()
         if self.ftype == 'template':
             self.setColumnText(1, 'template')
         elif self.ftype == 'script':
             self.setColumnText(1, 'script')
-
-        for trait in self.traits.list():
+        if self.trait is None:
+            traits = self.traits.list()
+        else:
+            traits = [self.trait]
+        for trait in traits:
             item = KListViewItem(self, trait)
             item.trait = trait
             if self.ftype == 'template':
@@ -116,10 +123,11 @@ class SuiteTraitCombo(QWidget):
         self.scombo = SuiteCombo(self, self.suites)
         self.tcombo = MyCombo(self, 'TypeCombo')
         self.tcombo.fill(['template', 'script'])
+        self.trcombo = MyCombo(self, 'TraitCombo')
         self.ubutton = KPushButton('update', self)
         self.listView = TraitList(self.app, self)
         self.vbox = QVBoxLayout(self)
-        for member in ['listView', 'scombo', 'tcombo', 'ubutton']:
+        for member in ['listView', 'scombo', 'tcombo', 'trcombo', 'ubutton']:
             widget = getattr(self, member)
             self.vbox.addWidget(widget)
         self.connect(self.scombo,
@@ -135,8 +143,17 @@ class SuiteTraitCombo(QWidget):
         self.listView.ftype = str(self.tcombo.currentText())
         
     def refreshlistView(self):
+        trait = str(self.trcombo.currentText())
+        if trait:
+            self.listView.set_trait(trait)
         self.listView.ftype = str(self.tcombo.currentText())
-        self.listView.set_suite(str(self.scombo.currentText()))
+        suite = str(self.scombo.currentText())
+        self.listView.set_suite(suite)
+        self.traits.set_suite(suite)
+        traits = [row.trait for row in self.traits.select()]
+        self.trcombo.fill(traits)
+        if trait in traits:
+            self.trcombo.setCurrentItem(traits.index(trait))
         self.listView.refreshlistView()
 
     def getData(self):

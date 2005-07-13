@@ -11,8 +11,8 @@ from kdeui import KTextBrowser
 from kdeui import KPushButton, KListViewItem
 from kdecore import KConfigDialogManager
 
-from paella.db.midlevel import StatementCursor
-from paella.sqlgen.clause import Eq
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
 class MimeSources(QMimeSourceFactory):
     def __init__(self):

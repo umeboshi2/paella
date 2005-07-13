@@ -1,0 +1,3 @@
+?package(paella-admin):command="/usr/bin/paella-management" \
+	needs="x11" section="Apps/Databases" \
+	title="Paella Database Management"

@@ -62,6 +62,16 @@ class NewInstaller(object):
         os.environ['LOGFILE'] = logfile
         os.environ['PAELLA_MACHINE'] = machine
         
+    def check_if_mounted(self, device):
+        mounts = file('/proc/mounts')
+        for line in file:
+            if line.startswith(device):
+                return True
+        return False
+
+    def unmount_device(self, device):
+        mounted = os.system('umount %s' % device)
+        
     def make_filesystems(self):
         device = self.machine.array_hack(self.machine.current.machine_type)
         mddev = False

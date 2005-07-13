@@ -213,7 +213,6 @@ class TraitGenWin(CommandBoxWindow, HasDialogs):
                 self.browser.trait.create_trait(trait)
             except ExistsError:
                 dialogs.Message('trait %s already exists' % trait)
-                self.browser.traits.insert(data=insert_data)
             self.destroy_dialog(self.dialogs['create'])
             self.browser.reset_rows()
 
