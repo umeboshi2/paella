@@ -20,6 +20,7 @@ def PartitionParser():
     id_ = Suppress('Id') + Suppress('=') + Word(nums)
     device_ = Word(alphas+nums+'/')
     comment_ = '#' + Optional(restOfLine)
+    warning_ = 'Warning:' + Optional(restOfLine)
     unit_ = Literal('unit') + Optional(Suppress(':') + Word(alphas + nums)+ restOfLine)
 
     pinfo = start_ + Suppress(',') 
@@ -27,6 +28,7 @@ def PartitionParser():
     pinfo += id_ + restOfLine
     partition = Group(device_ + Suppress(':') + pinfo)
     partition.ignore(comment_)
+    partition.ignore(warning_)
     partition.ignore(unit_)
     #partition = ZeroOrMore(partition)
     

@@ -107,7 +107,7 @@ binary-common:
 	dh_installchangelogs 
 	dh_installdocs -A README
 	dh_installexamples
-#	dh_installmenu
+	dh_installmenu
 #	dh_installdebconf	
 #	dh_installlogrotate	
 #	dh_installemacsen

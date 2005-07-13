@@ -155,10 +155,6 @@ class TraitMainWindow(SimpleSplitWindow):
         for trait in self.trait.get_trait_list():
             item = KListViewItem(trait_folder, trait)
             item.trait = trait
-            for widget in ['trait', 'template', 'environ', 'scripts']:
-                w = KListViewItem(item, widget)
-                w.trait = item.trait
-                w.widget = widget
                 
     def selectionChanged(self):
         current = self.listView.currentItem()

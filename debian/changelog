@@ -1,3 +1,10 @@
+paella (0.6.1-9) common; urgency=low
+
+  * uncommented dh-installmenu to get menu entry to work
+
+
+ -- Joseph Rawson <umeboshi@bard>  Wed, 13 Jul 2005 12:03:14 -0500
+
 paella (0.6.1-8) common; urgency=low
 
   * added menu entry for paella-admin
