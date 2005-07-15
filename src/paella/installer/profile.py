@@ -57,27 +57,6 @@ class ProfileInstaller(Installer):
         if hasattr(self, 'installer'):
             self.installer.set_logpath(logpath)
         
-    def make_traitlist_orig(self):
-        traitparent = TraitParent(self.conn, self.suite)
-        profile_traits = [x.trait for x in self.profiletrait.trait_rows()]
-        all_traits = list(self.traitparent.get_traitset(profile_traits))
-        traitlist = []
-        while len(profile_traits):
-            profile_traits_prepended = False
-            trait = profile_traits[0]
-            traitparent.set_trait(trait)
-            parents = [r.parent for r in traitparent.parents()]
-            for p in parents:
-                if not profile_traits_prepended and p not in traitlist:
-                    profile_traits = [p] + profile_traits
-                    profile_traits_prepended = True
-                    self.log.info('profile_traits prepended with %s' % p)
-            if not profile_traits_prepended:
-                traitlist.append(trait)
-                del profile_traits[0]
-            self.log.info('%s %s' % (str(traitlist), profile_traits))
-        return traitlist
-
     def make_traitlist(self):
         tp = TraitParent(self.conn, self.suite)
         listed = [x.trait for x in self.profiletrait.trait_rows()]
@@ -86,15 +65,31 @@ class ProfileInstaller(Installer):
         parfun = tp.parents
         log = self.log
         return make_deplist(listed, all, setfun, parfun, log)
+
+    def setup_initial_paellainfo_files(self, traits):
+        makepaths(self.paelladir)
+        traitlist = file(join(self.paelladir, 'traitlist'), 'w')
+        for trait in traits:
+            traitlist.write('%s\n' % trait)
+        traitlist.close()
+        itraits = file(join(self.paelladir, 'installed_traits'), 'w')
+        itraits.write('Installed Traits:\n')
+        itraits.close()
         
     def process(self):
         traits = self.make_traitlist()
+        self.setup_initial_paellainfo_files(traits)
         self.processed = []
         for trait in traits:
             self.process_trait(trait)
             self.log.info('currently processed %s' % ','.join(self.processed))
         self.log.info('all traits processed for profile %s' % self.profile)
         self.log.info('------------------------------------')
+        
+    def _append_installed_traits_file(self, trait):
+        itraits = file(join(self.paelladir, 'installed_traits'), 'a')
+        itraits.write(trait)
+        itraits.close()
         
     def process_trait(self, trait):
         self.traitparent.set_trait(trait)
@@ -107,6 +102,7 @@ class ProfileInstaller(Installer):
         self.installer.process()
         self.processed.append(trait)
         self.log.info('processed:  %s' % ', '.join(self.processed))
+        self._append_installed_traits_file(trait)
         
     def set_template_path(self, path):
         self.installer.set_template_path(path)

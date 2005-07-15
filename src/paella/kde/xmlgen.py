@@ -1,5 +1,6 @@
 from xml.dom.minidom import Text
 
+from useless.sqlgen.clause import Eq
 from useless.xmlgen.base import BaseElement, TextElement
 from useless.xmlgen.base import Anchor, Html, Body
 from useless.xmlgen.base import ListItem, UnorderedList
@@ -265,6 +266,44 @@ class FamilyDoc(BaseDocument):
         if len(erows):
             self.body.appendChild(PVarTable(erows, bgcolor='MistyRose2'))
             
+class _MachineBaseDocument(BaseDocument):
+    def __init__(self, app, **atts):
+        BaseDocument.__init__(self, app, **atts)
+        self.cursor = StatementCursor(self.conn)
+    
+    def _add_table_row(self, table, fields, row):
+        trow = TR()
+        for field in fields:
+            trow.appendChild(TxtTD(row[field]))
+        table.appendChild(trow)
+
+    def _add_table_header(self, table, fields, **atts):
+        th = BaseElement('th', **atts)
+        trow = TR()
+        th.appendChild(trow)
+        for field in fields:
+            trow.appendChild(TxtTD(Bold(field)))
+        table.appendChild(th)
+        table.header = th
+
+    def _make_table(self, fields, rows, **atts):
+        table = BaseElement('table', **atts)
+        self._add_table_header(table, fields)
+        for row in rows:
+            self._add_table_row(table, fields, row)
+        return table
+
+    def _make_footer_anchors(self, name, value):
+        newanchor = Anchor('new.%s.foo' % name, 'new')
+        editanchor = Anchor('edit.%s.%s' % (name, value), 'edit')
+        deleteanchor = Anchor('delete.%s.%s' % (name, value), 'delete')
+        self.body.appendChild(HR())
+        self.body.appendChild(editanchor)
+        self.body.appendChild(BR())
+        self.body.appendChild(deleteanchor)
+        self.body.appendChild(BR())
+        self.body.appendChild(newanchor)
+    
 class MachineDoc(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)
@@ -283,10 +322,6 @@ class MachineDoc(BaseDocument):
             trow.appendChild(TxtTD(v))
             mtable.appendChild(trow)
         self.body.appendChild(mtable)
-        #self.body.appendChild(SectionTitle('Machine Type'))
-        #self.body.appendChild(SectionTitle('Kernel'))
-        #self.body.appendChild(SectionTitle('Profile'))
-        #self.body.appendChild(SectionTitle('Filesystem'))
         newanchor = Anchor('new.machine.foo', 'new')
         editanchor = Anchor('edit.machine.%s' % machine, 'edit')
         self.body.appendChild(HR())
@@ -303,3 +338,59 @@ class MachineDoc(BaseDocument):
         for row in self.machine.cursor.select(clause=clause):
             self.body.appendChild(MachineFieldTable(row, bgcolor='MistyRose3'))
             self.body.appendChild(HR())
+
+class MachineTypeDoc(_MachineBaseDocument):
+    def __init__(self, app, **atts):
+        _MachineBaseDocument.__init__(self, app, **atts)
+        #self.machine = MachineHandler(self.conn)
+        self.cursor = StatementCursor(self.conn)
+        
+    def set_machine_type(self, machine_type):
+        clause = Eq('machine_type', machine_type)
+        self.clear_body()
+        title = SimpleTitleElement('MachineType:  %s' % machine_type,
+                                   bgcolor='IndianRed', width='100%')
+        self.body.appendChild(title)
+        self.body.appendChild(TextElement('h1', 'Machine Disks'))
+        rows = self.cursor.select(table='machine_disks', clause=clause)
+        fields = ['diskname', 'device']
+        disktable = self._make_table(fields, rows)
+        disktable.header.firstChild.setAttribute('bgcolor', 'cornsilk3')
+        self.body.appendChild(disktable)
+        modrows =  self.cursor.select(table='machine_modules', clause=clause,
+                                      order=['ord'])
+        if len(modrows):
+            self.body.appendChild(TextElement('h1', 'Machine Modules'))
+            modtable = self._make_table(['module', 'ord'], modrows)
+            modtable.header.firstChild.setAttribute('bgcolor', 'cornsilk3')
+            self.body.appendChild(modtable)
+
+        newanchor = Anchor('new.machine_type.foo', 'new')
+        editanchor = Anchor('edit.machine_type.%s' % machine_type, 'edit')
+        deleteanchor = Anchor('delete.machine_type.%s' % machine_type, 'delete')
+        self.body.appendChild(HR())
+        self.body.appendChild(editanchor)
+        self.body.appendChild(BR())
+        self.body.appendChild(deleteanchor)
+        self.body.appendChild(BR())
+        self.body.appendChild(newanchor)
+
+class FilesystemDoc(_MachineBaseDocument):
+    def __init__(self, app, **atts):
+        _MachineBaseDocument.__init__(self, app, **atts)
+        #self.machine = MachineHandler(self.conn)
+        self.cursor = StatementCursor(self.conn)
+        
+    def set_filesystem(self, filesystem):
+        clause = Eq('filesystem', filesystem)
+        self.clear_body()
+        title = SimpleTitleElement('Filesystem:  %s' % filesystem,
+                                   bgcolor='IndianRed', width='100%')
+        self.body.appendChild(title)
+        self.body.appendChild(TextElement('h2', 'Filesystem Mounts'))
+        rows = self.cursor.select(table='filesystem_mounts', clause=clause,
+                                  order=['ord'])
+        fields = ['mnt_name', 'partition', 'ord']
+        mounttable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
+        self.body.appendChild(mounttable)
+        self._make_footer_anchors('filesystem', filesystem)

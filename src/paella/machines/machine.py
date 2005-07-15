@@ -226,7 +226,7 @@ class MachineHandler(BaseMachineHandler):
         for row in fsmounts:
             fstype = row.fstype
             if int(row.partition) == 0:
-                if fstype in ['tmpfs', 'proc']:
+                if fstype in ['tmpfs', 'proc', 'sysfs', 'swap']:
                     _dev = fstype
                 else:
                     _dev = '/dev/null'

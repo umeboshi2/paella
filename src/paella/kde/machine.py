@@ -28,6 +28,8 @@ from paella.kde.base.actions import ManageMountsAction
 from paella.kde.base.actions import ManageKernelsAction
 
 from paella.kde.xmlgen import MachineDoc
+from paella.kde.xmlgen import MachineTypeDoc
+from paella.kde.xmlgen import FilesystemDoc
 
 ManageActions = {
     'machine' : ManageMachinesAction,
@@ -50,21 +52,37 @@ class MachineView(ViewBrowser):
     def setSource(self, url):
         KMessageBox.information(self, 'called %s' % url)
 
+class MachineTypeView(ViewBrowser):
+    def __init__(self, app, parent):
+        ViewBrowser.__init__(self, app, parent, MachineTypeDoc)
+
+    def set_machine_type(self, machine_type):
+        self.doc.set_machine_type(machine_type)
+        self.setText(self.doc.toxml())
+
+    def setSource(self, url):
+        KMessageBox.information(self, 'called %s' % url)
+        
+class FilesystemView(ViewBrowser):
+    def __init__(self, app, parent):
+        ViewBrowser.__init__(self, app, parent, FilesystemDoc)
+
+    def set_filesystem(self, filesystem):
+        self.doc.set_filesystem(filesystem)
+        self.setText(self.doc.toxml())
+
+    def setSource(self, url):
+        KMessageBox.information(self, 'called %s' % url)
+        
 class BaseManagerWidget(QSplitter):
     def __init__(self, app, parent, view, name):
         QSplitter.__init__(self, parent, name)
         self.app = app
-        #self.mainView = QSplitter(self, 'main view')
-        #self.listView = KListView(self.mainView)
         self.listView = KListView(self)
-        #self.view = view(self.app, self.mainView)
         self.view = view(self.app, self)
-        #self.setCentralWidget(self.mainView)
         self.initlistView()
         self.connect(self.listView,
                      SIGNAL('selectionChanged()'), self.selectionChanged)
-        #self.statusbar = KStatusBar(self, 'statusbar')
-        #self.statusbar.insertItem(QString('status'), 0, False)
         self.show()
 
     def selectionChanged(self):
@@ -74,23 +92,57 @@ class MachineManager(BaseManagerWidget):
     def __init__(self, app, parent):
         view = MachineView
         BaseManagerWidget.__init__(self, app, parent, view, 'MachineTypeManager')
-        
-        
+                
     def initlistView(self):
         self.cursor = StatementCursor(self.app.conn)
         table='machines'
         rows = self.cursor.select(table='machines')
         self.listView.addColumn('machine')
         for row in rows:
-            KListViewItem(self.listView, row.kernel)
-        for row in rows:
-            KListViewItem(self.listView, *row)
-
+            KListViewItem(self.listView, row.machine)
+  
     def selectionChanged(self):
         current = self.listView.currentItem().text(0)
         print str(current)
         self.view.set_machine(str(current))
         
+class MachineTypeManager(BaseManagerWidget):
+    def __init__(self, app, parent):
+        view = MachineTypeView
+        BaseManagerWidget.__init__(self, app, parent, view, 'MachineTypeManager')
+                
+    def initlistView(self):
+        self.cursor = StatementCursor(self.app.conn)
+        table='machines'
+        rows = self.cursor.select(table='machine_types')
+        self.listView.addColumn('machine_type')
+        for row in rows:
+            KListViewItem(self.listView, row.machine_type)
+  
+    def selectionChanged(self):
+        current = self.listView.currentItem().text(0)
+        print str(current)
+        self.view.set_machine_type(str(current))
+
+
+class FilesystemManager(BaseManagerWidget):
+    def __init__(self, app, parent):
+        view = FilesystemView
+        BaseManagerWidget.__init__(self, app, parent, view, 'FilesystemManager')
+
+    def initlistView(self):
+        self.cursor = StatementCursor(self.app.conn)
+        table='filesystems'
+        rows = self.cursor.select(table=table)
+        self.listView.addColumn('filesystem')
+        for row in rows:
+            KListViewItem(self.listView, row.filesystem)
+        
+    def selectionChanged(self):
+        current = self.listView.currentItem().text(0)
+        print str(current)
+        self.view.set_filesystem(str(current))
+
 class SimpleEdit(KTextEdit):
     def __init__(self, app, parent):
         KTextEdit.__init__(self, parent)
@@ -118,7 +170,7 @@ class MachineMainWindow(KMainWindow):
         self.cfg = app.cfg
         self.cursor = StatementCursor(self.conn)
         self.mainView = None
-        self.resize(300, 200)
+        self.resize(400, 300)
         self.show()
 
     def _killmainView(self):
@@ -164,8 +216,6 @@ class MachineMainWindow(KMainWindow):
         table='machines'
         rows = self.cursor.select(table='machines')
         columns = ['machine', 'machine_type', 'kernel', 'profile', 'filesystem']
-        #self.mainView = KListView(self)
-        #self.mainView.setRootIsDecorated(True)
         self.mainView = MachineManager(self.app, self)
         self.setCentralWidget(self.mainView)
         self.connect(self.mainView.listView,
@@ -176,7 +226,23 @@ class MachineMainWindow(KMainWindow):
         print '%d machines' % len(rows)
 
     def slotManagemachine_type(self):
+        self._killmainView()
+        self._managing = 'machine_types'
+        self.mainView = MachineTypeManager(self.app, self)
+        self.setCentralWidget(self.mainView)
+        self.connect(self.mainView.listView,
+                     SIGNAL('rightButtonClicked(QListViewItem *, const QPoint &, int )'),
+                     self.slotMouseIsPressed)
+        self.mainView.show()
         print 'manage machine_types'
+
+    def slotManagefilesystem(self):
+        self._killmainView()
+        self._managing = 'filesystems'
+        self.mainView = FilesystemManager(self.app, self)
+        self.setCentralWidget(self.mainView)
+        self.mainView.show()
+        print 'manage filesystems'
 
     def slotManagekernels(self):
         self._killmainView()
@@ -194,10 +260,6 @@ class MachineMainWindow(KMainWindow):
             KListViewItem(self.mainView, row.kernel)
         self.mainView.show()
         
-
-    def slotManagefilesystem(self):
-        self._killmainView()
-        print 'manage filesystems'
 
     def slotManagedisk(self):
         self._killmainView()

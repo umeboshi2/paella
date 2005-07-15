@@ -81,7 +81,7 @@ class ChangeSuiteAction(BaseAction):
 
 class ManageMachinesItem(BaseItem):
     def __init__(self):
-        BaseItem.__init__(self, 'manage machines', 'camera',
+        BaseItem.__init__(self, 'manage machines', 'gohome',
                           'manage machines', 'manage machines')
 
 class ManageMachinesAction(BaseAction):
@@ -91,7 +91,7 @@ class ManageMachinesAction(BaseAction):
 class ManageMachineTypesItem(BaseItem):
     def __init__(self):
         comment = 'manage machine types'
-        BaseItem.__init__(self, comment, 'memory', comment, comment)
+        BaseItem.__init__(self, comment, 'openterm', comment, comment)
 
 class ManageMachineTypesAction(BaseAction):
     def __init__(self, slot, parent):
@@ -101,7 +101,7 @@ class ManageMachineTypesAction(BaseAction):
 class ManageFilesystemsItem(BaseItem):
     def __init__(self):
         comment = 'manage filesystems'
-        BaseItem.__init__(self, comment, 'misc', comment, comment)
+        BaseItem.__init__(self, comment, 'blockdevice', comment, comment)
 
 class ManageFilesystemsAction(BaseAction):
     def __init__(self, slot, parent):
@@ -111,7 +111,7 @@ class ManageFilesystemsAction(BaseAction):
 class ManageDisksItem(BaseItem):
     def __init__(self):
         comment = 'manage disks'
-        BaseItem.__init__(self, comment, 'misc', comment, comment)
+        BaseItem.__init__(self, comment, 'filesave', comment, comment)
 
 class ManageDisksAction(BaseAction):
     def __init__(self, slot, parent):
@@ -121,7 +121,7 @@ class ManageDisksAction(BaseAction):
 class ManageMountsItem(BaseItem):
     def __init__(self):
         comment = 'manage mounts'
-        BaseItem.__init__(self, comment, 'misc', comment, comment)
+        BaseItem.__init__(self, comment, 'folder', comment, comment)
 
 class ManageMountsAction(BaseAction):
     def __init__(self, slot, parent):
@@ -131,7 +131,7 @@ class ManageMountsAction(BaseAction):
 class ManageKernelsItem(BaseItem):
     def __init__(self):
         comment = 'manage kernels'
-        BaseItem.__init__(self, comment, 'misc', comment, comment)
+        BaseItem.__init__(self, comment, 'memory', comment, comment)
 
 class ManageKernelsAction(BaseAction):
     def __init__(self, slot, parent):

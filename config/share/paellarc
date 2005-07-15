@@ -34,6 +34,7 @@ other_repos_names:	knoppix,marillat,logilab,marillat_src
 
 
 [installer]
+enable_bad_hacks:	false
 
 [management_gui]
 env_editor_size:	500, 400

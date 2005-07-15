@@ -37,7 +37,8 @@ def get_file_path(path, conf_path):
     return tpath[len(package):][1:], package
 
 
-TEMPL_CMDS = ['new', 'save', 'done', 'drop', 'root', 'edit']
+TEMPL_CMDS = ['new', 'save', 'done', 'drop', 'root', 'edit',
+              'real_templates', 'other_templates']
 TRAIT_TEMPL_CMDS = ['select trait', 'extract trait packages',
                     'trait manager']
 
@@ -340,16 +341,28 @@ class TemplateBrowser(ListNoteBook):
                 self.remove_page(template)
             except IndexError:
                 pass
-        elif command == 'drop':
-            print 'need to drop template'
+        elif command in ['drop', 'real_templates', 'other_templates']:
             rows = self.get_selected_data()
+            row = None
+            print row, rows, len(rows)
             if len(rows):
                 row = rows[0]
-                self.traittemplate.drop_template(row.package, row.template)
-                self.remove_page(row.template)
-                self.reset_rows()
             else:
                 dialogs.Message('a template must be selected')
+                print row, rows
+            if row:
+                package, template = row.package, row.template
+                print row, 'ifrow'
+                if command == 'drop':
+                    self.traittemplate.drop_template(package, template)
+                    self.remove_page(template)
+                elif command == 'real_templates':
+                    self.traittemplate.prefix_template(package, template, type_='real')
+                    print 'make it real_templates'
+                elif command == 'other_templates':
+                    self.traittemplate.prefix_template(package, template, type_='other')
+                    print 'make it other_templates'
+                self.reset_rows()
         elif command == 'root':
             if self.dialogs['rootsel'] is None:
                 path = self.tarball_path + '/'

@@ -1,3 +1,10 @@
+paella (0.6.1-10) common; urgency=low
+
+  * added more stuff to installer to make it log better
+
+
+ -- Joseph Rawson <umeboshi@bard>  Fri, 15 Jul 2005 13:35:53 -0500
+
 paella (0.6.1-9) common; urgency=low
 
   * uncommented dh-installmenu to get menu entry to work

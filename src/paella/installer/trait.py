@@ -212,12 +212,19 @@ class TraitInstaller(Installer):
     def _make_template_common(self, template, tmpl):
         sub = self.traittemplate.template.sub()
         newpath = join(self.target, template.template)
+        bkuppath = join(self.target, self.paelladir, 'original_files', template.template)
+        makepaths(dirname(newpath), dirname(bkuppath))
         self.log.info('target template %s' % newpath)
-        dir = dirname(newpath)
-        if not isdir(dir):
-            makepaths(dir)
         if tmpl != sub:
             self.log.info('%s %s subbed' % (template.package, template.template))
+        if isfile(newpath):
+            if not isfile(bkuppath):
+                os.system('mv %s %s' % newpath, dirname(bkuppath))
+                self.log.info('%s backed up' % template.template)
+            else:
+                self.log.info('overwriting previously installed template %s' % template.template)
+        else:
+            self.log.info('installing new template %s' % template.template)
         newfile = file(newpath, 'w')
         newfile.write(sub)
         newfile.close()
@@ -226,7 +233,7 @@ class TraitInstaller(Installer):
             mode = eval(mode)
         os.chmod(newpath, mode)
         own = ':'.join([template.owner, template.grp_owner])
-        os.system(self.command('chown', '%s %s' %(own, join('/', template.template))))
+        os.system(self.command('chown', "%s '%s'" %(own, join('/', template.template))))
 
     def install_debconf_template(self, template):
         trait = self._current_trait_

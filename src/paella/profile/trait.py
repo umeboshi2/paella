@@ -256,6 +256,13 @@ class TraitTemplate(_TraitRelation):
         clause = self._clause(package, template)
         self.cmd.update(data=dict(templatefile=str(id)), clause=clause)
 
+    def prefix_template(self, package, template, prefix='root/paella',
+                        type_='real'):
+        clause = self._clause(package, template)
+        newname = os.path.join(prefix, '%s_templates' % type_ , template)
+        data = dict(template=newname)
+        self.cmd.update(data=data, clause=clause)
+        
 class TraitScript(_TraitRelation):
     def __init__(self, conn, suite):
         table = ujoin(suite, 'scripts')

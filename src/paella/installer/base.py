@@ -52,7 +52,8 @@ class Installer(object):
         
     def set_target(self, target):
         self.target = target
-
+        self.paelladir = os.path.join(target, 'root/paella')
+        
     def command(self, command, args='', chroot=True):
         cmd = '%s %s' % (command, args)
         if chroot:

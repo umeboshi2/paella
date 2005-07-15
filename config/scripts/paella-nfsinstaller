@@ -20,7 +20,7 @@ if command == 'install':
     target = sys.argv[3]
     if target[0] != '/':
         raise Error, 'target must be absolute'
-    if target[-1] == '/':
+    if target[-1] == '/' and len(target) > 1:
         target = target[:-1]
     print "installing %s to %s" % (machine, target)
     installer.install(machine, target)
