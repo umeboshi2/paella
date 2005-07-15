@@ -88,7 +88,7 @@ class ProfileInstaller(Installer):
         
     def _append_installed_traits_file(self, trait):
         itraits = file(join(self.paelladir, 'installed_traits'), 'a')
-        itraits.write(trait)
+        itraits.write(trait + '\n')
         itraits.close()
         
     def process_trait(self, trait):

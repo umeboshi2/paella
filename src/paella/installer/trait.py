@@ -219,7 +219,7 @@ class TraitInstaller(Installer):
             self.log.info('%s %s subbed' % (template.package, template.template))
         if isfile(newpath):
             if not isfile(bkuppath):
-                os.system('mv %s %s' % newpath, dirname(bkuppath))
+                os.system('mv %s %s' % (newpath, dirname(bkuppath)))
                 self.log.info('%s backed up' % template.template)
             else:
                 self.log.info('overwriting previously installed template %s' % template.template)

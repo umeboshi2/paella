@@ -1,70 +1,141 @@
 #configuration file for paella
 [DEFAULT]
+# $(suite)_common and $(suite)_local help determine how
+# to make the sources.list for apt on the target
+# these options reference the local debian mirror that you have
+# for your modified packages.  The current way I use the local
+# mirror and suites is this:
+# my local debian root is http://mymirror/debian/local
+# a common line is like:
+#  deb http://mymirror/debian/local common/
+# a local line is like:
+#  deb http://mymirror/debian/local $(suite)/
 sarge_common:		true
 sarge_local:		true
-kudzu_common:		true
 
 __myhome:		/home/umeboshi
 
 [database]
-#database info
+# regular database info
 dbhost:			localhost
 dbname:			paella
 dbusername:		paella
 dbpassword:		apassword
+
+# these paths are used to import and export information
+# in the database.  These paths are used as hints in the
+# gui and aren't needed for the command line.
 import_path:		/usr/share/paella/defaultdb
 export_path:		/usr/share/paella/defaultdb
+
+# paella is an older autocommiting database
+# this probably won't change until it needs to,
+# or the base gets rewritten.
 autocommit:		true
 
 [debrepos]
 repos_host:		localhost
 debroot:			/debian
 repos_root:		/freespace/debian
+# these are the official debian suites that you will mirror
 official_suites:		woody,sarge,sid
+
+# these are the local suites that you maintain
+# in order to create a local suite, shell into the mirror
+# and cp -a debian/dists/sourcesuite debian/dists/targetsuite
+# this just copies all of the package and source list files,
+# but still references the same files in the pool
 local_suites:		maverick,questron,gunny,kardinal
+
+# suites that have Packages.bz2 files in them need to be listed
+# here in a comma separated list
+# this will get to the installer to mirror the .bz2 files as well as the
+# .gz files
 sid_suites:		sid,questron,kardinal
+
 http_mirror:		http://%(repos_host)s%(debroot)s
 
+# these options are the urls for the official debian sites
+# it can be helpful to override these to partially mirror a mirror
 official_main:		http://ftp.us.debian.org/debian
 official_nonus:		http://nonus.debian.org/
 official_security:		http://security.debian.org
 
+# this is the location of the other repositories that you may mirror
 other_repos:		%(repos_root)/other
+
+# this is a comma separated list of repositories that you
+# are mirroring.  There should be a section in this config file
+# named other_repos_$(repos) for each repository in this list.
 other_repos_names:	knoppix,marillat,logilab,marillat_src
 
 
 [installer]
+# this is to enable ugly stuff in the paella installers
 enable_bad_hacks:	false
+
+# a directory for storing generated files that would be needed later
+paella_storage:		/var/cache/paella
+
+# the directory that will hold tarfiles of clean bootstrapped suites
+suite_storage:		%(paella_storage)s/suites
+
+# this is a list of suites that will be bootstrapped and tarred
+bootstrap_suites:		sarge, testing, kudzu
+
+# the default is not to have the installer bootstrap,
+# but extract tar files in suite_storage (quicker)
+bootstrap_target:		false
+
+# this is the location of the devices tarball that can be used
+# in place of makedev
+devices_tarball:		%(paella_storage)s/devices.tar
+
+# we default to using the devices tarball because it is quicker
+# than running MAKEDEV
+use_devices_tarball:	true
 
 [management_gui]
 env_editor_size:	500, 400
 
 bkuptarball_path:		/mirrors/bkups
-management_suites:	sarge, kudzu
-default_profile_suite:	gunny
+
+# a comma separated list of suites to manage
+# the suite management toolbars will appear for
+# these suites on paella-management startup
+management_suites:	sarge
+
+# this is the template that profiles will be created from
 template_profile:		skeleton
+
+# this option is probably deprecated by the template_profile
+# option above
+default_profile_suite:	sarge
+
+# this is the path used to import and export client
+# information and the paella database
+# client information should be kept on a separate device
+# for general security reasons
+# the client information should be able to sit nicely
+# on top of the base paella database
 client_path:		/mirrors/bkups/clients
 
-#manager_pos:		1122, 775
+# *_pos options locate the windows on
+# paella-management startup
+
+# manager is the main management window
+# will be located
 manager_pos:		0, 1075
+
+# manager window size
 manager_size:		170, 200
-maverick_pos:		750, 0
-woody_pos:		750, 0
+
+# $(suite)_pos is the suite manager toolbar for that suite
 sarge_pos:		750, 0
-gunny_pos:		750, 50
-questron_pos:		750, 100
-kardinal_pos:		750, 100
-kudzu_pos:		750, 100
 
 
-[launcher]
-position:		0, 700
-size:		45, 100
-orientation:	vertical
-num_cols:	3
-num_rows:	4
-
-
+# the other_repos sections are sections that are mirrored
+# by the paella-update-other-repos script
 
 [other_repos__knoppix]
 uri:			http://developer.linuxtag.net/knoppix/

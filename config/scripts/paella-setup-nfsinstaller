@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from useless.base import Error
+from paella.profile.base import PaellaConfig
+from paella.debian.base import debootstrap
+
+parser = OptionParser()
+parser.add_option('--mirror', action='store', type='string', dest='remote',
+                  default='http://paella/debian')
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+config = PaellaConfig()
+
+http_mirror = config.get('debrepos', 'http_mirror')
+devices_tarball = config.get('installer', devices_tarball)
+
+def setup_bootstrap_tarball(suite):
+    here = os.getcwd()
+    spath = config.get('installer', 'suite_storage')
+    os.chdir(spath)
+    command = debootstrap(suite, suite, mirror=http_mirror)
+    print 'bootstrapping %s with command %s' % (suite, command)
+    os.system(command)
+    os.system('rm %s'  % join(suite, 'var/cache/apt/archives/*.deb'))
+    os.chdir(suite)
+    print 'making tarball of %s' % suite
+    os.system('tar cf ../%s.tar .' % suite)
+    os.chdir(spath)
+    print 'removing bootstrap directory'
+    os.system('rm %s -fr' % suite)
+    os.chdir(here)
+    
+def setup_devices_tarball():
+    here = os.getcwd()
+    mydev = '/tmp/mydev'
+    if os.path.exists(mydev):
+        raise Error, 'mydev is not supposed to be here'
+    os.makedirs(mydev)
+    os.chdir(mydev)
+    print 'making generic devices'
+    os.system('/sbin/MAKEDEV generic')
+    print 'making tarball of devices'
+    os.system('tar cf %s .' % devices_tarball)
+    os.chdir(here)
+    print 'removing %s' % mydev
+    os.system('rm -fr %s' % mydev)
+
+if __name__ == '__main__':
+    if not os.path.isfile(devices_tarball):
+        setup_devices_tarball()
+    suite_path = config.get('installer', 'suite_storage')
+    suites = config.get_list('bootstrap_suites', section='installer')
+    for suite in suites:
+        if not os.path.isfile(join(suite_path, '%s.tar' % suite)):
+            print 'need to bootstrap %s' % suite
+            setup_bootstrap_tarball(suite)
+        else:
+            print 'suite %s is already bootstrapped' % suite
+            
