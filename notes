@@ -139,10 +139,75 @@ a machine contains
 - a **profile**
 
 
-Mount: 
+Mount
+------
+
 a mount is named 
+
 a mount describes filesystem type, mount option, dump, pass and the mount point 
-Filesystem: 
+
+Filesystem
+---------------
+
 this is done on filesystem_mounts 
+
 the target fstab will be completely formed from the filesystem information 
+
+
+Installer
+----------
+
+The installers in paella are layered.  There is a trait installer, a profile installer,
+and a nfsinstaller.  The installers are layered to make the whole installing
+operation more structured.  The trait installer is the simplest and contains everything 
+needed for installing a trait.  The profile installer contains a trait installer, and it is 
+responsible for installing profiles.  The nfsinstaller contains a profile installer and is used
+to install a profile on a machine.  There is also a chroot installer that will install a profile
+to a target directory.
+
+Trait Installer
+-------------------
+
+The trait installer is responsible for installing a trait to a target location.
+It is pretty dumb as it doesn't check to see if a parent has been installed or not.
+This class should only be instantiated as a member of the profile installer class,
+or a similiar class because the profiledata and familydata members start out empty.
+
+- trait install process
+
+  + pre script
+
+  + remove packages
+
+  + install packages
+
+  + configure packages
+
+  + chroot script
+
+  + reconfigure packages
+
+  + post script
+
+
+Profile Installer
+---------------------
+
+The profile installer can be instantiated by itself.  It contains a trait installer.
+It is responsible for installing a profile to a target location.  A profile is the minimum
+installable object, you can't install a trait alone, but you can have a profile with one trait
+in it.  The profile installer is responsible for making the complete list of traits that will be
+installed.  The list is composed of the traits listed in the profile itself, and all of their implied
+parents, orded for install.  The profile installer then calls its trait installer for each trait
+in the list.
+
+
+Nfs Installer
+-----------------
+
+The nfs installer is responsible for installing a machine to a target location.  This is the
+installer that will be run on a machine to be installed.  This installer contains a profile
+installer.  The nfs installer will do all of the hardware related functions that are necessary
+to setup a target location for its profile installer.  The nfs installer will also setup the fstab,
+apt sources, and kernel for the machine.
 

@@ -16,6 +16,8 @@ class TraitInstaller(Installer):
         self.traittemplate = TraitTemplate(conn, suite)
         self.traitdebconf = TraitDebconf(conn, suite)
         self.traitscripts = TraitScript(conn, suite)
+        self.profiledata = {}
+        self.familydata = {}
         
     def set_trait(self, trait):
         self.traitpackage.set_trait(trait)
@@ -261,21 +263,8 @@ class TraitInstaller(Installer):
         self.traittemplate.template.set_path(path)
 
     def install_debconf(self):
-        config = self.traitdebconf.get_config()
-        config_path = join(self.target, 'tmp/paella_debconf')
-        if isfile(config_path):
-            raise Error, '%s is not supposed to be there' % config_path
-        debconf = file(config_path, 'w')
-        debconf.write(config + '\n')
-        debconf.close()
-        target_path = join(self.target, 'var/cache/debconf/config.dat')
-        self.log.info('debconf config is %s %s' % (config_path, target_path))
-        cmd = install_debconf(config_path, target_path)
-        command = 'sh -c "%s"' % cmd
-        self.log.info(cmd)
-        os.system(cmd)
-        os.remove(config_path)
-
+        raise Error, 'install_debconf is deprecated, use install_debconf_template instead'
+    
     def reconfigure_debconf(self):
         owners = self.traitdebconf.all_owners()
         self.log.info('ALL OWNERS %s' % owners)
