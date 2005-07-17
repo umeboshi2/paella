@@ -1,4 +1,4 @@
-	<profile name="desktest" suite="kudzu">
+	<profile name="desktest" suite="sid">
 		<traits>
 			<trait ord="50">
 				desktop

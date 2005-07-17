@@ -1,4 +1,4 @@
-	<profile name="nfsroot" suite="questron">
+	<profile name="nfsroot" suite="sarge">
 		<traits>
 			<trait ord="0">
 				simple_nfsroot

@@ -1,4 +1,4 @@
-	<profile name="dless" suite="kudzu">
+	<profile name="dless" suite="sid">
 		<traits>
 			<trait ord="20">
 				base

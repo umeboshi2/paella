@@ -1,10 +1,10 @@
 	<paelladatabase>
 		<suites>
-			<suite common="t" local="t" name="kudzu" nonus="f" updates="f"/>
+			<suite common="t" local="t" name="sid" nonus="f" updates="f"/>
 			<suite common="t" local="t" name="sarge" nonus="f" updates="f"/>
 			<suite common="f" local="f" name="woody" nonus="t" updates="f"/>
 		</suites>
-		<traits suite="kudzu">
+		<traits suite="sid">
 			<trait name="averatec"/>
 			<trait name="base"/>
 			<trait name="boot_server"/>
