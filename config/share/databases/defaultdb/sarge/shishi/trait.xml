@@ -1,5 +1,7 @@
 <trait name="shishi" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			standard
@@ -50,6 +52,5 @@
 			etc/dhcp3/dhcpd.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

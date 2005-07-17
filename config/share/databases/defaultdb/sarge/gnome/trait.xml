@@ -1,5 +1,7 @@
 <trait name="gnome" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			desktop
@@ -227,6 +229,5 @@
 			etc/skel/.gconf/apps/goats/herd/applet_goat_1608129903/%gconf.xml
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

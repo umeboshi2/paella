@@ -1,5 +1,7 @@
 <trait name="diskless" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			workstation
@@ -86,7 +88,6 @@
 			var/cache/debconf/config.dat
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="post"/>
 		<script name="pre"/>

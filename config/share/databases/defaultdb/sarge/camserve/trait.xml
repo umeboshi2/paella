@@ -1,5 +1,7 @@
 <trait name="camserve" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			postgres
@@ -46,7 +48,6 @@
 			var/www/kennelmanage/index.php
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="pre"/>

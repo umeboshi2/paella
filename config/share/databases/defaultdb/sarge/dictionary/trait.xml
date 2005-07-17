@@ -1,5 +1,7 @@
 <trait name="dictionary" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -82,6 +84,5 @@
 			etc/dictd/dictdconfig.alias
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

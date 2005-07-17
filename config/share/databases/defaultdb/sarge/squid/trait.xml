@@ -1,5 +1,7 @@
 <trait name="squid" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -34,6 +36,5 @@
 			etc/squid/squidGuard.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

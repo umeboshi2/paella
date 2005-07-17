@@ -1,5 +1,7 @@
 <trait name="standard" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			clockserver
@@ -37,6 +39,5 @@
 			etc/mailname
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

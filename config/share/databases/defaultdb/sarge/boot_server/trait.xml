@@ -1,5 +1,7 @@
 <trait name="boot_server" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -29,7 +31,6 @@
 			boot/paella/pxelinux.cfg/default
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="pre"/>

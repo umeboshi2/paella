@@ -1,5 +1,7 @@
 <trait name="nettester" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			localnet
@@ -69,6 +71,5 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

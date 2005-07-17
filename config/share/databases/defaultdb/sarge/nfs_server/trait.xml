@@ -1,5 +1,7 @@
 <trait name="nfs_server" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			fileserver
@@ -22,6 +24,5 @@
 			etc/exports
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

@@ -1,5 +1,7 @@
 <trait name="vnc_server" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -29,6 +31,5 @@
 			etc/vnc.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

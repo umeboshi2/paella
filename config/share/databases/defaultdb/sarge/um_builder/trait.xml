@@ -1,5 +1,7 @@
 <trait name="um_builder" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			builder
@@ -29,6 +31,5 @@
 			etc/dput.cf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

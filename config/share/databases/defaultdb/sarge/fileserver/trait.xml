@@ -1,5 +1,7 @@
 <trait name="fileserver" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -31,7 +33,6 @@
 		</share_path>
 	</environ>
 	<templates/>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="pre"/>

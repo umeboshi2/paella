@@ -1,5 +1,7 @@
 <trait name="local_website" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			webserver
@@ -22,7 +24,6 @@
 			etc/zopectl/zopectlrc
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

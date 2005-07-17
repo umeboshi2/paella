@@ -1,5 +1,7 @@
 <trait name="wmaker" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			xwindow
@@ -21,7 +23,6 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

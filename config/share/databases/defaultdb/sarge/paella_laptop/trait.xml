@@ -1,5 +1,7 @@
 <trait name="paella_laptop" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			desktop
@@ -106,6 +108,5 @@
 			etc/shorewall/shorewall.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

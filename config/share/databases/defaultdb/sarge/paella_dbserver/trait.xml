@@ -1,5 +1,7 @@
 <trait name="paella_dbserver" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			boot_server
@@ -44,7 +46,6 @@
 			etc/postgresql/pg_hba.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="pre"/>

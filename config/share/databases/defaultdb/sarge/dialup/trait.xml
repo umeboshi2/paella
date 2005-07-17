@@ -1,5 +1,7 @@
 <trait name="dialup" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -47,6 +49,5 @@
 			etc/ppp/peers/provider
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

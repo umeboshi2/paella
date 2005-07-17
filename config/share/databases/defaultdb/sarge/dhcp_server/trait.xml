@@ -1,5 +1,7 @@
 <trait name="dhcp_server" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			localnet
@@ -53,7 +55,6 @@
 			var/cache/debconf/config.dat
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="post"/>
 	</scripts>

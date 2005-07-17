@@ -1,5 +1,7 @@
 <trait name="postgres" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -65,6 +67,5 @@
 			etc/postgresql/postmaster.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

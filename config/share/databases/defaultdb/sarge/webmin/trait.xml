@@ -1,5 +1,7 @@
 <trait name="webmin" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			localnet
@@ -35,7 +37,6 @@
 			var/lib/dpkg/info/webmin.postinst
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

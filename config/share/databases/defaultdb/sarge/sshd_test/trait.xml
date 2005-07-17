@@ -1,5 +1,7 @@
 <trait name="sshd_test" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -41,7 +43,6 @@
 			root/paella/files/sshd_test/id_dsa.pub
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

@@ -1,5 +1,7 @@
 <trait name="paella_installer" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			paella_common
@@ -8,11 +10,9 @@
 			subversion
 		</parent>
 	</parents>
-	<packages>
-	</packages>
+	<packages/>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

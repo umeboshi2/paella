@@ -1,5 +1,7 @@
 <trait name="paella_nfsroot_installer" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			paella_nfsroot
@@ -11,6 +13,5 @@
 	<packages/>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

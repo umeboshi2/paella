@@ -1,5 +1,7 @@
 <trait name="um_default" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -19,7 +21,6 @@
 			etc/init.d/klogd
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

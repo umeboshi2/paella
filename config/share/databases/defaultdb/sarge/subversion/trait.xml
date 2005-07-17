@@ -1,5 +1,7 @@
 <trait name="subversion" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -19,6 +21,5 @@
 			etc/subversion/config
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

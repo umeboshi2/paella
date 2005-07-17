@@ -1,5 +1,7 @@
 <trait name="samba" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			fileserver
@@ -47,6 +49,5 @@
 			etc/default/samba
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

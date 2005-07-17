@@ -1,5 +1,7 @@
 <trait name="sql_ledger" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			postgres
@@ -21,7 +23,6 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

@@ -1,5 +1,7 @@
 <trait name="ume_testuser" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			sshd_test
@@ -12,7 +14,6 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

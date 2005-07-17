@@ -1,5 +1,7 @@
 <trait name="localnet" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -106,6 +108,5 @@
 		</webserver>
 	</environ>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

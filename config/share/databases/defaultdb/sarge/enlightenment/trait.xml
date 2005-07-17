@@ -1,5 +1,7 @@
 <trait name="enlightenment" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			xwindow
@@ -62,7 +64,6 @@
 			usr/share/enlightenment/config/menus.cfg
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

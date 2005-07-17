@@ -1,5 +1,7 @@
 <trait name="firewall" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			ipsec
@@ -119,7 +121,6 @@
 			etc/shorewall/zones
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="post"/>

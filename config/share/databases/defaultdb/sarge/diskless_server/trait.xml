@@ -1,5 +1,7 @@
 <trait name="diskless_server" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			diskless_common
@@ -38,7 +40,6 @@
 			root/paella/setup/setup_diskless.py
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="post"/>
 		<script name="pre"/>

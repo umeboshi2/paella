@@ -1,5 +1,7 @@
 <trait name="xwindow" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -212,7 +214,6 @@
 			etc/skel/.xxdiffrc
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="post"/>

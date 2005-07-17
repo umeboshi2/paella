@@ -1,5 +1,7 @@
 <trait name="global" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents/>
 	<packages>
 		<package action="install">
@@ -64,6 +66,5 @@
 			root/paella/testfile
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

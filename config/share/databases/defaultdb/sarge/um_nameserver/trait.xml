@@ -1,5 +1,7 @@
 <trait name="um_nameserver" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			dhcp_server
@@ -38,7 +40,6 @@
 			etc/resolv.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

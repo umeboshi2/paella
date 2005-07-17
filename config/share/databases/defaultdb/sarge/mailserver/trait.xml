@@ -1,5 +1,7 @@
 <trait name="mailserver" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			exim
@@ -25,6 +27,5 @@
 			var/cache/debconf/config.dat
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

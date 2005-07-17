@@ -1,5 +1,7 @@
 <trait name="xmms" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			gkrellm
@@ -46,6 +48,5 @@
 			etc/default/aumix
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

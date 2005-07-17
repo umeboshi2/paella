@@ -1,5 +1,7 @@
 <trait name="nameserver" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -56,7 +58,6 @@
 			var/cache/bind/localdomain.rev
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="post"/>

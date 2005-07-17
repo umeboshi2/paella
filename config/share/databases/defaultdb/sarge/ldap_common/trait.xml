@@ -1,5 +1,7 @@
 <trait name="ldap_common" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -77,6 +79,5 @@
 			root/paella/real_templates/etc/pam_ldap.conf
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

@@ -1,5 +1,7 @@
 <trait name="paella_common" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			localnet
@@ -37,6 +39,5 @@
 		</log_mntpt>
 	</environ>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

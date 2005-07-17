@@ -1,5 +1,7 @@
 <trait name="um_repository" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			mirrors_server
@@ -38,6 +40,5 @@
 			home/umeboshi/.ssh/authorized_keys
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

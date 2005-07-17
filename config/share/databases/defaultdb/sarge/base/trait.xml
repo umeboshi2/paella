@@ -1,5 +1,7 @@
 <trait name="base" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			global
@@ -233,7 +235,6 @@
 			etc/login.defs
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="pre"/>

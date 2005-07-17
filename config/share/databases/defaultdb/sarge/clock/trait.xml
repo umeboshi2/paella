@@ -1,5 +1,7 @@
 <trait name="clock" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -29,6 +31,5 @@
 			etc/default/ntpdate
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

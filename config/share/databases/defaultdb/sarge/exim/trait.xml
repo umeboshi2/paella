@@ -1,5 +1,7 @@
 <trait name="exim" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -41,6 +43,5 @@
 			var/cache/debconf/config.dat
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

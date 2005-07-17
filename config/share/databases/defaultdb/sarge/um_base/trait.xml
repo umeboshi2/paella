@@ -1,5 +1,7 @@
 <trait name="um_base" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			base
@@ -20,7 +22,6 @@
 			etc/fstab
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

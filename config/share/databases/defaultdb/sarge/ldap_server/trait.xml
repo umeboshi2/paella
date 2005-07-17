@@ -1,5 +1,7 @@
 <trait name="ldap_server" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			ldap_common
@@ -128,7 +130,6 @@
 			var/cache/debconf/config.dat
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="pre"/>

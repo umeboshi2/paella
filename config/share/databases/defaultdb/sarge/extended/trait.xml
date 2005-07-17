@@ -1,5 +1,7 @@
 <trait name="extended" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			boot_server
@@ -29,6 +31,5 @@
 	<packages/>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

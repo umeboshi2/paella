@@ -1,5 +1,7 @@
 <trait name="webserver" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -50,6 +52,5 @@
 			etc/php4/apache/php.ini
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

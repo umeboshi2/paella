@@ -1,5 +1,7 @@
 <trait name="nisclient" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			base
@@ -19,6 +21,5 @@
 		</ypserver>
 	</environ>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

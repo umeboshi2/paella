@@ -1,5 +1,7 @@
 <trait name="ircserver" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			localnet
@@ -28,6 +30,5 @@
 			etc/dancer-ircd/omotd
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>

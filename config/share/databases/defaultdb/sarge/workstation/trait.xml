@@ -1,5 +1,7 @@
 <trait name="workstation" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			ldap_common
@@ -59,6 +61,5 @@
 			root/paella/real_templates/etc/pam.d/sudo
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts/>
 </trait>
