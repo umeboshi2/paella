@@ -1,4 +1,4 @@
-	<profile name="nfsroot_installer" suite="questron">
+	<profile name="nfsroot_installer" suite="sarge">
 		<traits>
 			<trait ord="50">
 				paella_nfsroot
