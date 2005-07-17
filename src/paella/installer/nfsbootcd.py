@@ -3,8 +3,8 @@ from os.path import isfile, isdir, join
 
 from useless.base.util import makepaths
 
+from paella.base import PaellaConfig
 from paella.debian.dpkgdeb import DpkgDeb
-from paella.profile.base import PaellaConfig
 
 def unpack_kernel(kernel, target):
     isolinux_dir = join(target, 'isolinux')

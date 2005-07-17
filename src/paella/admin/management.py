@@ -11,18 +11,19 @@ from gtk import mainloop, mainquit
 
 from useless.base import Error, debug
 from useless.db.midlevel import StatementCursor
-from paella.profile.base import PaellaConfig, PaellaConnection
-from paella.profile.base import DefaultEnvironment
-from paella.profile.profile import PaellaDatabase
-from paella.machines.xmlgen import MachineDatabaseElement
-from paella.machines.machine import MachineHandler
+
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
+from paella.db import DefaultEnvironment
+from paella.db.main import PaellaDatabase
+from paella.db.machine.xmlgen import MachineDatabaseElement
+from paella.db.machine import MachineHandler
 
 
 from profilegen import ProfileGenWin
 from traitgen import TraitGenWin
 from template import TemplateManager
 from environ import EnvironmentEditorWin
-from debconf import DebconfBrowser
 from scriptomatic import ScriptManager
 from trait_manager import TraitManagerWin
 from machines import MainMachineWin

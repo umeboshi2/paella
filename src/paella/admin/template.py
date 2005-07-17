@@ -21,15 +21,14 @@ from useless.gtk import dialogs
 from gtk import MenuItem, FileSelection, ScrolledWindow
 from gtk import TRUE, FALSE, mainquit, mainloop
 
-from paella.profile.base import Traits, PaellaConfig
-from paella.profile.trait import TraitParent, TraitTemplate
-from paella.profile.trait import TraitPackage
-from paella.profile.trait import TraitElement, backup_trait
-from paella.profile.trait import Trait, TraitTarFile
+from paella.db import PaellaConfig
+from paella.db.trait import Trait
+from paella.db.trait.base import Traits
+from paella.db.trait.relations import TraitParent, TraitPackage, TraitTemplate
+from paella.db.trait.main import backup_trait, TraitTarFile
 
 from base import SystemTarWindow, select_from_tarfile
 from traitgen import TraitGenWin
-from debconf import DebconfBrowser
 
 def get_file_path(path, conf_path):
     tpath = get_sub_path(path, conf_path)

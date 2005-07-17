@@ -18,8 +18,8 @@ from paella.debian.debconf import parse_debconf_template
 
 from useless.db.midlevel import StatementCursor, Environment
 
-from paella.profile.base import PaellaConnection, TraitEnvironment, Traits
-from paella.profile.trait import TraitDebconf
+#from paella.profile.base import PaellaConnection, TraitEnvironment, Traits
+#from paella.profile.trait import TraitDebconf
 
 
 from gtk import TRUE, FALSE, mainquit, mainloop

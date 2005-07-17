@@ -13,7 +13,7 @@ from useless.gtk.helpers import make_menu, right_click_menu, HasDialogs
 
 from useless.base import debug, Error
 from useless.sqlgen.clause import Eq
-from paella.profile.family import Family, FamilyVariablesConfig
+from paella.db.family import Family
 
 from traitgen import DragListWindow
 
@@ -80,6 +80,7 @@ class FamilyBrowser(ListNoteBook):
                             self.drop_family, TARGETS.get('family', 'flavor'))
 
     def set_package(self, menu_item, action):
+        raise Error, 'this call (set_package) is not needed in Family'
         packages = self._get_listbox_col_('packages', 'package')
         trait = self.current_family
         self.trait.set_action(action, packages)
@@ -87,7 +88,7 @@ class FamilyBrowser(ListNoteBook):
 
     def var_menu_selected(self, menu_item, action):
         if action == 'edit':
-            config = FamilyVariablesConfig(self.conn, self.current_family)
+            config = self.family.getVariablesConfig(self.current_family)
             newconfig = config.edit()
             config.update(newconfig)
             self.select_family(self.current_family)
@@ -95,14 +96,9 @@ class FamilyBrowser(ListNoteBook):
             pages = dict(self.pages)
             listbox = pages['environment'].listbox
             rows = listbox.get_selected_data()
-            data = dict(family=self.current_family)
             for row in rows:
-                data['trait'] = row.trait
-                data['name'] = row.name
-                clause = reduce(and_, [Eq(k, v) for k,v in data.items()])
-                self.family.env.cursor.delete(clause=clause)
-    
-
+                self.family.deleteVariable(row.trait, row.name, self.current_family)
+            
     def pop_mymenu(self, widget, event, menu):
         if right_click_pressed(event):
             menu.popup(None, None, None, event.button, event.time)
@@ -133,17 +129,9 @@ class FamilyBrowser(ListNoteBook):
         table = 'family_environment'
         trips = [x.split('<=>') for x in selection.data.split('^&^')]
         rows = [dict(trait=x[0], name=x[1], value=x[2]) for x in trips]
-        print rows
         for r in trips:
-            clause = Eq('family', self.current_family)
-            clause &= Eq('trait', r[0]) & Eq('name', r[1]) 
-            trows = self.family.cursor.select(table=table, clause=clause)
-            print 'trows', trows
-            if len(trows) == 0:
-                data = dict(trait=r[0], name=r[1], value=r[2])
-                data['family'] = self.current_family
-                print 'data', data
-                self.family.cursor.insert(table=table, data=data)        
+            trait, name, value = r
+            self.family.insertVariable(trait, name, value, family=self.current_family)
         self.__set_pages(self.current_family)
 
     def _get_listbox_col_(self, page, field):
@@ -179,10 +167,6 @@ class FamilyWin(CommandBoxWindow, HasDialogs):
         self.tbar.add_button('create', 'create family', self.ask_dialog)
         self.tbar.add_button('variables', 'show all variables', self.create_list_dialog)
         self.tbar.add_button('families', 'show all families', self.create_list_dialog)
-        #self.main_menu.add('create', self.ask_dialog)
-        #self.main_menu.add('packages', self.create_package_list)
-        #self.main_menu.add('traits', self.create_package_list)
-        #self.menu_bar.append(self.main_menu, 'main')
         
     def ask_dialog(self, button, data):
         if not self.dialogs[data]:
@@ -220,14 +204,6 @@ if __name__ == '__main__':
     c = PaellaConnection()
     win = TraitGenWin(c, 'woody')
     win.connect('destroy', mainquit)
-    
-    
-    def dtable():
-        cmd.execute('drop table themebase')
-    def dtables():
-        for t in cmd.tables():
-            if t not in  ['footable']:
-                cmd.execute('drop table %s' %t)
-    #dtables()
     mainloop()
+    
     

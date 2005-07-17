@@ -4,6 +4,7 @@ from os.path import join
 from optparse import OptionParser
 
 from useless.base import Error, debug
+
 from paella.debian.base import RepositorySource
 from paella.debian.repos import RemoteRepos
 

@@ -10,13 +10,15 @@ from useless.db.midlevel import Environment
 from paella.debian.base import RepositorySource
 from paella.debian.debconf import install_debconf
 
-from paella.profile.base import get_traits, get_suite, PaellaConnection
-from paella.profile.base import make_deplist
-from paella.profile.trait import TraitParent, TraitPackage, TraitTemplate
-from paella.profile.trait import TraitDebconf, TraitScript
-from paella.profile.profile import ProfileTrait, ProfileEnvironment, Profile
+from paella.base import PaellaConfig
+from paella.base.util import make_deplist
+from paella.db import PaellaConnection
+from paella.db.base import get_traits, get_suite
+from paella.db.trait.relations import TraitParent, TraitPackage
+from paella.db.profile import Profile
+from paella.db.profile.main import ProfileTrait, ProfileEnvironment
 
-from base import PaellaConfig, InstallerConnection, CurrentEnvironment
+from base import InstallerConnection, CurrentEnvironment
 from base import Installer
 from trait import TraitInstaller
         

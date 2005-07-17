@@ -7,17 +7,21 @@ from useless.base.util import makepaths
 
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, In
-
-from paella.profile.base import PaellaConfig, PaellaConnection, DefaultEnvironment
-from paella.profile.profile import PaellaDatabase, PaellaProcessor, PaellaProfiles
-from paella.profile.family import Family
-from paella.machines.xmlgen import ClientMachineDatabaseElement
-from paella.machines.xmlgen import MachineDatabaseElement
-from paella.machines.machine import MachineHandler
-
 from useless.gtk.middle import ListTextView, ScrollCList
 from useless.gtk.windows import CommandBoxWindow
 from useless.gtk import dialogs
+
+
+from paella.db import PaellaConfig, PaellaConnection, DefaultEnvironment
+from paella.db.main import PaellaDatabase, PaellaProcessor
+from paella.db.profile.xmlgen import PaellaProfiles
+from paella.db.family import Family
+from paella.db.machine import MachineHandler
+
+#from paella.machines.xmlgen import ClientMachineDatabaseElement
+#from paella.machines.xmlgen import MachineDatabaseElement
+from paella.db.machine.xmlgen import MachineDatabaseElement
+#from paella.machines.machine import MachineHandler
 
 class DatabaseManager(object):
     def __init__(self, conn):

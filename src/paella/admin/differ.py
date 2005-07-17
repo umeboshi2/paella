@@ -1,10 +1,6 @@
 import os
 from os.path import join
-#from sets import Set
 
-#from useless.gtk.base import right_click_pressed, FlavoredTargets
-#from useless.gtk.base import rowpacker, set_receive_targets
-#from useless.gtk.simple import SimpleMenu, MyCombo, SimpleMenuBar
 from useless.gtk.simple import MyCombo
 from useless.gtk import dialogs
 from useless.gtk.middle import ListNoteBook, ScrollCList
@@ -13,25 +9,19 @@ from useless.gtk.middle import TwinScrollCList
 from useless.gtk.windows import CommandBoxWindow
 from useless.gtk.helpers import make_menu, right_click_menu, HasDialogs
 
-#from gtk import MenuBar
 from gtk import HBox, VBox, Button
-
-#from gtk.gdk import ACTION_COPY, ACTION_MOVE
-#from gtk.gdk import BUTTON1_MASK
 
 from useless.base import Error
 from useless.base.util import makepaths, strfile
 from useless.db.midlevel import StatementCursor
-#from useless.sqlgen.statement import Statement
-#from useless.sqlgen.select import SimpleClause
-#from useless.sqlgen.clause import one_many, Eq, In, NotIn
 from useless.sqlgen.clause import Eq
-from paella.profile.base import Differ
 
-#from paella.profile.base import PaellaConnection, PaellaConfig
-#from paella.profile.trait import TraitPackage, TraitParent
-from paella.profile.trait import TraitTemplate, TraitScript
-from paella.profile.family import Family, FamilyVariablesConfig
+from paella.base.objects import Differ
+
+#these need to be encapsulated in Trait object
+from paella.db.trait.relations import TraitTemplate, TraitScript
+
+from paella.db.family import Family, FamilyVariablesConfig
 
 class SuiteBar(HBox):
     def __init__(self, suites, name='SuiteBar'):

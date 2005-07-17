@@ -26,11 +26,18 @@ from useless.sqlgen.statement import Statement
 from useless.sqlgen.select import SimpleClause
 from useless.sqlgen.clause import Eq, In
 
-from paella.profile.base import PaellaConnection, VariablesConfig
-from paella.profile.base import PaellaConfig
-from paella.profile.profile import Profile, ProfileTrait, PaellaDatabase
-from paella.profile.profile import ProfileEnvironment
-from paella.profile.family import Family
+from paella.base.objects import VariablesConfig
+from paella.db import PaellaConnection, PaellaConfig
+from paella.db.profile import Profile
+from paella.db.family import Family
+
+#from paella.profile.profile import Profile, ProfileTrait, PaellaDatabase
+from paella.db.profile.main import ProfileTrait, ProfileEnvironment
+#the above classes need to be contained in Profile
+from paella.db.main import PaellaDatabase
+
+#from paella.profile.profile import ProfileEnvironment
+#from paella.profile.family import Family
 
 from traitgen import TraitGenWin, TraitsWindow
 from traitgen import PackagesWindow, TARGETS

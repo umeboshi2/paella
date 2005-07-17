@@ -9,10 +9,10 @@ from useless.base.objects import Parser
 from useless.db.midlevel import Environment
 
 from paella.debian.base import debootstrap
-from paella.profile.base import get_traits, get_suite, PaellaConnection, PaellaConfig
-from paella.profile.base import DefaultEnvironment
-from paella.profile.trait import TraitParent, TraitPackage
 
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection, DefaultEnvironment
+from paella.db.base import get_traits, get_suite
 
 class InstallerConnection(PaellaConnection):
     def __init__(self, cfg=None):
@@ -110,10 +110,3 @@ if __name__ == '__main__':
     from useless.db.midlevel import StatementCursor
     from useless.db.midlevel import Environment, TableDict
     c = PaellaConnection()
-    tp = TraitParent(c, 'woody')
-    pp = TraitPackage(c, 'woody')
-    ct = ConfigTemplate()
-    path = '/tmp/spam.db'
-    db = bsddb.btopen('path', 'c')
-    p = Parser('var-table.csv')
-    

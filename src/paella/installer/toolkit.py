@@ -1,11 +1,15 @@
 import os
 
 from useless.base.util import RefDict, str2list
-from paella.profile.base import PaellaConnection, PaellaConfig
-from paella.profile.base import get_suite, DefaultEnvironment
-from paella.profile.trait import TraitParent, Trait
-from paella.profile.family import Family
-from paella.profile.profile import ProfileEnvironment, Profile
+
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
+from paella.db.base import get_suite, DefaultEnvironment
+from paella.db.trait import Trait
+from paella.db.trait.relations import TraitParent
+from paella.db.family import Family
+from paella.db.profile import Profile
+from paella.db.profile.main import ProfileEnvironment
 
 from base import Modules
 from util import setup_modules

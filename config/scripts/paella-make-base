@@ -4,7 +4,8 @@ from os.path import join
 from optparse import OptionParser
 
 from useless.base import Error, debug
-from paella.profile.base import PaellaConfig
+
+from paella.base import PaellaConfig
 from paella.uml.base import UmlConfig
 from paella.uml.bootstrap import make_base
 

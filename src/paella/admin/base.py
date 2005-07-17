@@ -16,7 +16,8 @@ from useless.db.lowlevel import QuickConn
 from useless.db.midlevel import StatementCursor
 
 
-from paella.profile.base import PaellaConfig
+#from paella.profile.base import PaellaConfig
+from paella.db import PaellaConfig
 
 class SystemTar(object):
     def __init__(self, conn, cfg):

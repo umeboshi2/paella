@@ -13,10 +13,10 @@ from useless.gtk import dialogs
 
 from useless.db.midlevel import StatementCursor, Environment
 
-from paella.profile.base import PaellaConnection, TraitEnvironment
-from paella.profile.base import get_suite, PaellaConfig
-from paella.profile.trait import TraitParent
-from paella.profile.profile import ProfileEnvironment
+from paella.db import PaellaConfig, PaellaConnection
+from paella.db.base import get_suite
+from paella.db.trait import Trait
+from paella.db.trait.relations import TraitParent, TraitEnvironment
 
 from gtk import TRUE, FALSE, mainquit, mainloop
 

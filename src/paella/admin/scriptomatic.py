@@ -13,9 +13,9 @@ from useless.gtk.middle import ListNoteBook, MyNotebook
 from useless.gtk.windows import MenuWindow
 from useless.gtk import dialogs
 
-from paella.schema.paella_tables import SCRIPTS
-from paella.profile.trait import TraitScript, Trait, Traits
-from paella.profile.trait import TraitTarFile
+from paella.db.base import Traits
+from paella.db.schema.paella_tables import SCRIPTS
+from paella.db.trait.relations import TraitScript
 
 class AllScriptsDialog(dialogs.CList):
     def __init__(self, message, conn, suite, name='AllScriptsDialog'):

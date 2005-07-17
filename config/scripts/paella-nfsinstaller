@@ -3,7 +3,7 @@ import os, sys
 
 from useless.base import Error, debug
 
-from paella.profile.base import PaellaConfig
+from paella.base import PaellaConfig
 from paella.installer.base import InstallerConnection
 from paella.installer.nfsinstaller import NewInstaller
 

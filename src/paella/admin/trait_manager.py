@@ -1,11 +1,11 @@
-from paella.profile.base import Suites
-from paella.profile.trait import Trait
 from useless.gtk.middle import ScrollCList
 from useless.gtk.middle import ListNoteBook
 from useless.gtk.windows import CommandBoxWindow
 from useless.gtk.helpers import HasDialogs, make_menu
 from useless.gtk import dialogs
 
+from paella.db.base import Suites
+from paella.db.trait import Trait
 from paella.admin.template import TemplateBrowser
 from paella.admin.scriptomatic import ScriptBrowser
 from paella.admin.traitgen import TraitBrowser

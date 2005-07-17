@@ -14,13 +14,13 @@ from useless.base import Error, debug
 from useless.base.config import Configuration
 from useless.base.util import makepaths
 from useless.db.midlevel import StatementCursor
-from paella.profile.base import get_suite
+
+from paella.db.base import get_suite
 
 from paella.installer.base import InstallerConnection
 from paella.installer.profile import install_packages_uml
 from paella.installer.profile import get_profile_packages
 from paella.installer.uml import UmlBootstrapper
-
 from paella.installer.profile import ProfileInstaller
 
 cfg = Configuration(files=[kernopts['paellarc']])

@@ -1,10 +1,10 @@
 #!/usr/bin/python2.3
 import os, sys
-from paella.profile.base import PaellaConnection, PaellaConfig
-from paella.profile.profile import PaellaProfiles
 
-cfg = PaellaConfig()
-conn = PaellaConnection(cfg)
+from paella.db import PaellaConnection
+from paella.db.profile.xmlgen import PaellaProfiles
+
+conn = PaellaConnection()
 args = sys.argv[1:]
 profile = args[0]
 

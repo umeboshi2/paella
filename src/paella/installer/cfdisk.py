@@ -2,10 +2,11 @@ import os
 from os.path import join
 import commands
 
+from pyparsing import Word, alphas, Literal, nums, Suppress
+from pyparsing import restOfLine, Optional, Dict, ZeroOrMore
+from pyparsing import Group
+
 from useless.base.util import makepaths
-from paella.contrib.pyparsing import Word, alphas, Literal, nums, Suppress
-from paella.contrib.pyparsing import restOfLine, Optional, Dict, ZeroOrMore
-from paella.contrib.pyparsing import Group
 
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.statement import Statement
@@ -126,8 +127,8 @@ def _quick_insert_disks(conn):
     
 
 if __name__ == '__main__':
-    from paella.profile.base import PaellaConnection
-    conn = PaellaConnection(cfg)
+    from paella.db import PaellaConnection
+    conn = PaellaConnection()
     s = StatementCursor(conn)
     
     dm = DiskManager(conn)

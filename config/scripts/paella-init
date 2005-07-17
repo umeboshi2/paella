@@ -17,7 +17,10 @@ from useless.base import Error, debug
 from useless.base.config import Configuration
 from useless.base.util import makepaths
 from useless.db.midlevel import StatementCursor
-from paella.profile.base import get_suite, PaellaConfig
+
+from paella.base import PaellaConfig
+from paella.db.base import get_suite
+
 
 from paella.uml.base import UmlConfig
 from paella.uml.chroot import UmlChroot

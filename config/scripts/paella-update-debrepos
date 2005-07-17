@@ -3,7 +3,7 @@ import os, sys
 from os.path import join
 from optparse import OptionParser
 
-from paella.profile.base import PaellaConfig
+from paella.base import PaellaConfig
 
 config = PaellaConfig('debrepos')
 

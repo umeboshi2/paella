@@ -3,9 +3,10 @@ from os.path import join, dirname, isfile, isdir
 
 from useless.base import Error
 from useless.base.util import makepaths
+
 from paella.debian.debconf import copy_configdb
-from paella.profile.trait import TraitPackage, TraitTemplate, TraitDebconf
-from paella.profile.trait import TraitScript
+from paella.db.trait.relations import TraitPackage, TraitTemplate
+from paella.db.trait.relations import TraitScript
 
 from base import Installer
 
@@ -14,7 +15,6 @@ class TraitInstaller(Installer):
         Installer.__init__(self, conn, cfg=cfg)
         self.traitpackage = TraitPackage(conn, suite)
         self.traittemplate = TraitTemplate(conn, suite)
-        self.traitdebconf = TraitDebconf(conn, suite)
         self.traitscripts = TraitScript(conn, suite)
         self.profiledata = {}
         self.familydata = {}
@@ -22,7 +22,6 @@ class TraitInstaller(Installer):
     def set_trait(self, trait):
         self.traitpackage.set_trait(trait)
         self.traittemplate.set_trait(trait)
-        self.traitdebconf.set_trait(trait)
         self.traitscripts.set_trait(trait)
         self._current_trait_ = trait
         self.log.info('trait set to %s' % self._current_trait_)
@@ -266,11 +265,6 @@ class TraitInstaller(Installer):
         raise Error, 'install_debconf is deprecated, use install_debconf_template instead'
     
     def reconfigure_debconf(self):
-        owners = self.traitdebconf.all_owners()
-        self.log.info('ALL OWNERS %s' % owners)
-        os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-        for owner in owners:
-            self.log.info('RECONFIGURING %s' % owner)
-            os.system(self.command('dpkg-reconfigure -plow %s' % owner))
+        raise Error, 'reconfigure_debconf is deprecated'
         
         

@@ -69,25 +69,15 @@ install-indep:
 	#INSTALLDOC#
 	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
 	rm -r build/
-	python setup.py contrib install --prefix=$(CURDIR)/debian/paella-contrib/usr
-	rm -r build/
 	python setup.py debian install --prefix=$(CURDIR)/debian/paella-debian/usr
 	rm -r build/
 	python setup.py dbgtk install --prefix=$(CURDIR)/debian/paella-dbgtk/usr
 	rm -r build/
+	python setup.py db install --prefix=$(CURDIR)/debian/paella-db/usr
+	rm -r build/	
 	python setup.py installer install --prefix=$(CURDIR)/debian/paella-installer/usr
 	rm -r build/	
-	python setup.py uml install --prefix=$(CURDIR)/debian/paella-uml/usr
-	rm -r build/	
 	python setup.py admin install --prefix=$(CURDIR)/debian/paella-admin/usr
-	rm -r build/	
-	python setup.py schema install --prefix=$(CURDIR)/debian/paella-paelladb/usr
-	rm -r build/
-	python setup.py profile install --prefix=$(CURDIR)/debian/paella-paelladb/usr
-	rm -r build/
-	python setup.py machines install --prefix=$(CURDIR)/debian/paella-paelladb/usr
-	rm -r build/	
-	python setup.py server install --prefix=$(CURDIR)/debian/paella-paelladb/usr
 	rm -r build/	
 	dh_install -i
 

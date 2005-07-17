@@ -6,7 +6,7 @@ from optparse import OptionParser
 from paella.debian.base import make_source
 from paella.debian.backup_repos import BackupRepos
 
-from paella.profile.base import PaellaConfig
+from paella.base import PaellaConfig
 
 config = PaellaConfig('debrepos')
 

@@ -2,8 +2,9 @@
 import os, sys
 import cgi
 from xml.dom.minidom import Element, Document
-from paella.profile.base import PaellaConnection
-from paella.profile.profile import PaellaProfiles
+
+from paella.db import PaellaConnection
+from paella.db.profile.main import PaellaProfiles
 
 
 print 'content-type: text/xml'

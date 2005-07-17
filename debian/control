@@ -9,7 +9,7 @@ Package: paella
 Section: admin
 Architecture: all
 Priority: extra
-Depends: paella-paelladb
+Depends: paella-management
 Description: meta-package for default paella packages
     Paella is a installation/configuration management system
     centered on being able to easily define, configure, maintain and
@@ -21,25 +21,16 @@ Package: paella-base
 Section: admin
 Priority: optional
 Architecture: all
-Depends: useless-base
+Depends: useless-db
 Description: base utils for paella
     This package is responsible for initial setup of the paella 
     environment. (need to ask for pghost, etc..)
-
-Package: paella-contrib
-Section: admin
-Priority: optional
-Architecture: all
-Depends: paella-base
-Description: other people's code that paella uses
-    This is where paella tries not to reinvent wheels.
-    this package will be optional soon
 
 Package: paella-debian
 Section: admin
 Priority: optional
 Architecture: all
-Depends: paella-base, python-apt, useless-db, debootstrap, debconf-utils
+Depends: paella-base, python-apt, debootstrap, debconf-utils
 Description: Documentation for paella
     many class and functions for use with debian related
     activities (dpkg, package repositories, debconf, etc.)
@@ -48,7 +39,7 @@ Package: paella-dbgtk
 Section: admin
 Priority: optional
 Architecture: all
-Depends: paella-base, useless-gtk, useless-db
+Depends: paella-base, useless-gtk
 Description: db connected gui widgets needed by paella
     This package contains gtk objects that have connections
     to a postgres database making it easier to develop customized
@@ -58,33 +49,24 @@ Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-paelladb, reiserfsprogs, xfsprogs, paella-contrib, hdparm, mdadm, mkisofs, gawk
+Depends: paella-db, reiserfsprogs, xfsprogs, python-pyparsing, hdparm, mdadm, mkisofs, gawk
 Description: package for nfsroot installer
     This package should be installed on the nfsroot installer
-
-Package: paella-uml
-Section: admin
-Priority: extra
-Architecture: all
-Depends: paella-installer, user-mode-linux, umlrun
-Description: package for running installs
-    This is the uml module for installing in userland.  This module is used
-    to create the nfsroot installer.
 
 Package: paella-admin
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-uml, paella-paelladb, paella-dbgtk, xxdiff
+Depends: paella-db, paella-dbgtk, xxdiff
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
 
-Package: paella-paelladb
+Package: paella-db
 Section: extra
 Priority: optional
 Architecture: all
 Depends: paella-debian, paella-dbgtk, python-kjbuckets
-Replaces: paella-machines, paella-schema, paella-profile
+Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
     classes and functions to help create database schemas,
     generate and primer the databases.

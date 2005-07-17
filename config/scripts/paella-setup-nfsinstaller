@@ -4,7 +4,8 @@ from os.path import join
 from optparse import OptionParser
 
 from useless.base import Error
-from paella.profile.base import PaellaConfig
+
+from paella.base import PaellaConfig
 from paella.debian.base import debootstrap
 
 parser = OptionParser()

@@ -340,11 +340,6 @@ class MachineDoc(BaseDocument):
             self.body.appendChild(HR())
 
 class MachineTypeDoc(_MachineBaseDocument):
-    def __init__(self, app, **atts):
-        _MachineBaseDocument.__init__(self, app, **atts)
-        #self.machine = MachineHandler(self.conn)
-        self.cursor = StatementCursor(self.conn)
-        
     def set_machine_type(self, machine_type):
         clause = Eq('machine_type', machine_type)
         self.clear_body()
@@ -364,23 +359,9 @@ class MachineTypeDoc(_MachineBaseDocument):
             modtable = self._make_table(['module', 'ord'], modrows)
             modtable.header.firstChild.setAttribute('bgcolor', 'cornsilk3')
             self.body.appendChild(modtable)
-
-        newanchor = Anchor('new.machine_type.foo', 'new')
-        editanchor = Anchor('edit.machine_type.%s' % machine_type, 'edit')
-        deleteanchor = Anchor('delete.machine_type.%s' % machine_type, 'delete')
-        self.body.appendChild(HR())
-        self.body.appendChild(editanchor)
-        self.body.appendChild(BR())
-        self.body.appendChild(deleteanchor)
-        self.body.appendChild(BR())
-        self.body.appendChild(newanchor)
-
+        self._make_footer_anchors('machine_type', machine_type)
+    
 class FilesystemDoc(_MachineBaseDocument):
-    def __init__(self, app, **atts):
-        _MachineBaseDocument.__init__(self, app, **atts)
-        #self.machine = MachineHandler(self.conn)
-        self.cursor = StatementCursor(self.conn)
-        
     def set_filesystem(self, filesystem):
         clause = Eq('filesystem', filesystem)
         self.clear_body()

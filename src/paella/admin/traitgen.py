@@ -23,9 +23,9 @@ from useless.sqlgen.statement import Statement
 from useless.sqlgen.select import SimpleClause
 from useless.sqlgen.clause import one_many, Eq, In, NotIn
 
-from paella.profile.base import PaellaConnection, PaellaConfig
-from paella.profile.trait import TraitPackage, TraitParent
-from paella.profile.trait import Trait
+from paella.db import PaellaConnection, PaellaConfig
+
+from paella.db.trait import Trait
 
 def substring(field, substr):
     return 'substring(%s from 1 for %s)' %(field, len(substr))

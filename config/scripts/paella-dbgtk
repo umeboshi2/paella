@@ -4,8 +4,8 @@ from os.path import join
 from optparse import OptionParser
 
 from useless.base import Error, debug
-from paella.profile.base import PaellaConfig, PaellaConnection
 
+from paella.base import PaellaConfig
 from paella.dbgtk.base import ListWin, BrowserWin
 from paella.dbgtk.base import TableEditor, RelationalBrowser
 from paella.dbgtk.base import DatabaseManager

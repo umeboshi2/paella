@@ -5,12 +5,14 @@ import commands
 
 from useless.base import Error
 from useless.base.util import makepaths, runlog
-from paella.debian.base import debootstrap
-from paella.profile.base import PaellaConnection, get_suite, PaellaConfig
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, Gt, Neq
-from paella.machines.machine import MachineHandler
 
+from paella.base import PaellaConfig
+from paella.debian.base import debootstrap
+from paella.db import PaellaConnection
+from paella.db.base import get_suite
+from paella.db.machine import MachineHandler
 
 from base import CurrentEnvironment
 from util import ready_base_for_install, make_filesystem
