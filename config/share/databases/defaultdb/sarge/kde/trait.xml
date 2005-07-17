@@ -1,5 +1,7 @@
 <trait name="kde" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			desktop
@@ -11,9 +13,6 @@
 	<packages>
 		<package action="install">
 			fontconfig
-		</package>
-		<package action="install">
-			kde-extra-looks
 		</package>
 		<package action="install">
 			kde-icons-crystal
@@ -68,12 +67,6 @@
 		</package>
 		<package action="install">
 			quanta
-		</package>
-		<package action="install">
-			superkaramba
-		</package>
-		<package action="install">
-			umicons
 		</package>
 	</packages>
 	<environ>
@@ -182,7 +175,6 @@
 			etc/skel/.kde/share/config/uiserverrc
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

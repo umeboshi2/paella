@@ -1,5 +1,7 @@
 <trait name="ume_devel" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			ume_desktop
@@ -70,9 +72,6 @@
 			kernel-patch-skas
 		</package>
 		<package action="install">
-			kernel-patch-uml
-		</package>
-		<package action="install">
 			linda
 		</package>
 		<package action="install">
@@ -99,6 +98,5 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

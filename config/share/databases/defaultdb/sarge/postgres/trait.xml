@@ -10,9 +10,6 @@
 	</parents>
 	<packages>
 		<package action="install">
-			paella-db
-		</package>
-		<package action="install">
 			postgresql
 		</package>
 		<package action="install">

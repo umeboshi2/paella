@@ -1,5 +1,7 @@
 <trait name="default" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			base
@@ -106,7 +108,10 @@
 			libnss-db
 		</package>
 		<package action="install">
-			libopencdk4
+			libopencdk8
+		</package>
+		<package action="install">
+			libsasl2
 		</package>
 		<package action="install">
 			lilo
@@ -172,19 +177,16 @@
 			procmail
 		</package>
 		<package action="install">
+			pyca
+		</package>
+		<package action="install">
 			python
 		</package>
 		<package action="install">
 			python-newt
 		</package>
 		<package action="install">
-			python2.1
-		</package>
-		<package action="install">
 			quota
-		</package>
-		<package action="install">
-			rcconf
 		</package>
 		<package action="install">
 			rcs
@@ -495,7 +497,6 @@ vjBedRRoANIqD3XgcLG+NAd/eq8+enBBhVVcEiAOaQ==
 			etc/skel/.xemacs/pyrex-mode.el
 		</template>
 	</templates>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 		<script name="post"/>

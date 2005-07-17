@@ -28,7 +28,7 @@
 			mozilla-browser
 		</package>
 		<package action="install">
-			mozilla-firebird
+			mozilla-firefox
 		</package>
 		<package action="install">
 			mozilla-mailnews

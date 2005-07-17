@@ -16,9 +16,6 @@
 			gkrellm-common
 		</package>
 		<package action="install">
-			gkrellm-skins
-		</package>
-		<package action="install">
 			gkrellm-x86info
 		</package>
 		<package action="install">

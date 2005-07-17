@@ -1,5 +1,7 @@
 <trait name="gtkthemes" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			xwindow
@@ -26,9 +28,6 @@
 		</package>
 		<package action="install">
 			gtk-engines-lighthouseblue
-		</package>
-		<package action="install">
-			gtk-engines-mac2
 		</package>
 		<package action="install">
 			gtk-engines-metal
@@ -126,6 +125,5 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

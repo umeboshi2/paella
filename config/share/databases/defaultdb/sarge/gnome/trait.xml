@@ -70,9 +70,6 @@
 			metacity-themes
 		</package>
 		<package action="install">
-			mozilla-firebird
-		</package>
-		<package action="install">
 			quick-lounge-applet
 		</package>
 	</packages>

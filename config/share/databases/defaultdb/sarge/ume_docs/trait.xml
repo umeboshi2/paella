@@ -1,5 +1,7 @@
 <trait name="ume_docs" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			docs
@@ -40,21 +42,6 @@
 			doc-linux-html
 		</package>
 		<package action="install">
-			doc-rfc
-		</package>
-		<package action="install">
-			doc-rfc-fyi-bcp
-		</package>
-		<package action="install">
-			doc-rfc-misc
-		</package>
-		<package action="install">
-			doc-rfc-std
-		</package>
-		<package action="install">
-			doc-rfc-std-proposed
-		</package>
-		<package action="install">
 			docbook-defguide
 		</package>
 		<package action="install">
@@ -71,9 +58,6 @@
 		</package>
 		<package action="install">
 			gcc-3.3-doc
-		</package>
-		<package action="install">
-			gimp-manual
 		</package>
 		<package action="install">
 			grub-doc
@@ -97,9 +81,6 @@
 			libglib2.0-doc
 		</package>
 		<package action="install">
-			libgnutls-doc
-		</package>
-		<package action="install">
 			libgtk2.0-doc
 		</package>
 		<package action="install">
@@ -110,9 +91,6 @@
 		</package>
 		<package action="install">
 			lilo-doc
-		</package>
-		<package action="install">
-			linuxcookbook
 		</package>
 		<package action="install">
 			maint-guide
@@ -162,6 +140,5 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

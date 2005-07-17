@@ -1,25 +1,10 @@
 <machine_database>
 	<machines>
-		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="bard" profile="kbard">
-			bard
-		</machine>
-		<machine filesystem="default" kernel="kernel-image-2.4.24stdinstall" machine_type="bard" profile="mbuild">
-			bardbuilder
-		</machine>
-		<machine filesystem="freespace" kernel="kernel-image-2.4.18-bf2.4" machine_type="bard" profile="bard">
-			bardstable
-		</machine>
 		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="shuttle_sg40" profile="dindada">
 			dindada
 		</machine>
 		<machine filesystem="default" kernel="kernel-image-2.6.4-1-686" machine_type="emach_t1100" profile="mainserver">
 			emach
-		</machine>
-		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="bard" profile="plaptop">
-			plaptop
-		</machine>
-		<machine filesystem="freespace" kernel="kernel-image-2.6.7-1-k7" machine_type="shuttle_sg40" profile="desktest">
-			shuttle1
 		</machine>
 		<machine filesystem="freespace" kernel="kernel-image-2.4.26-1-k7" machine_type="shuttle_2sg40" profile="skeleton">
 			shuttle2
@@ -27,11 +12,8 @@
 		<machine filesystem="freespace" kernel="kernel-image-2.6.5-1-k7" machine_type="shuttle_sg40" profile="quick">
 			shuttle3
 		</machine>
-		<machine filesystem="freespace" kernel="kernel-image-2.4.24stdinstall" machine_type="shuttle_sg40" profile="desktest">
+		<machine filesystem="freespace" kernel="kernel-image-2.4.24stdinstall" machine_type="shuttle_sg40" profile="quick">
 			shuttle_one
-		</machine>
-		<machine filesystem="freespace" kernel="kernel-image-2.4.25-1-k7" machine_type="zathras" profile="zathras">
-			zathras
 		</machine>
 	</machines>
 	<machine_types>

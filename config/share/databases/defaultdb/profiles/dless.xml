@@ -1,13 +1,10 @@
-	<profile name="dless" suite="sid">
+	<profile name="dless" suite="sarge">
 		<traits>
 			<trait ord="20">
 				base
 			</trait>
 			<trait ord="50">
 				diskless
-			</trait>
-			<trait ord="50">
-				netdesk
 			</trait>
 			<trait ord="99">
 				final

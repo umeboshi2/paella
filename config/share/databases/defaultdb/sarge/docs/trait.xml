@@ -1,5 +1,7 @@
 <trait name="docs" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			default
@@ -76,12 +78,6 @@
 			doc-linux-html
 		</package>
 		<package action="install">
-			doc-rfc
-		</package>
-		<package action="install">
-			doc-rfc-std
-		</package>
-		<package action="install">
 			docbook-defguide
 		</package>
 		<package action="install">
@@ -115,28 +111,16 @@
 			kernel-internals-guide
 		</package>
 		<package action="install">
-			ldp-sag
-		</package>
-		<package action="install">
-			libgnutls-doc
-		</package>
-		<package action="install">
 			libpam-doc
 		</package>
 		<package action="install">
 			lilo-doc
 		</package>
 		<package action="install">
-			linuxcookbook
-		</package>
-		<package action="install">
 			maint-guide
 		</package>
 		<package action="install">
 			make-doc
-		</package>
-		<package action="install">
-			mysql-doc
 		</package>
 		<package action="install">
 			newbiedoc
@@ -165,6 +149,5 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts/>
 </trait>

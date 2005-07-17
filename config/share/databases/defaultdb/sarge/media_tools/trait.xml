@@ -37,9 +37,6 @@
 			bristol
 		</package>
 		<package action="install">
-			cantus
-		</package>
-		<package action="install">
 			cdlabelgen
 		</package>
 		<package action="install">
@@ -121,9 +118,6 @@
 			sidplay
 		</package>
 		<package action="install">
-			smurf
-		</package>
-		<package action="install">
 			snd
 		</package>
 		<package action="install">
@@ -154,7 +148,7 @@
 			toolame
 		</package>
 		<package action="install">
-			ucbmpeg
+			ucbmpeg-play
 		</package>
 		<package action="install">
 			vsound

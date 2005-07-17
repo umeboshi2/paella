@@ -7,7 +7,7 @@
 	</parents>
 	<packages>
 		<package action="install">
-			mozilla-firebird
+			mozilla-firefox
 		</package>
 		<package action="install">
 			mozilla-mozgest

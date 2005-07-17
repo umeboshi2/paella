@@ -22,15 +22,6 @@
 	</parents>
 	<packages>
 		<package action="install">
-			paella-admin
-		</package>
-		<package action="install">
-			paella-installer
-		</package>
-		<package action="install">
-			paella-uml
-		</package>
-		<package action="install">
 			postgresql
 		</package>
 		<package action="install">
@@ -46,7 +37,7 @@
 		</debrepos_on_usbdisk>
 	</environ>
 	<templates>
-		<template grp_owner="root" mode="0644" owner="root" package="paella-admin">
+		<template grp_owner="root" mode="0644" owner="root" package="postgresql">
 			etc/paellarc
 		</template>
 		<template grp_owner="root" mode="0644" owner="root" package="postgresql">

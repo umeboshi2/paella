@@ -7,12 +7,6 @@
 	</parents>
 	<packages>
 		<package action="install">
-			celestia-common
-		</package>
-		<package action="install">
-			celestia-glut
-		</package>
-		<package action="install">
 			gap
 		</package>
 		<package action="install">

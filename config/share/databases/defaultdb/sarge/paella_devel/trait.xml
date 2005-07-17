@@ -1,5 +1,7 @@
 <trait name="paella_devel" suite="sarge">
-	<description/>
+	<description>
+		None
+	</description>
 	<parents>
 		<parent>
 			postgres
@@ -19,7 +21,7 @@
 			initrd-tools
 		</package>
 		<package action="install">
-			kernel-patch-debian-2.4.24
+			kernel-patch-debian-2.4.27
 		</package>
 		<package action="install">
 			kernel-patch-scripts
@@ -28,19 +30,13 @@
 			kernel-patch-skas
 		</package>
 		<package action="install">
-			kernel-patch-uml
+			kernel-source-2.4.27
 		</package>
 		<package action="install">
-			kernel-source-2.4.24
-		</package>
-		<package action="install">
-			kernel-tree-2.4.24
+			kernel-tree-2.4.27
 		</package>
 		<package action="install">
 			libncurses5-dev
-		</package>
-		<package action="install">
-			user-mode-linux
 		</package>
 		<package action="install">
 			xxdiff
@@ -48,7 +44,6 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<debconfiguration/>
 	<scripts>
 		<script name="chroot"/>
 	</scripts>

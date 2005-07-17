@@ -9,9 +9,6 @@
 		</parent>
 	</parents>
 	<packages>
-		<package action="install">
-			paella-installer
-		</package>
 	</packages>
 	<environ/>
 	<templates/>
