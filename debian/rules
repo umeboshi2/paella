@@ -55,7 +55,7 @@ clean:
 	rm build -fr
 	dh_clean `find -path *.pyc`
 	dh_clean `find -path *~`
-	dh_clean configure-stamp
+	dh_clean configure-stamp notes.html
 	dh_clean
 
 install: install-indep
@@ -79,6 +79,7 @@ install-indep:
 	rm -r build/	
 	python setup.py admin install --prefix=$(CURDIR)/debian/paella-admin/usr
 	rm -r build/	
+	rst2html notes > notes.html
 	dh_install -i
 
 install-arch:

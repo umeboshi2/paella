@@ -55,14 +55,14 @@ Description: package for nfsroot installer
 
 Package: paella-admin
 Section: admin
-Priority: extra
+Priority: optional
 Architecture: all
 Depends: paella-db, paella-dbgtk, xxdiff
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
 
 Package: paella-db
-Section: extra
+Section: optional
 Priority: optional
 Architecture: all
 Depends: paella-debian, paella-dbgtk, python-kjbuckets
@@ -101,11 +101,23 @@ Description: build a bunch of kernels
 
 Package: paella-defaultdb
 Section: devel
-Priority: extra
+Priority: optional
 Architecture: all
 Depends: paella-base
 Description: a default database to start with
     The provided default database should contain
     enough toget started.  Included are profiles and
     traits designed to create a paella installer system.
+
+Package: paella-doc
+Section: doc
+Priority: optional
+Architecture: all
+Depends: paella-base
+Description: documentation for paella
+  Paella is a system for  installing and managing
+  configurations of debian systems.  This package
+  holds the pathetic documentation for it.
+
+
 
