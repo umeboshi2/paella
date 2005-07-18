@@ -1,3 +1,10 @@
+paella (0.6.2-2) common; urgency=low
+
+  * adding doc package
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon, 18 Jul 2005 12:21:04 -0500
+
 paella (0.6.2-1) common; urgency=low
 
   * new package layout better reflects use of useless packages
