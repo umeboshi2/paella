@@ -8,7 +8,13 @@ from paella.debian.debconf import copy_configdb
 from paella.db.trait.relations import TraitPackage, TraitTemplate
 from paella.db.trait.relations import TraitScript
 
-from base import Installer
+from base import Installer, InstallError
+
+INGDICT = {
+    'install' : 'installing',
+    'remove' : 'removing',
+    'configure' : 'configuring'
+    }
 
 class TraitInstaller(Installer):
     def __init__(self, conn, suite, cfg):
@@ -26,23 +32,6 @@ class TraitInstaller(Installer):
         self._current_trait_ = trait
         self.log.info('trait set to %s' % self._current_trait_)
 
-    def run(self, name, command, args='', proc=False, chroot=True,
-            keeprunning=False):
-        tname = 'trait-%s-%s' % (self._current_trait_, name)
-        self.log.info('running %s' % tname)
-        Installer.run(self, tname, command, args=args, proc=proc,
-                      chroot=chroot,
-                      keeprunning=keeprunning)
-        
-
-    def runscript(self, script, name, info, chroot=False):
-        self.log.info(info['start'])
-        trait = self._current_trait_
-        self.log.info('running script %s trait is currently %s' % (script, trait))
-        self.run(name, script, chroot=chroot)
-        os.remove(script)
-        self.log.info(info['done'])
-        
     def process(self):
         trait = self._current_trait_
         self.log.info('processing trait:  %s' % trait)
@@ -52,46 +41,15 @@ class TraitInstaller(Installer):
         templates = self.traittemplate.templates()
         stmt = 'this trait has %d packages and %d templates' % (len(packages), len(templates))
         self.log.info(stmt)
+
         #start pre script
-        self.log.info('processing pre for trait %s' % trait)
-        script = self._make_script('pre')
-        if script is not None:
-            info = dict(start='pre script started',
-                        done='pre script done')
-            self.runscript(script, 'pre-script', info)
-        self.log.info('pre has been processed for trait %s' % trait)
+        self.process_prepost_script('pre', trait)
         
         #remove packages
-        self.log.info('processing remove for trait %s' % trait)
-        script = self._make_script('remove')
-        if script is None:
-            remove = [p for p in packages if p.action == 'remove']
-            if len(remove):
-                stmt = 'removing %d packages for trait %s' % (len(remove), trait)
-                self.log.info(stmt)
-                self.remove(remove)
-        else:
-            self.log.info('remove has been hooked for trait %s' % trait)
-            info = dict(start='remove script started',
-                        done='remove script done')
-            self.runscript(script, 'remove-script', info)
-        self.log.info('remove has been processed for trait %s' % trait)
+        self.process_packages(trait, 'remove', packages)
 
         #install packages
-        self.log.info('processing install for trait %s' % trait)
-        script = self._make_script('install')
-        if script is None:
-            install = [p for p in packages if p.action == 'install']
-            if len(install):
-                stmt = 'installing %d packages for trait %s' % (len(install), trait)
-                self.log.info(stmt)
-                self.install(install, templates)
-        else:
-            self.log.info('install has been hooked for trait %s' % trait)
-            info = dict(start='install script started',
-                        done='install script done')
-            self.runscript(script, 'install-script', info)
-        self.log.info('install has been processed for trait %s' % trait)
+        self.process_packages(trait, 'install', packages, templates)
         
         #configure packages
         self.log.info('processing config for trait %s' % trait)
@@ -101,10 +59,7 @@ class TraitInstaller(Installer):
             if len(config):
                 self.configure(config, templates)
         else:
-            self.log.info('config has been hooked for trait %s' % trait)
-            info = dict(start='config script started',
-                        done='config script done')
-            self.runscript(script, 'config-script', info)
+            self.process_hooked_action('config', trait)
         self.log.info('config has been processed for trait %s' % trait)
         
         #reconfigure debconf
@@ -113,27 +68,79 @@ class TraitInstaller(Installer):
         if script is None:
             self.reconfigure_debconf()
         else:
-            self.log.info('reconfig has been hooked for trait %s' % trait)
-            info = dict(start='reconfig script started',
-                        done='reconfig script done')
-            self.runscript(script, 'reconfig-script', info)
+            self.process_hooked_action('reconfig', trait)
         self.log.info('reconfig has been processed for trait %s' % trait)
         
         #start post script
-        self.log.info('processing post for trait %s' % trait)
-        script = self._make_script('post')
+        self.process_prepost_script('post', trait)
+        
+    def run(self, name, command, args='', proc=False, chroot=True,
+            keeprunning=False):
+        tname = 'trait-%s-%s' % (self._current_trait_, name)
+        self.log.info('running %s' % tname)
+        runvalue = Installer.run(self, tname, command, args=args, proc=proc,
+                                 chroot=chroot,
+                                 keeprunning=keeprunning)
+        return runvalue
+
+    def runscript(self, script, name, info, chroot=False):
+        self.log.info(info['start'])
+        trait = self._current_trait_
+        self.log.info('running script %s trait is currently %s' % (script, trait))
+        runvalue = self.run(name, script, chroot=chroot)
+        os.remove(script)
+        self.log.info(info['done'])
+
+    # prepost is either 'pre' or 'post'
+    def process_prepost_script(self, prepost, trait):
+        self.log.info('processing %s for trait %s' % (prepost, trait))
+        script = self._make_script(prepost)
+        runvalue = 0
         if script is not None:
-            info = dict(start='post script started',
-                        done='post script done')
-            self.runscript(script, 'post-script', info)
+            info = dict(start='%s script started' % prepost,
+                        done='%s script done' % prepost)
+            runvalue = self.runscript(script, '%s-script' % prepost, info)
         else:
-            self.log.info('no post script for trait %s' % trait)
-        self.log.info('post has been processed for trait %s' % trait)
+            self.log.info('no %s script for trait %s' % (prepost, trait))
+        self.log.info('%s has been processed for trait %s' % (prepost, trait))
+        if runvalue:
+            raise InstallError, 'Error in running %s script for %s' % (prepost, trait)
+
+    def process_hooked_action(self, action, trait):
+        self.log.info('%s has been hooked for trait %s' % (action, trait))
+        info = dict(start='%s script started' % action,
+                    done='%s script done' % action)
+        runvalue = self.runscript(script, '%s-script' % action, info)
+        if runvalue:
+            InstallError, 'hooked action %s failed on trait %s' % (action, trait)
+        
+    def process_packages(self, trait, action, packages, templates=[]):
+        self.log.info('processing %s for trait %s' % (action, trait))
+        script = self._make_script(action)
+        if script is None:
+            affected = [p for p in packages if p.action == action]
+            length = len(affected)
+            if length:
+                ing = INGDICT[action]
+                stmt = '%s %d packages for trait %s' % (ing, length, trait)
+                self.log.info(stmt)
+                if action == 'remove':
+                    self.remove(affected)
+                elif action == 'install':
+                    self.install(affected, templates)
+                else:
+                    raise InstallError, '%s not implemented in process_packages'
+        else:
+            self.process_hooked_action(action, trait)
+        self.log.info('%s has been processed for trait %s' % (action, trait))
         
     def remove(self, packages):
         packages = ' '.join([p.package for p in packages])
         command, args = 'apt-get -y remove', packages
-        self.run('remove', command, args=args, proc=True)
+        runvalue = self.run('remove', command, args=args, proc=True)
+        if runvalue:
+            self.log.warn('Problem removing packages %s' % ', '.join(packages))
+            
                 
     def install(self, packages, templates):
         trait = self._current_trait_
@@ -142,8 +149,8 @@ class TraitInstaller(Installer):
         cmd += 'rm /var/cache/apt/archives/*.deb -f'
         stmt = 'install command for %s is %s' % (cmd, trait)
         self.log.info(stmt)
-        run = self.run('install', cmd, proc=True, keeprunning=True)
-        if run:
+        runvalue = self.run('install', cmd, proc=True, keeprunning=True)
+        if runvalue:
             self.log.warn('PROBLEM installing %s' % trait)
             self.log.warn('packages --> %s' % package_args)
             

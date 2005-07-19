@@ -1,12 +1,16 @@
-import sys
+import sys, os
 from distutils.core import setup
 
-package = sys.argv[1]
-del sys.argv[1]
+PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin']
+package = None
+if sys.argv[1] in PACKAGES:
+    package = sys.argv[1]
+    del sys.argv[1]
 
 
 pd = {'' : 'src'}
 
+print os.environ
 
 PACKS = {
     'base' : ['paella', 'paella/base'],
@@ -16,9 +20,13 @@ PACKS = {
     'debian' : ['paella/debian', 'paella/debian/newrepos']
     }
 
-packages = ['paella/'+package]
-if package in PACKS:
-    packages = PACKS[package]
+if package is not None:
+    packages = ['paella/'+package]
+    if package in PACKS:
+        packages = PACKS[package]
+else:
+    packages = []
+    package = 'dummy'
 
 setup(name='paella-'+package,
       version="0.2",

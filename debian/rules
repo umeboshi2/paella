@@ -1,131 +1,30 @@
 #!/usr/bin/make -f
-# Sample debian/rules that uses debhelper.
-# GNU copyright 1997 to 1999 by Joey Hess.
-#
-# Modified to make a template file for a multi-binary package with separated
-# build-arch and build-indep targets  by Bill Allombert 2001
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
 
-# Uncomment this to turn on verbose mode.
-#export DH_VERBOSE=1
+install/paella-base::
+	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
+	rm -r build/
+install/useless-debian::
+	python setup.py debian install --prefix=$(CURDIR)/debian/paella-debian/usr
+	rm -r build/
+install/paella-db::
+	python setup.py db install --prefix=$(CURDIR)/debian/paella-db/usr
+	rm -r build/	
+install/paella-dbgtk::
+	python setup.py dbgtk install --prefix=$(CURDIR)/debian/paella-dbgtk/usr
+	rm -r build/
+install/paella-installer::
+	python setup.py installer install --prefix=$(CURDIR)/debian/paella-installer/usr
+	rm -r build/	
+install/paella-admin::
+	python setup.py admin install --prefix=$(CURDIR)/debian/paella-admin/usr
+	rm -r build/	
+build/paella-doc::
+	rst2html notes > notes.html
 
-# This has to be exported to make some magic below work.
-export DH_OPTIONS
-
-
-
-CFLAGS = -Wall -g
-SUBNAMES = base contrib db schema debian gtk profile sqlgen uml
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	INSTALL_PROGRAM += -s
-endif
-
-configure: configure-stamp
-configure-stamp:
-	dh_testdir
-	# Add here commands to configure the package.
-
-	touch configure-stamp
-
-
-#Architecture 
-build: build-indep
-
-build-arch: build-arch-stamp
-build-arch-stamp: configure-stamp 
-	# Add here commands to compile the arch part of the package.
-	#$(MAKE) 
-
-build-indep: build-indep-stamp
-build-indep-stamp: configure-stamp 
-	# Add here commands to compile the indep part of the package.
-	#$(MAKE) doc
-
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-arch-stamp build-indep-stamp config-stamp
-
-	# Add here commands to clean up after the build process.
-	#-$(MAKE) clean
-	rm build -fr
+clean::
 	dh_clean `find -path *.pyc`
 	dh_clean `find -path *~`
 	dh_clean configure-stamp notes.html
-	dh_clean
 
-install: install-indep
-install-indep:
-	dh_testdir
-	dh_testroot
-	dh_clean -k -i
-	dh_installdirs -i
-	# Add here commands to install the indep part of the package into
-	# debian/<package>-doc.
-	#INSTALLDOC#
-	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
-	rm -r build/
-	python setup.py debian install --prefix=$(CURDIR)/debian/paella-debian/usr
-	rm -r build/
-	python setup.py dbgtk install --prefix=$(CURDIR)/debian/paella-dbgtk/usr
-	rm -r build/
-	python setup.py db install --prefix=$(CURDIR)/debian/paella-db/usr
-	rm -r build/	
-	python setup.py installer install --prefix=$(CURDIR)/debian/paella-installer/usr
-	rm -r build/	
-	python setup.py admin install --prefix=$(CURDIR)/debian/paella-admin/usr
-	rm -r build/	
-	rst2html notes > notes.html
-	dh_install -i
-
-install-arch:
-	dh_testdir
-	dh_testroot
-	dh_clean -k -a
-	dh_installdirs -a
-
-	dh_install -a
-# Must not depend on anything. This is to be called by
-# binary-arch/binary-multi
-# in another 'make' thread.
-binary-common:
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs 
-	dh_installdocs -A README
-	dh_installexamples
-	dh_installmenu
-#	dh_installdebconf	
-#	dh_installlogrotate	
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-	dh_installinit
-#	dh_installcron
-#	dh_installinfo
-	dh_installman
-	dh_link
-	dh_strip
-	dh_compress 
-	dh_fixperms
-#	dh_perl
-	dh_python
-	dh_makeshlibs
-	dh_installdeb
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-# Build architecture independant packages using the common target.
-binary-indep: build-indep install-indep
-	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
-
-# Build architecture dependant packages using the common target.
-binary-arch: build-arch install-arch
-	$(MAKE) -f debian/rules DH_OPTIONS=-a binary-common
-
-binary: binary-indep
-.PHONY: build clean binary-indep binary-arch binary install install-indep install-arch configure

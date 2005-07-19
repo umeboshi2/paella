@@ -1,7 +1,7 @@
 import os
 from os.path import isdir, isfile, join, basename, dirname
 
-from useless.base import Log
+from useless.base import Log, Error
 from useless.base.config import Configuration
 from useless.base.util import ujoin, makepaths, runlog
 from useless.base.objects import Parser
@@ -13,6 +13,13 @@ from paella.debian.base import debootstrap
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection, DefaultEnvironment
 from paella.db.base import get_traits, get_suite
+
+
+class InstallError(SystemExit):
+    pass
+
+class InstallSetupError(InstallError):
+    pass
 
 class InstallerConnection(PaellaConnection):
     def __init__(self, cfg=None):
@@ -41,7 +48,7 @@ class Installer(object):
         #check for default environment
         rows = self.defenv.cursor.select()
         if not len(rows):
-            raise Error, 'There is no data in the default_environment table'
+            raise InstallSetupError, 'There is no data in the default_environment table'
         self.set_logfile('_unused_')
 
     def set_logfile(self, logfile):
@@ -70,7 +77,7 @@ class Installer(object):
     def run(self, name, command, args='', proc=False, destroylog=False,
             chroot=True, keeprunning=False):
         if not chroot and proc:
-            raise Error, 'bad options, cannot mount proc with no_chroot'
+            raise InstallError, 'bad options, cannot mount proc with no_chroot'
         if proc:
             cmd = self.with_proc(command, args=args)
         else:

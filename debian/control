@@ -2,7 +2,7 @@ Source: paella
 Section: unknown
 Priority: optional
 Maintainer: Joseph Rawson <umeboshi@gregscomputerservice.com>
-Build-Depends: debhelper (>> 4.0.0), python2.3, python2.3-dev, python-docutils
+Build-Depends: debhelper (>> 4.0.0), python2.3, python2.3-dev, python-docutils, cdbs
 Standards-Version: 3.5.8
 
 Package: paella
@@ -20,7 +20,7 @@ Description: meta-package for default paella packages
 Package: paella-base
 Section: admin
 Priority: optional
-Architecture: all
+Architecture: any
 Depends: useless-db
 Description: base utils for paella
     This package is responsible for initial setup of the paella 
@@ -29,7 +29,7 @@ Description: base utils for paella
 Package: paella-debian
 Section: admin
 Priority: optional
-Architecture: all
+Architecture: any
 Depends: paella-base, python-apt, debootstrap, debconf-utils
 Description: Documentation for paella
     many class and functions for use with debian related
@@ -38,7 +38,7 @@ Description: Documentation for paella
 Package: paella-dbgtk
 Section: admin
 Priority: optional
-Architecture: all
+Architecture: any
 Depends: paella-base, useless-gtk
 Description: db connected gui widgets needed by paella
     This package contains gtk objects that have connections
@@ -48,7 +48,7 @@ Description: db connected gui widgets needed by paella
 Package: paella-installer
 Section: admin
 Priority: extra
-Architecture: all
+Architecture: any
 Depends: paella-db, reiserfsprogs, xfsprogs, python-pyparsing, hdparm, mdadm, mkisofs, gawk
 Description: package for nfsroot installer
     This package should be installed on the nfsroot installer
@@ -56,7 +56,7 @@ Description: package for nfsroot installer
 Package: paella-admin
 Section: admin
 Priority: optional
-Architecture: all
+Architecture: any
 Depends: paella-db, paella-dbgtk, xxdiff
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
@@ -64,7 +64,7 @@ Description: package for configuration of profiles
 Package: paella-db
 Section: optional
 Priority: optional
-Architecture: all
+Architecture: any
 Depends: paella-debian, paella-dbgtk, python-kjbuckets
 Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
@@ -81,7 +81,7 @@ Description: skeletons for database generation
 Package: paella-debrepos
 Section: admin
 Priority: extra
-Architecture: all
+Architecture: any
 Depends: paella-debian, mini-dinstall, dnotify
 Description: maintain debian a repository
     this is a set of scripts to maintain a debian
