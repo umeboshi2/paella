@@ -273,7 +273,7 @@ class TraitInstaller(Installer):
     
     def reconfigure_debconf(self, packages):
         self.log.info('running reconfigure')
-        reconfig = [p.package for p in packages if p.action in ['install', 'config']]
+        reconfig = [p.package for p in packages if p.action == 'reconfig']
         os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
         for package in reconfig:
             self.log.info('RECONFIGURING %s' % package)

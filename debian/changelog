@@ -1,3 +1,9 @@
+paella (0.6.16) common; urgency=low
+
+  * now only reconfigure packages in traits marked 'reconfig'
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 17:28:35 -0500
+
 paella (0.6.15) common; urgency=low
 
   * adding package paella-kde-admin
