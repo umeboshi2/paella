@@ -1,4 +1,10 @@
-paella (0.6.2-2) common; urgency=low
+paella (0.6.4) common; urgency=low
+
+  * removing debian revision, building with cdbs
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 11:58:03 -0500
+
+paella (0.6.3) common; urgency=low
 
   * adding doc package
 
