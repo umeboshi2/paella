@@ -61,11 +61,21 @@ Depends: paella-db, paella-dbgtk, xxdiff
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
 
+Package: paella-kde-admin
+Section: admin
+Priority: extra
+Architecture: any
+Depends: useless-kdb, paella-db, xxdiff
+Description: package for configuration of profiles
+ This package should be installed on the developer's machine.
+ This package depends indirectly on python-kde which is not in
+ sarge.
+
 Package: paella-db
 Section: optional
 Priority: optional
 Architecture: any
-Depends: paella-debian, paella-dbgtk, python-kjbuckets, useless-db, useless-xmlgen
+Depends: paella-debian, python-kjbuckets, useless-db, useless-xmlgen
 Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
     classes and functions to help create database schemas,

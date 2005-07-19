@@ -183,6 +183,17 @@ class NewInstaller(object):
         i.write(dump)
         i.close()
             
+    def extract_basebootstrap(self):
+        self._check_mounted()
+        self._check_installer()
+        runlog('echo extracting premade base tarball')
+        suite_path = self.cfg.get('installer', 'suite_storage')
+        basefile = join(suite_path, '%s.tar' % self.suite)
+        runvalue = runlog('tar -C %s -xf %s' % (self.target, basefile))
+        if runvalue:
+            raise Error, 'problems extracting %s' % basefile
+        self._bootstrapped = True
+
     def bootstrap_target(self):
         self._check_mounted()
         self._check_installer()
@@ -196,6 +207,15 @@ class NewInstaller(object):
             runlog('echo making device %s with MAKEDEV' % dev)
             runlog('./MAKEDEV %s' % dev)
         os.chdir(here)
+
+    def _extract_devices_tarball(self):
+        dtball = self.cfg.get('installer', 'devices_tarball')
+        devpath = join(self.target, 'dev')
+        cmd = 'tar -C %s -xf %s' % (devpath, dtball)
+        runvalue = runlog(cmd)
+        if runvalue:
+            raise Error, 'problem extracting devices tarball'
+        
 
     def make_disk_devices(self):
         devices = map(basename, self.machine.get_disk_devices())
@@ -216,7 +236,12 @@ class NewInstaller(object):
         self._check_installer()
         fstab = self.machine.make_fstab()
         ready_base_for_install(self.target, self.cfg, self.suite, fstab)
-        self.make_generic_devices()
+        if self.cfg.is_it_true('installer', 'use_devices_tarball'):
+            runlog('echo extracting devices tarball')
+            self._extract_devices_tarball()
+        else:
+            runlog('echo using MAKEDEV to make devices')
+            self.make_generic_devices()
         self.make_disk_devices()
         if self._raid_setup:
             mdpath = join(self.target, 'etc/mdadm')
@@ -259,7 +284,10 @@ class NewInstaller(object):
         self.setup_installer()
         self.set_target(target)
         self.ready_target()
-        self.bootstrap_target()
+        if self.cfg.is_it_true('installer', 'bootstrap_target'):
+            self.bootstrap_target()
+        else:
+            self.extract_basebootstrap()
         self.ready_base_for_install()
         self.install_to_target()
         self.post_install()

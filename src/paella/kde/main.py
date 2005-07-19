@@ -10,8 +10,8 @@ from kdeui import KPopupMenu, KStdAction
 
 from kdeui import KListView, KListViewItem
 
-from paella.profile.base import PaellaConfig
-from paella.profile.base import PaellaConnection
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow

@@ -1,7 +1,7 @@
 from kdeui import KDialogBase
 from kdeui import KListView, KListViewItem
 
-from paella.profile.base import Suites
+from paella.db.base import Suites
 
 def dbwidget(widget, app):
     widget.app = app

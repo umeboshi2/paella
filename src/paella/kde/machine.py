@@ -9,10 +9,10 @@ from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 from kdeui import KStatusBar
 
-from paella.profile.base import PaellaConfig
-from paella.profile.base import PaellaConnection
-from paella.profile.trait import Trait
-from paella.machines.machine import MachineHandler
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
+from paella.db.trait import Trait
+from paella.db.machine import MachineHandler
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow

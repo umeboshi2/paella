@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import os, sys
-from os.path import join
+from os.path import join, dirname
 from optparse import OptionParser
 
 from useless.base import Error
+from useless.base.util import makepaths
 
 from paella.base import PaellaConfig
 from paella.debian.base import debootstrap
@@ -17,7 +18,7 @@ opts, args = parser.parse_args(sys.argv[1:])
 config = PaellaConfig()
 
 http_mirror = config.get('debrepos', 'http_mirror')
-devices_tarball = config.get('installer', devices_tarball)
+devices_tarball = config.get('installer', 'devices_tarball')
 
 def setup_bootstrap_tarball(suite):
     here = os.getcwd()
@@ -52,8 +53,10 @@ def setup_devices_tarball():
 
 if __name__ == '__main__':
     if not os.path.isfile(devices_tarball):
+        makepaths(dirname(devices_tarball))
         setup_devices_tarball()
     suite_path = config.get('installer', 'suite_storage')
+    makepaths(suite_path)
     suites = config.get_list('bootstrap_suites', section='installer')
     for suite in suites:
         if not os.path.isfile(join(suite_path, '%s.tar' % suite)):

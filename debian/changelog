@@ -1,3 +1,60 @@
+paella (0.6.15) common; urgency=low
+
+  * adding package paella-kde-admin
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 17:10:05 -0500
+
+paella (0.6.14) common; urgency=low
+
+  * fixing imports in kde management
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 17:03:09 -0500
+
+paella (0.6.13) common; urgency=low
+
+  * fix bootstrap/extract error in nfsinstaller
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 16:32:31 -0500
+
+paella (0.6.12) common; urgency=low
+
+  * some improvements to nfsinstaller, now optional extracting from premade tar files
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 15:58:25 -0500
+
+paella (0.6.11) common; urgency=low
+
+  * fixed another bug in paella-setup-nfsinstaller, make sure another directory is created.
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 15:27:35 -0500
+
+paella (0.6.10) common; urgency=low
+
+  * fixed bug in paella-setup-nfsinstaller, make sure directory is created.
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 15:22:19 -0500
+
+paella (0.6.9) common; urgency=low
+
+  * fixed bug in installer toolkit,DefaultEnvironment not imported
+    from the right place.
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 15:18:05 -0500
+
+paella (0.6.8) common; urgency=low
+
+  * fixed bug in paella-setup-nfsinstaller script
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 15:04:09 -0500
+
+paella (0.6.7) common; urgency=low
+
+  * changed reconfigure method in trait installer
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 14:16:56 -0500
+
 paella (0.6.6) common; urgency=low
 
   * fixing dependencies for paella-db

@@ -3,8 +3,8 @@ import os
 from useless.base.util import RefDict, str2list
 
 from paella.base import PaellaConfig
-from paella.db import PaellaConnection
-from paella.db.base import get_suite, DefaultEnvironment
+from paella.db import PaellaConnection, DefaultEnvironment
+from paella.db.base import get_suite
 from paella.db.trait import Trait
 from paella.db.trait.relations import TraitParent
 from paella.db.family import Family

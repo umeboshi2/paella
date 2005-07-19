@@ -23,6 +23,7 @@ from useless.db.midlevel import Environment
 #from trait import TraitParent, TraitDebconf
 #from trait import TraitPackage, TraitTemplate
 #from trait import TraitsElement, Trait
+from paella.base.util import make_deplist
 from paella.db.base import get_suite
 from paella.db.trait import Trait
 from paella.db.trait.relations import TraitParent

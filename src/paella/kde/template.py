@@ -10,8 +10,8 @@ from kdeui import KListView, KListViewItem
 from kdeui import KStdAction
 #from kfile import KFileDialog
 
-from paella.base.template import Template
-from paella.profile.trait import Trait
+from useless.base.template import Template
+from paella.db.trait import Trait
 
 from paella.kde.base.actions import ChangeSuiteAction
 from paella.kde.db.gui import dbwidget, SuiteSelector

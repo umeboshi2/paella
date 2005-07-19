@@ -10,10 +10,10 @@ from kdeui import KListView, KListViewItem
 from kdeui import KActionSelector
 from kdeui import KPushButton
 
-from paella.profile.base import PaellaConfig
-from paella.profile.base import PaellaConnection
-from paella.profile.trait import Trait
-from paella.profile.profile import Profile
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
+from paella.db.trait import Trait
+from paella.db.profile import Profile
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow

@@ -9,11 +9,12 @@ from kdeui import KComboBox
 
 from useless.kbase.gui import MyCombo
 
-from paella.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq
 
-from paella.profile.base import Differ, Suites, Traits
-from paella.profile.trait import TraitTemplate, TraitScript
-from paella.profile.family import Family, FamilyVariablesConfig
+from paella.base.objects import Differ
+from paella.db.base import Suites, Traits
+from paella.db.trait.relations import TraitTemplate, TraitScript
+from paella.db.family import Family, FamilyVariablesConfig
 
 from paella.kde.base.actions import DiffAction
 from paella.kde.db.gui import dbwidget

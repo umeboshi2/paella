@@ -7,11 +7,11 @@ from useless.xmlgen.base import ListItem, UnorderedList
 from useless.xmlgen.base import BR, HR, Bold, TR, TD, Paragraph
 from useless.xmlgen.base import SimpleTitleElement
 
-from paella.db.midlevel import StatementCursor
-from paella.profile.trait import Trait
-from paella.profile.profile import Profile
-from paella.profile.family import Family
-from paella.machines.machine import MachineHandler
+from useless.db.midlevel import StatementCursor
+from paella.db.trait import Trait
+from paella.db.profile import Profile
+from paella.db.family import Family
+from paella.db.machine import MachineHandler
 
 class RecordElement(BaseElement):
     def __init__(self, fields, idcol, action, record, **atts):

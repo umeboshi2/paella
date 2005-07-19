@@ -66,7 +66,7 @@ class TraitInstaller(Installer):
         self.log.info('processing reconfig for trait %s' % trait)
         script = self._make_script('reconfig')
         if script is None:
-            self.reconfigure_debconf()
+            self.reconfigure_debconf(packages)
         else:
             self.process_hooked_action('reconfig', trait)
         self.log.info('reconfig has been processed for trait %s' % trait)
@@ -271,7 +271,12 @@ class TraitInstaller(Installer):
     def install_debconf(self):
         raise Error, 'install_debconf is deprecated, use install_debconf_template instead'
     
-    def reconfigure_debconf(self):
-        raise Error, 'reconfigure_debconf is deprecated'
+    def reconfigure_debconf(self, packages):
+        self.log.info('running reconfigure')
+        reconfig = [p.package for p in packages if p.action in ['install', 'config']]
+        os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+        for package in reconfig:
+            self.log.info('RECONFIGURING %s' % package)
+            os.system(self.command('dpkg-reconfigure -plow %s' % package))
         
         

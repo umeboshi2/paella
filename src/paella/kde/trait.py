@@ -15,10 +15,11 @@ from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 from kfile import KFileDialog
 
-from paella.base.template import Template
-from paella.profile.base import PaellaConfig
-from paella.profile.base import PaellaConnection
-from paella.profile.trait import Trait
+from useless.base.template import Template
+
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
+from paella.db.trait import Trait
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow

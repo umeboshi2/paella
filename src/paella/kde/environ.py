@@ -8,10 +8,10 @@ from kdeui import KListView, KListViewItem
 from kdeui import KStdAction, KPopupMenu
 from kfile import KFileDialog
 
-from paella.sqlgen.clause import Eq
-from paella.db.midlevel import StatementCursor
-from paella.profile.base import DefaultEnvironment
-from paella.profile.base import CurrentEnvironment
+from useless.sqlgen.clause import Eq
+from useless.db.midlevel import StatementCursor
+from paella.db import DefaultEnvironment
+from paella.db import CurrentEnvironment
 
 from paella.kde.db.gui import dbwidget
 from paella.kde.base.actions import EditAction
