@@ -1,3 +1,9 @@
+paella (0.6.6) common; urgency=low
+
+  * fixing dependencies for paella-db
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 13:29:05 -0500
+
 paella (0.6.5) common; urgency=low
 
   * fixing bug in install/paela-debian install in debian/rules file

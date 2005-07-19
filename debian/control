@@ -65,7 +65,7 @@ Package: paella-db
 Section: optional
 Priority: optional
 Architecture: any
-Depends: paella-debian, paella-dbgtk, python-kjbuckets
+Depends: paella-debian, paella-dbgtk, python-kjbuckets, useless-db, useless-xmlgen
 Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
     classes and functions to help create database schemas,
