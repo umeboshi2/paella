@@ -5,7 +5,7 @@ include /usr/share/cdbs/1/class/python-distutils.mk
 install/paella-base::
 	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
 	rm -r build/
-install/useless-debian::
+install/paella-debian::
 	python setup.py debian install --prefix=$(CURDIR)/debian/paella-debian/usr
 	rm -r build/
 install/paella-db::

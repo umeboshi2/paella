@@ -1,3 +1,9 @@
+paella (0.6.5) common; urgency=low
+
+  * fixing bug in install/paela-debian install in debian/rules file
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 19 Jul 2005 13:22:58 -0500
+
 paella (0.6.4) common; urgency=low
 
   * removing debian revision, building with cdbs
