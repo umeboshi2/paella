@@ -29,7 +29,7 @@ class KernelsWin(TableEditor):
 class FsWin(BrowserWin):
     def __init__(self, conn):
         browser = RelationalBrowser(conn, 'filesystems', 'filesystem_mounts',
-                                         'filesystem', ['mnt_name', 'ord', 'partition'])
+                                         'filesystem', ['mnt_name', 'ord', 'partition', 'size'])
         BrowserWin.__init__(self, conn, browser)
 
 class DiskWin(BrowserWin):

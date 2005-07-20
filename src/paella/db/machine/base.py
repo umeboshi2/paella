@@ -29,8 +29,8 @@ class Disk(object):
             raise Error, 'bad partition'
 
 class FilesystemMount(dict):
-    def __init__(self, mnt_name, ord, partition):
-        dict.__init__(self, mnt_name=mnt_name, ord=ord, partition=partition)
+    def __init__(self, mnt_name, ord, partition, size):
+        dict.__init__(self, mnt_name=mnt_name, ord=ord, partition=partition, size=size)
 
 
 class Filesystem(object):

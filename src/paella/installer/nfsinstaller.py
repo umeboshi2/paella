@@ -1,7 +1,8 @@
 import os
-from os.path import join, basename
+from os.path import join, basename, dirname
 from time import sleep
 import commands
+import tempfile
 
 from useless.base import Error
 from useless.base.util import makepaths, runlog
@@ -10,7 +11,7 @@ from useless.sqlgen.clause import Eq, Gt, Neq
 
 from paella.base import PaellaConfig
 from paella.debian.base import debootstrap
-from paella.db import PaellaConnection
+from paella.db import PaellaConnection, DefaultEnvironment
 from paella.db.base import get_suite
 from paella.db.machine import MachineHandler
 
@@ -27,6 +28,7 @@ class NewInstaller(object):
         object.__init__(self)
         self.conn = conn
         self.cfg = cfg
+        self.defenv = DefaultEnvironment(self.conn)
         self.machine = MachineHandler(self.conn)
         self.cursor = StatementCursor(self.conn)
         self.target = None
@@ -66,6 +68,11 @@ class NewInstaller(object):
             logfile = '/paellalog/paella-install-%s.log' % machine
         os.environ['LOGFILE'] = logfile
         os.environ['PAELLA_MACHINE'] = machine
+        disklogpath = join(dirname(logfile), 'disklog')
+        if not os.path.isdir(disklogpath):
+            makepaths(disklogpath)
+        self.disklogpath = disklogpath
+        self.curenv = CurrentEnvironment(self.conn, self.machine.current.machine)
         
     def check_if_mounted(self, device):
         mounts = file('/proc/mounts')
@@ -93,6 +100,9 @@ class NewInstaller(object):
                 pdev = device + str(row.partition)
             if row.mnt_name in env.keys():
                 print '%s held' % row.mnt_name
+            elif row.fstype == 'swap':
+                runlog('echo making swap on %s' % pdev)
+                runlog('mkswap %s' % pdev)
             else:
                 print 'making filesystem for', row.mnt_name
                 make_filesystem(pdev, row.fstype)
@@ -124,8 +134,9 @@ class NewInstaller(object):
         print 'mounting target', pdev, self.target
         clause &= Neq('mnt_point', '/')
         mounts = self.cursor.select(table=table, clause=clause, order='ord')
+        mountable = [mount for mount in mounts if mount.fstype != 'swap']
         runlog('mount %s %s' % (pdev, self.target))
-        for mnt in mounts:
+        for mnt in mountable:
             tpath = os.path.join(self.target, mnt.mnt_point[1:])
             makepaths(tpath)
             if mddev:
@@ -145,6 +156,71 @@ class NewInstaller(object):
     def organize_disks(self):
         return self.machine.check_machine_disks(self.machine.current.machine_type)
                             
+    def _setup_disks(self, diskname, disks=None):
+        if disks is None:
+            disks = self.organize_disks()
+        devices = disks[diskname]
+
+    def setup_disks(self):
+        disks = self.organize_disks()
+        disknames = disks.keys()
+        if not len(disknames):
+            self._setup_disk_fai('default', '/dev/hda')
+        else:
+            if len(disknames) > 1:
+                #this isn't really handled yet
+                self.partition_disks()
+                self.make_filesystems()
+            else:
+                devices = disks[disknames[0]]
+                if len(devices) > 1:
+                    #this is a raid setup
+                    self.partition_disks()
+                    self.make_filesystems()
+                elif len(devices) == 1:
+                    self._setup_disk_fai(self.machine.current.filesystem, devices[0])
+                else:
+                    self._setup_disk_fai('default', '/dev/hda')
+    
+    def _setup_disk_fai(self, filesystem, device):
+        disk_config = self.machine.make_disk_config_info(device)
+        fileid, disk_config_path = tempfile.mkstemp('paella', 'diskinfo')
+        disk_config_file = file(disk_config_path, 'w')
+        disk_config_file.write(disk_config)
+        disk_config_file.close()
+        script = '/usr/lib/fai/sbin/setup_harddisks'
+        options = '-X -f %s' % disk_config_path
+        env = 'env LOGDIR=%s diskvar=%s' % (self.disklogpath, join(self.disklogpath, 'diskvar'))
+        command = '%s %s %s' % (env, script, options)
+        runlog(command)
+        
+    def _setup_raid_drives(self, diskname, devices):
+        self._raid_setup = True
+        self._raid_drives[diskname] = devices
+        for device in devices:
+            self._partition_disk(diskname, device)
+        ndev = len(devices)
+        print 'doing raid setup on %s' % diskname
+        fs = self.machine.current.filesystem
+        print fs
+        pnums = [r.partition for r in self.machine.get_installable_fsmounts(fs)]
+        mdnum = 0 
+        for p in pnums:
+            mdadm = 'mdadm --create /dev/md%d' % mdnum
+            mdadm = '%s --force -l1 -n%d ' % (mdadm, ndev)
+            devices = ['%s%s' % (d, p) for d in devices]
+            command = mdadm + ' '.join(devices)
+            print command
+            yesman = 'bash -c "yes | %s"' % command
+            print yesman
+            os.system(yesman)
+            mdnum += 1
+        print 'doing raid setup on %s' % str(devices)
+        mdstat = file('/proc/mdstat').read()
+        while mdstat.find('resync') > -1:
+            sleep(10)
+            mdstat = file('/proc/mdstat').read()                    
+        
     def partition_disks(self):
         disks = self.organize_disks()
         for diskname in disks:
@@ -279,8 +355,11 @@ class NewInstaller(object):
         
     def install(self, machine, target):
         self.set_machine(machine)
-        self.partition_disks()
-        self.make_filesystems()
+        if self._enable_bad_hacks:
+            self.setup_disks()
+        else:
+            self.partition_disks()
+            self.make_filesystems()
         self.setup_installer()
         self.set_target(target)
         self.ready_target()

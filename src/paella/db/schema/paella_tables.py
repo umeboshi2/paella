@@ -301,7 +301,8 @@ class FilesystemMountsTable(Table):
         mnt_name_col.set_fk(mounts_table)
         ord_col = Num('ord')
         partition_column = Num('partition')
-        columns = [fs_col, mnt_name_col, ord_col, partition_column]
+        size = Name('size')
+        columns = [fs_col, mnt_name_col, ord_col, partition_column, size]
         Table.__init__(self, 'filesystem_mounts', columns)
 
 class FilesystemDisksTable(Table):

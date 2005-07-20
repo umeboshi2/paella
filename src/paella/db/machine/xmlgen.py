@@ -99,11 +99,12 @@ class MountsElement(Element):
     
 
 class FilesystemMountElement(Element):
-    def __init__(self, mnt_name, ord, partition):
+    def __init__(self, mnt_name, ord, partition, size):
         Element.__init__(self, 'filesystem_mount')
         self.setAttribute('mnt_name', mnt_name)
         self.setAttribute('ord', ord)
         self.setAttribute('partition', partition)
+        self.setAttribute('size', size)
         
         
 
@@ -119,11 +120,12 @@ class FilesystemElement(Element):
         clause = Eq('filesystem', filesystem)
         rows = self.cursor.select(clause=clause, order='mnt_name')
         for r in rows:
-            self.append_fs_mount(r.mnt_name, r.ord, r.partition)
+            self.append_fs_mount(r.mnt_name, r.ord, r.partition, r.size)
             
         
-    def append_fs_mount(self, mnt_name, ord, partition):
-        fs_mount_element = FilesystemMountElement(mnt_name, str(ord), str(partition))
+    def append_fs_mount(self, mnt_name, ord, partition, size):
+        fs_mount_element = FilesystemMountElement(mnt_name,
+                                                  str(ord), str(partition), str(size))
         self.mounts.append(fs_mount_element)
         self.appendChild(fs_mount_element)
 

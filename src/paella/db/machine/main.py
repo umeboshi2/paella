@@ -1,3 +1,4 @@
+from os.path import basename
 from xml.dom.minidom import parseString
 
 from useless.db.midlevel import StatementCursor
@@ -87,10 +88,10 @@ def add_new_mount(conn, name, mtpt, fstype, opts,
     data['pass'] = pass_
     cursor.insert(table='mounts', data=data)
 
-def add_mount_to_filesystem(conn, mnt_name, filesystem, ord, partition):
+def add_mount_to_filesystem(conn, mnt_name, filesystem, ord, partition, size):
     cursor = StatementCursor(conn)
     data = dict(mnt_name=mnt_name, filesystem=filesystem,
-                ord=str(ord), partition=partition)
+                ord=str(ord), partition=partition, size=size)
     cursor.insert(table='filesystem_mounts', data=data)
     
 def make_a_machine(conn, machine, mtype, profile, fs):
@@ -127,9 +128,9 @@ class MachineHandler(BaseMachineHandler):
         data['pass'] = pass_
         self.mounts.insert(data=data)
         
-    def add_mount_to_filesystem(self, mnt_name, filesystem, ord, partition):
+    def add_mount_to_filesystem(self, mnt_name, filesystem, ord, partition, size):
         self.fsmounts.insert(data=dict(mnt_name=mnt_name, filesystem=filesystem,
-                                       ord=ord, partition=partition))
+                                       ord=ord, partition=partition, size=size))
     def make_a_machine(self, machine, mtype, profile, fs):
         self.cursor.insert(table='machines',
                            data=dict(machine=machine,
@@ -200,12 +201,15 @@ class MachineHandler(BaseMachineHandler):
 
     def array_hack(self, machine_type):
         dn_dict = self.check_machine_disks(machine_type)
-        if len(dn_dict.keys()) == 1:
-            diskname = dn_dict.keys()[0]
+        disknames = dn_dict.keys()
+        if len(disknames) == 1:
+            diskname = disknames[0]
             if len(dn_dict[diskname]) > 1:
                 device = '/dev/md'
             else:
                 device = dn_dict[diskname][0]
+        elif not len(dn_dict.keys()):
+            device = '/dev/hda'
         else:
             raise Error, "can't handle more than one disktype now"
         return device
@@ -226,7 +230,7 @@ class MachineHandler(BaseMachineHandler):
         for row in fsmounts:
             fstype = row.fstype
             if int(row.partition) == 0:
-                if fstype in ['tmpfs', 'proc']:
+                if fstype in ['tmpfs', 'proc', 'sysfs']:
                     _dev = fstype
                 else:
                     _dev = '/dev/null'
@@ -273,24 +277,38 @@ class MachineHandler(BaseMachineHandler):
             self.cursor.insert(table='machine_modules', data=data)
             next_ord += 1
         
+    def make_disk_config_info(self, device, filesystem=None, curenv=None):
+        if filesystem is None:
+            filesystem = self.current.filesystem
+        rows = self.get_installable_fsmounts(filesystem=filesystem)
+        lines = []
+        if device[:4] == '/dev':
+            device = basename(device)
+        lines.append('disk_config %s' % device)
+        for row in rows:
+            ptype = 'logical'
+            if int(row.partition) < 5:
+                ptype = 'primary'
+            size = row.size
+            if curenv is not None:
+                if row.mnt_name in curenv.keys():
+                    size = 'preserve'
+            line = '%s\t%s\t%s\t%s' % (ptype, row.mnt_point, size, row.mnt_opts)
+            fstype = row.fstype
+            if fstype == 'reiserfs':
+                fstype = 'reiser'
+            fline = '%s\t; %s' % (line, fstype)
+            lines.append(fline)
+        return '\n'.join(lines) + '\n'
+    
+            
             
 if __name__ == '__main__':
     from os.path import join
-    from paella.profile.base import PaellaConfig, PaellaConnection
-    cfg = PaellaConfig()
-    conn = PaellaConnection(cfg)
+    from paella.db import PaellaConnection
+    conn = PaellaConnection()
     from xmlgen import MachineDatabaseElement
-    from paella.installer.base import CurrentEnvironment
-    ev = CurrentEnvironment(conn, 'bard')
-    
-    xfile = file(join(cfg['import_path'], 'machine_database.xml'))
-    mdata = xfile.read()
-    xfile.close()
-    
-    element = parseString(mdata)
-
-    me = MachineDatabaseElement(conn)
-    md = MachineDatabaseParser(element.firstChild)
+    from paella.db import CurrentEnvironment
     mh = MachineHandler(conn)
     mods = ['via82cxxx', 'ide-generic', 'ide-disk']
     

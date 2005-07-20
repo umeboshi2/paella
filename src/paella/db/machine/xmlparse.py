@@ -30,7 +30,8 @@ def parse_fsmount(element):
     mnt_name = get_attribute('mnt_name', element)
     ord = get_attribute('ord', element)
     partition = get_attribute('partition', element)
-    return FilesystemMount(mnt_name, ord, partition)
+    size = get_attribute('size', element)
+    return FilesystemMount(mnt_name, ord, partition, size)
 
 def parse_mdisk(element):
     diskname = get_attribute('diskname', element)

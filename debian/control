@@ -49,9 +49,18 @@ Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db, reiserfsprogs, xfsprogs, python-pyparsing, hdparm, mdadm, mkisofs, gawk
+Depends: paella-db, python-pyparsing
+Description: python package for paella installers
+ This package contains most of the code for installers to work.
+ It also contains the chroot installer.
+
+Package: paella-nfs-installer
+Section: admin
+Priority: extra
+Architecture: any
+Depends: paella-db, paella-installer, reiserfsprogs, xfsprogs, hdparm, mdadm, mkisofs, gawk, fai
 Description: package for nfsroot installer
-    This package should be installed on the nfsroot installer
+    This package should be installed on the nfsroot installer.
 
 Package: paella-admin
 Section: admin

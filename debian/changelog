@@ -1,3 +1,37 @@
+paella (0.6.21) common; urgency=low
+
+  * going to try to take care of swap space
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 20 Jul 2005 17:43:48 -0500
+
+paella (0.6.20) common; urgency=low
+
+  * fixed arrayhack in machine db to default to /dev/hda if no disks in config
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 20 Jul 2005 16:57:21 -0500
+
+paella (0.6.19) common; urgency=low
+
+  * more fixing on fai setup_harddisk script
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 20 Jul 2005 16:15:15 -0500
+
+paella (0.6.18) common; urgency=low
+
+  * bugfix in making tmpfile in nfsinstaller
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 20 Jul 2005 16:08:31 -0500
+
+paella (0.6.17) common; urgency=low
+
+  * made new nfs-installer package
+  * nfs-installer depends on fai now
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 20 Jul 2005 16:00:24 -0500
+
 paella (0.6.16) common; urgency=low
 
   * now only reconfigure packages in traits marked 'reconfig'
