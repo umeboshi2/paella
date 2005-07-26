@@ -18,9 +18,14 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/mini-dinstall
 NAME=mini-dinstall
 
+# Read config file if it is present.
+if [ -r /etc/default/paella-debrepos ] 
+then
+    echo 'using defaults in /etc/default/paella-debrepos'
+    . /etc/default/paella-debrepos
+fi
+
 DESC="Paella/Debian Repository Server"
-DUSER=debrepos
-REPOS=/freespace/debian/local
 SLEEPTIME=10
 
 PIDFILE=$REPOS/mini-dinstall/mini-dinstall.lock
@@ -28,12 +33,6 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 # Gracefully exit if the package has been removed.
 test -x $DAEMON || exit 0
-
-# Read config file if it is present.
-#if [ -r /etc/default/$NAME ]
-#then
-#	. /etc/default/$NAME
-#fi
 
 case "$1" in
   start)
@@ -46,6 +45,7 @@ case "$1" in
 	echo "Stopping $DESC: $NAME"
 	start-stop-daemon --stop  -c $DUSER --user $DUSER --pidfile $PIDFILE \
 		-- -k --config=/etc/mini-dinstall.conf $REPOS
+	rm $PIDFILE
 	echo "."
 	;;
   #reload)
@@ -73,6 +73,7 @@ case "$1" in
 		-- -k --config=/etc/mini-dinstall.conf $REPOS
 	echo "."
 	sleep $SLEEPTIME
+	rm $PIDFILE
 	echo "Starting $DESC: $NAME"
 	start-stop-daemon --start  --pidfile $PIDFILE --exec $DAEMON \
 		-c $DUSER -- --config=/etc/mini-dinstall.conf $REPOS

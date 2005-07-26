@@ -1,0 +1,6 @@
+# this file is used by /etc/init.d/paella-debrepos
+
+# name of the debrepos user
+DUSER=debrepos
+# local_debian_root
+REPOS=/mirrors/debian/local

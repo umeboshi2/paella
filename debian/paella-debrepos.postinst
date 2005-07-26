@@ -34,14 +34,21 @@ debroot="$RET"
 
 case "$1" in
     configure)
+    if ! [ -d $debroot ] ; then
+	mkdir -p $debroot
+    fi
+    if ! [ -d $debroot/local ] ; then
+	mkdir $debroot/local
+    fi
     if ! getent passwd $username > /dev/null ; then
 	adduser --quiet --system --no-create-home --group \
 	    --home $debroot  --gecos "Paella Debian Repository User" \
-	    $username || true
+	    --shell /bin/bash $username || true
     fi
     if ! getent group www-data | grep $username > /dev/null ; then
 	adduser --quiet $username www-data || true
     fi
+    chown -R $username $debroot
     ;;
     abort-upgrade|abort-remove|abort-deconfigure)
 
