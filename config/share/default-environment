@@ -1,0 +1,101 @@
+# most of the debrepos section is currently unused in
+# the installer so far.  It is better to have the configuration
+# for the installer in the database, and just have database 
+# info in the config file.  For the management_gui section,
+# some of that should be in the config and some of it should
+# be in here.
+
+[debrepos]
+repos_host:		localhost
+debroot:			/debian
+repos_root:		/freespace/debian
+# these are the official debian suites that you will mirror
+official_suites:		woody,sarge,sid
+
+# these are the local suites that you maintain
+# in order to create a local suite, shell into the mirror
+# and cp -a debian/dists/sourcesuite debian/dists/targetsuite
+# this just copies all of the package and source list files,
+# but still references the same files in the pool
+local_suites:		maverick,questron,gunny,kardinal
+
+# suites that have Packages.bz2 files in them need to be listed
+# here in a comma separated list
+# this will get to the installer to mirror the .bz2 files as well as the
+# .gz files
+sid_suites:		sid,questron,kardinal
+
+http_mirror:		http://%(repos_host)s%(debroot)s
+
+# these options are the urls for the official debian sites
+# it can be helpful to override these to partially mirror a mirror
+official_main:		http://ftp.us.debian.org/debian
+official_nonus:		http://nonus.debian.org/
+official_security:		http://security.debian.org
+
+# this is the location of the other repositories that you may mirror
+other_repos:		%(repos_root)/other
+
+[adminuser_gpprine]
+name:	Greg Prine
+passwd:	<cut this out of /etc/passwd or /etc/shadow>
+sshkey_spike:	ssh-dss A"<snip>"= gpprine@spike
+uid:	1001
+user:	gpprine
+
+[adminuser_umeboshi]
+name:	Joseph Rawson
+passwd:	<cut this out of /etc/passwd or /etc/shadow>
+sshkey_bard:	ssh-dss A"<snip>"= umeboshi@bard
+sshkey_rj:	ssh-dss A"<snip>"= umeboshi@roujin
+uid:	1000
+user:	umeboshi
+
+
+[installer]
+# this is to enable ugly stuff in the paella installers
+enable_bad_hacks:	false
+
+# a directory for storing generated files that would be needed later
+# I put this in usr because it's mainly used on the nfsinstaller, and
+# /var on the nfsinstaller uses tmpfs instead of nfs
+paella_storage:		/usr/share/paella/storage
+
+# use this one for machines other than the nfsinstaller
+#paella_storage:		/var/cache/paella
+
+# the directory that will hold tarfiles of clean bootstrapped suites
+suite_storage:		%(paella_storage)s/suites
+
+# this is a list of suites that will be bootstrapped and tarred
+bootstrap_suites:		sarge, testing, kudzu
+
+# the default is not to have the installer bootstrap,
+# but extract tar files in suite_storage (quicker)
+bootstrap_target:		false
+
+# this is the location of the devices tarball that can be used
+# in place of makedev
+devices_tarball:		%(paella_storage)s/devices.tar
+
+# we default to using the devices tarball because it is quicker
+# than running MAKEDEV
+use_devices_tarball:	true
+
+# the nfs_log_* options are there to mount the log directory
+# on the nfs-installer
+nfs_log_export:	/freespace/shared/bkups
+nfs_log_host:	zathras.frobozz.gue
+nfs_log_path:	paellalog
+
+# these options are referenced from scripts in the traits
+# these options are not necessary to run paella
+# this is an example of how to use the default environment
+# to provide information to the installer about instructions
+# and the location of certain resources, etc.
+nfs_common_export:	/freespace/shared/common
+nfs_common_host:	zathras.frobozz.gue
+common_msttfpath:	various-binaries/msttfonts
+common_opencdiso:	various-binaries/isos/TheOpenCD-v1.4.iso
+common_paelladb:	paelladb
+

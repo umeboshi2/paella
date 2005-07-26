@@ -1,0 +1,17 @@
+Template: paella/introduction
+Type: note
+_Description: The paella system will need a lot of 
+ attention to the setup in order to get it operational. 
+
+Template: paella/debrepos/local_debian_root
+Type: string
+_Default: /mirrors/debian
+_Description:  Where is your local debian repository located.
+ If it doesn't exist it will not be created.  The default is /mirrors/debian.
+
+Template: paella/debrepos/username
+Type: string
+_Default: debrepos
+_Description:  This is the username of the system user that
+ is responsible for the local debian mirror.
+

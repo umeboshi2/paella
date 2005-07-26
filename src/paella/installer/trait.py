@@ -13,7 +13,9 @@ from base import Installer, InstallError
 INGDICT = {
     'install' : 'installing',
     'remove' : 'removing',
-    'configure' : 'configuring'
+    'configure' : 'configuring',
+    'config' : 'configuring',
+    'reconfig' : 'reconfiguring'
     }
 
 class TraitInstaller(Installer):
@@ -237,9 +239,18 @@ class TraitInstaller(Installer):
         newfile.write(sub)
         newfile.close()
         mode = template.mode
+        
+        # a simple attempt to insure mode is a valid octal string
+        # this is one of the very rare places eval is used
+        # there are a few strings with 8's and 9's that will pass
+        # the if statement, but the eval will raise SyntaxError then.
+        # If the mode is unusable the install will fail at this point.
         if mode[0] == '0' and len(mode) <= 7 and mode.isdigit():
             mode = eval(mode)
-        os.chmod(newpath, mode)
+            os.chmod(newpath, mode)
+        else:
+            raise InstallError, 'bad mode %s, please use octal prefixed by 0' % mode
+        
         own = ':'.join([template.owner, template.grp_owner])
         os.system(self.command('chown', "%s '%s'" %(own, join('/', template.template))))
 
@@ -253,6 +264,8 @@ class TraitInstaller(Installer):
         if tmpl == sub:
             self.log.info('static debconf, no substitutions')
             self.log.info('for trait %s ' % trait)
+        else:
+            self.log.info('templated debconf for trait %s' % trait)
         config_path = join(self.target, 'tmp/paella_debconf')
         if isfile(config_path):
             self.log.warn('%s is not supposed to be there' % config_path)

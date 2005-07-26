@@ -2,7 +2,8 @@ import os
 from os.path import isfile, join, dirname
 import tarfile
 
-from paella.profile.base import get_suite, PaellaConfig
+from paella.base import PaellaConfig
+from paella.db.base import get_suite
 from paella.installer.util import extract_tarball
 from paella.installer.profile import ProfileInstaller
 

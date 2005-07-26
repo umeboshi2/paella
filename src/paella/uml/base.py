@@ -7,7 +7,7 @@ from useless.base.tarball import make_tarball
 from useless.base.config import Configuration, list_rcfiles
 
 from paella.debian.base import RepositorySource, debootstrap
-from paella.profile.base import get_suite
+from paella.db.base import get_suite
 
 class UmlConfig(Configuration):
     def __init__(self, section='umlmachines',

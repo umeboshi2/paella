@@ -23,11 +23,26 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
+# source debconf
+. /usr/share/debconf/confmodule
+
+db_version 2.0
+db_get "paella/debrepos/username"
+username="$RET"
+db_get "paella/debrepos/local_debian_root"
+debroot="$RET"
+
 case "$1" in
     configure)
-
+    if ! getent passwd $username > /dev/null ; then
+	adduser --quiet --system --no-create-home --group \
+	    --home $debroot  --gecos "Paella Debian Repository User" \
+	    $username || true
+    fi
+    if ! getent group www-data | grep $username > /dev/null ; then
+	adduser --quiet $username www-data || true
+    fi
     ;;
-    adduser --system --ingroup www-data debrepos
     abort-upgrade|abort-remove|abort-deconfigure)
 
     ;;

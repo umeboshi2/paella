@@ -11,7 +11,15 @@ if 'python_path' in kernopts:
     sys.path.insert(0, kernopts['python_path'])
 os.environ['PATH'] = ':'.join(['/bin', '/sbin', '/usr/bin', '/usr/sbin'])
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-os.environ['LOGFILE'] = kernopts['LOGFILE']
+
+logfile = None
+if 'logfile' in kernopts.keys():
+    logfile = kernopts['logfile']
+elif 'LOGFILE' in kernopts.keys():
+    logfile = kernopts['LOGFILE']
+
+if logfile is not None:
+    os.environ['LOGFILE'] = logfile
 
 from useless.base import Error, debug
 from useless.base.config import Configuration
@@ -85,11 +93,11 @@ elif action == 'extract':
 #print 'KERNOPTS'
 #for k,v in kernopts.items():
 #    print k,v
-
+backup_filesystem = cfg.get('umlmachines', 'backup_filesystem')
 if action == 'install':
     installer = UmlInstaller(conn, cfg=cfg)
     installer.set_mode('guest')
-    installer.mount_backup('/mnt', 'hostfs')
+    installer.mount_backup('/mnt', backup_filesystem)
     installer.setup_target()
     installer.set_profile(profile)
     installer.extract_base_tarball()
@@ -102,7 +110,7 @@ elif action == 'bootstrap':
     target = '/tmp/target'
     bootstrapper = UmlBootstrapper(suite, cfg=cfg)
     bootstrapper.set_mode('guest')
-    bootstrapper.mount_backup('/mnt', 'hostfs')
+    bootstrapper.mount_backup('/mnt', backup_filesystem)
     bootstrapper.set_target(target)
     bootstrapper.bootstrap()
     bootstrapper.backup_target(suite + '.base')
@@ -116,7 +124,7 @@ elif action == 'restore':
 elif action == 'extract':
     extract = UmlChroot(cfg=cfg)
     extract.set_mode('guest')
-    extract.mount_backup('/mnt', 'hostfs')
+    extract.mount_backup('/mnt', backup_filesystem)
     extract.setup_target()
     extract.extract_root_tarball(tarball)
     sys.stdout.write('%s extracted.\n' % basename(tarball))

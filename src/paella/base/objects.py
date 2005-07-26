@@ -1,6 +1,7 @@
 import os
 from os.path import isdir, isfile, join, basename, dirname
 from ConfigParser import RawConfigParser
+from ConfigParser import ConfigParser
 import tempfile
 
 from useless.base import Error, NoExistError
@@ -50,7 +51,7 @@ class TextFileManager(object):
         datafile.seek(0)
         return md5
     
-class VariablesConfig(RawConfigParser):
+class VariablesConfig(ConfigParser):
     def __init__(self, conn, table, section,
                  mainfield=None, mainvalue=None,
                  option='name', value='value'):
@@ -66,7 +67,7 @@ class VariablesConfig(RawConfigParser):
         if bothset:
             self._mainclause = Eq(mainfield, mainvalue)
         self._fields = [self._secfield, option, value]
-        RawConfigParser.__init__(self)
+        ConfigParser.__init__(self)
         for row in self.cursor.select(fields=self._fields, clause=self._mainclause):
             if row[0] not in self.sections():
                 self.add_section(row[0])
@@ -81,7 +82,7 @@ class VariablesConfig(RawConfigParser):
             keys.sort()
             for k in keys:
                 if k != '__name__':
-                    v = str(self.get(section, k)).replace('\n', '\n\t')
+                    v = str(self.get(section, k, raw=True)).replace('\n', '\n\t')
                     cfile.write('%s:\t%s\n' % (k, v))
             cfile.write('\n')
             
@@ -92,7 +93,7 @@ class VariablesConfig(RawConfigParser):
         tmp.close()
         os.system('$EDITOR %s' % path)
         tmp = file(path, 'r')
-        newconfig = RawConfigParser()
+        newconfig = ConfigParser()
         newconfig.readfp(tmp)
         tmp.close()
         os.remove(path)
@@ -109,7 +110,7 @@ class VariablesConfig(RawConfigParser):
         rtmp.close()
         os.system('xxdiff %s %s' % (lpath, rpath))
         ltmp, rtmp = file(lpath, 'r'), file(rpath, 'r')
-        lcfg, rcfg = RawConfigParser(), RawConfigParser()
+        lcfg, rcfg = ConfigParser(), ConfigParser()
         lcfg.readfp(ltmp)
         rcfg.readfp(rtmp)
         ltmp.close()

@@ -131,7 +131,7 @@ class NewInstaller(object):
             mdnum += 1
         else:
             pdev = self._pdev(device, mounts[0].partition)
-        print 'mounting target', pdev, self.target
+        runlog('echo mounting target %s to %s ' % (pdev, self.target)
         clause &= Neq('mnt_point', '/')
         mounts = self.cursor.select(table=table, clause=clause, order='ord')
         mountable = [mount for mount in mounts if mount.fstype != 'swap']

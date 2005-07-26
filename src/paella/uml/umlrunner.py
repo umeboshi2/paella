@@ -4,8 +4,9 @@ from os.path import join, dirname
 from umlrun import UML
 from useless.base.config import Configuration
 from useless.base.util import runlog
+
+from paella.base import PaellaConfig
 from paella.installer.base import InstallerConnection
-from paella.profile.base import PaellaConfig
 
 from base import Uml, UmlConfig
 from util import create_sparse_file

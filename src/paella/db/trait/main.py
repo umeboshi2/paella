@@ -10,6 +10,7 @@ from useless.base import ExistsError, UnbornError, Error, debug
 from useless.xmlgen.base import TextElement
 from useless.base.util import ujoin, makepaths
 from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
 
 from base import AllTraits, Traits
@@ -234,6 +235,17 @@ class Trait(object):
         print 'all exported', os.listdir(bkup_path)
         #make_tarball(bkup_path, tball_path, self.current_trait)
         #os.system('rm %s -fr' % bkup_path)
+        
+    def get_description(self):
+        trait = self.current_trait
+        row = self._traits.select_row(clause=Eq('trait', trait))
+        # we must use row['dsc'] instead of row.dsc here
+        return row['description']
+
+    def set_description(self, desc):
+        trait = self.current_trait
+        data = dict(description=desc)
+        self._traits.update(data=data, clause=Eq('trait', trait))
         
 #generate xml
 class TraitElement(Element):

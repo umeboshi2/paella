@@ -26,6 +26,7 @@ class InstallerConnection(PaellaConnection):
         if cfg is None:
             cfg = PaellaConfig()
         dsn = cfg.get_dsn()
+        # enforce user to be paella
         dsn['dbusername'] = 'paella'
         PaellaConnection.__init__(self, dsn)
         print 'installer connection made'

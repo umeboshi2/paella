@@ -1,11 +1,12 @@
 import os
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
+from paella.db.trait import Trait
+from paella.db.family import Family
+from paella.db.profile import Profile
+from paella.db.machine import MachineHandler
 
-from paella.profile.base import PaellaConnection, PaellaConfig
-from paella.profile.trait import Trait
-from paella.profile.family import Family
-from paella.profile.profile import Profile
-from paella.machines.machine import MachineHandler
-
+from paella.db import DefaultEnvironment
 
 if __name__ == '__main__':
     cfg = PaellaConfig()
@@ -14,4 +15,5 @@ if __name__ == '__main__':
     f = Family(conn)
     p = Profile(conn)
     m = MachineHandler(conn)
+    de = DefaultEnvironment(conn)
     

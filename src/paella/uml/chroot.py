@@ -23,7 +23,7 @@ class UmlChroot(Uml):
         try:
             logfile = os.environ['LOGFILE']
         except KeyError:
-            logfile = cfg['host_LOGFILE']
+            logfile = cfg['host_logfile']
         os.environ['LOGFILE'] = logfile
         self.set_options()
         
@@ -71,6 +71,9 @@ class UmlChroot(Uml):
             print mtpnt, fstype, export
             mount(mtpnt, fstype=fstype, export=export)
             print '%s mounted' % mtpnt
+        else:
+            print '%s is already mounted' % mtpnt
+            
 
     def backup_target_nfs(self, name):
         self.check_guest()
