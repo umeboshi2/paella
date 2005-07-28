@@ -34,7 +34,7 @@ official_nonus:		http://nonus.debian.org/
 official_security:		http://security.debian.org
 
 # this is the location of the other repositories that you may mirror
-other_repos:		%(repos_root)/other
+other_repos:		%(repos_root)s/other
 
 [adminuser_gpprine]
 name:	Greg Prine
@@ -99,3 +99,7 @@ common_msttfpath:	various-binaries/msttfonts
 common_opencdiso:	various-binaries/isos/TheOpenCD-v1.4.iso
 common_paelladb:	paelladb
 
+[machines]
+hwaddr_00_00_00_00_00_00:	testmachine
+
+[autoinstall]

@@ -30,6 +30,33 @@ class BaseMachineHandler(object):
         self._machine_clause_ = Eq('machine', machine)
         self.current = self.cursor.select_row(clause=self._machine_clause_)
         
+    def approve_machine_ids(self):
+       machine = self.current.machine
+       table = 'current_environment'
+       clause = "name like 'hwaddr_%'"
+       fields = ["'machines' as section", 'name as option', 'value']
+       rows = self.cursor.select(fields=fields, table=table, clause=clause)
+       for row in rows:
+           self.cursor.insert(table='default_environment', data=row)
+
+    def set_autoinstall(self, auto=True):
+        if auto:
+            value = 'True'
+        else:
+            value = 'False'
+        machine = self.current.machine
+        table = 'default_environment'
+        data = dict(section='autoinstall', option=machine, value=value)
+        clause = Eq('section', 'autoinstall') & Eq('option', machine)
+        rows = self.cursor.select(table=table, clause=clause)
+        if not len(rows):
+            self.cursor.insert(table=table, data=data)
+        elif len(rows) == 1:
+            self.cursor.update(table=table, data=dict(value=value),
+                               clause=clause)
+        else:
+            raise Error, 'too many rows for this machine: %s' % machine
+        
         
     def _update_field_(self, name, value):
         self.cursor.update(data={name:value}, clause=self._machine_clause_)

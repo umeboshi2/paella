@@ -5,6 +5,7 @@ from ConfigParser import ConfigParser
 import tempfile
 
 from useless.base import Error, NoExistError
+from useless.base.config import Configuration
 from useless.base.util import ujoin, makepaths, md5sum, strfile
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
@@ -51,7 +52,7 @@ class TextFileManager(object):
         datafile.seek(0)
         return md5
     
-class VariablesConfig(ConfigParser):
+class VariablesConfig(Configuration):
     def __init__(self, conn, table, section,
                  mainfield=None, mainvalue=None,
                  option='name', value='value'):
@@ -67,7 +68,7 @@ class VariablesConfig(ConfigParser):
         if bothset:
             self._mainclause = Eq(mainfield, mainvalue)
         self._fields = [self._secfield, option, value]
-        ConfigParser.__init__(self)
+        Configuration.__init__(self)
         for row in self.cursor.select(fields=self._fields, clause=self._mainclause):
             if row[0] not in self.sections():
                 self.add_section(row[0])
@@ -93,7 +94,7 @@ class VariablesConfig(ConfigParser):
         tmp.close()
         os.system('$EDITOR %s' % path)
         tmp = file(path, 'r')
-        newconfig = ConfigParser()
+        newconfig = Configuration()
         newconfig.readfp(tmp)
         tmp.close()
         os.remove(path)

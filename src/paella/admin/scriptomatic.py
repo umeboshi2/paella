@@ -14,7 +14,7 @@ from useless.gtk.windows import MenuWindow
 from useless.gtk import dialogs
 
 from paella.db.base import Traits
-from paella.db.schema.paella_tables import SCRIPTS
+#from paella.db.schema.paella_tables import SCRIPTS
 from paella.db.trait.relations import TraitScript
 
 class AllScriptsDialog(dialogs.CList):
@@ -138,9 +138,10 @@ class ScriptBrowser(ListNoteBook):
         self.suite = suite
         self.trait = trait
         self.cursor = StatementCursor(self.conn)
+        self._scriptnames =[r.script for r in self.cursor.select(table='scriptnames')]
         self.cursor.set_table('%s_scripts' % self.suite)
-        self.edit_menu = make_menu(SCRIPTS, self.modify_trait, name='edit')
-        self.diff_menu = make_menu(SCRIPTS, self.modify_trait, name='diff')
+        self.edit_menu = make_menu(self._scriptnames, self.modify_trait, name='edit')
+        self.diff_menu = make_menu(self._scriptnames, self.modify_trait, name='diff')
         self.menu = make_menu(['edit', 'diff'], self.modify_trait)
         self.menu['edit'].set_submenu(self.edit_menu)
         self.menu['diff'].set_submenu(self.diff_menu)
@@ -182,8 +183,10 @@ class TraitScriptBrowser(ListNoteBook):
         self.conn = conn
         self.suite = suite
         self.traits = Traits(self.conn, self.suite)
-        self.edit_menu = make_menu(SCRIPTS, self.modify_trait, name='edit')
-        self.diff_menu = make_menu(SCRIPTS, self.modify_trait, name='diff')
+        rows = self.traits.select(table='scriptnames')
+        self._scriptnames = [r.script for r in rows]
+        self.edit_menu = make_menu(self._scriptnames, self.modify_trait, name='edit')
+        self.diff_menu = make_menu(self._scriptnames, self.modify_trait, name='diff')
         self.menu = make_menu(['edit', 'diff'], self.edit_menu)
         self.menu['edit'].set_submenu(self.edit_menu)
         self.menu['diff'].set_submenu(self.diff_menu)

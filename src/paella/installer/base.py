@@ -40,21 +40,32 @@ class CurrentEnvironment(Environment):
     
 
 class Installer(object):
-    def __init__(self, conn, cfg=None):
+    def __init__(self, conn):
         object.__init__(self)
         self.conn = conn
         self.target = None
-        self.cfg = cfg
         self.defenv = DefaultEnvironment(self.conn)
         #check for default environment
         rows = self.defenv.cursor.select()
         if not len(rows):
             raise InstallSetupError, 'There is no data in the default_environment table'
-        self.set_logfile('_unused_')
-
+        
     def set_logfile(self, logfile):
-        self.logfile = os.environ['LOGFILE']
-        makepaths(os.path.dirname(self.logfile))
+        env = os.environ
+        if logfile is None:
+            if env.has_key('PAELLA_LOGFILE'):
+                self.logfile = env['PAELLA_LOGFILE']
+            elif env.has_key('LOGFILE'):
+                self.logfile = env['LOGFILE']
+            elif self.defenv.has_option('installer', 'default_logfile'):
+                self.logfile = self.defenv.get('installer', 'default_logfile')
+            else:
+                raise InstallSetupError, 'There is no log file defined, giving up.'
+        else:
+            self.logfile = logfile
+        logdir = os.path.dirname(self.logfile)
+        if logdir:
+            makepaths(os.path.dirname(self.logfile))
         format = '%(name)s - %(asctime)s - %(levelname)s: %(message)s'
         self.log = Log('paella-installer', self.logfile, format)
         
@@ -113,7 +124,90 @@ class Modules(list):
         mfile.close()
         
             
-              
+
+class BaseChrootInstaller(Installer):
+    def __init__(self, conn, installer=None):
+        Installer.__init__(self, conn)
+        self._bootstrapped = False
+        self.installer = installer
+        self.debmirror = self.defenv.get('installer', 'http_mirror')
+        
+    def _make_target_dir(self, target):
+        makepaths(target)
+        
+    def _check_target(self):
+        if self.target is None:
+            raise InstallError, 'no target specified'
+
+    def _check_target_exists(self):
+        self._check_target()
+        if not isdir(self.target):
+            self._make_target_dir(self.target)
+        if not isdir(self.target):
+            raise InstallError, 'unable to create target directory %s' % self.target
+        
+    def _check_installer(self):
+        if self.installer is None:
+            raise InstallError, 'no installer available'
+
+    def _check_bootstrap(self):
+        self._check_target_exists()
+        if not self._bootstrapped:
+            raise InstallError, 'target not bootstrapped'
+
+    def _check_target_proc(self):
+        if not self._proc_mounted:
+            raise InstallError, 'target /proc not mounted'
+        
+    def _extract_base_tarball(self, suite):
+        self._check_target_exists()
+        runlog('echo extracting premade base tarball')
+        suite_path = self.defenv.get('installer', 'suite_storage')
+        basefile = join(suite_path, '%s.tar' % suite)
+        runvalue = runlog('tar -C %s -xf %s' % (self.target, basefile))
+        if runvalue:
+            raise InstallError, 'problems extracting %s' % basefile
+        else:
+            self._bootstrapped = True
+
+    def _bootstrap_target(self):
+        self._check_installer()
+        if self.defenv.is_it_true('installer', 'bootstrap_target'):
+            mirror = self.debmirror
+            suite = self.suite
+            self._run_bootstrap(mirror, suite)
+        else:
+            suite = self.suite
+            self._extract_base_tarball(suite)
+
+    def _mount_target_proc(self):
+        self._check_bootstrap()
+        tproc = join(self.target, 'proc')
+        cmd = 'mount --bind /proc %s' % tproc
+        runvalue = runlog(cmd)
+        if runvalue:
+            raise InstallError, 'problem mounting target /proc at %s' % tproc
+        else:
+            self._proc_mounted = True
+
+    def _umount_target_proc(self):
+        self._check_target_proc()
+        tproc = join(self.target, 'proc')
+        cmd = 'umount %s' % tproc
+        runvalue = runlog(cmd)
+        if runvalue:
+            raise InstallError, 'problem unmounting target /proc at %s' % tproc
+        else:
+            self._proc_mounted = False
+            
+    def _run_bootstrap(self, mirror, suite):
+        self._check_target_exists()
+        runvalue = runlog(debootstrap(suite, self.target, mirror))
+        if runvalue:
+            raise InstallError, 'bootstrapping %s on %s failed.' % (suite, self.target)
+        else:
+            self._bootstrapped = True
+    
 if __name__ == '__main__':
     from useless.db.midlevel import StatementCursor
     from useless.db.midlevel import Environment, TableDict

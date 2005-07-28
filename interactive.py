@@ -8,6 +8,8 @@ from paella.db.machine import MachineHandler
 
 from paella.db import DefaultEnvironment
 
+from paella.installer.toolkit import InstallerTools
+
 if __name__ == '__main__':
     cfg = PaellaConfig()
     conn = PaellaConnection()

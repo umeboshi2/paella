@@ -173,13 +173,15 @@ It is pretty dumb as it doesn't check to see if a parent has been installed or n
 This class should only be instantiated as a member of the profile installer class,
 or a similiar class because the profiledata and familydata members start out empty.
 
-- trait install process
+- default trait install process
 
   + pre script
 
   + remove packages
 
   + install packages
+
+  + install templates
 
   + configure packages
 

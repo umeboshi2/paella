@@ -24,15 +24,15 @@ from trait import TraitInstaller
         
 
 class ProfileInstaller(Installer):
-    def __init__(self, conn, cfg):
+    def __init__(self, conn):
         os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-        Installer.__init__(self, conn, cfg)
+        Installer.__init__(self, conn)
         self.profiletrait = ProfileTrait(self.conn)
         self.profile = None
         self.installer = None
-        self.cfg = cfg
         self._profile = Profile(self.conn)
-        self.log.info('profile installer initialized')
+        if hasattr(self, 'log'):
+            self.log.info('profile installer initialized')
         
     def set_profile(self, profile):
         self.profile = profile
@@ -44,7 +44,7 @@ class ProfileInstaller(Installer):
         self.familydata = self._profile.get_family_data()
         self.profiledata = self._profile.get_profile_data()
         self.suite = get_suite(self.conn, profile)
-        self.installer = TraitInstaller(self.conn, self.suite, self.cfg)
+        self.installer = TraitInstaller(self.conn, self.suite)
         self.installer.log = self.log
         self.installer.familydata = self.familydata
         self.installer.profiledata = self.profiledata
@@ -77,10 +77,19 @@ class ProfileInstaller(Installer):
         itraits = file(join(self.paelladir, 'installed_traits'), 'w')
         itraits.write('Installed Traits:\n')
         itraits.close()
-        
+
+    def setup_initial_paellainfo_env(self, traits):
+        if os.environ.has_key('PAELLA_MACHINE'):
+            machine = os.environ['PAELLA_MACHINE']
+            curenv = CurrentEnvironment(self.conn, machine)
+            curenv['current_profile'] = self.profile
+            curenv['traitlist'] = ', '.join(traits)
+            curenv['installed_traits'] = ''
+            
     def process(self):
         traits = self.make_traitlist()
         self.setup_initial_paellainfo_files(traits)
+        self.setup_initial_paellainfo_env(traits)
         self.processed = []
         for trait in traits:
             self.process_trait(trait)
@@ -92,6 +101,17 @@ class ProfileInstaller(Installer):
         itraits = file(join(self.paelladir, 'installed_traits'), 'a')
         itraits.write(trait + '\n')
         itraits.close()
+
+    def _append_installed_traits_db(self, trait):
+        if os.environ.has_key('PAELLA_MACHINE'):
+            machine = os.environ['PAELLA_MACHINE']
+            curenv = CurrentEnvironment(self.conn, machine)
+            line = curenv['installed_traits']
+            traits = [t.strip() for t in line.split(',')]
+            traits.append(trait)
+            curenv['installed_traits'] = ', '.join(traits)
+            
+            
         
     def process_trait(self, trait):
         self.traitparent.set_trait(trait)
@@ -104,8 +124,8 @@ class ProfileInstaller(Installer):
         self.installer.process()
         self.processed.append(trait)
         self.log.info('processed:  %s' % ', '.join(self.processed))
-        self._append_installed_traits_file(trait)
-        
+        self.append_installed_traits(trait)
+
     def set_template_path(self, path):
         self.installer.set_template_path(path)
 
@@ -121,6 +141,10 @@ class ProfileInstaller(Installer):
         os.system(self.command('apt-get -y install %s' % package))
         print 'kernel %s installed' % package
 
+    def append_installed_traits(self, trait):
+        self._append_installed_traits_file(trait)
+        self._append_installed_traits_db(trait)
+        
 def get_profile_packages(conn, suite, profile):
     traits = get_traits(conn, profile)
     tp = TraitParent(conn, suite)

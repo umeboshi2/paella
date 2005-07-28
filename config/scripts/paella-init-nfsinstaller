@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join, dirname
+from optparse import OptionParser
+
+from useless.base import Error
+from useless.base.util import makepaths
+
+from paella.base import PaellaConfig
+from paella.db import DefaultEnvironment
+from paella.db.machine import MachineHandler
+from paella.installer.base import InstallerConnection
+from paella.installer.util import get_mac_addresses
+
+parser = OptionParser()
+parser.add_option('--mirror', action='store', type='string', dest='remote',
+                  default='http://paella/debian')
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+config = PaellaConfig()
+conn = InstallerConnection(config)
+env = DefaultEnvironment(conn)
+if env.has_option('installer', 'default_target'):
+    target = env.get('installer', 'default_target')
+else:
+    target = '/tmp/target'
+    
+# identify the machine
+macs = get_mac_addresses()
+machine = None
+for mac in macs:
+    if machine is None:
+        if env.has_option('machines', mac):
+            machine = env.get('machines', mac)
+
+if machine is not None:
+    section = 'autoinstall'
+    has_it =  env.has_section(section) and env.has_option(section, machine)
+    if has_it:
+        auto = env.is_it_true('autoinstall', machine)
+        if auto:
+            print 'auto installing machine %s' % machine
+            os.system('paella-nfsinstaller install %s %s' % (machine, target))
+    print 'skipping installation of machine %s' % machine
+else:
+    print 'This is an unknown machine'
+    
+        
+if __name__ == '__main__':
+    print 'going to run the installer, ha ha ha'
+    

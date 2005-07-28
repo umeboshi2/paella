@@ -11,7 +11,7 @@ from useless.sqlgen.statement import Statement
 PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
 SUITES = ['sid', 'woody'] 
 #SCRIPTS = ['chroot', 'pre', 'post', 'config']
-SCRIPTS = ['pre', 'remove', 'install', 'config', 'chroot', 'reconfig', 'post']
+SCRIPTS = ['pre', 'remove', 'install', 'templates', 'config', 'chroot', 'reconfig', 'post']
 def getcolumn(name, columns):
     ncols = [column for column in columns if column.name == name]
     if len(ncols) == 1:
@@ -139,7 +139,7 @@ class TraitPackage(_TraitRelation):
     def __init__(self, suite, traits_table, packages_table):
         packs_column = PkBigname('package')
         packs_column.set_fk(packages_table)
-        action_column = Name('action')
+        action_column = PkName('action')
         action_column.constraint.default = 'install'
         columns = [packs_column, action_column]
         tablename = ujoin(suite, 'trait', 'package')
@@ -354,8 +354,8 @@ def suite_tables(suite):
 
 def currentenv_columns():
     return [
-        Name('hostname'),
-        Bigname('name'),
+        PkName('hostname'),
+        PkBigname('name'),
         Text('value')]
 
 def defaultenv_columns():
@@ -453,7 +453,7 @@ if __name__ == '__main__':
     from useless.db.midlevel import StatementCursor
     from useless.sqlgen.statement import Statement
     from paella.debian.base import parse_packages, full_parse
-    from paella.profile.base import PaellaConnection
+    from paella.db import PaellaConnection
     def dtable():
         cmd.execute('drop table ptable')
 
@@ -462,16 +462,3 @@ if __name__ == '__main__':
             if t != 'footable':
                 cmd.execute('drop table %s' %t)
 
-
-    #start_schema(cmd, traits)
-    #rp = Repos('/mirrors/debian')
-    #ps = rp.parse('contrib')
-    #prows = [package_to_row(p) for p in ps.values()]
-    conn = PaellaConnection()
-    cursor = StatementCursor(conn)
-    from paella.sqlgen.defaults import LogTable, ActionIdentifier
-    ai = ActionIdentifier()
-    if ai.name not in cursor.sequences():
-        cursor.create_sequence(ai)
-    m = MachinesTable('mumu', 'fifi', 'jojo', 'yoyo')
-    ml = LogTable(m)

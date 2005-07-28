@@ -25,7 +25,7 @@ profile = sys.argv[1]
 target = sys.argv[2]
 
 print "installing %s to %s" % (profile, target)
-i = ChrootInstaller(conn, cfg)
+i = ChrootInstaller(conn)
 i.install(profile, target)
 
 

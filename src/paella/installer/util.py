@@ -28,7 +28,7 @@ def remove_debs(target):
     archives = 'var/cache/apt/archives'
     debs = os.path.join(target, archives, '*.deb')
     pdebs = os.path.join(target, archives, 'partial', '*.deb')
-    runlog('rm %s %s -f' % (debs, pdebs))
+    return runlog('rm %s %s -f' % (debs, pdebs))
     
 def extract_tarball(target, tarball):
     here = os.getcwd()
@@ -52,7 +52,7 @@ def make_sources_list(cfg, target, suite):
     makepaths(aptdir)
     sources_list = file(os.path.join(aptdir, 'sources.list'), 'w')
     source = RepositorySource()
-    source.uri = cfg.get(section, 'http_mirror')
+    source.uri = cfg.get('installer', 'http_mirror')
     source.suite = suite
     source.set_path()
     sources_list.write(str(source) +'\n')
@@ -123,7 +123,6 @@ def make_filesystem(device, fstype):
         raise Error,  'unhandled fstype %s '  % fstype
     echo(cmd)
     runlog(cmd, keeprunning=True)
-
 
 
 #this is done after bootstrap or
@@ -219,4 +218,15 @@ def install_iso_contents(iso, install_path, removeiso=True,
     if removeiso:
         os.remove(iso)
         
-    
+def get_mac_addresses():
+    if os.getuid():
+        raise Error, 'must be root to use get_mac_addresses'
+    i, o = os.popen2('ifconfig')
+    macs = []
+    for line in o:
+        if line.startswith('eth'):
+            columns = [c.strip() for c in line.split()]
+            mac = 'hwaddr_%s' % columns[4].replace(':', '_')
+            macs.append(mac)
+    return macs
+

@@ -3,7 +3,7 @@ import os
 from useless.base.util import RefDict, str2list
 
 from paella.base import PaellaConfig
-from paella.db import PaellaConnection, DefaultEnvironment
+from paella.db import DefaultEnvironment
 from paella.db.base import get_suite
 from paella.db.trait import Trait
 from paella.db.trait.relations import TraitParent
@@ -11,15 +11,16 @@ from paella.db.family import Family
 from paella.db.profile import Profile
 from paella.db.profile.main import ProfileEnvironment
 
-from base import Modules
+from base import InstallError, InstallerConnection, Modules
 from util import setup_modules
-from trait import TraitInstaller
+#from trait import TraitInstaller
+from profile import ProfileInstaller
 
 class InstallerTools(object):
     def __init__(self):
         object.__init__(self)
         self.cfg = PaellaConfig()
-        self.conn = PaellaConnection()
+        self.conn = InstallerConnection()
         self.profile = os.environ['PAELLA_PROFILE']
         self.target = os.environ['PAELLA_TARGET']
         self.machine = None
@@ -35,12 +36,16 @@ class InstallerTools(object):
         self.families = list(self.fm.get_related_families(self.pr.get_families()))
         self._envv = None
         self.default = DefaultEnvironment(self.conn)
-        self.installer = TraitInstaller(self.conn, self.suite, self.cfg)
+        #self.installer = TraitInstaller(self.conn, self.suite)
+        self.installer = ProfileInstaller(self.conn)
+        self.installer.set_logfile()
+        self.installer.set_profile(self.profile)
+        self.installer.set_target(self.target)
         if os.environ.has_key('PAELLA_MACHINE'):
             self.machine = os.environ['PAELLA_MACHINE']
         if os.environ.has_key('PAELLA_TRAIT'):
             self.set_trait(os.environ['PAELLA_TRAIT'])
-            
+             
         
     def env(self):
         env = RefDict(self.tp.Environment())
@@ -54,9 +59,10 @@ class InstallerTools(object):
         self.tr.set_trait(trait)
         self.parents = self.tr.parents()
         self._envv = self.env()
-        self.installer.set_trait(trait)
-        self.packages = self.installer.traitpackage.packages()
-        self.templates = self.installer.traittemplate.templates()
+        tinstaller = self.installer.installer
+        tinstaller.set_trait(trait)
+        self.packages = tinstaller.traitpackage.packages()
+        self.templates = tinstaller.traittemplate.templates()
         
     def get(self, key):
         if self._envv is None:
