@@ -1,7 +1,8 @@
+config/scripts/paella-nfsinstaller usr/sbin
+config/scripts/paella-init-nfsinstaller usr/sbin
+config/scripts/paella-setup-nfsinstaller usr/sbin
 config/scripts/paella-submit-diskconfig usr/bin
 config/scripts/paella-submit-machine usr/bin
-config/scripts/paella-nfsinstaller usr/sbin
-config/scripts/paella-setup-nfsinstaller usr/sbin
 config/scripts/setup_harddisks usr/lib/paella/scripts
 
 

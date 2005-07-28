@@ -4,7 +4,7 @@ from time import sleep
 import commands
 import tempfile
 
-from useless.base import Error
+from useless.base import Error, Log
 from useless.base.util import makepaths, runlog
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, Gt, Neq
@@ -121,7 +121,7 @@ class MachineInstallHelper(BaseChrootInstaller):
         
     def setup_installer(self):
         profile = self.machine.current.profile
-        self.installer = ProfileInstaller(self.conn, self.cfg)
+        self.installer = ProfileInstaller(self.conn)
         self.installer.log = self.log
         self.installer.set_profile(profile)
         self.suite = self.installer.suite
@@ -378,6 +378,25 @@ class NewInstaller(object):
         if self.cfg.is_it_true('installer', 'enable_bad_hacks'):
             self._enable_bad_hacks = True
         
+    def set_logfile(self, logfile):
+        env = os.environ
+        if logfile is None:
+            if env.has_key('PAELLA_LOGFILE'):
+                self.logfile = env['PAELLA_LOGFILE']
+            elif env.has_key('LOGFILE'):
+                self.logfile = env['LOGFILE']
+            elif self.defenv.has_option('installer', 'default_logfile'):
+                self.logfile = self.defenv.get('installer', 'default_logfile')
+            else:
+                raise InstallSetupError, 'There is no log file defined, giving up.'
+        else:
+            self.logfile = logfile
+        logdir = os.path.dirname(self.logfile)
+        if logdir:
+            makepaths(os.path.dirname(self.logfile))
+        format = '%(name)s - %(asctime)s - %(levelname)s: %(message)s'
+        self.log = Log('paella-installer', self.logfile, format)
+        
     def _check_target(self):
         if not self.target:
             raise Error, 'no target specified'
@@ -409,6 +428,7 @@ class NewInstaller(object):
             makepaths(disklogpath)
         self.disklogpath = disklogpath
         self.curenv = CurrentEnvironment(self.conn, self.machine.current.machine)
+        self.set_logfile(logfile)
         
     def check_if_mounted(self, device):
         mounts = file('/proc/mounts')
@@ -449,6 +469,25 @@ class NewInstaller(object):
     def _pdev(self, device, partition):
         return device + str(partition)
 
+    def _mount_target_proc(self):
+        self._check_bootstrap()
+        tproc = join(self.target, 'proc')
+        cmd = 'mount --bind /proc %s' % tproc
+        runvalue = runlog(cmd)
+        if runvalue:
+            raise InstallError, 'problem mounting target /proc at %s' % tproc
+        else:
+            self._proc_mounted = True
+
+    def _umount_target_proc(self):
+        tproc = join(self.target, 'proc')
+        cmd = 'umount %s' % tproc
+        runvalue = runlog(cmd)
+        if runvalue:
+            raise InstallError, 'problem unmounting target /proc at %s' % tproc
+        else:
+            self._proc_mounted = False
+            
     def ready_target(self):
         self._check_target()
         makepaths(self.target)
@@ -485,7 +524,8 @@ class NewInstaller(object):
         
     def setup_installer(self):
         profile = self.machine.current.profile
-        self.installer = ProfileInstaller(self.conn, self.cfg)
+        self.installer = ProfileInstaller(self.conn)
+        self.installer.log = self.log
         self.installer.set_profile(profile)
         self.suite = self.installer.suite
 
@@ -670,7 +710,8 @@ class NewInstaller(object):
             mdconf.write(arrdata + '\n')
             mdconf.write('\n')
             mdconf.close()
-            
+        self._mount_target_proc()
+        
     def install_to_target(self):
         os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
         self._check_target()

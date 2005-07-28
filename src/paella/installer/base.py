@@ -50,7 +50,7 @@ class Installer(object):
         if not len(rows):
             raise InstallSetupError, 'There is no data in the default_environment table'
         
-    def set_logfile(self, logfile):
+    def set_logfile(self, logfile=None):
         env = os.environ
         if logfile is None:
             if env.has_key('PAELLA_LOGFILE'):

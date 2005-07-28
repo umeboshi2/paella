@@ -37,7 +37,7 @@ test -x $DAEMON || exit 0
 case "$1" in
   start)
 	echo "Starting $DESC: $NAME"
-	start-stop-daemon --start  --pidfile $PIDFILE --exec $DAEMON 
+	start-stop-daemon --start  --pidfile $PIDFILE --exec $DAEMON &
 	echo "."
 	;;
   stop)

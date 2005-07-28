@@ -1,3 +1,58 @@
+paella (0.6.32) common; urgency=low
+
+  * a little more bugfixing
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 15:15:19 -0500
+
+paella (0.6.31) common; urgency=low
+
+  * another bugfix
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 12:57:36 -0500
+
+paella (0.6.30) common; urgency=low
+
+  * quick hack to make sure proc is mounted in target
+    before we rewrite the whole nfs-installer
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 12:44:43 -0500
+
+paella (0.6.29) common; urgency=low
+
+  * even more logfile fixes
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 12:34:58 -0500
+
+paella (0.6.28) common; urgency=low
+
+  * more logfile fixes
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 12:19:00 -0500
+
+paella (0.6.27) common; urgency=low
+
+  * quick bugfix hack in nfsinstaller
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 12:12:57 -0500
+
+paella (0.6.26) common; urgency=low
+
+  * bugfix in paella.installer.nfsinstaller module
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 11:50:29 -0500
+
+paella (0.6.25) common; urgency=low
+
+  * adding the paella-init-nfsinstaller script to the nfs-installer
+    package
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 28 Jul 2005 11:25:45 -0500
+
 paella (0.6.24) common; urgency=low
 
   * many updates to installer
