@@ -1,0 +1,54 @@
+#!/usr/bin/python
+import os
+from useless.base import Error
+from useless.base.util import makepaths, str2list
+from paella.installer.toolkit import InstallerTools
+
+def reverse_ip(ip):
+    octets = ip.split('.')
+    octets.reverse()
+    return '.'.join(octets)
+
+it = InstallerTools()
+it.set_trait('nameserver')
+
+hosts = str2list(it.get('localnet_static_hosts'))
+ips = str2list(it.get('localnet_static_ips'))
+if len(hosts) != len(ips):
+    raise Error, 'hosts != ips'
+
+ldhosts = file(os.path.join(it.target, 'var/cache/bind/localdomain.hosts'), 'a+')
+ldrev = file(os.path.join(it.target, 'var/cache/bind/localdomain.rev'), 'a+')
+domain = it.get('global_domain')
+for i in range(len(hosts)):
+    ip, hostname = ips[i], hosts[i]
+    hline = '%s.%s.\tIN\tA\t%s\n' % (hostname, domain, ip)
+    print hline
+    ldhosts.write(hline)
+    rev = reverse_ip(ip)
+    rline = '%s.in-addr.arpa.\tIN\tPTR %s.%s.\n' % (rev, hostname, domain)
+    print rline
+    ldrev.write(rline)
+ldhosts.write('\n')
+ldrev.write('\n')
+ldhosts.close()
+ldrev.close()
+
+# read /etc/dhclient.conf and check to see if line
+# is commented out, if so, uncomment and supersede
+# domain
+dhclient_path = os.path.join(it.target, 'etc/dhclient.conf')
+dhclient_data = file(dhclient_path).read()
+line = 'prepend domain-name-servers 127.0.0.1;'
+parts = dhclient_data.split('#' + line)
+newdata = None
+if len(parts) == 2:
+    nline = line + '\nsupersede domain-name "%s";' % domain
+    newdata =nline.join(parts)
+if newdata is not None:
+    f = file(dhclient_path, 'w')
+    f.write(newdata)
+    f.close()
+else:
+    print 'NAMESERVER -- dhclient.conf UNCHANGED'
+    

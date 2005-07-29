@@ -1,0 +1,27 @@
+<trait name="wine" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			desktop
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			wine
+		</package>
+		<package action="install">
+			wine-doc
+		</package>
+		<package action="install">
+			wine-utils
+		</package>
+		<package action="install">
+			winesetuptk
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

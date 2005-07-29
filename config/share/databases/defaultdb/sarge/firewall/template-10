@@ -1,0 +1,38 @@
+##############################################################################
+#
+# Shorewall 1.4  -- Network Address Translation Table
+#
+# /etc/shorewall/nat
+#
+#	This file is used to define one-to-one Network Address Translation
+#	(NAT).
+#
+# WARNING: If all you want to do is simple port forwarding, do NOT use this
+#          file. See http://www.shorewall.net/FAQ.htm#faq1. Also, in most
+#	   cases, Proxy ARP is a better solution that one-to-one NAT.
+#
+# Columns must be separated by white space and are:
+#
+#	EXTERNAL	External IP Address - this should NOT be the primary
+#			IP address of the interface named in the next
+#			column and must not be a DNS Name.
+#	INTERFACE	Interface that we want to EXTERNAL address to appear
+#                       on. If ADD_IP_ALIASES=Yes in shorewall.conf, you may
+#			follow the interface name with ":" and a digit to
+#			indicate that you want Shorewall to add the alias
+#			with this name (e.g., "eth0:0"). That allows you to
+#			see the alias with ifconfig. THAT IS THE ONLY THING
+#			THAT THIS NAME IS GOOD FOR -- YOU CANNOT USE IT
+#			ANYWHERE ELSE IN YOUR SHORWALL CONFIGURATION.
+#	INTERNAL	Internal Address (must not be a DNS Name).
+#       ALL INTERFACES  If Yes or yes (or left empty), NAT will be effective
+#                       from all hosts. If No or no then NAT will be effective
+#                       only through the interface named in the INTERFACE
+#                       column
+#       LOCAL           If Yes or yes and the ALL INTERFACES column contains
+#                       Yes or yes, NAT will be effective from the firewall
+#                       system
+##############################################################################
+#EXTERNAL	INTERFACE	INTERNAL	ALL	 		LOCAL
+#						INTERFACES
+#LAST LINE -- ADD YOUR ENTRIES ABOVE THIS LINE -- DO NOT REMOVE

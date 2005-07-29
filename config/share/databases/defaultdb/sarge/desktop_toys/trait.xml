@@ -1,0 +1,66 @@
+<trait name="desktop_toys" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			desktop
+		</parent>
+		<parent>
+			xmms
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			amor
+		</package>
+		<package action="install">
+			gdancer
+		</package>
+		<package action="install">
+			gdesklets
+		</package>
+		<package action="install">
+			junior-toys
+		</package>
+		<package action="install">
+			kodo
+		</package>
+		<package action="install">
+			oneko
+		</package>
+		<package action="install">
+			robotfindskitten
+		</package>
+		<package action="install">
+			tdfsb
+		</package>
+		<package action="install">
+			xaos
+		</package>
+		<package action="install">
+			xblast
+		</package>
+		<package action="install">
+			xblast-sound
+		</package>
+		<package action="install">
+			xcruise
+		</package>
+		<package action="install">
+			xfireworks
+		</package>
+		<package action="install">
+			xfishtank
+		</package>
+		<package action="install">
+			xflip
+		</package>
+		<package action="install">
+			xpenguins
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

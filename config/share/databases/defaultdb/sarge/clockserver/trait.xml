@@ -1,0 +1,35 @@
+<trait name="clockserver" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="reconfig">
+			ntp
+		</package>
+		<package action="reconfig">
+			ntp-refclock
+		</package>
+	</packages>
+	<environ>
+		<server>
+			pool.ntp.org
+		</server>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="ntp">
+			etc/default/ntp-servers
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="ntp">
+			etc/ntp.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="ntp">
+			var/cache/debconf/config.dat
+		</template>
+	</templates>
+	<scripts/>
+</trait>

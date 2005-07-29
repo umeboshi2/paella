@@ -1,0 +1,5 @@
+# /etc/exports: the access control list for filesystems which may be exported
+#		to NFS clients.  See exports(5).
+/freespace/bkups		10.0.1.*(rw,no_root_squash,async)
+/freespace/nfsroot		*(rw,no_root_squash,async)
+

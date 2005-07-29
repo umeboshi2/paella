@@ -1,0 +1,56 @@
+<trait name="simple_nfsroot" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			devfsd
+		</package>
+		<package action="install">
+			initscripts
+		</package>
+		<package action="install">
+			nfs-common
+		</package>
+		<package action="install">
+			portmap
+		</package>
+	</packages>
+	<environ>
+		<kernel>
+			kernel-image-2.6.8diskless
+		</kernel>
+		<nfsroot_server>
+			192.168.0.2
+		</nfsroot_server>
+		<paellalog_export>
+			/freespace/shared/bkups/paellalog
+		</paellalog_export>
+		<root_export>
+			/freespace/nfsroot
+		</root_export>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="devfsd">
+			etc/default/devfsd
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="initscripts">
+			etc/fstab
+		</template>
+		<template grp_owner="root" mode="0755" owner="root" package="initscripts">
+			etc/init.d/mountall.sh
+		</template>
+		<template grp_owner="root" mode="0100755" owner="root" package="initscripts">
+			etc/init.d/remount_rootnfs.sh
+		</template>
+	</templates>
+	<scripts>
+		<script name="chroot"/>
+		<script name="post"/>
+	</scripts>
+</trait>

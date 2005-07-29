@@ -1,0 +1,129 @@
+<trait name="averatec" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			paella_laptop
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			fxload
+		</package>
+		<package action="install">
+			kdm
+		</package>
+		<package action="install">
+			powernowd
+		</package>
+		<package action="install">
+			sg3-utils
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/X11/XF86Config-4
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/X11/XF86Config-4.orig
+		</template>
+		<template grp_owner="root" mode="0100740" owner="root" package="kdm">
+			etc/acpi/default.sh
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/acpi/events/powerbtn
+		</template>
+		<template grp_owner="root" mode="0100740" owner="root" package="kdm">
+			etc/acpi/lid.sh
+		</template>
+		<template grp_owner="root" mode="0100755" owner="root" package="kdm">
+			etc/acpi/powerbtn.sh
+		</template>
+		<template grp_owner="root" mode="0100755" owner="root" package="kdm">
+			etc/acpi/powerbtn.sh.orig
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/bootcd/bootcdwrite.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/acpid
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/cdrecord
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/dhcp3-server
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/nfs-common
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/nfs-kernel-server
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/default/sleepd
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/dhclient.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/dhcp3/dhcpd.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/dput.cf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/exports
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/gkrellmd.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/hostname
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/ldap/ldap.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/lilo.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/modules
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/network/interfaces
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			etc/syslog.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="kdm">
+			root/paella/other_templates/etc/paellarc
+		</template>
+		<template grp_owner="root" mode="0100754" owner="root" package="kdm">
+			usr/sbin/sleep_shutdown.sh
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/burlywood4/gtk-2.0/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/burlywood4/gtk/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/cornsilk/gtk-2.0/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/cornsilk/gtk/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/indianred3/gtk-2.0/gtkrc
+		</template>
+		<template grp_owner="umeboshi" mode="0100644" owner="umeboshi" package="kdm">
+			usr/share/themes/indianred3/gtk/gtkrc
+		</template>
+	</templates>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

@@ -1,0 +1,23 @@
+#!/usr/bin/python
+import os
+from useless.base.util import makepaths, str2list
+from paella.installer.util import setup_modules
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+it.set_trait('paella_nfsroot')
+modules = str2list(it.get('paella_nfsroot_kmods'))
+print modules
+setup_modules(it.target, modules)
+
+host = it.get('paella_common_log_host')
+export = it.get('paella_common_log_export')
+mntpt = it.get('paella_common_log_mntpt')
+
+fstab = file(os.path.join(it.target, 'etc/fstab'), 'a+')
+fsline = '%s:%s\t%s\tnfs\tdefaults,nolock\t0\t0' % (host, export, mntpt)
+fstab.write(fsline)
+fstab.close()
+while mntpt[0] == '/':
+    mntpt = mntpt[1:]
+makepaths(os.path.join(it.target, mntpt))

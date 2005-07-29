@@ -1,0 +1,53 @@
+<trait name="dialup" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ppp
+		</package>
+		<package action="install">
+			pppconfig
+		</package>
+	</packages>
+	<environ>
+		<demand>
+			demand
+		</demand>
+		<isp_number>
+			1234567
+		</isp_number>
+		<password>
+			password
+		</password>
+		<persist>
+			#persist
+		</persist>
+		<serial_device>
+			/dev/ttyS0
+		</serial_device>
+		<user>
+			pppuser
+		</user>
+	</environ>
+	<templates>
+		<template grp_owner="dip" mode="0640" owner="root" package="ppp">
+			etc/chatscripts/provider
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="ppp">
+			etc/ppp/options
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="ppp">
+			etc/ppp/pap-secrets
+		</template>
+		<template grp_owner="dip" mode="0640" owner="root" package="ppp">
+			etc/ppp/peers/provider
+		</template>
+	</templates>
+	<scripts/>
+</trait>

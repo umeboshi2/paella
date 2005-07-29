@@ -1,0 +1,28 @@
+<trait name="nfs_server" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			fileserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			nfs-common
+		</package>
+		<package action="install">
+			nfs-kernel-server
+		</package>
+		<package action="install">
+			portmap
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="nfs-common">
+			etc/exports
+		</template>
+	</templates>
+	<scripts/>
+</trait>

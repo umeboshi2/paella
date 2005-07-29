@@ -1,0 +1,11 @@
+#!/bin/sh
+# /etc/acpi/poweroff.sh
+# Initiates a shutdown when the power putton has been
+# pressed.
+
+if ps -Af | grep -q '[k]desktop' && test -f /usr/bin/dcop
+then
+    dcop --all-users ksmserver ksmserver logout 0 2 0 && exit 0
+fi
+
+/sbin/init 0

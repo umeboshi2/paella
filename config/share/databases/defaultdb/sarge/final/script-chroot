@@ -1,0 +1,8 @@
+#!/bin/bash
+# /root/paella/real_templates is where the templates are stored
+# that could possibly damage, or stall the installation process
+# if installed at the time the trait was processed.  Files that would
+# do this can be placed here and installed with final.
+if [ -d /root/paella/real_templates ]; then
+    rsync -av /root/paella/real_templates/ /
+fi

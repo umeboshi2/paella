@@ -1,0 +1,10 @@
+# Specify modules to load on acpid's startup
+# MODULES may be uncommented to load "none", contain the string "all"
+# to load all acpi related modules or simply a space seperated list
+# of modules to be probed.
+#MODULES="ospm_ac_adapter ospm_button"
+#MODULES="all"
+
+# Specify options for acpid startup, Debian default is to enable the
+# use of sockets at a non-default position
+OPTIONS="-s /var/run/.acpid.socket"

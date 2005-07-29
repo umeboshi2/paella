@@ -1,0 +1,5 @@
+/dev/root	/	nfs	ro,nolock	0	0
+proc	/proc	proc	defaults	0	0
+/dev/mem        /tmp    tmpfs   defaults        0       0
+<--|simple_nfsroot_nfsroot_server|-->:<--|simple_nfsroot_root_export|-->/var/lib/dpkg	/var/lib/dpkg	nfs	defaults,nolock	0	0
+<--|simple_nfsroot_nfsroot_server|-->:<--|simple_nfsroot_paellalog_export|-->	/paellalog		nfs	defaults,nolock	0	0

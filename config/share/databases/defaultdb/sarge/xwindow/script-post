@@ -1,0 +1,33 @@
+#!/usr/bin/python
+import os
+
+from useless.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+
+it.set_trait('xwindow')
+env = it.env()
+
+nfshost = it.default.get('installer', 'nfs_common_host')
+export = it.default.get('installer', 'nfs_common_export')
+_msttfpath = it.default.get('installer', 'common_msttfpath')
+mtpt = '/tmp/common'
+localcopy = 'root/paella/msttfonts'
+target = os.path.join(it.target, localcopy)
+msttfpath = os.path.join(mtpt, _msttfpath)
+print target, msttfpath, export, nfshost
+map(makepaths, [mtpt, target])
+os.system('mount -o nolock %s:%s %s' % (nfshost, export, mtpt))
+print mtpt, 'mounted'
+print file('/proc/mounts').read()
+os.system('cp -v %s/* %s' % (msttfpath, target))
+os.system('umount %s' % mtpt)
+print 'unmounted', mtpt
+print file('/proc/mounts').read()
+os.system('ls -l %s' % target)
+os.system('chroot %s update-ms-fonts-paella -s/%s /%s' % (it.target, localcopy, localcopy))
+os.system('chroot %s apt-get -y install msttcorefonts' % it.target)
+print 'msttcorefonts installed'
+os.system('rm %s/usr/sbin/update-ms-fonts-paella' % it.target)
+print 'update-ms-fonts-paella removed'

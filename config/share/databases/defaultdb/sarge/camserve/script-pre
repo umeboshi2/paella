@@ -1,0 +1,8 @@
+#!/usr/bin/python
+import os
+from paella.installer.toolkit import InstallerTools
+
+noisy_packages = ['libapache-mod-auth-pgsql', 'php4-pgsql', 'advancedpetcare']
+it = InstallerTools()
+command = "yes 'n' | apt-get -y install %s" % ' '.join(noisy_packages)
+os.system('chroot %s bash -c "%s"' % (it.target, command))

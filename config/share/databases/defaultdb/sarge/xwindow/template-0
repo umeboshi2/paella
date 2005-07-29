@@ -1,0 +1,220 @@
+#!/bin/sh
+# Download and install the Microsoft Core Fonts for the Web
+#
+# (C) 2000,2001 Eric Sharkey.
+# You may freely distribute this file under the terms of the GNU General
+# Public License, version 2 or later.
+
+#abort if anything goes wrong
+set -e
+
+if [ `id -u` != 0 ] ; then
+  echo "update-ms-fonts can only be run as root."
+  exit -1
+fi
+
+for x in $* ; do
+  if [ `echo $x | awk '{print substr($1,1,1)}'` = '-' ] ; then
+    case `echo $x | awk '{print substr($1,2,1)}'` in
+      q) QUIET_MODE=1;;
+      c) CHECK_ONLY=1;;
+      s) SAVEDIR=`expr $x : "-s\(.*$\)"` || true;;
+    esac
+  else
+    LOCALCOPY=$x
+  fi
+done
+
+if [ `echo $LOCALCOPY | tr [:upper:] [:lower:] `x = "nonex" ] ; then
+  exit 0
+fi
+
+EXITCODE=0
+
+# Base URL for Microsoft fonts
+##URLROOT="http://unc.dl.sourceforge.net/sourceforge/corefonts/"
+
+URLROOTS="http://belnet.dl.sourceforge.net/sourceforge/corefonts/
+         http://easynews.dl.sourceforge.net/sourceforge/corefonts/
+         http://twtelecom.dl.sourceforge.net/sourceforge/corefonts/
+         http://aleron.dl.sourceforge.net/sourceforge/corefonts/
+         http://cesnet.dl.sourceforge.net/sourceforge/corefonts/
+         http://switch.dl.sourceforge.net/sourceforge/corefonts/"
+
+if [ -z "$QUIET_MODE" ] ; then
+echo "
+These fonts were provided by Microsoft \"in the interest of cross-
+platform compatibility\".  This is no longer the case, but
+they are still available from third parties.
+
+You are free to download these fonts and use them for your own use,
+but you may not redistribute them in modified form, including
+changes to the file name or packaging format.
+"
+fi
+
+SCRATCHDIR=/tmp/msttcorefonts
+
+if [ "$SCRATCHDIR" = "$LOCALCOPY" ] ; then
+  SCRATCHDIR=/tmp/msttcorefonts-scratch
+fi
+
+mkdir -p -m 0755 $SCRATCHDIR
+if [ -O $SCRATCHDIR ] ; then
+  if [ `ls -ld $SCRATCHDIR | awk '{print substr($1,6,1) substr($1,9,1)}'` != '--' ] ; then
+    echo "
+update-ms-fonts: Error: $SCRATCHDIR must have mode 755 permissions.
+
+The directory $SCRATCHDIR is writable by non-root users.  Using this
+directory would be a security risk.  Please remove this directory.
+" 1>&2
+    exit -3;
+  fi
+else
+  echo "
+update-ms-fonts: Error: $SCRATCHDIR is not owned by root.
+
+The directory $SCRATCHDIR exists but is not owned by root with group
+root.  Using this directory would be a security risk.  Please remove it.
+" 1>&2
+  exit -2;
+fi
+cd $SCRATCHDIR
+
+cat <<EOF > msfonts.info
+663974c9fe3ba55b228724fd4d4e445f  Andale_Mono.ttf                 andale32.exe andalemo.ttf
+3e7043e8125f1c8998347310f2c315bc  Arial_Black.ttf                 arialb32.exe ariblk.ttf
+f11c0317db527bdd80fa0afa04703441  Arial.ttf                       arial32.exe  arial.ttf
+34cd8fd9e4fae9f075d4c9a2c971d065  Arial_Bold.ttf                  arial32.exe  arialbd.ttf
+a2b3bcdb39097b6aed17a766652b92b2  Arial_Bold_Italic.ttf           arial32.exe  arialbi.ttf
+25633f73d92a0646e733e50cf2cc3b07  Arial_Italic.ttf                arial32.exe  ariali.ttf
+a50f9c96a76356e3d01013e0b042989f  Comic_Sans_MS.ttf               comic32.exe  comic.ttf
+81d64ec3675c4adc14e9ad2c5c8103a7  Comic_Sans_MS_Bold.ttf          comic32.exe  comicbd.ttf
+20f23317e90516cbb7d38bd53b3d1c5b  Courier_New.ttf                 courie32.exe cour.ttf
+7d94f95bf383769b51379d095139f2d7  Courier_New_Bold.ttf            courie32.exe courbd.ttf
+167e27add66e9e8eb0d28a1235dd3bda  Courier_New_Italic.ttf          courie32.exe couri.ttf
+da414c01f951b020bb09a4165d3fb5fa  Courier_New_Bold_Italic.ttf     courie32.exe courbi.ttf
+f4b306eed95aa7d274840533be635532  Georgia.ttf                     georgi32.exe georgia.ttf
+c61b355a5811e56ed3d7cea5d67c900e  Georgia_Bold.ttf                georgi32.exe georgiab.ttf
+1e4e5d1975bdf4a5c648afbf8872fa13  Georgia_Italic.ttf              georgi32.exe georgiai.ttf
+e5d52bbfff45e1044381bacb7fc8e300  Georgia_Bold_Italic.ttf         georgi32.exe georgiaz.ttf
+8fc622c3a2e2d992ec059cca61e3dfc0  Impact.ttf                      impact32.exe impact.ttf
+4f97f4d6ba74767259ccfb242ce0e3f7  Times_New_Roman.ttf             times32.exe  times.ttf
+ed6e29caf3843142d739232aa8642158  Times_New_Roman_Bold.ttf        times32.exe  timesbd.ttf
+6d2bd425ff00a79dd02e4c95f689861b  Times_New_Roman_Bold_Italic.ttf times32.exe  timesbi.ttf
+957dd4f17296522dead302ab4fcdfa8d  Times_New_Roman_Italic.ttf      times32.exe  timesi.ttf
+70e7be8567bc05f771b59abd9d696407  Trebuchet_MS.ttf                trebuc32.exe trebuc.ttf
+055460df9ab3c8aadd3330bd30805f11  Trebuchet_MS_Bold.ttf           trebuc32.exe trebucbd.ttf
+8f308fe77b584e20b246aa1f8403d2e9  Trebuchet_MS_Italic.ttf         trebuc32.exe trebucit.ttf
+fb5d68cb58c6ad7e88249d65f6900740  Trebuchet_MS_Bold_Italic.ttf    trebuc32.exe trebucbi.ttf
+3ba52ab1fa0cd726e7868e9c6673902c  Verdana.ttf                     verdan32.exe verdana.ttf
+a2b4dc9afc18e76cfcaa0071fa7cd0da  Verdana_Bold.ttf                verdan32.exe verdanab.ttf
+24b3a293c865a2c265280f017fb24ba5  Verdana_Italic.ttf              verdan32.exe verdanai.ttf
+f7310c29df0070530c48a47f2dca9014  Verdana_Bold_Italic.ttf         verdan32.exe verdanaz.ttf
+1a56b45a66b07b4c576d5ead048ed992  Webdings.ttf                    webdin32.exe webdings.ttf
+EOF
+
+for ttf in `awk '{print $2}' msfonts.info` ; do
+  if [ ! -e /usr/share/fonts/truetype/$ttf ] || [ `md5sum /usr/share/fonts/truetype/$ttf | awk '{print $1}'` != `grep $ttf msfonts.info | awk '{print $1}'` ] ; then
+    THISFILE=`grep $ttf msfonts.info | awk '{print $3}'`
+    if ! echo $FONTFILES | grep -q $THISFILE ; then
+      FONTFILES="$FONTFILES $THISFILE"
+    fi
+  fi
+done
+if [ -n "$CHECK_ONLY" ] ; then
+  if [ -n "$FONTFILES" ] ; then
+    EXITCODE=1
+  fi
+elif [ -n "$FONTFILES" ] ; then 
+  if [ -n "$QUIET_MODE" ] ; then
+    QUIET_ARG="--quiet"
+  else
+    QUIET_ARG=""
+  fi
+  for URLROOT in $URLROOTS ; do
+    for ff in $FONTFILES; do
+      if [ ! -e $ff.done ] || [ ! -e $ff ] ; then
+        if [ -z "$LOCALCOPY" ] ; then
+          if ! wget --continue --tries=1 --dns-timeout=10 --connect-timeout=5 --read-timeout=300 $QUIET_ARG --directory-prefix . -c $URLROOT$ff ; then
+            continue 2
+          fi
+        else
+          cp $LOCALCOPY/$ff .
+        fi
+        touch $ff.done
+      fi
+    done
+  done
+  if [ -n "$SAVEDIR" ] ; then
+    mkdir -p "$SAVEDIR"
+  fi
+  for ff in $FONTFILES; do
+    cabextract $ff 1>&2
+    if [ -n "$SAVEDIR" ] ; then
+      cp $ff "$SAVEDIR"
+    fi
+    rm $ff
+  done
+  #Add some level of predictability by folding everything to lower case
+  for x in *; do
+    y=`echo $x | tr '[A-Z]' '[a-z]'`
+    if [ "$x" != "$y" ]; then
+       mv "$x" "$y"
+    fi
+  done
+
+  chmod 644 *
+
+  #Give sane names.  8.3 is for lamers.
+  #These are nearly the same names MS uses for the Macintosh versions
+
+  mkdir -p /usr/share/doc/msttcorefonts
+  if [ -e licen.txt ] ; then
+    mv licen.txt "/usr/share/doc/msttcorefonts/READ_ME!"
+    gzip -f "/usr/share/doc/msttcorefonts/READ_ME!"
+  fi
+  for ff in $FONTFILES; do
+    for ttf in `grep $ff msfonts.info | awk '{print $4}'`; do
+      mv $ttf /usr/share/fonts/truetype/`grep $ttf msfonts.info | awk '{print $2}'`
+    done
+  done
+  #Make a note of what we installed so we can uninstall it later
+  mkdir -p /var/lib/msttcorefonts
+  awk '{print $2}'  msfonts.info > /var/lib/msttcorefonts/ms-fonts
+fi
+
+if [ -z "$CHECK_ONLY" ] ; then
+
+  #This should be handled by defoma now
+#  for ttf in `awk '{print $2}' msfonts.info` ; do
+#    ln -sf ../../../../../share/fonts/truetype/$ttf /usr/lib/X11/fonts/TrueType/$ttf
+#  done
+#  update-fonts-scale TrueType
+#  /usr/X11R6/bin/mkfontdir -e /usr/X11R6/lib/X11/fonts/encodings /usr/lib/X11/fonts/TrueType
+
+  #Remove old links
+  for ttf in `awk '{print $2}' msfonts.info` ; do
+    if [ -L /usr/lib/X11/fonts/TrueType/$ttf ] ; then
+      rm /usr/lib/X11/fonts/TrueType/$ttf
+    fi
+  done
+  rm -f /usr/lib/X11/fonts/TrueType/msttcorefonts.scale
+  if [ -d /usr/lib/X11/fonts/TrueType ] ; then
+    rmdir --ignore-fail-on-non-empty /usr/lib/X11/fonts/TrueType
+  fi
+  # Make sure X knows those fonts are gone
+  update-fonts-scale TrueType
+  /usr/bin/defoma-font reregister-all /etc/defoma/hints/msttcorefonts.hints
+fi
+rm -rf $SCRATCHDIR
+
+if [ -z "$QUIETMODE" ] ; then
+  if [ $EXITCODE = 0 ] ; then
+    echo "All fonts downloaded and installed."
+  else
+    echo "Fonts need to be updated."
+  fi
+fi
+
+exit $EXITCODE

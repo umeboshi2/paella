@@ -1,0 +1,56 @@
+<trait name="webserver" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apache
+		</package>
+		<package action="install">
+			apache-common
+		</package>
+		<package action="install">
+			apache-ssl
+		</package>
+		<package action="install">
+			php4
+		</package>
+	</packages>
+	<environ>
+		<admin>
+			$global_adminuser
+		</admin>
+		<default_type>
+			text/plain
+		</default_type>
+		<directory_index>
+			index.html index.htm index.shtml index.cgi index.php
+		</directory_index>
+		<hostname_lookups>
+			Off
+		</hostname_lookups>
+		<use_cgi>
+			#AddHandler cgi-script .cgi .sh .pl
+		</use_cgi>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="apache">
+			etc/apache/httpd.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="apache-common">
+			var/cache/debconf/config.dat
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="apache-ssl">
+			etc/apache-ssl/httpd.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="php4">
+			etc/php4/apache/php.ini
+		</template>
+	</templates>
+	<scripts/>
+</trait>

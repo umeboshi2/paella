@@ -1,0 +1,37 @@
+#!/usr/bin/python
+import os
+first_ip = '<--|localnet_first_dynhost|-->'
+last_ip = '<--|localnet_last_dynhost|-->'
+bpath = '<--|fileserver_base_path|-->'
+lcidr = '<--|localnet_cidr|-->'
+print bpath
+print 'in diskless_server post setup'
+print 'environ'
+print os.environ
+rpath = '<--|diskless_server_diskless_roots_path|-->'
+install = '<--|diskless_server_install_diskless|-->'
+home = '<--|base_homepath|-->'
+dprofile = '<--|diskless_server_diskless_profile|-->'
+dpath = os.path.join(rpath, dprofile)
+
+exports = file('diskless_exports', 'a+')
+exports.write('\n#diskless hosts\n')
+exports.write('%s\t%s(rw)\n' %  (home, lcidr))
+exports.write('%s\t%s(ro,no_root_squash)\n' % (dpath, lcidr))
+print 'need to do this part better later'
+fip = int(first_ip.split('.')[-1])
+lip = int(last_ip.split('.')[-1])
+bip = '.'.join(first_ip.split('.')[:3])
+for i in range(fip, lip + 1):
+    ip = '%s.%s' % (bip, i)
+    hostname = 'host-%s' % i
+    opts = 'host=%s mailname=%s' % (hostname, hostname)
+    cmd = '/usr/sbin/diskless-newhost %s %s %s' % (dpath, ip, opts)
+    print cmd
+    os.system(cmd)
+    line = '%s/%s\t%s(rw,no_root_squash)\n' % (rpath, ip, ip)
+    exports.write(line)
+exports.write('\n')
+exports.close()
+
+    

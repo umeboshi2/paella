@@ -1,0 +1,8 @@
+## O:lines are better described in the dancer-oper-guide than here
+## The new format for dancer has the 4th field (port) as the allowed umodes,
+##  and the 6th field (after the connection class) as the default umodes to
+##  be set on OPER.
+# Examples:
+
+#O:*:$1$nmNi3oKw$/TTB9SfKK3.KPYfKBYLy20:admin:abcdDfFgGhHkKlLmMnNpPrRsSUvVwWxXyzZ0123459*:1:acdDfFgGhHkKlRsSUvVWXyzZ0123459
+#O:*:$1$nmNi3oKw$/TTB9SfKK3.KPYfKBYLy20:luser::1:

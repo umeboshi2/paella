@@ -1,0 +1,17 @@
+<trait name="paella_installer" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			paella_common
+		</parent>
+		<parent>
+			subversion
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

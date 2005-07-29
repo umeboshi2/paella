@@ -1,0 +1,27 @@
+// ************************************
+// ***     GLOBAL CONFIG FILE       ***
+// *** PUT YOUR GLOBAL CONFIGS HERE ***
+// ************************************
+
+/*
+   use this if you have no access to gnome configuration
+   as described on http://www.jwsdot.com/debian/faq.html#q9
+   and don't care about debian default settings.
+*/
+// pref("network.protocol-handler.app.http","mozilla-firefox");
+// pref("network.protocol-handler.app.https","mozilla-firefox");
+
+
+/* 
+   uncomment this if you want your browser configured as
+   your default by means of the debian alternatives mechanism
+*/
+// pref("network.protocol-handler.app.http","x-www-browser");
+// pref("network.protocol-handler.app.https","x-www-browser");
+
+
+/*
+   use this to tune your gtk2 mouse feeling
+*/
+// pref("widget.gtk2.dnd.threshold",25);
+// pref("widget.gtk2.double_click_timeout", 300);

@@ -1,0 +1,54 @@
+#!/usr/bin/python
+import os
+from os.path import isdir, isfile, join
+from useless.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+it.set_trait('default')
+sections = it.default.sections()
+admin_sections = [x for x in sections if x[:10] == 'adminuser_']
+admins = [it.default.get(x, 'user') for x in admin_sections]
+print 'admins', admins
+passwd = file(join(it.target, 'etc/passwd'), 'a+')
+sudoers = file(join(it.target, 'etc/sudoers'), 'a+')
+homepath = it.get('base_homepath')
+rhomepath = homepath
+while rhomepath[0] == '/':
+    rhomepath = rhomepath[1:]
+    
+for s in admin_sections:
+    user = it.default.get(s, 'user')
+    password = it.default.get(s, 'passwd')
+    uid = it.default.get(s, 'uid')
+    gid = '50'
+    shell = '/bin/bash'
+    name = it.default.get(s, 'name')
+    name += ',,,'
+    hpath = join(homepath, user)
+    line = ':'.join([user, password, uid, gid, name, hpath, shell])
+    passwd.write(line + '\n')
+    sline = '%s\tALL=(ALL) %s: ALL\n' % (user, it.get('base_adminuser_passwd_opt'))
+    sudoers.write(sline)
+    fhpath = join(it.target, rhomepath, user)
+    makepaths(fhpath)
+    makepaths(join(fhpath, '.ssh'))
+    authkeys = file(join(fhpath, '.ssh', 'authorized_keys'), 'w')
+    keys = [o for o in it.default.options(s) if o[:7] == 'sshkey_']
+    print 'sshkeys', keys
+    for key in keys:
+        authkeys.write(it.default.get(s, key) + '\n')
+    authkeys.close()
+    os.system('rsync -av %s/etc/skel/ %s' % (it.target, fhpath))
+    os.system('chown -R %s:%s %s' % (uid, gid, fhpath))
+passwd.close()
+sudoers.close()
+
+print 'families: -->', it.families
+if 'insecure' not in it.families:
+    print 'securing default system'
+    os.system('chroot %s rm /etc/ssh/ssh_host_*' % it.target)
+    os.system('chroot %s dpkg-reconfigure -plow ssh' % it.target)
+    os.system('chroot %s shadowconfig on' % it.target)
+
+

@@ -1,0 +1,23 @@
+# /etc/modules: kernel modules to load at boot time.
+#
+# This file should contain the names of kernel modules that are
+# to be loaded at boot time, one per line.  Comments begin with
+# a "#", and everything on the line after them are ignored.
+
+via82cxxx_audio
+mousedev
+evdev
+psmouse
+via-rhine
+ac
+battery
+thermal
+processor
+powernow_k7
+cpufreq_powersave
+cpufreq_userspace
+ohci_hcd
+ehci_hcd
+usb_storage
+sr_mod
+ide-scsi

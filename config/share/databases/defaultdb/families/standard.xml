@@ -58,12 +58,6 @@
 			<family_variable name="usutf8" trait="base">
 				#en_US.UTF-8 UTF-8
 			</family_variable>
-			<family_variable name="local_debroot" trait="builder">
-				/mirrors/debian
-			</family_variable>
-			<family_variable name="mount_on_boot" trait="builder">
-				no
-			</family_variable>
 			<family_variable name="cdr_device" trait="cdburner">
 				0,0,0
 			</family_variable>
@@ -596,9 +590,6 @@ vjBedRRoANIqD3XgcLG+NAd/eq8+enBBhVVcEiAOaQ==
 			<family_variable name="reversed_zone" trait="nameserver">
 				0.168.192
 			</family_variable>
-			<family_variable name="ypserver" trait="nisclient">
-				umhead
-			</family_variable>
 			<family_variable name="log_statement" trait="postgres">
 				false
 			</family_variable>
@@ -650,107 +641,17 @@ vjBedRRoANIqD3XgcLG+NAd/eq8+enBBhVVcEiAOaQ==
 			<family_variable name="workgroup" trait="samba">
 				workgroup
 			</family_variable>
-			<family_variable name="paella_bootfile" trait="shishi">
-				pxelinux.0
-			</family_variable>
-			<family_variable name="paella_desktop" trait="shishi">
-				roujin
-			</family_variable>
-			<family_variable name="paella_desktop_hwaddr" trait="shishi">
-				00:E0:81:24:69:30
-			</family_variable>
-			<family_variable name="paella_desktop_ip" trait="shishi">
-				192.168.0.6
-			</family_variable>
-			<family_variable name="paella_laptop" trait="shishi">
-				bard
-			</family_variable>
-			<family_variable name="paella_laptop_hwaddr" trait="shishi">
-				00:40:45:12:54:62
-			</family_variable>
-			<family_variable name="paella_laptop_ip" trait="shishi">
-				192.168.0.12
-			</family_variable>
-			<family_variable name="paella_mainhost" trait="shishi">
-				zathras
-			</family_variable>
-			<family_variable name="paella_mainhost_hwaddr" trait="shishi">
-				00:03:6D:15:83:5A
-			</family_variable>
-			<family_variable name="paella_mainhost_ip" trait="shishi">
-				192.168.0.2
-			</family_variable>
-			<family_variable name="paella_rootpath" trait="shishi">
-				/freespace/nfsroot
-			</family_variable>
-			<family_variable name="host_dsa_key" trait="sshd_test">
-				MIIBugIBAAKBgQCssom8AhUWalnGG05qKbVG8Vw1iqZ7mWwlH0jnM05QTYQSNke5
-wSduEwTY19jUAJ9kOSOuusZfdX1c+aLqwUfKbsf1b70kfg5Ib0jcg4fVrEa4n9Qa
-93oCMMdzjaA2QZh07XBs/fA012cFcrujde7OPfJDQM7SkY9aaPCNaaQMYwIVAP+R
-9SMVNoa/VfFsJegp4k/dSsvbAoGAUrrD24NvVE7v8E6Ahni/M0X/ecObAuriKP7S
-djoVZWCGq5bZJJiK8r4HAJYCb+9KwU+gvtK++KPMkbYh7Yw/MBDgCrWIm0tg04zn
-wK8JgbPh/truMXQ4OhPDRlrHjNdN/CEYYNV20VKSMjmrx4gNIJkVYLnevFX59j+q
-C4HZnekCgYBAkQsuGAPI3iVtuo9urtv7Xw/EEghGJ1WJ5TZaPHP/ZIat9yZO37Jy
-u48AwVv+W2h6tYlYTHF01hfRim3mYhxv1HvoNok1cg5gZ9nkn3Q2kc3PDHxT/YTW
-axBJF8FjbqdBoLwqkclFZh1x0uFzWvFmM6ldMHG7GCrwAEtwOlq7ZAIUU7fNuJSJ
-qD2cfPM2ncwLs0qBBWM=
-			</family_variable>
-			<family_variable name="host_dsa_pub" trait="sshd_test">
-				ssh-dss AAAAB3NzaC1kc3MAAACBAKyyibwCFRZqWcYbTmoptUbxXDWKpnuZbCUfSOczTlBNhBI2R7nBJ24TBNjX2NQAn2Q5I666xl91fVz5ourBR8pux/VvvSR+DkhvSNyDh9WsRrif1Br3egIwx3ONoDZBmHTtcGz98DTXZwVyu6N17s498kNAztKRj1po8I1ppAxjAAAAFQD/kfUjFTaGv1XxbCXoKeJP3UrL2wAAAIBSusPbg29UTu/wToCGeL8zRf95w5sC6uIo/tJ2OhVlYIarltkkmIryvgcAlgJv70rBT6C+0r74o8yRtiHtjD8wEOAKtYibS2DTjOfArwmBs+H+2u4xdDg6E8NGWseM1038IRhg1XbRUpIyOavHiA0gmRVgud68Vfn2P6oLgdmd6QAAAIBAkQsuGAPI3iVtuo9urtv7Xw/EEghGJ1WJ5TZaPHP/ZIat9yZO37Jyu48AwVv+W2h6tYlYTHF01hfRim3mYhxv1HvoNok1cg5gZ9nkn3Q2kc3PDHxT/YTWaxBJF8FjbqdBoLwqkclFZh1x0uFzWvFmM6ldMHG7GCrwAEtwOlq7ZA== root@(none)
-			</family_variable>
-			<family_variable name="host_rsa_key" trait="sshd_test">
-				MIICWwIBAAKBgQDf3VHvvP/05R+U9PpjVIzYfyXyPXwuCSJQRvsEYpSb0NuWJGZD
-OYPdBDmjpqhNAxwcNJxgAPEAVEn+pLrU3zQ3SA3SscN0IpqnwNNVz4KIliDB9Cvc
-GmTQjNNIFQZFFdzMM6+gNTyUxPsccoSvHs0flrB2D9blIPhrMp4xK1yc8wIBIwKB
-gHmGxhRt6giZo24elo2xjkmkG+nm3QMMRdPOwsfdvmM23ZqmC6DWFGIJm6H7Yq12
-t30Gngg7BnyFh0EXmJ9x2oNlBIICMkUKBCTwLM32LV40lzgFP38cFEkbQTKQQiNn
-sfRPifAZNyj8c3/6HegqVTOv/3eh+yE0gulEzGXkNWHzAkEA8cn+hrKUhB4lV1we
-sGnRYTZt1uyyXYTej1mJ30u7vfgmUnhJR81XQ/Jg5GdCmRYqF03flV2GY4LZ5e2O
-/zv3DQJBAO0FoU9w5y24Pl4yJ4IIgu78MEl5WokmXdi+Rh6EEjqPXRjNdDg/hja6
-tNxSHypCbdzc1Qy4PIUmGX0dKdiV4/8CQQClzFbCw5kKI0zOMIoSkbQlZya/Qzh6
-pEDXU1c6CAu1dvW05MSJAdVwa7Anl0OcLHSiRAcHVhMCaFrmzsh0gOPrAkEAooeE
-jj7KaH5Wpv3R8sQCAvYSe4Zp96VHqpEaI43DW1r+AmD/PINUt9B8BMqZBwj64Jdt
-hRCehzARel0kAjrlewJAOblurXAfvnrm+Mxbpyzg/jtsxk3SJoeh3d+ggqhczpdE
-vjBedRRoANIqD3XgcLG+NAd/eq8+enBBhVVcEiAOaQ==
-			</family_variable>
-			<family_variable name="host_rsa_pub" trait="sshd_test">
-				ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEA391R77z/9OUflPT6Y1SM2H8l8j18LgkiUEb7BGKUm9DbliRmQzmD3QQ5o6aoTQMcHDScYADxAFRJ/qS61N80N0gN0rHDdCKap8DTVc+CiJYgwfQr3Bpk0IzTSBUGRRXczDOvoDU8lMT7HHKErx7NH5awdg/W5SD4azKeMStcnPM= root@(none)
-			</family_variable>
 			<family_variable name="frotz_background_color" trait="textgames">
 				blue
 			</family_variable>
 			<family_variable name="frotz_foreground_color" trait="textgames">
 				white
 			</family_variable>
-			<family_variable name="host_mount" trait="um_base">
-				/host	/home	hostfs	defaults	0	0
-			</family_variable>
-			<family_variable name="hostname" trait="um_builder">
-				umwbuild
-			</family_variable>
-			<family_variable name="repository_host" trait="um_builder">
-				umhead
-			</family_variable>
-			<family_variable name="address" trait="um_repository">
-				10.0.1.100
-			</family_variable>
-			<family_variable name="hostname" trait="um_repository">
-				umrepos
-			</family_variable>
-			<family_variable name="nfshost" trait="um_repository">
-				paella
-			</family_variable>
-			<family_variable name="root_device" trait="um_repository">
-				/dev/ubd0
-			</family_variable>
 			<family_variable name="depth" trait="vnc_server">
 				24
 			</family_variable>
 			<family_variable name="geometry" trait="vnc_server">
 				1024x768
-			</family_variable>
-			<family_variable name="admin_password" trait="webmin">
-				YD52jq/nPegVE:0::
 			</family_variable>
 			<family_variable name="basedn" trait="workstation">
 				dc=umdomain

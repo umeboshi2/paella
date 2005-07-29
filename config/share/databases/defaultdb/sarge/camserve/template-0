@@ -1,0 +1,30 @@
+<IfModule mod_proxy.c>
+    ProxyRequests Off
+    ProxyPass /kennel1/ http://kennel1/	
+	<Directory proxy:http://kennel1/>
+	AuthName "Kennel Authenticator"
+	AuthType basic
+	Auth_PG_host localhost
+	Auth_PG_port 5432
+	Auth_PG_user www-data
+	Auth_PG_pwd wwwd878
+	Auth_PG_database kennelauth
+	Auth_PG_pwd_table valid_users
+	Auth_PG_hash_type MD5
+	Auth_PG_uid_field userlogin
+	Auth_PG_pwd_field password
+	Auth_PG_log_table access_log
+	Auth_PG_log_uname_field userlogin
+	Auth_PG_log_date_field logindate
+	Auth_PG_log_uri_field 	request
+	Auth_PG_log_addrs_field  ip_address
+	Auth_PG_pwd_whereclause " and kennel=1 and checkin <= CURRENT_TIMESTAMP and checkout >= CURRENT_TIMESTAMP"
+
+	RedirectMatch (.*)admin\.htm$ http://<--|global_domain|-->/kennel1/
+	RedirectMatch (.*)adm_login\.htm$ http://<--|global_domain|-->/kennel1/
+
+	<LIMIT GET POST>
+		require valid-user
+	</LIMIT>
+	</Directory>
+</IfModule>

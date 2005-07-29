@@ -1,0 +1,12 @@
+Name: shared/ntp/servers
+Template: shared/ntp/servers
+Value: <--|clockserver_server|-->
+Owners: ntp-refclock, ntpdate
+Flags: seen
+
+Name: shared/ntp/update-conf
+Template: shared/ntp/update-conf
+Value: true
+Owners: ntp-refclock
+Flags: seen
+

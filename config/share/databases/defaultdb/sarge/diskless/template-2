@@ -1,0 +1,51 @@
+# Default format for config files. Change this file is prefered
+# over changing the individual config files, as changes will be
+# preserved by dpkg. This file is invoked automatically by postinst.
+# Please update individual files with dpkg-reconfigure.
+
+cat > /etc/diskless-image/config << EOF
+master=$master
+nfsserver=$nfsserver
+nfsimagedir=$nfsimagedir
+nfshostsdir=$nfshostsdir
+nfshomedir=$nfshomedir
+nameserver=$nameserver
+domain=$domain
+maildomain=$maildomain
+mailroute=$mailroute
+devfs=$devfs
+EOF
+
+cat > /etc/diskless-image/config.m4 <<EOF
+divert(-1)dnl
+define(<[image_master]>,<[$master]>)
+define(<[image_nfsserver]>,<[$nfsserver]>)
+define(<[image_nfsimagedir]>,<[$nfsimagedir]>)
+define(<[image_nfshostsdir]>,<[$nfshostsdir]>)
+define(<[image_nfshomedir]>,<[$nfshomedir]>)
+define(<[image_nameserver]>,<[$nameserver]>)
+define(<[image_domain]>,<[$domain]>)
+define(<[image_maildomain]>,<[$maildomain]>)
+define(<[image_mailroute]>,<[$mailroute]>)
+define(<[image_devfs]>,<[$devfs]>)
+divert(0)dnl
+EOF
+
+cat > /etc/diskless-image/exports << EOF
+$nfsimagedir <ipaddress>(rw no_root_squash)
+EOF
+
+cat > /etc/fstab << EOF
+none	/proc	proc	defaults	1	0
+$nfsserver:$nfsimagedir	/	nfs	defaults,nolock	0	1
+EOF
+
+cat > /etc/resolv.conf << EOF
+nameserver $nameserver
+domain $domain
+search $domain
+EOF
+
+cat > /etc/hostname << EOF
+$master
+EOF

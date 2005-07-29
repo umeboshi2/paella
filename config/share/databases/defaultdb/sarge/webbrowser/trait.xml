@@ -1,0 +1,71 @@
+<trait name="webbrowser" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			mozilla-browser
+		</package>
+		<package action="install">
+			mozilla-firefox
+		</package>
+		<package action="install">
+			mozilla-mailnews
+		</package>
+		<package action="install">
+			mozilla-mozgest
+		</package>
+		<package action="install">
+			mozilla-psm
+		</package>
+		<package action="install">
+			mozilla-stumbleupon
+		</package>
+		<package action="install">
+			mozilla-tabextensions
+		</package>
+		<package action="install">
+			mozilla-thunderbird
+		</package>
+	</packages>
+	<environ>
+		<mozilla_dsp>
+			Auto
+		</mozilla_dsp>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-browser">
+			etc/mozilla/prefs.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-browser">
+			var/cache/debconf/config.dat
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/mozilla-firefoxrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/pref/firefox.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/profile/bookmarks.html
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/profile/prefs.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-firefox">
+			etc/mozilla-firefox/profile/search.rdf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-thunderbird">
+			etc/mozilla-thunderbird/auto-config.js
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="mozilla-thunderbird">
+			etc/mozilla-thunderbird/global-config.js
+		</template>
+	</templates>
+	<scripts/>
+</trait>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="version" mtime="1081569276" schema="/schemas/apps/goats/settings/version"/>
+<entry name="paranoid" mtime="1081569276" schema="/schemas/apps/goats/settings/paranoid"/>
+<entry name="delete_hides" mtime="1081569276" schema="/schemas/apps/goats/settings/delete_hides" type="bool" value="true"/>
+<entry name="fortune" mtime="1081569276" schema="/schemas/apps/goats/settings/fortune"/>
+<entry name="cal" mtime="1081569276" schema="/schemas/apps/goats/settings/cal"/>
+<entry name="date" mtime="1081569276" schema="/schemas/apps/goats/settings/date"/>
+</gconf>

@@ -1,0 +1,79 @@
+#configuration file for paella
+[DEFAULT]
+sarge_common:		true
+sarge_local:		true
+questron_common:		true
+questron_local:		true
+maverick_local:		true
+maverick_nonus:		true
+gunny_common:		true
+gunny_local:		true
+kardinal_common:		true
+kardinal_local:		true
+__myhome:		/home/umeboshi
+
+[database]
+#database info
+dbhost:			<--|paella_common_dbhost|-->
+dbname:			<--|paella_common_dbname|-->
+dbusername:		<--|paella_common_dbusername|-->
+dbpassword:		apassword
+import_path:		/mirrors/bkups/main/concord
+export_path:		/mirrors/bkups/main/backup
+autocommit:		true
+
+[debrepos]
+repos_host:		<--|paella_nfsroot_reposhost|-->
+debroot:			/debian
+repos_root:		/freespace/debian
+official_suites:		woody,sarge,sid
+local_suites:		maverick,questron,gunny
+http_mirror:		<--|paella_nfsroot_http_mirror|-->
+
+official_main:		http://ftp.us.debian.org/debian
+official_nonus:		http://nonus.debian.org/
+official_security:		http://security.debian.org
+
+other_repos:		%(repos_root)/other
+other_repos_names:	svn_woody,knoppix,marillat,logilab
+
+
+[installer]
+
+[management_gui]
+env_editor_size:	500, 400
+
+bkuptarball_path:		/mirrors/bkups
+management_suites:	maverick, gunny
+manager_pos:		1122, 775
+manager_size:		150, 200
+maverick_pos:		500, 20
+gunny_pos:		500, 60
+questron_pos:		500, 100
+
+
+
+
+
+
+[other_repos__svn_woody]
+uri:			http://people.debian.org/~cjwatson/subversion-woody/
+localpath:			subversion-woody
+types:			both
+
+[other_repos__knoppix]
+uri:			http://developer.linuxtag.net/knoppix/
+localpath:			knoppix
+types:			both
+
+[other_repos__marillat]
+uri:			http://marillat.free.fr/
+localpath:			marillat
+distpath:			dists/unstable/main/binary-i386
+types:			binary
+
+[other_repos__logilab]
+uri:			http://www.logilab.org/ftp/pub/debian
+localpath:			logilab
+distpath:			unstable
+types:			binary

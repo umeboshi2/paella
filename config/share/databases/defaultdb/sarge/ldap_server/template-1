@@ -1,0 +1,260 @@
+#
+# $Id: migrate_common.ph,v 1.19 2002/01/15 18:06:12 lukeh Exp $
+#
+# Copyright (c) 1997 Luke Howard.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions
+# are met:
+# 1. Redistributions of source code must retain the above copyright
+#    notice, this list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+# 3. All advertising materials mentioning features or use of this software
+#    must display the following acknowledgement:
+#        This product includes software developed by Luke Howard.
+# 4. The name of the other may not be used to endorse or promote products
+#    derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE LUKE HOWARD ``AS IS'' AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# ARE DISCLAIMED.  IN NO EVENT SHALL LUKE HOWARD BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+# OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+# HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+# OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+# SUCH DAMAGE.
+#
+
+#
+# Common defines for MigrationTools
+#
+
+# Naming contexts. Key is $PROGRAM with migrate_ and .pl 
+# stripped off. RFC2307BIS denotes support for rfc2307bis/
+# Solaris 8 hierarchy.
+$RFC2307BIS = 1;
+
+if ($RFC2307BIS) {
+	$NAMINGCONTEXT{'aliases'}           = "ou=Aliases";
+	$NAMINGCONTEXT{'fstab'}             = "ou=Mounts";
+	$NAMINGCONTEXT{'passwd'}            = "ou=People";
+	$NAMINGCONTEXT{'netgroup_byuser'}   = "nisMapName=netgroup.byuser";
+	$NAMINGCONTEXT{'netgroup_byhost'}   = "nisMapName=netgroup.byhost";
+	$NAMINGCONTEXT{'group'}             = "ou=Group";
+	$NAMINGCONTEXT{'netgroup'}          = "ou=Netgroup";
+	$NAMINGCONTEXT{'hosts'}             = "ou=Hosts";
+	$NAMINGCONTEXT{'networks'}          = "ou=Networks";
+	$NAMINGCONTEXT{'protocols'}         = "ou=Protocols";
+	$NAMINGCONTEXT{'rpc'}               = "ou=Rpc";
+	$NAMINGCONTEXT{'services'}          = "ou=Services";
+} else {
+	$NAMINGCONTEXT{'aliases'}           = "ou=mailGroups";
+	$NAMINGCONTEXT{'fstab'}             = "ou=Mounts";
+	$NAMINGCONTEXT{'passwd'}            = "ou=People";
+	$NAMINGCONTEXT{'netgroup_byuser'}   = "nisMapName=netgroup.byuser";
+	$NAMINGCONTEXT{'netgroup_byhost'}   = "nisMapName=netgroup.byhost";
+	$NAMINGCONTEXT{'group'}             = "ou=Groups";
+	$NAMINGCONTEXT{'netgroup'}          = "ou=Netgroups";
+	$NAMINGCONTEXT{'hosts'}             = "ou=Devices";
+	$NAMINGCONTEXT{'networks'}          = "ou=tcpIp";
+	$NAMINGCONTEXT{'protocols'}         = "ou=tcpIp";
+	$NAMINGCONTEXT{'rpc'}               = "ou=tcpIp";
+	$NAMINGCONTEXT{'services'}          = "ou=tcpIp";
+}
+
+# Default DNS domain
+$DEFAULT_MAIL_DOMAIN = "<--|global_mailname|-->";
+
+# Default base 
+$DEFAULT_BASE = "<--|ldap_common_basedn|-->";
+
+# Turn this on for inetLocalMailReceipient
+# sendmail support; add the following to 
+# sendmail.mc (thanks to Petr@Kristof.CZ):
+##### CUT HERE #####
+#define(`confLDAP_DEFAULT_SPEC',`-h "ldap.padl.com"')dnl
+#LDAPROUTE_DOMAIN_FILE(`/etc/mail/ldapdomains')dnl
+#FEATURE(ldap_routing)dnl
+##### CUT HERE #####
+# where /etc/mail/ldapdomains contains names of ldap_routed
+# domains (similiar to MASQUERADE_DOMAIN_FILE).
+#$DEFAULT_MAIL_HOST = "mail.padl.com";
+
+# turn this on to support more general object clases
+# such as person.
+$EXTENDED_SCHEMA = 0;
+
+# Uncomment this if your ldap server properly supports UTF8 encoding
+$USE_UTF8 = 1;
+
+# Uncomment these to avoid Debian managed system users and groups
+$IGNORE_UID_BELOW = 1000;
+$IGNORE_GID_BELOW = 100;
+
+# And here's the opposite for completeness
+$IGNORE_UID_ABOVE = 9999;
+$IGNORE_GID_ABOVE = 9999;
+
+#
+# allow environment variables to override predefines
+#
+if (defined($ENV{'LDAP_BASEDN'})) {
+	$DEFAULT_BASE = $ENV{'LDAP_BASEDN'};
+}
+
+if (defined($ENV{'LDAP_DEFAULT_MAIL_DOMAIN'})) {
+	$DEFAULT_MAIL_DOMAIN = $ENV{'LDAP_DEFAULT_MAIL_DOMAIN'};
+}
+
+if (defined($ENV{'LDAP_DEFAULT_MAIL_HOST'})) {
+	$DEFAULT_MAIL_HOST = $ENV{'LDAP_DEFAULT_MAIL_HOST'};
+}
+
+# binddn used for alias owner (otherwise uid=root,...)
+if (defined($ENV{'LDAP_BINDDN'})) {
+	$DEFAULT_OWNER = $ENV{'LDAP_BINDDN'};
+}
+
+if (defined($ENV{'LDAP_EXTENDED_SCHEMA'})) {
+	$EXTENDED_SCHEMA = $ENV{'LDAP_EXTENDED_SCHEMA'};
+}
+
+# If we haven't set the default base, guess it automagically.
+if (!defined($DEFAULT_BASE)) {
+	$DEFAULT_BASE = &domain_expand($DEFAULT_MAIL_DOMAIN);
+	$DEFAULT_BASE =~ s/,$//;
+}
+
+# Default Kerberos realm
+if ($EXTENDED_SCHEMA) {
+	$DEFAULT_REALM = $DEFAULT_MAIL_DOMAIN;
+	$DEFAULT_REALM =~ tr/a-z/A-Z/;
+}
+
+if (-x "/usr/sbin/revnetgroup") {
+	$REVNETGROUP = "/usr/sbin/revnetgroup";
+} elsif (-x "/usr/lib/yp/revnetgroup") {
+	$REVNETGROUP = "/usr/lib/yp/revnetgroup";
+}
+
+$classmap{'o'} = 'organization';
+$classmap{'dc'} = 'domain';
+$classmap{'l'} = 'locality';
+$classmap{'ou'} = 'organizationalUnit';
+$classmap{'c'} = 'country';
+$classmap{'nismapname'} = 'nisMap';
+$classmap{'cn'} = 'container';
+
+sub parse_args
+{
+	if ($#ARGV < 0) {
+		print STDERR "Usage: $PROGRAM infile [outfile]\n";
+		exit 1;
+	}
+	
+	$INFILE = $ARGV[0];
+	
+	if ($#ARGV > 0) {
+		$OUTFILE = $ARGV[1];
+	}
+}
+
+sub open_files
+{
+	open(INFILE);
+	if ($OUTFILE) {
+		open(OUTFILE,">$OUTFILE");
+		$use_stdout = 0;
+	} else {
+		$use_stdout = 1;
+	}
+}
+
+# moved from migrate_hosts.pl
+# lukeh 10/30/97
+sub domain_expand
+{
+	local($first) = 1;
+	local($dn);
+	local(@namecomponents) = split(/\./, $_[0]);
+	foreach $_ (@namecomponents) {
+		$first = 0;
+		$dn .= "dc=$_,";
+	}
+	$dn .= $DEFAULT_BASE;
+	return $dn;
+}
+
+# case insensitive unique
+sub uniq
+{
+	local($name) = shift(@_);
+	local(@vec) = sort {uc($a) cmp uc($b)} @_;
+	local(@ret);
+	local($next, $last);
+	foreach $next (@vec) {
+		if ((uc($next) ne uc($last)) &&
+			(uc($next) ne uc($name))) {
+			push (@ret, $next);
+		}
+		$last = $next;
+	}
+	return @ret;
+}
+
+# concatenate naming context and 
+# organizational base
+sub getsuffix
+{
+	local($program) = shift(@_);
+	local($nc);
+	$program =~ s/^migrate_(.*)\.pl$/$1/;
+	$nc = $NAMINGCONTEXT{$program};
+	if ($nc eq "") {
+		return $DEFAULT_BASE;
+	} else {
+		return $nc . ',' . $DEFAULT_BASE;
+	}
+}
+
+sub ldif_entry
+{
+# remove leading, trailing whitespace
+	local ($HANDLE, $lhs, $rhs) = @_;
+	local ($type, $val) = split(/\=/, $lhs);
+	local ($dn);
+
+	if ($rhs ne "") {
+		$dn = $lhs . ',' . $rhs;
+	} else {
+		$dn = $lhs;
+	}
+
+	$type =~ s/$\s*//;
+	$type =~ s/^\s*//;
+	$type =~ tr/A-Z/a-z/;
+	$val =~ s/$\s*//;
+	$val =~ s/^\s*//;
+
+	print $HANDLE "dn: $dn\n";
+	print $HANDLE "$type: $val\n";
+	print $HANDLE "objectClass: top\n";
+	print $HANDLE "objectClass: $classmap{$type}\n";
+	if ($EXTENDED_SCHEMA) {
+		if ($DEFAULT_MAIL_DOMAIN) {
+			print $HANDLE "objectClass: domainRelatedObject\n";
+			print $HANDLE "associatedDomain: $DEFAULT_MAIL_DOMAIN\n";
+		}
+	}
+
+	print $HANDLE "\n";
+}
+
+1;
+

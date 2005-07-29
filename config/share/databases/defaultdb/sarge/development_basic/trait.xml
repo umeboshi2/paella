@@ -1,0 +1,24 @@
+<trait name="development_basic" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			subversion
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			build-essential
+		</package>
+		<package action="install">
+			fakeroot
+		</package>
+		<package action="install">
+			wdiff
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,38 @@
+<?php
+if (isset($_GET['moday']))
+  { $moday = $_GET['moday']; }
+else
+  { $moday = 0; }
+if (isset($_GET['monum']))
+  { $monum = $_GET['monum']; }
+else
+  { $monum = 0; }
+if (isset($_GET['moyear']))
+  { $moyear = $_GET['moyear']; }
+else
+  { $moyear = 0; }
+
+?>
+<html><title>Add a user</title>
+<form action="adduser.php" method="post">
+<br>  Please select a checkout date:
+  <? 
+  include 'calendar.php'; 
+?>
+<br>
+<input type='hidden' name='moday' value='<? echo "$moday" ?>'>
+<input type='hidden' name='monum' value='<? echo "$monum" ?>'>
+<input type='hidden' name='moyear' value='<? echo "$moyear" ?>'>
+<br>Enter a username: <input type="text" name="uname">
+<br><br>
+  Select a Kennel: <select name="kennelnum">
+<option value="1">Kennel 1</option>
+<option value="2">Kennel 2</option>
+<option value="3">Kennel 3</option>
+<option value="4">Kennel 4</option>
+<option value="5">Kennel 5</option>
+<option value="6">Kennel 6</option>
+</select>
+<br><br>
+
+<input type="submit" value="Add"></form></html>

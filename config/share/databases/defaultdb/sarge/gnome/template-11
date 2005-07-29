@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="accessibility" mtime="1081569132" schema="/schemas/desktop/gnome/interface/accessibility"/>
+<entry name="enable_animations" mtime="1081569132" schema="/schemas/desktop/gnome/interface/enable_animations"/>
+<entry name="menus_have_tearoff" mtime="1081569132" schema="/schemas/desktop/gnome/interface/menus_have_tearoff" type="bool" value="true"/>
+<entry name="can_change_accels" mtime="1081569132" schema="/schemas/desktop/gnome/interface/can_change_accels" type="bool" value="true"/>
+<entry name="toolbar_style" mtime="1081569132" schema="/schemas/desktop/gnome/interface/toolbar_style"/>
+<entry name="menus_have_icons" mtime="1081569132" schema="/schemas/desktop/gnome/interface/menus_have_icons"/>
+<entry name="menubar_detachable" mtime="1081569132" schema="/schemas/desktop/gnome/interface/menubar_detachable"/>
+<entry name="toolbar_detachable" mtime="1081569132" schema="/schemas/desktop/gnome/interface/toolbar_detachable"/>
+<entry name="toolbar_icon_size" mtime="1081569132" schema="/schemas/desktop/gnome/interface/toolbar_icon_size"/>
+<entry name="cursor_blink" mtime="1081569132" schema="/schemas/desktop/gnome/interface/cursor_blink"/>
+<entry name="cursor_blink_time" mtime="1081569132" schema="/schemas/desktop/gnome/interface/cursor_blink_time"/>
+<entry name="icon_theme" mtime="1081569132" schema="/schemas/desktop/gnome/interface/icon_theme" type="string"><stringvalue><--|gnome_icon_theme|--></stringvalue></entry>
+<entry name="gtk_theme" mtime="1081569132" schema="/schemas/desktop/gnome/interface/gtk_theme" type="string"><stringvalue><--|gnome_gtktheme|--></stringvalue></entry>
+<entry name="gtk_key_theme" mtime="1081569132" schema="/schemas/desktop/gnome/interface/gtk_key_theme" type="string"><stringvalue>Emacs</stringvalue></entry>
+<entry name="font_name" mtime="1081569132" schema="/schemas/desktop/gnome/interface/font_name"/>
+<entry name="gtk-im-preedit-style" mtime="1081569132" schema="/schemas/desktop/gnome/interface/gtk-im-preedit-style"/>
+<entry name="gtk-im-status-style" mtime="1081569132" schema="/schemas/desktop/gnome/interface/gtk-im-status-style"/>
+<entry name="monospace_font_name" mtime="1081569132" schema="/schemas/desktop/gnome/interface/monospace_font_name"/>
+<entry name="use_custom_font" mtime="1081569132" schema="/schemas/desktop/gnome/interface/use_custom_font"/>
+<entry name="status_bar_meter_on_right" mtime="1081569132" schema="/schemas/desktop/gnome/interface/status_bar_meter_on_right"/>
+</gconf>

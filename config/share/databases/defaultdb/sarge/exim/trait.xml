@@ -1,0 +1,44 @@
+<trait name="exim" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			base-files
+		</package>
+		<package action="reconfig">
+			exim4-config
+		</package>
+	</packages>
+	<environ>
+		<configtype>
+			internet
+		</configtype>
+		<local_domains>
+			$global_domain
+		</local_domains>
+		<maildomain>
+			$global_regdomain
+		</maildomain>
+		<qualifydomain>
+			$global_regdomain
+		</qualifydomain>
+		<relay_local_network>
+			$global_local_network_cidr
+		</relay_local_network>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="exim4-config">
+			etc/exim4/update-exim4.conf.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="exim4-config">
+			var/cache/debconf/config.dat
+		</template>
+	</templates>
+	<scripts/>
+</trait>

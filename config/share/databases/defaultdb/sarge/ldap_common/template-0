@@ -1,0 +1,128 @@
+###DEBCONF###
+# the configuration of this file will be done by debconf as long as the
+# first line of the file says '###DEBCONF###'
+#
+# you should use dpkg-reconfigure libnss-ldap to configure this file.
+#
+# @(#)$Id: ldap.conf,v 2.30 2001/09/22 10:57:56 lukeh Exp $
+#
+# This is the configuration file for the LDAP nameservice
+# switch library and the LDAP PAM module.
+#
+# PADL Software
+# http://www.padl.com
+#
+
+# Your LDAP server. Must be resolvable without using LDAP.
+host <--|ldap_common_ldap_host|-->
+
+# The distinguished name of the search base.
+base ou=<--|ldap_common_admin_base|-->,<--|ldap_common_basedn|-->
+
+# Another way to specify your LDAP server is to provide an
+# uri with the server name. This allows to use
+# Unix Domain Sockets to connect to a local LDAP Server.
+#uri ldap://127.0.0.1/
+#uri ldaps://127.0.0.1/   
+#uri ldapi://%2fvar%2frun%2fldapi_sock/
+# Note: %2f encodes the '/' used as directory separator
+
+# The LDAP version to use (defaults to 3
+# if supported by client library)
+ldap_version 3
+
+# The distinguished name to bind to the server with.
+# Optional: default is to bind anonymously.
+# The credentials to bind with. 
+# Optional: default is no credential.
+
+
+# The distinguished name to bind to the server with
+# if the effective user ID is root. Password is
+# stored in /etc/ldap.secret (mode 600)
+#rootbinddn cn=manager,dc=padl,dc=com
+rootbinddn cn=<--|ldap_common_nss|-->,<--|ldap_common_basedn|-->
+
+
+# The port.
+# Optional: default is 389.
+#port 389
+
+# The search scope.
+#scope sub
+#scope one
+#scope base
+
+# Search timelimit
+#timelimit 30
+
+# Bind timelimit
+#bind_timelimit 30
+
+# Idle timelimit; client will close connections
+# (nss_ldap only) if the server has not been contacted
+# for the number of seconds specified below.
+#idle_timelimit 3600
+
+# RFC2307bis naming contexts
+# Syntax:
+# nss_base_XXX		base?scope?filter
+# where scope is {base,one,sub}
+# and filter is a filter to be &'d with the
+# default filter.
+# You can omit the suffix eg:
+# nss_base_passwd	ou=People,
+# to append the default base DN but this
+# may incur a small performance impact.
+nss_base_passwd	ou=people,ou=<--|ldap_common_admin_base|-->,<--|ldap_common_basedn|-->?one
+nss_base_shadow	ou=people,ou=<--|ldap_common_admin_base|-->,<--|ldap_common_basedn|-->?one
+nss_base_group		ou=groups,ou=<--|ldap_common_admin_base|-->,<--|ldap_common_basedn|-->?one
+#nss_base_hosts		ou=Hosts,dc=padl,dc=com?one
+#nss_base_services	ou=Services,dc=padl,dc=com?one
+#nss_base_networks	ou=Networks,dc=padl,dc=com?one
+#nss_base_protocols	ou=Protocols,dc=padl,dc=com?one
+#nss_base_rpc		ou=Rpc,dc=padl,dc=com?one
+#nss_base_ethers	ou=Ethers,dc=padl,dc=com?one
+#nss_base_netmasks	ou=Networks,dc=padl,dc=com?ne
+#nss_base_bootparams	ou=Ethers,dc=padl,dc=com?one
+#nss_base_aliases	ou=Aliases,dc=padl,dc=com?one
+#nss_base_netgroup	ou=Netgroup,dc=padl,dc=com?one
+
+# attribute/objectclass mapping
+# Syntax:
+#nss_map_attribute	rfc2307attribute	mapped_attribute
+#nss_map_objectclass	rfc2307objectclass	mapped_objectclass
+
+# configure --enable-nds is no longer supported.
+# For NDS now do:
+#nss_map_attribute uniqueMember member
+
+# configure --enable-mssfu-schema is no longer supported.
+# For MSSFU now do:
+#nss_map_objectclass posixAccount User
+#nss_map_attribute uid msSFUName
+#nss_map_attribute uniqueMember posixMember
+#nss_map_attribute userPassword msSFUPassword
+#nss_map_attribute homeDirectory msSFUHomeDirectory
+#nss_map_objectclass posixGroup Group
+#nss_map_attribute cn msSFUName
+
+# Alternatively, if you wish to equivalence W2K and POSIX
+# groups, change the uniqueMember mapping line to:
+#nss_map_attribute uniqueMember member
+
+# configure --enable-authpassword is no longer supported
+# For authPassword support, now do:
+#nss_map_attribute userPassword authPassword
+
+# For IBM AIX SecureWay support, do:
+#nss_map_objectclass posixAccount aixAccount
+#nss_base_passwd ou=aixaccount,?one
+#nss_map_attribute uid userName
+#nss_map_attribute gidNumber gid
+#nss_map_attribute uidNumber uid
+#nss_map_attribute userPassword passwordChar
+#nss_map_objectclass posixGroup aixAccessGroup
+#nss_base_group ou=aixgroup,?one
+#nss_map_attribute cn groupName
+#nss_map_attribute uniqueMember member

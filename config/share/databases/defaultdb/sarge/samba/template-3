@@ -1,0 +1,7 @@
+' VBScript.
+Dim Shell, DesktopPath, URL
+Set Shell = CreateObject("WScript.Shell")
+DesktopPath = Shell.SpecialFolders("Desktop")
+Set URL = Shell.CreateShortcut(DesktopPath & "\My Home.LNK")
+URL.TargetPath = "H:\"
+URL.Save

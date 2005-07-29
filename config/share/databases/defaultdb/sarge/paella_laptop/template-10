@@ -1,0 +1,90 @@
+#configuration file for paella
+[DEFAULT]
+#these shouldn't be refrenced unless its in a SECTION
+mirrors:			/mirrors
+workspace:		/home/umeboshi/workspace
+freespace:		/freespace/share
+config_path:		%(workspace)s/paella/config
+local_mirror:		%(mirrors)s/debian
+example_path:		/usr/share/doc/paella-uml/examples
+
+
+#database info
+dbhost:			10.0.1.1
+dbname:			paella
+dbusername:		umeboshi
+dbpassword:		waugk
+
+#path to local python modules
+python_path:		%(workspace)s/paella/src
+
+script_path:		%(config_path)s/scripts
+
+#this file
+#this is a path to pass to the umlchroot
+#this should be in the umlmachines config
+paellarc:			/etc/paellarc
+
+#these should maybe also be in the umlmachines config
+rootimage_path:		%(freespace)s/roots
+basetarball_path:		%(rootimage_path)s/paella_bases
+
+#export as config_host(rw,no_root_squash)
+bkuptarball_path:		%(mirrors)s/bkups
+nfs_host:			paella
+
+#this is for the management gui
+db_bkup_path:		%(bkuptarball_path)s/main
+
+#this is deprecated
+backup_installed_system:	false
+template_path:		/tmp/nowhere
+
+
+[SECTIONS]:
+global:			global
+admin:			dbadmin
+repos:			repos
+paella:			paella
+debian:			debian
+umlmachines:		umlmachines
+
+
+[umlmachines]
+uml_machines_conf:	%(example_path)s/umlmachines
+
+[global]
+python_path:		%(workspace)s/paella/src
+
+[dbadmin]
+dbusername:			fastback
+dbpassword:		flash
+db_bkup_path:		/opt/workspace/dbackup
+
+[repos]
+dbname:			repository
+local_mirror:		%(mirrors)s/debian
+http_mirror:		ftp.us.debian.org
+http_mirror_root:		/debian
+repos_server:		premio
+repos_server_port:	8000
+local_http:		http://10.0.1.1%(http_mirror_root)s
+
+[paella]
+dbname:			paella
+tmp_extract_path:		%(workspace)s/extdeb
+
+
+[debian]
+main_repos_host:		http://ftp.us.debian.org
+local_repos_host:		paella
+nfs_repos_host:		paella
+sources_file:		
+main_repos_path:		/debian
+#local_repos_path:		/mirrors/share/debrepos/debian
+local_repos_path:		/mirrors/debian
+nfs_repos_path:		/mirrors/debian/sid-mirror
+
+repos_mnt_point:		/mirrors/debian
+suites:			sid, woody
+

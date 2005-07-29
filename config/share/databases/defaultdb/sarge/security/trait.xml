@@ -1,0 +1,61 @@
+<trait name="security" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="reconfig">
+			aide
+		</package>
+		<package action="reconfig">
+			checksecurity
+		</package>
+		<package action="reconfig">
+			chkrootkit
+		</package>
+		<package action="reconfig">
+			john
+		</package>
+		<package action="reconfig">
+			tiger
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="aide">
+			etc/aide/aide.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="aide">
+			etc/default/aide
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="checksecurity">
+			etc/checksecurity.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="checksecurity">
+			etc/checksecurity/check-diskfree.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="checksecurity">
+			etc/checksecurity/check-passwd.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="checksecurity">
+			etc/checksecurity/check-setuid.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="checksecurity">
+			var/cache/debconf/config.dat
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="chkrootkit">
+			etc/chkrootkit.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="tiger">
+			etc/tiger/tiger.ignore
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="tiger">
+			etc/tiger/tigerrc
+		</template>
+	</templates>
+	<scripts/>
+</trait>

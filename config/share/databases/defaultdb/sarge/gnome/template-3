@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="command_screenshot" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command_screenshot"/>
+<entry name="command_window_screenshot" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command_window_screenshot"/>
+<entry name="command_12" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_11" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_10" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_9" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_8" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_7" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_6" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_5" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_4" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_3" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_2" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+<entry name="command_1" mtime="1081569248" schema="/schemas/apps/metacity/keybinding_commands/command"/>
+</gconf>

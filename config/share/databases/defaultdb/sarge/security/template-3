@@ -1,0 +1,21 @@
+#
+#   This is the configuration file for the disk space check
+# which checksecurity will perform via the 'check-diskfree' plugin.
+#
+#  To disable this series of tests edit /etc/checksecurity.conf
+# and set 'check-diskspace="FALSE"'.
+#
+##
+
+
+##
+#  If the disk usage of any partition becomes more than 70% full
+# then we will generate an alert.
+#
+#  Valid values or "0" - "100"
+#
+##
+CHECK_DISK_PERCENT="70"
+
+
+

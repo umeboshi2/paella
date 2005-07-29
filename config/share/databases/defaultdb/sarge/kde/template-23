@@ -1,0 +1,39 @@
+[Main Window Settings Toolbar bookmarkToolBar]
+Hidden=true
+IconText=IconTextRight
+Index=3
+
+[Main Window Settings Toolbar extraToolBar]
+IconText=IconOnly
+Index=0
+
+[Main Window Settings Toolbar locationToolBar]
+IconText=IconOnly
+Index=2
+
+[Main Window Settings Toolbar mainToolBar]
+Index=1
+
+[Profile]
+Container0_Children=View1,View2
+Container0_Orientation=Horizontal
+Container0_SplitterSizes=200,494
+Container0_activeChildIndex=1
+FullScreen=false
+Name=filemanagement
+RootItem=Container0
+View1_LinkedView=false
+View1_LockedLocation=false
+View1_PassiveMode=true
+View1_ServiceName=konq_sidebartng
+View1_ServiceType=Browser/View
+View1_ToggleView=true
+View1__OpenViews=home.desktop
+View2_LinkedView=false
+View2_LockedLocation=false
+View2_PassiveMode=false
+View2_ServiceName=konq_treeview
+View2_ServiceType=inode/directory
+View2_ToggleView=false
+View2_docContainer=true
+XMLUIFile=konqueror.rc

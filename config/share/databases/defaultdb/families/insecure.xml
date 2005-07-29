@@ -37,8 +37,5 @@
 			<family_variable name="trusted_hosts" trait="postgres">
 				host	all	all		10.0.0.0		255.0.0.0	trust
 			</family_variable>
-			<family_variable name="admin_password" trait="webmin">
-				YD52jq/nPegVE:0::
-			</family_variable>
 		</environ>
 	</family>

@@ -1,0 +1,85 @@
+Name: freeswan/create_rsa_key
+Template: freeswan/create_rsa_key
+Value: <--|ipsec_create_rsa_key|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/enable-oe
+Template: freeswan/enable-oe
+Value: <--|ipsec_enable_oe|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/existing_x509_certificate
+Template: freeswan/existing_x509_certificate
+Value: <--|ipsec_existing_x509_certificate|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/existing_x509_certificate_filename
+Template: freeswan/existing_x509_certificate_filename
+Value: <--|ipsec_existing_x509_certificate_filename|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/existing_x509_key_filename
+Template: freeswan/existing_x509_key_filename
+Value: <--|ipsec_existing_x509_key_filename|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/restart
+Template: freeswan/restart
+Value: <--|ipsec_restart|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/rsa_key_length
+Template: freeswan/rsa_key_length
+Value: <--|ipsec_rsa_key_length|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/rsa_key_type
+Template: freeswan/rsa_key_type
+Value: <--|ipsec_rsa_key_type|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/start_level
+Template: freeswan/start_level
+Value: <--|ipsec_start_level|-->
+Owners: freeswan
+Flags: seen
+
+Name: freeswan/x509_common_name
+Template: freeswan/x509_common_name
+Owners: freeswan
+
+Name: freeswan/x509_country_code
+Template: freeswan/x509_country_code
+Owners: freeswan
+
+Name: freeswan/x509_email_address
+Template: freeswan/x509_email_address
+Owners: freeswan
+
+Name: freeswan/x509_locality_name
+Template: freeswan/x509_locality_name
+Owners: freeswan
+
+Name: freeswan/x509_organization_name
+Template: freeswan/x509_organization_name
+Owners: freeswan
+
+Name: freeswan/x509_organizational_unit
+Template: freeswan/x509_organizational_unit
+Owners: freeswan
+
+Name: freeswan/x509_self_signed
+Template: freeswan/x509_self_signed
+Owners: freeswan
+
+Name: freeswan/x509_state_name
+Template: freeswan/x509_state_name
+Owners: freeswan

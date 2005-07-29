@@ -1,0 +1,27 @@
+#
+#   This is the configuration file for the password checks
+# which checksecurity will perform via the 'check-passwd' plugin.
+#
+#
+#  To disable this series of tests edit /etc/checksecurity.conf
+# and set 'check-passwords="FALSE"'.
+#
+##
+
+
+##
+#  Check for duplicate UID's.
+#
+#  Valid values or "TRUE" or "FALSE".
+##
+CHECK_PASSWORD_WARN_UIDS="TRUE"
+
+##
+#  The following controls whether we should warn about any
+# accounts which do not have a password set.
+#
+#  Valid values or "TRUE" or "FALSE".
+##
+CHECK_PASSWORD_EMPTY="TRUE"
+
+

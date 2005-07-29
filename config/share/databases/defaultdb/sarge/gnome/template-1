@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="mouse_button_modifier" mtime="1081569248" schema="/schemas/apps/metacity/general/mouse_button_modifier" type="string">
+<stringvalue>&lt;Super&gt;</stringvalue>
+</entry>
+<entry name="button_layout" mtime="1081569248" schema="/schemas/apps/metacity/general/button_layout"/>
+<entry name="focus_mode" mtime="1081569248" schema="/schemas/apps/metacity/general/focus_mode" type="string">
+<stringvalue>sloppy</stringvalue>
+</entry>
+<entry name="action_double_click_titlebar" mtime="1081569248" schema="/schemas/apps/metacity/general/action_double_click_titlebar" type="string">
+<stringvalue>toggle_shade</stringvalue>
+</entry>
+<entry name="auto_raise" mtime="1081569248" schema="/schemas/apps/metacity/general/auto_raise" type="bool" value="true"/>
+<entry name="auto_raise_delay" mtime="1081569248" schema="/schemas/apps/metacity/general/auto_raise_delay" type="int" value="500"/>
+<entry name="theme" mtime="1081569248" schema="/schemas/apps/metacity/general/theme" type="string">
+<stringvalue><--|gnome_metacity_theme|--></stringvalue>
+</entry>
+<entry name="titlebar_uses_system_font" mtime="1081569248" schema="/schemas/apps/metacity/general/titlebar_uses_system_font"/>
+<entry name="titlebar_font" mtime="1081569248" schema="/schemas/apps/metacity/general/titlebar_font"/>
+<entry name="num_workspaces" mtime="1081569248" schema="/schemas/apps/metacity/general/num_workspaces" type="int" value="6"/>
+<entry name="visual_bell" mtime="1081569248" schema="/schemas/apps/metacity/general/visual_bell"/>
+<entry name="audible_bell" mtime="1081569248" schema="/schemas/apps/metacity/general/audible_bell"/>
+<entry name="visual_bell_type" mtime="1081569248" schema="/schemas/apps/metacity/general/visual_bell_type"/>
+<entry name="application_based" mtime="1081569248" schema="/schemas/apps/metacity/general/application_based"/>
+<entry name="disable_workarounds" mtime="1081569248" schema="/schemas/apps/metacity/general/disable_workarounds"/>
+</gconf>

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<gconf>
+<entry name="default" mtime="1081569131" schema="/schemas/desktop/gnome/applications/window_manager/default" type="string"><stringvalue>/usr/bin/metacity</stringvalue></entry>
+<entry name="current" mtime="1081569131" schema="/schemas/desktop/gnome/applications/window_manager/current"/>
+<entry name="number_of_workspaces" mtime="1081569131" schema="/schemas/desktop/gnome/applications/window_manager/number_of_workspaces"/>
+<entry name="workspace_names" mtime="1081569131" schema="/schemas/desktop/gnome/applications/window_manager/workspace_names"/>
+</gconf>

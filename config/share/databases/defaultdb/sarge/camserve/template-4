@@ -1,0 +1,51 @@
+<?php
+if (!isset($_POST['moday']))
+  { echo "<html><title>No</title>Press back and select a day of the month</html>"; }
+else {
+  if ((!isset($_POST['uname']) || ($_POST['uname'] == "")))
+    {
+      echo "<html><title>No</title>Press back and set a username</html>"; }
+  else
+    {
+      if (($_POST['moday'] == 0) || ($_POST['monum'] == 0) || ($_POST['moyear'] == 0))
+	{
+	  echo "<html><title>No</title>Press back and select a checkout date.</html>";
+	}
+      else
+	{
+	  $newpass = rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9);
+	  $db = pg_connect("dbname='kennelauth'");
+	  if (strlen($_POST['monum']) == 1)
+	    { $m = "0".$_POST['monum']; }
+	  else
+	    { $m = $_POST['monum']; }
+	  $result=pg_fetch_all(pg_query($db, "select * from valid_users where kennel='".$_POST['kennelnum']."' and checkin <= CURRENT_TIMESTAMP and checkout >= to_timestamp('".$_POST['moday'].$m.$_POST['moyear']."', 'DDMMYYYY')"));
+
+
+	  if (!($result)) {
+	    pg_query($db, "insert into valid_users (userlogin, password, kennel, checkin, checkout) values ('".$_POST['uname']."',md5('".$newpass."'), ".$_POST['kennelnum'].", CURRENT_TIMESTAMP, to_timestamp('".$_POST['moday'].$m.$_POST['moyear']."', 'DDMMYYYY'))");
+	    echo "<html><title>New User Accepted</title>";
+	    
+	    echo "Thank you for registering for Kennel ".$_POST['kennelnum']."<br>";
+	    echo "Your username: ".$_POST['uname']."<br>";
+	    echo "Your password: ".$newpass."<br>";
+	    echo "Checkout time: ".$_POST['moday']."/".$m."/".$_POST['moyear']."<br>";
+	    echo "-------------------------------</html>";
+	    
+	  }
+
+	  else {
+	    
+	  echo "<html><title>You are trying to double book!</title>"; 
+	  
+	  echo "You were unable to register for Kennel ".$_POST['kennelnum']."<br>"; 
+	  echo $result[0]['userlogin']." has registered for Kennel".$_POST['kennelnum']." from ".$result[0]['checkin']." to ".$result[0]['checkout']."<br>";
+	  echo "-------------------------------</html>"; 
+
+	  }
+	  
+
+	}
+    }
+}
+?>

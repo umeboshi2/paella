@@ -1,0 +1,45 @@
+<trait name="glgames" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			desktop
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			egoboo
+		</package>
+		<package action="install">
+			egoboo-data
+		</package>
+		<package action="install">
+			gl-117
+		</package>
+		<package action="install">
+			gl-117-data
+		</package>
+		<package action="install">
+			gltron
+		</package>
+		<package action="install">
+			neverball
+		</package>
+		<package action="install">
+			neverdata
+		</package>
+		<package action="install">
+			planetpenguin-racer
+		</package>
+		<package action="install">
+			planetpenguin-racer-data
+		</package>
+		<package action="install">
+			planetpenguin-racer-extras
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

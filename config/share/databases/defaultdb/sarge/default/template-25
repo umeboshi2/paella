@@ -1,0 +1,286 @@
+Name: dictionaries-common/default-ispell
+Template: dictionaries-common/default-ispell
+Value: american (American English)
+Owners: dictionaries-common
+Flags: seen
+Variables:
+ choices = american (American English), british (British English)
+
+Name: dictionaries-common/default-wordlist
+Template: dictionaries-common/default-wordlist
+Value: american (American English)
+Owners: dictionaries-common
+Flags: seen
+Variables:
+ choices = american (American English)
+
+Name: dictionaries-common/invalid_debconf_value
+Template: dictionaries-common/invalid_debconf_value
+Owners: dictionaries-common
+
+Name: dictionaries-common/ispell-autobuildhash-message
+Template: dictionaries-common/ispell-autobuildhash-message
+Owners: dictionaries-common
+
+Name: dictionaries-common/move_old_usr_dict
+Template: dictionaries-common/move_old_usr_dict
+Owners: dictionaries-common
+
+Name: dictionaries-common/old_wordlist_link
+Template: dictionaries-common/old_wordlist_link
+Owners: dictionaries-common
+
+Name: dictionaries-common/remove_old_usr_dict_link
+Template: dictionaries-common/remove_old_usr_dict_link
+Value: false
+Owners: dictionaries-common
+
+Name: dictionaries-common/selecting_ispell_wordlist_default
+Template: dictionaries-common/selecting_ispell_wordlist_default
+Owners: dictionaries-common
+
+Name: flex/upgrade/pre_2.5.5
+Template: flex/upgrade/pre_2.5.5
+Owners: flex
+
+Name: iamerican/languages
+Template: iamerican/languages
+Owners: iamerican
+
+Name: ibritish/languages
+Template: ibritish/languages
+Owners: ibritish
+
+Name: ifupdown/convert-interfaces
+Template: ifupdown/convert-interfaces
+Owners: ifupdown
+
+Name: libssl0.9.7/restart-services
+Template: libssl0.9.7/restart-services
+Owners: libssl0.9.7
+
+Name: libusb-0.1-4/nousb
+Template: libusb-0.1-4/nousb
+Owners: libusb-0.1-4
+
+Name: libusb-0.1-4/usbfs
+Template: libusb-0.1-4/usbfs
+Owners: libusb-0.1-4
+
+Name: libx11-6/migrate_xkb_dir
+Template: libx11-6/migrate_xkb_dir
+Owners: libx11-6
+
+Name: libxt6/migrate_app_defaults_dir
+Template: libxt6/migrate_app_defaults_dir
+Owners: libxt6
+
+Name: lilo/bad_bitmap
+Template: lilo/bad_bitmap
+Owners: lilo
+
+Name: lilo/new-config
+Template: lilo/new-config
+Value: 
+Owners: lilo
+Flags: seen
+
+Name: lilo/runme
+Template: lilo/runme
+Owners: lilo
+
+Name: lilo/upgrade
+Template: lilo/upgrade
+Owners: lilo
+
+Name: logcheck-database/conffile-cleanup
+Template: logcheck-database/conffile-cleanup
+Owners: logcheck-database
+
+Name: logcheck-database/rules-directories-note
+Template: logcheck-database/rules-directories-note
+Value: 
+Owners: logcheck-database
+Flags: seen
+
+Name: logcheck-database/security_level
+Template: logcheck-database/security_level
+Value: server
+Owners: logcheck-database
+Flags: seen
+
+Name: logcheck-database/standard-rename-note
+Template: logcheck-database/standard-rename-note
+Owners: logcheck-database
+
+Name: logcheck/auto_create_logfiles
+Template: logcheck/auto_create_logfiles
+Value: true
+Owners: logcheck
+Flags: seen
+
+Name: logcheck/changes
+Template: logcheck/changes
+Owners: logcheck
+
+Name: logcheck/email_address
+Template: logcheck/email_address
+Value: root
+Owners: logcheck
+Flags: seen
+
+Name: logcheck/install-note
+Template: logcheck/install-note
+Value: 
+Owners: logcheck
+Flags: seen
+
+Name: logcheck/upgrade-note
+Template: logcheck/upgrade-note
+Owners: logcheck
+
+Name: netbase/spoofprot
+Template: netbase/spoofprot
+Value: 
+Owners: netbase
+Flags: seen
+
+Name: nfs-common/tcpwrappers-statd
+Template: nfs-common/tcpwrappers-statd
+Value: 
+Owners: nfs-common
+Flags: seen
+
+Name: quota/cc
+Template: quota/cc
+Owners: quota
+
+Name: quota/cc_before
+Template: quota/cc_before
+Owners: quota
+
+Name: quota/group_message
+Template: quota/group_message
+Owners: quota
+
+Name: quota/group_signature
+Template: quota/group_signature
+Owners: quota
+
+Name: quota/mailfrom
+Template: quota/mailfrom
+Owners: quota
+
+Name: quota/message
+Template: quota/message
+Owners: quota
+
+Name: quota/rquota_setquota
+Template: quota/rquota_setquota
+Owners: quota
+
+Name: quota/run_warnquota
+Template: quota/run_warnquota
+Value: false
+Owners: quota
+Flags: seen
+
+Name: quota/signature
+Template: quota/signature
+Owners: quota
+
+Name: quota/subject
+Template: quota/subject
+Owners: quota
+
+Name: quota/supportemail
+Template: quota/supportemail
+Owners: quota
+
+Name: quota/supportphone
+Template: quota/supportphone
+Owners: quota
+
+Name: shared/packages-ispell
+Template: shared/packages-ispell
+Owners: iamerican, ibritish
+
+Name: shared/packages-wordlist
+Template: shared/packages-wordlist
+Owners: wamerican
+
+Name: slay/butthead
+Template: slay/butthead
+Value: false
+Owners: slay
+Flags: seen
+
+Name: slay/punish
+Template: slay/punish
+Value: true
+Owners: slay
+Flags: seen
+
+Name: ssh/SUID_client
+Template: ssh/SUID_client
+Value: true
+Owners: ssh
+Flags: seen
+
+Name: ssh/disable_cr_auth
+Template: ssh/disable_cr_auth
+Owners: ssh
+
+Name: ssh/encrypted_host_key_but_no_keygen
+Template: ssh/encrypted_host_key_but_no_keygen
+Owners: ssh
+
+Name: ssh/forward_warning
+Template: ssh/forward_warning
+Value: 
+Owners: ssh
+Flags: seen
+
+Name: ssh/insecure_rshd
+Template: ssh/insecure_rshd
+Owners: ssh
+
+Name: ssh/insecure_telnetd
+Template: ssh/insecure_telnetd
+Owners: ssh
+
+Name: ssh/new_config
+Template: ssh/new_config
+Owners: ssh
+
+Name: ssh/protocol2_only
+Template: ssh/protocol2_only
+Owners: ssh
+
+Name: ssh/run_sshd
+Template: ssh/run_sshd
+Value: true
+Owners: ssh
+Flags: seen
+
+Name: ssh/ssh2_keys_merged
+Template: ssh/ssh2_keys_merged
+Owners: ssh
+
+Name: ssh/use_old_init_script
+Template: ssh/use_old_init_script
+Value: true
+Owners: ssh
+Flags: seen
+
+Name: ssh/user_environment_tell
+Template: ssh/user_environment_tell
+Owners: ssh
+
+Name: wamerican/languages
+Template: wamerican/languages
+Owners: wamerican
+
+Name: xfree86-common/experimental_packages
+Template: xfree86-common/experimental_packages
+Owners: xfree86-common

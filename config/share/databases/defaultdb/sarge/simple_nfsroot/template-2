@@ -1,0 +1,70 @@
+#
+# mountall.sh	Mount all filesystems.
+#
+# Version:	@(#)mountall.sh  2.85-4  08-May-2003  miquels@cistron.nl
+#
+. /etc/default/rcS
+
+#
+# Mount local file systems in /etc/fstab. For some reason, people
+# might want to mount "proc" several times, and mount -v complains
+# about this. So we mount "proc" filesystems without -v.
+#
+[ "$VERBOSE" != no ] && echo "Mounting local filesystems..."
+mount -at proc
+mount -avt nosmbfs,noncpfs,noproc
+
+#
+# We might have mounted something over /dev, see if /dev/initctl is there.
+#
+if [ ! -p /dev/initctl ]
+then
+	rm -f /dev/initctl
+	mknod -m 600 /dev/initctl p
+fi
+kill -USR1 1
+
+#
+# Execute swapon command again, in case we want to swap to
+# a file on a now mounted filesystem.
+#
+doswap=yes
+case "`uname -r`" in
+	2.[0123].*)
+		if grep -qs resync /proc/mdstat
+		then
+			doswap=no
+		fi
+		;;
+esac
+if [ $doswap = yes ]
+then
+	swapon -a 2> /dev/null
+fi
+
+mkdir /tmp/target
+tar -C /etc -c . | gzip > /tmp/etc.tar.gz
+mount -n -t tmpfs /dev/mem /etc
+gzip -cd /tmp/etc.tar.gz | tar -C /etc -x
+cp -a /var/run /tmp/target
+cp -a /var/log /tmp/target
+mkdir -p /tmp/target/lib/dpkg
+mkdir /tmp/target/tmp
+mkdir /tmp/target/spool
+mkdir /tmp/target/mail
+mkdir /tmp/target/www
+
+cp -a /var/lib/dhcp /tmp/target/lib
+cp -a /var/lib/exim4 /tmp/target/lib
+cp -a /var/lib/logrotate /tmp/target/lib
+cp -a /var/lib/setserial /tmp/target/lib
+cp -a /var/lib/quota /tmp/target/lib
+cp -a /var/lib/rcconf /tmp/target/lib
+cp -a /var/lib/nfs /tmp/target/lib
+mount -t tmpfs /dev/mem /var
+cp -a /tmp/target/* /var
+rm /tmp/target/ -fr
+rm /tmp/etc.tar.gz
+
+: exit 0
+

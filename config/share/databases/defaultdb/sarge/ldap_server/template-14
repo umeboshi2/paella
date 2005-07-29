@@ -1,0 +1,33 @@
+# PAM configuration for the Secure Shell service
+
+# Disallow non-root logins when /etc/nologin exists.
+auth       required     pam_nologin.so
+
+# Read environment variables from /etc/environment and
+# /etc/security/pam_env.conf.
+auth       required     pam_env.so # [1]
+
+# Standard Un*x authentication.
+#@include common-auth
+auth	required	pam_unix.so
+
+# Standard Un*x authorization.
+#@include common-account
+account	required	pam_unix.so
+
+# Standard Un*x session setup and teardown.
+#@include common-session
+session	required	pam_unix.so
+
+# Print the message of the day upon successful login.
+session    optional     pam_motd.so # [1]
+
+# Print the status of the user's mailbox upon successful login.
+session    optional     pam_mail.so standard noenv # [1]
+
+# Set up user limits from /etc/security/limits.conf.
+session    required     pam_limits.so
+
+# Standard Un*x password updating.
+#@include common-password
+password	required	pam_unix.so md5

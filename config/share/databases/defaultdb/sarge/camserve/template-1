@@ -1,0 +1,9 @@
+<Location /kennelmanage>
+  order deny,allow
+  deny from all
+  allow from 127.0.0.0/255.0.0.0
+  allow from <--|global_local_network|-->/<--|global_local_netmask|-->
+  Options Indexes FollowSymLinks MultiViews
+</Location>
+
+

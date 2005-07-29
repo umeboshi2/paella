@@ -1,0 +1,109 @@
+#this file should be included from the main smb.conf file
+
+#======================= Share Definitions =======================
+
+[homes]
+   comment = Home Directories
+   browseable = no
+
+# By default, the home directories are exported read-only. Change next
+# parameter to 'yes' if you want to be able to write to them.
+   writable = no
+
+# File creation mask is set to 0700 for security reasons. If you want to
+# create files with group=rw permissions, set next parameter to 0775.
+   create mask = 0700
+
+# Directory creation mask is set to 0700 for security reasons. If you want to
+# create dirs. with group=rw permissions, set next parameter to 0775.
+   directory mask = 0700
+
+# Un-comment the following and create the netlogon directory for Domain Logons
+# (you need to configure Samba to act as a domain controller too.)
+;[netlogon]
+;   comment = Network Logon Service
+;   path = /etc/samba/netlogon
+;   guest ok = yes
+;   writable = no
+;   share modes = no
+
+[printers]
+   comment = All Printers
+   browseable = no
+   path = /tmp
+   printable = yes
+   public = no
+   writable = no
+   create mode = 0700
+
+# Windows clients look for this share name as a source of downloadable
+# printer drivers
+[print$]
+   comment = Printer Drivers
+   path = /var/lib/samba/printers
+   browseable = yes
+   read only = yes
+   guest ok = no
+# Uncomment to allow remote administration of Windows print drivers.
+# Replace 'ntadmin' with the name of the group your admin users are
+# members of.
+;   write list = root, @ntadmin
+
+# A sample share for sharing your CD-ROM with others.
+;[cdrom]
+;   comment = Samba server's CD-ROM
+;   writable = no
+;   locking = no
+;   path = /cdrom
+;   public = yes
+
+# A sample share
+[common]
+   comment = Samba server's common space
+   writable = no
+   locking = no
+   path = <--|localnet_fs_base_path|-->/<--|localnet_fs_common_dir|-->
+   public = yes
+
+# A sample share
+[share]
+   comment = Samba server's shared space
+   writable = yes
+   locking = no
+   path = <--|localnet_fs_base_path|-->/<--|localnet_fs_share_dir|-->
+   public = yes
+   create mask = 0770
+   directory mask = 0770
+
+[office]
+   comment = Samba server's shared space
+   writable = yes
+   locking = yes
+   path = <--|localnet_fs_base_path|-->/<--|localnet_fs_office_dir|-->
+   public = yes
+   create mask = 0770
+   directory mask = 0770
+
+[admin]
+   comment = Samba server's shared space
+   writable = yes
+   locking = yes
+   path = <--|localnet_fs_base_path|-->/<--|localnet_fs_admin_dir|-->
+   public = yes
+   create mask = 0770
+   directory mask = 0770
+
+# The next two parameters show how to auto-mount a CD-ROM when the
+#	cdrom share is accesed. For this to work /etc/fstab must contain
+#	an entry like this:
+#
+#       /dev/scd0   /cdrom  iso9660 defaults,noauto,ro,user   0 0
+#
+# The CD-ROM gets unmounted automatically after the connection to the
+#
+# If you don't want to use auto-mounting/unmounting make sure the CD
+#	is mounted on /cdrom
+#
+;   preexec = /bin/mount /cdrom
+;   postexec = /bin/umount /cdrom
+

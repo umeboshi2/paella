@@ -1,0 +1,230 @@
+<trait name="gnome" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			desktop
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			abiword-common
+		</package>
+		<package action="install">
+			abiword-gnome
+		</package>
+		<package action="install">
+			bug-buddy
+		</package>
+		<package action="install">
+			evolution
+		</package>
+		<package action="install">
+			file-roller
+		</package>
+		<package action="install">
+			gconf
+		</package>
+		<package action="install">
+			gdesklets
+		</package>
+		<package action="install">
+			gnome-applets
+		</package>
+		<package action="install">
+			gnome-audio
+		</package>
+		<package action="install">
+			gnome-control-center
+		</package>
+		<package action="install">
+			gnome-core
+		</package>
+		<package action="install">
+			gnome-desktop-data
+		</package>
+		<package action="install">
+			gnome-media
+		</package>
+		<package action="install">
+			gnome-panel
+		</package>
+		<package action="install">
+			gnome-panel-data
+		</package>
+		<package action="install">
+			gnome-randr-applet
+		</package>
+		<package action="install">
+			gnome-session
+		</package>
+		<package action="install">
+			goats
+		</package>
+		<package action="install">
+			metacity
+		</package>
+		<package action="install">
+			metacity-themes
+		</package>
+		<package action="install">
+			quick-lounge-applet
+		</package>
+	</packages>
+	<environ>
+		<gtktheme>
+			Smooth-Peachy-Clean
+		</gtktheme>
+		<icon_theme>
+			Flat-Blue
+		</icon_theme>
+		<metacity_theme>
+			Bright
+		</metacity_theme>
+		<terminal>
+			x-terminal-emulator
+		</terminal>
+		<workspace1>
+			$desktop_desktop1
+		</workspace1>
+		<workspace2>
+			$desktop_desktop2
+		</workspace2>
+		<workspace3>
+			$desktop_desktop3
+		</workspace3>
+		<workspace4>
+			$desktop_desktop4
+		</workspace4>
+		<workspace5>
+			$desktop_desktop5
+		</workspace5>
+		<workspace6>
+			$desktop_desktop6
+		</workspace6>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100644" owner="root" package="gnome-core">
+			etc/gconf/2/path
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-core">
+			etc/gconf/gconf.xml.defaults/apps/metacity/general/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-core">
+			etc/gconf/gconf.xml.defaults/apps/metacity/global_keybindings/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-core">
+			etc/gconf/gconf.xml.defaults/apps/metacity/keybinding_commands/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-core">
+			etc/gconf/gconf.xml.defaults/apps/metacity/window_keybindings/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-core">
+			etc/gconf/gconf.xml.defaults/apps/metacity/workspace_names/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0640" owner="root" package="gnome-core">
+			etc/skel/.xbindkeysrc.scm
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-desktop-data">
+			etc/gconf/gconf.xml.defaults/desktop/gnome/applications/browser/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-desktop-data">
+			etc/gconf/gconf.xml.defaults/desktop/gnome/applications/terminal/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-desktop-data">
+			etc/gconf/gconf.xml.defaults/desktop/gnome/applications/window_manager/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-desktop-data">
+			etc/gconf/gconf.xml.defaults/desktop/gnome/background/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-desktop-data">
+			etc/gconf/gconf.xml.defaults/desktop/gnome/interface/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-desktop-data">
+			etc/gconf/gconf.xml.defaults/desktop/gnome/url-handlers/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-desktop-data">
+			etc/gconf/gconf.xml.defaults/desktop/gnome/url-handlers/http/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/clock/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/desktop_resize/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/fish/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/mini_commander/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/mini_commander/prefs/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/mixer/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/mixer/prefs/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/notes/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/quicklaunch/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/quicklaunch/prefs/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/window_list/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/window_list/prefs/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/window_menu/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/workspace_switcher/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/applets/workspace_switcher/prefs/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/general/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/objects/main_menu/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/toplevels/bottom_panel/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/toplevels/command_panel/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-panel">
+			etc/gconf/gconf.xml.defaults/apps/panel/default_setup/toplevels/top_panel/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="gnome-session">
+			etc/gconf/gconf.xml.defaults/apps/gnome-session/options/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0640" owner="root" package="gnome-session">
+			etc/skel/.gnome2/session-manual
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="goats">
+			etc/gconf/gconf.xml.defaults/apps/goats/defaults/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="goats">
+			etc/gconf/gconf.xml.defaults/apps/goats/settings/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="goats">
+			etc/skel/.gconf/apps/goats/herd/%gconf.xml
+		</template>
+		<template grp_owner="root" mode="0600" owner="root" package="goats">
+			etc/skel/.gconf/apps/goats/herd/applet_goat_1608129903/%gconf.xml
+		</template>
+	</templates>
+	<scripts/>
+</trait>

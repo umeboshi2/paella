@@ -1,0 +1,83 @@
+<trait name="samba" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			fileserver
+		</parent>
+	</parents>
+	<packages>
+		<package action="reconfig">
+			samba
+		</package>
+		<package action="reconfig">
+			samba-common
+		</package>
+	</packages>
+	<environ>
+		<common_path>
+			$fileserver_common_path
+		</common_path>
+		<domain_master>
+			auto
+		</domain_master>
+		<generate_smbpasswd>
+			true
+		</generate_smbpasswd>
+		<local_master>
+			yes
+		</local_master>
+		<oslevel>
+			20
+		</oslevel>
+		<preferred_master>
+			auto
+		</preferred_master>
+		<run_mode>
+			daemons
+		</run_mode>
+		<security>
+			share
+		</security>
+		<shared_path>
+			$fileserver_share_path
+		</shared_path>
+		<workgroup>
+			workgroup
+		</workgroup>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/default/samba
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/samba/gdbcommands
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/samba/netlogon/login.bat
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/samba/netlogon/shortcut.vbs
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/samba/smb-debian-edu.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/samba/smb-defaultshares.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/samba/smb-ldap.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			etc/samba/smb-winbind-debian-edu.conf
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="samba">
+			etc/samba/smb.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root" package="samba">
+			var/cache/debconf/config.dat
+		</template>
+	</templates>
+	<scripts/>
+</trait>

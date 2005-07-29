@@ -1,0 +1,68 @@
+<trait name="enlightenment" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			xwindow
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			e16keyedit
+		</package>
+		<package action="install">
+			e16menuedit
+		</package>
+		<package action="install">
+			enlightenment
+		</package>
+		<package action="install">
+			enlightenment-data
+		</package>
+		<package action="install">
+			enlightenment-theme-bluesteel
+		</package>
+		<package action="install">
+			enlightenment-theme-brushedmetal
+		</package>
+		<package action="install">
+			enlightenment-theme-ganymede
+		</package>
+		<package action="install">
+			enlightenment-theme-shinymetal
+		</package>
+	</packages>
+	<environ>
+		<tooltips>
+			__OFF
+		</tooltips>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0100640" owner="root" package="enlightenment">
+			etc/skel/.enlightenment/...e_session-XXXXXX.snapshots.0
+		</template>
+		<template grp_owner="root" mode="0100640" owner="root" package="enlightenment">
+			etc/skel/.enlightenment/user_theme.cfg
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="enlightenment">
+			usr/share/enlightenment/config/actionclasses.cfg
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="enlightenment">
+			usr/share/enlightenment/config/backup-tooltips.cfg
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="enlightenment">
+			usr/share/enlightenment/config/control.cfg
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="enlightenment">
+			usr/share/enlightenment/config/definitions
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="enlightenment">
+			usr/share/enlightenment/config/keybindings.cfg
+		</template>
+		<template grp_owner="root" mode="0100644" owner="root" package="enlightenment">
+			usr/share/enlightenment/config/menus.cfg
+		</template>
+	</templates>
+	<scripts/>
+</trait>

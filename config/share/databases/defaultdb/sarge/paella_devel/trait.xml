@@ -1,0 +1,44 @@
+<trait name="paella_devel" suite="sarge">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			postgres
+		</parent>
+		<parent>
+			subversion
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			initrd-tools
+		</package>
+		<package action="install">
+			kernel-patch-debian-2.4.27
+		</package>
+		<package action="install">
+			kernel-patch-scripts
+		</package>
+		<package action="install">
+			kernel-patch-skas
+		</package>
+		<package action="install">
+			kernel-source-2.4.27
+		</package>
+		<package action="install">
+			kernel-tree-2.4.27
+		</package>
+		<package action="install">
+			libncurses5-dev
+		</package>
+		<package action="install">
+			xxdiff
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

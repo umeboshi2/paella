@@ -1,0 +1,38 @@
+#!/usr/bin/python
+import os
+from os.path import isdir, isfile, join
+from useless.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+from paella.installer.shorewall import Shorewall
+
+it = InstallerTools()
+it.set_trait('firewall')
+
+s = Shorewall()
+s.set_target(it.target)
+s.get_rulesfile()
+if 'clockserver' in it.traitlist:
+    print 'firewall uses ntp'
+    s.use_rules.use_ntp()
+if 'mailserver' in it.traitlist or 'exim' in it.traitlist:
+    print 'firewall handles email'
+    s.use_rules.use_smtp()
+    s.base_rules.net_fw.add_dport('smtp')
+    s.base_rules.loc_fw.add_dport('smtp')
+if 'squid' in it.traitlist:
+    print 'firewall is http cache proxy'
+    s.redirect_squid(it.get('global_local_network_cidr'))
+    s.use_rules.use_www_net()
+if 'nameserver' in it.traitlist:
+    print 'firewall is nameserver'
+    s.use_rules.use_domain()
+if 'webserver' in it.traitlist:
+    print 'firewall is webserver'
+    s.base_rules.net_fw.add_dport('www')
+    s.base_rules.net_fw.add_dport('https')
+if 'ircserver' in it.traitlist:
+    print 'firewall is ircserver'
+    s.use_rules._check_rule('loc', 'tcp')
+    s.use_rules.rules['loc_tcp'].add_dport('auth')
+s.write_rules()
+
