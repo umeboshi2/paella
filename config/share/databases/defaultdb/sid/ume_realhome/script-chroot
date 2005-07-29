@@ -1,4 +1,0 @@
-#!/bin/sh
-echo "removing authorized keys"
-rm /root/.ssh/authorized_keys*
-echo "removed authorized keys"

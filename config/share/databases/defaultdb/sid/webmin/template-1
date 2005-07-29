@@ -1,3 +1,0 @@
-root:<--|base_root_password|-->
-
-admin:<--|webmin_admin_password|-->

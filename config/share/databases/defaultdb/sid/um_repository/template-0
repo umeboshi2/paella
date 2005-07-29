@@ -1,9 +1,0 @@
-<--|um_repository_root_device|-->	/	ext2	defaults	0	0
-proc	/proc	proc	defaults	0	0
-tmpfs	/tmp	tmpfs	defaults	0	0
-/host	/home	hostfs	defaults	0	0
-<--|um_base_host_mount|-->
-<--|um_repository_nfshost|-->:/mirrors/share /mirrors/share nfs defaults 0 0
-<--|um_repository_nfshost|-->:/mirrors/common /mirrors/common nfs defaults 0 0
-<--|um_repository_nfshost|-->:/mirrors/bkups /mirrors/bkups nfs defaults 0 0
-<--|um_repository_nfshost|-->:/mirrors/debian/sid-mirror /mirrors/debian nfs defaults 0 0

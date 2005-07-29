@@ -1,4 +1,0 @@
-# Defaults for xfstt init.d script
-#
-# Valid values are: yes no
-LISTEN_TCP="yes"

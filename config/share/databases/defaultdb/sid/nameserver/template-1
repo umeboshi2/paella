@@ -1,4 +1,0 @@
-key "<--|default_standard_key_name|-->" {
-	algorithm hmac-md5;
-	secret "<--|default_standard_key|-->";
-};

@@ -1,3 +1,0 @@
-#!/bin/bash
-update-inetd --remove ^tftp
-update-inetd --add "tftp\tdgram\tudp\twait\troot\t/usr/sbin/in.tftpd\tin.tftpd -s /boot/paella -r blksize"

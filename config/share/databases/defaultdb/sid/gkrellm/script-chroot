@@ -1,3 +1,0 @@
-#!/bin/bash
-#apt-get -y install gkrellm-skins
-echo 'nothing to do right now'

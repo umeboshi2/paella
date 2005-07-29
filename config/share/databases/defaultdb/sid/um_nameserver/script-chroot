@@ -1,3 +1,0 @@
-#!/bin/bash
-#update-rc.d klogd stop 89 0 1 2 3 4 5 6
-

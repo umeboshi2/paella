@@ -1,4 +1,0 @@
-#!/bin/bash
-echo "questron script initiated"
-#echo 'deb http://paella/debian/local questron/' >> /etc/apt/sources.list
-apt-get -y update

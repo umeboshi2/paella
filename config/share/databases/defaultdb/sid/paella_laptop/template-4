@@ -1,6 +1,0 @@
-# Number of servers to start up
-RPCNFSDCOUNT=8
-
-# Options for rpc.mountd
-RPCMOUNTDOPTS="-p 860"
-

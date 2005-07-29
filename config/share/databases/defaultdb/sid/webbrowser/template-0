@@ -1,4 +1,0 @@
-# which /dev/dsp wrapper to use
-FIREFOX_DSP="auto"
-# open in a new tab or window, window by default
-FIREFOX_OPEN_IN="tab"

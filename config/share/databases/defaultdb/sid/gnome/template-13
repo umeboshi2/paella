@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-<entry name="enabled" mtime="1081569133" schema="/schemas/desktop/gnome/url-handlers/http/enabled"/>
-<entry name="command" mtime="1081569133" schema="/schemas/desktop/gnome/url-handlers/http/command" type="string"><stringvalue>sensible-browser %s</stringvalue></entry>
-<entry name="need-terminal" mtime="1081569133" schema="/schemas/desktop/gnome/url-handlers/http/need-terminal" type="bool" value="false"/>
-</gconf>

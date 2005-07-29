@@ -1,3 +1,0 @@
-#!/bin/bash
-echo "creating admin user for local website"
-zope-zpasswd -u Admin -p Adminp22wd /var/lib/zope/instance/default/access

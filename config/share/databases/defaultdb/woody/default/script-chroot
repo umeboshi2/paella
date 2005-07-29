@@ -1,5 +1,0 @@
-#!/bin/bash
-echo "default script initiated"
-update-alternatives --install /usr/bin/pager pager /usr/bin/most 99
-echo "changing localtime to US/Central with bad hack"
-rm /etc/localtime && ln -s /usr/share/zoneinfo/US/Central

@@ -1,9 +1,0 @@
-$ttl 38400
-<--|global_domain|-->.	IN	SOA	<--|global_hostname|-->. root.<--|global_hostname|-->. (
-			1035540349
-			10800
-			3600
-			604800
-			38400 )
-<--|global_domain|-->.	IN	NS	<--|global_hostname|-->.
-<--|global_hostname|-->.<--|global_domain|-->.	IN	A	<--|default_local_address|-->

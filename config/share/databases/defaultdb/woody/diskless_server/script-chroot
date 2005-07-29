@@ -1,3 +1,0 @@
-#!/bin/bash
-touch /etc/networks
-echo '+::::::' >> /etc/passwd

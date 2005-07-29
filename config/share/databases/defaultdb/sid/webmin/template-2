@@ -1,6 +1,0 @@
-Name: webmin/hostname
-Template: webmin/hostname
-Value: <--|global_hostname|-->
-Owners: webmin
-Flags: seen
-

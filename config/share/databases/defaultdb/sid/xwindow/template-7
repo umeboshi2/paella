@@ -1,6 +1,0 @@
-Accel.EditLeft: "Ctrl+["
-Accel.EditRight: "Ctrl+]"
-FontText: "-Misc-Fixed-medium-r-normal-*-10-100-75-75-c-60-iso8859-1"
-DirDiffRecursive: True
-Show.Toolbar: True
-Command.DiffDirectoriesRec: "diff -q -s -r --exclude=.svn --exclude=SCCS --exclude=CVS"

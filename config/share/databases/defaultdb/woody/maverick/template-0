@@ -1,6 +1,0 @@
-deb http://10.0.0.2/debian woody main contrib non-free
-deb-src http://10.0.0.2/debian sid main contrib non-free
-deb http://10.0.0.2/debian woody/non-US main contrib non-free
-deb-src http://10.0.0.2/debian woody/non-US main contrib non-free
-deb-src http://10.0.0.2/debian/local maverick/
-deb http://10.0.0.2/debian/local maverick/

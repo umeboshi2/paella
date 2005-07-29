@@ -1,5 +1,0 @@
-#!/bin/bash
-echo "enlightenment script initiated"
-#update-alternatives --install /usr/bin/x-window-manager x-window-manager /usr/bin/icewm 00
-#update-alternatives --install /usr/bin/x-window-manager x-window-manager /usr/bin/enlightenment 99
-echo "not doing anything"

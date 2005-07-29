@@ -1,9 +1,0 @@
-$ttl 38400
-<--|nameserver_reversed_zone|-->.in-addr.arpa.	IN	SOA	<--|global_hostname|-->. root.<--|global_hostname|-->. (
-			1035540511
-			10800
-			3600
-			604800
-			38400 )
-<--|nameserver_reversed_zone|-->.in-addr.arpa.	IN	NS	<--|global_hostname|-->.
-<--|nameserver_reversed_local_address|-->.in-addr.arpa.	IN	PTR	<--|global_hostname|-->.<--|global_domain|-->.
