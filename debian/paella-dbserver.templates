@@ -1,0 +1,28 @@
+Template: paella/dbserver/plsql_in_template1
+Type: boolean
+Default: false
+Description:  Do you want to create pgplsql handler in template1?
+ The paella database uses pgplsql for certain operations.  Creating
+  the handler in the template1 database will cause all created 
+  databases to have it ready.  Since the author uses pgplsql in many
+  of his databases, he finds this to be an effective option.  This option,
+  however may not be desirable for others, so you may decide if it is
+  right for you here.
+
+Template: paella/dbserver/installer_username
+Type: string
+Default: paella
+Description:  Postgres username of the paella installer.
+ This will not create a unix account for this user, but it will
+  create a postgres user that will be able to have read-only
+  access to most of the database (and write access to a 
+  couple of special tables).
+
+Template: paella/dbserver/admin_groupname
+Type: string
+Default: admpaella
+Description:  Postgres groupname of paella admins
+  This is currently not implemented in the code yet.  Currently,
+  the only admin is the user that creates the database and
+  runs the gui.  Soon a group will be made for them, and access
+  privileges modified to the database to allow for this.

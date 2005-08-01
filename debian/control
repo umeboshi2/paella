@@ -140,3 +140,15 @@ Description: documentation for paella
 
 
 
+Package: paella-dbserver
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-defaultdb, postgresql, postgresql-contrib
+Description: database server package for paella
+  Paella is a system for  installing and managing
+  configurations of debian systems.  This package will setup
+  the database server required for paella.  This package is
+  not required to run paella, you can setup the database 
+  manually.  This package just makes it easier.
+

@@ -10,7 +10,7 @@ if sys.argv[1] in PACKAGES:
 
 pd = {'' : 'src'}
 
-print os.environ
+#print os.environ
 
 PACKS = {
     'base' : ['paella', 'paella/base'],

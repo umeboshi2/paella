@@ -1,4 +1,5 @@
 import os
+from os.path import join
 
 from useless.base import Error
 from useless.base.util import makepaths, runlog, echo
@@ -230,3 +231,24 @@ def get_mac_addresses():
             macs.append(mac)
     return macs
 
+def make_fake_start_stop_daemon(target):
+    daemon = join(target, 'sbin/start-stop-daemon')
+    os.rename(daemon, '%s.REAL' % daemon)
+    if os.path.isfile(daemon):
+        raise Error, '%s should not exist' % daemon
+    fakescript = file(daemon, 'w')
+    fakescript.write('#!/bin/sh\n')
+    fakescript.write('echo\n')
+    fakescript.write('echo "Warning: Fake start-stop-daemon called, doing nothing"\n')
+    fakescript.close()
+    if os.system('chmod 755 %s' % daemon):
+        raise Error, 'problem changing permissions on %s' % daemon
+
+def remove_fake_start_stop_daemon(target):
+    daemon = join(target, 'sbin/start-stop-daemon')
+    real = '%s.REAL' % daemon
+    if not os.path.isfile(real):
+        raise Error, '%s does not exist' % real
+    os.remove(daemon)
+    os.rename(real, daemon)
+    

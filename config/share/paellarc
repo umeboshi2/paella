@@ -10,10 +10,13 @@
 #  deb http://mymirror/debian/local common/
 # a local line is like:
 #  deb http://mymirror/debian/local $(suite)/
-sarge_common:		true
-sarge_local:		true
+sarge_common:		false
+sarge_local:		false
 
+
+# this is only referenced in this config file
 __myhome:		/home/umeboshi
+__paelladir:		%(__myhome)s/workspace/paella
 
 [database]
 # regular database info
@@ -25,8 +28,10 @@ dbpassword:		apassword
 # these paths are used to import and export information
 # in the database.  These paths are used as hints in the
 # gui and aren't needed for the command line.
-import_path:		/usr/share/paella/defaultdb
-export_path:		/usr/share/paella/defaultdb
+#import_path:		/usr/share/paella/defaultdb
+#export_path:		/usr/share/paella/defaultdb
+import_path:		%(__paelladir)s/config/share/databases/defaultdb
+export_path:		%(import_path)s
 
 # paella is an older autocommiting database
 # this probably won't change until it needs to,
@@ -62,7 +67,7 @@ official_nonus:		http://nonus.debian.org/
 official_security:		http://security.debian.org
 
 # this is the location of the other repositories that you may mirror
-other_repos:		%(repos_root)/other
+other_repos:		%(repos_root)s/other
 
 # this is a comma separated list of repositories that you
 # are mirroring.  There should be a section in this config file
