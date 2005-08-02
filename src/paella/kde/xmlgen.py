@@ -262,7 +262,8 @@ class FamilyDoc(BaseDocument):
             for p in parents:
                 plist.appendChild(ListItem(p))
             self.body.appendChild(plist)
-        self.body.appendChild(SectionTitle('Variables'))
+        vtitle = Anchor('edit.variables.%s' % self.family.current, 'Variables')
+        self.body.appendChild(SectionTitle(vtitle))
         if len(erows):
             self.body.appendChild(PVarTable(erows, bgcolor='MistyRose2'))
             

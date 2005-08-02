@@ -23,11 +23,13 @@ class SimpleEdit(KTextEdit):
 class FamilyView(ViewBrowser):
     def __init__(self, app, parent):
         ViewBrowser.__init__(self, app, parent, FamilyDoc)
-
+        self.family = Family(self.app.conn)
+        
     def set_family(self, family):
         self.doc.set_family(family)
         self.setText(self.doc.toxml())
-
+        self.family.set_family(family)
+        
     def setSource(self, url):
         action, context, id = str(url).split('.')
         if action == 'show':
@@ -46,6 +48,13 @@ class FamilyView(ViewBrowser):
                 win = ViewWindow(self.app, self.parent(), SimpleEdit, 'ScriptView')
                 win.view.setText(scriptfile)
                 win.resize(600, 800)
+        elif action == 'edit':
+            #KMessageBox.information(self, 'edit the family %s ' % id)
+            config = self.family.getVariablesConfig(self.family.current)
+            newconfig = config.edit()
+            config.update(newconfig)
+            self.set_family(id)
+            
                 
         else:
             KMessageBox.information(self, 'called %s' % url)
