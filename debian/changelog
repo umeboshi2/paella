@@ -1,3 +1,18 @@
+paella (0.6.35) common; urgency=low
+
+  * bugfix in gtk management
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  2 Aug 2005 15:55:35 -0500
+
+paella (0.6.34) common; urgency=low
+
+  * forcing dbserver package to do something for now,
+    will make more elegant later
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  2 Aug 2005 15:43:57 -0500
+
 paella (0.6.33) common; urgency=low
 
   * adding dbserver package

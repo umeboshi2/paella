@@ -181,7 +181,7 @@ class Manager(CommandBoxWindow):
         elif data == 'browser':
             self.workspace[data] = 'working'
             print data
-            os.spawnlpe(os.P_NOWAIT, '/home/umeboshi/bin/paella-kde-management',
+            os.spawnlpe(os.P_NOWAIT, 'paella-kde-management',
                         '--display :0', os.environ)
             print data, 'running'
         else:

@@ -36,9 +36,9 @@ template1="$RET"
 
 case "$1" in
     configure)
-    su postgres "createuser $username -A -D"
-    su postgres "createdb paella"
-    su postgres "createlang plpgsql paella"
+    su postgres "createuser $username -A -D" || true
+    su postgres "createdb paella" || true
+    su postgres "createlang plpgsql paella" || true
     ;;
     abort-upgrade|abort-remove|abort-deconfigure)
 
