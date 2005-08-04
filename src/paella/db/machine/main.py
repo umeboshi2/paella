@@ -33,7 +33,7 @@ class BaseMachineHandler(object):
     def approve_machine_ids(self):
        machine = self.current.machine
        table = 'current_environment'
-       clause = "name like 'hwaddr_%' and value='%s'" % machine
+       clause = "name like 'hwaddr_%'" + " and value='%s'" % machine
        fields = ["'machines' as section", 'name as option', 'value']
        rows = self.cursor.select(fields=fields, table=table, clause=clause)
        for row in rows:
