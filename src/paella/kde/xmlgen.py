@@ -13,6 +13,9 @@ from paella.db.profile import Profile
 from paella.db.family import Family
 from paella.db.machine import MachineHandler
 
+def color_header(table, color='cornsilk3'):
+    table.header.firstChild.setAttribute('bgcolor', color)
+    
 class RecordElement(BaseElement):
     def __init__(self, fields, idcol, action, record, **atts):
         BaseElement.__init__(self, 'table', **atts)
@@ -347,21 +350,32 @@ class MachineTypeDoc(_MachineBaseDocument):
         title = SimpleTitleElement('MachineType:  %s' % machine_type,
                                    bgcolor='IndianRed', width='100%')
         self.body.appendChild(title)
-        self.body.appendChild(TextElement('h1', 'Machine Disks'))
+
         rows = self.cursor.select(table='machine_disks', clause=clause)
-        fields = ['diskname', 'device']
-        disktable = self._make_table(fields, rows)
-        disktable.header.firstChild.setAttribute('bgcolor', 'cornsilk3')
-        self.body.appendChild(disktable)
+        self._setup_section('Disks', ['diskname', 'device'], rows)
         modrows =  self.cursor.select(table='machine_modules', clause=clause,
                                       order=['ord'])
-        if len(modrows):
-            self.body.appendChild(TextElement('h1', 'Machine Modules'))
-            modtable = self._make_table(['module', 'ord'], modrows)
-            modtable.header.firstChild.setAttribute('bgcolor', 'cornsilk3')
-            self.body.appendChild(modtable)
+        self._setup_section('Modules', ['module', 'ord'], modrows)
+        famrows = self.cursor.select(table='machine_type_family', clause=clause,
+                                     order='family')
+        self._setup_section('Families', ['family'], famrows)
+        scripts = self.cursor.select(table='machine_type_scripts', clause=clause,
+                                     order='script')
+        self._setup_section('Scripts', ['script'], scripts)
+        vars_ = self.cursor.select(table='machine_type_variables', clause=clause,
+                                   order=['trait', 'name'])
+        self._setup_section('Variables', ['trait', 'name', 'value'], vars_)
         self._make_footer_anchors('machine_type', machine_type)
-    
+
+    def _setup_section(self, name, fields, rows):
+        title = SimpleTitleElement(name)
+        title.set_font(color='RoyalBlue')
+        self.body.appendChild(title)
+        if len(rows):
+            table = self._make_table(fields, rows)
+            color_header(table)
+            self.body.appendChild(table)
+            
 class FilesystemDoc(_MachineBaseDocument):
     def set_filesystem(self, filesystem):
         clause = Eq('filesystem', filesystem)
