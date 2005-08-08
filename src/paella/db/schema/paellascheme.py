@@ -21,6 +21,7 @@ from useless.db.plsql import pgsql_delete
 
 from paella_tables import suite_tables, primary_tables, primary_sequences
 from paella_tables import packages_columns, SCRIPTS
+from paella_tables import MTSCRIPTS
 
 PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
 SUITES = ['sid', 'woody'] 
@@ -201,6 +202,8 @@ def start_schema(conn):
     priorities_table = mapping['priorities']
     insert_list(cursor, priorities_table.name, 'priority', PRIORITIES)
     insert_list(cursor, 'scriptnames', 'script', SCRIPTS)
+    newscripts = [s for s in MTSCRIPTS if s not in SCRIPTS]
+    insert_list(cursor, 'scriptnames', 'script', newscripts)
     cursor.execute(grant_public([x.name for x in tables]))
     cursor.execute(grant_public(['current_environment'], 'ALL'))
     cursor.execute(grant_public(['partition_workspace'], 'ALL'))

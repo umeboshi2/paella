@@ -15,7 +15,7 @@ class TraitParser(ParserHelper):
             raise Error, 'bad tag'
         self.name = element.getAttribute('name').encode()
         self.suite = element.getAttribute('suite').encode()
-        self.packages = {}
+        self.packages = []
         self._get_packages(element)
         self.parents = []
         self._get_parents(element)
@@ -33,8 +33,9 @@ class TraitParser(ParserHelper):
         for package in packages:
             action = package.getAttribute('action').encode().strip()
             pname = package.firstChild.data.encode().strip()
-            self.packages[pname] = action
-    
+            #self.packages[pname] = action
+            self.packages.append((pname, action))
+            
     def _get_parents(self, element):
         parents = self.get_elements_from_section(element, 'parents', 'parent')
         for parent in parents:

@@ -1,6 +1,10 @@
+from os.path import join
+
 from useless.base import Error
-from useless.base.util import ujoin
+from useless.base.util import ujoin, strfile, filecopy
 from useless.db.midlevel import StatementCursor
+
+from paella.base.objects import TextFileManager
 
 class Suites(StatementCursor):
     def __init__(self, conn):
@@ -50,6 +54,93 @@ def get_suite(conn, profile):
     cursor.set_clause([('profile', profile)])
     return [r.suite for r in cursor.select()][0]
 
+class ScriptCursor(StatementCursor):
+    def __init__(self, conn, table, keyfield):
+        StatementCursor.__init__(self, conn, name='AllTraits')
+        self.set_table(table)
+        self.textfiles = TextFileManager(conn)
+        self._keyfield = keyfield
+        self._jtable = '%s as s join textfiles as t ' % table
+        self._jtable += 'on s.scriptfile = t.fileid' 
+
+    def _clause(self, name, keyfield=None):
+        # clause = Eq(self._keyfield, keyfield) & Eq('script', name)
+        # return clause
+        raise Error, 'this member must be overridden'
+    
+    def insert_script(self, name, scriptfile):
+        # current_key = self.current_trait
+        # self._insert_script(name, scriptfile, current_key)
+        raise Error, 'insert_script must be overridden'
+
+    def scripts(self, key=None):
+        # this is not called with the keyword arg
+        # returns rows of script names for
+        # current key
+        raise Error, 'scripts must be overridden'
+    
+    def scriptfile(self, name):
+        return strfile(self.scriptdata(name))
+            
+    def _script_row(self, name):
+        table = self._jtable
+        clause = self._clause(name)
+        return self.select_row(fields=['*'], table=table, clause=clause)
+        
+    def _script_id(self, name):
+        return self._script_row(name).scriptfile
+        
+    def scriptdata(self, name):
+        return self._script_row(name).data
+        
+    def save_script(self, name, scriptfile):
+        id = self.textfiles.insert_file(scriptfile)
+        clause = self._clause(name)
+        self.update(data=dict(scriptfile=str(id)), clause=clause)
+
+    def remove_scriptfile(self, name):
+        print 'remove_scriptfile deprecated'
+        raise Error, 'remove_scriptfile is deprecated'
+    
+    def get(self, name):
+        clause = self._clause(name)
+        rows = self.select(clause=clause)
+        if len(rows) == 1:
+            return self.scriptfile(name)
+        else:
+            return None
+
+    def read_script(self, name):
+        return self.scriptdata(name)
+
+    def _insert_script(self, name, scriptfile, current_key):
+        insert_data = {}
+        insert_data[self._keyfield] = current_key
+        insert_data['script'] = name
+        id = self.textfiles.insert_file(scriptfile)
+        insert_data['scriptfile'] = str(id)
+        self.insert(data=insert_data)
+        
+    def update_script(self, name, scriptfile):
+        id = self.textfiles.insert_file(scriptfile)
+        clause = self._clause(name)
+        data = dict(scriptfile=str(id))
+        self.update(data=data, clause=clause)
+
+    def update_scriptdata(self, name, data):
+        clause = self._clause(name)
+        id = self.textfiles.insert_data(data)
+        self.update(data=dict(scriptfile=str(id)), clause=clause)
+
+    def export_scripts(self, bkup_path):
+        for row in self.scripts():
+            npath = join(bkup_path, 'script-%s' % row.script)
+            nfile = self.scriptfile(row.script)
+            filecopy(nfile, npath)
+            nfile.close()
+
+        
+        
 if __name__ == '__main__':
     from paella.db import PaellaConnection
     from paella.base.objects import VariablesConfig

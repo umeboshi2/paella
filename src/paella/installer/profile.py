@@ -33,6 +33,8 @@ class ProfileInstaller(Installer):
         self._profile = Profile(self.conn)
         if hasattr(self, 'log'):
             self.log.info('profile installer initialized')
+        self.mtypedata = {}
+        
         
     def set_profile(self, profile):
         self.profile = profile
@@ -48,6 +50,7 @@ class ProfileInstaller(Installer):
         self.installer.log = self.log
         self.installer.familydata = self.familydata
         self.installer.profiledata = self.profiledata
+        self.installer.mtypedata = self.mtypedata
         self.traitparent = TraitParent(self.conn, self.suite)
         self.log.info('profile set to %s' % profile)
                 

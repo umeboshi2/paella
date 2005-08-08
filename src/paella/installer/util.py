@@ -1,5 +1,8 @@
 import os
 from os.path import join
+import tempfile
+import commands
+from time import sleep
 
 from useless.base import Error
 from useless.base.util import makepaths, runlog, echo
@@ -31,7 +34,7 @@ def remove_debs(target):
     pdebs = os.path.join(target, archives, 'partial', '*.deb')
     return runlog('rm %s %s -f' % (debs, pdebs))
     
-def extract_tarball(target, tarball):
+def extract_tarball_orig(target, tarball):
     here = os.getcwd()
     print 'extracting with tar'
     os.chdir(target)
@@ -43,6 +46,16 @@ def extract_tarball(target, tarball):
         opts = 'xf'
     runlog('tar %s %s' % (opts, tarball))
     os.chdir(here)
+
+def extract_tarball(target, tarball):
+    opts = '-xf'
+    if tarball[-7:] == '.tar.gz' or tarball[-4:] == '.tgz':
+        opts = '-xzf'
+    elif tarball[-8:] == '.tar.bz2':
+        opts = '-xjf'
+    cmd = 'tar -C %s %s %s' % (target, opts, tarball)
+    echo('extracting tarball with command %s' % cmd)
+    return runlog(cmd)
 
 #password is 'a'
 myline = 'root:$1$IImobcMx$4Lsn4oHhM7L9pNYZNP7zz/:0:0:root:/root:/bin/bash'
@@ -251,4 +264,128 @@ def remove_fake_start_stop_daemon(target):
         raise Error, '%s does not exist' % real
     os.remove(daemon)
     os.rename(real, daemon)
+    
+def make_script(name, data, target, execpath=False):
+    """This function creates a script in the tmp directory
+    on the target system.  If execpath is True, the path
+    that is returned can be passed to chroot command, else
+    the full path to the script is returned.
+    """
+    exec_path = join('/tmp', name + '-script')
+    target_path = join(target, 'tmp', name + '-script')
+    sfile = file(target_path, 'w')
+    sfile.write(script.read())
+    sfile.close()
+    os.system('chmod 755 %s' % target_path)
+    if not execpath:
+        return target_path
+    else:
+        # for chroot target exec_path
+        return exec_path
+    
+
+def setup_disk_fai(self, disk_config, logpath,
+                   script='/usr/lib/fai/sbin/setup_harddisks'):
+    fileid, disk_config_path = tempfile.mkstemp('paella', 'diskinfo')
+    disk_config_file = file(disk_config_path, 'w')
+    disk_config_file.write(disk_config)
+    disk_config_file.close()
+    options = '-X -f %s' % disk_config_path
+    env = 'env LOGDIR=%s diskvar=%s' % (logpath, join(logpath, 'diskvar'))
+    command = '%s %s %s' % (env, script, options)
+    return runlog(command)
+    
+def make_filesystems(device, fsmounts, env):
+    mddev = False
+    if device == '/dev/md':
+        mdnum = 0
+        mddev = True
+    for row in fsmounts:
+        if mddev:
+            pdev = '/dev/md%d' % mdnum
+            mdnum += 1
+        else:
+            pdev = dev + str(row.partition)
+        if row.mnt_name in env.keys():
+            echo('%s held' % row.mnt_name)
+        elif row.fstype == 'swap':
+            runlog('echo making swap on %s' % pdev)
+            runvalue = runlog('mkswap %s' % pdev)
+            if runvalue:
+                raise Error, 'problem making swap on %s' % pdev
+        else:
+            echo('making filesystem for %s' % row.mnt_name)
+            make_filesystem(pdev, row.fstype)
+            
+def partition_disk(dump, device):
+    i, o = os.popen2('sfdisk %s' % device)
+    i.write(dump)
+    i.close()
+
+def create_raid_partition(devices, pnum, mdnum, raidlevel=1):
+    opts = '--create /dev/md%d' % mdnum
+    opts = '%s --force -l%d -n%d' % (opts, raidlevel, len(devices))
+    devices = ['%s%d' % (device, pnum) for device in devices]
+    cmd = 'mdadm %s %s' % (opts, ' '.join(devices))
+    yes = 'bash -c "yes | %s' % cmd
+    return runlog(yesman)
+
+def create_mdadm_conf(target, devices):
+    mdpath = join(target, 'etc/mdadm')
+    makepaths(mdpath)
+    mdconfname = join(mdpath, 'mdadm.conf')
+    mdconf = file(mdconfname, 'w')
+    devices = ['%s*' % d for d in devices]
+    nl = '\n'
+    line = 'DEVICE %s' % ' '.join(devices)
+    mdconf.write(line + nl)
+    arrdata = commands.getoutput('mdadm -E --config=%s -s' % mdconfname)
+    mdconf.write(arrdata + nl)
+    mdconf.write(nl)
+    mdconf.close()
+    
+def wait_for_resync():
+    mdstat = file('/proc/mdstat').read()
+    while mdstat.find('resync') > -1:
+        sleep(2)
+        mdstat = file('/proc/mdstat').read()
+
+def mount_target(target, mounts, device):
+    if mounts[0].mnt_point != '/':
+        raise Error, 'bad set of mounts', mounts
+    mddev = False
+    mdnum = 0
+    if device == '/dev/md':
+        mddev = True
+        pdev = '/dev/md0'
+        mdnum += 1
+    else:
+        pdev = '%s%d' % (device, mounts[0].partition)
+    runlog('echo mounting target %s to %s' % (pdev, target))
+    mounts = mounts[1:]
+    mountable = [m for m in mounts if m.fstype != 'swap']
+    for mnt in mountable:
+        tpath = os.path.join(target, mnt.mnt_point[1:])
+        makepaths(tpath)
+        if mddev:
+            pdev = '/dev/md%d' % mdnum
+        else:
+            pdev = '%s%d' % (device, mnt.partition)
+        mdnum += 1
+        runlog('mount %s %s' % (pdev, tpath))
+        
+def makedev(target, devices=['generic']):
+    here = os.getcwd()
+    os.chdir(join(target, 'dev'))
+    for dev in devices:
+        echo('making device %s with MAKEDEV' % dev)
+        runlog('./MAKEDEV %s' % dev)
+    os.chdir(here)
+    
+def mount_target_proc(target, umount=False):
+    tproc = join(target, 'proc')
+    cmd = 'mount --bind /proc %s' % tproc
+    if umount:
+        cmd = 'umount %s' % tproc
+    return runlog(cmd)
     

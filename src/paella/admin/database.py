@@ -37,11 +37,13 @@ class DatabaseManager(object):
         pdb = PaellaDatabase(self.conn, path)
         pdb.backup(path)
         mdbpath = join(path, 'machine_database.xml')
-        me = MachineDatabaseElement(self.conn)
-        mdfile = file(mdbpath, 'w')
-        mdfile.write(me.toprettyxml())
-        mdfile.close()
-
+        #me = MachineDatabaseElement(self.conn)
+        #mdfile = file(mdbpath, 'w')
+        #mdfile.write(me.toprettyxml())
+        #mdfile.close()
+        #me.export_machine_database(path)
+        mh = MachineHandler(self.conn)
+        mh.export_machine_database(path)
     def restore(self, path):
         if not os.path.isdir(path):
             raise Error, 'arguement needs to be a directory'
@@ -50,8 +52,8 @@ class DatabaseManager(object):
         pp = PaellaProcessor(self.conn, self.cfg)
         pp.create(dbpath)
         mh = MachineHandler(self.conn)
-        md = mh.parse_xmlfile(mdbpath)
-        mh.insert_parsed_element(md)    
+        #md = mh.parse_xmlfile(mdbpath)
+        mh.restore_machine_database(path)
         
 class TextFileBrowser(ListTextView):
     def __init__(self, conn, name='TextFileBrowser'):

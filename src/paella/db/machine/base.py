@@ -57,6 +57,9 @@ class MachineType(object):
         object.__init__(self)
         self.name = mtype
         self.disks = []
+        self.scripts = []
+        self.families = []
+        self.variables = []
 
     def __repr__(self):
         return '<MachineType:  %s>' % self.name
@@ -70,6 +73,15 @@ class MachineType(object):
     def append_modules(self, modules):
         self.modules = modules
 
+    def append_script(self, name, data):
+        self.scripts.append((name, data))
+
+    def append_family(self, family):
+        self.families.append(family)
+
+    def append_variable(self, trait, name, value):
+        self.variables.append((trait, name, value))
+        
 class MachineModules(list):
     def __init__(self, mtype, modules):
         list.__init__(self, modules)

@@ -5,14 +5,16 @@ from useless.base import Error, debug
 
 from paella.base import PaellaConfig
 from paella.installer.base import InstallerConnection
-from paella.installer.nfsinstaller import NewInstaller
+#from paella.installer.nfsinstaller import NewInstaller
+from paella.installer.machine import MachineInstaller
 
 if os.getuid():
     raise Error, 'need to be root'
 
 cfg = PaellaConfig()
 conn = InstallerConnection(cfg)
-installer = NewInstaller(conn, cfg)
+#installer = NewInstaller(conn, cfg)
+installer = MachineInstaller(conn)
 
 command = sys.argv[1]
 if command == 'install':

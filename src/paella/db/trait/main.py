@@ -200,7 +200,7 @@ class Trait(object):
         self._templates.set_trait(trait.name)
         self._scripts.set_trait(trait.name)
         self._parents.insert_parents(trait.parents)
-        for package, action in trait.packages.items():
+        for package, action in trait.packages:
             self._packages.insert_package(package, action)
         n = 0
         for package, template, data in trait.templates:
@@ -222,10 +222,12 @@ class Trait(object):
         self.set_trait(lasttrait)
 
     def backup_trait(self, tball_path):
-        print 'this needs to be called export_trait'
+        raise Error, 'this call is deprecated, use export_trait'
+        
+    def export_trait(self, suite_path):
         xmldata = TraitElement(self.conn, self.suite)
         xmldata.set(self.current_trait)
-        bkup_path = join(tball_path, self.current_trait)
+        bkup_path = join(suite_path, self.current_trait)
         makepaths(bkup_path)
         xmlfile = file(join(bkup_path, 'trait.xml'), 'w')
         xmlfile.write(xmldata.toprettyxml())
@@ -233,9 +235,8 @@ class Trait(object):
         self._templates.export_templates(bkup_path)
         self._scripts.export_scripts(bkup_path)
         print 'all exported', os.listdir(bkup_path)
-        #make_tarball(bkup_path, tball_path, self.current_trait)
-        #os.system('rm %s -fr' % bkup_path)
         
+
     def get_description(self):
         trait = self.current_trait
         row = self._traits.select_row(clause=Eq('trait', trait))

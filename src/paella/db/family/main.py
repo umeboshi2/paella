@@ -187,16 +187,25 @@ class Family(object):
         for var in parsed.environ:
             row.update(var)
             self.cursor.insert(table='family_environment', data=row)
+
+    def _import_family_xml(self, xmlfile):
+        xml = parse_file(xmlfile)
+        elements = xml.getElementsByTagName('family')
+        if len(elements) != 1:
+            raise Error, 'bad number of family tags %s' % len(elements)
+        element = elements[0]
+        return element
+    
             
+    def import_family_xml(self, xmlfile):
+        element = self._import_family_xml(xmlfile)
+        self.import_family(element)
+        
     def import_families(self, path):
         xmlfiles = [join(path, x) for x in os.listdir(path) if x[-4:] == '.xml']
         families = []
         for f in xmlfiles:
-            xml = parse_file(f)
-            elements = xml.getElementsByTagName('family')
-            if len(elements) != 1:
-                raise Error, 'bad number of family tags %s' % len(elements)
-            element = elements[0]
+            element = self._import_family_xml(f)
             families.append(element)
         while len(families):
             f = families[0]

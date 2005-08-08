@@ -1,9 +1,12 @@
+from os.path import join
 from xml.dom.minidom import Element
 
 from useless.base.xmlfile import TextElement, DictElement
+from useless.base.util import makepaths
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, In
 
+from paella.db.xmlgen import BaseVariableElement
 
 class PartitionElement(Element):
     def __init__(self, partition, start, size, id):
@@ -41,20 +44,50 @@ class MachineModuleElement(TextElement):
         self.setAttribute('machine_type', mtype)
         self.setAttribute('order', order)
         
+class MachineScriptElement(Element):
+    def __init__(self, name):
+        Element.__init__(self, 'script')
+        self.setAttribute('name', name)
+
+class MachineTypeVariableElement(BaseVariableElement):
+    def __init__(self, trait, name, value):
+        BaseVariableElement.__init__(self, 'machine_type_variable',
+                                     trait, name, value)
+
+class MachineTypeFamilyElement(TextElement):
+    def __init__(self, family):
+        TextElement.__init__(self, 'family', family)
         
 class MachineTypeElement(Element):
-    def __init__(self, name):
+    def __init__(self, conn, name):
         Element.__init__(self, 'machine_type')
+        self.conn = conn
+        self.cursor = StatementCursor(self.conn)
         self.setAttribute('name', name)
         self.devices = []
         self.modules = []
+        self.scripts = []
+        self.families = []
+        self.variables = []
         self.machine_type = name
-
+        clause = Eq('machine_type', name)
+        self._append_devices(clause)
+        self._append_modules(clause)
+        self._append_scripts(clause)
+        self._append_families(clause)
+        self._append_variables(clause)
+        
     def append_device(self, diskname, device):
         mdisk_element = MachineDiskElement(diskname, device)
         self.devices.append(mdisk_element)
         self.appendChild(mdisk_element)
 
+    def _append_devices(self, clause):
+        table = 'machine_disks'
+        mdisks = self.cursor.select(table=table, clause=clause, order='device')
+        for row in mdisks:
+            self.append_device(row.diskname, row.device)
+            
     def set_devices(self):
         pass
 
@@ -63,7 +96,53 @@ class MachineTypeElement(Element):
                                            module, order)
         self.modules.append(mod_element)
         self.appendChild(mod_element)
+
+    def _append_modules(self, clause):
+        table = 'machine_modules'
+        mods = self.cursor.select(table=table, clause=clause, order='ord')
+        for row in mods:
+            self.append_module(row.module, str(row.ord))
+    
+    def append_family(self, family):
+        fam_element = MachineTypeFamilyElement(family)
+        self.families.append(fam_element)
+        self.appendChild(fam_element)
+
+    def _append_families(self, clause):
+        table = 'machine_type_family'
+        fams = self.cursor.select(table=table, clause=clause, order='family')
+        for row in fams:
+            self.append_family(row.family)
         
+    def append_script(self, name):
+        script_element = MachineScriptElement(name)
+        self.scripts.append(script_element)
+        self.appendChild(script_element)
+
+    def _append_scripts(self, clause):
+        table = 'machine_type_scripts'
+        scripts = self.cursor.select(table=table, clause=clause, order='script')
+        for row in scripts:
+            self.append_script(row.script)
+    
+    def append_variable(self, trait, name, value):
+        variable_element = MachineTypeVariableElement(trait, name, value)
+        self.variables.append(variable_element)
+        self.appendChild(variable_element)
+
+    def _append_variables(self, clause):
+        table = 'machine_type_variables'
+        vlist = self.cursor.select(table=table, clause=clause, order=['trait', 'name'])
+        for row in vlist:
+            self.append_variable(row.trait, row.name, row.value)
+        
+    def export(self, mtypepath):
+        mtype = self.getAttribute('name')
+        path = join(mtypepath, mtype)
+        makepaths(path)
+        xfile = file(join(path, 'machine_type.xml'), 'w')
+        xfile.write(self.toprettyxml())
+        xfile.close()
 
 class MountElement(Element):
     def __init__(self, mnt_name, mnt_point, fstype, mnt_opts,
@@ -171,19 +250,12 @@ class MachineTypesElement(Element):
             mtypes = [r.machine_type for r in rows]
         self.machine_types = []
         for mtype in mtypes:
-            mtype_element = MachineTypeElement(mtype)
-            clause = Eq('machine_type', mtype)
-            mdisks = self.cursor.select(table='machine_disks', clause=clause,
-                                        order='device')
-            for m in mdisks:
-                mtype_element.append_device(m.diskname, m.device)
-            modules = self.cursor.select(table='machine_modules', clause=clause,
-                                         order='ord')
-            for m in modules:
-                mtype_element.append_module(m.module, str(m.ord))
+            mtype_element = Element('machine_type')
+            mtype_element.setAttribute('name', mtype)
+            #mtype_element = MachineTypeElement(conn, mtype)
             self.machine_types.append(mtype_element)
             self.appendChild(mtype_element)
-            
+
 class KernelElement(TextElement):
     def __init__(self, name):
         TextElement.__init__(self, 'kernel', name)
@@ -240,6 +312,9 @@ class MachineDatabaseElement(Element):
                   self.filesystems, self.kernels]:
             self.appendChild(e)
             
+    def export_machine_database(self, path):
+        pass
+    
 class ClientMachineDatabaseElement(Element):
     def __init__(self, conn, disks=None, mtypes=None, machines=None):
         Element.__init__(self, 'machine_database')

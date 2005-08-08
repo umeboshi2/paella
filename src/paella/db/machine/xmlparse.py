@@ -1,3 +1,7 @@
+import os
+from os.path import join
+from xml.dom.minidom import parseString
+
 from useless.base.xmlfile import ParserHelper
 from useless.base import Error
 
@@ -51,9 +55,46 @@ def parse_machine(element):
     profile = get_attribute('profile', element)
     return Machine(name, mtype, filesystem, kernel, profile)
 
-class MachineDatabaseParser(ParserHelper):
+class MachineTypeParser(ParserHelper):
     def __init__(self, element):
         ParserHelper.__init__(self)
+        self.name = element.getAttribute('name')
+        devs = element.getElementsByTagName('machine_disk')
+        mods = element.getElementsByTagName('module')
+        fams = element.getElementsByTagName('family')
+        scripts = element.getElementsByTagName('script')
+        vars_ = element.getElementsByTagName('machine_type_variable')
+        
+        self.mtype = MachineType(self.name)
+        for d in devs:
+            device = d.getAttribute('device')
+            diskname = d.getAttribute('diskname')
+            self.mtype.append_disk(MachineDisk(diskname, device))
+        moddict = dict(map(parse_module, mods))
+        modorder = moddict.keys()
+        modorder.sort()
+        modules = []
+        for i in modorder:
+            modules.append(moddict[i])
+        self.mtype.append_modules(modules)
+        for f in fams:
+            family = get_child(f)
+            self.mtype.append_family(family)
+        for s in scripts:
+            name = s.getAttribute('name')
+            self.mtype.append_script(name, name)
+        for v in vars_:
+            trait = v.getAttribute('trait')
+            name = v.getAttribute('name')
+            value = get_child(v)
+            self.mtype.append_variable(trait, name, value)
+            
+class MachineDatabaseParser(ParserHelper):
+    def __init__(self, path, element):
+        ParserHelper.__init__(self)
+        self.path = path
+        self.mtypepath = join(path, 'machine_types')
+        
         name = element.tagName.encode()
         get_em = self.get_elements_from_section
         self.kernels = map(get_child, get_em(element, 'kernels', 'kernel'))
@@ -64,6 +105,7 @@ class MachineDatabaseParser(ParserHelper):
         self.mtypes = map(self._parse_mtype, get_em(element, 'machine_types',
                                                     'machine_type'))
         self.machines = map(parse_machine, get_em(element, 'machines', 'machine'))
+        #self.mtypes = []
         
     def _parse_disk(self, element):
         diskname = get_attribute('name', element)
@@ -79,7 +121,20 @@ class MachineDatabaseParser(ParserHelper):
         map(fs.append_mount, map(parse_fsmount, fs_elements))
         return fs
 
+    def _get_mtype_element(self, mtype):
+        path = join(self.mtypepath, mtype)
+        xml = join(path, 'machine_type.xml')
+        element = parseString(file(xml).read())
+        return element
+    
+    def _parse_mtype_element(self, element):
+        pass
+
     def _parse_mtype(self, element):
+        name = get_attribute('name', element)
+        return name
+
+    def _parse_mtypeOrig(self, element):
         name = get_attribute('name', element)
         md_elements = element.getElementsByTagName('machine_disk')
         mod_elements = element.getElementsByTagName('module')

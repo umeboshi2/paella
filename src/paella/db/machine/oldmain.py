@@ -1,12 +1,10 @@
-from os.path import basename, dirname, join
+from os.path import basename
 from xml.dom.minidom import parseString
 
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
-from mtype import MachineTypeHandler
 from xmlparse import MachineDatabaseParser
-from xmlgen import MachineDatabaseElement
 
 def Table_cursor(conn, table):
     cursor = StatementCursor(conn, table)
@@ -19,19 +17,18 @@ class BaseMachineHandler(object):
         self.cursor = Table_cursor(self.conn, 'machines')
         self.cursor.set_table('machines')
         self.kernels = Table_cursor(self.conn, 'kernels')
-        self.mtype = MachineTypeHandler(self.conn)
+        self.mtypes = Table_cursor(self.conn, 'machine_types')
+        self.mdisks = Table_cursor(self.conn, 'machine_disks')
         self.filesystems = Table_cursor(self.conn, 'filesystems')
         self.mounts = Table_cursor(self.conn, 'mounts')
         self.fsmounts = Table_cursor(self.conn, 'filesystem_mounts')
         self.disks = Table_cursor(self.conn, 'disks')
         self.partitions = Table_cursor(self.conn, 'partitions')
-        self.current = None
+        self.current_machine = None
         
     def set_machine(self, machine):
         self._machine_clause_ = Eq('machine', machine)
         self.current = self.cursor.select_row(clause=self._machine_clause_)
-        mtype = self.current.machine_type
-        self.mtype.set_machine_type(mtype)
         
     def approve_machine_ids(self):
        machine = self.current.machine
@@ -75,23 +72,76 @@ class BaseMachineHandler(object):
         self._update_field_('kernel', kernel)
 
     def set_machine_type(self, mtype):
+        mtypes = [r.machine_type for r in self.mtypes.select()]
+        if mtype not in mtypes:
+            self.mtypes.insert(data={'machine_type' : mtype})
         self._update_field_('machine_type', mtype)
-        self.set_machine(self.current.machine)
-        
+
     def rename_machine(self, newname):
         self._update_field_('machine', newname)
         self.set_machine(newname)
 
     def get_disk_devices(self):
-        return self.mtype.get_disk_devices()
+        return get_disk_devices(self.conn, self.current.machine_type)
     
+def add_disk_to_machine_type(conn,
+                             diskname, mtype, device='/dev/hda'):
+    cursor = StatementCursor(conn)
+    data = dict(machine_type=mtype, diskname=diskname,
+                device=device)
+    cursor.insert(table='machine_disks', data=data)
+
+def add_machine_type(conn, mtype):
+    cursor = StatementCursor(conn)
+    data = dict(machine_type=mtype)
+    cursor.insert(table='machine_types', data=data)
+
+def add_new_filesystem(conn, filesystem):
+    cursor = StatementCursor(conn)
+    data = dict(filesystem=filesystem)
+    cursor.insert(table='filesystems', data=data)
+
+def add_new_kernel(conn, kernel):
+    cursor = StatementCursor(conn)
+    data = dict(kernel=kernel)
+    cursor.insert(table='kernels', data=data)
+
+def add_new_mount(conn, name, mtpt, fstype, opts,
+                  dump='0', pass_='0'):
+    cursor = StatementCursor(conn)
+    data = dict(mnt_name=name, mnt_point=mtpt,
+                fstype=fstype, mnt_opts=opts,
+                dump=dump)
+    data['pass'] = pass_
+    cursor.insert(table='mounts', data=data)
+
+def add_mount_to_filesystem(conn, mnt_name, filesystem, ord, partition, size):
+    cursor = StatementCursor(conn)
+    data = dict(mnt_name=mnt_name, filesystem=filesystem,
+                ord=str(ord), partition=partition, size=size)
+    cursor.insert(table='filesystem_mounts', data=data)
+    
+def make_a_machine(conn, machine, mtype, profile, fs):
+    cursor = StatementCursor(conn)
+    data = dict(machine=machine, machine_type=mtype,
+                profile=profile, filesystem=fs)
+    cursor.insert(table='machines', data=data)
+
+def get_disk_devices(conn, mtype):
+    cursor = StatementCursor(conn)
+    table = 'machine_disks'
+    clause = Eq('machine_type', mtype)
+    rows = cursor.select(fields=['device'], table=table, clause=clause)
+    return [r.device for r in rows]
+
     
 class MachineHandler(BaseMachineHandler):
-    def add_disk(self, diskname, device):
-        self.mtype.add_disk(diskname, device)
+    def add_disk_to_machine_type(self, diskname, mtype, device):
+        self.mdisks.insert(data=dict(diskname=diskname, machine_type=mtype,
+                                     device=device))
         
     def add_machine_type(self, mtype):
-        self.mtype.add_new_type(mtype)
+        self.mtypes.insert(data=dict(machine_type=mtype))
         
     def add_new_filesystem(self, filesystem):
         self.filesystems.insert(data=dict(filesystem=filesystem))
@@ -108,7 +158,6 @@ class MachineHandler(BaseMachineHandler):
     def add_mount_to_filesystem(self, mnt_name, filesystem, ord, partition, size):
         self.fsmounts.insert(data=dict(mnt_name=mnt_name, filesystem=filesystem,
                                        ord=ord, partition=partition, size=size))
-
     def make_a_machine(self, machine, mtype, profile, fs):
         self.cursor.insert(table='machines',
                            data=dict(machine=machine,
@@ -132,10 +181,17 @@ class MachineHandler(BaseMachineHandler):
                 print partition, data
                 self.partitions.insert(data=data)
         for mtype in element.mtypes:
-            print 'mtype is', mtype
-            #self.mtype.insert_parsed_element(mtype)
-            self.mtype.import_machine_type(element, mtype)
-            
+            self.add_machine_type(mtype.name)
+            for mdisk in  mtype.disks:
+                mdisk['machine_type'] = mtype.name
+                self.mdisks.insert(data=mdisk)
+                
+            mod_items = zip(range(len(mtype.modules)), mtype.modules)
+            data = dict(machine_type=mtype.name)
+            for i in range(len(mtype.modules)):
+                data['ord'] = str(i)
+                data['module'] = mtype.modules[i]
+                self.cursor.insert(table='machine_modules', data=data)
         for machine in element.machines:
             data = {}
             data.update(machine)
@@ -145,59 +201,108 @@ class MachineHandler(BaseMachineHandler):
 
     def parse_xmlfile(self, path):
         element = parseString(file(path).read())
-        return MachineDatabaseParser(dirname(path), element.firstChild)
+        return MachineDatabaseParser(element.firstChild)
     
-    def restore_machine_database(self, path):
-        mdbfile = join(path, 'machine_database.xml')
-        parsed = self.parse_xmlfile(mdbfile)
-        self.insert_parsed_element(parsed)
-        
-    def export_machine_database(self, path):
-        me = MachineDatabaseElement(self.conn)
-        mdfile = file(join(path, 'machine_database.xml'), 'w')
-        mtypepath = join(path, 'machine_types')
-        mdfile.write(me.toprettyxml())
-        mdfile.close()
-        for mtype in me.mtypes.machine_types:
-            name = mtype.getAttribute('name')
-            self.mtype.set_machine_type(name)
-            self.mtype.export_machine_type(name, mtypepath)
-            
-    
-    def check_machine_disks(self):
-        return self.mtype.check_machine_disks()
+    def check_machine_disks(self, machine_type):
+        rows = self.mdisks.select(clause=Eq('machine_type', machine_type))
+        dn_dict = {}
+        for row in rows:
+            if row.diskname not in dn_dict.keys():
+                dn_dict[row.diskname] = []
+            dn_dict[row.diskname].append(row.device)
+        return dn_dict
 
     def make_partition_dump(self, diskname, device):
-        return self.mtype.make_partition_dump(diskname, device)
+        rows = self.partitions.select(clause=Eq('diskname', diskname))
+        firstline = '# partition table of %s' % device
+        secondline = 'unit: sectors'
+        blankline = ''
+        plines = []
+        for row in rows:
+            line = '%s%s : start=%9d, size=%9d, Id=%d' % \
+                   (device, row.partition, int(row.start), int(row.size), int(row.id))
+            plines.append(line)
+        return '\n'.join([firstline, secondline, blankline] + plines) + '\n'
     
+
+
     def array_hack(self, machine_type):
-        return self.mtype.array_hack()
+        dn_dict = self.check_machine_disks(machine_type)
+        disknames = dn_dict.keys()
+        if len(disknames) == 1:
+            diskname = disknames[0]
+            if len(dn_dict[diskname]) > 1:
+                device = '/dev/md'
+            else:
+                device = dn_dict[diskname][0]
+        elif not len(dn_dict.keys()):
+            device = '/dev/hda'
+        else:
+            raise Error, "can't handle more than one disktype now"
+        return device
+        
 
     def make_fstab(self, filesystem=None, machine_type=None):
         if filesystem is None:
             filesystem = self.current.filesystem
-        return self.mtype.make_fstab(filesystem)
+        if machine_type is None:
+            machine_type = self.current.machine_type
+        fsmounts = self.get_all_fsmounts(filesystem=filesystem)
+        device = self.array_hack(machine_type)
+        mddev = False
+        if device == '/dev/md':
+            mdnum = 0
+            mddev = True
+        fstab = []
+        for row in fsmounts:
+            fstype = row.fstype
+            if int(row.partition) == 0:
+                if fstype in ['tmpfs', 'proc', 'sysfs']:
+                    _dev = fstype
+                else:
+                    _dev = '/dev/null'
+            else:
+                if mddev:
+                    _dev = '/dev/md%d' % mdnum
+                    mdnum += 1
+                else:
+                    _dev = '%s%s' % (device, row.partition)
+            line = '%s\t%s\t%s' % (_dev, row.mnt_point, row.fstype)
+            line += '\t%s\t%s\t%s' % (row.mnt_opts, row.dump, row['pass'])
+            fstab.append(line)
+        return '\n'.join(fstab) + '\n'
 
     def get_all_fsmounts(self, filesystem=None):
         if filesystem is None:
             filesystem = self.current.filesystem
-        return self.mtype.get_all_fsmounts(filesystem)
+        table = 'filesystem_mounts natural join mounts'
+        clause = Eq('filesystem', filesystem)
+        return self.cursor.select(table=table, clause=clause, order='ord')
 
     def get_installable_fsmounts(self, filesystem=None):
-        if filesystem is None:
-            filesystem = self.current.filesystem
-        return self.mtype.get_installable_fsmounts(filesystem)
+        fsmounts = self.get_all_fsmounts(filesystem=filesystem)
+        return [r for r in fsmounts if int(r.partition)]
 
-    def get_ordered_fsmounts(self, filesystem=None):
-        if filesystem is None:
-            filesystem = self.current.filesystem
-        return self.mtype.get_ordered_fsmounts(filesystem)
-    
     def get_modules(self, machine_type=None):
-        return self.mtype.get_modules()
+        if machine_type is None:
+            machine_type = self.current.machine_type
+        rows = self.cursor.select(table='machine_modules',
+                                  clause=Eq('machine_type', machine_type),
+                                  order='ord')
+        return [r.module for r in rows]
 
     def append_modules(self, modules, machine_type=None):
-        self.mtype.append_modules(modules)
+        if machine_type is None:
+            machine_type = self.current.machine_type
+        data = dict(machine_type=machine_type)
+        current_mods = self.get_modules(machine_type)
+        next_ord = len(current_mods)        
+        new_mods = [m for m in modules if m not in current_mods]
+        for mod in new_mods:
+            data['ord'] = next_ord
+            data['module'] = mod
+            self.cursor.insert(table='machine_modules', data=data)
+            next_ord += 1
         
     def make_disk_config_info(self, device, filesystem=None, curenv=None):
         if filesystem is None:

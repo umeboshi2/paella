@@ -130,7 +130,83 @@ list of tuples in the database (machine_type, diskname, device) .  The current p
 to treat all devices of a certain  diskname as a raid1 array if there is more than one
 device.
 
+Machine Type Scripts
+-------------------------------
 
+Machine type scripts are steps in the install process for machines.  These steps
+will be treated similiar to the trait scripts. The default steps/scripts are:
+
+- pre
+
+  + this step normally does nothing.
+
+- setup_disks
+
+  + this step is responsible for partitioning the disks and
+    for creating the filesystems
+
+- mount_target
+
+  + this step is responsible for mounting the filesystems
+    created in the previous step to the target directory
+
+  + the script will need to make the subdirectories in target
+    for filesystems under the target root, and mount the
+    appropriate ones.
+
+- bootstrap
+
+  + this step is responsible for bootstrapping the base
+    system into the target directory.
+
+- apt_sources_installer
+
+  + this step should create a sources.list file that is appropriate
+    for the installer environment.  It should place the file in 
+    $target/etc/apt/sources.list
+
+- ready_base
+
+  + this is a legacy step in the installer that would setup a root
+    password, a simple /etc/network/interfaces file, and a fstab.
+
+- pre_install
+
+  + this step normally does nothing.
+
+- install
+
+  + this step performs the install process
+
+- post_install
+
+  + this step normally does nothing.
+
+- install_modules
+
+  + this step should create a $target/etc/modules file appropriate for
+    the machine type.
+
+- install_kernel
+
+  + this step is reponsible for installing a kernel in the target and
+    preparing the bootloader for booting.
+
+  +  the machine should be ready to reboot after this step
+
+- apt_sources_final
+
+  + this step is reponsible for making a sources.list that will
+    be used when the machine is on the target site.  This step can be
+    skipped for on-site installations.
+
+- install_fstab
+
+  + this step is reponsible for installing the fstab on the target system.
+
+- post
+
+  + this step normally does nothing.
 
 Machine
 --------

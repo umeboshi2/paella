@@ -71,7 +71,7 @@ class PaellaDatabase(Element):
             trait = Trait(self.conn, suite)
             for t in trait.get_trait_list():
                 trait.set_trait(t)
-                trait.backup_trait(join(path, suite))
+                trait.export_trait(join(path, suite))
 
     def backup_profiles(self, path=None):
         profiles_dir = join(path, 'profiles')

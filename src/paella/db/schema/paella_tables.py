@@ -12,6 +12,15 @@ PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
 SUITES = ['sid', 'woody'] 
 #SCRIPTS = ['chroot', 'pre', 'post', 'config']
 SCRIPTS = ['pre', 'remove', 'install', 'templates', 'config', 'chroot', 'reconfig', 'post']
+MTSCRIPTS = ['pre', 'setup_disks', 'mount_target',
+             'bootstrap', 'make_device_entries',
+             'apt_sources_installer', 'ready_base',
+             'mount_target_proc',
+             'pre_install', 'install', 'post_install',
+             'install_modules', 'install_kernel', 'apt_sources_final',
+             'install_fstab', 'umount_target_proc', 'post'
+             ]
+
 def getcolumn(name, columns):
     ncols = [column for column in columns if column.name == name]
     if len(ncols) == 1:
@@ -271,6 +280,37 @@ class PartitionsTable(Table):
         columns = [diskname_col] + partition_columns()
         Table.__init__(self, name, columns)
 
+class MachineTypeFamilyTable(Table):
+    def __init__(self, mach_types_table):
+        mtype_col = PkName('machine_type')
+        mtype_col.set_fk(mach_types_table)
+        fcol = PkName('family')
+        fcol.set_fk('families')
+        Table.__init__(self, 'machine_type_family', [mtype_col, fcol])
+        
+class MachineTypeEnvironment(Table):
+    def __init__(self, mach_types_table):
+        mtype_col = PkName('machine_type')
+        mtype_col.set_fk(mach_types_table)
+        trait_col = PkName('trait')
+        name_col = PkBigname('name')
+        value_col = Text('value')
+        cols = [mtype_col, trait_col, name_col, value_col]
+        tablename = ujoin('machine_type', 'variables')
+        Table.__init__(self, tablename, cols)
+
+class MachineTypeScript(Table):
+    def __init__(self, mach_types_table):
+        mtype_col = PkName('machine_type')
+        mtype_col.set_fk(mach_types_table)
+        tablename = ujoin('machine_type', 'scripts')
+        script_column = PkName('script')
+        script_column.set_fk('scriptnames')
+        sfile_column = Num('scriptfile')
+        sfile_column.set_fk('textfiles')
+        script_columns = [mtype_col, script_column, sfile_column]
+        Table.__init__(self, tablename, script_columns)
+
 class MachineDisksTable(Table):
     def __init__(self, name, mach_types_table, disks_table):
         mtype_col = PkName('machine_type')
@@ -425,6 +465,13 @@ def primary_tables():
     #Partition Workspace
     pwcols = [PkName('diskname')] + partition_columns()
     tables.append(Table('partition_workspace', pwcols))
+    #MachineTypesTables
+    mtfamily = MachineTypeFamilyTable('machine_types')
+    tables.append(mtfamily)
+    mtenviron = MachineTypeEnvironment('machine_types')
+    tables.append(mtenviron)
+    mtscript = MachineTypeScript('machine_types')
+    tables.append(mtscript)
     #Machine Disks
     machine_disks = MachineDisksTable('machine_disks', 'machine_types', 'disks')
     tables.append(machine_disks)
