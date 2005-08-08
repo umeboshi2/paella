@@ -274,7 +274,7 @@ def make_script(name, data, target, execpath=False):
     exec_path = join('/tmp', name + '-script')
     target_path = join(target, 'tmp', name + '-script')
     sfile = file(target_path, 'w')
-    sfile.write(script.read())
+    sfile.write(data.read())
     sfile.close()
     os.system('chmod 755 %s' % target_path)
     if not execpath:
@@ -284,7 +284,7 @@ def make_script(name, data, target, execpath=False):
         return exec_path
     
 
-def setup_disk_fai(self, disk_config, logpath,
+def setup_disk_fai(disk_config, logpath,
                    script='/usr/lib/fai/sbin/setup_harddisks'):
     fileid, disk_config_path = tempfile.mkstemp('paella', 'diskinfo')
     disk_config_file = file(disk_config_path, 'w')
@@ -351,6 +351,7 @@ def wait_for_resync():
         mdstat = file('/proc/mdstat').read()
 
 def mount_target(target, mounts, device):
+    mounts = [m for m in mounts if int(m.partition)]
     if mounts[0].mnt_point != '/':
         raise Error, 'bad set of mounts', mounts
     mddev = False
@@ -372,6 +373,7 @@ def mount_target(target, mounts, device):
         else:
             pdev = '%s%d' % (device, mnt.partition)
         mdnum += 1
+        runlog('echo mounting target %s to %s' % (pdev, tpath))
         runlog('mount %s %s' % (pdev, tpath))
         
 def makedev(target, devices=['generic']):

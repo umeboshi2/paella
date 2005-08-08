@@ -11,6 +11,7 @@ from paella.db.machine import MachineHandler
 from base import CurrentEnvironment
 from base import BaseChrootInstaller
 from base import InstallError
+from profile import ProfileInstaller
 from util import ready_base_for_install, make_filesystem
 from util import install_kernel, setup_modules
 from util import setup_disk_fai, partition_disk
@@ -18,8 +19,8 @@ from util import create_raid_partition, mount_target
 from util import wait_for_resync, make_sources_list
 from util import make_fstab, makedev
 from util import myline, set_root_passwd, make_interfaces_simple
-from util import create_mdadm_conf
-
+from util import create_mdadm_conf, extract_tarball
+from util import mount_target_proc
 
 #from profile import ProfileInstaller
 #from fstab import HdFstab
@@ -177,7 +178,7 @@ class MachineInstaller(BaseChrootInstaller):
             
     def run_process(self, proc):
         self.start_process(proc)
-        script = self.machine.get_script(name)
+        script = self.machine.get_script(proc)
         mtype = self.machine.current.machine_type
         if script is None:
             if proc in self._process_map:
@@ -227,6 +228,8 @@ class MachineInstaller(BaseChrootInstaller):
         except KeyError:
             logfile = '/paellalog/paella-install-%s.log' % machine
         os.environ['PAELLA_LOGFILE'] = logfile
+        # this needs to be removed sometime
+        os.environ['LOGFILE'] = logfile
         os.environ['PAELLA_MACHINE'] = machine
         disklogpath = join(dirname(logfile), 'disklog')
         if not os.path.isdir(disklogpath):
@@ -236,7 +239,7 @@ class MachineInstaller(BaseChrootInstaller):
         self.set_logfile(logfile)
         self.mtypedata = self.machine.mtype.get_machine_type_data()
         
-    def install(machine, target):
+    def install(self, machine, target):
         self.set_machine(machine)
         self.setup_installer()
         self.set_target(target)

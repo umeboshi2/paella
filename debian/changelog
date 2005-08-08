@@ -1,3 +1,70 @@
+paella (0.7.10) common; urgency=low
+
+  * more bugfixes in utils
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 17:01:07 -0500
+
+paella (0.7.9) common; urgency=low
+
+  * more bugfixes in utils
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:53:50 -0500
+
+paella (0.7.8) common; urgency=low
+
+  * more bugfixes
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:48:12 -0500
+
+paella (0.7.7) common; urgency=low
+
+  * another bugfix to new installer utils
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:42:14 -0500
+
+paella (0.7.6) common; urgency=low
+
+  * some more bugfixes
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:35:23 -0500
+
+paella (0.7.5) common; urgency=low
+
+  * another bugfix to new installer utils
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:29:28 -0500
+
+paella (0.7.4) common; urgency=low
+
+  * another bugfix to new installer
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:26:23 -0500
+
+paella (0.7.3) common; urgency=low
+
+  * another bugfix to new installer
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:23:31 -0500
+
+paella (0.7.2) common; urgency=low
+
+  * another bugfix to new installer
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:19:19 -0500
+
+paella (0.7.1) common; urgency=low
+
+  * small bugfix to new installer
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 16:15:52 -0500
+
 paella (0.7.0) common; urgency=low
 
   * giving more importance to machine types

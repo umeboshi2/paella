@@ -170,7 +170,7 @@ class MachineHandler(BaseMachineHandler):
     def make_partition_dump(self, diskname, device):
         return self.mtype.make_partition_dump(diskname, device)
     
-    def array_hack(self, machine_type):
+    def array_hack(self):
         return self.mtype.array_hack()
 
     def make_fstab(self, filesystem=None, machine_type=None):
@@ -198,7 +198,10 @@ class MachineHandler(BaseMachineHandler):
 
     def append_modules(self, modules, machine_type=None):
         self.mtype.append_modules(modules)
-        
+
+    def get_script(self, name):
+        return self.mtype.get_script(name)
+    
     def make_disk_config_info(self, device, filesystem=None, curenv=None):
         if filesystem is None:
             filesystem = self.current.filesystem
@@ -222,7 +225,6 @@ class MachineHandler(BaseMachineHandler):
             fline = '%s\t; %s' % (line, fstype)
             lines.append(fline)
         return '\n'.join(lines) + '\n'
-    
             
             
 if __name__ == '__main__':
