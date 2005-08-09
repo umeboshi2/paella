@@ -79,11 +79,11 @@ def make_sources_list(cfg, target, suite):
         source.type = 'deb-src'
         sources_list.write(str(source) +'\n')
     loption = suite + '_local'
-    if cfg.has_option(section, loption) and cfg[loption] == 'true':
+    if cfg.has_option(section, loption) and cfg.get(section, loption) == 'true':
         sources_list.write('deb %s/local %s/\n' % (source.uri, suite))
         sources_list.write('deb-src %s/local %s/\n' % (source.uri, suite))
     coption = suite + '_common'
-    if cfg.has_option(section, coption) and cfg[coption] == 'true':
+    if cfg.has_option(section, coption) and cfg.get(section, coption) == 'true':
         sources_list.write('deb %s/local common/\n' % source.uri)
         sources_list.write('deb-src %s/local common/\n' % source.uri)
     sources_list.write('\n')
