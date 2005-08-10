@@ -24,6 +24,7 @@ from useless.db.midlevel import Environment
 #from trait import TraitPackage, TraitTemplate
 #from trait import TraitsElement, Trait
 from paella.base.util import make_deplist
+from paella.base.objects import VariablesConfig
 from paella.db.base import get_suite
 from paella.db.trait import Trait
 from paella.db.trait.relations import TraitParent
@@ -33,7 +34,11 @@ from paella.db.family import Family
 #from xmlgen import EnvironElement, SuitesElement
 #from xmlgen import SuiteElement, ProfileElement
 #from xmlgen import ProfileVariableElement
-
+class ProfileVariablesConfig(VariablesConfig):
+    def __init__(self, conn, profile):
+        VariablesConfig.__init__(self, conn, 'profile_variables',
+                                 'trait', 'profile', profile)
+        
 class ProfileTrait(SimpleRelation):
     def __init__(self, conn):
         SimpleRelation.__init__(self, conn, 'profile_trait',
@@ -180,6 +185,7 @@ class Profile(StatementCursor):
         self._pfam = StatementCursor(conn)
         self._pfam.set_table('profile_family')
         self._fam = Family(conn)
+        self.current = None
         
     def drop_profile(self, profile):
         self.delete(clause=Eq('profile', profile))
@@ -243,7 +249,8 @@ class Profile(StatementCursor):
         for cursor in cursors:
             sel = str(cursor.stmt.select(fields = [pfield] + cursor.fields()[1:], clause=pclause))
             cursor.execute('insert into %s (%s)' % (cursor.stmt.table, sel))
-        self.set_profile(current.profile)
+        if current is not None:
+            self.set_profile(current.profile)
             
 
     def get_profile_list(self, suite=None):
@@ -255,6 +262,12 @@ class Profile(StatementCursor):
             clause = Eq('suite', suite)
             plist = [r.profile for r in self.select(clause=clause)]
         return plist
+
+    def edit_variables(self):
+        config = ProfileVariablesConfig(self.conn, self.current.profile)
+        newconfig = config.edit()
+        config.update(newconfig)
+        
     
 #class Profile(object):
 #    def __init__(self, conn):

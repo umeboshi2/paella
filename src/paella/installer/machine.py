@@ -20,7 +20,7 @@ from util import wait_for_resync, make_sources_list
 from util import make_fstab, makedev
 from util import myline, set_root_passwd, make_interfaces_simple
 from util import create_mdadm_conf, extract_tarball
-from util import mount_target_proc
+from util import mount_target_proc, make_script
 
 #from profile import ProfileInstaller
 #from fstab import HdFstab
@@ -30,8 +30,8 @@ DEFAULT_PROCESSES = [
     'apt_sources_installer', 'ready_base',
     'mount_target_proc',
     'pre_install', 'install', 'post_install',
-    'install_modules', 'install_kernel', 'apt_sources_final',
-    'install_fstab', 'umount_target_proc', 'post'
+    'install_fstab', 'install_modules', 'install_kernel',
+    'apt_sources_final', 'umount_target_proc', 'post'
     ]
 
 def scriptinfo(name):
@@ -161,28 +161,42 @@ class MachineInstaller(BaseChrootInstaller):
             'ready_base' : self.ready_base_for_install,
             'mount_target_proc' : self.mount_target_proc,
             'install' : self.install_to_target,
+            'install_fstab' : self.install_fstab,
             'install_modules' : self.install_modules,
             'install_kernel' : self.install_kernel,
             'apt_sources_final' : self.setup_apt_sources_final,
-            'install_fstab' : self.install_fstab,
             'umount_target_proc' : self.umount_target_proc
             }
         self.helper = None
         
     def process(self):
         mach = self.machine.current.machine
+        self.log.info('Starting machine install process for %s' % mach)
         for proc in self.processes:
             self.log.info('processing %s for machine %s' % (proc, mach))
             self.run_process(proc)
             self.log.info('processed %s for machine %s' % (proc, mach))
-            
+        self.log.info('Ending machine install process for %s' % mach)
+        
+    def _make_script(self, name):
+        script = self.machine.get_script(name)
+        if script is not None:
+            return make_script(name, script, self.target)
+        else:
+            return None
+        
     def run_process(self, proc):
+        info = self.log.info
         self.start_process(proc)
-        script = self.machine.get_script(proc)
+        script = self._make_script(proc)
         mtype = self.machine.current.machine_type
         if script is None:
+            info('No script for process %s on machine type %s' % (proc, mtype))
             if proc in self._process_map:
+                info('Running default process %s' % proc)
                 self._process_map[proc]()
+            else:
+                info('Nothing to do for process %s' % proc)
         else:
             self.log.info('%s script exists for %s' % (proc, mtype))
             self.run_process_script(proc, script)
@@ -196,7 +210,9 @@ class MachineInstaller(BaseChrootInstaller):
     def finish_process(self, proc):
         if proc == 'mount_target':
             self._mounted = True
+            self.log.info('Target should be mounted now.')
         elif proc == 'bootstrap':
+            self.log.info('Target should be bootstrapped now.')
             self._bootstrapped = True
     
     def _runscript(self, script, name, info):
@@ -237,23 +253,28 @@ class MachineInstaller(BaseChrootInstaller):
         self.disklogpath = disklogpath
         self.curenv = CurrentEnvironment(self.conn, self.machine.current.machine)
         self.set_logfile(logfile)
+        self.log.info('Machine Installer set machine to %s' % machine)
         self.mtypedata = self.machine.mtype.get_machine_type_data()
         
     def install(self, machine, target):
         self.set_machine(machine)
         self.setup_installer()
         self.set_target(target)
+        self.log.info('Installer set to install %s to %s' % (machine, target))
         self.helper = MachineInstallerHelper(self)
         self.process()
         
     def setup_installer(self):
+        machine = self.machine.current.machine
         profile = self.machine.current.profile
+        self.log.info('Setting up profile installer for %s' % machine)
         self.installer = ProfileInstaller(self.conn)
         self.installer.log = self.log
         self.installer.mtypedata = self.mtypedata
         self.installer.set_profile(profile)
         self.suite = self.installer.suite
         self._installer_ready = True
+        self.log.info('Profile installer ready for %s' % machine)
         
     
     def setup_disks(self):

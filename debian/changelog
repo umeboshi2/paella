@@ -1,3 +1,57 @@
+paella (0.7.18) common; urgency=low
+
+  * fixed another bug in utils, now mounting target partition
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 17:39:44 -0500
+
+paella (0.7.17) common; urgency=low
+
+  * installing fstab before kernel now because of mkinitrd
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 16:34:05 -0500
+
+paella (0.7.16) common; urgency=low
+
+  * using lazy umount for target proc now
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 15:56:07 -0500
+
+paella (0.7.15) common; urgency=low
+
+  * removing mount target proc steps from install_kernel function
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 15:37:00 -0500
+
+paella (0.7.14) common; urgency=low
+
+  * another bugfix on machine installer
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 15:24:32 -0500
+
+paella (0.7.13) common; urgency=low
+
+  * bugfix on running scripts in machine installer
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 15:14:02 -0500
+
+paella (0.7.12) common; urgency=low
+
+  * bugfix in mtype handler
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 14:29:39 -0500
+
+paella (0.7.11) common; urgency=low
+
+  * another bugfix in utils
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue,  9 Aug 2005 13:38:05 -0500
+
 paella (0.7.10) common; urgency=low
 
   * more bugfixes in utils

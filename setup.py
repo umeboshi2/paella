@@ -18,7 +18,8 @@ PACKS = {
             'paella/db/trait', 'paella/db/family',
             'paella/db/profile', 'paella/db/machine'],
     'debian' : ['paella/debian', 'paella/debian/newrepos'],
-    'kde-admin' : ['paella/kde']
+    'kde-admin' : ['paella/kde', 'paella/kde/base',
+                   'paella/kde/db']
     }
 
 if package is not None:

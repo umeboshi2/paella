@@ -73,3 +73,5 @@ class RecordSelectorWindow(KMainWindow):
         self.setCentralWidget(self.mainView)
         self.show()
         
+def split_url(url):
+    return str(url).split('.')

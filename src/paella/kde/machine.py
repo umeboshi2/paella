@@ -13,13 +13,16 @@ from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 from paella.db.trait import Trait
 from paella.db.machine import MachineHandler
+from paella.db.machine.mtype import MachineTypeHandler
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow
 from useless.kbase.gui import ViewWindow, MainWindow
+from useless.kbase.gui import SimpleRecordDialog
 from useless.kdb.gui import RecordSelector, ViewBrowser
 
 from paella.kde.base import RecordSelectorWindow
+from paella.kde.base import split_url
 from paella.kde.base.actions import ManageMachinesAction
 from paella.kde.base.actions import ManageMachineTypesAction
 from paella.kde.base.actions import ManageFilesystemsAction
@@ -50,18 +53,81 @@ class MachineView(ViewBrowser):
         self.setText(self.doc.toxml())
 
     def setSource(self, url):
+        action, context, id_ = split_url(url)
         KMessageBox.information(self, 'called %s' % url)
 
 class MachineTypeView(ViewBrowser):
     def __init__(self, app, parent):
         ViewBrowser.__init__(self, app, parent, MachineTypeDoc)
+        self._dialog = None
 
+    def _info(self, message, parent=None):
+        if parent is None:
+            parent = self
+        KMessageBox.information(parent, message)
+        
     def set_machine_type(self, machine_type):
         self.doc.set_machine_type(machine_type)
         self.setText(self.doc.toxml())
 
+    def resetView(self):
+        self.set_machine_type(self.doc.mtype.current)
+
     def setSource(self, url):
-        KMessageBox.information(self, 'called %s' % url)
+        action, context, id_ = split_url(url)
+        fields = []
+        if context == 'Disks':
+            fields = ['diskname', 'device']
+        elif context == 'Families':
+            fields = ['family']
+        elif context == 'Variables':
+            fields = ['trait', 'name', 'value']
+        if action == 'new':
+            if context == 'Scripts':
+                self._info('need to make a new script')
+            if fields:
+                dialog = SimpleRecordDialog(self, fields)
+                dialog.context = context
+                dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewRecord)
+                self._dialog = dialog
+            else:
+                self._info('problem with %s' % url)
+        elif action == 'edit':
+            if context == 'Variables':
+                self.doc.mtype.edit_variables()
+            elif context == 'Scripts':
+                self.doc.mtype.edit_script(id_)
+            else:
+                self._info('need to edit %s, %s' % (context, id_))
+        elif action == 'delete':
+            if context == 'Families':
+                self.doc.mtype.delete_family(id_)
+            elif context == 'Variables':
+                self._info('use edit to delete variables')
+            else:
+                self._info('need to delete something')
+        else:
+            KMessageBox.information(self, 'called %s' % url)
+        self.resetView()
+        
+    def insertNewRecord(self):
+        dialog = self._dialog
+        context = dialog.context
+        data = dialog.getRecordData()
+        if context == 'Disks':
+            self.doc.mtype.add_disk(data['diskname'], data['device'])
+        elif context == 'Families':
+            self.doc.mtype.append_family(data['family'])
+        elif context == 'Variables':
+            self.doc.mtype.append_variable(data['trait'], data['name'],
+                                           data['value'])
+        else:
+            KMessageBox.information(self, 'called something')
+        self.resetView()
+
+    def updateRecord(self):
+        KMessageBox.information('called updateRecord')
+        
         
 class FilesystemView(ViewBrowser):
     def __init__(self, app, parent):
@@ -181,7 +247,7 @@ class MachineMainWindow(KMainWindow):
             
     def initActions(self):
         collection = self.actionCollection()
-        self.quitAction = KStdAction.quit(self.app.quit, collection)
+        self.quitAction = KStdAction.quit(self.close, collection)
         self._manage_actions = {}
         for k,v in ManageActions.items():
             att = 'slotManage%s' % k

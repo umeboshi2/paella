@@ -10,6 +10,8 @@ from useless.base.util import ujoin, makepaths, md5sum, strfile
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
+from util import edit_dbfile
+
 class TextFileManager(object):
     def __init__(self, conn):
         object.__init__(self)

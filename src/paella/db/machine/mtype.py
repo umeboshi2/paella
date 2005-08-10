@@ -1,15 +1,23 @@
 from os.path import join
 from xml.dom.minidom import parseString
 
+from useless.base.util import strfile
 from useless.db.midlevel import StatementCursor, Environment
 from useless.sqlgen.clause import Eq
 
+from paella.base.util import edit_dbfile
+from paella.base.objects import VariablesConfig
 from paella.db.base import ScriptCursor
 from paella.db.family import Family
 
 from xmlgen import MachineTypeElement
 from xmlparse import MachineTypeParser
 
+class MachineTypeVariablesConfig(VariablesConfig):
+    def __init__(self, conn, mtype):
+        VariablesConfig.__init__(self, conn, 'machine_type_variables',
+                                 'trait', 'machine_type', mtype)
+        
 class BaseMachineTypeObject(object):
     def __init__(self):
         object.__init__(self)
@@ -138,8 +146,8 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
     
     def get_modules(self):
         clause = self._mtype_clause()
-        rows = self.cursor.select(table='machine_modules',
-                                  clause=clause, order='ord')
+        rows = self.select(table='machine_modules',
+                           clause=clause, order='ord')
         return [r.module for r in rows]
 
     def append_modules(self, modules):
@@ -150,7 +158,7 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
         for mod in new_mods:
             data['ord'] = next_ord
             data['module'] = mod
-            self.cursor.insert(table='machine_modules', data=data)
+            self.insert(table='machine_modules', data=data)
             next_ord += 1
         
 class MachineTypeScript(BaseMachineTypeObject, ScriptCursor):
@@ -198,17 +206,57 @@ class MachineTypeHandler(BaseMachineTypeHandler):
     def set_machine_type(self, machine_type):
         BaseMachineTypeHandler.set_machine_type(self, machine_type)
         self._mtenv = MachineTypeEnvironment(self.conn, machine_type)
+        self._mtcfg = MachineTypeVariablesConfig(self.conn, machine_type)
         self._mtscript.set_machine_type(machine_type)
         
     def family_rows(self):
         clause = self._mtype_clause()
         return self._mtfam.select(clause=clause, order='family')
+
+    def _family_clause(self, family):
+        return self._mtype_clause() & Eq('family', family)
     
     def append_family(self, family):
         if family not in self.get_families():
             data = dict(machine_type=self.current, family=family)
             self._mtfam.insert(data=data)
 
+    def delete_family(self, family):
+        clause  = self._family_clause(family)
+        self._mtfam.delete(clause=clause)
+
+    def update_family(self, oldfam, newfam):
+        clause = self._family_clause(oldfam)
+        self._mtfam.update(data=dict(family=newfam), clause=clause)
+        
+    def append_variable(self, trait, name, value):
+        data = dict(trait=trait, name=name, value=value,
+                    machine_type=self.current)
+        self._mtenv.cursor.insert(data=data)
+
+    def _variable_clause(self, trait, name):
+        return self._mtype_clause() & Eq('trait', trait) & Eq('name', name)
+    
+    def delete_variable(self, trait, name):
+        clause = self._variable_clause(trait, name)
+        self._mtenv.cursor.delete(clause=clause)
+
+    def update_variable(self, trait, name, value):
+        clause = self._variable_clause(trait, name)
+        self._mtenv.update(data=dict(value=value), clause=clause)
+
+    def edit_variables(self):
+        newvars = self._mtcfg.edit()
+        self._mtcfg.update(newvars)
+
+    def edit_script(self, name):
+        script = self.get_script(name)
+        if script is not None:
+            data = edit_dbfile(name, script.read(), 'script')
+            if data is not None:
+                self._mtscript.save_script(name, strfile(data))
+                print 'need to update'
+                
     def get_families(self):
         return [r.family for r in self.family_rows()]
 

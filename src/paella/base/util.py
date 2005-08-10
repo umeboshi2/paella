@@ -1,3 +1,6 @@
+import os
+import tempfile
+
 def make_deplist(listed, all, setfun, parfun, log=None):
     deplist = []
     while len(listed):
@@ -26,3 +29,19 @@ def make_deplist(listed, all, setfun, parfun, log=None):
             cleanlist.append(dep)
     return cleanlist
 
+def edit_dbfile(name, data, ftype='script'):
+    tmp, path = tempfile.mkstemp('paella', ftype)
+    tmp = file(path, 'w')
+    tmp.write(data)
+    tmp.close()
+    os.system('$EDITOR %s' %path)
+    tmp = file(path, 'r')
+    mod = tmp.read()
+    tmp.seek(0)
+    tmp.close()
+    os.remove(path)
+    if mod != data:
+        return mod
+    else:
+        return None
+        

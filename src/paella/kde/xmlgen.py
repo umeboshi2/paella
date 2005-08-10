@@ -12,6 +12,7 @@ from paella.db.trait import Trait
 from paella.db.profile import Profile
 from paella.db.family import Family
 from paella.db.machine import MachineHandler
+from paella.db.machine.mtype import MachineTypeHandler
 
 def color_header(table, color='cornsilk3'):
     table.header.firstChild.setAttribute('bgcolor', color)
@@ -344,9 +345,15 @@ class MachineDoc(BaseDocument):
             self.body.appendChild(HR())
 
 class MachineTypeDoc(_MachineBaseDocument):
+    def __init__(self, app, **atts):
+        _MachineBaseDocument.__init__(self, app, **atts)
+        self.mtype = MachineTypeHandler(self.conn)
+        self.body.setAttribute('bgcolor', 'Salmon')
+
     def set_machine_type(self, machine_type):
         clause = Eq('machine_type', machine_type)
         self.clear_body()
+        self.mtype.set_machine_type(machine_type)
         title = SimpleTitleElement('MachineType:  %s' % machine_type,
                                    bgcolor='IndianRed', width='100%')
         self.body.appendChild(title)
@@ -369,13 +376,42 @@ class MachineTypeDoc(_MachineBaseDocument):
 
     def _setup_section(self, name, fields, rows):
         title = SimpleTitleElement(name)
-        title.set_font(color='RoyalBlue')
+        title.set_font(color='DarkViolet')
+        td = TD()
+        anchor = Anchor('new.%s.mtype' % name, 'new')
+        td.appendChild(anchor)
+        title.row.appendChild(td)
         self.body.appendChild(title)
         if len(rows):
-            table = self._make_table(fields, rows)
-            color_header(table)
+            table = self._make_table(name, fields, rows, border=1, cellspacing=1)
+            color_header(table, 'MediumOrchid2')
             self.body.appendChild(table)
             
+    def _make_table(self, context, fields, rows, **atts):
+        table = BaseElement('table', bgcolor='MediumOrchid3', **atts)
+        table.context = context
+        self._add_table_header(table, fields + ['command'])
+        for row in rows:
+            self._add_table_row(table, fields, row)
+        return table
+
+    def _add_table_row(self, table, fields, row):
+        trow = TR()
+        for field in fields:
+            val = row[field]
+            trow.appendChild(TxtTD(val))
+        durl = 'delete.%s.%s' % (table.context, row[fields[0]])
+        eurl = 'edit.%s.%s' % (table.context, row[fields[0]])
+        delanchor = Anchor(durl, 'delete')
+        editanchor = Anchor(eurl, 'edit')
+        td = TD()
+        td.appendChild(editanchor)
+        td.appendChild(BR())
+        td.appendChild(delanchor)
+        trow.appendChild(td)
+        #trow.appendChild(TxtTD(delanchor))
+        table.appendChild(trow)
+
 class FilesystemDoc(_MachineBaseDocument):
     def set_filesystem(self, filesystem):
         clause = Eq('filesystem', filesystem)

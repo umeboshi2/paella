@@ -10,7 +10,7 @@ from qtext import QextScintilla, QextScintillaLexer
 from qtext import QextScintillaLexerPython
 
 from kdeui import KMainWindow
-from kdeui import KPopupMenu
+from kdeui import KPopupMenu, KStdAction
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 from kfile import KFileDialog
@@ -23,7 +23,7 @@ from paella.db.trait import Trait
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow
-from useless.kbase.gui import ViewWindow
+from useless.kbase.gui import ViewWindow, SimpleRecordDialog
 from useless.kdb.gui import ViewBrowser
 from useless.kdb.gui import RecordSelector
 
@@ -137,26 +137,45 @@ class TraitMainWindow(SimpleSplitWindow):
         
     def initActions(self):
         collection = self.actionCollection()
+        self.quitAction = KStdAction.quit(self.close, collection)
+        self.newTraitAction = KStdAction.openNew(self.newTrait, collection)
         
     def initMenus(self):
         mainMenu = KPopupMenu(self)
         menus = [mainMenu]
         self.menuBar().insertItem('&Main', mainMenu)
         self.menuBar().insertItem('&Help', self.helpMenu(''))
-
+        self.newTraitAction.plug(mainMenu)
+        self.quitAction.plug(mainMenu)
+        
     def initToolbar(self):
         toolbar = self.toolBar()
-
+        self.newTraitAction.plug(toolbar)
+        self.quitAction.plug(toolbar)
+        
     def initlistView(self):
         self.listView.setRootIsDecorated(True)
         self.listView.addColumn('group')
         
     def refreshListView(self):
+        self.listView.clear()
         trait_folder = KListViewItem(self.listView, 'traits')
         for trait in self.trait.get_trait_list():
             item = KListViewItem(trait_folder, trait)
             item.trait = trait
-                
+
+    def newTrait(self):
+        dialog = SimpleRecordDialog(self, ['trait'])
+        dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewTrait)
+        self._dialog = dialog
+
+    def insertNewTrait(self):
+        dialog = self._dialog
+        data = dialog.getRecordData()
+        trait = data['trait']
+        self.trait.create_trait(trait)
+        self.refreshListView()
+        
     def selectionChanged(self):
         current = self.listView.currentItem()
         if hasattr(current, 'trait'):

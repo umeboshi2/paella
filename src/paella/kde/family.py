@@ -4,15 +4,17 @@ from kdeui import KMainWindow
 from kdeui import KPopupMenu
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
-
-from paella.base import PaellaConfig
-from paella.db import PaellaConnection
-from paella.db.family import Family
+from kdeui import KStdAction
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow
 from useless.kbase.gui import ViewWindow
+from useless.kbase.gui import SimpleRecordDialog
 from useless.kdb.gui import ViewBrowser
+
+from paella.base import PaellaConfig
+from paella.db import PaellaConnection
+from paella.db.family import Family
 from paella.kde.xmlgen import FamilyDoc
 
 class SimpleEdit(KTextEdit):
@@ -77,21 +79,28 @@ class FamilyMainWindow(SimpleSplitWindow):
         
     def initActions(self):
         collection = self.actionCollection()
+        self.quitAction = KStdAction.quit(self.close, collection)
+        self.newFamilyAction = KStdAction.openNew(self.newFamily, collection)
         
     def initMenus(self):
         mainMenu = KPopupMenu(self)
         menus = [mainMenu]
         self.menuBar().insertItem('&Main', mainMenu)
         self.menuBar().insertItem('&Help', self.helpMenu(''))
-
+        self.newFamilyAction.plug(mainMenu)
+        self.quitAction.plug(mainMenu)
+        
     def initToolbar(self):
         toolbar = self.toolBar()
-
+        self.newFamilyAction.plug(toolbar)
+        self.quitAction.plug(toolbar)
+        
     def initlistView(self):
         self.listView.setRootIsDecorated(True)
         self.listView.addColumn('group')
         
     def refreshListView(self):
+        self.listView.clear()
         for row in self.family.family_rows():
             item = KListViewItem(self.listView, row.family)
             item.family = row.family
@@ -108,7 +117,21 @@ class FamilyMainWindow(SimpleSplitWindow):
             if hasattr(current, 'widget'):
                 print 'widget is', current.widget
 
+    def newFamily(self):
+        dialog = SimpleRecordDialog(self, ['family'])
+        dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewFamily)
+        self._dialog = dialog
 
+    def insertNewFamily(self):
+        dialog = self._dialog
+        data = dialog.getRecordData()
+        family = data['family']
+        if family not in self.family.all_families():
+            self.family.create_family(family)
+        else:
+            KMessageBox.information(self, '%s already exists.' % family)
+        self.refreshListView()
+        
 if __name__ == '__main__':
     cfg = PaellaConfig()
     conn = PaellaConnection(cfg)

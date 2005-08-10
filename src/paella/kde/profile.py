@@ -8,7 +8,7 @@ from kdeui import KPopupMenu
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 from kdeui import KActionSelector
-from kdeui import KPushButton
+from kdeui import KPushButton, KStdAction
 
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection
@@ -17,9 +17,11 @@ from paella.db.profile import Profile
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow
-from useless.kbase.gui import ViewWindow
+from useless.kbase.gui import ViewWindow, SimpleRecordDialog
 from useless.kbase.gui import BaseAssigner
 from useless.kdb.gui import ViewBrowser
+
+from paella.kde.base import split_url
 from paella.kde.xmlgen import ProfileDoc
 
 class SimpleEdit(KTextEdit):
@@ -105,17 +107,23 @@ class ProfileView(ViewBrowser):
         self.doc.set_profile(profile)
         self.setText(self.doc.toxml())
 
+    def resetView(self):
+        self.set_profile(self.doc.profile.current.profile)
+        
     def set_suite(self, suite):
         self.doc.suite = suite
         self.doc.trait = Trait(self.app.conn, suite=suite)
 
     def setSource(self, url):
-        action, context, id = str(url).split('.')
+        action, context, id = split_url(url)
         if action == 'show':
             print 'unimpletmented'
         elif action == 'edit':
             if context == 'traits':
                 win = TraitAssigner(self.app, self.parent(), id)
+            elif context == 'variables':
+                self.doc.profile.edit_variables()
+                self.resetView()
             else:
                 self._url_error(url)
                 
@@ -140,25 +148,48 @@ class ProfileMainWindow(SimpleSplitWindow):
         
     def initActions(self):
         collection = self.actionCollection()
+        self.quitAction = KStdAction.quit(self.close, collection)
+        self.newProfileAction = KStdAction.openNew(self.newProfile, collection)
         
     def initMenus(self):
         mainMenu = KPopupMenu(self)
         menus = [mainMenu]
         self.menuBar().insertItem('&Main', mainMenu)
         self.menuBar().insertItem('&Help', self.helpMenu(''))
-
+        self.newProfileAction.plug(mainMenu)
+        self.quitAction.plug(mainMenu)
+        
     def initToolbar(self):
         toolbar = self.toolBar()
-
+        self.newProfileAction.plug(toolbar)
+        self.quitAction.plug(toolbar)
+        
     def initlistView(self):
         self.listView.setRootIsDecorated(True)
         self.listView.addColumn('group')
         
     def refreshListView(self):
+        self.listView.clear()
         for row in self.profile.select(fields=['profile', 'suite'], order='profile'):
             item = KListViewItem(self.listView, row.profile)
             item.profile = row.profile
-                
+
+    def newProfile(self):
+        dialog = SimpleRecordDialog(self, ['profile'])
+        dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewProfile)
+        self._dialog = dialog
+
+    def insertNewProfile(self):
+        dialog = self._dialog
+        data = dialog.getRecordData()
+        if data['profile'] not in self.profile.get_profile_list():
+            #self.profile.insert(data=data)
+            self.profile.copy_profile('skeleton', data['profile'])
+        else:
+            KMessageBox.information(self, 'profile %s already exists.' % data['profile'])
+        #KMessageBox.information(self, 'Make new profile %s' % data['profile'])
+        self.refreshListView()
+        
     def selectionChanged(self):
         current = self.listView.currentItem()
         if hasattr(current, 'profile'):

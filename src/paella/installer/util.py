@@ -108,14 +108,14 @@ def make_fstab(fstabobj, target):
 
 def install_kernel(package, target):
     script = "#!/bin/bash\n"
-    script += 'umount /proc\n'
-    script += 'umount /proc\n'
-    script += 'mount -t proc proc /proc\n'
+    script += '#umount /proc\n'
+    script += '#umount /proc\n'
+    script += '#mount -t proc proc /proc\n'
     script += 'touch /boot/vmlinuz-fake\n'
     script += 'ln -s boot/vmlinuz-fake vmlinuz\n'
     script += 'apt-get -y install %s\n' % package
     script += 'echo "kernel %s installed"\n' % package
-    script += 'umount /proc\n'
+    script += '#umount /proc\n'
     script += '\n'
     sname = 'install_kernel.sh'
     full_path = os.path.join(target, sname)
@@ -363,6 +363,7 @@ def mount_target(target, mounts, device):
     else:
         pdev = '%s%d' % (device, mounts[0].partition)
     runlog('echo mounting target %s to %s' % (pdev, target))
+    runlog('mount %s %s' % (pdev, target))
     mounts = mounts[1:]
     mountable = [m for m in mounts if m.fstype != 'swap']
     for mnt in mountable:
@@ -388,6 +389,6 @@ def mount_target_proc(target, umount=False):
     tproc = join(target, 'proc')
     cmd = 'mount --bind /proc %s' % tproc
     if umount:
-        cmd = 'umount %s' % tproc
+        cmd = 'umount -l %s' % tproc
     return runlog(cmd)
     
