@@ -229,7 +229,7 @@ class NewInstaller(object):
         disk_config_file = file(disk_config_path, 'w')
         disk_config_file.write(disk_config)
         disk_config_file.close()
-        script = '/usr/lib/fai/sbin/setup_harddisks'
+        script = '/usr/lib/paella/scripts/setup_harddisks_fai'
         options = '-X -f %s' % disk_config_path
         env = 'env LOGDIR=%s diskvar=%s' % (self.disklogpath, join(self.disklogpath, 'diskvar'))
         command = '%s %s %s' % (env, script, options)

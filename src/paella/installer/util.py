@@ -285,7 +285,7 @@ def make_script(name, data, target, execpath=False):
     
 
 def setup_disk_fai(disk_config, logpath,
-                   script='/usr/lib/fai/sbin/setup_harddisks'):
+                   script='/usr/lib/paella/scripts/setup_harddisks_fai'):
     fileid, disk_config_path = tempfile.mkstemp('paella', 'diskinfo')
     disk_config_file = file(disk_config_path, 'w')
     disk_config_file.write(disk_config)

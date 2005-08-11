@@ -58,7 +58,7 @@ Package: paella-nfs-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db, paella-installer, reiserfsprogs, xfsprogs, hdparm, mdadm, mkisofs, gawk, fai
+Depends: paella-db, paella-installer, reiserfsprogs, xfsprogs, hdparm, mdadm, mkisofs, gawk
 Description: package for nfsroot installer
     This package should be installed on the nfsroot installer.
 
