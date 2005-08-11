@@ -24,7 +24,7 @@ install/paella-kde-admin::
 	python setup.py kde-admin install --prefix=$(CURDIR)/debian/paella-kde-admin/usr
 	rm -r build/	
 build/paella-doc::
-	rst2html notes > notes.html
+	rst2html docs/notes > notes.html
 
 clean::
 	dh_clean `find -path *.pyc`

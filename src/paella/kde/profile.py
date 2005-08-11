@@ -14,6 +14,7 @@ from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 from paella.db.trait import Trait
 from paella.db.profile import Profile
+from paella.db.family import Family
 
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow
@@ -35,7 +36,7 @@ class TraitAssigner(BaseAssigner):
         self.profile.set_profile(profile)
         BaseAssigner.__init__(self, app, parent,
                               name='TraitAssigner', udbuttons=True)
-        self.connect(self, SIGNAL('okClicked()'), self.slotLaughAtMe)
+        self.connect(self, SIGNAL('okClicked()'), self.slotInsertNewTraits)
         
     def initView(self):
         app = self.app
@@ -57,47 +58,45 @@ class TraitAssigner(BaseAssigner):
             r = QListBoxText(abox, row.trait)
             r.trait = row.trait
 
-    def slotLaughAtMe(self):
+    def slotInsertNewTraits(self):
         sbox = self.listBox.selectedListBox()
         traits = [sbox.item(n).trait for n in range(sbox.numRows())] 
-        print 'laughing out loud', traits
+        self.profile.insert_new_traits(traits)
         
-class TraitAssignerOrig(KMainWindow):
+class FamilyAssigner(BaseAssigner):
     def __init__(self, app, parent, profile):
-        KMainWindow.__init__(self, parent, 'TraitAssigner')
-        self.page = QFrame(self)
-        self.vbox = QVBoxLayout(self.page, 5, 7)
-        self.listBox = KActionSelector(self.page)
-        self.listBox.setShowUpDownButtons(True)
-        self.setCentralWidget(self.page)
-        self.vbox.addWidget(self.listBox)
-        hbox = QHBoxLayout(self.page, 5, 7)
-        self.vbox.addLayout(hbox)
-        self.ok_button = KPushButton('ok', self.page)
-        self.cancel_button = KPushButton('cancel', self.page)
-        hbox.addWidget(self.ok_button)
-        hbox.addWidget(self.cancel_button)
-        self.app = app
-        self.db = app.db
         self.profile = Profile(app.conn)
         self.profile.set_profile(profile)
+        BaseAssigner.__init__(self, app, parent,
+                              name='FamilyAssigner', udbuttons=True)
+        self.connect(self, SIGNAL('okClicked()'), self.slotInsertNewFamilies)
+        
+    def initView(self):
+        app = self.app
+        self.db = app.db
         self.suite = self.profile.current.suite
-        self.traits = StatementCursor(app.conn)
-        self.traits.set_table('%s_traits'  % self.suite)
-        self.initlistView()
-        self.show()
-
-    def initlistView(self):
-        ptrows = self.profile.get_trait_rows()
-        pt = [r.trait for r in ptrows]
-        all_trows = self.traits.select(fields=['trait'], order=['trait'])
-        trows = [r for r in all_trows if r.trait not in pt]
+        self.family = Family(app.conn)
+        all_fams = self.family.all_families()
+        pfams = self.profile.get_families()
+        fams = [f for f in all_fams if f not in pfams]
         abox = self.listBox.availableListBox()
         sbox = self.listBox.selectedListBox()
-        for row in ptrows:
-            QListBoxText(sbox, row.trait)
-        for row in trows:
-            QListBoxText(abox, row.trait)
+        for family in pfams:
+            self._add_family_to_listbox(sbox, family)
+        for family in fams:
+            self._add_family_to_listbox(abox, family)
+            
+
+    def _add_family_to_listbox(self, box, family):
+        r = QListBoxText(box, family)
+        r.family = family
+
+    def slotInsertNewFamilies(self):
+        sbox = self.listBox.selectedListBox()
+        families =[sbox.item(n).family for n in range(sbox.numRows())]
+        self.profile.delete_all_families()
+        for family in families:
+            self.profile.append_family(family)
         
 class ProfileView(ViewBrowser):
     def __init__(self, app, parent):
@@ -121,9 +120,13 @@ class ProfileView(ViewBrowser):
         elif action == 'edit':
             if context == 'traits':
                 win = TraitAssigner(self.app, self.parent(), id)
+                self.connect(win, SIGNAL('okClicked()'), self.resetView)
             elif context == 'variables':
                 self.doc.profile.edit_variables()
                 self.resetView()
+            elif context == 'families':
+                win = FamilyAssigner(self.app, self.parent(), id)
+                self.connect(win, SIGNAL('okClicked()'), self.resetView)
             else:
                 self._url_error(url)
                 

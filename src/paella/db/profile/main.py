@@ -79,6 +79,9 @@ class ProfileTrait(SimpleRelation):
         clause=Eq('profile', self.current) & Eq('trait', trait)
         self.cmd.delete(clause=clause)
 
+    def delete_all(self):
+        self.cmd.delete(clause=Eq('profile', self.current))
+        
     def update(self, *args, **kw):
         self.cmd.update(*args, **kw)
         
@@ -202,15 +205,22 @@ class Profile(StatementCursor):
     def get_family_data(self):
         families = self.get_families()
         return self._fam.FamilyData(families)
-    
-    def make_traitlist(self, log=None):
+
+    def _make_traitlist(self, traits, log=None):
         tp = TraitParent(self.conn, self.current.suite)
-        listed = [x.trait for x in self._traits.trait_rows()]
+        listed = traits
         all = list(tp.get_traitset(listed))
         setfun = tp.set_trait
         parfun = tp.parents
         return make_deplist(listed, all, setfun, parfun, log)
+        
+    def make_traitlist(self, log=None):
+        listed = [x.trait for x in self._traits.trait_rows()]
+        return self._make_traitlist(listed, log=log)
 
+    def get_traitlist_for_traits(self, traits):
+        return self._make_traitlist(traits)
+    
     def family_rows(self, profile=None):
         if profile is None:
             profile = self.current.profile
@@ -219,7 +229,6 @@ class Profile(StatementCursor):
 
     def get_families(self, profile=None):
         return [r.family for r in self.family_rows(profile)]
-    
 
     def get_trait_rows(self):
         return self._traits.trait_rows()
@@ -267,6 +276,30 @@ class Profile(StatementCursor):
         config = ProfileVariablesConfig(self.conn, self.current.profile)
         newconfig = config.edit()
         config.update(newconfig)
+
+    def delete_trait(self, trait):
+        self._traits.delete(trait)
+
+    def delete_all_traits(self):
+        self._traits.delete_all()
+
+    def delete_family(self, family):
+        clause = Eq('profile', self.current.profile) & Eq('family', family)
+        self._pfam.delete(clause=clause)
+
+    def delete_all_families(self):
+        clause = Eq('profile', self.current.profile)
+        self._pfam.delete(clause=clause)
+
+    def insert_new_traits(self, traits):
+        self.delete_all_traits()
+        num = 0
+        for trait in traits:
+            self.append_trait(trait, num)
+            num += 1
+            
+            
+    
         
     
 #class Profile(object):

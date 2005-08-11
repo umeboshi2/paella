@@ -1,3 +1,11 @@
+paella (0.7.20) common; urgency=low
+
+  * more work on gui
+  * changed doc package build
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 11 Aug 2005 11:59:22 -0500
+
 paella (0.7.19) common; urgency=low
 
   * adding setup_harddisk script from fai
