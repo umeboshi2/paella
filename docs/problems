@@ -1,0 +1,57 @@
+Known Problems with Paella_
+-----------------------------------------
+
++ xml import/export
+
+  - the tags for trait variables needs to be redone
+
+  - the way templates are exported is sloppy
+
++ the kde gui needs finishing
+
+  - trait management
+
+  - family management
+
+  - machine management
+
++ temporary files should be more vigorously removed
+
++ debrepos
+
+  - no partial mirror support
+
+  - init script holds up installation
+
++ python-kde3 not in sarge.
+
+  - maybe I can put my backport on berlios?
+
++ schema problems
+
+  - templates in the traits are tied to packages
+
+  - use of current_environment table needs updating
+
+
+This project_ is hosted by |berlios|.
+
+
+.. |berlios| image:: http://developer.berlios.de/bslogo.php?group_id=0&type=1
+   :target: http://developer.berlios.de
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com
+.. _problems: problems.html
