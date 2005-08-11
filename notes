@@ -102,7 +102,9 @@ Family
 - A family is a collection of variables from different traits 
 
   + a family can have parents
-  + a family is not tied to a suite 
+  + a family is not tied to a suite
+  + a variable in a family doesn't have to exist in a trait,
+    but it has to be tied to a trait.
 
 Profile
 -------
@@ -524,7 +526,7 @@ Other tables are in related sets:
     + use this info to dump with sfdisk
 
 
-
+-----------------------------------
 
 Getting started with paella
 --------------------------------------
@@ -561,6 +563,8 @@ svn checkout svn://svn.berlios.de/paella/trunk paella
 
 You can build the packages with debuild, or fakeroot debian/rules binary.
 
+
+--------------------------------------
 
 Hardware Recommendations
 ------------------------------------------
@@ -605,6 +609,9 @@ a window in X.  On this machine you will want to install the paella-admin and th
 paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
 probably want to copy this to ~/.paellarc and edit it.
 
+
+-----------------------------------
+
 Local Debian Repository
 ------------------------------------
 
@@ -615,6 +622,8 @@ should fail because you are likely not to have a debrepos user.  This will be fi
 Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The 
 mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a 
 directory for each suite you have in paella, plus one called 'common'.
+
+------------------------------------
 
 Using Paella-Management
 -------------------------------------
