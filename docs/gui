@@ -1,0 +1,180 @@
+Paella Gui
+============
+
+
+Original gui design goals
+---------------------------------
+
+The original goals for the gui were to provide enough of an interface to the paella_ 
+database to do simple operations needed to create traits and their components.  
+Much of the gui was made without regard for new users, or users unfamiliar with 
+the code or paella system.  Most of my time spent in developing paella has been focused
+on the installer code, and in system design.  It can take a great deal of time in 
+testing, troubleshooting problems and improving systems.  As a result, the gui is 
+very minimalistic, and will not do all (although it will do most) necessary operations 
+needed to make use of the database.
+
+------------------
+
+Configuration File
+-------------------------
+
+The gui uses the paellarc config files ['/etc/paellarc', '~/.paellarc'].  Most options are 
+found in the management_gui section.
+
+management_suites
+	This is comma separated list of suites to manage.  There will be a
+	suite manager toolbar appear for each suite.
+
+template_profile
+	This is the name of the profile to create other profiles from.  New profiles 
+	will be copies of this.
+
+client_path
+	This is the path where the imports and exports of clients reside.  This is
+	not crucial to the operation of paella, and will be explained elsewhere.  
+	When it is explained, I'll provide a link to the explanation.
+
+manager_pos
+	This is the position on the screen of the main management window.  
+	Example:  0, 480
+
+manager_size
+	This is the size of the main management window..
+	Example: 150, 200
+
+${suite}_pos
+	This is the location of the suite management toolbar for that suite.
+	Example: sarge_pos:  400, 0
+
+--------------------
+
+Gtk/Qt and Gnome/KDE
+----------------------------------
+
+There are two graphical management interfaces for paella.  One is written 
+using pygtk_.  The other is written  using pykde_.  I started paella writing the 
+pygtk interface, but during the end of 2004, I switched to developing with the
+pykde interface.
+
+Way back when I was using python1.5, I learned to write interfaces with pygtk.  At the 
+time the qt license was not dfsg_ compatible, but gtk was.  By the time I got around 
+to writing paella, I had plenty of inertia with pygtk, although there was a dfsg compatible 
+qt available.
+
+I decided to play around with pykde one day and found it a little easier than gtk.  It takes 
+longer for me to write with pykde currently, because my relative exposure to when
+compared to pygtk.  I am expecting that to change with time and practice. One of the 
+things that attracted me to pykde is the lower level widget subclasses.  I haven't used
+to much of pygnome because of it's poor widget selection, and the difficutly in using 
+bonobo.  There don't seem to be many lowlevel replacements for gtk widgets that are 
+gnome aware.  To be fair, at the time the pygnome docs weren't fulfilling, so I may have
+missed out on something I didn't know about.  An example that I am thinking of is the 
+KComboBox which is a QComboBox with text completion methods and configurable 
+hotkeys.
+
+Current State of Paella Gui
+--------------------------------------
+
+Currently, the gtk interface is being deprecated, and the kde interface is being actively 
+developed.  I will be happy to help with the gtk interface if somebody else feels 
+like actively maintaining it.  Any reasonable patch sent will be applied.  Some of the 
+operations with this interface are deprecated and should be removed.
+
+You still need to gtk interface to perform some of the operations.  All operations 
+available on the gtk interface will be available on the kde interface, except for the 
+deprecated/unused operations.
+
+Some of the operations are only available on the kde interface.  I am not planning on 
+duplicating this on the gtk interface.
+
+Between both interfaces, most of the simple operations, and some more complex ones 
+are supported.  Do not expect the gui's to be completely sufficient anytime soon.  You 
+will probably at some time be forced to use psql or a generic database manager on the 
+database.  A graphical database manager that I highly recommend is TOra_.  TOra is 
+available on sarge.
+
+-------------------------
+
+Using the Gui
+--------------------
+
+At the command line type in paella-management.  This should at least pull up the main 
+management window.  There are two menus on this window, database and edit.  The
+database menu has options to connect, disconnect, backup and restore a database.  
+Connect and disconnect are not really supported yet.  Backup and restore will backup
+and restore most of the database (with the exception of the main package tables, the 
+default_environment, and current_environment tables).  Using one of these menu 
+options will bring up a file dialog.  Only the directory values for the fileselection are 
+used.  It doesn't matter what file you select, the directory containing the file will be the
+argument that is passed.
+
+The other menu on the main management window is edit.  The options here will open 
+other management windows.
+
+The options are
+
+profiles
+	brings up the profile management window
+
+families
+	brings up the family management window
+
+suitemanager
+	brings up a dialog to select the suite, then brings
+	up a suitemanager toolbar window
+
+traitmanager
+	this option is deprecated, see traits below.
+
+machines
+	brings up a machine toolbar window
+
+traits
+	brings up a traitmanager window.  This object is not
+	actively developed.
+
+tdiff
+	brings up the template differ
+
+sdiff
+	brings up the script differ
+
+fdiff
+	brings up the family differ
+
+default_environment
+	brings up the default environment editor.
+
+clients
+	brings up the client manager
+
+browser
+	brings up the kde management interface
+	this option will do nothing if that interface is
+	not installed.
+
+
+---------------------------
+
+This project_ is hosted by |berlios|.
+
+
+.. |berlios| image:: http://developer.berlios.de/bslogo.php?group_id=0&type=1
+   :target: http://developer.berlios.de
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com
+.. _problems: problems.html
