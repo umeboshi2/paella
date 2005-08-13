@@ -3,7 +3,7 @@ Paella Gui
 
 
 Original gui design goals
----------------------------------
+------------------------------------
 
 The original goals for the gui were to provide enough of an interface to the paella_ 
 database to do simple operations needed to create traits and their components.  
@@ -114,42 +114,42 @@ other management windows.
 
 The options are
 
-profiles
+**profiles**
 	brings up the profile management window
 
-families
+**families**
 	brings up the family management window
 
-suitemanager
+**suitemanager**
 	brings up a dialog to select the suite, then brings
 	up a suitemanager toolbar window
 
-traitmanager
+**traitmanager**
 	this option is deprecated, see traits below.
 
-machines
+**machines**
 	brings up a machine toolbar window
 
-traits
+**traits**
 	brings up a traitmanager window.  This object is not
 	actively developed.
 
-tdiff
+**tdiff**
 	brings up the template differ
 
-sdiff
+**sdiff**
 	brings up the script differ
 
-fdiff
+**fdiff**
 	brings up the family differ
 
-default_environment
+**default_environment**
 	brings up the default environment editor.
 
-clients
+**clients**
 	brings up the client manager
 
-browser
+**browser**
 	brings up the kde management interface
 	this option will do nothing if that interface is
 	not installed.

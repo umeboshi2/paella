@@ -1,0 +1,204 @@
+Paella Database Design 
+===========================
+
+Database Schema
+----------------------------
+
+The database schema is not very complicated.
+
+The primary tables are:
+
++ textfiles
+
+  - a table containing an id, md5sum, size, and
+    text of every template and script used in the
+    database.
+
++ scriptnames
+
+  - a list of names for the scripts
+
+  - right now this defaults to the steps of the trait
+    processes.
+
++ suites
+
++ default_environment
+
++ current_environment
+
+Other tables are in related sets:
+
++ **suite tables**  -- there is a set for each suite in suites table
+
+  - sarge_packages
+
+    + a list of all the packages available to this suite
+
+  - sarge_traits
+
+    + a list of all the traits_ in this suite
+
+  - sarge_trait_package
+
+    + relates traits to packages
+
+    + action on the package can be remove, install, config, reconfig
+
+      - remove will remove the package, if installed
+
+      - install will install the package
+
+      - config does nothing right now
+
+      - reconfig runs dpkg-reconfigure -plow on the package
+
+  - sarge_trait_parent
+
+    + relates traits to other traits
+
+    + current code can't handle cyclic dependencies
+
+  - sarge_scripts
+
+    + relates traits and scriptnames and textfiles
+
+  - sarge_templates
+
+    + relates traits to packages and textfiles
+
+    + this is where the templates are located
+
+    + info can be preserved for user/group ownership
+      and file mode.
+
+    + template tags have the form::
+
+
+       <--|trait_name|-->
+       
+     where trait is the name of the trait
+     and name is the name of the variable
+     for example::
+
+        <--|xwindow_driver|-->
+
+
+    + parent directories created before installing the
+      template will be root:root and system umask
+      
+  - sarge_variables
+    
+    + relates traits to name, value pairs
+
+    + a dictionary is made from this table and is used
+      in the templates and in the scripts
+
+    + the keys in the dictionary are in the form
+      as the template tags mentioned above, without
+      the tag markers.
+
++ **profile tables**
+
+  - profiles_
+
+  - profile_family
+
+  - profile_trait
+
+  - profile_variables
+
++ **family tables**
+
+  - families_
+
+  - family_environment
+
+  - family_parent
+
++ **machine tables**
+
+  - machines 
+
+    + list of machines_
+
+    + relates to machine_types, profiles, filesystems, kernels
+
+  - machine_types
+
+    + list of machine_types_
+
+  - machine_disks
+
+    + relates machine_types to disks and device name
+
+  - machine_modules
+
+    + ordered lists of modules
+
+    + relates to machine_types_
+
+  - disks
+
+    + list of disknames
+
+  - filesystem_mounts
+
+    + an ordered list of mounts for a filesystem
+
+    + relates to filesystems_
+
+    + size corresponds to fai diskconfig
+
+    + partition number for hard drive
+
+  - filesystems
+
+    + a list of filesystems_
+
+  - kernels
+    
+    + a list of kernel package names
+
+  - mounts
+
+    + a list of mounts_ and options 
+
+  - partitions
+
+    + a list of partition numbers and sfdisk info
+
+    + relates to disks 
+
+    + use this info to dump with sfdisk
+
+
+-----------------------------------
+
+Database Setup
+--------------------------
+
+	example::
+		
+		apt-get install postgresql
+		su postgres
+		createuser -a -d adminuser
+		createuser -A -D paella
+		createlang plpgsql template1	
+		exit
+		su adminuser createdb paella
+
+You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
+paella from anywhere on the local network, and allow adminuser from your management
+desktop.
+
+
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+.. _machines: #machine
