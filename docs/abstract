@@ -70,3 +70,4 @@ of the process of bootstrapping a new base Knoppix cd in this tree.  There is
 a script called 'setup-livecd-tree' in the script directory that can be used after
 a debootstrap to setup a small livecd system (doesn't make the iso, just the
 system).
+
