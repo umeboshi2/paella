@@ -1,3 +1,10 @@
+paella (0.7.21) common; urgency=low
+
+  * layout changes to kde management package
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon, 15 Aug 2005 11:37:29 -0500
+
 paella (0.7.20) common; urgency=low
 
   * more work on gui

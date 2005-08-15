@@ -19,7 +19,7 @@ PACKS = {
             'paella/db/profile', 'paella/db/machine'],
     'debian' : ['paella/debian', 'paella/debian/newrepos'],
     'kde-admin' : ['paella/kde', 'paella/kde/base',
-                   'paella/kde/db']
+                   'paella/kde/db', 'paella/kde/xmlgen']
     }
 
 if package is not None:
