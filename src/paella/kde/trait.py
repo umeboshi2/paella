@@ -82,6 +82,9 @@ class TraitView(ViewBrowser):
         self.doc.set_trait(trait)
         self.setText(self.doc.toxml())
 
+    def resetView(self):
+        self.set_trait(self.doc.trait.current_trait)
+        
     def set_suite(self, suite):
         self.doc.suite = suite
         self.doc.trait = Trait(self.app.conn, suite=suite)
@@ -110,14 +113,46 @@ class TraitView(ViewBrowser):
             if context == 'templates':
                 #win = KFileDialog('.', '*', self, 'hello file dialog', False)
                 #win.show()
-                win = TemplateEditorWindow(self.app, self.parent(), self.doc.suite)
+                #win = TemplateEditorWindow(self.app, self.parent(), self.doc.suite)
+                win = KFileDialog('.', '', self, 'SystemTarball', True)
+                self.connect(win, SIGNAL('okClicked()'), self.fileSelected)
+                win.show()
+                self._dialog = win
+                
             elif context == 'packages':
                 win = PackageSelectorWindow(self.app, self.parent(), self.doc.suite)
             else:
                 self._url_error(url)
+        elif action == 'new':
+            if context == 'package':
+                win = SimpleRecordDialog(self, ['package', 'action'])
+                win.connect(win, SIGNAL('okClicked()'), self.slotAddPackage)
+                self._dialog = win
         else:
             self._url_error(url)
 
+    def slotAddPackage(self):
+        win = self._dialog
+        data = win.getRecordData()
+        self.doc.trait.add_package(data['package'], data['action'])
+        self.resetView()
+
+    def fileSelected(self):
+        filesel = self._dialog
+        filename = str(filesel.selectedFile())
+        print filename
+        filesel.close()
+        filesel = KFileDialog('tar:%s' % filename, '', self, 'SystemTarball', True)
+        filesel.connect(filesel, SIGNAL('okClicked()'), self.newTemplateSelected)
+        filesel.show()
+        self._dialog = filesel
+        
+    def newTemplateSelected(self):
+        filesel = self._dialog
+        filename = str(filesel.selectedFile())
+        print filename
+        KMessageBox.information(self, filename)
+        
 class TraitMainWindow(SimpleSplitWindow):
     def __init__(self, app, parent, suite):
         SimpleSplitWindow.__init__(self, app, parent, TraitView, 'TraitMainWindow')

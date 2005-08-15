@@ -247,6 +247,9 @@ class Trait(object):
         trait = self.current_trait
         data = dict(description=desc)
         self._traits.update(data=data, clause=Eq('trait', trait))
+
+    def add_package(self, package, action):
+        self._packages.insert_package(package, action)
         
 #generate xml
 class TraitElement(Element):
