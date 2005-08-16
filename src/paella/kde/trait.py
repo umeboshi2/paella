@@ -1,5 +1,7 @@
 import os
 import re
+#import tempfile
+import commands
 
 from qt import SLOT, SIGNAL, Qt
 from qt import QSyntaxHighlighter
@@ -9,11 +11,13 @@ from qt import QSplitter
 from qtext import QextScintilla, QextScintillaLexer
 from qtext import QextScintillaLexerPython
 
+from kdecore import KURL
 from kdeui import KMainWindow
 from kdeui import KPopupMenu, KStdAction
 from kdeui import KMessageBox, KTextEdit
 from kdeui import KListView, KListViewItem
 from kfile import KFileDialog
+from kio import KIO
 
 from useless.base.template import Template
 
@@ -142,17 +146,26 @@ class TraitView(ViewBrowser):
         filename = str(filesel.selectedFile())
         print filename
         filesel.close()
-        filesel = KFileDialog('tar:%s' % filename, '', self, 'SystemTarball', True)
+        filesel = KFileDialog('.', '', self, 'SystemTarball', True)
+        url = 'tar://%s' % filename
+        filesel.setURL(KURL(url))
         filesel.connect(filesel, SIGNAL('okClicked()'), self.newTemplateSelected)
         filesel.show()
         self._dialog = filesel
         
     def newTemplateSelected(self):
         filesel = self._dialog
-        filename = str(filesel.selectedFile())
-        print filename
-        KMessageBox.information(self, filename)
+        urlobj = filesel.selectedURL()
+        url = urlobj.url()
+        print 'selected url is', url
+        data = commands.getoutput('kioexec cat %s' % url)
+        print len(data), ' bytes of data copied'
+        print data
         
+    def slotGetFromTarDone(self, job):
+        print 'got from tar', job, 'job'
+        
+    
 class TraitMainWindow(SimpleSplitWindow):
     def __init__(self, app, parent, suite):
         SimpleSplitWindow.__init__(self, app, parent, TraitView, 'TraitMainWindow')
