@@ -14,11 +14,14 @@ from paella.db import PaellaConnection
 from paella.db.trait import Trait
 from paella.db.machine import MachineHandler
 from paella.db.machine.mtype import MachineTypeHandler
+from paella.db.schema.paella_tables import MTSCRIPTS
 
+from useless.base.util import strfile
 from useless.db.midlevel import StatementCursor
 from useless.kbase.gui import MainWindow, SimpleSplitWindow
 from useless.kbase.gui import ViewWindow, MainWindow
 from useless.kbase.gui import SimpleRecordDialog
+from useless.kbase.gui import MyCombo, VboxDialog
 from useless.kdb.gui import RecordSelector, ViewBrowser
 
 from paella.kde.base import RecordSelectorWindow
@@ -43,7 +46,43 @@ ManageActions = {
     'kernels' : ManageKernelsAction
     }
 
+class MTScriptCombo(MyCombo):
+    def __init__(self, parent):
+        MyCombo.__init__(self, parent, 'MTScriptCombo')
+        self.fill(MTSCRIPTS)
 
+class NewMTScriptDialog(VboxDialog):
+    def __init__(self, parent):
+        VboxDialog.__init__(self, parent, 'NewMTScriptDialog')
+        self.scriptnameBox = MTScriptCombo(self.page)
+        self.scriptdataBox = KTextEdit(self.page)
+        self.vbox.addWidget(self.scriptnameBox)
+        self.vbox.addWidget(self.scriptdataBox)
+        self.show()
+
+    def getRecordData(self):
+        name = str(self.scriptnameBox.currentText())
+        data = str(self.scriptdataBox.text())
+        return dict(name=name, data=data)
+    
+class NewMachineDialog(VboxDialog):
+    def __init__(self, parent, handler):
+        VboxDialog.__init__(self, parent, 'NewMachineDialog')
+        self.conn = handler.conn
+        self.handler = handler
+        self.mtypeBox = MyCombo(self.page)
+        self.mtypeBox.fill(self.handler.list_all_machine_types())
+        self.profileBox = MyCombo(self.page)
+        self.profileBox.fill(['hello'])
+        self.kernelBox = MyCombo(self.page)
+        self.kernelBox.fill(self.handler.list_all_kernels())
+        self.fsBox = MyCombo(self.page)
+        self.fsBox.fill(self.handler.list_all_filesystems())
+        boxes = [self.mtypeBox, self.profileBox, self.kernelBox,
+                 self.fsBox]
+        map(self.vbox.addWidget, boxes)
+        self.show()
+        
 class MachineView(ViewBrowser):
     def __init__(self, app, parent):
         ViewBrowser.__init__(self, app, parent, MachineDoc)
@@ -54,8 +93,20 @@ class MachineView(ViewBrowser):
 
     def setSource(self, url):
         action, context, id_ = split_url(url)
-        KMessageBox.information(self, 'called %s' % url)
+        if action == 'new':
+            if context == 'machine':
+                handler = self.doc.machine
+                dialog = NewMachineDialog(self, handler)
+            else:
+                self._info('make new <url> %s' % url)
+        else:
+            self._info('%s not supported yet' % url)
 
+    def _info(self, message, parent=None):
+        if parent is None:
+            parent = self
+        KMessageBox.information(parent, message)
+        
 class MachineTypeView(ViewBrowser):
     def __init__(self, app, parent):
         ViewBrowser.__init__(self, app, parent, MachineTypeDoc)
@@ -84,8 +135,10 @@ class MachineTypeView(ViewBrowser):
             fields = ['trait', 'name', 'value']
         if action == 'new':
             if context == 'Scripts':
-                self._info('need to make a new script')
-            if fields:
+                dialog = NewMTScriptDialog(self)
+                dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewScript)
+                self._dialog = dialog
+            elif fields:
                 dialog = SimpleRecordDialog(self, fields)
                 dialog.context = context
                 dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewRecord)
@@ -104,8 +157,12 @@ class MachineTypeView(ViewBrowser):
                 self.doc.mtype.delete_family(id_)
             elif context == 'Variables':
                 self._info('use edit to delete variables')
+            elif context == 'Scripts':
+                self.doc.mtype.delete_script(id_)
+            elif context == 'Modules':
+                self._info('Deleting modules not supported')
             else:
-                self._info('need to delete something')
+                self._info('need to delete something in context %s, %s' % (context, id_))
         else:
             KMessageBox.information(self, 'called %s' % url)
         self.resetView()
@@ -127,6 +184,13 @@ class MachineTypeView(ViewBrowser):
 
     def updateRecord(self):
         KMessageBox.information('called updateRecord')
+
+    def insertNewScript(self):
+        dialog = self._dialog
+        data = dialog.getRecordData()
+        mtype = self.doc.mtype
+        mtype.insert_script(data['name'], strfile(data['data']))
+        self.resetView()
         
         
 class FilesystemView(ViewBrowser):

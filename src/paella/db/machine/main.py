@@ -201,6 +201,17 @@ class MachineHandler(BaseMachineHandler):
 
     def get_script(self, name):
         return self.mtype.get_script(name)
+
+    def list_all_machine_types(self):
+        rows = self.cursor.select(table='machine_types')
+        return [r.machine_type for r in rows]
+    
+    def list_all_filesystems(self):
+        rows = self.filesystems.select()
+        return [r.filesystem for r in rows]
+    
+    def list_all_kernels(self):
+        return [r.kernel for r in self.kernels.select()]
     
     def make_disk_config_info(self, device, filesystem=None, curenv=None):
         if filesystem is None:
@@ -225,7 +236,8 @@ class MachineHandler(BaseMachineHandler):
             fline = '%s\t; %s' % (line, fstype)
             lines.append(fline)
         return '\n'.join(lines) + '\n'
-            
+
+
             
 if __name__ == '__main__':
     from os.path import join

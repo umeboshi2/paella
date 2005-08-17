@@ -274,6 +274,13 @@ class MachineTypeHandler(BaseMachineTypeHandler):
     
     def get_script(self, name):
         return self._mtscript.get(name)
+
+    def insert_script(self, name, scriptfile):
+        self._mtscript.insert_script(name, scriptfile)
+
+    def delete_script(self, name):
+        self._mtscript.delete_script(name)
+        
     
     def insert_parsed_element(self, mtype_element, path):
         mtype = mtype_element.mtype

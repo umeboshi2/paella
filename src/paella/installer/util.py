@@ -60,6 +60,12 @@ def extract_tarball(target, tarball):
 #password is 'a'
 myline = 'root:$1$IImobcMx$4Lsn4oHhM7L9pNYZNP7zz/:0:0:root:/root:/bin/bash'
 
+def _is_option_true(cfg, section, option):
+    return cfg.has_option(section, option) and cfg.get(section, option) == 'true'
+
+def _make_source_line(parts):
+    return ' '.join(parts) + '\n'
+
 def make_sources_list(cfg, target, suite):
     section = 'debrepos'
     aptdir = os.path.join(target, 'etc', 'apt')
@@ -79,13 +85,73 @@ def make_sources_list(cfg, target, suite):
         source.type = 'deb-src'
         sources_list.write(str(source) +'\n')
     loption = suite + '_local'
-    if cfg.has_option(section, loption) and cfg.get(section, loption) == 'true':
+    if _is_option_true(cfg, section, loption):
         sources_list.write('deb %s/local %s/\n' % (source.uri, suite))
         sources_list.write('deb-src %s/local %s/\n' % (source.uri, suite))
     coption = suite + '_common'
-    if cfg.has_option(section, coption) and cfg.get(section, coption) == 'true':
+    if _is_option_true(cfg, section, coption):
         sources_list.write('deb %s/local common/\n' % source.uri)
         sources_list.write('deb-src %s/local common/\n' % source.uri)
+    secopt = suite + '_updates'
+    if _is_option_true(cfg, section, secopt):
+        sline = ['deb', '%s/updates' %source.uri, '%s/updates' % suite, 'main contrib non-free']
+        sources_list.write(' '.join(sline) + '\n')
+        sline[0] = 'deb-src'
+        sources_list.write(' '.join(sline) + '\n')
+    sources_list.write('\n')
+    sources_list.close()
+
+
+def make_official_sources_list(cfg, target, suite):
+    section = 'debrepos'
+    aptdir = os.path.join(target, 'etc', 'apt')
+    makepaths(aptdir)
+    sources_list = file(os.path.join(aptdir, 'sources.list'), 'w')
+    _sections = 'main contrib non-free'
+    main = cfg.get(section, 'official_main')
+    nonus = None
+    security = None
+    if _is_option_true(cfg, section, '%s_nonus' % suite) or suite == 'woody':
+        nonus = cfg.get(section, 'official_nonus')
+    if _is_option_true(cfg, section, '%s_updates' % suite):
+        security = cfg.get(section, 'official_security')
+    loption = suite + '_local'
+    coption = suite + '_local'
+    local = None
+    common = None
+    if _is_option_true(cfg, section, loption):
+        local = cfg.get(section, 'official_local_mirror')
+    if _is_option_true(cfg, section, coption):
+        common = cfg.get(section, 'official_local_mirror')
+    sline = ['deb', main, suite, _sections]
+    sources_list.write(_make_source_line(sline))
+    sline[0] = 'deb-src'
+    sources_list.write(_make_source_line(sline))
+    sline[0]  = 'deb'
+    if security is not None:
+        sline[1] = security
+        sline[2] = '%s/updates' % suite
+        sources_list.write(_make_source_line(sline))
+        sline[0]  = 'deb-src'
+        sources_list.write(_make_source_line(sline))
+        sline[0] = 'deb'
+        sline[2] = suite
+    if local is not None:
+        sline[1] = '%s/local' % local
+        sline[2] = '%s/' % suite
+        sources_list.write(_make_source_line(sline[:-1]))
+        sline[0] = 'deb-src'
+        sources_list.write(_make_source_line(sline[:-1]))
+        sline[0] = 'deb'
+        sline[2] = suite
+    if common is not None:
+        sline[1] = '%s/local' % common
+        sline[2] = 'common/'
+        sources_list.write(_make_source_line(sline[:-1]))
+        sline[0] = 'deb-src'
+        sources_list.write(_make_source_line(sline[:-1]))
+        sline[0] = 'deb'
+        sline[2] = suite
     sources_list.write('\n')
     sources_list.close()
 

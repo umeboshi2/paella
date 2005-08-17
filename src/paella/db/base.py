@@ -139,6 +139,10 @@ class ScriptCursor(StatementCursor):
             filecopy(nfile, npath)
             nfile.close()
 
+    def delete_script(self, name):
+        clause = self._clause(name)
+        self.delete(clause=clause)
+        
         
         
 if __name__ == '__main__':

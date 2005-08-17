@@ -21,6 +21,7 @@ from util import make_fstab, makedev
 from util import myline, set_root_passwd, make_interfaces_simple
 from util import create_mdadm_conf, extract_tarball
 from util import mount_target_proc, make_script
+from util import make_official_sources_list
 
 #from profile import ProfileInstaller
 #from fstab import HdFstab
@@ -342,8 +343,7 @@ class MachineInstaller(BaseChrootInstaller):
         
     def setup_apt_sources_final(self):
         "this is a default process"
-        make_sources_list(self.defenv, self.target, self.suite)
-
+        make_official_sources_list(self.defenv, self.target, self.suite)
     def install_fstab(self):
         "this is a default process"
         fstab = self.machine.make_fstab()
