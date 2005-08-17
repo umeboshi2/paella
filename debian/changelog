@@ -1,3 +1,17 @@
+paella (0.7.24) common; urgency=low
+
+  * another typo bugfix in machine installer
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 17 Aug 2005 14:55:33 -0500
+
+paella (0.7.23) common; urgency=low
+
+  * another import bugfix
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 17 Aug 2005 14:51:54 -0500
+
 paella (0.7.22) common; urgency=low
 
   * updated example default environment to match new code

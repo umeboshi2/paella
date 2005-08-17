@@ -13,6 +13,7 @@ from base import BaseChrootInstaller
 from base import InstallError
 from profile import ProfileInstaller
 from util import ready_base_for_install, make_filesystem
+from util import make_filesystems
 from util import install_kernel, setup_modules
 from util import setup_disk_fai, partition_disk
 from util import create_raid_partition, mount_target

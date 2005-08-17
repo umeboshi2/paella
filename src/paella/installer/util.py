@@ -371,7 +371,7 @@ def make_filesystems(device, fsmounts, env):
             pdev = '/dev/md%d' % mdnum
             mdnum += 1
         else:
-            pdev = dev + str(row.partition)
+            pdev = device + str(row.partition)
         if row.mnt_name in env.keys():
             echo('%s held' % row.mnt_name)
         elif row.fstype == 'swap':
