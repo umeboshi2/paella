@@ -1,3 +1,9 @@
+paella (0.7.25) common; urgency=low
+
+  * a few bugfixes, updated making sources.list
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Thu, 18 Aug 2005 15:40:15 -0500
+
 paella (0.7.24) common; urgency=low
 
   * another typo bugfix in machine installer

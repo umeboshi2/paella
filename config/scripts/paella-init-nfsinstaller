@@ -47,6 +47,3 @@ else:
     print 'This is an unknown machine'
     
         
-if __name__ == '__main__':
-    print 'going to run the installer, ha ha ha'
-    

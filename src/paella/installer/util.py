@@ -94,7 +94,7 @@ def make_sources_list(cfg, target, suite):
         sources_list.write('deb-src %s/local common/\n' % source.uri)
     secopt = suite + '_updates'
     if _is_option_true(cfg, section, secopt):
-        sline = ['deb', '%s/updates' %source.uri, '%s/updates' % suite, 'main contrib non-free']
+        sline = ['deb', source.uri, '%s/updates' % suite, 'main contrib non-free']
         sources_list.write(' '.join(sline) + '\n')
         sline[0] = 'deb-src'
         sources_list.write(' '.join(sline) + '\n')
