@@ -393,7 +393,7 @@ def create_raid_partition(devices, pnum, mdnum, raidlevel=1):
     opts = '%s --force -l%d -n%d' % (opts, raidlevel, len(devices))
     devices = ['%s%d' % (device, pnum) for device in devices]
     cmd = 'mdadm %s %s' % (opts, ' '.join(devices))
-    yes = 'bash -c "yes | %s' % cmd
+    yes = 'bash -c "yes | %s"' % cmd
     return runlog(yes)
 
 def create_mdadm_conf(target, devices):
@@ -410,6 +410,11 @@ def create_mdadm_conf(target, devices):
     mdconf.write(nl)
     mdconf.close()
     
+
+def check_for_resync():
+    mdstat = file('/proc/mdstat').read()
+    return mdstat.find('resync') > -1
+
 def wait_for_resync():
     mdstat = file('/proc/mdstat').read()
     while mdstat.find('resync') > -1:
