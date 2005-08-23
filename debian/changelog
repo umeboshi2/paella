@@ -1,3 +1,10 @@
+paella (0.7.31) common; urgency=low
+
+  * a couple more fixed bugs
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 23 Aug 2005 16:48:26 -0500
+
 paella (0.7.30) common; urgency=low
 
   * another bugfix, make sure PAELLA_TARGET is set

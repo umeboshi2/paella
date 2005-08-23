@@ -405,7 +405,9 @@ def create_mdadm_conf(target, devices):
     nl = '\n'
     line = 'DEVICE %s' % ' '.join(devices)
     mdconf.write(line + nl)
+    mdconf.close()
     arrdata = commands.getoutput('mdadm -E --config=%s -s' % mdconfname)
+    mdconf = file(mdconfname, 'a')
     mdconf.write(arrdata + nl)
     mdconf.write(nl)
     mdconf.close()

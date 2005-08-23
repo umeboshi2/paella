@@ -290,7 +290,8 @@ class MachineInstaller(BaseChrootInstaller):
         self._check_target()
         makepaths(self.target)
         device = self.machine.array_hack()
-        mounts = self.machine.get_ordered_fsmounts()
+        #mounts = self.machine.get_ordered_fsmounts()
+        mounts = self.machine.get_installable_fsmounts()
         mount_target(self.target, mounts, device)
         self._mounted = True
         
