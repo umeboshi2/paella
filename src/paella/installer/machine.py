@@ -69,6 +69,7 @@ class MachineInstallerHelper(object):
                 self._partition_disk(diskname, device)
             if len(disks[diskname]) > 1:
                 self._raid_setup = True
+                self._raid_drives = {}
                 self._raid_drives[diskname] = disks[diskname]
                 print 'doing raid setup on %s' % diskname
                 fsmounts = self.machine.get_installable_fsmounts()
@@ -183,7 +184,7 @@ class MachineInstaller(BaseChrootInstaller):
     def _make_script(self, name):
         script = self.machine.get_script(name)
         if script is not None:
-            return make_script(name, script, self.target)
+            return make_script(name, script, '/')
         else:
             return None
         
@@ -262,6 +263,7 @@ class MachineInstaller(BaseChrootInstaller):
         self.set_machine(machine)
         self.setup_installer()
         self.set_target(target)
+        makepaths(target)
         self.log.info('Installer set to install %s to %s' % (machine, target))
         self.helper = MachineInstallerHelper(self)
         self.process()

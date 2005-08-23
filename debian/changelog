@@ -1,3 +1,24 @@
+paella (0.7.28) common; urgency=low
+
+  * another bugfix in installer utils
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 23 Aug 2005 14:34:16 -0500
+
+paella (0.7.27) common; urgency=low
+
+  * another bugfix for the machine installer, 
+    machine type scripts run from /tmp instead of target.
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 23 Aug 2005 14:19:48 -0500
+
+paella (0.7.26) common; urgency=low
+
+  * bugfixes in machine installer
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 23 Aug 2005 14:08:19 -0500
+
 paella (0.7.25) common; urgency=low
 
   * a few bugfixes, updated making sources.list

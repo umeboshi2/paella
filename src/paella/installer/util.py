@@ -394,7 +394,7 @@ def create_raid_partition(devices, pnum, mdnum, raidlevel=1):
     devices = ['%s%d' % (device, pnum) for device in devices]
     cmd = 'mdadm %s %s' % (opts, ' '.join(devices))
     yes = 'bash -c "yes | %s' % cmd
-    return runlog(yesman)
+    return runlog(yes)
 
 def create_mdadm_conf(target, devices):
     mdpath = join(target, 'etc/mdadm')
