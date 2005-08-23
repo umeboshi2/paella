@@ -347,6 +347,7 @@ class MachineInstaller(BaseChrootInstaller):
     def setup_apt_sources_final(self):
         "this is a default process"
         make_official_sources_list(self.defenv, self.target, self.suite)
+
     def install_fstab(self):
         "this is a default process"
         fstab = self.machine.make_fstab()

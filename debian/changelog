@@ -1,3 +1,10 @@
+paella (0.7.30) common; urgency=low
+
+  * another bugfix, make sure PAELLA_TARGET is set
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 23 Aug 2005 15:56:51 -0500
+
 paella (0.7.29) common; urgency=low
 
   * another bugfix in installer utils
