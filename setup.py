@@ -30,11 +30,13 @@ else:
     packages = []
     package = 'dummy'
 
+url = 'http://paella.berlios.de'
 setup(name='paella-'+package,
       version="0.2",
       description = 'paella configuration/installation management system',
       author='Joseph Rawson',
       author_email='umeboshi@gregscomputerservice.com',
+      url=url,
       package_dir = {'' : 'src'},
       packages = packages
       )

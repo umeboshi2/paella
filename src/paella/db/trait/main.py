@@ -234,8 +234,8 @@ class Trait(object):
         xmlfile.close()
         self._templates.export_templates(bkup_path)
         self._scripts.export_scripts(bkup_path)
-        print 'all exported', os.listdir(bkup_path)
-        
+        #print 'all exported', os.listdir(bkup_path)
+        print 'trait', self.current_trait, 'exported in suite', self.suite
 
     def get_description(self):
         trait = self.current_trait

@@ -147,11 +147,13 @@ class VariablesConfig(Configuration):
                 for name, value in newconfig.items(section):
                     nclause = sclause & Eq(self._fields[1], name)
                     #print 'nclause', nclause
-                    #print 'value', self.get(section, name)
+                    #print 'oldvalue', self.get(section, name)
                     if self.has_option(section, name):
-                        if value != self.get(section, name):
-                            #print 'updating'
+                        oldvalue = self.get(section, name)
+                        if value != oldvalue:
+                            print 'updating', name, oldvalue, 'to', value
                             self.cursor.update(data={self._fields[2] : value}, clause=nclause)
+                            #print self.cursor.select(clause=nclause)
                     else:
                         idata = dict(zip(self._fields, [section, name, value]))
                         if self._mainclause:
