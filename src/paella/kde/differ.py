@@ -211,6 +211,7 @@ class DifferWin(KMainWindow):
         self.initToolbar()
 
         self.setCentralWidget(self.mainView)
+        self.setCaption('%s Differ' % dtype.capitalize())
         self.show()
         
 

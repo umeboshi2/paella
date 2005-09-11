@@ -301,6 +301,7 @@ class MachineMainWindow(KMainWindow):
         self.cursor = StatementCursor(self.conn)
         self.mainView = None
         self.resize(400, 300)
+        self.setCaption('Machine Manager')
         self.show()
 
     def _killmainView(self):

@@ -55,6 +55,7 @@ class PaellaMainWindow(KMainWindow):
         self.listView.addColumn('widget')
         self.setCentralWidget(self.listView)
         self.refreshListView()
+        self.setCaption('Main Menu')
         self.connect(self.listView,
                      SIGNAL('selectionChanged()'), self.selectionChanged)
 

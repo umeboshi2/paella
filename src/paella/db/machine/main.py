@@ -228,7 +228,7 @@ class MachineHandler(BaseMachineHandler):
             size = row.size
             if curenv is not None:
                 if row.mnt_name in curenv.keys():
-                    size = 'preserve'
+                    size = 'preserve%d' % row.partition
             line = '%s\t%s\t%s\t%s' % (ptype, row.mnt_point, size, row.mnt_opts)
             fstype = row.fstype
             if fstype == 'reiserfs':

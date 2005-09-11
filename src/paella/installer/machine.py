@@ -53,6 +53,7 @@ class MachineInstallerHelper(object):
         self.target = self.installer.target
         self.disklogpath = self.installer.disklogpath
         self.defenv = self.installer.defenv
+        self.curenv = None
         
     def _partition_disk(self, diskname, device):
         print 'partitioning', diskname, device
@@ -123,7 +124,7 @@ class MachineInstallerHelper(object):
             
 
     def _setup_disk_fai(self, device):
-        disk_config = self.machine.make_disk_config_info(device)
+        disk_config = self.machine.make_disk_config_info(device, curenv=self.curenv)
         setup_disk_fai(disk_config, self.disklogpath)
         
     def extract_basebootstrap(self):
@@ -266,6 +267,7 @@ class MachineInstaller(BaseChrootInstaller):
         makepaths(target)
         self.log.info('Installer set to install %s to %s' % (machine, target))
         self.helper = MachineInstallerHelper(self)
+        self.helper.curenv = self.curenv
         self.process()
         
     def setup_installer(self):

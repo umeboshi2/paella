@@ -78,6 +78,7 @@ class DefEnvWin(KMainWindow):
         self.setCentralWidget(self.mainView)
         self.mainView.refreshlistView()
         self.resize(600, 500)
+        self.setCaption('%s Environment' % etype.capitalize())
         self.show()
         
 
