@@ -278,9 +278,7 @@ class TraitInstaller(Installer):
     def make_template(self, template):
         self.traittemplate.set_template(template.package, template.template)
         tmpl = self.traittemplate.template.template
-        self.traittemplate.template.update(self.familydata)
-        self.traittemplate.template.update(self.mtypedata)
-        self.traittemplate.template.update(self.profiledata)
+        self._update_templatedata()
         self._make_template_common(template, tmpl)
         
 
@@ -325,12 +323,17 @@ class TraitInstaller(Installer):
         own = ':'.join([template.owner, template.grp_owner])
         os.system(self.command('chown', "%s '%s'" %(own, join('/', template.template))))
 
+    def _update_templatedata(self):
+        self.traittemplate.template.update(self.familydata)
+        self.traittemplate.template.update(self.mtypedata)
+        self.traittemplate.template.update(self.profiledata)
+        
     def install_debconf_template(self, template):
         trait = self._current_trait_
         self.log.info('Installing debconf for %s' % trait)
         self.traittemplate.set_template(template.package, template.template)
         tmpl = self.traittemplate.template.template
-        self.traittemplate.template.update(self.profiledata)
+        self._update_templatedata()
         sub = self.traittemplate.template.sub()
         if tmpl == sub:
             self.log.info('static debconf, no substitutions')

@@ -1,3 +1,10 @@
+paella (0.7.32) common; urgency=low
+
+  * bugfix, updating templatedata in debconf templates properly now
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon, 12 Sep 2005 14:50:52 -0500
+
 paella (0.7.31) common; urgency=low
 
   * a couple more fixed bugs

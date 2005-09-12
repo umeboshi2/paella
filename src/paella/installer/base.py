@@ -68,6 +68,10 @@ class Installer(object):
             makepaths(os.path.dirname(self.logfile))
         format = '%(name)s - %(asctime)s - %(levelname)s: %(message)s'
         self.log = Log('paella-installer', self.logfile, format)
+        bkup = '%s.bkup' % self.logfile
+        if not os.path.exists(bkup):
+            os.link(self.logfile, bkup)
+        
         
     def set_target(self, target):
         self.target = target

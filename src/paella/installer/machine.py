@@ -251,7 +251,7 @@ class MachineInstaller(BaseChrootInstaller):
         # this needs to be removed sometime
         os.environ['LOGFILE'] = logfile
         os.environ['PAELLA_MACHINE'] = machine
-        disklogpath = join(dirname(logfile), 'disklog')
+        disklogpath = join(dirname(logfile), 'disklog-%s' % machine)
         if not os.path.isdir(disklogpath):
             makepaths(disklogpath)
         self.disklogpath = disklogpath
