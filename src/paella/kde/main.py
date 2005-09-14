@@ -25,6 +25,7 @@ from paella.kde.family import FamilyMainWindow
 from paella.kde.machine import MachineMainWindow
 from paella.kde.differ import DifferWin
 from paella.kde.environ import DefEnvWin
+from paella.kde.installer import InstallerMainWin
 
 class PaellaMainApplication(KApplication):
     def __init__(self, *args):
@@ -104,7 +105,9 @@ class PaellaMainWindow(KMainWindow):
         for etype in ['default', 'current']:
             item = KListViewItem(environ_folder, etype)
             item.etype = etype
-            
+        installer_folder = KListViewItem(self.listView, 'installer')
+        installer_folder.installer = True
+        
     def selectionChanged(self):
         current = self.listView.currentItem()
         if hasattr(current, 'suite'):
@@ -121,7 +124,8 @@ class PaellaMainWindow(KMainWindow):
             DifferWin(self.app, self, current.dtype)
         elif hasattr(current, 'etype'):
             DefEnvWin(self.app, self, current.etype)
-            
+        elif hasattr(current, 'installer'):
+            InstallerMainWin(self.app, self)
     def slotManageFamilies(self):
         print 'running families'
         FamilyMainWindow(self.app, self)

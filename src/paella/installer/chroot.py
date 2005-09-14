@@ -18,6 +18,8 @@ from paella.db import PaellaConnection
 from base import BaseChrootInstaller
 from util import ready_base_for_install, make_filesystem
 from util import install_kernel
+from util import make_fake_start_stop_daemon
+from util import remove_fake_start_stop_daemon
 from profile import ProfileInstaller
 
 class ChrootInstaller(BaseChrootInstaller):
@@ -65,6 +67,8 @@ class ChrootInstaller(BaseChrootInstaller):
         runvalue = runlog(cmd)
         if runvalue:
             raise InstallError, 'problem updating the apt lists.'
+        if os.environ.has_key('FAKE_START_STOP_DAEMON'):
+            make_fake_start_stop_daemon(self.target)
         self._base_ready = True
         
     def install_to_target(self):
@@ -75,7 +79,8 @@ class ChrootInstaller(BaseChrootInstaller):
 
     def post_install(self):
         self._umount_target_proc()
-        
+        if os.environ.has_key('FAKE_START_STOP_DAEMON'):
+            remove_fake_start_stop_daemon(self.target)        
     
     def install(self, profile, target):
         self.set_profile(profile)

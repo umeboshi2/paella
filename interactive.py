@@ -5,6 +5,7 @@ from paella.db.trait import Trait
 from paella.db.family import Family
 from paella.db.profile import Profile
 from paella.db.machine import MachineHandler
+from paella.db.installer import InstallerManager
 
 from paella.db import DefaultEnvironment
 
@@ -18,4 +19,4 @@ if __name__ == '__main__':
     p = Profile(conn)
     m = MachineHandler(conn)
     de = DefaultEnvironment(conn)
-    
+    im = InstallerManager(conn)

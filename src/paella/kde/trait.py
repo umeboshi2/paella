@@ -131,6 +131,7 @@ class TraitView(ViewBrowser):
             if context == 'package':
                 win = SimpleRecordDialog(self, ['package', 'action'])
                 win.connect(win, SIGNAL('okClicked()'), self.slotAddPackage)
+                win.setRecordData(dict(action='install'))
                 self._dialog = win
         else:
             self._url_error(url)
