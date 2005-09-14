@@ -1,3 +1,10 @@
+paella (0.7.33) common; urgency=low
+
+  * adding support for fake start-stop-daemon in chroot installer
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 14 Sep 2005 10:47:55 -0500
+
 paella (0.7.32) common; urgency=low
 
   * bugfix, updating templatedata in debconf templates properly now
