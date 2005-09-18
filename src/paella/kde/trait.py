@@ -125,6 +125,12 @@ class TraitView(ViewBrowser):
                 
             elif context == 'packages':
                 win = PackageSelectorWindow(self.app, self.parent(), self.doc.suite)
+            elif context == 'script':
+                self.doc.trait.edit_script(id)
+            elif context == 'template':
+                fid = id.replace(',', '.')
+                package, template = fid.split('...')
+                self.doc.trait.edit_template(package, template)
             else:
                 self._url_error(url)
         elif action == 'new':

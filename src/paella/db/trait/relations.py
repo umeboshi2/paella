@@ -1,5 +1,7 @@
+import os
 from os.path import join
 from sets import Set
+import tempfile
 
 from kjbuckets import kjGraph
 
@@ -189,6 +191,21 @@ class TraitTemplate(TraitRelation):
         clause = self._clause(package, template)
         self.cmd.update(data=dict(templatefile=str(id)), clause=clause)
 
+    def edit_template(self, package, template):
+        data = self.templatedata(package, template)
+        tmp, path = tempfile.mkstemp('paella', 'template')
+        tmp = file(path, 'w')
+        tmp.write(data)
+        tmp.close()
+        os.system('$EDITOR %s' % path)
+        tmp = file(path, 'r')
+        mod = tmp.read()
+        tmp.seek(0)
+        if mod != data:
+            print 'template modified'
+            self.save_template(package, template, tmp)
+        os.remove(path)
+        
 class TraitScript(TraitRelation):
     def __init__(self, conn, suite):
         table = ujoin(suite, 'scripts')
@@ -267,6 +284,24 @@ class TraitScript(TraitRelation):
             nfile = self.scriptfile(row.script)
             filecopy(nfile, npath)
             nfile.close()
+
+    def edit_script(self, name):
+        sfile = self.get(name)
+        tmp, path = tempfile.mkstemp('paella', 'script')
+        script = sfile.read()
+        sfile.close()
+        tmp = file(path, 'w')
+        tmp.write(script)
+        tmp.close()
+        os.system('$EDITOR %s' % path)
+        tmp = file(path, 'r')
+        mod = tmp.read()
+        tmp.seek(0)
+        if mod != script:
+            print 'script modified'
+            self.save_script(name, tmp)
+        os.remove(path)
+        
 
 class TraitPackage(TraitRelation):
     def __init__(self, conn, suite):

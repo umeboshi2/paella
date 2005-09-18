@@ -40,7 +40,7 @@ class ScriptText(TextScroll):
         menuitem = widget.get_name()
         populate_menu(mainmenu, self.trait, [menuitem], self.edit_script)
 
-    def edit_script(self, menuitem, name, parent):
+    def edit_scriptOrig(self, menuitem, name, parent):
         sfile = self.script.get(name)
         tmp, path = tempfile.mkstemp('paella', 'script')
         print path, tmp
@@ -58,6 +58,9 @@ class ScriptText(TextScroll):
             self.script.save_script(name, tmp)
             self.set_text(name, mod)
         os.remove(path)
+
+    def edit_script(self, menuitem, name, parent):
+        self.script.edit_script(name)
         
     def new_script(self, name):
         if self.script.get(name) is not None:

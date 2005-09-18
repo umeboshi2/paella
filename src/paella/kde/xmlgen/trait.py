@@ -58,6 +58,10 @@ class TemplateTable(BaseElement):
             td = TD()
             td.appendChild(ta)
             trow.appendChild(td)
+            td = TD()
+            ea = Anchor('edit.template.%s' % fake_template, '(edit)')
+            td.appendChild(ea)
+            trow.appendChild(td)
             p = TxtTD(row.package)
             trow.appendChild(p)
             self.appendChild(trow)
@@ -126,7 +130,11 @@ class TraitDoc(BaseDocument):
         slist = UnorderedList()
         for row in self.trait._scripts.scripts(trait=trait):
             script  = row.script
+            p = Paragraph()
             sa = Anchor('show.script.%s' % script, script)
-            slist.appendChild(ListItem(sa))
+            ea = Anchor('edit.script.%s' % script, '  (edit)')
+            p.appendChild(sa)
+            p.appendChild(ea)
+            slist.appendChild(ListItem(p))
         self.body.appendChild(slist)
         

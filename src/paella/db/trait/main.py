@@ -250,6 +250,15 @@ class Trait(object):
 
     def add_package(self, package, action):
         self._packages.insert_package(package, action)
+
+    def edit_script(self, name):
+        trait = self.current_trait
+        self._scripts.edit_script(name)
+
+    def edit_template(self, package, template):
+        self._templates.edit_template(package, template)
+        
+        
         
 #generate xml
 class TraitElement(Element):

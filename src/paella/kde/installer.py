@@ -12,6 +12,7 @@ from kdeui import KMainWindow, KPushButton
 #from useless.db.midlevel import StatementCursor
 from paella.db import DefaultEnvironment
 from paella.db import CurrentEnvironment
+from paella.db.installer import InstallerManager
 
 from paella.kde.db.gui import dbwidget
 #from paella.kde.base.actions import EditAction
@@ -20,25 +21,11 @@ ETYPE = { 'default' : DefaultEnvironment,
           'current' : CurrentEnvironment
           }
 
-class InstallerManager(object):
-    def __init__(self, conn):
-        self.conn = conn
-        self.defenv = DefaultEnvironment(conn)
-
-    def get_known_machines(self):
-        machines = []
-        macs = self.defenv.options('machines')
-        for mac in macs:
-            machine = self.defenv.get('machines', mac)
-            if machine not in machines:
-                machines.append(machine)
-        return machines
-
 class InstallerMainWin(KMainWindow):
     def __init__(self, app, parent):
         KMainWindow.__init__(self, parent)
         dbwidget(self, app)
-
+        self.manager = InstallerManager(self.conn)
         self.mainView = KPushButton('hello there', self)
         self.setCentralWidget(self.mainView)
         self.setCaption('Installer Management')
