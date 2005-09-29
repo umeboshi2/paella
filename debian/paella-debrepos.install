@@ -3,6 +3,4 @@ config/scripts/paella-update-debrepos usr/bin
 config/scripts/paella-backup-debrepos usr/bin
 config/scripts/paella-update-other-mirrors usr/bin
 config/scripts/paella-daily-debrepos-update usr/bin
-
-
-
+config/scripts/paella-update-repos usr/bin
