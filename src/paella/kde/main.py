@@ -1,5 +1,6 @@
 import os
 from qt import SLOT, SIGNAL, Qt
+from qt import PYSIGNAL
 
 from kdecore import KApplication, KIconLoader
 from kdecore import KStandardDirs
@@ -19,6 +20,7 @@ from useless.kdb import BaseDatabase
 
 from paella.kde.base.actions import ManageFamilies
 from paella.kde.base.actions import EditTemplateAction
+from paella.kde.base.actions import ManageSuiteAction
 from paella.kde.trait import TraitMainWindow
 from paella.kde.profile import ProfileMainWindow
 from paella.kde.family import FamilyMainWindow
@@ -45,12 +47,15 @@ class PaellaMainWindow(KMainWindow):
         KMainWindow.__init__(self, *args)
         self.app = app
         self.icons = KIconLoader()
-        self.initActions()
-        self.initMenus()
-        self.initToolbar()
+        self._environ_types = ['default', 'current']
+        self._differ_types = ['trait', 'family']
         self.conn = app.conn
         self.cfg = app.cfg
         self.cursor = StatementCursor(self.conn)
+        self._suites = [x.suite for x in self.cursor.select(table='suites')]
+        self.initActions()
+        self.initMenus()
+        self.initToolbar()
         self.listView = KListView(self)
         self.listView.setRootIsDecorated(True)
         self.listView.addColumn('widget')
@@ -65,10 +70,16 @@ class PaellaMainWindow(KMainWindow):
         self.manageFamiliesAction = ManageFamilies(self.slotManageFamilies, collection)
         self.editTemplatesAction = EditTemplateAction(self.slotEditTemplates, collection)
         self.quitAction = KStdAction.quit(self.app.quit, collection)
-       
+        self.suiteActions = {}
+        for suite in self._suites:
+            self.suiteActions[suite] = ManageSuiteAction(suite, self.slotManageSuite, collection)
+        self.environActions = {}
+        self.differActions = {}
+        
     def initMenus(self):
         mainMenu = KPopupMenu(self)
-        actions = [self.manageFamiliesAction,
+        actions = self.suiteActions.values()
+        actions += [self.manageFamiliesAction,
                    self.editTemplatesAction,
                    self.quitAction]
         self.menuBar().insertItem('&Main', mainMenu)
@@ -132,3 +143,12 @@ class PaellaMainWindow(KMainWindow):
             
     def slotEditTemplates(self):
         print 'edit templates'
+
+    def slotEditEnvironment(self, etype):
+        print 'in slotEditEnvironment etype is', etype, type(etype)
+        DefEnvWin(self.app, self, etype)
+
+    def slotManageSuite(self, wid=-1):
+        print 'in slotManageSuite suite is', wid
+        TraitMainWindow(self.app, self, current.suite)
+        
