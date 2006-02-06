@@ -1,0 +1,411 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from os.path import isfile, isdir, basename, dirname
+from optparse import OptionParser
+from shelve import DbfilenameShelf
+import shelve
+import datetime
+
+from useless.base import Error, debug
+from useless.base.util import get_file, makepaths
+from useless.base.util import get_url
+
+from paella.debian.base import RepositorySource
+from paella.debian.base import make_source, islocaluri
+from paella.debian.repos import RemoteRepos
+from paella.debian.repos import LocalRepos
+from paella.debian.repos import md5sum
+
+from useless.db.lowlevel import LocalConnection
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.classes import Table
+from useless.sqlgen.defaults import Text, Name, Bigname
+from useless.sqlgen.defaults import PkName
+from useless.sqlgen.clause import Eq
+
+class ReposListTable(Table):
+    def __init__(self):
+        columns = [
+            PkName('tablename'),
+            Name('type'),
+            Bigname('uri'),
+            Name('suite'),
+            Text('sections')
+            ]
+        Table.__init__(self, 'reposlist', columns)
+
+class PackageReposTable(Table):
+    def __init__(self, name):
+        columns = [
+            Name('section'),
+            Bigname('package'),
+            Text('path'),
+            Name('status'),
+            Bigname('checked')]
+        Table.__init__(self, name, columns)
+        
+now = datetime.datetime.now
+
+class PackageStatus(object):
+    def __init__(self, name, secdict={}):
+        self.secdict = secdict
+        if not self.secdict:
+            self.name = name
+            self.files = {}
+            self.checked = now()
+        else:
+            s = secdict[name]
+            self.checked, self.files = s.checked, s.files
+            self.name = s.name
+            
+    def add_file(self, path, status):
+        self.files[path] = status
+        self.checked = now()
+
+class PackageDatabase(object):
+    def __init__(self, conn, source=None):
+        self.conn = conn
+        self.cursor = StatementCursor(self.conn)
+        self.table = None
+        if source is not None:
+            self.set_source(source)
+            
+    def set_source(self, source):
+        clause = Eq('type', source.type) & Eq('uri', source.uri)
+        clause &= Eq('suite', source.suite) & Eq('sections', ' '.join(source.sections))
+        rows = self.cursor.select(table='reposlist', clause=clause)
+        if len(rows) > 1:
+            raise ValueError, 'too many rows for %s' % source
+        self.table = rows[0]['tablename']
+        self.cursor.set_table(self.table)
+        self.source = source
+        
+    def add_source(self, source, name):
+        pass
+        
+    def initialize_section(self, section, secdict):
+        data = dict(section=section)
+        for package, pdata in secdict.items():
+            data['package'] = package
+            data['path'] = pdata[0]
+            data['status'] = 'missing'
+            data['checked'] = now()
+            self.cursor.insert(data=data)
+
+    def _pkg_clause(self, section, package, path=''):
+        clause = Eq('section', section) & Eq('package', package)
+        if path:
+            clause &= Eq('path', path)
+        return clause
+    
+    def get_status(self, section, package, path=''):
+        clause = self._pkg_clause(section, package, path)
+        rows = self.cursor.select(clause=clause)
+        if len(rows) != 1:
+            raise ValueError, '%d rows returnd for %s' % (len(rows), package)
+        return rows[0]['status']
+        
+    def set_status(self, section, package, status, path=''):
+        clause = self._pkg_clause(section, package, path)
+        data = dict(status=status, checked=now())
+        self.cursor.update(data=data44444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444, clause=clause)
+        
+    def get_sections(self):
+        fields = ['distinct section']
+        return [r['section'] for r in self.cursor.select(fields=fields)]
+    
+    def get_packages(self, section):
+        clause = Eq('section', section)
+        return [r['package'] for r in self.cursor.select(clause=clause)]
+    
+class CheckRepos(LocalRepos):
+    def __init__(self, conn, *args):
+        LocalRepos.__init__(self, *args)
+        self.conn = conn
+        print 'Parsing Release'
+        self.parse_release()
+        print 'Parsing Package Listings'
+        self.parse()
+        self._mainkey = self.source
+        self.pdb = PackageDatabase(self.conn, self.source)
+        self.diff = {}
+        
+    def check_sources(self, section, checktype='slow'):
+        quick = True
+        if checktype != 'quick':
+            quick = False
+        missing, corrupt = [], []
+        for package in self.sections[section]:
+            m, c = self.check_source(package, section, quick)
+            missing += m
+            corrupt  += c
+        self.diff[section] = (missing, corrupt)
+
+    def _store_statdict(self):
+        self.db[self._mainkey] = self.statdict
+
+    def check_packages(self, section, checktype='slow'):
+        quick = False
+        if section not in self.pdb.get_sections():
+            self.pdb.initialize_section(section, self.sections[section])
+        pstats = {}
+        for arow in self.pdb.cursor.select(clause=Eq('section', section)):
+            pstats[arow['package']] = arow['status']
+        for package in self.sections[section]:
+            #status = self.pdb.get_status(section, package)
+            status = pstats[package]
+            if status == 'missing':
+                nstatus, path = self.check_package(package, section, quick)
+                if nstatus == 'missing':
+                    print package, 'is still missing'
+                elif nstatus == 'corrupt':
+                    print package, 'is corrupted.'
+                    self.pdb.set_status(section, package, 'corrupt')
+                elif nstatus == 'ok':
+                    print package, 'is ok.'
+                    self.pdb.set_status(section, package, 'ok')
+                else:
+                    raise ValueError, 'Bad status value %s' % nstatus
+            elif status != 'ok':
+                print status, package, status, 'badbad'
+    def check_packagesPri(self, section, checktype='slow'):
+        quick = False
+        if checktype != 'quick':
+            quick = False
+        missing, corrupt = [], []
+        statpackages = [p for p in self.pdb.get_packages(section)]
+        for package in self.sections[section]:
+            for path, status in pstats.files.items():
+                if status == 'missing':
+                    nstatus, path = self.check_package(package, section, quick)
+                    if nstatus == 'missing':
+                        print package, 'is still missing'
+                    elif nstatus == 'corrupt':
+                        print package, 'is corrupted.'
+                        pstats.add_file(path, nstatus)
+                        self.pdb.set_status(section, pstats)
+                    elif nstatus == 'ok':
+                        print package, 'is ok.'
+                        pstats.add_file(path, nstatus) 
+                        self.pdb.set_status(section, pstats)
+                    else:
+                        raise ValueError, 'Bad status value %s' % nstatus
+                elif status != 'ok':
+                    print package, status, index
+                index += 1
+    
+    def check(self, checktype='quick'):
+        if self.source.type == 'deb':
+            checker = self.check_packages
+        elif self.source.type == 'deb-src':
+            checker = self.check_sources
+        else:
+            raise ValueError, 'bad value for source type %s' % self.source.type
+        for section in self.source.sections:
+            checker(section, checktype=checktype)
+
+class CheckRemoteRepos(RemoteRepos):
+    def __init__(self, remotesource, localsource, arch='i386'):
+        remotesource = make_source(remotesource)
+        localsource = make_source(localsource)
+        if islocaluri(remotesource.uri):
+            raise Error, 'localuri'
+        self.source = remotesource
+        self.local = CheckRepos(localsource)
+        self.arch = arch
+        self.sections = self.local.sections
+        self.diff = {}
+            
+    def __repr__(self):
+        return 'CheckRemoteRepos %s\n%s' %(self.source, self.local)
+        
+    def update_release(self):
+        makepaths(self.local.source.distpath)
+        localpath = os.path.join(self.local.source.distpath, 'Release')
+        url = os.path.join(self.source.distpath, 'Release')
+        release = get_url(url)
+        if not isfile(localpath):
+            self._write_release_(release, localpath)
+        release.seek(0)
+        rsum = md5sum(release, keepopen=True)
+        lsum = md5sum(file(localpath))
+        release.seek(0)
+        if lsum != rsum:
+            self._write_release_(release, localpath)
+        release.seek(0)
+        self.local.parse_release()
+        self.release = self.local.release
+
+    def _update_packagelist_(self, filename='Packages.gz'):
+        self.local.parse()
+        self.source.sections = self.local.sections
+        rpath = os.path.join(self.source.uri, self.source.suite, filename)
+        lpath = os.path.join(self.local.source.distpath, filename)
+        packagelist = get_url(rpath)
+        self._write_file_(packagelist, lpath)
+
+    def update_packagelist(self):
+        self._update_packagelist_(filename='Packages.gz')
+        self.check_packages('_default_', False)
+        missing, corrupt = self.diff['_default_']
+        for path in missing:
+            lpath = os.path.join(self.local.source.root, self.local.source.suite, path)
+            url = os.path.join(self.source.root, self.source.suite, path)
+            get_file(url, lpath, 'missing')
+        for path in corrupt:
+            lpath = os.path.join(self.local.source.root, self.local.source.suite, path)
+            url = os.path.join(self.source.root, self.source.suite, path)
+            get_file(url, lpath, 'corrupt')
+
+
+
+    def update_sourcelist(self):
+        self._update_packagelist_(filename='Sources.gz')
+        self.check_sources('_default_', False)
+        missing, corrupt = self.diff['_default_']
+        for path in missing:
+            lpath = os.path.join(self.local.source.root, self.local.source.suite, path)
+            url = os.path.join(self.source.root, self.source.suite, path)
+            get_file(url, lpath, 'missing')
+        for path in corrupt:
+            lpath = os.path.join(self.local.source.root, self.local.source.suite, path)
+            url = os.path.join(self.source.root, self.source.suite, path)
+            get_file(url, lpath, 'corrupt')
+
+    def update_flatrepos(self):
+        rpath = self.release.path(section, release=release)
+        localpath = os.path.join(self.local.source.distpath, rpath)
+        url = os.path.join(self.source.distpath, rpath)
+        status = self.local.check_section(section, release=release)
+        if status == 'missing':
+            makepaths(dirname(localpath))
+            rfile = get_url(url)
+            filecopy(rfile, localpath)
+        elif status == 'corrupt':
+            rfile = get_url(url)
+            filecopy(rfile, localpath)
+        else:
+            print localpath, status
+        
+    def _update_section_(self, section, release=False):
+        rpath = self.release.path(section, release=release)
+        localpath = os.path.join(self.local.source.distpath, rpath)
+        url = os.path.join(self.source.distpath, rpath)
+        status = self.local.check_section(section, release=release)
+        if status == 'missing':
+            makepaths(dirname(localpath))
+            rfile = get_url(url)
+            filecopy(rfile, localpath)
+        elif status == 'corrupt':
+            rfile = get_url(url)
+            filecopy(rfile, localpath)
+        else:
+            print localpath, status
+        
+            
+    def update_section(self, section):
+        self._update_section_(section, release=True)
+        self._update_section_(section)
+        self.local.sections[section] = self.local.parse_section(section)
+
+        
+    def update_sections(self):
+        for section in self.source.sections:
+            self.update_section(section)
+            
+    def sync_section(self, section):
+        stats = self.local.statdict[section]
+        for package in stats:
+            status, path = stats[package]
+            if status == 'missing':
+                print 'retrieving missing package %s' % package
+                lpath = os.path.join(self.local.source.root, path)
+                url = os.path.join(self.source.root, path)
+                get_file(url, lpath, 'missing')
+            elif status == 'corrupt':
+                print 'retrieving corrupt package %s'% package
+                lpath = os.path.join(self.local.source.root, path)
+                url = os.path.join(self.source.root, path)
+                get_file(url, lpath, 'corrupt')
+            else:
+                print package, 'is', status
+                
+
+            
+            
+    def _write_release_(self, release, localpath):
+        self._write_file_(release, localpath)
+    
+
+    
+    def check_packages(self, section, quick=True):
+        self.local.check_packages(section, quick)
+
+        
+    def check_sources(self, section, quick=True):
+        self.local.check_sources(self, quick)        
+
+    def update(self, both_zips=False):
+        if self.source.has_release():
+            self.update_release()
+            if both_zips:
+                self.release._zip_ = 'gz'
+                self.update_sections()
+                self.release._zip_ = 'bz2'
+                self.update_sections()
+            else:
+                self.update_sections()
+        else:
+            self.local.parse()
+            self.source.sections = self.local.sections
+        
+    def check(self, quick=True):
+        for section in self.source.sections:
+            if self.source.type == 'deb':
+                self.check_packages(section, quick=quick)
+            elif self.source.type == 'deb-src':
+                self.check_sources(section, quick=quick)
+
+    def sync(self):
+        for section in self.source.sections:
+            self.sync_section(section)
+
+parser = OptionParser()
+parser.add_option('-l', '--local', action='store', type='string', dest='local',
+                  default='file:/mirrors/debian')
+parser.add_option('-r', '--remote', action='store', type='string', dest='remote',
+                  default='http://ftp.us.debian.org/debian')
+parser.add_option('-t', '--type', action='store', type='choice', dest='type',
+                  default='binary', choices=['binary', 'source'])
+parser.add_option('-q', '--quick', action='store_true', dest='quick',
+                  default=False)
+
+opts, args = parser.parse_args(sys.argv[1:])
+src = False
+if opts.type == 'source':
+    src=True
+
+suite = args[0]
+
+print 'Mirroring type %s' % opts.type
+if opts.quick:
+    print 'Doing a quick check'
+else:
+    print 'Doing a complete check'
+
+print 'suite %s is unchecked.' % suite
+
+if __name__ == '__main__':
+    conn = LocalConnection()
+    s = StatementCursor(conn)
+    if 'reposlist' not in s.tables():
+        s.create_table(ReposListTable())
+        
+    rs = RepositorySource('deb %s %s main contrib non-free' % (opts.remote, suite))
+    ls = RepositorySource('deb %s %s main contrib non-free' % (opts.local, suite))
+    
+    #c = CheckRemoteRepos(rs, ls)
+    #pdb = c.local.pdb
+    c = CheckRepos(conn, ls)
+    
