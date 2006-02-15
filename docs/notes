@@ -635,6 +635,36 @@ very much right now, but bugs will be fixed on it.  A good portion of setting up
 configuring the machines is done with the gtk interface, so for the time being, anybody 
 using paella will have to bear through using it until the kde interface is ready.
 
+
+-----------------------------------------------------
+
+Environment Variables used by Paella
+------------------------------------------------------
+
+these are used to help override a configured db connection:
+PAELLA_DBHOST
+PAELLA_DBNAME
+
+these are used in the installers:
+PAELLA_TRAIT
+PAELLA_TARGET
+PAELLA_MACHINE
+PAELLA_PROFILE
+PAELLA_LOGFILE
+LOGFILE -- this needs to be deprecated
+FAKE_START_STOP_DAEMON
+DEBIAN_FRONTEND
+
+These are used in scripts and are mostly unimportant:
+SUITES
+USER
+PATH
+
+these are used in the kernelbuilder:
+INITRD_OK
+CONCURRENCY_LEVEL
+
+
 .. _mounts: #mount
 .. _families: #family
 .. _profiles: #profile
