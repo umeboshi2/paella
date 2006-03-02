@@ -50,6 +50,35 @@ def family_env_columns():
         PkBigname('name'),
         Text('value')]
 
+class SuitesTable(Table):
+    def __init__(self):
+        columns = [
+            PkName('suite'),
+            Bool('nonUS'),
+            Bool('updates'),
+            Bool('local'),
+            Bool('common')
+            ]
+        Table.__init__(self, 'suites', columns)
+        
+class AptSourcesTable(Table):
+    def __init__(self):
+        idcol = PkName('apt_id')
+        uri = Bigname('uri')
+        dist = Name('dist')
+        sections = Bigname('sections')
+        local_path = Bigname('local_path')
+        columns = [idcol, uri, dist, sections, local_path]
+        Table.__init__(self, 'apt_sources', columns)
+
+class SuiteAptSourcesTable(Table):
+    def __init__(self):
+        suite = PkName('suite')
+        apt_id = PkName('apt_id')
+        order = Num('ord')
+        name = 'suite_apt_sources'
+        Table.__init__(self, name, [suite, apt_id, order])
+        
 
 #family table
 class FamilyTable(Table):
@@ -404,14 +433,6 @@ def defaultenv_columns():
         PkBigname('option'),
         Text('value')]
 
-def suite_columns():
-    return [
-        PkName('suite'),
-        Bool('nonUS'),
-        Bool('updates'),
-        Bool('local'),
-        Bool('common')]
-
 def primary_sequences():
     return [TextFileIdentifier()]
 
@@ -421,7 +442,11 @@ def primary_tables():
     #Textfiles
     tables.append(TextFilesTable())
     #All Suites
-    tables.append(Table('suites', suite_columns()))
+    tables.append(SuitesTable())
+    #Apt Sources Table
+    tables.append(AptSourcesTable())
+    #Suite-AptSource Relation
+    tables.append(SuiteAptSourcesTable())
     #All Traits
     tables.append(PkNameTable('traits', 'trait'))
     #All Priorities
