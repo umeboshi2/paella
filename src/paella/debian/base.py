@@ -30,7 +30,6 @@ class _Srcfile(list):
 class RepositorySource(object):
     default_line = ['deb file:/mirrors/debian sid main contrib non-free']
     def __init__(self, line=default_line[0]):
-        object.__init__(self)
         self.set_source(line)
         self._zip_ = 'gz'
 
@@ -94,7 +93,6 @@ class ReleaseSums(object):
 
 class Release(object):
     def __init__(self, source, arch='i386'):
-        object.__init__(self)
         self.source = source
         self.arch = arch
         self.parse()

@@ -58,6 +58,19 @@ class DebConfElement(Element):
         self.appendChild(self.dc.value)
         
 
+class AptSourceElement(Element):
+    def __init__(self, apt_id, uri, dist, sections, local_path):
+        Element.__init__(self, 'aptsource')
+        self.setAttribute('apt_id', apt_id)
+        self.setAttribute('uri', uri)
+        self.setAttribute('dist', dist)
+        self.setAttribute('sections', sections)
+        self.setAttribute('local_path', local_path)
+
+class AptSourceListElement(Element):
+    def __init__(self):
+        Element.__init__(self, 'aptsources')
+        
 class ScriptElement(Element):
     def __init__(self, name):
         Element.__init__(self, 'script')
@@ -67,6 +80,13 @@ class ScriptElement(Element):
 class DebConfigurationElement(Element):
     def __init__(self):
         Element.__init__(self, 'debconfiguration')
+
+class SuiteAptElement(Element):
+    def __init__(self, suite, apt_id, order):
+        Element.__init__(self, 'suiteapt')
+        self.setAttribute('suite', suite)
+        self.setAttribute('apt_id', apt_id)
+        self.setAttribute('order', order)
         
 #generate xml
 class SuiteElement(Element):

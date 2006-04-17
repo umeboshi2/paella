@@ -8,8 +8,11 @@ from xml.dom.minidom import parse as parse_file
 from useless.base.util import makepaths, ujoin
 from useless.base import Error, UnbornError
 from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
-from paella.db.schema.paellascheme import insert_packages, make_suite
+from paella.base import PaellaConfig
+#from paella.db.schema.paellascheme import insert_packages, make_suite
+from paella.db.schema.paellascheme import SuiteHandler
 from paella.db.schema.paellascheme import start_schema
 
 from trait import Trait
@@ -19,13 +22,11 @@ from trait.relations import TraitTemplate
 from family import Family
 from profile import Profile, ProfileTrait
 from profile.xmlgen import PaellaProfiles
+from machine import MachineHandler
 
-from xmlgen import SuiteElement, SuitesElement
+from xmlgen import AptSourceElement, AptSourceListElement
+from xmlgen import SuiteElement, SuitesElement, SuiteAptElement
 from xmlparse import PaellaParser, ProfileParser
-#from xmlparse import PaellaParser, ProfilesParser, ProfileParser
-#from xmlgen import EnvironElement, SuitesElement
-#from xmlgen import SuiteElement, ProfileElement
-#from xmlgen import ProfileVariableElement
 
 #generate xml        
 class PaellaDatabase(Element):
@@ -35,11 +36,21 @@ class PaellaDatabase(Element):
         self.stmt = StatementCursor(self.conn)
         self._profile_traits_ = ProfileTrait(self.conn)
         self.path = path
+        self.aptsources = AptSourceListElement()
+        self.appendChild(self.aptsources)
+        for row in self.stmt.select(table='apt_sources', order=['apt_id']):
+            element = AptSourceElement(row.apt_id, row.uri, row.dist, row.sections,
+                                       row.local_path)
+            self.aptsources.appendChild(element)
         self.suites = SuitesElement()
         self.appendChild(self.suites)
         for row in self._suite_rows():
             args = map(str, [row.suite, row.nonus, row.updates, row.local, row.common])
             element = SuiteElement(*args)
+            for suiteapt in self.stmt.select(table='suite_apt_sources', order=['ord'],
+                                             clause=Eq('suite', row.suite)):
+                element.appendChild(SuiteAptElement(row.suite,
+                                                    suiteapt.apt_id, str(suiteapt.ord)))
             self.suites.appendChild(element)
         self.profiles = PaellaProfiles(self.conn)
         self.family = Family(self.conn)
@@ -92,6 +103,7 @@ class PaellaProcessor(object):
         self.cfg = cfg
         self.__set_cursors__()
         self.main_path = None
+        self.suitehandler = SuiteHandler(self.conn, self.cfg)
         
     def parse_xml(self, filename):
         self.dbdata = PaellaParser(filename)
@@ -99,6 +111,7 @@ class PaellaProcessor(object):
 
     def start_schema(self):
         start_schema(self.conn)
+        self._insert_aptsources()
         self._sync_suites()
 
     def _sync_suites(self):
@@ -107,11 +120,24 @@ class PaellaProcessor(object):
         for suite in self.dbdata.suites:
             if suite.name not in current_suites:
                 self.main.insert(data=suite)
-                make_suite(self.main, suite.name)
-                insert_packages(self.cfg, self.main, suite.name, quick=False)
+                for apt in suite.aptsources:
+                    data = dict(suite=suite.name, apt_id=apt.apt_id, ord=apt.order)
+                    self.main.insert(table='suite_apt_sources', data=data)
+                self.suitehandler.set_suite(suite.name)
+                self.suitehandler.make_suite()
+                #make_suite(self.main, suite.name)
+                #insert_packages(self.cfg, self.main, suite.name, quick=False)
             else:
-                self.main.update(data=suite)
+                raise Error, '%s already exists.' % suite
+                #self.main.update(data=suite)
 
+    def _insert_aptsources(self):
+        for apt in self.dbdata.aptsources:
+            data = dict(apt_id=apt.apt_id, uri=apt.uri, dist=apt.dist,
+                        sections=apt.sections, local_path=apt.local_path)
+            self.main.insert(table='apt_sources', data=data)
+            
+    
     def insert_families(self):
         path = join(self.main_path, 'families')
         print 'path is in insert_families', path
@@ -206,7 +232,35 @@ class PaellaProcessor(object):
             self.insert_traits(suite.name)
         self.insert_families()
         self.insert_profiles()
+        # use the machine handler to insert
+        # machine types and such
+        mh = MachineHandler(self.conn)
+        mh.restore_machine_database(self.main_path)
 
+class DatabaseManager(object):
+    def __init__(self, conn):
+        object.__init__(self)
+        self.cfg = PaellaConfig()
+        self.conn = conn
+        self.import_dir = self.cfg.get('database', 'import_path')
+        self.export_dir = self.cfg.get('database', 'export_path')
+
+    def backup(self, path):
+        if not os.path.isdir(path):
+            raise Error, 'arguement needs to be a directory'
+        pdb = PaellaDatabase(self.conn, path)
+        pdb.backup(path)
+        mh = MachineHandler(self.conn)
+        mh.export_machine_database(path)
+
+    def restore(self, path):
+        if not os.path.isdir(path):
+            raise Error, 'arguement needs to be a directory'
+        dbpath = join(path, 'database.xml')
+        mdbpath = join(path, 'machine_database.xml')
+        pp = PaellaProcessor(self.conn, self.cfg)
+        pp.create(dbpath)
+        
 
 if __name__ == '__main__':
     pass

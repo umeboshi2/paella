@@ -3,13 +3,13 @@ import os
 from useless.base import Error, NoExistError
 from useless.base.util import ujoin
 
-from useless.db.lowlevel import QuickConn
+from useless.db.lowlevel import BasicConnection
 from useless.db.midlevel import StatementCursor
 
 from paella.base import PaellaConfig
 from paella.base.objects import VariablesConfig
 
-class PaellaConnection(QuickConn):
+class PaellaConnection(BasicConnection):
     def __init__(self, cfg=None):
         if cfg is None:
             cfg = PaellaConfig('database')
@@ -21,8 +21,25 @@ class PaellaConnection(QuickConn):
             dsn['dbhost'] = os.environ['PAELLA_DBHOST']
         if os.environ.has_key('PAELLA_DBNAME'):
             dsn['dbname'] = os.environ['PAELLA_DBNAME']
-        QuickConn.__init__(self, dsn)
-
+        if os.environ.has_key('PAELLA_DBPORT'):
+            dsn['dbport'] = int(os.environ['PAELLA_DBPORT'])
+            if dsn['dbport'] not in range(1, 65536):
+                raise ValueError, 'bad database port %s' % dsn['dbport']
+        user = dsn['dbusername']
+        host = dsn['dbhost']
+        dbname = dsn['dbname']
+        passwd = dsn['dbpassword']
+        autocommit = 0
+        if dsn['autocommit'] == 'true':
+            autocommit = 1
+        if 'dbport' in dsn:
+            port = dsn['dbport']
+        else:
+            port = 5432
+        BasicConnection.__init__(self, user=user, host=host,
+                                dbname=dbname, passwd=passwd, port=port)
+        self.autocommit = autocommit
+        
 class ProfileStruct(object):
     name = 'myprofile'
     suite = 'sid'

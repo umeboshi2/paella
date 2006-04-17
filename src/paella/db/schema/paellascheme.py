@@ -4,6 +4,7 @@ from useless.base import Error, debug
 from useless.base.util import ujoin, makepaths
 from useless.base.util import readfile, wget, strfile
 
+from paella.debian.base import RepositorySource
 from paella.debian.repos import LocalRepos
 from paella.debian.repos import RemoteRepos
 
@@ -14,6 +15,7 @@ from useless.sqlgen.defaults import PkBignameTable, PkNameTable, PkName
 
 from useless.sqlgen.statement import Statement
 from useless.sqlgen.admin import grant_public
+from useless.sqlgen.clause import Eq
 
 from useless.db.lowlevel import OperationalError
 from useless.db.midlevel import StatementCursor
@@ -117,19 +119,23 @@ def package_to_row_quick(packagedict, section='main'):
         newdict['section'] = packagedict['section']
     return newdict
 
-def insert_more_packages(cursor, repos, suite=None, quick=False):
+def _insert_some_more_packages(cursor, table, packages, quick=False):
     prow = package_to_row
     if quick:
         prow = package_to_row_quick
-    repos.source.set_path()
-    repos.parse_release()
-    table = ujoin(suite, 'packages')
-    for package in repos.full_parse().values():
+    for package in packages:
         try:
             cursor.insert(table, prow(package))
         except OperationalError:
             pass
     
+def insert_more_packages(cursor, repos, suite=None, quick=False):
+    repos.source.set_path()
+    repos.parse_release()
+    table = ujoin(suite, 'packages')
+    packages = repos.full_parse().values()
+    _insert_some_more_packages(cursor, table, packages, quick=quick)
+        
 def insert_suite_packages(cursor, repos, quick=False):
     prow = package_to_row
     if quick:
@@ -168,6 +174,121 @@ def update_local_packagelist(repos, localdist, localsuite):
         print rurl, lpath, 'rurl, lpath'
         wget(rurl, lpath)
 
+
+class SuiteHandler(object):
+    def __init__(self, conn, cfg):
+        self.conn = conn
+        self.cfg = cfg
+        self.cursor = StatementCursor(self.conn)
+        self.http_mirror = 'http://%s' % self.cfg.get('debrepos', 'repos_host')
+        self.local_mirror = 'file:/tmp/paellamirror'
+        self.suite = None
+        self.sources_rows = []
+
+    def set_suite(self, suite):
+        self.suite = suite
+        self.sources_rows = self.get_sources_rows(self.suite)
+
+    def make_suite(self):
+        if self.suite is None:
+            raise Error, 'the suite needs to be set first'
+        self._make_suite_tables()
+        self.update_packagelists()
+        for row in self.sources_rows:
+            self._insert_packages(row)
+            
+    def _make_suite_tables(self):
+        tables = suite_tables(self.suite)
+        map(self.cursor.create_table, tables)
+        self.cursor.execute(grant_public([x.name for x in tables]))
+        
+    def update_packagelists(self):
+        self._update_suite_packages(self.suite)
+        
+    def get_sources_rows(self, suite):
+        table = 'apt_sources natural join suite_apt_sources'
+        rows = self.cursor.select(table=table, clause=Eq('suite', suite), order=['ord'])
+        return rows
+
+    def _insert_some_packages(self, table, packages):
+        for package in packages:
+            try:
+                self.cursor.insert(table, data=package_to_row(package))
+            except OperationalError:
+                pass
+            
+    def _insert_packages(self, src_row):
+        table = '%s_packages' % self.suite
+        repos = self._row2repos(src_row)
+        prow = package_to_row
+        local = repos.local
+        if local.source.sections:
+            repos.update()
+            local.parse_release()
+            for section in local.source.sections:
+                packages = local.full_parse(section).values()
+                self._insert_some_packages(table, packages)
+        else:
+            packages = local.full_parse().values()
+            self._insert_some_packages(table, packages)
+            
+            
+        
+    def _row2repsource(self, row, http_mirror):
+        lp = row.local_path
+        while lp[0] == '/':
+            lp = lp[1:]
+        uri = os.path.join(http_mirror, lp)
+        suite = row.dist
+        src = 'deb %s %s' % (uri, suite)
+        if not suite.endswith('/'):
+            src = '%s %s' % (src, row.sections)
+        r = RepositorySource(src)
+        return r
+
+    def _row2repos(self, row):
+        rsource = self._row2repsource(row, self.http_mirror)
+        lsource = self._row2repsource(row, self.local_mirror)
+        return RemoteRepos(rsource, lsource)
+                
+    def _get_packages_file(self, repos):
+        if repos.source.has_release():
+            repos.update()
+        else:
+            rpath = os.path.join(repos.source.uri, repos.source.suite, 'Packages.gz')
+            # the [5:] slice is to remove file: from local uri
+            lpath = os.path.join(repos.local.source.uri, repos.source.suite, 'Packages.gz')[5:]
+            if not os.path.isfile(lpath):
+                print 'lpath is --->', lpath
+                makepaths(os.path.dirname(lpath))
+                print rpath, lpath, 'getting now'
+                wget(rpath, lpath)
+            
+    def _update_suite_packages(self, suite):
+        rows = self.get_sources_rows(suite)
+        for row in rows:
+            repos = self._row2repos(row)
+            self._get_packages_file(repos)
+
+# new functions for apt sources schema
+def get_apt_sources_rows(cursor, suite):
+    table = 'apt_sources natural join suite_apt_sources'
+    rows = cursor.select(table=table, clause=Eq('suite', suite), order=['ord'])
+    return rows
+
+
+
+
+
+def insert_packagesNew(cfg, cursor, suite, quick=False):
+    table = 'apt_sources natural join suite_apt_sources'
+    rows = cursor.select(table=table, clause=Eq('suite', suite), order=['ord'])
+    http_mirror = cfg.get('debrepos', 'http_mirror')
+    for r in rows:
+        print _row2repsource(r, http_mirror)
+        
+
+    
 def insert_packages(cfg, cursor, suite, quick=False):
     source = 'deb %s %s main contrib non-free' % (cfg.get('debrepos', 'http_mirror'), suite)
     lsource = 'deb file:/tmp/paellamirror %s main contrib non-free' % suite

@@ -16,6 +16,7 @@ from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 from paella.db import DefaultEnvironment
 from paella.db.main import PaellaDatabase
+from paella.db.main import DatabaseManager
 from paella.db.machine.xmlgen import MachineDatabaseElement
 from paella.db.machine import MachineHandler
 
@@ -27,7 +28,7 @@ from environ import EnvironmentEditorWin
 from scriptomatic import ScriptManager
 from trait_manager import TraitManagerWin
 from machines import MainMachineWin
-from database import DatabaseManager, ClientManager
+from database import ClientManager
 from families import FamilyWin
 from differ import DifferWin
 
