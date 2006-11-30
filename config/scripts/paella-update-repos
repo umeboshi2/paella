@@ -37,7 +37,8 @@ parser.add_option('-t', '--type', action='store', type='choice', dest='type',
                   default='binary', choices=['binary', 'source'])
 parser.add_option('-q', '--quick', action='store_true', dest='quick',
                   default=False)
-
+parser.add_option('-a', '--arch', action='store', type='string', dest='arch',
+                  default='i386')
 opts, args = parser.parse_args(sys.argv[1:])
 src = False
 if opts.type == 'source':

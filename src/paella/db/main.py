@@ -38,20 +38,23 @@ class PaellaDatabase(Element):
         self.path = path
         self.aptsources = AptSourceListElement()
         self.appendChild(self.aptsources)
-        for row in self.stmt.select(table='apt_sources', order=['apt_id']):
-            element = AptSourceElement(row.apt_id, row.uri, row.dist, row.sections,
-                                       row.local_path)
-            self.aptsources.appendChild(element)
-        self.suites = SuitesElement()
-        self.appendChild(self.suites)
-        for row in self._suite_rows():
-            args = map(str, [row.suite, row.nonus, row.updates, row.local, row.common])
-            element = SuiteElement(*args)
-            for suiteapt in self.stmt.select(table='suite_apt_sources', order=['ord'],
-                                             clause=Eq('suite', row.suite)):
-                element.appendChild(SuiteAptElement(row.suite,
-                                                    suiteapt.apt_id, str(suiteapt.ord)))
-            self.suites.appendChild(element)
+        if 'apt_sources' in self.stmt.tables():
+            for row in self.stmt.select(table='apt_sources', order=['apt_id']):
+                element = AptSourceElement(row.apt_id, row.uri, row.dist, row.sections,
+                                           row.local_path)
+                self.aptsources.appendChild(element)
+            self.suites = SuitesElement()
+            self.appendChild(self.suites)
+            for row in self._suite_rows():
+                args = map(str, [row.suite, row.nonus, row.updates, row.local, row.common])
+                element = SuiteElement(*args)
+                for suiteapt in self.stmt.select(table='suite_apt_sources', order=['ord'],
+                                                 clause=Eq('suite', row.suite)):
+                    element.appendChild(SuiteAptElement(row.suite,
+                                                        suiteapt.apt_id, str(suiteapt.ord)))
+                self.suites.appendChild(element)
+        else:
+            print 'WARNING, apt_sources table does not exist, backing up anyway'
         self.profiles = PaellaProfiles(self.conn)
         self.family = Family(self.conn)
         suites = [x.suite for x in self._suite_rows()]

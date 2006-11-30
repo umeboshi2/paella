@@ -58,7 +58,15 @@ local_suites:		maverick,questron,gunny,kardinal
 # .gz files
 sid_suites:		sid,questron,kardinal
 
+# these are suites that receive security updates
+updated_suites:		sarge,etch
+
 http_mirror:		http://%(repos_host)s%(debroot)s
+
+default_archs:		i386,amd64
+sarge_archs:		i386
+etch_archs:		i386,amd64
+sid_archs:		i386,amd64
 
 # these options are the urls for the official debian sites
 # it can be helpful to override these to partially mirror a mirror

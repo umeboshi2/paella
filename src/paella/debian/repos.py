@@ -344,7 +344,96 @@ class RemoteRepos(object):
         for section in self.source.sections:
             self.sync_section(section)
 
+class ReposMirror(object):
+    def __init__(self):
+        self.rsrc = RepositorySource()
+        self.lsrc = RepositorySource()
+        self.arch = 'i386'
+        self.handler = None
+        self._sid_suite = False
+        self.options = {}
+        
+    def _set_src_paths(self):
+        self.lsrc.set_path()
+        self.rsrc.set_path()
+        
+    def set_local_root(self, root):
+        self.lsrc.root = root
+        self._set_src_paths()
 
+    def set_remote_uri(self, uri):
+        self.rsrc.uri = uri
+        self._set_src_paths()
+
+    def set_arch(self, arch):
+        self.arch = arch
+
+    def set_repos_type(self, rtype):
+        if rtype in ['deb', 'deb-src']:
+            self.lsrc.type = rtype
+            self.rsrc.type = rtype
+            self._set_src_paths()
+        else:
+            raise ValueError, '%s not a valid repos type' % rtype
+
+    #sidsuite should be bool
+    def set_suite(self, suite, sidsuite=None):
+        self.lsrc = suite
+        self.rsrc = suite
+        self._set_src_paths()
+        if sidsuite is not None:
+            self._sid_suite = sidsuite
+            
+    def init_repos_handler(self):
+        self.handler = RemoteRepos(self.rsrc, self.lsrc, self.arch)
+
+    def run_update(self, quick=True):
+        self.handler.update()
+        if self._sid_suite:
+            self.handler.release._zip_ = 'gz'
+            self.handler.update_sections()
+        self.handler.check(quick=True)
+        self.handler.sync()
+
+    def set_config_options(self, config):
+        for k in ['official_main', 'official_security',
+                  'official_nonus', 'repos_root']:
+            self.options[k] = config.get('debrepos', k)
+        for kl in ['official_suites', 'default_archs',
+                   'updated_suites']:
+            self.options[kl] = config.get_list(kl, section='debrepos')
+        for suite in self.options['official_suites']:
+            opt = '%s_archs' % suite
+            if config.has_option('debrepos',opt):
+                self.options[opt] = config.get_list(opt, section='debrepos')
+                
+
+    def _mirror_suite(self, archs, quick):
+        self.set_type('deb')
+        for arch in archs:
+            self.set_arch(arch)
+            self.init_repos_handler()
+            self.run_update(quick=quick)
+        self.set_type('deb-src')
+        self.init_repos_handler()
+        self.run_update(quick=quick)
+        
+    def mirror_suite(self, suite, quick=False):
+        self.set_remote_uri(self.options['official_main'])
+        self.set_suite(suite)
+        self.set_type('deb')
+        sname = '%s_archs' % suite
+        if self.options.has_key(sname):
+            archs = self.options[sname]
+        else:
+            archs = self.options['default_archs']
+        self._mirror_suite(archs, quick)
+        if suite in self.options['updated_suites']:
+            self.set_remote_uri(self.options['official_security'])
+            self.set_suite('%s/updates' % suite)
+            self._mirror_suite(archs, quick)
+            
+        
 def update_repos(repos):
     repos.update()
     if repos.source.suite in ['sid']:

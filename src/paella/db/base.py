@@ -3,6 +3,7 @@ from os.path import join
 from useless.base import Error
 from useless.base.util import ujoin, strfile, filecopy
 from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
 from paella.base.objects import TextFileManager
 
@@ -19,6 +20,25 @@ class Suites(StatementCursor):
         if suite not in self.list():
             raise Error, 'bad suite'
         self.current = suite
+
+
+class SuiteCursor(StatementCursor):
+    def __init__(self, conn):
+        StatementCursor.__init__(self, conn, name='SuiteCursor')
+        self.current = None
+
+    def get_suites(self):
+        return [x.suite for x in self.select(table='suites')]
+    
+    def set_suite(self, suite):
+        self.current = suite
+
+    def get_apt_rows(self, suite=None):
+        if suite is None:
+            suite = self.current
+        table = 'suite_apt_sources natural join apt_sources'
+        return self.select(table=table, clause=Eq('suite', suite), order='ord')
+    
 
 class AllTraits(StatementCursor):
     def __init__(self, conn):

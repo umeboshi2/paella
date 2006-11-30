@@ -155,7 +155,11 @@ def make_official_sources_list(cfg, target, suite):
     sources_list.write('\n')
     sources_list.close()
 
-
+def make_sources_list_new(cursor, target, suite):
+    aptdir = os.path.join(target, 'etc', 'apt')
+    makepaths(aptdir)
+    sources_list = file(os.path.join(aptdir, 'sources.list'), 'w')
+    
 def set_root_passwd(target, rootline):
     p = file(os.path.join(target, 'etc/passwd'))
     lines = [rootline + '\n']
