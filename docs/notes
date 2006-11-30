@@ -641,28 +641,46 @@ using paella will have to bear through using it until the kde interface is ready
 Environment Variables used by Paella
 ------------------------------------------------------
 
-these are used to help override a configured db connection:
-PAELLA_DBHOST
-PAELLA_DBNAME
++ these are used to help override a configured db connection:
 
-these are used in the installers:
-PAELLA_TRAIT
-PAELLA_TARGET
-PAELLA_MACHINE
-PAELLA_PROFILE
-PAELLA_LOGFILE
-LOGFILE -- this needs to be deprecated
-FAKE_START_STOP_DAEMON
-DEBIAN_FRONTEND
+  - **PAELLA_DBHOST** - hostname or ip of host paella database resides
 
-These are used in scripts and are mostly unimportant:
-SUITES
-USER
-PATH
+  - **PAELLA_DBNAME** - the name of the paella database
 
-these are used in the kernelbuilder:
-INITRD_OK
-CONCURRENCY_LEVEL
+
++ these are used in the installers:
+
+  - **PAELLA_TRAIT** - name of the trait currently being processed
+
+  - **PAELLA_TARGET** - path to target system (/tmp/target by default)
+
+  - **PAELLA_MACHINE** - name of the machine currently being processed
+
+  - **PAELLA_PROFILE** - name of the profile currently being installed
+
+  - **PAELLA_LOGFILE** - absolute name of logfile
+
+  - **LOGFILE** -- this needs to be deprecated
+
+  - **FAKE_START_STOP_DAEMON** - fill me in
+
+  - **DEBIAN_FRONTEND** - set to noninteractive
+
+
++ These are used in scripts and are mostly unimportant:
+
+  - **SUITES**
+
+  - **USER**
+
+  - **PATH**
+
+
++ these are used in the kernelbuilder:
+
+  - **INITRD_OK** - used when building initrd kernel
+
+  - **CONCURRENCY_LEVEL** - this helps speed things up on smp systems.
 
 
 .. _mounts: #mount
