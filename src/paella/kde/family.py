@@ -15,7 +15,8 @@ from useless.kdb.gui import ViewBrowser
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 from paella.db.family import Family
-from paella.kde.xmlgen import FamilyDoc
+#from paella.kde.xmlgen import FamilyDoc
+from paella.kde.docgen.family import FamilyDoc
 
 class SimpleEdit(KTextEdit):
     def __init__(self, app, parent):
@@ -29,7 +30,7 @@ class FamilyView(ViewBrowser):
         
     def set_family(self, family):
         self.doc.set_family(family)
-        self.setText(self.doc.toxml())
+        self.setText(self.doc.output())
         self.family.set_family(family)
         
     def setSource(self, url):

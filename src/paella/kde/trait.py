@@ -32,7 +32,8 @@ from useless.kdb.gui import ViewBrowser
 from useless.kdb.gui import RecordSelector
 
 from paella.kde.base import RecordSelectorWindow
-from paella.kde.xmlgen import TraitDoc, PackageDoc
+#from paella.kde.xmlgen import TraitDoc, PackageDoc
+from paella.kde.docgen.trait import TraitDoc, PackageDoc
 from paella.kde.db.gui import dbwidget
 #from paella.kde.differ import TraitList
 from paella.kde.template import TemplateEditorWindow
@@ -84,7 +85,7 @@ class TraitView(ViewBrowser):
 
     def set_trait(self, trait):
         self.doc.set_trait(trait)
-        self.setText(self.doc.toxml())
+        self.setText(self.doc.output())
 
     def resetView(self):
         self.set_trait(self.doc.trait.current_trait)

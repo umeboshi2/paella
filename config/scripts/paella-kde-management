@@ -15,26 +15,24 @@ if __name__ == '__main__':
                            'Paella Configuration Management Database', 0,
                            'Joseph Rawson')
     KCmdLineArgs.init(sys.argv, aboutData)
-    #app = KApplication()
+
+    # setup application instance
     app = PaellaMainApplication()
     app.connect(app, SIGNAL('lastWindowClosed()'), app.quit)
+
+    # register with dcop
     dcop = app.dcopClient()
     appid = dcop.registerAs('paella')
-    #bo = BaseObject('kon-default')
-    #bo.db = app.db
-    #app.db = BaseDatabase('Konsultant', app)
-    #win = ClientManager(app.db)
-    win = PaellaMainWindow(app)
+
+    # create main window
+    win = PaellaMainWindow()
     win.show()
-    #win.lower()
-    
-    #win.hide()
-    #app.setMainWidget(win)
-    #print app.mainWidget()
-    #win2 = ClientManager(win, win.db)
-    #win2.hide()
-    cfg = app.config()
-    print cfg
-    from kdecore import KLockFile
-    f = KLockFile('foolock')
+
+    #cfg = app.config()
+    #print cfg
+    #from kdecore import KLockFile
+    #f = KLockFile('foolock')
+
+    # start application loop
     app.exec_loop()
+    

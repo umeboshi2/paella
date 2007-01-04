@@ -39,23 +39,35 @@ class PaellaMainApplication(KApplication):
         self.tmpdir = str(dirs.findResourceDir('tmp', '/'))
         self.datadir = str(dirs.findResourceDir('data', '/'))
         self.socketdir = str(dirs.findResourceDir('socket', '/'))
+        #print self.tmpdir, self.datadir, self.socketdir
         dsn = {}
         
 
 class PaellaMainWindow(KMainWindow):
-    def __init__(self, app, *args):
+    def __init__(self, *args):
         KMainWindow.__init__(self, *args)
-        self.app = app
+        # setup app pointer
+        self.app = KApplication.kApplication()
+        # I don't know why the KIconLoader is called
         self.icons = KIconLoader()
+        
         self._environ_types = ['default', 'current']
         self._differ_types = ['trait', 'family']
-        self.conn = app.conn
-        self.cfg = app.cfg
+
+        # setup convenient pointers to connection and config objects
+        self.conn = self.app.conn
+        self.cfg = self.app.cfg
+        # make a cursor
         self.cursor = StatementCursor(self.conn)
         self._suites = [x.suite for x in self.cursor.select(table='suites')]
+
+        # setup actions, menus, and toolbar
         self.initActions()
         self.initMenus()
         self.initToolbar()
+
+        # we use a listview instead of a regular menu
+        # to call other parts of the application
         self.listView = KListView(self)
         self.listView.setRootIsDecorated(True)
         self.listView.addColumn('widget')
@@ -137,6 +149,7 @@ class PaellaMainWindow(KMainWindow):
             DefEnvWin(self.app, self, current.etype)
         elif hasattr(current, 'installer'):
             InstallerMainWin(self.app, self)
+
     def slotManageFamilies(self):
         print 'running families'
         FamilyMainWindow(self.app, self)

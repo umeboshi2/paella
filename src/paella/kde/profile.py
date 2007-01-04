@@ -23,7 +23,8 @@ from useless.kbase.gui import BaseAssigner
 from useless.kdb.gui import ViewBrowser
 
 from paella.kde.base import split_url
-from paella.kde.xmlgen import ProfileDoc
+#from paella.kde.xmlgen import ProfileDoc
+from paella.kde.docgen.profile import ProfileDoc
 
 class SimpleEdit(KTextEdit):
     def __init__(self, app, parent):
@@ -104,7 +105,7 @@ class ProfileView(ViewBrowser):
 
     def set_profile(self, profile):
         self.doc.set_profile(profile)
-        self.setText(self.doc.toxml())
+        self.setText(self.doc.output())
 
     def resetView(self):
         self.set_profile(self.doc.profile.current.profile)

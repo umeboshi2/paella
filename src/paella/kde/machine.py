@@ -33,9 +33,12 @@ from paella.kde.base.actions import ManageDisksAction
 from paella.kde.base.actions import ManageMountsAction
 from paella.kde.base.actions import ManageKernelsAction
 
-from paella.kde.xmlgen import MachineDoc
-from paella.kde.xmlgen import MachineTypeDoc
-from paella.kde.xmlgen import FilesystemDoc
+#from paella.kde.xmlgen import MachineDoc
+#from paella.kde.xmlgen import MachineTypeDoc
+#from paella.kde.xmlgen import FilesystemDoc
+from paella.kde.docgen.machine import MachineDoc
+from paella.kde.docgen.machine import MachineTypeDoc
+from paella.kde.docgen.machine import FilesystemDoc
 
 ManageActions = {
     'machine' : ManageMachinesAction,
@@ -90,7 +93,7 @@ class MachineView(ViewBrowser):
 
     def set_machine(self, machine):
         self.doc.set_machine(machine)
-        self.setText(self.doc.toxml())
+        self.setText(self.doc.output())
 
     def setSource(self, url):
         action, context, id_ = split_url(url)
@@ -120,7 +123,7 @@ class MachineTypeView(ViewBrowser):
         
     def set_machine_type(self, machine_type):
         self.doc.set_machine_type(machine_type)
-        self.setText(self.doc.toxml())
+        self.setText(self.doc.output())
 
     def resetView(self):
         self.set_machine_type(self.doc.mtype.current)
@@ -200,7 +203,7 @@ class FilesystemView(ViewBrowser):
 
     def set_filesystem(self, filesystem):
         self.doc.set_filesystem(filesystem)
-        self.setText(self.doc.toxml())
+        self.setText(self.doc.output())
 
     def setSource(self, url):
         KMessageBox.information(self, 'called %s' % url)

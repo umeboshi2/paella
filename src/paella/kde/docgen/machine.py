@@ -1,23 +1,19 @@
-#from xml.dom.minidom import Text
-
-from useless.sqlgen.clause import Eq
-from useless.xmlgen.base import BaseElement, TextElement
-from useless.xmlgen.base import Anchor, Html, Body
-from useless.xmlgen.base import ListItem, UnorderedList
-from useless.xmlgen.base import BR, HR, Bold, TR, TD, Paragraph
-from useless.xmlgen.base import SimpleTitleElement
+from forgetHTML import Table, TableRow, TableCell
+from forgetHTML import TableHeader
+from forgetHTML import Anchor, Ruler, Break
+from forgetHTML import Header
 
 from useless.db.midlevel import StatementCursor
-#from paella.db.trait import Trait
-#from paella.db.profile import Profile
-#from paella.db.family import Family
+from useless.sqlgen.clause import Eq
+
 from paella.db.machine import MachineHandler
 from paella.db.machine.mtype import MachineTypeHandler
 
 from base import color_header
 from base import BaseDocument
-from base import TxtTD
-
+from base import Bold
+from base import SectionTitle
+from base import BaseFieldTable
 
 class _MachineBaseDocument(BaseDocument):
     def __init__(self, app, **atts):
@@ -25,37 +21,42 @@ class _MachineBaseDocument(BaseDocument):
         self.cursor = StatementCursor(self.conn)
     
     def _add_table_row(self, table, fields, row):
-        trow = TR()
+        tablerow = TableRow()
         for field in fields:
-            trow.appendChild(TxtTD(row[field]))
-        table.appendChild(trow)
+            tablerow.append(TableCell(row[field]))
+        table.append(tablerow)
 
+    # this has been changed from the xmlgen version
+    # the th elements are cells
+    #we don't append th to tr here
     def _add_table_header(self, table, fields, **atts):
-        th = BaseElement('th', **atts)
-        trow = TR()
-        th.appendChild(trow)
+        if atts:
+            print 'Warning, use of atts here is questionable', atts
+            print 'in _MachineBaseDocument._add_table_header'
+        tablerow = TableRow(**atts)
+        table.append(tablerow)
         for field in fields:
-            trow.appendChild(TxtTD(Bold(field)))
-        table.appendChild(th)
-        table.header = th
+            tablerow.append(TableHeader(Bold(field)))
+        # we should check if we need the header attribute here
+        table.header = tablerow
 
     def _make_table(self, fields, rows, **atts):
-        table = BaseElement('table', **atts)
+        table = Table(**atts)
         self._add_table_header(table, fields)
         for row in rows:
             self._add_table_row(table, fields, row)
         return table
-
+    
     def _make_footer_anchors(self, name, value):
-        newanchor = Anchor('new.%s.foo' % name, 'new')
-        editanchor = Anchor('edit.%s.%s' % (name, value), 'edit')
-        deleteanchor = Anchor('delete.%s.%s' % (name, value), 'delete')
-        self.body.appendChild(HR())
-        self.body.appendChild(editanchor)
-        self.body.appendChild(BR())
-        self.body.appendChild(deleteanchor)
-        self.body.appendChild(BR())
-        self.body.appendChild(newanchor)
+        newanchor = Anchor('new', href='new.%s.foo' % name)
+        editanchor = Anchor('edit', href='edit.%s.%s' % (name, value))
+        deleteanchor = Anchor('delete', href='delete.%s.%s' % (name, value))
+        self.body.append(Ruler())
+        self.body.append(editanchor)
+        self.body.append(Break())
+        self.body.append(deleteanchor)
+        self.body.append(Break())
+        self.body.append(newanchor)
     
 class MachineDoc(BaseDocument):
     def __init__(self, app, **atts):
@@ -65,46 +66,49 @@ class MachineDoc(BaseDocument):
     def set_machine(self, machine):
         self.machine.set_machine(machine)
         self.clear_body()
-        title = SimpleTitleElement('Machine:  %s' % machine, bgcolor='IndianRed',
-                                   width='100%')
-        self.body.appendChild(title)
-        mtable = BaseElement('table')
+        title = SectionTitle('Machine:  %s' % machine)
+        title['bgcolor'] = 'IndianRed'
+        title['width'] = '100%'
+        self.body.append(title)
+        mtable = Table()
         for k,v in self.machine.current.items():
-            trow = TR()
-            trow.appendChild(TxtTD(Bold(k)))
-            trow.appendChild(TxtTD(v))
-            mtable.appendChild(trow)
-        self.body.appendChild(mtable)
-        newanchor = Anchor('new.machine.foo', 'new')
-        editanchor = Anchor('edit.machine.%s' % machine, 'edit')
-        self.body.appendChild(HR())
-        self.body.appendChild(editanchor)
-        self.body.appendChild(BR())
-        self.body.appendChild(newanchor)
+            tablerow = TableRow()
+            tablerow.append(TableCell(Bold(k)))
+            tablerow.append(TableCell(v))
+            mtable.append(tablerow)
+        self.body.append(mtable)
+        newanchor = Anchor('new', href='new.machine.foo')
+        editanchor = Anchor('edit', href='edit.machine.%s' % machine)
+        self.body.append(Ruler())
+        self.body.append(editanchor)
+        self.body.append(Break())
+        self.body.append(newanchor)
         
     def set_clause(self, clause):
         print 'clause---->', clause, type(clause)
-        #self.machine.cursor.clause = clause
         self.clear_body()
-        title = SimpleTitleElement('Machines', bgcolor='IndianRed', width='100%')
-        self.body.appendChild(title)
+        title = SectionTitle('Machines')
+        title['bgcolor'] = 'IndianRed'
+        title['width'] = '100%'
+        self.body.append(title)
         for row in self.machine.cursor.select(clause=clause):
-            self.body.appendChild(MachineFieldTable(row, bgcolor='MistyRose3'))
-            self.body.appendChild(HR())
+            self.body.append(MachineFieldTable(row, bgcolor='MistyRose3'))
+            self.body.append(Ruler())
 
 class MachineTypeDoc(_MachineBaseDocument):
     def __init__(self, app, **atts):
         _MachineBaseDocument.__init__(self, app, **atts)
         self.mtype = MachineTypeHandler(self.conn)
-        self.body.setAttribute('bgcolor', 'Salmon')
+        self.body['bgcolor'] = 'Salmon'
 
     def set_machine_type(self, machine_type):
         clause = Eq('machine_type', machine_type)
         self.clear_body()
         self.mtype.set_machine_type(machine_type)
-        title = SimpleTitleElement('MachineType:  %s' % machine_type,
-                                   bgcolor='IndianRed', width='100%')
-        self.body.appendChild(title)
+        title = SectionTitle('Machine Type:  %s' % machine_type)
+        title['bgcolor'] = 'IndianRed'
+        title['width'] = '100%'
+        self.body.append(title)
 
         rows = self.cursor.select(table='machine_disks', clause=clause)
         self._setup_section('Disks', ['diskname', 'device'], rows)
@@ -123,20 +127,18 @@ class MachineTypeDoc(_MachineBaseDocument):
         self._make_footer_anchors('machine_type', machine_type)
 
     def _setup_section(self, name, fields, rows):
-        title = SimpleTitleElement(name)
+        title = SectionTitle(name)
         title.set_font(color='DarkViolet')
-        td = TD()
-        anchor = Anchor('new.%s.mtype' % name, 'new')
-        td.appendChild(anchor)
-        title.row.appendChild(td)
-        self.body.appendChild(title)
+        anchor = Anchor('new', href='new.%s.mtype' % name)
+        title.row.append(TableCell(anchor))
+        self.body.append(title)
         if len(rows):
             table = self._make_table(name, fields, rows, border=1, cellspacing=1)
             color_header(table, 'MediumOrchid2')
-            self.body.appendChild(table)
+            self.body.append(table)
             
     def _make_table(self, context, fields, rows, **atts):
-        table = BaseElement('table', bgcolor='MediumOrchid3', **atts)
+        table = Table(bgcolor='MediumOrchid3', **atts)
         table.context = context
         self._add_table_header(table, fields + ['command'])
         for row in rows:
@@ -144,33 +146,40 @@ class MachineTypeDoc(_MachineBaseDocument):
         return table
 
     def _add_table_row(self, table, fields, row):
-        trow = TR()
+        tablerow = TableRow()
         for field in fields:
-            val = row[field]
-            trow.appendChild(TxtTD(val))
+            tablerow.append(TableCell(row[field]))
         durl = 'delete.%s.%s' % (table.context, row[fields[0]])
         eurl = 'edit.%s.%s' % (table.context, row[fields[0]])
-        delanchor = Anchor(durl, 'delete')
-        editanchor = Anchor(eurl, 'edit')
-        td = TD()
-        td.appendChild(editanchor)
-        td.appendChild(BR())
-        td.appendChild(delanchor)
-        trow.appendChild(td)
-        #trow.appendChild(TxtTD(delanchor))
-        table.appendChild(trow)
+        delanchor = Anchor('delete', href=durl)
+        editanchor = Anchor('edit', href=eurl)
+        cell = TableCell(editanchor)
+        cell.append(Break())
+        cell.append(delanchor)
+        tablerow.append(cell)
+        table.append(tablerow)
 
 class FilesystemDoc(_MachineBaseDocument):
     def set_filesystem(self, filesystem):
         clause = Eq('filesystem', filesystem)
         self.clear_body()
-        title = SimpleTitleElement('Filesystem:  %s' % filesystem,
-                                   bgcolor='IndianRed', width='100%')
-        self.body.appendChild(title)
-        self.body.appendChild(TextElement('h2', 'Filesystem Mounts'))
+        title = SectionTitle('Filesystem:  %s' % filesystem)
+        title['bgcolor'] = 'IndianRed'
+        title['width'] = '100%'
+        self.body.append(title)
+        self.body.append(Header('Filesystem Mounts', level=2))
         rows = self.cursor.select(table='filesystem_mounts', clause=clause,
                                   order=['ord'])
         fields = ['mnt_name', 'partition', 'ord']
         mounttable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
-        self.body.appendChild(mounttable)
+        self.body.append(mounttable)
         self._make_footer_anchors('filesystem', filesystem)
+
+
+class MachineFieldTable(BaseFieldTable):
+    def __init__(self, row, **atts):
+        fields = ['machine', 'machine_type', 'kernel', 'profile', 'filesystem']
+        BaseFieldTable.__init__(self, fields, row, **atts)
+
+
+# first draft completed
