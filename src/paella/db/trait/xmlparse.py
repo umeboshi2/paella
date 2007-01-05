@@ -5,6 +5,7 @@ from useless.base import Error, debug
 from useless.base.xmlfile import ParserHelper, DictElement
 
 from xmlgen import EnvironElement
+from xmlgen import TraitVariableElement
 
 #parse xml
 class TraitParser(ParserHelper):
@@ -23,8 +24,6 @@ class TraitParser(ParserHelper):
         self._get_environ(element)
         self.templates = []
         self._get_templates(element)
-        self.debconf = {}
-        self._get_debconf(element)
         self.scripts = []
         self._get_scripts(element)
         
@@ -41,12 +40,36 @@ class TraitParser(ParserHelper):
         for parent in parents:
             self.parents.append(parent.firstChild.data.encode().strip())
 
+    # This method is pretty ugly right now as there is a change of
+    # format for the environ section in progress.  This method will
+    # successfully parse both the old and new formats.
+    # In the future, after enough time has passed, this will be cleaned up.
     def _get_environ(self, element):
         environ = self._get_single_section(element, 'environ')
         if len(environ):
-            env_element = EnvironElement({})
-            env_element.reform(environ[0])
-            self.environ = dict(env_element.items())
+            environ_element = environ[0]
+            children = environ_element.childNodes
+            # only count childNodes with tag names
+            tagged_children = [e for e in children if hasattr(e, 'tagName')]
+            num_children = len(tagged_children)
+            if num_children:
+                newtags = environ_element.getElementsByTagName('trait_variable')
+                num_newtags = len(newtags)
+                if num_newtags and num_newtags != num_children:
+                    raise Error, "There are more elements than elements with tag trait_variable"
+                if num_newtags:
+                    print "parsing new trait_variable tags"
+                    self.environ = {}
+                    for child in tagged_children:
+                        key = child.getAttribute('name')
+                        value = child.firstChild.data.encode().strip()
+                        self.environ[key] = value
+                else:
+                    print "This xmlfile needs updating to new trait_variable tags"
+                    print "suite", self.suite, "name", self.name
+                    env_element = EnvironElement({})
+                    env_element.reform(environ[0])
+                    self.environ = dict(env_element.items())
 
     def _get_templates(self, element):
         templates = self.get_elements_from_section(element, 'templates', 'template')
@@ -56,15 +79,6 @@ class TraitParser(ParserHelper):
             for field in ['package', 'mode', 'owner', 'grp_owner']:
                 tdict[field] = template.getAttribute(field).encode().strip()
             self.templates.append([tdict['package'], value, tdict])
-
-    def _get_debconf(self, element):
-        debconf = self.get_elements_from_section(element, 'debconfiguration', 'debconf')
-        for dc in debconf:
-            dc_element = DictElement('debconf', {})
-            dc_element.reform(dc)
-            tdict = {}
-            tdict.update(dc_element)
-            self.debconf[tdict['name']] = tdict
 
     def _get_scripts(self, element):
         scripts = self.get_elements_from_section(element, 'scripts', 'script')

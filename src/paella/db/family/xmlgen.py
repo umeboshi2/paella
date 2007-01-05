@@ -1,6 +1,6 @@
 from xml.dom.minidom import Element
 
-from useless.base.xmlfile import TextElement, DictElement
+from useless.base.xmlfile import TextElement
 
 from paella.db.xmlgen import BaseVariableElement
 

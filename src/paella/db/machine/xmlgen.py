@@ -1,7 +1,7 @@
 from os.path import join
 from xml.dom.minidom import Element
 
-from useless.base.xmlfile import TextElement, DictElement
+from useless.base.xmlfile import TextElement
 from useless.base.util import makepaths
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, In

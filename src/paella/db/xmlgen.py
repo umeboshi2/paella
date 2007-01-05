@@ -45,6 +45,7 @@ class Debconf_object(object):
 #generate xml
 class DebConfElement(Element):
     def __init__(self, trait, data):
+        raise Error, "the DebConfElement is deprecated"
         Element.__init__(self, 'debconf')
         self.setAttribute('trait', trait)
         self.dc = Debconf_object()
@@ -143,6 +144,7 @@ class ProfileEnvironmentElement(DictElement):
         DictElement.__init__(self, 'profile_variable', environ)
         self.setAttribute('trait', trait)
 
+# here etype is the tagname of the element
 class BaseVariableElement(TextElement):
     def __init__(self, etype, trait, name, value):
         TextElement.__init__(self, etype, value)

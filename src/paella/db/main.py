@@ -1,6 +1,4 @@
 import os
-from os.path import join, dirname, isdir
-#from sets import Set
 
 from xml.dom.minidom import Element
 from xml.dom.minidom import parse as parse_file
@@ -19,14 +17,18 @@ from trait import Trait
 from trait.main import TraitsElement
 from trait.relations import TraitPackage, TraitParent
 from trait.relations import TraitTemplate
+
 from family import Family
+
 from profile import Profile, ProfileTrait
 from profile.xmlgen import PaellaProfiles
+from profile.xmlparse import ProfileParser
+
 from machine import MachineHandler
 
 from xmlgen import AptSourceElement, AptSourceListElement
 from xmlgen import SuiteElement, SuitesElement, SuiteAptElement
-from xmlparse import PaellaParser, ProfileParser
+from xmlparse import PaellaParser
 
 #generate xml        
 class PaellaDatabase(Element):
@@ -65,35 +67,35 @@ class PaellaDatabase(Element):
         return self.stmt.select(table='suites', order='suite')
 
     def write(self, filename):
-        path = join(self.path, filename)
+        path = os.path.join(self.path, filename)
         xmlfile = file(path, 'w')
         self.writexml(xmlfile, indent='\t', newl='\n', addindent='\t')
 
     def backup(self, path=None):
         if path is None:
             path = self.path
-        if not isdir(path):
+        if not os.path.isdir(path):
             raise Error, '%s not a directory' % path
-        dbfile = file(join(path, 'database.xml'), 'w')
+        dbfile = file(os.path.join(path, 'database.xml'), 'w')
         self.writexml(dbfile, indent='\t', newl='\n', addindent='\t')
         dbfile.close()
         self.backup_profiles(path)
         self.backup_families(path)
         suites = [x.suite for x in self._suite_rows()]
         for suite in suites:
-            makepaths(join(path, suite))
+            makepaths(os.path.join(path, suite))
             trait = Trait(self.conn, suite)
             for t in trait.get_trait_list():
                 trait.set_trait(t)
-                trait.export_trait(join(path, suite))
+                trait.export_trait(os.path.join(path, suite))
 
     def backup_profiles(self, path=None):
-        profiles_dir = join(path, 'profiles')
+        profiles_dir = os.path.join(path, 'profiles')
         makepaths(profiles_dir)
         self.profiles.export_profiles(profiles_dir)
 
     def backup_families(self, path=None):
-        fpath = join(path, 'families')
+        fpath = os.path.join(path, 'families')
         makepaths(fpath)
         self.family.export_families(fpath)
         
@@ -110,7 +112,7 @@ class PaellaProcessor(object):
         
     def parse_xml(self, filename):
         self.dbdata = PaellaParser(filename)
-        self.main_path = dirname(filename)
+        self.main_path = os.path.dirname(filename)
 
     def start_schema(self):
         start_schema(self.conn)
@@ -142,15 +144,15 @@ class PaellaProcessor(object):
             
     
     def insert_families(self):
-        path = join(self.main_path, 'families')
+        path = os.path.join(self.main_path, 'families')
         print 'path is in insert_families', path
         self.family.import_families(path)
         
         
     def insert_profiles(self):
-        path = join(self.main_path, 'profiles')
+        path = os.path.join(self.main_path, 'profiles')
         print 'path is in insert_profiles', path
-        xmlfiles = [join(path, x) for x in os.listdir(path) if x[-4:] == '.xml']
+        xmlfiles = [os.path.join(path, x) for x in os.listdir(path) if x[-4:] == '.xml']
         profiles = PaellaProfiles(self.conn)
         for xmlfile in xmlfiles:
             xml = parse_file(xmlfile)
@@ -210,7 +212,7 @@ class PaellaProcessor(object):
     def _insert_trait_(self, trait, suite):
         traitdb = Trait(self.conn, suite)
         #path = join(self.main_path, suite, trait + '.tar')
-        path = join(self.main_path, suite, trait)
+        path = os.path.join(self.main_path, suite, trait)
         traitdb.insert_trait(path, suite)
         
         
@@ -259,11 +261,12 @@ class DatabaseManager(object):
     def restore(self, path):
         if not os.path.isdir(path):
             raise Error, 'arguement needs to be a directory'
-        dbpath = join(path, 'database.xml')
-        mdbpath = join(path, 'machine_database.xml')
+        dbpath = os.path.join(path, 'database.xml')
+        mdbpath = os.path.join(path, 'machine_database.xml')
         pp = PaellaProcessor(self.conn, self.cfg)
         pp.create(dbpath)
         
 
 if __name__ == '__main__':
     pass
+

@@ -162,13 +162,19 @@ class TraitTemplate(TraitRelation):
     def set_template_path(self, path):
         self.template_path = join(path, self.suite, self.current_trait)
         
-        
-    def export_templates(self, bkup_path):
+    # set a keyword argument (to be removed sometime in the future)
+    # to revert to previous way of naming template files.  The default is to
+    # use the new method.
+    def export_templates(self, bkup_path, numbered_templates=False):
         n = 0
         for t in self.templates():
-            npath = join(bkup_path, 'template-%d' % n)
+            if numbered_templates:
+                filename  = join(bkup_path, 'template-%d' % n)
+            else:
+                template_id = t.template.replace('/', '-slash-')
+                filename = join(bkup_path, 'template-%s' % template_id)
             tfile = self.templatefile(t.package, t.template)
-            filecopy(tfile, npath)
+            filecopy(tfile, filename)
             tfile.close()
             n += 1
             

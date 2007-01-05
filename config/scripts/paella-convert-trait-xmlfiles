@@ -1,0 +1,86 @@
+#!/usr/bin/env python
+# use this script to convert the trait.xml files to the newer types
+# The converted part of the xml file is not pretty-printed
+# pass a single filename to convert a file
+# pass a directory argument to convert the directory recursively
+# multiple arguments are supported, and can be a mixture of files and directories
+
+
+import os, sys
+from xml.dom.minidom import parse
+
+from useless.base import Error
+from useless.base.xmlfile import TextElement
+
+
+from paella.db.trait.xmlgen import TraitVariableElement
+
+class AlreadyConverted(StandardError):
+    pass
+
+class WrongTypeXmlfile(StandardError):
+    pass
+
+class BadTagLayout(WrongTypeXmlfile):
+    pass
+
+# here we pass the full path to the file
+def convert_file(filename):
+    xml = parse(file(filename))
+
+    trait_element = xml.firstChild
+    print "converting", trait_element.tagName, trait_element.getAttribute('name')
+    trait_name = trait_element.getAttribute('name')
+
+    elements = xml.getElementsByTagName('environ')
+    if len(elements) != 1:
+        raise WrongTypeXmlfile, "no environ elements in this xml file"
+    element = elements[0]
+    children = element.childNodes
+    tagged_children = [e for e in children if hasattr(e, 'tagName')]
+    new_tagged_elements = element.getElementsByTagName('trait_variable')
+    if new_tagged_elements and len(new_tagged_elements) != len(tagged_children):
+        print "%s has bad naming structure, already trait_variable elements, but not all" % trait_name
+        raise BadTagLayout, "bad naming structure"
+    elif new_tagged_elements:
+        print "%s is already converted" % trait_name
+        raise AlreadyConverted, "%s is already converted." % filename
+    else:
+        new_children = []
+        for child in children:
+            if hasattr(child, 'tagName'):
+                e = TextElement('', '')
+                e.reform(child)
+                key = e.tagName
+                value = e.get()
+                new_children.append(TraitVariableElement(trait_name, key, value))
+            else:
+                # assume it's a white space textnode
+                # and append anyway
+                new_children.append(child)
+        element.childNodes = new_children
+
+    newfile = file(filename, 'w')
+    newfile.write(trait_element.toxml())
+
+
+#conn = PaellaConnection()
+args = sys.argv[1:]
+for path in args:
+    if os.path.isdir(path):
+        print 'converting recursively'
+        for root, dirs, files in os.walk(path):
+            for afile in files:
+                if os.path.basename(afile) == 'trait.xml':
+                    filename = os.path.join(root, afile)
+                    print "converting %s" % filename
+                    try:
+                        convert_file(filename)
+                    except AlreadyConverted:
+                        print filename, 'already converted'
+    elif os.path.isfile(path):
+        print 'converting single file %s' % path
+        try:
+            convert_file(path)
+        except AlreadyConverted:
+            print path, 'already converted'

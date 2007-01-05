@@ -21,6 +21,7 @@ from relations import TraitScript
 #from base import Template, TextFileManager
 
 from xmlgen import EnvironElement, ParentElement
+from xmlgen import TraitVariableElement
 from xmlgen import PackageElement, TemplateElement
 from xmlparse import TraitParser
 
@@ -206,7 +207,13 @@ class Trait(object):
         for package, template, data in trait.templates:
             #print template, data
             #templatefile = tar.get_template(data['package'], template)
-            templatefile = file(join(path, 'template-%d' % n))
+            template_id = template.replace('/', '-slash-')
+            template_filename = join(path, 'template-%s' % template_id)
+            if not os.path.exists(template_filename):
+                print "in suite %s trait %s" % (suite, trait.name)
+                print "exported template %s not converted yet" % template
+                template_filename = join(path, 'template-%d' % n)
+            templatefile = file(template_filename)
             idata = {'template' : template}
             #print idata
             idata.update(data)
@@ -221,9 +228,6 @@ class Trait(object):
         environ.update(trait.environ)
         self.set_trait(lasttrait)
 
-    def backup_trait(self, tball_path):
-        raise Error, 'this call is deprecated, use export_trait'
-        
     def export_trait(self, suite_path):
         xmldata = TraitElement(self.conn, self.suite)
         xmldata.set(self.current_trait)
@@ -261,6 +265,7 @@ class Trait(object):
         
         
 #generate xml
+# This class should maybe go in the xmlgen module
 class TraitElement(Element):
     def __init__(self, conn, suite):
         self.conn = conn
@@ -290,10 +295,12 @@ class TraitElement(Element):
 
     def set_environ(self):
         self.environ = TraitEnvironment(self.conn, self.suite, self.name)
-        new_element = EnvironElement(self.environ)
-        self.replaceChild(new_element, self.env_element)
-        self.env_element = new_element
-
+        while self.env_element.hasChildNodes():
+            del self.env_element.childNodes[0]
+        for key, value in self.environ.items():
+            var_element = TraitVariableElement(self.name, key, value)
+            self.env_element.appendChild(var_element)
+    
     def set_parents(self):
         self.parents = self.traitparent.parents(self.name)
         while self.parent_element.hasChildNodes():
@@ -378,5 +385,16 @@ class TraitsElement(Element):
 if __name__ == '__main__':
     #f = file('tmp/trait.xml')
     #tx = TraitXml(f)
-    import sys
-    tt = TraitTarFile(sys.argv[1])
+    #import sys
+    #tt = TraitTarFile(sys.argv[1])
+    from paella.db import PaellaConnection
+    conn = PaellaConnection()
+    t = Trait(conn)
+    t.set_trait('base')
+    t.export_trait('.')
+    tx = TraitXml(file('base/trait.xml'))
+    tox = TraitXml(file('base.old/trait.xml'))
+    t.set_trait('camserve')
+    tcx = TraitXml(file('camserve/trait.xml'))
+    tcox = TraitXml(file('camserve.old/trait.xml'))
+    

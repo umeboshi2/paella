@@ -30,7 +30,7 @@ from paella.kde.environ import DefEnvWin
 from paella.kde.installer import InstallerMainWin
 
 class PaellaMainApplication(KApplication):
-    def __init__(self, *args):
+    def __init__(self):
         KApplication.__init__(self)
         self.cfg = PaellaConfig()
         self.conn = PaellaConnection(self.cfg)
@@ -44,8 +44,8 @@ class PaellaMainApplication(KApplication):
         
 
 class PaellaMainWindow(KMainWindow):
-    def __init__(self, *args):
-        KMainWindow.__init__(self, *args)
+    def __init__(self, parent=None, name='PaellaMainWindow'):
+        KMainWindow.__init__(self, parent, name)
         # setup app pointer
         self.app = KApplication.kApplication()
         # I don't know why the KIconLoader is called
