@@ -4,12 +4,12 @@ from qt import SIGNAL, SLOT
 
 from kdecore import KCmdLineArgs
 
-from paella.kde.base.about import AboutData
-from paella.kde.main import PaellaMainApplication
+from paella.kdenew.base.about import AboutData
+from paella.kdenew.main import PaellaMainApplication
 
 # these imports will stay like this until the kdenew is ready to be tested
-from paella.kde.main import PaellaMainWindow
-from paella.kde.main import PaellaMainWindow as PaellaMainWindowSmall
+from paella.kdenew.main import PaellaMainWindow
+from paella.kdenew.main import PaellaMainWindowSmall
 
 if __name__ == '__main__':
     aboutData = AboutData()
@@ -25,13 +25,14 @@ if __name__ == '__main__':
 
     # create main window
     manager_type = app.cfg.get('management_gui', 'manager_type')
+    print 'using manager type', manager_type
     # determine which type of windows will be used
     if manager_type == 'listbox_select':
         win = PaellaMainWindowSmall()
     else:
         # default to regular window if bad option value
         win = PaellaMainWindow()
-        
+
     win.show()
 
     # set main window in application
