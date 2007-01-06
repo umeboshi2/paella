@@ -39,6 +39,16 @@ class PaellaConnection(BasicConnection):
         BasicConnection.__init__(self, user=user, host=host,
                                 dbname=dbname, passwd=passwd, port=port)
         self.autocommit = autocommit
+
+    # this is kind of hacky looking
+    # don't know if I'll keep this or not
+    # this should keep me from having to import StatementCursor
+    # everywhere I need the connection object
+    def cursor(self, statement=False):
+        if statement:
+            return StatementCursor(self)
+        else:
+            return BasicConnection.cursor(self)
         
 class ProfileStruct(object):
     name = 'myprofile'
