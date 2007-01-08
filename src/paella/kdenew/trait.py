@@ -8,6 +8,7 @@ from useless.kdebase.mainwin import BaseSplitWindow
 from paella.db.trait import Trait
 
 from paella.kdenew.docgen.trait import TraitDoc
+from paella.kdenew.base import split_url
 from paella.kdenew.base.viewbrowser import ViewBrowser
 from paella.kdenew.base.mainwin import BasePaellaWindow
 
@@ -21,9 +22,6 @@ class _unimp(object):
     def _nonimplemented(self, objname):
         raise NotImplementedError, '%s is not implemented yet.' % objname
 ###########
-
-def split_url(url):
-    return str(url).split('.')
 
 class ViewWindow(BasePaellaWindow):
     def __init__(self, parent, view, name='ViewWindow'):

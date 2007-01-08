@@ -23,6 +23,9 @@ from paella.kdenew.base.mainwin import BasePaellaWindow
 # import child windows
 from paella.kdenew.trait import TraitMainWindow
 from paella.kdenew.differ import DifferWindow
+from paella.kdenew.profile import ProfileMainWindow
+from paella.kdenew.environ import EnvironmentWindow
+from paella.kdenew.family import FamilyMainWindow
 
 class PaellaMainApplication(KApplication):
     def __init__(self):
@@ -151,7 +154,7 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             print 'differ', current.dtype
             win = DifferWindow(self, current.dtype)
         elif hasattr(current, 'etype'):
-            win = DefEnvWin(self, current.etype)
+            win = EnvironmentWindow(self, current.etype)
         elif hasattr(current, 'installer'):
             win = InstallerMainWin(self)
         elif hasattr(current, 'folder'):
@@ -165,7 +168,9 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
     def slotManageFamilies(self):
         print 'running families'
         #FamilyMainWindow(self.app, self)
-        KMessageBox.error(self, 'Managing families unimplemented')
+        #KMessageBox.error(self, 'Managing families unimplemented')
+        win = FamilyMainWindow(self)
+        win.show()
         
     def slotEditTemplates(self):
         print 'edit templates'
