@@ -15,9 +15,9 @@ from useless.kdebase import get_application_pointer
 
 from paella.db.trait import Trait
 
-from paella.kde.base.actions import ChangeSuiteAction
+from paella.kdenew.base.actions import ChangeSuiteAction
 
-from paella.kde.differ import TraitList
+from paella.kdenew.differ import TraitListView
 
 # we may need the SuiteSelector later
 #from paella.kde.db.gui import dbwidget, SuiteSelector
@@ -47,12 +47,12 @@ class SimpleEdit(KTextEdit):
         self.hl = TemplateHighlighter(self)
         
 class TemplateEditor(QSplitter):
-    def __init__(self, app, parent, suite, name='TemplateEditor'):
+    def __init__(self, parent, suite, name='TemplateEditor'):
         QSplitter.__init__(self, parent, name)
-        dbwidget(self, app)
+        self.app = get_application_pointer()
         self.trait = None
-        self.listView = TraitList(self.app, self, 'template')
-        self.mainEdit = SimpleEdit(self.app, self)
+        self.listView = TraitListView(self, 'template')
+        self.mainEdit = SimpleEdit(self)
         self.set_suite(suite)
         self.refreshListView()
         self.connect(self.listView,

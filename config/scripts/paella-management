@@ -9,7 +9,7 @@ from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 
 from paella.admin.management import Manager, SuiteManager
-from gtk import mainloop, mainquit
+from gtk import main, main_quit
 
 cfg = PaellaConfig('database')
 dbname = cfg['dbname']
@@ -21,14 +21,14 @@ if cfg.has_key('manager_size'):
     m.set_size_request(w, h)
 if cfg.has_key('manager_pos'):
     x, y = map(int, cfg.get_list('manager_pos'))
-    m.set_uposition(x, y)
+    m.move(x, y)
 m.dbconnect(dbname)
-m.connect('destroy', mainquit)
+m.connect('destroy', main_quit)
 
 for suite in cfg.get_list('management_suites'):
     sm = SuiteManager(m.conn, suite)
     if cfg.has_key('%s_pos' % suite):
         x, y = map(int, cfg.get_list('%s_pos' % suite))
-        sm.set_uposition(x, y)
+        sm.move(x, y)
 
-mainloop()
+main()

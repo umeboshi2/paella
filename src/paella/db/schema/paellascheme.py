@@ -25,6 +25,8 @@ from paella_tables import suite_tables, primary_tables, primary_sequences
 from paella_tables import packages_columns, SCRIPTS
 from paella_tables import MTSCRIPTS
 
+from paella import deprecated
+
 PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
 SUITES = ['sid', 'woody'] 
 
@@ -93,7 +95,9 @@ def package_to_row(packagedict, section='main'):
     for f in ['package', 'priority', 'filename', 'md5sum',
               'version', 'description', 'size', 'maintainer']:
         try:
-            newdict[f] = packagedict[f]
+            #newdict[f] = packagedict[f].encode('utf-8', 'ignore')
+            # decode to utf-8 ignoring errors seems to work here
+            newdict[f] = packagedict[f].decode('utf-8', 'ignore')
         except KeyError:
             newdict[f] = 'Not Applicable'
     newdict['installedsize'] = packagedict['installed-size']
@@ -137,6 +141,7 @@ def insert_more_packages(cursor, repos, suite=None, quick=False):
     _insert_some_more_packages(cursor, table, packages, quick=quick)
         
 def insert_suite_packages(cursor, repos, quick=False):
+    deprecated('insert_suite_packages is deprecated')
     prow = package_to_row
     if quick:
         prow = package_to_row_quick
@@ -146,12 +151,13 @@ def insert_suite_packages(cursor, repos, quick=False):
     table = ujoin(suite, 'packages')
     for section in repos.source.sections:
         for package in repos.full_parse(section).values():
-            #cursor.insert(table, prow(package))
-            # just the package names now
+            cursor.insert(table, prow(package))
+            
             cursor.insert(table, dict(package=package['package']))
             
 
 def make_suite(cursor, suite):
+    deprecated('make_suite is deprecated')
     tables = suite_tables(suite)
     map(cursor.create_table, tables)
     cursor.execute(grant_public([x.name for x in tables]))
@@ -213,11 +219,27 @@ class SuiteHandler(object):
         return rows
 
     def _insert_some_packages(self, table, packages):
+        duplicates = []
         for package in packages:
             try:
-                self.cursor.insert(table, data=package_to_row(package))
-            except OperationalError:
-                pass
+                # normal package info
+                data = package_to_row(package)
+                # just the package names now
+                #data = dict(package=package['package'])
+                self.cursor.insert(table, data=data)
+            except OperationalError, inst:
+                if inst.args[0].startswith('ERROR:  duplicate key violates unique constraint'):
+                    duplicates.append(package['package'])
+                    pass
+                else:
+                    print 'OperationalError occured:',
+                    print 'number of arguements', len(inst.args)
+                    count = 1
+                    for arg in inst.args:
+                        print 'arg%d' % count, arg
+                    raise inst
+        if duplicates:
+            print 'These duplicates were ignored', ' '.join(duplicates)
             
     def _insert_packages(self, src_row):
         table = '%s_packages' % self.suite
@@ -292,6 +314,7 @@ def insert_packagesNew(cfg, cursor, suite, quick=False):
 
     
 def insert_packages(cfg, cursor, suite, quick=False):
+    deprecated('insert_packages is deprecated')
     source = 'deb %s %s main contrib non-free' % (cfg.get('debrepos', 'http_mirror'), suite)
     lsource = 'deb file:/tmp/paellamirror %s main contrib non-free' % suite
     #source = 'deb file:/mirrors/debian %s main contrib non-free' %suite

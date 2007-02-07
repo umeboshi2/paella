@@ -130,8 +130,6 @@ class PaellaProcessor(object):
                     self.main.insert(table='suite_apt_sources', data=data)
                 self.suitehandler.set_suite(suite.name)
                 self.suitehandler.make_suite()
-                #make_suite(self.main, suite.name)
-                #insert_packages(self.cfg, self.main, suite.name, quick=False)
             else:
                 raise Error, '%s already exists.' % suite
                 #self.main.update(data=suite)

@@ -1,0 +1,2 @@
+from useless import deprecated
+
