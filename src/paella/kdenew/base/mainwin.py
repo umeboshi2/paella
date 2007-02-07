@@ -1,10 +1,10 @@
 from useless.kdebase import get_application_pointer
 from useless.kdebase.mainwin import BaseMainWindow
 
-class BasePaellaWindow(BaseMainWindow):
+from widgets import BasePaellaWidget
+
+class BasePaellaWindow(BaseMainWindow, BasePaellaWidget):
     def initPaellaCommon(self):
-        self.app = get_application_pointer()
-        self.conn = self.app.conn
-        self.cfg = self.app.cfg
+        BasePaellaWidget.initPaellaCommon(self)
         
         

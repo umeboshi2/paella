@@ -146,8 +146,10 @@ def insert_suite_packages(cursor, repos, quick=False):
     table = ujoin(suite, 'packages')
     for section in repos.source.sections:
         for package in repos.full_parse(section).values():
-            cursor.insert(table, prow(package))
-
+            #cursor.insert(table, prow(package))
+            # just the package names now
+            cursor.insert(table, dict(package=package['package']))
+            
 
 def make_suite(cursor, suite):
     tables = suite_tables(suite)

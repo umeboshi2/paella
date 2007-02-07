@@ -14,7 +14,6 @@ from util import edit_dbfile
 
 class TextFileManager(object):
     def __init__(self, conn):
-        object.__init__(self)
         self.conn = conn
         self.cursor = StatementCursor(self.conn)
         self.cursor.set_table('textfiles')

@@ -13,7 +13,63 @@ from util import create_sparse_file
 from chroot import UmlChroot
 from installer import UmlInstaller
 
+class MachineUnsetError(StandardError):
+    pass
 
+class UmlMachineManager(Uml):
+    def __init__(self, cfg):
+        Uml.__init__(self)
+        self.cfg = cfg
+        self.cfg.change('umlmachines')
+        self.options.update(self.cfg.get_umlopts())
+        self.current = None
+
+    def _check_current(self):
+        if self.current is None:
+            raise MachineUnsetError, 'Set a machine in UmlMachineManager'
+    def _make_config(self, machine):
+        return UmlConfig(machine)
+    
+    def set_machine(self, machine):
+        self.cfg.change(machine)
+        self.current = machine
+        self.options['umlmachine'] = machine
+        self.options['umid'] = machine
+        self.options.update(self.cfg.get_umlopts())
+        self.set_root_filesystem(self.cfg['basefile'])
+        
+    def set_root_filesystem(self, basefile):
+        self.options['ubd0'] = basefile
+
+    def backup_machine(self, basefile=None):
+        self._check_current()
+        machine = self.current
+        cfg = self._make_config(machine)
+        chroot = UmlChroot(cfg)
+        if basefile is None:
+            basefile = cfg.get(machine, 'basefile')
+        chroot.set_targetimage(basefile)
+        chroot.options['backup_target'] = machine
+        chroot.options['paella_action'] = 'backup'
+        chroot.run_uml()
+
+    def install_machine(self, backupalso=False, basefile=None, profile=None):
+        self._check_current()
+        machine = self.current
+        cfg = self._make_config(machine)
+        installer = UmlInstaller(cfg=cfg)
+        runner = UmlRunner(cfg)
+        if basefile is None:
+            basefile = cfg.get(machine, 'basefile')
+        if profile is None:
+            profile = cfg.get(machine, 'profile')
+        installer.install_profile(profile, basefile)
+        if backupalso:
+            self.backup_machine(basefile=basefile)
+        runner.set(machine)
+        return runner
+    
+        
 class UmlRunner(Uml):
     def __init__(self, cfg=None):
         Uml.__init__(self)

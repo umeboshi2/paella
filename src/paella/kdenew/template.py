@@ -130,7 +130,7 @@ class TemplateEditorWindow(KMainWindow):
             if hasattr(current, 'widget'):
                 print 'widget is', current.widget
 
-    def slotChangeSiute(self):
+    def slotChangeSuite(self):
         print 'ChangeSuite'
         win = SuiteSelector(self.app, self)
         win.connect(win, SIGNAL('okClicked()'), self.set_suite)

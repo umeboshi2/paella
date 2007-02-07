@@ -26,6 +26,7 @@ from paella.kdenew.differ import DifferWindow
 from paella.kdenew.profile import ProfileMainWindow
 from paella.kdenew.environ import EnvironmentWindow
 from paella.kdenew.family import FamilyMainWindow
+from paella.kdenew.machine.main import MachineMainWindow
 
 class PaellaMainApplication(KApplication):
     def __init__(self):

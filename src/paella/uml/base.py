@@ -16,6 +16,10 @@ class UmlConfig(Configuration):
             section = 'database'
         Configuration.__init__(self, section=section, files=files)
 
+    def list_rcfiles(self):
+        return list_rcfiles('umlmachines.conf')
+    
+
     def get_umlopts(self):
         pre = 'uopt_'
         uopt_keys = [x for x in self.keys() if x[:5] == pre]
@@ -26,6 +30,25 @@ class UmlConfig(Configuration):
             opts[k.split(pre)[1]] = self[k]
         return opts
 
+    def list_machines(self):
+        sections = [s for s in self.sections() if s != 'umlmachines' ]
+        return sections
+
+    def nondefault_items(self, section):
+        items = self.items(section)
+        default_items = self.items('DEFAULT')
+        defaults = dict(default_items)
+        changed = dict()
+        for k, v in items:
+            if not k.startswith('_'):
+                if k not in defaults:
+                    changed[k] = v
+                else:
+                    if defaults[k] != v:
+                        changed[k] = v
+        return changed.items()
+    
+    
 class Option(object):
     def __init__(self, name, value):
         str.__init__(self)
@@ -78,11 +101,14 @@ class Uml(object):
         self.mode = 'host'
         self.options = Options()
 
-    def __repr__(self):
+    def command(self):
         return 'linux %s' % self.options
 
+    def __repr__(self):
+        return self.command()
+
     def __str__(self):
-        return str(self.__repr__())
+        return self.command()
 
     def set_mode(self, mode):
         if mode not in ['host', 'guest']:

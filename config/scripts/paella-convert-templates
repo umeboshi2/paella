@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+# use this script to convert the trait.xml files to the newer types
+# The converted part of the xml file is not pretty-printed
+# pass a single filename to convert a file
+# pass a directory argument to convert the directory recursively
+# multiple arguments are supported, and can be a mixture of files and directories
+
+
+import os, sys
+from optparse import OptionParser
+
+from paella.base.template import Template
+from paella.db import PaellaConnection
+from paella.db.base import Suites
+from paella.db.trait import Trait
+
+class AlreadyConverted(StandardError):
+    pass
+
+class WrongTypeXmlfile(StandardError):
+    pass
+
+class BadTagLayout(WrongTypeXmlfile):
+    pass
+
+parser = OptionParser()
+opts, args = parser.parse_args(sys.argv[1:])
+
+def new_replace_function(cls, match):
+    print cls, dir(cls)
+    left, right = match.span()
+    key = cls._strip_tag_(cls.template[left:right])
+    return '${%s}' % key
+
+def get_templates(traittemplates, trait):
+    tp = traittemplates
+    tl = []
+    tp.set_trait(trait)
+    for row in tp.templates():
+        package = row.package
+        template = row.template
+        data = tp.templatedata(package, template)
+        tl.append((package, template, data))
+    return tl
+
+def convert_templates(traittemplates, trait):
+    tl = []
+    tp = traittemplates
+    tp.set_trait(trait)
+    for row in tp.templates():
+        package = row.package
+        template = row.template
+        tp.set_template(package, template)
+        tp.template.update((k, '$${%s}' % k) for k in tp.template.keys())
+        data = tp.template.sub()
+        tl.append((package, template, data))
+    return tl
+
+        
+if __name__ == '__main__':
+    conn = PaellaConnection()
+    print conn
+    print opts, args
+    s = Suites(conn)
+    t = Trait(conn, 'sarge')
+
+    #t.set_suite('sarge')
+    t.set_trait('base')
+    tp = t._templates
+    tp.set_template('base-files', 'etc/hostname')
+    tp.template.update((k, '$${%s}' % k) for k in tp.template.keys())
+    #old_replace = tp.template._replace_function_
+    #tp.template._replace_function_ = classmethod(new_replace_function)
+    td = t._templates.templatedata('base-files', 'etc/hostname')
+    

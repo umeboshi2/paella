@@ -10,16 +10,16 @@ _basepath:		%(_freespace)s/roots
 _base_logfile:		paellalog/uml-installer.log
 
 
-host_LOGFILE:		/mirrors/bkups/%(_base_logfile)s.host
+host_logfile:		/mirrors/bkups/%(_base_logfile)s.host
 
-#this is the script that the umlmachine runs
+# this is the script that the umlmachine runs
 uml_initscript:			%(_script_path)s/paella-init
 
 
-#uml network options
+# uml network options
 
 uml_socket:		/tmp/uml.ctl
-host_tun_iface:		tap1
+host_tun_iface:		tap0
 host_tun_addr:		10.0.1.1
 #--# this can be either static or dhcp
 guest_eth_ifconfig:		static
@@ -27,18 +27,18 @@ guest_eth_ifconfig:		static
 guest_eth_netmask:	255.255.255.0
 guest_eth_addr:		10.0.1.2
 
-#uml installer needs to read this file
+# uml installer needs to read this file
 paellarc:			%(_myhome)s/.paellarc
 
 
-#other uml kernel options --
+# other uml kernel options --
 uopt_python_path:		%(_workspace)s/paella/src
 
 
-#all umlmachines read this option
+# all umlmachines read this option
 uopt_umlconfig:		%(_myhome)s/.umlmachines.conf
 
-uopt_LOGFILE:		/mnt/mirrors/bkups/%(_base_logfile)s
+uopt_LOGFILE:		/mnt/%(_base_logfile)s
 
 #regular uml kernel options
 uopt_eth0:			daemon,,,%(uml_socket)s

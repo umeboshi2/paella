@@ -106,11 +106,24 @@ if action == 'install':
     installer.process()
     sys.stdout.write('profile installed.\n')
 elif action == 'bootstrap':
+    print "action is bootstrap"
     os.system('mount -t tmpfs tmpfs /tmp')
+    os.system('mount -t tmpfs tmpfs /dev')
+    here = os.getcwd()
+    os.chdir('/dev')
+    #os.system('MAKEDEV generic')
+    os.system('find')
+    os.chdir(here)
+    os.system('mknod /dev/null c 1 3')
+    os.system('mknod /dev/ubd0 b 98 0')
+    os.system('mknod /dev/ubd1 b 98 16')
+    print [f for f in os.listdir('/dev') if f.startswith('ub')]
+    print os.listdir('/dev/')
     target = '/tmp/target'
     bootstrapper = UmlBootstrapper(suite, cfg=cfg)
     bootstrapper.set_mode('guest')
     bootstrapper.mount_backup('/mnt', backup_filesystem)
+    print 'backup_filesystem mounted'
     bootstrapper.set_target(target)
     bootstrapper.bootstrap()
     bootstrapper.backup_target(suite + '.base')

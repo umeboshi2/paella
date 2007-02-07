@@ -13,7 +13,9 @@ from base import Uml, UmlConfig
 from util import mount, mount_target, mkrootfs, setup_target
 from util import ready_base_for_install
 
-
+# This is a class that runs under hostfs,
+# and intends to chroot into target ubd filesystem
+# at ubd1
 class UmlChroot(Uml):
     def __init__(self, cfg=None):
         Uml.__init__(self)
@@ -33,7 +35,7 @@ class UmlChroot(Uml):
         o['rootflags'] = '/'
         o['rootfstype'] = 'hostfs'
         o['paella_action'] = 'nothing'
-        o['devfs'] = 'mount'
+        o['devfs'] = 'nomount'
         o['init'] = self.cfg['uml_initscript']
         o.update(self.cfg.get_umlopts())
 
@@ -56,7 +58,7 @@ class UmlChroot(Uml):
 
     def mount_target(self):
         self.check_guest()
-        mount_target(self.target, device='/dev/ubd/1')
+        mount_target(self.target, device='/dev/ubd1')
 
     def mount_backup(self, mtpnt, fstype='hostfs', export=None):
         self.check_guest()
@@ -113,7 +115,7 @@ class UmlChroot(Uml):
         self.check_guest()
         extract_tarball(self.target, basetarball)
 
-    def setup_target(self, target='/tmp/target', device='/dev/ubd/1'):
+    def setup_target(self, target='/tmp/target', device='/dev/ubd1'):
         self.check_guest()
         self.set_target(target)
         setup_target(self.target, device=device)
