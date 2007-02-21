@@ -8,15 +8,23 @@ from kdeui import KStdAction
 from kdeui import KMessageBox
 from kdeui import KListView, KListViewItem
 
+from kfile import KDirSelectDialog
+
 from useless.kdebase.mainwin import BaseMainWindow
 
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 
+# database manager
+from paella.db.main import DatabaseManager
+
 # import actions
 from paella.kdenew.base.actions import ManageFamilies
 from paella.kdenew.base.actions import EditTemplateAction
 from paella.kdenew.base.actions import ManageSuiteAction
+from paella.kdenew.base.actions import ImportDatabaseAction
+from paella.kdenew.base.actions import ExportDatabaseAction
+
 
 from paella.kdenew.base.mainwin import BasePaellaWindow
 
@@ -27,6 +35,7 @@ from paella.kdenew.profile import ProfileMainWindow
 from paella.kdenew.environ import EnvironmentWindow
 from paella.kdenew.family import FamilyMainWindow
 from paella.kdenew.machine.main import MachineMainWindow
+from paella.kdenew.clients import ClientsMainWindow
 
 class PaellaMainApplication(KApplication):
     def __init__(self):
@@ -46,12 +55,18 @@ class BasePaellaMainWindow(BasePaellaWindow):
         # make a cursor
         self.cursor = self.conn.cursor(statement=True)
         # figure out what suites are available
-        self._suites = [row.suite for row in self.cursor.select(table='suites')]
+        if 'suites' in self.cursor.tables():
+            self._suites = [row.suite for row in self.cursor.select(table='suites')]
+        else:
+            self._suites = []
         # setup actions, menus, and toolbar
         self.initActions()
         self.initMenus()
         self.initToolbar()
 
+        # setup dialog pointers
+        self._import_export_dirsel_dialog = None
+        
     def initActions(self):
         collection = self.actionCollection()
         self.manageFamiliesAction = ManageFamilies(self.slotManageFamilies,
@@ -64,6 +79,10 @@ class BasePaellaMainWindow(BasePaellaWindow):
         for suite in self._suites:
             self.suiteActions[suite] = ManageSuiteAction(suite,
                                                          self.slotManageSuite, collection)
+        self.dbactions = {}
+        self.dbactions['import'] = ImportDatabaseAction(self.slotImportDatabase, collection)
+        self.dbactions['export'] = ExportDatabaseAction(self.slotExportDatabase, collection)
+        
         # these will be similar to suiteActions
         # where the key is the context
         self.environActions = {}
@@ -71,17 +90,22 @@ class BasePaellaMainWindow(BasePaellaWindow):
 
     def initMenus(self):
         mainmenu = KPopupMenu(self)
+        dbmenu = KPopupMenu(self)
         suitemenu = KPopupMenu(self)
         suite_actions = self.suiteActions.values()
         main_actions = [self.manageFamiliesAction,
                         self.editTemplatesAction,
                         self.quitAction]
+        dbactions = [self.dbactions[action] for action in ('import', 'export')]
         menubar = self.menuBar()
         menubar.insertItem('&Main', mainmenu)
+        menubar.insertItem('&Database', dbmenu)
         menubar.insertItem('&Suite', suitemenu)
         menubar.insertItem('&Help', self.helpMenu(''))
         for action in main_actions:
             action.plug(mainmenu)
+        for action in dbactions:
+            action.plug(dbmenu)
         for action in suite_actions:
             action.plug(suitemenu)
         
@@ -111,13 +135,19 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         self.connect(self.listView,
                      SIGNAL('selectionChanged()'),
                      self.selectionChanged)
+        tables = self.cursor.tables()
+        print 'tables', tables
+        if not tables:
+            msg = 'There are no tables in the database.\n'
+            msg += 'Please import a database.'
+            KMessageBox.error(self, msg)
         
     def refreshListView(self):
         suite_folder = KListViewItem(self.listView, 'suites')
         suite_folder.folder = True
-        for row in self.cursor.select(table='suites'):
-            item = KListViewItem(suite_folder, row.suite)
-            item.suite = row.suite
+        for suite in self._suites:
+            item = KListViewItem(suite_folder, suite)
+            item.suite = suite
         profile_folder = KListViewItem(self.listView, 'profiles')
         profile_folder.profiles = True
         family_folder = KListViewItem(self.listView, 'families')
@@ -138,6 +168,8 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             item.etype = etype
         installer_folder = KListViewItem(self.listView, 'installer')
         installer_folder.installer = True
+        clients_folder = KListViewItem(self.listView, 'clients')
+        clients_folder.clients = True
         
     def selectionChanged(self):
         current = self.listView.currentItem()
@@ -158,6 +190,8 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             win = EnvironmentWindow(self, current.etype)
         elif hasattr(current, 'installer'):
             win = InstallerMainWin(self)
+        elif hasattr(current, 'clients'):
+            win = ClientsMainWindow(self)
         elif hasattr(current, 'folder'):
             # nothing important selected, do nothing
             pass
@@ -188,6 +222,42 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         KMessageBox.error(self, 'Managing suites unimplemented')
         
         
+    def slotImportDatabase(self):
+        print 'slotImportDatabase called'
+        self._select_import_export_directory('import')
+
+    def slotExportDatabase(self):
+        print 'slotExportDatabase called'
+        self._select_import_export_directory('export')
+
+    # here action is either 'import' or 'export'
+    def _select_import_export_directory(self, action):
+        if self._import_export_dirsel_dialog is None:
+            default_db_path = self.app.cfg.get('database', 'import_path')
+            dlg = KDirSelectDialog(default_db_path, False , self)
+            dlg.connect(dlg, SIGNAL('okClicked()'), self._import_export_directory_selected)
+            dlg.db_action = action
+            dlg.show()
+            self._import_export_dirsel_dialog = dlg
+        else:
+            KMessageBox.error('This dialog is already open, or bug in code.')
+            
+    def _import_export_directory_selected(self):
+        dlg = self._import_export_dirsel_dialog
+        if dlg is None:
+            raise RuntimeError, 'There is no import export dialog'
+        url = dlg.url()
+        fullpath = str(url.path())
+        action = dlg.db_action
+        print 'selected fullpath', fullpath
+        print 'action is', dlg.db_action
+        dbm = DatabaseManager(self.conn)
+        if action == 'import':
+            dbm.restore(fullpath)
+        elif action == 'export':
+            dbm.backup(fullpath)
+        else:
+            KMessageBox.error(self, 'action %s not supported' % action)
     
 class PaellaMainWindow(BasePaellaMainWindow):
     pass

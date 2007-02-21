@@ -348,6 +348,11 @@ class TraitPackage(TraitRelation):
                  'package' : package}
         self.cmd.insert(data=idata)
 
+    def delete_package(self, package, action):
+        clause = Eq('package', package) & Eq('action', action)
+        self.cmd.delete(clause=clause)
+        
+
     def insert_packages(self, packages):
         diff = self.diff('package', packages)
         for package in packages:

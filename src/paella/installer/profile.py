@@ -11,7 +11,7 @@ from paella.debian.base import RepositorySource
 from paella.debian.debconf import install_debconf
 
 from paella.base import PaellaConfig
-from paella.base.util import make_deplist
+
 from paella.db import PaellaConnection
 from paella.db.base import get_traits, get_suite
 from paella.db.trait.relations import TraitParent, TraitPackage
@@ -33,6 +33,9 @@ class ProfileInstaller(Installer):
         self._profile = Profile(self.conn)
         if hasattr(self, 'log'):
             self.log.info('profile installer initialized')
+        else:
+            self.set_logfile()
+            self.log.info('profile installer initialized')
         self.mtypedata = {}
         
         
@@ -53,7 +56,9 @@ class ProfileInstaller(Installer):
         self.installer.mtypedata = self.mtypedata
         self.traitparent = TraitParent(self.conn, self.suite)
         self.log.info('profile set to %s' % profile)
-                
+        traitlist = self.make_traitlist()
+        self.setup_initial_paellainfo_env(traitlist)
+        
     def get_profile_data(self):
         return self.env.ProfileData()
     
@@ -63,13 +68,10 @@ class ProfileInstaller(Installer):
             self.installer.set_logpath(logpath)
         
     def make_traitlist(self):
-        tp = TraitParent(self.conn, self.suite)
         listed = [x.trait for x in self.profiletrait.trait_rows()]
-        all = list(self.traitparent.get_traitset(listed))
-        setfun = tp.set_trait
-        parfun = tp.parents
-        log = self.log
-        return make_deplist(listed, all, setfun, parfun, log)
+        #log = self.log
+        log = None
+        return self._profile.make_traitlist_with_traits(listed, log=log)
 
     def setup_initial_paellainfo_files(self, traits):
         makepaths(self.paelladir)

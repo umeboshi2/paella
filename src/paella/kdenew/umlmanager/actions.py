@@ -32,7 +32,7 @@ class BackupMachine(BaseAction):
 
 class InstallMachineItem(BaseItem):
     def __init__(self):
-        BaseItem.__init__(self, 'Install machine', 'install',
+        BaseItem.__init__(self, 'Install machine', 'rebuild',
                           'Install a machine', 'Install a machine')
 
 class InstallMachine(BaseAction):

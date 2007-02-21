@@ -2,16 +2,29 @@
 import os, sys
 import commands
 from os.path import join, basename
+
 print 'paella-init started'
+# mount /proc
 os.system("mount -t proc proc /proc")
+
+print 'proc mounted'
+
+# parse kernel command line options
 _opts = file('/proc/cmdline').read().strip().split() 
 kernopts = dict([o.split('=') for o in _opts if o.find('=') >= 0])
 
+# setup python path if available
 if 'python_path' in kernopts:
     sys.path.insert(0, kernopts['python_path'])
+    os.environ['PYTHONPATH'] = kernopts['python_path']
+    
+# setup PATH variable
 os.environ['PATH'] = ':'.join(['/bin', '/sbin', '/usr/bin', '/usr/sbin'])
+
+# setup DEBIAN_FRONTEND
 os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
 
+# are we using a logfile?
 logfile = None
 if 'logfile' in kernopts.keys():
     logfile = kernopts['logfile']
@@ -21,6 +34,7 @@ elif 'LOGFILE' in kernopts.keys():
 if logfile is not None:
     os.environ['LOGFILE'] = logfile
 
+# the imports below may depend on python_path being set
 from useless.base import Error, debug
 from useless.base.config import Configuration
 from useless.base.util import makepaths
@@ -36,6 +50,7 @@ from paella.uml.bootstrap import UmlBootstrapper
 from paella.uml.installer import UmlInstaller
 
 from paella.installer.base import InstallerConnection
+from paella.installer.base import CurrentEnvironment
 from paella.installer.profile import install_packages_uml
 from paella.installer.profile import get_profile_packages
 from paella.installer.profile import ProfileInstaller
@@ -48,8 +63,14 @@ action = kernopts['paella_action']
 
 cfg = UmlConfig(files=[kernopts['umlconfig']])
 
+umlmachine = ''
+if 'umlmachine' in kernopts:
+    umlmachine = kernopts['umlmachine']
+    os.environ['PAELLA_MACHINE'] = umlmachine
 
 kver = commands.getoutput('uname -r')
+
+# setup networking
 os.system('ifconfig lo up')
 if cfg['guest_eth_ifconfig'] == 'dhcp':
     print 'starting up interfaces'
@@ -70,14 +91,22 @@ else:
     print addgw
     os.system(addgw)
 
+# start performing paella_action
 print 'performing action', action
+# setup objects for actions that use database
 if action in ['install', 'restore']:
     cfile = cfg['paellarc']
+    os.environ['PAELLARC'] = cfile
     pcfg = PaellaConfig(files=[cfile])
     conn = InstallerConnection(pcfg)
     s = StatementCursor(conn)
-    
+    curenv = None
+    if umlmachine:
+        curenv = CurrentEnvironment(conn, umlmachine)
+        curenv['current_profile'] = 'None'
+        
 if action == 'install':
+    # not sure I need this
     profile = kernopts['paellaprofile']
     suite = get_suite(conn, profile)
     print 'profile and suite are:', profile, suite
@@ -97,28 +126,10 @@ backup_filesystem = cfg.get('umlmachines', 'backup_filesystem')
 if action == 'install':
     installer = UmlInstaller(conn, cfg=cfg)
     installer.set_mode('guest')
-    installer.mount_backup('/mnt', backup_filesystem)
-    installer.setup_target()
-    installer.set_profile(profile)
-    installer.extract_base_tarball()
-    installer.ready_base_for_install()
-    installer.set_template_path()
-    installer.process()
+    installer.perform_install(profile=profile, backup_filesystem=backup_filesystem)
     sys.stdout.write('profile installed.\n')
 elif action == 'bootstrap':
     print "action is bootstrap"
-    os.system('mount -t tmpfs tmpfs /tmp')
-    os.system('mount -t tmpfs tmpfs /dev')
-    here = os.getcwd()
-    os.chdir('/dev')
-    #os.system('MAKEDEV generic')
-    os.system('find')
-    os.chdir(here)
-    os.system('mknod /dev/null c 1 3')
-    os.system('mknod /dev/ubd0 b 98 0')
-    os.system('mknod /dev/ubd1 b 98 16')
-    print [f for f in os.listdir('/dev') if f.startswith('ub')]
-    print os.listdir('/dev/')
     target = '/tmp/target'
     bootstrapper = UmlBootstrapper(suite, cfg=cfg)
     bootstrapper.set_mode('guest')

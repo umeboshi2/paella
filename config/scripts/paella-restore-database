@@ -8,25 +8,34 @@ from useless.base import Error, debug
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 
-from paella.db.main import PaellaProcessor
+from paella.db.main import DatabaseManager
 from paella.uml.bootstrap import make_base
 
+
 parser = OptionParser()
+cfg = PaellaConfig()
+db = 'database'
+rp = 'debrepos'
 parser.add_option('--mirror', action='store', type='string', dest='remote',
-                  default='http://paella/debian')
+                  default=cfg.get(rp, 'http_mirror'))
 parser.add_option('--database', action='store', type='string', dest='dbname',
-                  default='paella')
+                  default=cfg.get(db, 'dbname'))
 parser.add_option('--host', action='store', type='string', dest='dbhost',
-                  default='localhost')
+                  default=cfg.get(db, 'dbhost'))
 parser.add_option('--user', action='store', type='string', dest='dbusername',
-                  default=os.environ['USER'])
+                  default=cfg.get(db, 'dbusername'))
 
 opts, args = parser.parse_args(sys.argv[1:])
 dsn = dict(dbusername=opts.dbusername,
            dbhost=opts.dbhost,
            dbname=opts.dbname,
-           dbpassword=None)
+           dbpassword=None,
+           autocommit=cfg.get(db, 'autocommit'))
 conn = PaellaConnection(dsn)
-#processor = PaellaProcessor(conn)
-#processor.create(os.getcwd()+'/database.xml')
-print 'not working at the moment, use the gui'
+if not args:
+    raise RuntimeError, 'need a directory arguement'
+path = args[0]
+
+dbm = DatabaseManager(conn)
+dbm.restore(path)
+

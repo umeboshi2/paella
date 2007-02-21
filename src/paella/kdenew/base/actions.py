@@ -89,3 +89,23 @@ class ManageSuiteAction(BaseAction):
         BaseAction.__init__(self, ManageSuiteItem(suite), 'ManageSuite%s' % suite,
                             slot, parent)
         
+class ImportDatabaseItem(BaseItem):
+    def __init__(self):
+        tt = 'Import the database from a previous xml export.'
+        BaseItem.__init__(self, 'Import database', 'restore', tt, tt)
+
+class ImportDatabaseAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ImportDatabaseItem(), 'ImportDatabaseAction',
+                            slot, parent)
+
+class ExportDatabaseItem(BaseItem):
+    def __init__(self):
+        tt = 'Export the database to xml.'
+        BaseItem.__init__(self, 'Export database', 'export', tt, tt)
+
+class ExportDatabaseAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ExportDatabaseItem(), 'ExportDatabaseAction',
+                            slot, parent)
+        

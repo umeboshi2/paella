@@ -97,7 +97,10 @@ def package_to_row(packagedict, section='main'):
         try:
             #newdict[f] = packagedict[f].encode('utf-8', 'ignore')
             # decode to utf-8 ignoring errors seems to work here
-            newdict[f] = packagedict[f].decode('utf-8', 'ignore')
+            # then re-encode to utf-8
+            # not sure if any information is lost here, I probably couln't
+            # read it anyway.
+            newdict[f] = packagedict[f].decode('utf-8', 'ignore').encode('utf-8')
         except KeyError:
             newdict[f] = 'Not Applicable'
     newdict['installedsize'] = packagedict['installed-size']
@@ -200,6 +203,7 @@ class SuiteHandler(object):
     def make_suite(self):
         if self.suite is None:
             raise Error, 'the suite needs to be set first'
+        debug("in make_suite ->", self.suite)
         self._make_suite_tables()
         self.update_packagelists()
         for row in self.sources_rows:
@@ -239,7 +243,7 @@ class SuiteHandler(object):
                         print 'arg%d' % count, arg
                     raise inst
         if duplicates:
-            print 'These duplicates were ignored', ' '.join(duplicates)
+            debug('These duplicates were ignored', ' '.join(duplicates))
             
     def _insert_packages(self, src_row):
         table = '%s_packages' % self.suite
@@ -283,15 +287,17 @@ class SuiteHandler(object):
             # the [5:] slice is to remove file: from local uri
             lpath = os.path.join(repos.local.source.uri, repos.source.suite, 'Packages.gz')[5:]
             if not os.path.isfile(lpath):
-                print 'lpath is --->', lpath
+                debug('lpath is --->', lpath)
                 makepaths(os.path.dirname(lpath))
-                print rpath, lpath, 'getting now'
+                debug(rpath, lpath, 'getting now')
                 wget(rpath, lpath)
             
     def _update_suite_packages(self, suite):
         rows = self.get_sources_rows(suite)
         for row in rows:
+            debug('_update_suite_packages', row)
             repos = self._row2repos(row)
+            debug('repos is', repos)
             self._get_packages_file(repos)
 
 # new functions for apt sources schema

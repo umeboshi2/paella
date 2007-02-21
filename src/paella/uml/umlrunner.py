@@ -1,5 +1,6 @@
 import os
 from os.path import join, dirname
+import subprocess
 
 from umlrun import UML
 from useless.base.config import Configuration
@@ -23,10 +24,12 @@ class UmlMachineManager(Uml):
         self.cfg.change('umlmachines')
         self.options.update(self.cfg.get_umlopts())
         self.current = None
+        self.run_process = None
 
     def _check_current(self):
         if self.current is None:
             raise MachineUnsetError, 'Set a machine in UmlMachineManager'
+
     def _make_config(self, machine):
         return UmlConfig(machine)
     
@@ -58,17 +61,34 @@ class UmlMachineManager(Uml):
         machine = self.current
         cfg = self._make_config(machine)
         installer = UmlInstaller(cfg=cfg)
+        installer.options['umlmachine'] = machine
+        installer.options['umid'] = machine
         runner = UmlRunner(cfg)
         if basefile is None:
             basefile = cfg.get(machine, 'basefile')
         if profile is None:
             profile = cfg.get(machine, 'profile')
         installer.install_profile(profile, basefile)
+        self.run_process = installer.run_process
+        print 'self.run_process', self.run_process
         if backupalso:
             self.backup_machine(basefile=basefile)
         runner.set(machine)
         return runner
-    
+
+    def restore_machine(self, basefile=None, archive=None):
+        pass
+
+    def run_machine(self, init=None):
+        self._check_current()
+        machine = self.current
+        cfg = self._make_config(machine)
+        runner = UmlRunner(cfg)
+        runner.set(machine)
+        if init is not None:
+            runner.options['init'] = init
+        runner.run()
+        
         
 class UmlRunner(Uml):
     def __init__(self, cfg=None):

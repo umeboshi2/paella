@@ -25,6 +25,8 @@ class PackageTable(Table):
             tablerow = TableRow()
             tablerow.append(TableCell(row.package))
             tablerow.append(TableCell(row.action))
+            anchor = Anchor('delete', href='delete.package.%s|%s' % (row.package, row.action))
+            tablerow.append(anchor)
             self.append(tablerow)
 
 class PackageFieldTable(BaseFieldTable):

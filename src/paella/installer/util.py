@@ -6,6 +6,8 @@ from time import sleep
 
 from useless.base import Error
 from useless.base.util import makepaths, runlog, echo
+
+from paella import deprecated
 from paella.debian.base import RepositorySource
 
 from base import Modules
@@ -19,15 +21,20 @@ def make_interfaces_simple(target):
     i.write('\n\n')
     i.close()
 
-def mount_tmp():
-    os.system('mount -t tmpfs tmpfs /tmp')
+def mount_tmp(target='/tmp'):
+    deprecated('mount_tmp is deprecated use mount_tmpfs instead')
+    os.system('mount -t tmpfs tmpfs %s' % target)
+
+def mount_tmpfs(target='/tmp'):
+    os.system('mount -t tmpfs tmpfs %s' % target)
 
 def backup_target_command(target, tarball):
     exclude = "--exclude './proc/*'"
-    tarcmd = 'bash -c "tar -c %s ' % exclude
-    tarcmd += '-C %s . > %s"' % (target, tarball)
-    return tarcmd
-
+    location = '-C %s' % target
+    fileopt = '--file %s' % tarball
+    cmd = 'tar --create %s %s . %s' % (exclude, location, fileopt)
+    return cmd
+    
 def remove_debs(target):
     archives = 'var/cache/apt/archives'
     debs = os.path.join(target, archives, '*.deb')

@@ -22,11 +22,14 @@ class UmlBootstrapper(UmlChroot):
         o['paella_action'] = 'bootstrap'
 
     def make_filesystem(self):
-        #guest mode method
+        # guest mode method
+        self.check_guest()
+        # this function needs to be removed
         mkrootfs()
         
     def bootstrap(self):
-        #guest mode method
+        # guest mode method
+        self.check_guest()
         suite = self.options['paellasuite'].value
         mirror = self.cfg.get('umlmachines', 'bootstrap_debmirror')
         bs = Debootstrap(suite, self.target, mirror)

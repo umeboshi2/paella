@@ -1,28 +1,8 @@
-#import os
-#from os.path import join, dirname, isdir
-#from sets import Set
-
-#from xml.dom.minidom import Element
-#from xml.dom.minidom import parse as parse_file
-#from xml.dom.minidom import parseString as parse_string
-
-#from useless.base import UnbornError, Error, debug
-#from useless.base.xmlfile import TextElement
-#from useless.base.util import ujoin, makepaths
-
 from useless.sqlgen.clause import Eq
 
 from useless.db.midlevel import StatementCursor, SimpleRelation
 from useless.db.midlevel import Environment
-#from useless.db.lowlevel import OperationalError
 
-#from paella.schema.paellascheme import insert_packages, make_suite
-#from paella.schema.paellascheme import start_schema
-
-#from base import TraitEnvironment, get_suite, make_deplist
-#from trait import TraitParent, TraitDebconf
-#from trait import TraitPackage, TraitTemplate
-#from trait import TraitsElement, Trait
 from paella.base.util import make_deplist
 from paella.base.objects import VariablesConfig
 from paella.db.base import get_suite
@@ -30,10 +10,6 @@ from paella.db.trait import Trait
 from paella.db.trait.relations import TraitParent
 from paella.db.family import Family
 
-#from xmlparse import PaellaParser, ProfilesParser, ProfileParser
-#from xmlgen import EnvironElement, SuitesElement
-#from xmlgen import SuiteElement, ProfileElement
-#from xmlgen import ProfileVariableElement
 class ProfileVariablesConfig(VariablesConfig):
     def __init__(self, conn, profile):
         VariablesConfig.__init__(self, conn, 'profile_variables',
@@ -213,7 +189,10 @@ class Profile(StatementCursor):
         setfun = tp.set_trait
         parfun = tp.parents
         return make_deplist(listed, all, setfun, parfun, log)
-        
+
+    def make_traitlist_with_traits(self, traits, log=None):
+        return self._make_traitlist(traits, log=log)
+    
     def make_traitlist(self, log=None):
         listed = [x.trait for x in self._traits.trait_rows()]
         return self._make_traitlist(listed, log=log)

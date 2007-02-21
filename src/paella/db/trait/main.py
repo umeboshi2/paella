@@ -6,6 +6,8 @@ from tarfile import TarFile
 from xml.dom.minidom import parse as parse_file
 
 from useless.base import ExistsError, UnbornError, Error, debug
+from useless.base import NoExistError
+
 
 from useless.xmlgen.base import TextElement
 from useless.base.util import ujoin, makepaths
@@ -17,8 +19,6 @@ from base import AllTraits, Traits
 from relations import TraitParent, TraitPackage
 from relations import TraitTemplate, TraitEnvironment
 from relations import TraitScript
-#from base import TraitRelation, TraitEnvironment
-#from base import Template, TextFileManager
 
 from xmlgen import EnvironElement, ParentElement
 from xmlgen import TraitVariableElement
@@ -176,12 +176,35 @@ class Trait(object):
         self._traits.delete()
         self._traits.clear(clause=True)
 
+    def parse_trait_xml(self, path, suite=None):
+        trait = TraitXml(file(os.path.join(path, 'trait.xml')))
+        if suite is not None:
+            trait.suite = suite
+        return trait
+
+    def find_missing_packages(self, traitxml):
+        all_packages = []
+        missing = []
+        cursor = StatementCursor(self.conn)
+        suite = traitxml.suite
+        ptable = '%s_packages' % suite
+        for package, action in traitxml.packages:
+            if package not in all_packages:
+                all_packages.append(package)
+        for package in all_packages:
+            try:
+                row = cursor.select_row(table=ptable, clause=Eq('package', package))
+            except NoExistError:
+                missing.append(package)
+        return missing
+    
     def insert_trait(self, path, suite=None):
         #tar = TraitTarFile(path)
         #trait = tar.get_trait()
         trait = TraitXml(file(join(path, 'trait.xml')))
         if suite is not None:
             trait.suite = suite
+        trait = self.parse_trait_xml(path, suite=suite)
         all = Set([x.trait for x in self._alltraits.select()])
         suite_traits = Set([x.trait for x in self._traits.select()])
         parents = Set(trait.parents)

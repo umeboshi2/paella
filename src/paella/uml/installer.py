@@ -6,6 +6,7 @@ from paella.base import PaellaConfig
 from paella.db.base import get_suite
 from paella.installer.util import extract_tarball
 from paella.installer.profile import ProfileInstaller
+from paella.installer.base import CurrentEnvironment
 
 from util import ready_base_for_install, create_sparse_file
 from chroot import UmlChroot
@@ -15,12 +16,17 @@ class UmlInstaller(UmlChroot):
         self.conn = conn
         UmlChroot.__init__(self, cfg=cfg)
         self.options['paella_action'] = 'install'
-        self.paellarc = PaellaConfig(files=[self.cfg['paellarc']])
+        paellarc_files = [self.cfg['paellarc']]
+        self.paellarc = PaellaConfig(files=paellarc_files)
         
+        
+
+    def setup_target(self, **kwargs):
+        UmlChroot.setup_target(self, **kwargs)
         
     def set_suite(self, suite):
         self.check_guest()
-        self.installer = ProfileInstaller(self.conn, self.paellarc)
+        self.installer = ProfileInstaller(self.conn)
         self._suite = suite
         
     def set_profile(self, profile):
@@ -76,8 +82,33 @@ class UmlInstaller(UmlChroot):
         extract_tarball(self.target, basetarball)
 
     def ready_base_for_install(self):
-        ready_base_for_install(self.target, self.paellarc, self._suite)
-        
+        self.check_guest()
+        cfg = self.installer.defenv
+        ready_base_for_install(self.target, cfg, self._suite)
 
+    def perform_install(self, profile=None, backup_filesystem=None):
+        self.check_guest()
+        machine = os.environ['PAELLA_MACHINE']
+        curenv = CurrentEnvironment(self.conn, machine)
+        curenv['current_trait'] = 'None'
+        curenv['current_trait_process'] = 'None'
+        curenv['traitlist'] = ''
+        mpkey = 'current_machine_process'
+        if backup_filesystem is not None:
+            curenv[mpkey] = 'mount_backup'
+            self.mount_backup('/mnt', backup_filesystem)
+        curenv[mpkey] = 'setup_target'
+        self.setup_target()
+        curenv[mpkey] = 'set_profile'
+        self.set_profile(profile)
+        curenv[mpkey] = 'extract_base_tarball'
+        self.extract_base_tarball()
+        curenv[mpkey] = 'ready_base_for_install'
+        self.ready_base_for_install()
+        curenv[mpkey] = 'set_template_path'
+        self.set_template_path()
+        curenv[mpkey] = 'process'
+        self.process()
+        
 if __name__ == '__main__':
     pass

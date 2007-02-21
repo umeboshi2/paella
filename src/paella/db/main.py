@@ -30,6 +30,9 @@ from xmlgen import AptSourceElement, AptSourceListElement
 from xmlgen import SuiteElement, SuitesElement, SuiteAptElement
 from xmlparse import PaellaParser
 
+# imports for ClientManager
+from useless.base.config import Configuration
+
 #generate xml        
 class PaellaDatabase(Element):
     def __init__(self, conn, path='/'):
@@ -188,8 +191,35 @@ class PaellaProcessor(object):
     def insert_traits(self, suite):
         self.__set_suite_cursors__(suite)
         traits = [trait for trait in self.dbdata.get_traits(suite)]
-        self._insert_traits_(traits, suite)
+        missing = self._find_missing_packages(suite, traits)
+        if missing:
+            print 'missing these packages in suite', suite
+            self._make_missing_packages_report(missing)
+            raise RuntimeError, 'Missing packages declared in suite %s' % suite
+        else:
+            self._insert_traits_(traits, suite)
 
+    def _make_missing_packages_report(self, missing):
+        traits = missing.keys()
+        traits.sort()
+        for t in traits:
+            print '%s:' % t
+            for p in missing[t]:
+                print '\t%s' % p
+        
+    def _find_missing_packages(self, suite, traits):
+        missing = dict()
+        tdb = Trait(self.conn, suite)
+        print suite, traits
+        for trait in traits:
+            path = self._get_trait_path(suite, trait)
+            traitxml = tdb.parse_trait_xml(path, suite=suite)
+            missing_list = tdb.find_missing_packages(traitxml)
+            if missing_list:
+                #print 'in trait,', trait, ', missing packages:  ', missing_list
+                missing[trait] = missing_list
+        return missing
+    
     def _clear_traits(self, suite):
         self.__set_suite_cursors__(suite)
         self.traitparent.cmd.delete()
@@ -197,6 +227,9 @@ class PaellaProcessor(object):
         self.main.delete(table=ujoin(suite, 'variables'))
         self.traits.delete()
 
+    def _get_trait_path(self, suite, trait):
+        return os.path.join(self.main_path, suite, trait)
+    
     def _insert_traits_(self, traits, suite):
         while len(traits):
             trait = traits[0]
@@ -210,7 +243,7 @@ class PaellaProcessor(object):
     def _insert_trait_(self, trait, suite):
         traitdb = Trait(self.conn, suite)
         #path = join(self.main_path, suite, trait + '.tar')
-        path = os.path.join(self.main_path, suite, trait)
+        path = self._get_trait_path(suite, trait)
         traitdb.insert_trait(path, suite)
         
         
@@ -242,7 +275,6 @@ class PaellaProcessor(object):
 
 class DatabaseManager(object):
     def __init__(self, conn):
-        object.__init__(self)
         self.cfg = PaellaConfig()
         self.conn = conn
         self.import_dir = self.cfg.get('database', 'import_path')
@@ -263,7 +295,7 @@ class DatabaseManager(object):
         mdbpath = os.path.join(path, 'machine_database.xml')
         pp = PaellaProcessor(self.conn, self.cfg)
         pp.create(dbpath)
-        
+
 
 if __name__ == '__main__':
     pass

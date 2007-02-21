@@ -24,6 +24,10 @@ from util import install_kernel, setup_modules
 from profile import ProfileInstaller
 from fstab import HdFstab
 
+from paella import deprecated
+deprecated('the nfsinstaller module is deprecated')
+
+
 class NewInstaller(object):
     def __init__(self, conn, cfg):
         object.__init__(self)

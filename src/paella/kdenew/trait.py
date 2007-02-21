@@ -70,6 +70,8 @@ class TraitView(ViewBrowser):
             self._perform_edit_action(context, ident)
         elif action == 'new':
             self._perform_new_action(context, ident)
+        elif action == 'delete':
+            self._perform_delete_action(context, ident)
         else:
             raise MethodNotImplementedError(self, url)
 
@@ -104,10 +106,24 @@ class TraitView(ViewBrowser):
             raise MethodNotImplementedError(self, 'TraitView._perform_show_action')
         win.show()
     def _perform_edit_action(self, context, ident):
-        raise MethodNotImplementedError(self, 'TraitView._perform_edit_action')
+        if context == 'templates':
+            raise RuntimeError, 'templates not implemented yet'
+        elif context == 'packages':
+            raise RuntimeError, 'packages not implemented yet'
+        elif context == 'script':
+            self.doc.trait.edit_script(ident)
+        else:
+            raise MethodNotImplementedError(self, 'TraitView._perform_edit_action')
+        
     def _perform_new_action(self, context, ident):
         raise MethodNotImplementedError(self, 'TraitView._perform_new_action')
-    
+
+    def _perform_delete_action(self, context, ident):
+        if context == 'package':
+            print context, ident
+            package, action = ident.split('|')
+            print 'delete package', package, action
+            
 # main window to handle traits
 class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
     def __init__(self, parent, suite):

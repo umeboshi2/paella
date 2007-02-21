@@ -5,7 +5,9 @@ from useless.base import Error
 from useless.base.defaults import MB
 from useless.base.util import makepaths
 from paella.installer.util import make_sources_list, set_root_passwd
-from paella.installer.util import myline, make_fstab, make_filesystem, mount_tmp
+from paella.installer.util import myline, make_fstab, make_filesystem
+from paella.installer.util import mount_tmp
+from paella.installer.util import mount_tmpfs
 from paella.installer.util import ready_base_for_install as _ready_base_for_install
 from paella.installer.fstab import UmlFstab
 
@@ -45,7 +47,7 @@ def mkrootfs(fstype='ext2', primary='/dev/ubd1',
     make_filesystem(primary, fstype)
     
 def setup_target(target='/tmp/target', device='/dev/ubd1'):
-    mount_tmp()
+    mount_tmpfs(target='/tmp')
     mkrootfs(primary=device)
     mount_target(target, device)
 

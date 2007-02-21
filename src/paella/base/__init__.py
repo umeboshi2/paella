@@ -1,3 +1,4 @@
+import os
 from useless.base.config import Configuration, list_rcfiles
 
 class PaellaConfig(Configuration):
@@ -5,7 +6,12 @@ class PaellaConfig(Configuration):
         if section is None:
             section = 'database'
         Configuration.__init__(self, section=section, files=files)
-        
+        if 'PAELLARC' in os.environ:
+            paellarc = os.environ['PAELLARC']
+            print 'reading paellarc at', paellarc
+            self.read([paellarc])
+            
+            
 
 if __name__ == '__main__':
     print 'hello there'

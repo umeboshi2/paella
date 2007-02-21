@@ -102,26 +102,29 @@ class Uml(object):
         self.options = Options()
 
     def command(self):
+        return self._cmd_()
+    
+    def _cmd_(self):
         return 'linux %s' % self.options
 
     def __repr__(self):
-        return self.command()
+        return self._cmd_()
 
     def __str__(self):
-        return self.command()
+        return self._cmd_()
 
     def set_mode(self, mode):
         if mode not in ['host', 'guest']:
-            raise Error, 'unknown mode %s' % mode
+            raise RuntimeError, 'unknown mode %s' % mode
         self.mode = mode
 
     def check_guest(self):
         if self.mode != 'guest':
-            raise Error, 'not in guest mode'
+            raise RuntimeError, 'not in guest mode'
 
     def check_host(self):
         if self.mode != 'host':
-            raise Error, 'not in host mode'
+            raise RuntimeError, 'not in host mode'
         
 
 if __name__ == '__main__':

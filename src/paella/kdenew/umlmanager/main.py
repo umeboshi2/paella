@@ -9,6 +9,7 @@ from kdeui import KPopupMenu
 from kdeui import KStdAction
 from kdeui import KMessageBox
 from kdeui import KListView, KListViewItem
+from kdeui import KStatusBar
 
 from useless.kdebase.mainwin import BaseMainWindow
 from useless.kdebase import get_application_pointer
@@ -18,6 +19,8 @@ from paella.base import PaellaConfig
 from paella.db import PaellaConnection
 
 from paella.uml.base import UmlConfig
+from paella.uml.umlrunner import UmlMachineManager
+
 
 from paella.kdenew.base.viewbrowser import ViewBrowser
 
@@ -36,11 +39,12 @@ from actions import EditConfigFile
 
 from docgen import UmlMachineDoc
 
-
+from installer import LogBrowserWindow
 
 class UmlManagerApplication(KApplication):
     def __init__(self):
         KApplication.__init__(self)
+        self.conn = PaellaConnection()
         self.umlcfg = UmlConfig()
         self.update_config()
         
@@ -59,7 +63,7 @@ class UmlManagerMainWindow(BaseUmlManagerMainWindow):
         self.initActions()
         self.initMenus()
         self.initToolbar()
-
+        self.statusbar = KStatusBar(self)
         self.mainView = MainUmlManagerWidget(self)
         self.setCentralWidget(self.mainView)
         
@@ -76,12 +80,14 @@ class UmlManagerMainWindow(BaseUmlManagerMainWindow):
                                                  collection)
         self.editConfigFileAction = EditConfigFile(self.slotEditConfigFile,
                                                    collection)
-        
+        self.launchMachineAction = LaunchMachine(self.slotLaunchMachine,
+                                                 collection)
 
     def initMenus(self):
         mainmenu = KPopupMenu(self)
         main_actions = [self.bootstrapMachineAction,
                         self.installMachineAction,
+                        self.launchMachineAction,
                         self.backupMachineAction,
                         self.editConfigFileAction,
                         self.quitAction]
@@ -93,7 +99,9 @@ class UmlManagerMainWindow(BaseUmlManagerMainWindow):
         
     def initToolbar(self):
         toolbar = self.toolBar()
-        actions = [self.quitAction]                   
+        actions = [self.installMachineAction,
+                   self.launchMachineAction,
+                   self.quitAction]                   
         for action in actions:
             action.plug(toolbar)
             
@@ -105,6 +113,12 @@ class UmlManagerMainWindow(BaseUmlManagerMainWindow):
 
     def slotInstallMachine(self):
         print 'install machine'
+        self.mainView.install_machine()
+
+    def slotLaunchMachine(self):
+        print 'launch machine'
+        self.mainView.launch_machine()
+        
 
     def slotEditConfigFile(self):
         filename = os.path.expanduser('~/.umlmachines.conf')
@@ -124,6 +138,8 @@ class MainUmlManagerWidget(BaseUmlManagerWidget):
         mainview = UmlMachineView
         BaseUmlManagerWidget.__init__(self, parent, mainview,
                                       name='MainUmlManagerWidget')
+        cfg = UmlConfig()
+        self.umlmachines = UmlMachineManager(cfg)
         self.initListView()
         
     def initListView(self):
@@ -138,8 +154,21 @@ class MainUmlManagerWidget(BaseUmlManagerWidget):
 
     def selectionChanged(self):
         item = self.listView.currentItem()
-        self.mainView.set_machine(str(item.text(0)))
-        
+        machine = str(item.text(0))
+        self.mainView.set_machine(machine)
+        self.umlmachines.set_machine(machine)
+
+    def install_machine(self):
+        machine = self.umlmachines.current
+        win = LogBrowserWindow(self, self.umlmachines)
+        win.show()
+        self.app.processEvents()
+        self.umlmachines.install_machine()
+        print self.umlmachines.run_process, 'umlmachines.run_process'
+
+    def launch_machine(self):
+        machine = self.umlmachines.current
+        self.umlmachines.run_machine()
         
 class UmlMachineView(ViewBrowser):
     def __init__(self, parent):

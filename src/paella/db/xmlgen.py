@@ -3,12 +3,12 @@ from xml.dom.minidom import Element
 from useless.base.xmlfile import TextElement, DictElement
 
 
-#generate and reform xml
+# generate and reform xml
 class ParentElement(TextElement):
     def __init__(self, parent):
         TextElement.__init__(self, 'parent', parent)
 
-#generate and reform xml
+# generate and reform xml
 class PackageElement(TextElement):
     def __init__(self, package, action='install'):
         TextElement.__init__(self, 'package', package)
@@ -24,7 +24,7 @@ class PackageElement(TextElement):
         action = element.getAttribute('action').encode()
         TextElement.__init__(self, package, action)
 
-#generate xml
+# generate xml
 class TemplateElement(TextElement):
     def __init__(self, package, template, mode='0100644',
                  owner='root', grp_owner='root'):
@@ -42,7 +42,7 @@ class Debconf_object(object):
         self.owners = None
         self.value = None
 
-#generate xml
+# generate xml
 class DebConfElement(Element):
     def __init__(self, trait, data):
         raise Error, "the DebConfElement is deprecated"
@@ -77,7 +77,7 @@ class ScriptElement(Element):
         Element.__init__(self, 'script')
         self.setAttribute('name', name)
     
-#generate xml
+# generate xml
 class DebConfigurationElement(Element):
     def __init__(self):
         Element.__init__(self, 'debconfiguration')
@@ -89,7 +89,7 @@ class SuiteAptElement(Element):
         self.setAttribute('apt_id', apt_id)
         self.setAttribute('order', order)
         
-#generate xml
+# generate xml
 class SuiteElement(Element):
     def __init__(self, suite, nonus=False, updates=False, local=False, common=False):
         Element.__init__(self, 'suite')
@@ -99,17 +99,17 @@ class SuiteElement(Element):
         self.setAttribute('local', local)
         self.setAttribute('common', common)
         
-#generate xml        
+# generate xml        
 class SuitesElement(Element):
     def __init__(self):
         Element.__init__(self, 'suites')
 
-#generate xml        
+# generate xml        
 class EnvironElement(DictElement):
     def __init__(self, environ):
         DictElement.__init__(self, 'environ', environ)
 
-#generate xml
+# generate xml
 class ProfileElement(Element):
     def __init__(self, name, suite):
         Element.__init__(self, 'profile')
