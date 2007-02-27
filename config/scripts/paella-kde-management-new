@@ -4,6 +4,8 @@ from qt import SIGNAL, SLOT
 
 from kdecore import KCmdLineArgs
 
+from useless.kdebase.error import excepthook
+
 from paella.kdenew.base.about import AboutData
 from paella.kdenew.main import PaellaMainApplication
 
@@ -15,6 +17,8 @@ if __name__ == '__main__':
     aboutData = AboutData()
     KCmdLineArgs.init(sys.argv, aboutData)
 
+    # setup error handling
+    sys.excepthook = excepthook
     # setup application instance
     app = PaellaMainApplication()
     app.connect(app, SIGNAL('lastWindowClosed()'), app.quit)

@@ -126,6 +126,7 @@ def backup(machine):
 def install(machine, backup_=False, basefile=None):
     cfg = UmlConfig(machine)
     ui = UmlInstaller(cfg=cfg)
+    ui.options['umlmachine'] = machine
     u = UmlRunner(cfg)
     if basefile is None:
         basefile = cfg['basefile']

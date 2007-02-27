@@ -29,7 +29,7 @@ from paella.kdenew.base.actions import ExportDatabaseAction
 from paella.kdenew.base.mainwin import BasePaellaWindow
 
 # import child windows
-from paella.kdenew.trait import TraitMainWindow
+from paella.kdenew.trait.main import TraitMainWindow
 from paella.kdenew.differ import DifferWindow
 from paella.kdenew.profile import ProfileMainWindow
 from paella.kdenew.environ import EnvironmentWindow

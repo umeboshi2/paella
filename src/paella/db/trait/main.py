@@ -103,15 +103,8 @@ class Trait(object):
         self._templates.set_trait(trait)
         self._scripts.set_trait(trait)
         
-    def parents(self, trait=None):
-        return [x.parent for x in self._parents.parents(trait)]
-    
-    def templates(self, trait=None, fields=None):
-        rows = self._templates.templates(trait, fields)
-        if fields is None:
-            return [row.template for row in rows]
-        else:
-            return rows
+    def get_traits(self):
+        return self._traits.select(fields=['trait'])
 
     def packages(self, trait=None, action=False):
         if trait is None:
@@ -122,40 +115,62 @@ class Trait(object):
         else:
             return [row.package for row in rows]
 
-        
     def get_package_rows(self):
         return self._packages.packages([self.current_trait])
 
-    def get_traits(self):
-        return self._traits.select(fields=['trait'])
-
-    def get_trait_list(self):
-        return [row.trait for row in self.get_traits()]
-    
-    def get_template_rows(self):
-        return self._templates.templates(self.current_trait)
-    
     def set_action(self, action, packages):
         self._packages.set_action(action, packages)
-
-    def get_traitset(self):
-        return self._parents.get_traitset([self.current_trait])
 
     def insert_packages(self, packages):
         self._packages.insert_packages(packages)
 
+    def add_package(self, package, action):
+        self._packages.insert_package(package, action)
+
+    def delete_package(self, package, action):
+        self._packages.delete_package(package, action)
+
+    def parents(self, trait=None):
+        return [x.parent for x in self._parents.parents(trait)]
+    
+    def get_traitset(self):
+        return self._parents.get_traitset([self.current_trait])
+
+    def get_trait_list(self):
+        return [row.trait for row in self.get_traits()]
+    
     def insert_parents(self, traits):
         self._parents.insert_parents(traits)
-
-    def insert_template(self, template_data):
-        self._templates.insert_template(template_data)
-
-    def update_template(self, template_data):
-        self._templates.update_template(template_data)
 
     def delete_parents(self, parents):
         self._parents.delete(parents)
 
+    def update_parents(self, parents):
+        self._parents.insert_new_parents_list(parents)
+        
+    def templates(self, trait=None, fields=None):
+        rows = self._templates.templates(trait, fields)
+        if fields is None:
+            return [row.template for row in rows]
+        else:
+            return rows
+
+    def insert_template(self, template_data):
+        self._templates.insert_template(template_data)
+
+    def insert_template_from_tarfile(self, template_path, tarball):
+        self._templates.insert_template_from_tarfile(template_path, tarball)
+        
+    def update_template(self, template_data):
+        self._templates.update_template(template_data)
+
+    def get_template_rows(self):
+        return self._templates.templates(self.current_trait)
+    
+    def edit_template(self, package, template):
+        self._templates.edit_template(package, template)
+        
+        
     def create_trait(self, trait):
         insert_data = {'trait' : trait}
         if trait not in self._alltraits.list():
@@ -275,17 +290,10 @@ class Trait(object):
         data = dict(description=desc)
         self._traits.update(data=data, clause=Eq('trait', trait))
 
-    def add_package(self, package, action):
-        self._packages.insert_package(package, action)
-
     def edit_script(self, name):
         trait = self.current_trait
         self._scripts.edit_script(name)
 
-    def edit_template(self, package, template):
-        self._templates.edit_template(package, template)
-        
-        
         
 #generate xml
 # This class should maybe go in the xmlgen module

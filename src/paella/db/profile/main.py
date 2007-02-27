@@ -169,6 +169,10 @@ class Profile(StatementCursor):
     def drop_profile(self, profile):
         self.delete(clause=Eq('profile', profile))
 
+    def make_new_profile(self, profile, suite):
+        data = dict(profile=profile, suite=suite)
+        self.insert(data=data)
+    
     def set_profile(self, profile):
         self.clause = Eq('profile', profile)
         self.current = self.select_row(clause=self.clause)

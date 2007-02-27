@@ -3,7 +3,7 @@ from qt import SIGNAL
 from kdeui import KMessageBox
 from kdeui import KStdAction
 from kdeui import KPopupMenu
-from kdeui import KListViewItem
+from kdeui import KListView, KListViewItem
 
 from paella.db.profile import Profile
 from paella.db.family import Family

@@ -60,7 +60,7 @@ class UmlInstaller(UmlChroot):
         self.check_host()
         self.set_profile(profile)
         self.make_root_device(path)
-        self.run_uml()
+        self.run_uml(popen=True)
 
     def restore_profile(self, name, path):
         self.check_host()
@@ -68,7 +68,7 @@ class UmlInstaller(UmlChroot):
         self.options['paellaprofile'] = name
         self.options['paellasuite'] = 'none'
         self.make_root_device(path)
-        self.run_uml()
+        self.run_uml(popen=False)
         
     def extract_base_tarball(self):
         self.check_guest()

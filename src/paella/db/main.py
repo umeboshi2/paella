@@ -270,8 +270,9 @@ class PaellaProcessor(object):
         self.insert_profiles()
         # use the machine handler to insert
         # machine types and such
-        mh = MachineHandler(self.conn)
-        mh.restore_machine_database(self.main_path)
+        if os.path.isfile(os.path.join(self.main_path, 'machine_database.xml')):
+            mh = MachineHandler(self.conn)
+            mh.restore_machine_database(self.main_path)
 
 class DatabaseManager(object):
     def __init__(self, conn):

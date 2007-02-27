@@ -1,4 +1,4 @@
-import os
+import os, sys
 from os.path import join
 import subprocess
 
@@ -51,17 +51,21 @@ class UmlChroot(Uml):
     def set_targetimage(self, path):
         self.check_host()
         self.options['ubd1'] = path
-        
-    def run_uml(self):
+
+    # the popen and use_pipe will probably be removed later
+    def run_uml(self, popen=False, use_pipe=False):
         self.check_host()
         #return os.system(str(self))
         cmd = str(self)
-        PIPE = subprocess.PIPE
-        STDOUT = subprocess.STDOUT
-        # make dummy PIPE until fix stdout.read()
-        PIPE = None
-        p = subprocess.Popen(cmd, shell=True, stdin=PIPE,
-                             stdout=PIPE, stderr=STDOUT, close_fds=True)
+        if popen:
+            if use_pipe:
+                p = subprocess.Popen(cmd, shell=True,
+                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                     close_fds=True)
+            else:
+                p = subprocess.Popen(cmd, shell=True, close_fds=True)
+        else:
+            p = subprocess.call(cmd, shell=True)
         self.run_process = p
         print 'running', p
         

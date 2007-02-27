@@ -84,7 +84,8 @@ class InstallerTools(object):
         command = 'apt-get -y remove %s' % package_list
         self.installer.run('remove', command, proc=True)
 
-    
+    def chroot_command(self, cmd):
+        return 'chroot %s %s' % (self.target, cmd)
     
         
 if __name__ == '__main__':

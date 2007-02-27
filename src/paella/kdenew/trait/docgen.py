@@ -5,10 +5,10 @@ from forgetHTML import Paragraph
 
 from paella.db.trait import Trait
 
-from base import RecordTable
-from base import SectionTitle
-from base import BaseFieldTable, BaseDocument
-from base import TraitTable
+from paella.kdenew.docgen.base import RecordTable
+from paella.kdenew.docgen.base import SectionTitle
+from paella.kdenew.docgen.base import BaseFieldTable, BaseDocument
+from paella.kdenew.docgen.base import TraitTable
 
 
 class TraitEnvTable(RecordTable):

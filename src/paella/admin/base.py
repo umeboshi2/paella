@@ -19,6 +19,14 @@ from useless.db.midlevel import StatementCursor
 #from paella.profile.base import PaellaConfig
 from paella.db import PaellaConfig
 
+# new error handling
+from useless.base.util import excepthook_message
+from useless.gtk import dialogs
+
+def excepthook(type, value, tracebackobj):
+    msg = excepthook_message(type, value, tracebackobj)
+    dialogs.Message(msg)
+
 class SystemTar(object):
     def __init__(self, conn, cfg):
         object.__init__(self)

@@ -67,10 +67,11 @@ class TraitParent(TraitRelation):
         self.insert('parent', parents)
 
     def delete(self, parents=[]):
-        print parents, 'PARENTS'
-        clause = In('parent', parents) & Eq('trait', self.current_trait)
-        self.cmd.delete(clause=clause)
-        self.reset_clause()
+        if parents:
+            print parents, 'PARENTS'
+            clause = In('parent', parents) & Eq('trait', self.current_trait)
+            self.cmd.delete(clause=clause)
+            self.reset_clause()
 
     def delete_trait(self, trait=None):
         if trait is None:
@@ -78,6 +79,16 @@ class TraitParent(TraitRelation):
         clause = Eq('trait', trait)
         self.cmd.delete(clause=clause)
         self.reset_clause()
+
+    def insert_new_parents_list(self, parents):
+        current_parents = [row.parent for row in self.parents()]
+        new_parents = parents
+        common_parents = [p for p in new_parents if p in current_parents]
+        delete_parents = [p for p in current_parents if p not in common_parents]
+        insert_parents = [p for p in new_parents if p not in common_parents]
+        self.delete(parents=delete_parents)
+        self.insert_parents(insert_parents)
+        
         
         
 class TraitTemplate(TraitRelation):
@@ -125,6 +136,14 @@ class TraitTemplate(TraitRelation):
         insert_data['templatefile'] = str(id)
         self.cmd.insert(data=insert_data)
 
+    def insert_template_from_tarfile(self, template_path, tarfileobj):
+        templatefile = tarfileobj.extractfile(template_path)
+        info = tarfileobj.getmember(template_path)
+        data = dict(owner=info.uname, grp_owner=info.gname,
+                    mode=oct(info.mode), package='base-files',
+                    template=template_path)
+        self.insert_template(data, templatefile)
+        
     def update_template(self, data, templatefile):
         clause = self._clause(data['package'], data['template'])
         id = self.textfiles.insert_file(templatefile)

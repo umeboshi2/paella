@@ -228,13 +228,14 @@ class TraitInstaller(Installer):
         num = len(templates)
         stmt = 'in install_templates, there are %d templates for trait %s' % (num, trait)
         self.log.info(stmt)
-        for p in packages:
-            for t in [t for t in templates if t.package == p.package]:
-                if t.template == 'var/cache/debconf/config.dat':
-                    self.log.info('Installing Debconf template ...')
-                    self.install_debconf_template(t)
-                else:
-                    self.make_template(t)
+        if packages:
+            print 'ignoring packages', packages
+        for t in templates:
+            if t.template == 'var/cache/debconf/config.dat':
+                self.log.info('Installing Debconf template ...')
+                self.install_debconf_template(t)
+            else:
+                self.make_template(t)
             
     def configure(self, packages, templates):
         trait = self._current_trait_

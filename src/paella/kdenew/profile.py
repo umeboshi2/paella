@@ -11,6 +11,7 @@ from paella.db.family import Family
 
 from useless.kdebase import get_application_pointer
 from useless.kdebase.dialogs import BaseAssigner
+from useless.kdebase.dialogs import BaseRecordDialog
 from useless.kdebase.mainwin import BaseSplitWindow
 
 from paella.kdenew.base import split_url
@@ -137,6 +138,7 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.refreshListView()
         self.resize(600, 800)
         self.setCaption('Paella Profiles')
+        self._dialog = None
 
     def initActions(self):
         collection = self.actionCollection()
@@ -167,8 +169,47 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
             item.profile = row.profile
 
     def newProfile(self):
-        raise NotImplementedError, 'need a dialog box in newProfile'
+        win = BaseRecordDialog(self, ['name'])
+        win.frame.text_label.setText('Name for new profile:')
+        win.connect(win, SIGNAL('okClicked()'), self.insertNewProfile)
+        skeleton = self.cfg.get('management_gui', 'template_profile')
+        if skeleton not in self.profile.get_profile_list():
+            msg = 'Name for new profile: (skeleton does not exist yet.)'
+            win.frame.text_label.setText(msg)
+            win.setRecordData(dict(name=skeleton))
+        win.show()
+        self._dialog = win
 
+    def insertNewProfile(self):
+        win = self._dialog
+        profile = win.getRecordData()['name']
+        profile_list = self.profile.get_profile_list()
+        if profile not in profile_list:
+            skeleton = self.cfg.get('management_gui', 'template_profile')
+            if skeleton in profile_list:
+                self.profile.copy_profile(skeleton, profile)
+            else:
+                dlg = BaseRecordDialog(win, ['suite'])
+                dlg.frame.text_label.setText('Select a suite for this profile')
+                dlg.connect(dlg, SIGNAL('okClicked()'), self.insertNewProfilewithSuite)
+                dlg.show()
+                dlg.profile = profile
+                win.suite_dialog = dlg
+                KMessageBox.information(self, 'need to select suite here')
+                
+            # need to determine if skeleton exists
+            KMessageBox.information(self, 'make profile %s' % profile)
+        else:
+            KMessageBox.error(self, 'Profile %s already exists.' % profile)
+
+    def insertNewProfilewithSuite(self):
+        win = self._dialog.suite_dialog
+        profile = win.profile
+        suite = win.getRecordData()['suite']
+        self.profile.make_new_profile(profile, suite)
+        self._dialog = None
+        self.refreshListView()
+    
     def selectionChanged(self):
         item = self.listView.currentItem()
         self.mainView.set_profile(item.profile)
