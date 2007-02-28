@@ -44,7 +44,8 @@ class UmlBootstrapper(UmlChroot):
 
 
 def bootstrap_base(suite, path, cfg=None, size=3000, mkfs='mke2fs'):
-    cfg = UmlConfig()
+    if cfg is None:
+        cfg = UmlConfig()
     makepaths(dirname(path))
     create_sparse_file(path, size=size)
     uml = UmlBootstrapper(suite, path, cfg=cfg)
@@ -52,6 +53,8 @@ def bootstrap_base(suite, path, cfg=None, size=3000, mkfs='mke2fs'):
     
 
 def make_base_filesystem(suite, name, cfg=None, size=3000, mkfs='mke2fs'):
+    if cfg is None:
+        cfg = UmlConfig()
     path = join(cfg.get('umlmachines', 'bootstrap_basepath'), name)
     bootstrap_base(suite, path, cfg=cfg, size=size, mkfs=mkfs)
     

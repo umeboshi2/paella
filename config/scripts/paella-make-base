@@ -7,15 +7,21 @@ from useless.base import Error, debug
 
 from paella.base import PaellaConfig
 from paella.uml.base import UmlConfig
+from paella.uml.bootstrap import make_base_filesystem
 from paella.uml.bootstrap import make_base
 
 parser = OptionParser()
 parser.add_option('--mirror', action='store', type='string', dest='remote',
                   default='http://paella/debian')
-
+parser.add_option('--base-suite', action='store', type='string', dest='base_suite',
+                  default='')
+parser.add_option('--size', action='store', type='int', dest='size', default=3000)
+parser.add_option('--mkfs', action='store', type='string', dest='mkfs',
+                  default='mke2fs')
 opts, args = parser.parse_args(sys.argv[1:])
 
 cfg = UmlConfig()
+
 suite = args[0]
 print suite
 make_base(suite, cfg)

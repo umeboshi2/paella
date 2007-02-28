@@ -170,11 +170,11 @@ class Trait(object):
     def get_template_rows(self):
         return self._templates.templates(self.current_trait)
     
-    def edit_template(self, package, template):
-        self._templates.edit_template(package, template)
+    def edit_template(self, template):
+        self._templates.edit_template(template)
 
-    def get_template_contents(self, package, template):
-        return self._templates.templatedata(package, template)
+    def get_template_contents(self, template):
+        return self._templates.templatedata(template)
 
     def get_full_environment(self):
         return self._parents.get_environment([self.current_trait])
@@ -251,7 +251,7 @@ class Trait(object):
         for package, action in trait.packages:
             self._packages.insert_package(package, action)
         n = 0
-        for package, template, data in trait.templates:
+        for template, data in trait.templates:
             #print template, data
             #templatefile = tar.get_template(data['package'], template)
             template_id = template.replace('/', '-slash-')
@@ -362,8 +362,8 @@ class TraitElement(Element):
         while self.templ_element.hasChildNodes():
             del self.templ_element.childNodes[0]
         for template in self.templates:
-            element = TemplateElement(template.package, template.template)
-            for att in ['package', 'mode', 'owner', 'grp_owner']:
+            element = TemplateElement(template.template)
+            for att in ['mode', 'owner', 'grp_owner']:
                 element.setAttribute(att, template[att])
             self.templ_element.appendChild(element)
 

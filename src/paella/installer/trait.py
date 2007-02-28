@@ -1,7 +1,6 @@
 import os
 from os.path import join, dirname, isfile, isdir
 
-from useless.base import Error
 from useless.base.util import makepaths
 
 from paella.debian.debconf import copy_configdb
@@ -92,9 +91,8 @@ class TraitInstaller(Installer):
         trait, packages, templates = self._info()
         script = self._make_script('templates')
         if script is None:
-            tpackages = [p for p in packages if p.action in ['install', 'config']]
-            if len(tpackages) or len(templates):
-                self.install_templates(tpackages, templates)
+            if len(templates):
+                self.install_templates(templates)
         else:
             self.process_hooked_action(script, 'templates', trait)
         
@@ -223,13 +221,11 @@ class TraitInstaller(Installer):
             self.log.warn('PROBLEM removing downloaded debs')
             raise InstallError, 'problem removing downloaded debs'
         
-    def install_templates(self, packages, templates):
+    def install_templates(self, templates):
         trait = self._current_trait_
         num = len(templates)
         stmt = 'in install_templates, there are %d templates for trait %s' % (num, trait)
         self.log.info(stmt)
-        if packages:
-            print 'ignoring packages', packages
         for t in templates:
             if t.template == 'var/cache/debconf/config.dat':
                 self.log.info('Installing Debconf template ...')
@@ -258,33 +254,15 @@ class TraitInstaller(Installer):
         else:
             return None
         
-    def _make_scriptOrig(self, name, execpath=False):
-        script = self.traitscripts.get(name)
-        if script is not None:
-            stmt = '%s script exists for trait %s' % (name, self._current_trait_)
-            self.log.info(stmt)
-            exec_path = join('/tmp', name + '-script')
-            target_path = join(self.target, 'tmp', name + '-script')
-            sfile = file(target_path, 'w')
-            sfile.write(script.read())
-            sfile.close()
-            os.system('chmod 755 %s' % target_path)
-            if not execpath:
-                return target_path
-            else:
-                return exec_path
-        else:
-            return None
-        
     def make_template(self, template):
-        self.traittemplate.set_template(template.package, template.template)
+        self.traittemplate.set_template(template.template)
         tmpl = self.traittemplate.template.template
         self._update_templatedata()
         self._make_template_common(template, tmpl)
         
 
     def make_template_with_data(self, template, data):
-        self.traittemplate.set_template(template.package, template.template)
+        self.traittemplate.set_template(template.template)
         tmpl = self.traittemplate.template.template
         self.traittemplate.template.update(data)
         self._make_template_common(template, tmpl)
@@ -296,7 +274,7 @@ class TraitInstaller(Installer):
         makepaths(dirname(newpath), dirname(bkuppath))
         self.log.info('target template %s' % newpath)
         if tmpl != sub:
-            self.log.info('%s %s subbed' % (template.package, template.template))
+            self.log.info('template %s subbed' % (template.template))
         if isfile(newpath):
             if not isfile(bkuppath):
                 os.system('mv %s %s' % (newpath, dirname(bkuppath)))
@@ -332,7 +310,7 @@ class TraitInstaller(Installer):
     def install_debconf_template(self, template):
         trait = self._current_trait_
         self.log.info('Installing debconf for %s' % trait)
-        self.traittemplate.set_template(template.package, template.template)
+        self.traittemplate.set_template(template.template)
         tmpl = self.traittemplate.template.template
         self._update_templatedata()
         sub = self.traittemplate.template.sub()
@@ -344,7 +322,7 @@ class TraitInstaller(Installer):
         config_path = join(self.target, 'tmp/paella_debconf')
         if isfile(config_path):
             self.log.warn('%s is not supposed to be there' % config_path)
-            raise Error, '%s is not supposed to be there' % config_path
+            raise RuntimeError, '%s is not supposed to be there' % config_path
         debconf = file(config_path, 'w')
         debconf.write(sub + '\n')
         debconf.close()

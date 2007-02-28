@@ -27,10 +27,9 @@ class PackageElement(TextElement):
 
 #generate xml
 class TemplateElement(TextElement):
-    def __init__(self, package, template, mode='0100644',
+    def __init__(self, template, mode='0100644',
                  owner='root', grp_owner='root'):
         TextElement.__init__(self, 'template', template)
-        self.setAttribute('package', package)
         self.setAttribute('mode', mode)
         self.setAttribute('owner', owner)
         self.setAttribute('grp_owner', grp_owner)

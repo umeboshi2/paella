@@ -4,6 +4,7 @@ from qt import SIGNAL
 
 from kdecore import KURL
 from kdeui import KMessageBox
+from kdeui import KTextEdit
 
 from kfile import KFileDialog
 
@@ -60,9 +61,10 @@ class TraitView(ViewBrowser):
 
     def _perform_show_action(self, context, ident):
         if context == 'parent':
-            winclass = self.parent().__class__
+            mainwin = self.parent().parent()
+            winclass = mainwin.__class__
             if winclass.__name__ == 'TraitMainWindow':
-                win = winclass(self.parent(), self.doc.suite)
+                win = winclass(mainwin, self.doc.suite)
                 win.mainView.set_trait(ident)
             else:
                 msg = 'Unable to show parent with class %s' % winclass.__name__
@@ -70,7 +72,7 @@ class TraitView(ViewBrowser):
         elif context == 'template':
             suite = self.doc.suite
             trait = self.doc.trait.current_trait
-            package, template = self._convert_template_id(ident)
+            template = self._convert_template_id(ident)
             
             win = TemplateViewWindow(self, suite, trait, package, template)
 
@@ -79,7 +81,7 @@ class TraitView(ViewBrowser):
         elif context == 'script':
             # need to call public method here
             scriptfile = self.doc.trait._scripts.scriptdata(ident)
-            win = ViewWindow(self.parent(), SimpleEdit, name='ScriptView')
+            win = ViewWindow(self.parent(), KTextEdit, name='ScriptView')
             win.mainView.setText(scriptfile)
         else:
             raise MethodNotImplementedError(self, 'TraitView._perform_show_action')
@@ -106,7 +108,7 @@ class TraitView(ViewBrowser):
             win = TraitVariablesWindow(self, self.doc.suite, ident)
             win.show()
         elif context == 'template':
-            package, template = self._convert_template_id(ident)
+            template = self._convert_template_id(ident)
             self.doc.trait.edit_template(package, template)
         else:
             raise MethodNotImplementedError(self, 'TraitView._perform_edit_action')
@@ -185,6 +187,5 @@ class TraitView(ViewBrowser):
 
     def _convert_template_id(self, ident):
         newid = ident.replace(',', '.')
-        package, template = newid.split('...')
-        return package, template
+        return newid
     

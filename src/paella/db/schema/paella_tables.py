@@ -206,28 +206,12 @@ def template_columns():
         Num('templatefile')]
 
 class TraitTemplate(_TraitRelation):
-    def __init__(self, suite, traits_table, packages_table):
+    def __init__(self, suite, traits_table):
         tablename = ujoin(suite, 'templates')
-        packs_column = PkBigname('package')
-        packs_column.set_fk(packages_table)
         tcolumns = template_columns()
         tcolumns[-1].set_fk('textfiles')
-        columns = tcolumns[:1] + [packs_column] + tcolumns[1:]
+        columns = tcolumns
         _TraitRelation.__init__(self, traits_table, tablename, columns)
-
-def debconf_columns():
-    return [
-        PkBigname('name'),
-        Bigname('value'),
-        Bigname('owners'),
-        Bigname('flags'),
-        Bigname('template'),
-        Text('variables')]
-
-class TraitDebConf(_TraitRelation):
-    def __init__(self, suite, traits_table, packages_table):
-        tablename = ujoin(suite, 'debconf')
-        _TraitRelation.__init__(self, traits_table, tablename, debconf_columns())
 
 class TraitScript(_TraitRelation):
     def __init__(self, suite, traits_table):
@@ -258,13 +242,6 @@ class ProfileTrait(Table):
         trait_col.set_fk(traits_table)
         ord_col = Num('ord')
         Table.__init__(self, 'profile_trait', [profile_col, trait_col, ord_col])
-
-class ProfileDebConf(_ProfileRelation):
-    def __init__(self, profiles_table):
-        tablename = 'profiledebconf'
-        _ProfileRelation.__init__(self, profiles_table, debconf_columns)
-
-
 
 class DisksTable(Table):
     def __init__(self, name='disks'):
@@ -414,11 +391,10 @@ def suite_tables(suite):
     trait_parent = TraitParent(suite, trait_table.name)
     trait_package = TraitPackage(suite, trait_table.name, pack_table.name)
     trait_variable = TraitEnvironment(suite, trait_table.name)
-    trait_template = TraitTemplate(suite, trait_table.name, pack_table.name)
+    trait_template = TraitTemplate(suite, trait_table.name)
     trait_scripts = TraitScript(suite, trait_table.name)
-    trait_debconf = TraitDebConf(suite, trait_table.name, pack_table.name)
     tables = [pack_table, trait_table, trait_parent, trait_package, trait_variable,
-              trait_template, trait_scripts, trait_debconf]
+              trait_template, trait_scripts]
     return tables
 
 def currentenv_columns():

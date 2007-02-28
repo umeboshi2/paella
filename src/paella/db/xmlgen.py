@@ -3,62 +3,6 @@ from xml.dom.minidom import Element
 from useless.base.xmlfile import TextElement, DictElement
 
 
-# generate and reform xml
-class ParentElement(TextElement):
-    def __init__(self, parent):
-        TextElement.__init__(self, 'parent', parent)
-
-# generate and reform xml
-class PackageElement(TextElement):
-    def __init__(self, package, action='install'):
-        TextElement.__init__(self, 'package', package)
-        self.setAttribute('action', action)
-        self.package = package
-        self.action = action
-        
-    def reform(self, element):
-        name = element.tagName.encode()
-        if name != 'package':
-            raise Error, 'bad package tag'
-        package = element.firstChild.data.encode()
-        action = element.getAttribute('action').encode()
-        TextElement.__init__(self, package, action)
-
-# generate xml
-class TemplateElement(TextElement):
-    def __init__(self, package, template, mode='0100644',
-                 owner='root', grp_owner='root'):
-        TextElement.__init__(self, 'template', template)
-        self.setAttribute('package', package)
-        self.setAttribute('mode', mode)
-        self.setAttribute('owner', owner)
-        self.setAttribute('grp_owner', grp_owner)
-
-class Debconf_object(object):
-    def __init__(self):
-        object.__init__(self)
-        self.name = None
-        self.template = None
-        self.owners = None
-        self.value = None
-
-# generate xml
-class DebConfElement(Element):
-    def __init__(self, trait, data):
-        raise Error, "the DebConfElement is deprecated"
-        Element.__init__(self, 'debconf')
-        self.setAttribute('trait', trait)
-        self.dc = Debconf_object()
-        self.dc.name = TextElement('name', data['name'])
-        self.appendChild(self.dc.name)
-        self.dc.template = TextElement('template', data['template'])
-        self.appendChild(self.dc.template)
-        self.dc.owners = TextElement('owners', data['owners'])
-        self.appendChild(self.dc.owners)
-        self.dc.value = TextElement('value', data['value'])
-        self.appendChild(self.dc.value)
-        
-
 class AptSourceElement(Element):
     def __init__(self, apt_id, uri, dist, sections, local_path):
         Element.__init__(self, 'aptsource')
@@ -77,11 +21,6 @@ class ScriptElement(Element):
         Element.__init__(self, 'script')
         self.setAttribute('name', name)
     
-# generate xml
-class DebConfigurationElement(Element):
-    def __init__(self):
-        Element.__init__(self, 'debconfiguration')
-
 class SuiteAptElement(Element):
     def __init__(self, suite, apt_id, order):
         Element.__init__(self, 'suiteapt')

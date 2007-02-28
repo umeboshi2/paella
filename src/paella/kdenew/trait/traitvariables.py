@@ -85,6 +85,12 @@ class TraitVariablesWindow(BasePaellaWindow):
         report = self._changed_report(removed, added, changed)
         from kdeui import KMessageBox
         KMessageBox.information(self, report)
+        env = self.tveditor.traitenv
+        for key in removed:
+            del env[key]
+        for key in added + changed:
+            env[key] = newdata[key]
+            
         
 
     def slotNew(self):

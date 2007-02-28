@@ -74,11 +74,11 @@ class TraitParser(ParserHelper):
     def _get_templates(self, element):
         templates = self.get_elements_from_section(element, 'templates', 'template')
         for template in templates:
-            value = template.firstChild.data.encode().strip()
+            template_name = template.firstChild.data.encode().strip()
             tdict = {}
-            for field in ['package', 'mode', 'owner', 'grp_owner']:
+            for field in ['mode', 'owner', 'grp_owner']:
                 tdict[field] = template.getAttribute(field).encode().strip()
-            self.templates.append([tdict['package'], value, tdict])
+            self.templates.append([template_name, tdict])
 
     def _get_scripts(self, element):
         scripts = self.get_elements_from_section(element, 'scripts', 'script')

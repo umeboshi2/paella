@@ -283,7 +283,7 @@ class DatabaseManager(object):
 
     def backup(self, path):
         if not os.path.isdir(path):
-            raise Error, 'arguement needs to be a directory'
+            raise Error, 'argument needs to be a directory'
         pdb = PaellaDatabase(self.conn, path)
         pdb.backup(path)
         mh = MachineHandler(self.conn)
@@ -291,7 +291,7 @@ class DatabaseManager(object):
 
     def restore(self, path):
         if not os.path.isdir(path):
-            raise Error, 'arguement needs to be a directory'
+            raise Error, 'argument needs to be a directory'
         dbpath = os.path.join(path, 'database.xml')
         mdbpath = os.path.join(path, 'machine_database.xml')
         pp = PaellaProcessor(self.conn, self.cfg)

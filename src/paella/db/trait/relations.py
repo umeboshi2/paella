@@ -103,19 +103,19 @@ class TraitTemplate(TraitRelation):
         self._jtable = '%s as s join textfiles as t ' % table
         self._jtable += 'on s.templatefile = t.fileid' 
 
-    def _clause(self, package, template, trait=None):
+    def _clause(self, template, trait=None):
         if trait is None:
             trait = self.current_trait
-        return Eq('trait', trait) & Eq('package', package) & Eq('template', template)
+        return Eq('trait', trait) & Eq('template', template)
     
     def templates(self, trait=None, fields=['*']):
         if trait is None:
             trait = self.current_trait
             self.reset_clause()
-            return self.cmd.select(fields=fields, order=['package', 'template'])
+            return self.cmd.select(fields=fields, order=['template'])
         else:
             self.set_clause(trait)
-            rows = self.cmd.select(fields=fields, order=['package', 'template'])
+            rows = self.cmd.select(fields=fields, order=['template'])
             self.reset_clause()
             return rows
 
@@ -132,20 +132,19 @@ class TraitTemplate(TraitRelation):
             data.update(dict(owner='root', grp_owner='root', mode='0100644'))
         insert_data = {'trait' : self.current_trait}
         insert_data.update(data)
-        id = self.textfiles.insert_file(templatefile)
-        insert_data['templatefile'] = str(id)
+        txtid = self.textfiles.insert_file(templatefile)
+        insert_data['templatefile'] = str(txtid)
         self.cmd.insert(data=insert_data)
 
     def insert_template_from_tarfile(self, template_path, tarfileobj):
         templatefile = tarfileobj.extractfile(template_path)
         info = tarfileobj.getmember(template_path)
         data = dict(owner=info.uname, grp_owner=info.gname,
-                    mode=oct(info.mode), package='base-files',
-                    template=template_path)
+                    mode=oct(info.mode), template=template_path)
         self.insert_template(data, templatefile)
         
     def update_template(self, data, templatefile):
-        clause = self._clause(data['package'], data['template'])
+        clause = self._clause(data['template'])
         id = self.textfiles.insert_file(templatefile)
         fields = ['owner', 'grp_owner', 'mode']
         update = {}
@@ -156,14 +155,14 @@ class TraitTemplate(TraitRelation):
         self.cmd.update(data=update, clause=clause)
         self.reset_clause()
 
-    def update_templatedata(self, package, template, data):
-        clause = self._clause(package, template)
-        id = self.textfiles.insert_data(data)
-        self.cmd.update(data=dict(templatefile=str(id)), clause=clause)
+    def update_templatedata(self, template, data):
+        clause = self._clause(template)
+        txtid = self.textfiles.insert_data(data)
+        self.cmd.update(data=dict(templatefile=str(txtid)), clause=clause)
         
 
-    def drop_template(self, package, template):
-        clause = self._clause(package, template)
+    def drop_template(self, template):
+        clause = self._clause(template)
         self._drop_template(clause)
         
     def _drop_template(self, clause):
@@ -175,8 +174,8 @@ class TraitTemplate(TraitRelation):
         self.traitparent.set_trait(trait)
         self.template.set_trait(trait)
         
-    def set_template(self, package, template):
-        self.template.set_template(self.templatefile(package, template))
+    def set_template(self, template):
+        self.template.set_template(self.templatefile(template))
         self.template.update(self.traitparent.Environment())
 
     def set_template_path(self, path):
@@ -193,32 +192,32 @@ class TraitTemplate(TraitRelation):
             else:
                 template_id = t.template.replace('/', '-slash-')
                 filename = join(bkup_path, 'template-%s' % template_id)
-            tfile = self.templatefile(t.package, t.template)
+            tfile = self.templatefile(t.template)
             filecopy(tfile, filename)
             tfile.close()
             n += 1
             
-    def templatefile(self, package, template):
-        return strfile(self.templatedata(package, template))
+    def templatefile(self, template):
+        return strfile(self.templatedata(template))
     
-    def templatedata(self, package, template):
-        return self._template_row(package, template).data
+    def templatedata(self, template):
+        return self._template_row(template).data
 
-    def _template_row(self, package, template):
+    def _template_row(self, template):
         table = self._jtable
-        clause = self._clause(package, template)
+        clause = self._clause(template)
         return self.cmd.select_row(fields=['data', 'templatefile'], table=table, clause=clause)
 
-    def _template_id(self, package, template):
-        return self._template_row(package, template).templatefile
+    def _template_id(self, template):
+        return self._template_row(template).templatefile
 
-    def save_template(self, package, template, templatefile):
+    def save_template(self, template, templatefile):
         id = self.textfiles.insert_file(templatefile)
-        clause = self._clause(package, template)
+        clause = self._clause(template)
         self.cmd.update(data=dict(templatefile=str(id)), clause=clause)
 
-    def edit_template(self, package, template):
-        data = self.templatedata(package, template)
+    def edit_template(self, template):
+        data = self.templatedata(template)
         tmp, path = tempfile.mkstemp('paella', 'template')
         tmp = file(path, 'w')
         tmp.write(data)
@@ -229,7 +228,7 @@ class TraitTemplate(TraitRelation):
         tmp.seek(0)
         if mod != data:
             print 'template modified'
-            self.save_template(package, template, tmp)
+            self.save_template(template, tmp)
         os.remove(path)
         
 class TraitScript(TraitRelation):

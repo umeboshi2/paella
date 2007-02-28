@@ -40,12 +40,11 @@ class TemplateTable(Table):
         Table.__init__(self, **atts)
         for row in rows:
             tablerow = TableRow()
-            fake_template = ',,,'.join([row.package, row.template.replace('.', ',')])
+            fake_template = row.template.replace('.', ',')
             show_anchor = Anchor(row.template, href='show.template.%s' % fake_template)
             tablerow.append(TableCell(show_anchor))
             edit_anchor = Anchor('(edit)', href='edit.template.%s' % fake_template)
             tablerow.append(TableCell(edit_anchor))
-            tablerow.append(TableCell(row.package))
             self.append(tablerow)
         
 class PackageDoc(BaseDocument):
