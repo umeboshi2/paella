@@ -1,4 +1,5 @@
 from qt import SIGNAL
+from qt import PYSIGNAL
 from qt import QListBoxText
 
 from kdeui import KMessageBox
@@ -17,6 +18,7 @@ from useless.kdebase.mainwin import BaseSplitWindow
 from paella.kdenew.base import split_url
 from paella.kdenew.base.viewbrowser import ViewBrowser
 from paella.kdenew.base.mainwin import BasePaellaWindow
+from paella.kdenew.base.dialogs import SuiteSelectDialog
 from paella.kdenew.docgen.profile import ProfileDoc
 
 class TraitAssigner(BaseAssigner):
@@ -103,27 +105,33 @@ class ProfileView(ViewBrowser):
         self.doc.trait = Trait(self.app.conn, suite=suite)
 
     def setSource(self, url):
-        action, context, id = split_url(url)
+        action, context, ident = split_url(url)
         if action == 'show':
             print 'unimpletmented'
         elif action == 'edit':
             if context == 'traits':
-                win = TraitAssigner(self.parent(), id)
+                win = TraitAssigner(self.parent(), ident)
                 self.connect(win, SIGNAL('okClicked()'), self.resetView)
                 win.show()
             elif context == 'variables':
                 self.doc.profile.edit_variables()
                 self.resetView()
             elif context == 'families':
-                win = FamilyAssigner(self.parent(), id)
+                win = FamilyAssigner(self.parent(), ident)
                 self.connect(win, SIGNAL('okClicked()'), self.resetView)
                 win.show()
             else:
                 KMessageBox.error(self, 'bad edit action %s' % url)
+        elif action == 'change':
+            if context == 'suite':
+                self.emit(PYSIGNAL('changeSuite'), (ident,))
+                print 'changeSuite emitted'
+            else:
+                KMessageBox.error(self, 'bad change action %s' % url)
+                
                 
         else:
             KMessageBox.information(self, 'called %s' % url)
-        
         
 class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
     def __init__(self, parent):
@@ -139,7 +147,8 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.resize(600, 800)
         self.setCaption('Paella Profiles')
         self._dialog = None
-
+        self.connect(self.mainView, PYSIGNAL('changeSuite'), self.slotChangeSuite)
+        
     def initActions(self):
         collection = self.actionCollection()
         self.quitAction = KStdAction.quit(self.close, collection)
@@ -213,4 +222,19 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
     def selectionChanged(self):
         item = self.listView.currentItem()
         self.mainView.set_profile(item.profile)
+        self.profile.set_profile(item.profile)
+
+    def slotChangeSuite(self):
+        win = SuiteSelectDialog(self)
+        win.connect(win, SIGNAL('okClicked()'), self.slotSuiteSelected)
+        win.show()
+        self._dialog = win
         
+    def slotSuiteSelected(self):
+        win = self._dialog
+        suite = str(win.suite.currentText())
+        KMessageBox.information(self, 'change to suite %s' % suite)
+        if suite != self.profile.current.suite:
+            self.profile.set_suite(suite)
+            self.mainView.resetView()
+            

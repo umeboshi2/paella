@@ -148,9 +148,10 @@ class TraitTemplate(TraitRelation):
         clause = self._clause(data['package'], data['template'])
         id = self.textfiles.insert_file(templatefile)
         fields = ['owner', 'grp_owner', 'mode']
-        update = {}.fromkeys(fields)
-        for field in update:
-            update[field] = data[field]
+        update = {}
+        for f in fields:
+            if f in data:
+                update[f] = data[f]
         update['templatefile'] = str(id)
         self.cmd.update(data=update, clause=clause)
         self.reset_clause()

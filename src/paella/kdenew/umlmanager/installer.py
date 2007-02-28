@@ -17,6 +17,7 @@ from paella.installer.base import CurrentEnvironment
 class BaseLogBrowser(KTextBrowser):
     def __init__(self, parent, name='BaseLogBrowser'):
         KTextBrowser.__init__(self, parent, name)
+        self.setTextFormat(self.LogText)
         self.timer = QTimer(self)
         self.connect(self.timer, SIGNAL('timeout()'), self.update_logtext)
         self.resume_logging()

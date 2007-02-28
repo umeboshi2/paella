@@ -27,22 +27,6 @@ from paella.kdenew.base.mainwin import BasePaellaWindow
 
 from useless.kdebase.error import MethodNotImplementedError
 
-class SuiteComboBox(KComboBox):
-    def __init__(self, parent, suites, name='SuiteComboBox'):
-        KComboBox.__init__(self, parent, name)
-        for suite in suites:
-            self.insertItem(suite)
-    # This method is being kept as a quick reference
-    # it will be removed later
-    def fill(self, alist):
-        raise NotImplementedError, 'SuiteComboBox.fill should not be called'
-        self.clear()
-        for item in alist:
-            self.insertItem(item)
-        # it should be done this way
-        self.clear()
-        self.insertStrList(alist)
-
 class TraitListView(KListView):
     def __init__(self, parent, file_type='template', name='TraitListView'):
         KListView.__init__(self, parent, name)

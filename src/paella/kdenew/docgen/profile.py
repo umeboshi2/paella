@@ -1,6 +1,7 @@
 from forgetHTML import UnorderedList, ListItem
 from forgetHTML import Table, TableRow, TableCell
 from forgetHTML import Anchor
+from forgetHTML import Paragraph
 
 from paella.db.profile import Profile
 
@@ -16,9 +17,19 @@ class ProfileDoc(BaseDocument):
     def set_profile(self, profile):
         self.clear_body()
         self.profile.set_profile(profile)
-        title = SectionTitle('Profile:  %s' % profile)
+        suite = self.profile.current.suite
+        maintitle_text = 'Profile:  %s' % profile
+        #ptitle.append('(suite ')
+        #ptitle.append(Anchor(suite, href='change.suite.%s' % suite))
+        #ptitle.append(')')
+        #title = SectionTitle('Profile:  %s   (suite %s) ' % (profile, suite))
+        title = SectionTitle(maintitle_text)
         title['bgcolor'] = 'IndianRed'
         title['width'] = '100%'
+        title.cell.append('  (suite ')
+        title.cell.append(Anchor(suite, href='change.suite.%s' % suite))
+        title.cell.append(')')
+        
         self.body.append(title)
         rows = self.profile.get_trait_rows()
         ptitle = Anchor('Traits', href='edit.traits.%s' % self.profile.current.profile)
