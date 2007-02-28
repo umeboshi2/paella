@@ -105,7 +105,7 @@ class TraitDoc(BaseDocument):
         
         ttitle = Anchor('Templates', href='edit.templates.%s' % trait)
         self.body.append(SectionTitle(ttitle))
-        rows = self.trait.templates(trait=trait, fields=['package', 'template', 'templatefile'])
+        rows = self.trait.templates(trait=trait, fields=['template', 'templatefile'])
         if len(rows):
             self.body.append(TemplateTable(rows, bgcolor='DarkSeaGreen3'))
         vtitle = Anchor('Variables', href='edit.variables.%s' % trait)

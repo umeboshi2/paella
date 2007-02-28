@@ -55,7 +55,7 @@ def make_sources_list_lines(apt_rows, uri=None):
 def make_sources_list_common(conn, target, suite, installer=False):
     defenv = DefaultEnvironment(conn)
     suitecursor = SuiteCursor(conn)
-    apt_rows = suite.get_apt_rows(suite)
+    apt_rows = suitecursor.get_apt_rows(suite)
     if installer:
         # while installing use sources from local mirror
         uri = defenv.get('installer', 'http_mirror')

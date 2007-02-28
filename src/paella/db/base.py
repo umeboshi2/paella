@@ -38,7 +38,11 @@ class SuiteCursor(StatementCursor):
             suite = self.current
         table = 'suite_apt_sources natural join apt_sources'
         return self.select(table=table, clause=Eq('suite', suite), order='ord')
-    
+
+    # the base suite is the dist column of the first apt source of a suite
+    def get_base_suite(self, suite):
+        row = self.get_apt_rows(suite=suite)[0]
+        return row.dist
 
 class AllTraits(StatementCursor):
     def __init__(self, conn):

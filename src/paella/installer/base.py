@@ -38,7 +38,33 @@ class CurrentEnvironment(Environment):
         self.set_main(hostname)
         
     
+class BaseProcessor(object):
+    def __init__(self, log):
+        self._processes = []
+        self._process_map = {}
+        self.log = log
+        
+    def append_process(self, name, function):
+        if name not in self._processes:
+            self._processes.append(name)
+            self._process_map[name] = function
+        else:
+            raise ValueError, '%s is already in process list' % name
+        
+    def process(self):
+        for procname in self._processes:
+            self.log.info('running process %s' % procname)
+            
+    def run_process(self, procname):
+        info = self.log.info
+        self.start_process(procname)
 
+    def start_process(self, procname):
+        raise NotImplementedError, 'start_process not implemented in BaseProcessor'
+
+    def finish_process(self, procname):
+        raise NotImplementedError, 'finish_process not implemented in BaseProcessor'
+    
 class Installer(object):
     def __init__(self, conn):
         object.__init__(self)
