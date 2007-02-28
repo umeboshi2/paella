@@ -4,7 +4,9 @@ import tarfile
 
 from paella.base import PaellaConfig
 from paella.db.base import get_suite
-from paella.installer.util import extract_tarball
+from paella.db.base import SuiteCursor
+
+from paella.installer.util.misc import extract_tarball
 from paella.installer.profile import ProfileInstaller
 from paella.installer.base import CurrentEnvironment
 
@@ -28,6 +30,7 @@ class UmlInstaller(UmlChroot):
         self.check_guest()
         self.installer = ProfileInstaller(self.conn)
         self._suite = suite
+        self.suitecursor = SuiteCursor(self.conn)
         
     def set_profile(self, profile):
         if self.mode == 'host':
@@ -72,7 +75,7 @@ class UmlInstaller(UmlChroot):
         
     def extract_base_tarball(self):
         self.check_guest()
-        suite = self._suite
+        suite = self.suitecursor.get_base_suite(self._suite)
         fstype = self.cfg.get('umlmachines', 'backup_filesystem')
         if fstype == 'hostfs':
             backup_path = self.cfg.get('umlmachines', 'hostfs_backup_path')
@@ -84,7 +87,7 @@ class UmlInstaller(UmlChroot):
     def ready_base_for_install(self):
         self.check_guest()
         cfg = self.installer.defenv
-        ready_base_for_install(self.target, cfg, self._suite)
+        ready_base_for_install(self.target, self.conn, self._suite)
 
     def perform_install(self, profile=None, backup_filesystem=None):
         self.check_guest()

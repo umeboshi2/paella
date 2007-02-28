@@ -6,9 +6,11 @@ from useless.base import Error
 from useless.base.util import makepaths, runlog
 from useless.base.util import parse_proc_mounts
 
-from paella.installer.util import mount_tmp, backup_target_command
-from paella.installer.util import make_interfaces_simple, extract_tarball
-from paella.installer.util import mount_tmpfs
+from paella.installer.util.filesystem import mount_tmpfs
+from paella.installer.util.misc import make_interfaces_simple
+from paella.installer.util.misc import backup_target_command
+from paella.installer.util.misc import extract_tarball
+
 
 from base import Uml, UmlConfig
 from util import mount, mount_target, mkrootfs, setup_target

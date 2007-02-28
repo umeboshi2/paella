@@ -12,17 +12,27 @@ from base import CurrentEnvironment
 from base import BaseChrootInstaller
 from base import InstallError
 from profile import ProfileInstaller
-from util import ready_base_for_install, make_filesystem
-from util import make_filesystems
-from util import install_kernel, setup_modules
-from util import setup_disk_fai, partition_disk
-from util import create_raid_partition, mount_target
-from util import wait_for_resync, make_sources_list
-from util import make_fstab, makedev
-from util import myline, set_root_passwd, make_interfaces_simple
-from util import create_mdadm_conf, extract_tarball
-from util import mount_target_proc, make_script
-from util import make_official_sources_list
+
+from util.base import makedev
+from util.base import make_script
+from util.aptsources import make_sources_list
+from util.aptsources import make_official_sources_list
+from util.disk import setup_disk_fai
+from util.disk import partition_disk
+from util.disk import create_raid_partition
+from util.disk import wait_for_resync
+from util.disk import create_mdadm_conf
+from util.filesystem import make_filesystem
+from util.filesystem import make_filesystems
+from util.filesystem import mount_target
+from util.filesystem import make_fstab
+from util.filesystem import mount_target_proc
+from util.main import setup_modules
+from util.misc import myline, set_root_passwd
+from util.misc import make_interfaces_simple
+from util.misc import extract_tarball
+from util.preinst import ready_base_for_install
+from util.postinst import install_kernel
 
 #from profile import ProfileInstaller
 #from fstab import HdFstab
@@ -313,7 +323,7 @@ class MachineInstaller(BaseChrootInstaller):
         
     def setup_apt_sources_installer(self):
         "this is a default process"
-        make_sources_list(self.defenv, self.target, self.suite)
+        make_sources_list(self.conn, self.target, self.suite)
 
     def ready_base_for_install(self):
         "this is a default process"
@@ -349,7 +359,7 @@ class MachineInstaller(BaseChrootInstaller):
         
     def setup_apt_sources_final(self):
         "this is a default process"
-        make_official_sources_list(self.defenv, self.target, self.suite)
+        make_official_sources_list(self.conn, self.target, self.suite)
 
     def install_fstab(self):
         "this is a default process"

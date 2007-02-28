@@ -12,7 +12,7 @@ from paella.db.profile import Profile
 from paella.db.profile.main import ProfileEnvironment
 
 from base import InstallError, InstallerConnection, Modules
-from util import setup_modules
+from util.main import setup_modules
 #from trait import TraitInstaller
 from profile import ProfileInstaller
 

@@ -3,7 +3,7 @@ from os.path import isfile, join, dirname
 
 from useless.base.util import makepaths
 from paella.debian.base import debootstrap, Debootstrap
-from paella.installer.util import remove_debs
+from paella.installer.util.misc import remove_debs
 
 from base import UmlConfig
 from util import mkrootfs, create_sparse_file
@@ -46,8 +46,6 @@ class UmlBootstrapper(UmlChroot):
 def bootstrap_base(suite, path, cfg=None, size=3000, mkfs='mke2fs'):
     if cfg is None:
         cfg = UmlConfig()
-    makepaths(dirname(path))
-    create_sparse_file(path, size=size)
     uml = UmlBootstrapper(suite, path, cfg=cfg)
     uml.run_uml()
     
@@ -56,7 +54,9 @@ def make_base_filesystem(suite, name, cfg=None, size=3000, mkfs='mke2fs'):
     if cfg is None:
         cfg = UmlConfig()
     path = join(cfg.get('umlmachines', 'bootstrap_basepath'), name)
-    bootstrap_base(suite, path, cfg=cfg, size=size, mkfs=mkfs)
+    makepaths(dirname(path))
+    create_sparse_file(path, size=size)
+    bootstrap_base(suite, path, cfg=cfg)
     
 def make_base(suite, cfg=None):
     make_base_filesystem(suite, suite + '.base', cfg=cfg)

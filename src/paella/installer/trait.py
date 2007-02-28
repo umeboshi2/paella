@@ -10,7 +10,9 @@ from paella.db.trait.relations import TraitScript
 
 from base import Installer, InstallError
 from base import CurrentEnvironment
-from util import remove_debs, make_script
+
+from util.misc import remove_debs
+from util.base import make_script
 
 INGDICT = {
     'install' : 'installing',
