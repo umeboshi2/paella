@@ -111,7 +111,7 @@ class TemplateTextEdit(KTextEdit):
         
             
 class TemplateViewWindow(BasePaellaWindow):
-    def __init__(self, parent, suite, trait, package, template, name='TemplateViewWindow'):
+    def __init__(self, parent, suite, trait, template, name='TemplateViewWindow'):
         BasePaellaWindow.__init__(self, parent, name=name)
         self.initPaellaCommon()
         self.trait = Trait(self.conn, suite=suite)
@@ -124,11 +124,10 @@ class TemplateViewWindow(BasePaellaWindow):
         self.initActions()
         self.initMenus()
         self.initToolbar()
-        self.set_template(package, template)
+        self.set_template(template)
         
 
-    def set_template(self, package, template):
-        self.current_package = package
+    def set_template(self, template):
         self.current_template = template
         self._set_template()
 
@@ -145,9 +144,8 @@ class TemplateViewWindow(BasePaellaWindow):
         self.statusBar().message(msg)
         
     def _set_template(self):
-        package = self.current_package
         template = self.current_template
-        data = self.trait.get_template_contents(package, template)
+        data = self.trait.get_template_contents(template)
         self.mainView.setText(data)
         self._update_status()
     
@@ -170,11 +168,9 @@ class TemplateViewWindow(BasePaellaWindow):
         self._update_status('CHANGED')
         
     def slotSave(self):
-        data = dict(package=self.current_package,
-                    template=self.current_template)
+        data = dict(template=self.current_template)
         text = str(self.mainView.text())
-        oldtext = self.trait.get_template_contents(self.current_package,
-                                                   self.current_template)
+        oldtext = self.trait.get_template_contents(self.current_template)
         if oldtext != text:
             templatefile = strfile(text)
             self.trait.update_template(data, templatefile)

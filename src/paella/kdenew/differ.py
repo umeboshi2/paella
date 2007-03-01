@@ -65,7 +65,7 @@ class TraitListView(KListView):
             if self.file_type == 'template':
                 for row in self.templates.templates(trait):
                     template_item = KListViewItem(item, str(row.templatefile),
-                                                  row.template, row.package)
+                                                  row.template)
                     template_item.trait = trait
                     template_item.row = row
             elif self.file_type == 'script':
@@ -83,7 +83,7 @@ class TraitListView(KListView):
         item = self.currentItem()
         if self.file_type == 'template':
             self.templates.set_trait(item.trait)
-            return self.templates.templatedata(item.row.package, item.row.template)
+            return self.templates.templatedata(item.row.template)
         elif self.file_type == 'script':
             self.scripts.set_trait(item.trait)
             return self.scripts.scriptdata(item.row.script)
@@ -96,7 +96,7 @@ class TraitListView(KListView):
         row = item.row
         if self.file_type == 'template':
             self.templates.set_trait(item.trait)
-            self.templates.update_templatedata(row.package, row.template, data)
+            self.templates.update_templatedata(row.template, data)
         elif self.file_type == 'script':
             self.scripts.set_trait(item.trait)
             self.scripts.update_scriptdata(row.script, data)

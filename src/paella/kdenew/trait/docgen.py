@@ -38,15 +38,20 @@ class PackageFieldTable(BaseFieldTable):
 class TemplateTable(Table):
     def __init__(self, rows, **atts):
         Table.__init__(self, **atts)
+        self.set_rows(rows)
+        
+    def set_rows(self, rows):
         for row in rows:
             tablerow = TableRow()
-            fake_template = ',,,'.join([row.package, row.template.replace('.', ',')])
+            fake_template = row.template.replace('.', ',')
             show_anchor = Anchor(row.template, href='show.template.%s' % fake_template)
             tablerow.append(TableCell(show_anchor))
             edit_anchor = Anchor('(edit)', href='edit.template.%s' % fake_template)
             tablerow.append(TableCell(edit_anchor))
-            tablerow.append(TableCell(row.package))
             self.append(tablerow)
+
+    def clear_rows(self):
+        self._content = []
         
 class PackageDoc(BaseDocument):
     def __init__(self, app, **atts):
@@ -74,59 +79,102 @@ class TraitDoc(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)
         self.trait = Trait(self.conn)
+        #self.title = SectionTitle('Trait Document')
+        #self.title.attributes.update(dict(bgcolor='IndianRed', width='100%'))
 
-    def set_trait(self, trait):
-        self.clear_body()
-        self.trait.set_trait(trait)
+    def _make_trait_title(self, trait):
         title = SectionTitle('Trait:  %s' % trait)
-        title['bgcolor'] = 'IndianRed'
-        title['width'] = '100%'
-        self.body.set(title)
-        self.body.append(Ruler())
-        plist = UnorderedList()
-        parents = self.trait.parents(trait=trait)
+        title.attributes.update(dict(bgcolor='IndianRed', width='100%'))
+        return title
+    
+    def _make_parent_section(self, trait):
         parent_section = SectionTitle('Parents')
         parent_section.create_rightside_table()
         parent_url = 'edit.parents.%s' % trait
         parent_section.append_rightside_anchor(Anchor('edit', href=parent_url))
-        self.body.append(parent_section)
+        return parent_section
+    
+    def _make_parent_list(self, trait):
+        plist = UnorderedList()
+        parents = self.trait.parents(trait=trait)
         for parent in parents:
             pp = Anchor(parent, href='show.parent.%s' % parent)
             plist.append(ListItem(pp))
-        self.body.append(plist)
-        #ptitle_anchor = Anchor('edit.packages.%s' % trait, 'Packages')
+        return plist
+
+    def _make_packages_section(self, trait):
         ptitle = SectionTitle('Packages')
         ptitle_anchor = Anchor('(new)', href='new.package.%s' % trait)
         cell = TableCell(ptitle_anchor)
         ptitle.row.append(cell)
-        self.body.append(ptitle)
+        return ptitle
+
+    def _make_packages_table(self, trait):
         rows = self.trait.packages(trait=trait, action=True)
-        self.body.append(PackageTable(rows, bgcolor='SkyBlue3'))
+        if rows:
+            return PackageTable(rows, bgcolor='SkyBlue3')
+        else:
+            return None
         
+    def _make_templates_section(self, trait):
         ttitle = Anchor('Templates', href='edit.templates.%s' % trait)
-        self.body.append(SectionTitle(ttitle))
-        rows = self.trait.templates(trait=trait, fields=['template', 'templatefile'])
-        if len(rows):
-            self.body.append(TemplateTable(rows, bgcolor='DarkSeaGreen3'))
+        return SectionTitle(ttitle)
+
+    def _make_templates_table(self, trait):
+        rows = self.trait.templates(trait=trait, fields=['*'])
+        if rows:
+            return TemplateTable(rows, bgcolor='DarkSeaGreen3')
+        else:
+            return None
+        
+    def _make_variables_section(self, trait):
         vtitle = Anchor('Variables', href='edit.variables.%s' % trait)
-        self.body.append(SectionTitle(vtitle))
+        return SectionTitle(vtitle)
+    
+    def _make_variables_table(self, trait):
         if len(self.trait.environ.keys()):
-            env = TraitEnvTable(trait, self.trait.environ, bgcolor='MistyRose3')
-            self.body.append(env)
+            return TraitEnvTable(trait, self.trait.environ, bgcolor='MistyRose3')
+        else:
+            return None
+        
+    def _make_scripts_section(self, trait):
         stitle = SectionTitle('Scripts')
         stitle.create_rightside_table()
         stitle.append_rightside_anchor(Anchor('new', href='new.script.%s' % trait))
-        self.body.append(stitle)
-        slist = UnorderedList()
-        for row in self.trait._scripts.scripts(trait=trait):
-            script  = row.script
-            p = Paragraph()
-            sa = Anchor(script, href='show.script.%s' % script)
-            ea = Anchor('(edit)', href='edit.script.%s' % script)
-            p.append(sa)
-            p.append(ea)
-            slist.append(ListItem(p))
-        self.body.append(slist)
+        return stitle
 
-# first draft complete
+    def _make_scripts_list(self, trait):
+        rows = self.trait._scripts.scripts(trait=trait)
+        if rows:
+            slist = UnorderedList()
+            for row in rows:
+                script  = row.script
+                p = Paragraph()
+                sa = Anchor(script, href='show.script.%s' % script)
+                ea = Anchor('(edit)', href='edit.script.%s' % script)
+                p.append(sa)
+                p.append(ea)
+                slist.append(ListItem(p))
+            return slist
+        else:
+            return None
+        
+    def set_trait(self, trait):
+        self.clear_body()
+        self.trait.set_trait(trait)
+        order = [self._make_trait_title,
+                 self._make_parent_section,
+                 self._make_parent_list,
+                 self._make_packages_section,
+                 self._make_packages_table,
+                 self._make_templates_section,
+                 self._make_templates_table,
+                 self._make_variables_section,
+                 self._make_variables_table,
+                 self._make_scripts_section,
+                 self._make_scripts_list]
+        for method in order:
+            chunk = method(trait)
+            if chunk is not None:
+                self.body.append(chunk)
 

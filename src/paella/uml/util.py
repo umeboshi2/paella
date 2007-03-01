@@ -14,6 +14,7 @@ from paella.installer.util.filesystem import make_fstab
 from paella.installer.util.filesystem import make_filesystem
 
 from paella.installer.util.misc import myline, set_root_passwd
+from paella.installer.util.misc import make_interfaces_simple
 
 from paella.installer.util.preinst import ready_base_for_install as _ready_base_for_install
 
@@ -73,7 +74,11 @@ def make_generic_devices(target):
 #this is done after bootstrap or
 #this is done after extracting the base tar
 def ready_base_for_install(target, conn, suite):
-    _ready_base_for_install(target, conn, suite, UmlFstab())
+    #_ready_base_for_install(target, conn, suite, UmlFstab())
+    #set_root_passwd(target, myline)
+    make_sources_list(conn, target, suite)
+    make_interfaces_simple(target)
+    make_fstab(UmlFstab(), target)
     make_ubd_nodes(target)
     modpath = os.path.join(target, 'lib/modules')
     kernel_version = commands.getoutput('uname -r')

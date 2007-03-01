@@ -31,6 +31,7 @@ class TraitView(ViewBrowser):
         # setup dialog pointers
         # just one now
         self._dialog = None
+        self._current_tarball = None
         
     def set_trait(self, trait):
         self.doc.set_trait(trait)
@@ -73,11 +74,9 @@ class TraitView(ViewBrowser):
             suite = self.doc.suite
             trait = self.doc.trait.current_trait
             template = self._convert_template_id(ident)
-            
-            win = TemplateViewWindow(self, suite, trait, package, template)
+            win = TemplateViewWindow(self, suite, trait, template)
 
             win.trait.set_trait(self.doc.trait.current_trait)
-            win.set_template(package, template)
         elif context == 'script':
             # need to call public method here
             scriptfile = self.doc.trait._scripts.scriptdata(ident)
@@ -89,11 +88,17 @@ class TraitView(ViewBrowser):
         
     def _perform_edit_action(self, context, ident):
         if context == 'templates':
-            win = KFileDialog('.', '', self, 'SystemTarball', True)
-            win.connect(win, SIGNAL('okClicked()'), self.fileSelected)
-            win.show()
-            self._dialog = win
-            
+            if self._current_tarball is None:
+                self.selectSystemTarballDialog()
+            else:
+                msg = 'use %s as the current tarball?' % self._current_tarball
+                yesno = KMessageBox.questionYesNo(self, msg)
+                if yesno == KMessageBox.Yes:
+                    self.selectWithinSystemTarballDialog(self._current_tarball)
+                else:
+                    self._current_tarball = None
+                    self.selectSystemTarballDialog()
+                    
         elif context == 'packages':
             raise RuntimeError, 'packages not implemented yet'
         elif context == 'script':
@@ -109,7 +114,7 @@ class TraitView(ViewBrowser):
             win.show()
         elif context == 'template':
             template = self._convert_template_id(ident)
-            self.doc.trait.edit_template(package, template)
+            self.doc.trait.edit_template(template)
         else:
             raise MethodNotImplementedError(self, 'TraitView._perform_edit_action')
         
@@ -145,17 +150,26 @@ class TraitView(ViewBrowser):
         self.doc.trait.add_package(data['package'], data['action'])
         self.resetView()
         
+    def selectSystemTarballDialog(self):
+        win = KFileDialog('.', '', self, 'SystemTarball', True)
+        win.connect(win, SIGNAL('okClicked()'), self.fileSelected)
+        win.show()
+        self._dialog = win
 
-    # tarball selected in dialog, make another dialog with url tar://filename
-    def fileSelected(self):
-        win = self._dialog
-        filename = str(win.selectedFile())
+    def selectWithinSystemTarballDialog(self, filename):
         win = KFileDialog('.', '', self, 'SystemTarball', True)
         win.setURL(KURL('tar://%s' % filename))
         win.connect(win, SIGNAL('okClicked()'), self.newTemplateSelected)
         win.tarball_filename = filename
         win.show()
         self._dialog = win
+        
+    # tarball selected in dialog, make another dialog with url tar://filename
+    def fileSelected(self):
+        win = self._dialog
+        filename = str(win.selectedFile())
+        self._current_tarball = filename
+        self.selectWithinSystemTarballDialog(filename)
         
     # template selected from tarball dialog
     def newTemplateSelected(self):
