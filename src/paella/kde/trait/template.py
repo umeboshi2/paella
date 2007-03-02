@@ -168,12 +168,11 @@ class TemplateViewWindow(BasePaellaWindow):
         self._update_status('CHANGED')
         
     def slotSave(self):
-        data = dict(template=self.current_template)
+        #data = dict(template=self.current_template)
         text = str(self.mainView.text())
         oldtext = self.trait.get_template_contents(self.current_template)
         if oldtext != text:
-            templatefile = strfile(text)
-            self.trait.update_template(data, templatefile)
+            self.trait.update_template(self.current_template, contents=text)
             self._update_status('Saved')
         else:
             KMessageBox.information(self, 'Nothing has changed')

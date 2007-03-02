@@ -96,7 +96,7 @@ class TraitListView(KListView):
         row = item.row
         if self.file_type == 'template':
             self.templates.set_trait(item.trait)
-            self.templates.update_templatedata(row.template, data)
+            self.templates.update_template(row.template, contents=data)
         elif self.file_type == 'script':
             self.scripts.set_trait(item.trait)
             self.scripts.update_scriptdata(row.script, data)

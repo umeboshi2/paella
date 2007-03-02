@@ -2,7 +2,7 @@ Source: paella
 Section: unknown
 Priority: optional
 Maintainer: Joseph Rawson <umeboshi@gregscomputerservice.com>
-Build-Depends: debhelper (>> 4.0.0), python2.3, python2.3-dev, python-docutils, cdbs
+Build-Depends: debhelper (>> 4.0.0), python, python-dev, python-docutils, cdbs
 Standards-Version: 3.5.8
 
 Package: paella

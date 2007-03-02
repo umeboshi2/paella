@@ -161,17 +161,10 @@ class Trait(object):
     def insert_template_from_tarfile(self, template_path, tarball):
         self._templates.insert_template_from_tarfile(template_path, tarball)
         
-    def update_templateOrig(self, template_data):
-        self._templates.update_template(template_data)
-
-    def update_template(self, data, template_data):
-        self._templates.update_template(data, template_data)
-
-    def update_template_v2(self, template, data=None, templatefile=None,
+    def update_template(self, template, data=None, templatefile=None,
                            contents=None):
-        self._templates.update_template_v2(template, data=data, templatefile=templatefile,
+        self._templates.update_template(template, data=data, templatefile=templatefile,
                                            contents=contents)
-        
         
     def get_template_rows(self):
         return self._templates.templates(self.current_trait)

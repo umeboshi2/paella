@@ -16,6 +16,8 @@ from paella.base.objects import TextFileManager
 from base import TraitRelation
 from base import Template
 
+from paella import deprecated
+
 class TraitEnvironment(Environment):
     def __init__(self, conn, suite, trait):
         self.suite = suite
@@ -142,26 +144,9 @@ class TraitTemplate(TraitRelation):
         data = dict(owner=info.uname, grp_owner=info.gname,
                     mode=oct(info.mode), template=template_path)
         self.insert_template(data, templatefile)
-        
-    def update_template(self, data, templatefile):
-        clause = self._clause(data['template'])
-        id = self.textfiles.insert_file(templatefile)
-        fields = ['owner', 'grp_owner', 'mode']
-        update = {}
-        for f in fields:
-            if f in data:
-                update[f] = data[f]
-        update['templatefile'] = str(id)
-        self.cmd.update(data=update, clause=clause)
-        self.reset_clause()
 
-    def update_templatedata(self, template, data):
-        clause = self._clause(template)
-        txtid = self.textfiles.insert_data(data)
-        self.cmd.update(data=dict(templatefile=str(txtid)), clause=clause)
-        
-
-    def update_template_v2(self, template, data=None, templatefile=None, contents=None):
+    def update_template(self, template, data=None, templatefile=None,
+                        contents=None):
         if templatefile is not None and contents is not None:
             raise RuntimeError, 'must either pass a file object or a string but not both'
         clause = self._clause(template)
@@ -177,6 +162,12 @@ class TraitTemplate(TraitRelation):
             update.update(data)
         self.cmd.update(data=update, clause=clause)
         
+    def update_templatedata(self, template, data):
+        deprecated('update_templatedata is deprecated use update_template instead')
+        self.update_template(template, contents=data)
+        
+        
+
     def drop_template(self, template):
         clause = self._clause(template)
         self._drop_template(clause)

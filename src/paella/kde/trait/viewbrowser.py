@@ -219,7 +219,7 @@ class TraitView(ViewBrowser):
         win = self._dialog
         template = win.template
         data = win.getRecordData()
-        self.doc.trait.update_template_v2(template, data=data)
+        self.doc.trait.update_template(template, data=data)
         self.resetView()
         
         
