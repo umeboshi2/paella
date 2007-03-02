@@ -5,7 +5,8 @@ from forgetHTML import Paragraph
 
 from paella.db.profile import Profile
 
-from base import SectionTitle, BaseDocument
+from base import BaseDocument
+from base import SectionTitle
 from base import PVarTable
 from base import TraitTable
 

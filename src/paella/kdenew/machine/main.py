@@ -1,3 +1,4 @@
+from kdeui import KListView
 from kdeui import KListViewItem
 from kdeui import KStdAction
 from kdeui import KPopupMenu
@@ -29,7 +30,7 @@ class MachineManager(PaellaManagerWidget):
     def initlistView(self):
         self.cursor = self.conn.cursor(statement=True)
         self.listView.addColumn('machine')
-        rows = self.cursor.select(table='machines')
+        rows = self.cursor.select(table='machines', order='machine')
         for row in rows:
             KListViewItem(self.listView, row.machine)
 
@@ -58,10 +59,12 @@ class FilesystemManager(PaellaManagerWidget):
     def __init__(self, parent):
         mainview = FilesystemView
         PaellaManagerWidget.__init__(self, parent, mainview, name='FilesystemManager')
-
+        self.initlistView()
+        
     def initlistView(self):
         self.cursor = self.conn.cursor(statement=True)
-        rows = self.cursor.select(table='filesystem')
+        rows = self.cursor.select(table='filesystems')
+        self.listView.addColumn('filesystem')
         for row in rows:
             KListViewItem(self.listView, row.filesystem)
 
@@ -72,6 +75,7 @@ class FilesystemManager(PaellaManagerWidget):
 class MachineMainWindow(BasePaellaWindow):
     def __init__(self, parent):
         BasePaellaWindow.__init__(self, parent, name='MachineMainWindow')
+        self.initPaellaCommon()
         self.initActions()
         self.initMenus()
         self.initToolbar()
@@ -84,6 +88,13 @@ class MachineMainWindow(BasePaellaWindow):
             del self.mainView
             self.mainView = None
 
+    def _setMainView(self, managerclass):
+        self._killmainView()
+        manager = managerclass(self)
+        self.setCentralWidget(manager)
+        manager.show()
+        self.mainView = manager
+        
     def initActions(self):
         collection = self.actionCollection()
         self.quitAction = KStdAction.quit(self.close, collection)
@@ -112,26 +123,26 @@ class MachineMainWindow(BasePaellaWindow):
             action.plug(toolbar)
             
     def slotManagemachine(self):
-        self._killmainView()
-        manager = MachineManager(self)
-        self.setCentralWidget(manager)
-        manager.show()
-        self.mainView = manager
+        self._setMainView(MachineManager)
         
     def slotManagemachine_type(self):
-        self._killmainView()
-        manager = MachineTypeManager(self)
-        self.setCentralWidget(manager)
-        manager.show()
-        self.mainView = manager
+        self._setMainView(MachineTypeManager)
+
 
 
     def slotManagefilesystem(self):
-        raise NotImplementedError, 'slotManagefilesystem not implemented'
+        self._setMainView(FilesystemManager)
 
     def slotManagekernels(self):
-        raise NotImplementedError, 'slotManagekernels not implemented'
-
+        self._setMainView(KListView)
+        table = 'kernels'
+        cursor = self.conn.cursor(statement=True)
+        rows = cursor.select(table=table)
+        self.mainView.setRootIsDecorated(True)
+        self.mainView.addColumn('kernel')
+        for row in rows:
+            KListViewItem(self.mainView, row.kernel)
+            
     def slotManagedisk(self):
         raise NotImplementedError, 'slotManagedisk not implemented'
 

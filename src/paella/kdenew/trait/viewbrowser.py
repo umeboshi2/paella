@@ -8,6 +8,8 @@ from kdeui import KTextEdit
 
 from kfile import KFileDialog
 
+from useless.base import debug
+from useless.base.util import strfile
 from useless.kdebase.dialogs import BaseRecordDialog
 
 from paella.db.trait import Trait
@@ -98,7 +100,6 @@ class TraitView(ViewBrowser):
                 else:
                     self._current_tarball = None
                     self.selectSystemTarballDialog()
-                    
         elif context == 'packages':
             raise RuntimeError, 'packages not implemented yet'
         elif context == 'script':
@@ -109,12 +110,25 @@ class TraitView(ViewBrowser):
             win.show()
         elif context == 'variables':
             #KMessageBox.information(self, 'edit variables')
-            print 'edit variables', ident
+            debug('edit variables', ident)
             win = TraitVariablesWindow(self, self.doc.suite, ident)
             win.show()
         elif context == 'template':
             template = self._convert_template_id(ident)
             self.doc.trait.edit_template(template)
+        elif context == 'templatedata':
+            template = self._convert_template_id(ident)
+            row = self.doc.trait.get_template_row(template)
+            data = {}
+            fields = ['template', 'owner', 'grp_owner', 'mode']
+            for f in fields:
+                data[f] = row[f]
+            win = BaseRecordDialog(self, fields, record=data)
+            win.template = template
+            win.connect(win, SIGNAL('okClicked()'), self.slotUpdateTemplateData)
+            win.show()
+            self._dialog = win
+            
         else:
             raise MethodNotImplementedError(self, 'TraitView._perform_edit_action')
         
@@ -175,12 +189,12 @@ class TraitView(ViewBrowser):
     def newTemplateSelected(self):
         win = self._dialog
         kurl = win.selectedURL()
-        print 'url', str(kurl.url())
-        print 'path in tar is', str(kurl.path())
+        debug('url', str(kurl.url()))
+        debug('path in tar is', str(kurl.path()))
         fullpath = str(kurl.path())
         tarball = win.tarball_filename
         if fullpath.startswith(tarball):
-            print 'fullpath', fullpath, 'tarball', tarball
+            debug('fullpath', fullpath, 'tarball', tarball)
             tpath = fullpath.split(tarball)[1]
             while tpath.startswith('/'):
                 tpath = tpath[1:]
@@ -197,8 +211,18 @@ class TraitView(ViewBrowser):
 
     def slotMakeNewScript(self):
         scriptname = self._dialog.scriptname()
-        KMessageBox.information(self, 'make new %s script' % scriptname)
+        self.doc.trait.insert_script(scriptname, strfile('#!/bin/sh\n'))
+        #KMessageBox.information(self, 'make new %s script' % scriptname)
+        self.resetView()
 
+    def slotUpdateTemplateData(self):
+        win = self._dialog
+        template = win.template
+        data = win.getRecordData()
+        self.doc.trait.update_template_v2(template, data=data)
+        self.resetView()
+        
+        
     def _convert_template_id(self, ident):
         newid = ident.replace(',', '.')
         return newid

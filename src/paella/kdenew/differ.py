@@ -161,12 +161,16 @@ class SuiteTraitComboBox(QFrame):
         self.traits.set_suite(suite)
         self.listView.set_suite(suite)
         self.listView.file_type = str(self.tcombo.currentText())
+        self._update_traits_combobox()
+        
+
+    def _update_traits_combobox(self):
         traits = [row.trait for row in self.traits.select()]
         traits.sort()
         self.trcombo.clear()
         self.trcombo.insertStrList(traits)
-        
-
+        return traits
+    
     def refreshlistView(self):
         trait = str(self.trcombo.currentText())
         if trait:
@@ -175,9 +179,7 @@ class SuiteTraitComboBox(QFrame):
         suite = str(self.scombo.currentText())
         self.traits.set_suite(suite)
         self.listView.set_suite(suite)
-        traits = [row.trait for row in self.traits.select()]
-        self.trcombo.clear()
-        self.trcombo.insertStrList(traits)
+        traits = self._update_traits_combobox()
         if trait in traits:
             self.trcombo.setCurrentItem(traits.index(trait))
         self.listView.refreshlistView()

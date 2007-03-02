@@ -127,9 +127,9 @@ class TraitEnvTable(RecordTable):
 
 class SectionTitle(SimpleTitleElement):
     def __init__(self, text, **atts):
-        atts['width'] = '75%'
-        atts['bgcolor'] = 'IndianRed'
-        SimpleTitleElement.__init__(self, text, **atts)
+        attributes = dict(bgcolor='IndianRed', width='100%')
+        attributes.update(atts)
+        SimpleTitleElement.__init__(self, text, **attributes)
 
 class BaseFieldTable(Table):
     def __init__(self, fields, row, **atts):

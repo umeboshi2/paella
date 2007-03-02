@@ -103,8 +103,8 @@ class Trait(object):
         self._templates.set_trait(trait)
         self._scripts.set_trait(trait)
         
-    def get_traits(self):
-        return self._traits.select(fields=['trait'])
+    def get_traits(self, order=None):
+        return self._traits.select(fields=['trait'], order=order)
 
     def packages(self, trait=None, action=False):
         if trait is None:
@@ -136,8 +136,8 @@ class Trait(object):
     def get_traitset(self):
         return self._parents.get_traitset([self.current_trait])
 
-    def get_trait_list(self):
-        return [row.trait for row in self.get_traits()]
+    def get_trait_list(self, order=None):
+        return [row.trait for row in self.get_traits(order=order)]
     
     def insert_parents(self, traits):
         self._parents.insert_parents(traits)
@@ -166,9 +166,18 @@ class Trait(object):
 
     def update_template(self, data, template_data):
         self._templates.update_template(data, template_data)
+
+    def update_template_v2(self, template, data=None, templatefile=None,
+                           contents=None):
+        self._templates.update_template_v2(template, data=data, templatefile=templatefile,
+                                           contents=contents)
+        
         
     def get_template_rows(self):
         return self._templates.templates(self.current_trait)
+
+    def get_template_row(self, template):
+        return self._templates.get_row(template)
     
     def edit_template(self, template):
         self._templates.edit_template(template)
@@ -179,6 +188,13 @@ class Trait(object):
     def get_full_environment(self):
         return self._parents.get_environment([self.current_trait])
         
+        
+    def edit_script(self, name):
+        trait = self.current_trait
+        self._scripts.edit_script(name)
+
+    def insert_script(self, name, scriptfile):
+        self._scripts.insert_script(name, scriptfile)
         
     def create_trait(self, trait):
         insert_data = {'trait' : trait}
@@ -299,11 +315,6 @@ class Trait(object):
         data = dict(description=desc)
         self._traits.update(data=data, clause=Eq('trait', trait))
 
-    def edit_script(self, name):
-        trait = self.current_trait
-        self._scripts.edit_script(name)
-
-        
 #generate xml
 # This class should maybe go in the xmlgen module
 class TraitElement(Element):

@@ -5,8 +5,8 @@ from forgetHTML import Paragraph
 
 from paella.db.trait import Trait
 
+from paella.kdenew.docgen.base import SimpleTitleElement
 from paella.kdenew.docgen.base import RecordTable
-from paella.kdenew.docgen.base import SectionTitle
 from paella.kdenew.docgen.base import BaseFieldTable, BaseDocument
 from paella.kdenew.docgen.base import TraitTable
 
@@ -21,10 +21,18 @@ class TraitEnvTable(RecordTable):
 class PackageTable(Table):
     def __init__(self, rows, **atts):
         Table.__init__(self, **atts)
+        packages = []
+        package_actions = {}
         for row in rows:
+            if row.package not in packages:
+                packages.append(row.package)
+                package_actions[row.package] = [row.action]
+            else:
+                package_actions[row.package].append(row.action)
+        for package in packages:
             tablerow = TableRow()
-            tablerow.append(TableCell(row.package))
-            tablerow.append(TableCell(row.action))
+            tablerow.append(TableCell(package))
+            tablerow.append(TableCell(', '.join(package_actions[package])))
             anchor = Anchor('delete', href='delete.package.%s|%s' % (row.package, row.action))
             tablerow.append(anchor)
             self.append(tablerow)
@@ -46,8 +54,17 @@ class TemplateTable(Table):
             fake_template = row.template.replace('.', ',')
             show_anchor = Anchor(row.template, href='show.template.%s' % fake_template)
             tablerow.append(TableCell(show_anchor))
+            template_data = '%s:%s (%s)' % (row.owner, row.grp_owner, row.mode)
+            data_anchor = Anchor(template_data, href='edit.templatedata.%s' % fake_template)
             edit_anchor = Anchor('(edit)', href='edit.template.%s' % fake_template)
-            tablerow.append(TableCell(edit_anchor))
+            del_anchor = Anchor('(delete)', href='delete.template.%s' % fake_template)
+            tablerow.append(TableCell(data_anchor))
+            cmdcell = TableCell()
+            cmdcell.set(edit_anchor)
+            cmdcell.append(del_anchor)
+            tablerow.append(cmdcell)
+            #tablerow.append(TableCell(edit_anchor))
+            #tablerow.append(TableCell(del_anchor))
             self.append(tablerow)
 
     def clear_rows(self):
@@ -67,7 +84,7 @@ class PackageDoc(BaseDocument):
         print 'clause---->', clause, type(clause)
         self.cursor.clause = clause
         self.clear_body()
-        title = SectionTitle('%s Packages' % self.suite)
+        title = SimpleTitleElement('%s Packages' % self.suite)
         title['bgcolor'] = 'IndianRed'
         title['width'] = '100%'
         self.body.set(title)
@@ -81,14 +98,14 @@ class TraitDoc(BaseDocument):
         self.trait = Trait(self.conn)
         #self.title = SectionTitle('Trait Document')
         #self.title.attributes.update(dict(bgcolor='IndianRed', width='100%'))
+        self._sectitle_atts = dict(bgcolor='IndianRed', width='100%')
 
     def _make_trait_title(self, trait):
-        title = SectionTitle('Trait:  %s' % trait)
-        title.attributes.update(dict(bgcolor='IndianRed', width='100%'))
+        title = SimpleTitleElement('Trait:  %s' % trait, **self._sectitle_atts)
         return title
     
     def _make_parent_section(self, trait):
-        parent_section = SectionTitle('Parents')
+        parent_section = SimpleTitleElement('Parents', **self._sectitle_atts)
         parent_section.create_rightside_table()
         parent_url = 'edit.parents.%s' % trait
         parent_section.append_rightside_anchor(Anchor('edit', href=parent_url))
@@ -103,7 +120,7 @@ class TraitDoc(BaseDocument):
         return plist
 
     def _make_packages_section(self, trait):
-        ptitle = SectionTitle('Packages')
+        ptitle = SimpleTitleElement('Packages', **self._sectitle_atts)
         ptitle_anchor = Anchor('(new)', href='new.package.%s' % trait)
         cell = TableCell(ptitle_anchor)
         ptitle.row.append(cell)
@@ -112,33 +129,33 @@ class TraitDoc(BaseDocument):
     def _make_packages_table(self, trait):
         rows = self.trait.packages(trait=trait, action=True)
         if rows:
-            return PackageTable(rows, bgcolor='SkyBlue3')
+            return PackageTable(rows, bgcolor='SkyBlue3', width='100%')
         else:
             return None
         
     def _make_templates_section(self, trait):
         ttitle = Anchor('Templates', href='edit.templates.%s' % trait)
-        return SectionTitle(ttitle)
+        return SimpleTitleElement(ttitle, **self._sectitle_atts)
 
     def _make_templates_table(self, trait):
         rows = self.trait.templates(trait=trait, fields=['*'])
         if rows:
-            return TemplateTable(rows, bgcolor='DarkSeaGreen3')
+            return TemplateTable(rows, bgcolor='DarkSeaGreen3', width='100%')
         else:
             return None
         
     def _make_variables_section(self, trait):
         vtitle = Anchor('Variables', href='edit.variables.%s' % trait)
-        return SectionTitle(vtitle)
+        return SimpleTitleElement(vtitle, **self._sectitle_atts)
     
     def _make_variables_table(self, trait):
         if len(self.trait.environ.keys()):
-            return TraitEnvTable(trait, self.trait.environ, bgcolor='MistyRose3')
+            return TraitEnvTable(trait, self.trait.environ, bgcolor='MistyRose3', width='100%')
         else:
             return None
         
     def _make_scripts_section(self, trait):
-        stitle = SectionTitle('Scripts')
+        stitle = SimpleTitleElement('Scripts', **self._sectitle_atts)
         stitle.create_rightside_table()
         stitle.append_rightside_anchor(Anchor('new', href='new.script.%s' % trait))
         return stitle

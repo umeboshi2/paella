@@ -7,8 +7,8 @@ from kdeui import KMessageBox, KAboutDialog
 
 class AboutData(KAboutData):
     def __init__(self):
-        appname = 'paella-kde-management'
-        progname = 'paella-kde-management'
+        appname = 'paella-management'
+        progname = 'paella-management'
         version = '0.7'
         short_desc = "Paella database management"
         KAboutData.__init__(self, appname, progname, version, short_desc)

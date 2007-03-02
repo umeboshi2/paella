@@ -153,7 +153,7 @@ class TemplateViewWindow(BasePaellaWindow):
         collection = self.actionCollection()
         self.quitAction = KStdAction.quit(self.close, collection)
         self.saveAction = KStdAction.save(self.slotSave, collection)
-        self.newAction = KStdAction.openNew(self.slotNew, collection)
+        self.newAction = KStdAction.openNew(self.mainView.slotCreateNewVariable, collection)
         
     def initMenus(self):
         pass
@@ -179,10 +179,6 @@ class TemplateViewWindow(BasePaellaWindow):
             KMessageBox.information(self, 'Nothing has changed')
             self._update_status()
         
-        
-
-    def slotNew(self):
-        print 'slotNew'
 
     
 

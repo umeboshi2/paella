@@ -123,7 +123,7 @@ class TraitTemplate(TraitRelation):
         return self.has_it('template', template)
 
     def get_row(self, template):
-        return _TraitRelation.get_row(self, 'template', template)
+        return TraitRelation.get_row(self, 'template', template)
 
     def insert_template(self, data, templatefile):
         if type(data) is not dict:
@@ -161,6 +161,22 @@ class TraitTemplate(TraitRelation):
         self.cmd.update(data=dict(templatefile=str(txtid)), clause=clause)
         
 
+    def update_template_v2(self, template, data=None, templatefile=None, contents=None):
+        if templatefile is not None and contents is not None:
+            raise RuntimeError, 'must either pass a file object or a string but not both'
+        clause = self._clause(template)
+        txtid = None
+        if templatefile is not None:
+            txtid = self.textfiles.insert_file(templatefile)
+        if contents is not None:
+            txtid = self.textfiles.insert_data(contents)
+        update = {}
+        if txtid is not None:
+            update.update(dict(templatefile=str(txtid)))
+        if data is not None:
+            update.update(data)
+        self.cmd.update(data=update, clause=clause)
+        
     def drop_template(self, template):
         clause = self._clause(template)
         self._drop_template(clause)

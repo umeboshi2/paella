@@ -1,36 +1,49 @@
 #!/usr/bin/env python
-import os, sys
-from os.path import join
-from optparse import OptionParser
+import sys
+from qt import SIGNAL, SLOT
 
-from useless.base import Error, debug
+from kdecore import KCmdLineArgs
 
-from paella.base import PaellaConfig
-from paella.db import PaellaConnection
+from useless.kdebase.error import excepthook
 
-from paella.admin.management import Manager, SuiteManager
-from paella.admin.base import excepthook
+from paella.kdenew.base.about import AboutData
+from paella.kdenew.main import PaellaMainApplication
 
-from gtk import main, main_quit
+# these imports will stay like this until the kdenew is ready to be tested
+from paella.kdenew.main import PaellaMainWindow
+from paella.kdenew.main import PaellaMainWindowSmall
 
-cfg = PaellaConfig('database')
-dbname = cfg['dbname']
-cfg.change('management_gui')
+if __name__ == '__main__':
+    aboutData = AboutData()
+    KCmdLineArgs.init(sys.argv, aboutData)
 
-m = Manager()
-if cfg.has_key('manager_size'):
-    w, h = map(int, cfg.get_list('manager_size'))
-    m.set_size_request(w, h)
-if cfg.has_key('manager_pos'):
-    x, y = map(int, cfg.get_list('manager_pos'))
-    m.move(x, y)
-m.dbconnect(dbname)
-m.connect('destroy', main_quit)
+    # setup error handling
+    sys.excepthook = excepthook
+    # setup application instance
+    app = PaellaMainApplication()
+    app.connect(app, SIGNAL('lastWindowClosed()'), app.quit)
 
-for suite in cfg.get_list('management_suites'):
-    sm = SuiteManager(m.conn, suite)
-    if cfg.has_key('%s_pos' % suite):
-        x, y = map(int, cfg.get_list('%s_pos' % suite))
-        sm.move(x, y)
-sys.excepthook = excepthook
-main()
+    # register with dcop
+    dcop = app.dcopClient()
+    appid = dcop.registerAs('paella')
+
+    # create main window
+    manager_type = app.cfg.get('management_gui', 'manager_type')
+    print 'using manager type', manager_type
+    # determine which type of windows will be used
+    if manager_type == 'listbox_select':
+        win = PaellaMainWindowSmall()
+    else:
+        # default to regular window if bad option value
+        win = PaellaMainWindow()
+
+    win.show()
+
+    # set main window in application
+    app.setMainWidget(win)
+
+    # start application loop
+    import profile
+    profile.run('app.exec_loop()')
+    #app.exec_loop()
+    

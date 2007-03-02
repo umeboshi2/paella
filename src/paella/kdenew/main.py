@@ -136,7 +136,7 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
                      SIGNAL('selectionChanged()'),
                      self.selectionChanged)
         tables = self.cursor.tables()
-        print 'tables', tables
+        #print 'tables', tables
         if not tables:
             msg = 'There are no tables in the database.\n'
             msg += 'Please import a database.'

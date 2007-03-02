@@ -33,6 +33,7 @@ class ParentAssigner(BaseAssigner):
         
     def initView(self):
         traits = self.trait.get_trait_list()
+        traits.sort()
         parents = self.trait.parents()
         traits = [t for t in traits if t != self.trait.current_trait]
         abox = self.listBox.availableListBox()
