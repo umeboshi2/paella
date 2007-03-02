@@ -15,11 +15,11 @@ from useless.kdebase.dialogs import BaseAssigner
 from useless.kdebase.dialogs import BaseRecordDialog
 from useless.kdebase.mainwin import BaseSplitWindow
 
-from paella.kdenew.base import split_url
-from paella.kdenew.base.viewbrowser import ViewBrowser
-from paella.kdenew.base.mainwin import BasePaellaWindow
-from paella.kdenew.base.dialogs import SuiteSelectDialog
-from paella.kdenew.docgen.profile import ProfileDoc
+from paella.kde.base import split_url
+from paella.kde.base.viewbrowser import ViewBrowser
+from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.base.dialogs import SuiteSelectDialog
+from paella.kde.docgen.profile import ProfileDoc
 
 class TraitAssigner(BaseAssigner):
     def __init__(self, parent, profile):

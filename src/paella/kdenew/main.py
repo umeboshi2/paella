@@ -19,23 +19,23 @@ from paella.db import PaellaConnection
 from paella.db.main import DatabaseManager
 
 # import actions
-from paella.kdenew.base.actions import ManageFamilies
-from paella.kdenew.base.actions import EditTemplateAction
-from paella.kdenew.base.actions import ManageSuiteAction
-from paella.kdenew.base.actions import ImportDatabaseAction
-from paella.kdenew.base.actions import ExportDatabaseAction
+from paella.kde.base.actions import ManageFamilies
+from paella.kde.base.actions import EditTemplateAction
+from paella.kde.base.actions import ManageSuiteAction
+from paella.kde.base.actions import ImportDatabaseAction
+from paella.kde.base.actions import ExportDatabaseAction
 
 
-from paella.kdenew.base.mainwin import BasePaellaWindow
+from paella.kde.base.mainwin import BasePaellaWindow
 
 # import child windows
-from paella.kdenew.trait.main import TraitMainWindow
-from paella.kdenew.differ import DifferWindow
-from paella.kdenew.profile import ProfileMainWindow
-from paella.kdenew.environ import EnvironmentWindow
-from paella.kdenew.family import FamilyMainWindow
-from paella.kdenew.machine.main import MachineMainWindow
-from paella.kdenew.clients import ClientsMainWindow
+from paella.kde.trait.main import TraitMainWindow
+from paella.kde.differ import DifferWindow
+from paella.kde.profile import ProfileMainWindow
+from paella.kde.environ import EnvironmentWindow
+from paella.kde.family import FamilyMainWindow
+from paella.kde.machine.main import MachineMainWindow
+from paella.kde.clients import ClientsMainWindow
 
 class PaellaMainApplication(KApplication):
     def __init__(self):

@@ -3,7 +3,7 @@ from kdecore import KShortcut
 from kdeui import KGuiItem, KAction
 
 from useless.kdebase.actions import BaseItem
-from paella.kdenew.base.actions import BaseAction
+from paella.kde.base.actions import BaseAction
         
 class ManageMachinesItem(BaseItem):
     def __init__(self):

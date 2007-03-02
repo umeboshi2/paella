@@ -5,8 +5,8 @@ from kdeui import KPopupMenu
 
 from useless.kdebase import get_application_pointer
 
-from paella.kdenew.base.widgets import PaellaManagerWidget
-from paella.kdenew.base.mainwin import BasePaellaWindow
+from paella.kde.base.widgets import PaellaManagerWidget
+from paella.kde.base.mainwin import BasePaellaWindow
 
 from viewbrowser import MachineView
 from viewbrowser import MachineTypeView

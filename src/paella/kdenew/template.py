@@ -15,15 +15,15 @@ from useless.kdebase import get_application_pointer
 
 from paella.db.trait import Trait
 
-from paella.kdenew.base.actions import ChangeSuiteAction
+from paella.kde.base.actions import ChangeSuiteAction
 
-from paella.kdenew.differ import TraitListView
+from paella.kde.differ import TraitListView
 
 # we may need the SuiteSelector later
 #from paella.kde.db.gui import dbwidget, SuiteSelector
 
 import warnings
-warnings.warn('paella.kdenew.template needs to be cleaned up some',
+warnings.warn('paella.kde.template needs to be cleaned up some',
               RuntimeWarning, stacklevel=2)
 
 

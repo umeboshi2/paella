@@ -10,10 +10,10 @@ from paella.db.family import Family
 from useless.kdebase import get_application_pointer
 from useless.kdebase.mainwin import BaseSplitWindow
 
-from paella.kdenew.base import split_url
-from paella.kdenew.base.viewbrowser import ViewBrowser
-from paella.kdenew.base.mainwin import BasePaellaWindow
-from paella.kdenew.docgen.family import FamilyDoc
+from paella.kde.base import split_url
+from paella.kde.base.viewbrowser import ViewBrowser
+from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.docgen.family import FamilyDoc
 
 class FamilyView(ViewBrowser):
     def __init__(self, parent):

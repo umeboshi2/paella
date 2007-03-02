@@ -6,13 +6,13 @@ from useless.base.util import strfile
 from useless.kdebase import get_application_pointer
 from useless.kdebase.dialogs import BaseRecordDialog
 
-from paella.kdenew.base import split_url
-from paella.kdenew.base.viewbrowser import ViewBrowser
+from paella.kde.base import split_url
+from paella.kde.base.viewbrowser import ViewBrowser
 
 # import document objects
-from paella.kdenew.docgen.machine import MachineDoc
-from paella.kdenew.docgen.machine import MachineTypeDoc
-from paella.kdenew.docgen.machine import FilesystemDoc
+from paella.kde.docgen.machine import MachineDoc
+from paella.kde.docgen.machine import MachineTypeDoc
+from paella.kde.docgen.machine import FilesystemDoc
 
 from base import NewMachineDialog
 from base import NewMTScriptDialog

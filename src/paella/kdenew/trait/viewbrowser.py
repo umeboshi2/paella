@@ -13,10 +13,10 @@ from useless.base.util import strfile
 from useless.kdebase.dialogs import BaseRecordDialog
 
 from paella.db.trait import Trait
-from paella.kdenew.base import split_url
-from paella.kdenew.base.viewbrowser import ViewBrowser
-from paella.kdenew.base.recordedit import BaseVariablesEditor
-from paella.kdenew.base.mainwin import BasePaellaWindow
+from paella.kde.base import split_url
+from paella.kde.base.viewbrowser import ViewBrowser
+from paella.kde.base.recordedit import BaseVariablesEditor
+from paella.kde.base.mainwin import BasePaellaWindow
 
 from base import ParentAssigner
 from base import ViewWindow

@@ -21,9 +21,9 @@ from paella.db.trait.relations import TraitTemplate, TraitScript
 from paella.db.family import Family, FamilyVariablesConfig
 
 # for mainwin class
-from paella.kdenew.base.actions import DiffAction
+from paella.kde.base.actions import DiffAction
 
-from paella.kdenew.base.mainwin import BasePaellaWindow
+from paella.kde.base.mainwin import BasePaellaWindow
 
 from useless.kdebase.error import MethodNotImplementedError
 

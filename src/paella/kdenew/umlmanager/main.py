@@ -22,7 +22,7 @@ from paella.uml.base import UmlConfig
 from paella.uml.umlrunner import UmlMachineManager
 
 
-from paella.kdenew.base.viewbrowser import ViewBrowser
+from paella.kde.base.viewbrowser import ViewBrowser
 
 
 # import actions
@@ -33,9 +33,9 @@ from actions import RestoreMachine
 from actions import LaunchMachine
 from actions import EditConfigFile
 
-#from paella.kdenew.base.actions import ManageFamilies
-#from paella.kdenew.base.actions import EditTemplateAction
-#from paella.kdenew.base.actions import ManageSuiteAction
+#from paella.kde.base.actions import ManageFamilies
+#from paella.kde.base.actions import EditTemplateAction
+#from paella.kde.base.actions import ManageSuiteAction
 
 from docgen import UmlMachineDoc
 

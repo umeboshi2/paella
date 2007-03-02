@@ -14,8 +14,8 @@ from useless.kdebase.dialogs import BaseRecordDialog
 
 from paella.db.trait.main import Trait
 
-from paella.kdenew.base.mainwin import BasePaellaWindow
-from paella.kdenew.base.dialogs import NewTraitVariableDialog
+from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.base.dialogs import NewTraitVariableDialog
 
 class TemplateHighlighter(QSyntaxHighlighter):
     def highlightParagraph(self, text, endStateOfLastPara):

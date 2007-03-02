@@ -15,8 +15,8 @@ from paella.db import CurrentEnvironment
 
 from useless.kdebase import get_application_pointer
 
-from paella.kdenew.base.mainwin import BasePaellaWindow
-from paella.kdenew.base.actions import EditAction
+from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.base.actions import EditAction
 
 ETYPE = { 'default' : DefaultEnvironment,
           'current' : CurrentEnvironment

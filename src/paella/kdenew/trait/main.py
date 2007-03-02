@@ -9,7 +9,7 @@ from useless.kdebase.dialogs import BaseRecordDialog
 
 from paella.db.trait import Trait
 
-from paella.kdenew.base.mainwin import BasePaellaWindow
+from paella.kde.base.mainwin import BasePaellaWindow
 
 from viewbrowser import TraitView
 

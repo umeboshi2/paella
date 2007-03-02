@@ -5,9 +5,9 @@ from kdeui import KStdAction
 
 from paella.db.trait.relations import TraitParent, TraitEnvironment
 
-from paella.kdenew.base.mainwin import BasePaellaWindow
-from paella.kdenew.base.recordedit import BaseVariablesEditor
-from paella.kdenew.base.dialogs import NewTraitVariableDialog
+from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.base.recordedit import BaseVariablesEditor
+from paella.kde.base.dialogs import NewTraitVariableDialog
 
 class TraitVariablesEditor(BaseVariablesEditor):
     def __init__(self, parent, suite, trait, name='TraitVariablesEditor'):

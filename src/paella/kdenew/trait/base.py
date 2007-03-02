@@ -10,7 +10,7 @@ from useless.kdebase.dialogs import BaseAssigner
 
 from paella.db.trait import Trait
 
-from paella.kdenew.base.mainwin import BasePaellaWindow
+from paella.kde.base.mainwin import BasePaellaWindow
 
 class ViewWindow(BasePaellaWindow):
     def __init__(self, parent, view, name='ViewWindow'):
