@@ -66,19 +66,9 @@ Package: paella-admin
 Section: admin
 Priority: optional
 Architecture: any
-Depends: paella-db, paella-dbgtk, xxdiff
-Description: package for configuration of profiles
-    This package should be installed on the developer's machine
-
-Package: paella-kde-admin
-Section: admin
-Priority: extra
-Architecture: any
 Depends: useless-kdb, paella-db, xxdiff
 Description: package for configuration of profiles
- This package should be installed on the developer's machine.
- This package depends indirectly on python-kde which is not in
- sarge.
+    This package should be installed on the developer's machine
 
 Package: paella-db
 Section: optional

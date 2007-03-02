@@ -1,7 +1,7 @@
 import sys, os
 from distutils.core import setup
 
-PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin', 'kde-admin']
+PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin']
 package = None
 if sys.argv[1] in PACKAGES:
     package = sys.argv[1]
@@ -18,8 +18,9 @@ PACKS = {
             'paella/db/trait', 'paella/db/family',
             'paella/db/profile', 'paella/db/machine'],
     'debian' : ['paella/debian', 'paella/debian/newrepos'],
-    'kde-admin' : ['paella/kde', 'paella/kde/base',
-                   'paella/kde/db', 'paella/kde/xmlgen']
+    'admin' : ['paella/kde', 'paella/kde/base', 'paella/kde/trait',
+               'paella/kde/machine', 'paella/kde/docget', 'paella/kde/umlmanager'
+               ]
     }
 
 if package is not None:
