@@ -6,12 +6,12 @@ from kdecore import KCmdLineArgs
 
 from useless.kdebase.error import excepthook
 
-from paella.kdenew.base.about import AboutData
-from paella.kdenew.main import PaellaMainApplication
+from paella.kde.base.about import AboutData
+from paella.kde.main import PaellaMainApplication
 
 # these imports will stay like this until the kdenew is ready to be tested
-from paella.kdenew.main import PaellaMainWindow
-from paella.kdenew.main import PaellaMainWindowSmall
+from paella.kde.main import PaellaMainWindow
+from paella.kde.main import PaellaMainWindowSmall
 
 if __name__ == '__main__':
     aboutData = AboutData()
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     app.setMainWidget(win)
 
     # start application loop
-    import profile
-    profile.run('app.exec_loop()')
-    #app.exec_loop()
+    #import profile
+    #profile.run('app.exec_loop()')
+    app.exec_loop()
     

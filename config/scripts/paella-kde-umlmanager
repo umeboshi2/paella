@@ -4,9 +4,9 @@ from qt import SIGNAL, SLOT
 
 from kdecore import KCmdLineArgs
 
-from paella.kdenew.umlmanager.about import AboutData
-from paella.kdenew.umlmanager.main import UmlManagerApplication
-from paella.kdenew.umlmanager.main import UmlManagerMainWindow
+from paella.kde.umlmanager.about import AboutData
+from paella.kde.umlmanager.main import UmlManagerApplication
+from paella.kde.umlmanager.main import UmlManagerMainWindow
 
 
 if __name__ == '__main__':
