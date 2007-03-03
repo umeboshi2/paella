@@ -1,13 +1,16 @@
 import os
 from os.path import isfile, join, dirname
+import subprocess
 import tarfile
 
 from useless.base.util import makepaths
 from useless.base.tarball import make_tarball
 from useless.base.config import Configuration, list_rcfiles
 
+
 from paella.debian.base import RepositorySource, debootstrap
 from paella.db.base import get_suite
+from paella.installer.util.filesystem import mount_tmpfs
 
 class UmlConfig(Configuration):
     def __init__(self, section='umlmachines',
@@ -125,6 +128,51 @@ class Uml(object):
     def check_host(self):
         if self.mode != 'host':
             raise RuntimeError, 'not in host mode'
+        
+    # the popen and use_pipe will probably be removed later
+    # popen is now ignored use call parameter
+    def run_uml(self, popen=False, use_pipe=False,
+                call=False, stdout=None, stderr=None):
+        self.check_host()
+        cmd = str(self)
+        print 'cmd ->', cmd
+        if call:
+            print 'calling cmd'
+            return subprocess.call(cmd, shell=True)
+        if stderr is None:
+            #stderr = subprocess.STDOUT
+            pass
+        if stdout is None:
+            if use_pipe:
+                stdout = subprocess.PIPE
+        args = dict(shell=True, close_fds=True, stderr=stderr)
+        # test stdout to logfile
+        test_logfile = False
+        if test_logfile:
+            logfile = os.environ['LOGFILE']
+            if os.path.exists(logfile):
+                mode = 'a+'
+            else:
+                mode = 'w'
+            debug('mode', mode)
+            stdout = file(logfile, mode)
+        # done testing stdout to logfile
+        if stdout is not None:
+            args['stdout'] = stdout
+        print 'using popen', stdout
+        self.run_process = subprocess.Popen(cmd, **args)
+        return self.run_process
+            
+    def _init_uml_system(self):
+        self.check_guest()
+        print 'initializing uml system'
+        for target in ['/tmp', '/dev']:
+            mount_tmpfs(target=target)
+        # we need something better here
+        os.system('mknod /dev/null c 1 3')
+        os.system('mknod /dev/ubd0 b 98 0')
+        os.system('mknod /dev/ubd1 b 98 16')
+
         
 
 if __name__ == '__main__':

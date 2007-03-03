@@ -9,9 +9,9 @@ from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
 from paella.base import PaellaConfig
-#from paella.db.schema.paellascheme import insert_packages, make_suite
-from paella.db.schema.paellascheme import SuiteHandler
-from paella.db.schema.paellascheme import start_schema
+
+from paella.db.schema.main import start_schema
+from paella.db.schema.suitehandler import SuiteHandler
 
 from trait import Trait
 from trait.main import TraitsElement

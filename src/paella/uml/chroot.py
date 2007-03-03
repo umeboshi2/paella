@@ -1,8 +1,8 @@
 import os, sys
 from os.path import join
-import subprocess
 
 from useless.base import Error
+from useless.base import debug
 from useless.base.util import makepaths, runlog
 from useless.base.util import parse_proc_mounts
 
@@ -54,37 +54,6 @@ class UmlChroot(Uml):
         self.check_host()
         self.options['ubd1'] = path
 
-    # the popen and use_pipe will probably be removed later
-    def run_uml(self, popen=False, use_pipe=False):
-        self.check_host()
-        #return os.system(str(self))
-        cmd = str(self)
-        if popen:
-            if use_pipe:
-                p = subprocess.Popen(cmd, shell=True,
-                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                     close_fds=True)
-            else:
-                p = subprocess.Popen(cmd, shell=True, close_fds=True)
-        else:
-            p = subprocess.call(cmd, shell=True)
-        self.run_process = p
-        print 'running', p
-        
-        #bgcmd = '%s &' % cmd
-        #return subprocess.call(bgcmd, shell=True)
-        
-    def _init_uml_system(self):
-        self.check_guest()
-        print 'initializing uml system'
-        for target in ['/tmp', '/dev']:
-            mount_tmpfs(target=target)
-        # we need something better here
-        os.system('mknod /dev/null c 1 3')
-        os.system('mknod /dev/ubd0 b 98 0')
-        os.system('mknod /dev/ubd1 b 98 16')
-
-        
     def set_target(self, target='/tmp/target'):
         self.check_guest()
         self.target = target

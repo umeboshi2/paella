@@ -81,14 +81,7 @@ class UmlMachineManager(Uml):
 
     def run_machine(self, init=None):
         self._check_current()
-        machine = self.current
-        cfg = self._make_config(machine)
-        runner = UmlRunner(cfg)
-        runner.set(machine)
-        if init is not None:
-            runner.options['init'] = init
-        runner.run()
-        
+        return self.run_uml()
         
 class UmlRunner(Uml):
     def __init__(self, cfg=None):

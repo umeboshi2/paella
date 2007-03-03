@@ -99,10 +99,31 @@ class TraitDoc(BaseDocument):
         #self.title = SectionTitle('Trait Document')
         #self.title.attributes.update(dict(bgcolor='IndianRed', width='100%'))
         self._sectitle_atts = dict(bgcolor='IndianRed', width='100%')
+        self._show_description = False
 
+    def show_description(self):
+        self._show_description = True
+
+    def hide_description(self):
+        self._show_description = False
+
+    def toggle_description(self):
+        if self._show_description:
+            self.hide_description()
+        else:
+            self.show_description()
+            
     def _make_trait_title(self, trait):
         title = SimpleTitleElement('Trait:  %s' % trait, **self._sectitle_atts)
+        title.cell.append(Anchor('(description)', href='edit.description.%s' % trait))
+        show = '(show)'
+        if self._show_description:
+            show = '(hide)'
+        title.cell.append(Anchor(show, href='show.description.%s' % trait))
         return title
+
+    def _make_desc_section(self, trait):
+        return self.trait.get_description()
     
     def _make_parent_section(self, trait):
         parent_section = SimpleTitleElement('Parents', **self._sectitle_atts)
@@ -179,7 +200,10 @@ class TraitDoc(BaseDocument):
     def set_trait(self, trait):
         self.clear_body()
         self.trait.set_trait(trait)
-        order = [self._make_trait_title,
+        order = [self._make_trait_title]
+        if self._show_description:
+            order.append(self._make_desc_section)
+        order += [
                  self._make_parent_section,
                  self._make_parent_list,
                  self._make_packages_section,
@@ -189,7 +213,8 @@ class TraitDoc(BaseDocument):
                  self._make_variables_section,
                  self._make_variables_table,
                  self._make_scripts_section,
-                 self._make_scripts_list]
+                 self._make_scripts_list
+                 ]
         for method in order:
             chunk = method(trait)
             if chunk is not None:

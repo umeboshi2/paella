@@ -1,5 +1,5 @@
 import os
-from os.path import dirname, join
+
 from sets import Set
 from xml.dom.minidom import Element
 from tarfile import TarFile
@@ -38,14 +38,14 @@ def store_trait(traittemplate, tmpl_path, bkup_path, name):
     conn = traittemplate.conn
     xmldata = TraitElement(conn, suite)
     xmldata.set(trait)
-    root_path = join(bkup_path, suite, trait, name)
+    root_path = os.path.join(bkup_path, suite, trait, name)
     os.system('rm %s -fr' %root_path)
     makepaths(root_path)
-    xmlfile = file(join(root_path, 'trait.xml'), 'w')
+    xmlfile = file(os.path.join(root_path, 'trait.xml'), 'w')
     xmlfile.write(xmldata.toprettyxml())
     xmlfile.close()
     traittemplate.set_template_path(tmpl_path)
-    traittemplate.backup_templates(join(root_path, 'templates'))
+    traittemplate.backup_templates(os.path.join(root_path, 'templates'))
     
 
 def backup_trait(conn, suite, trait, tball_path):
@@ -73,11 +73,11 @@ class TraitTarFile(TarFile):
         return TraitXml(self.extractfile('trait.xml'))    
 
     def get_template(self, package, template):
-        path = join('templates', package, template + '.template')
+        path = os.path.join('templates', package, template + '.template')
         return self.extractfile(path)
 
     def get_script(self, name):
-        path = join('scripts', name)
+        path = os.path.join('scripts', name)
         return self.extractfile(path)
     
 
@@ -234,9 +234,6 @@ class Trait(object):
     def insert_trait(self, path, suite=None):
         #tar = TraitTarFile(path)
         #trait = tar.get_trait()
-        trait = TraitXml(file(join(path, 'trait.xml')))
-        if suite is not None:
-            trait.suite = suite
         trait = self.parse_trait_xml(path, suite=suite)
         all = Set([x.trait for x in self._alltraits.select()])
         suite_traits = Set([x.trait for x in self._traits.select()])
@@ -249,8 +246,13 @@ class Trait(object):
         idata ={'trait' : trait.name}
         if trait.name not in all:
             self._alltraits.insert(data=idata)
+        description_path = os.path.join(path, 'description.txt')
+        if os.path.isfile(description_path):
+            idata['description'] = file(description_path).read()            
         if trait.name not in suite_traits:
             self._traits.insert(data=idata)
+        else:
+            raise RuntimeError, '%s already there' % trait.name
         lasttrait = self.current_trait
         self._parents.set_trait(trait.name)
         self._packages.set_trait(trait.name)
@@ -264,11 +266,11 @@ class Trait(object):
             #print template, data
             #templatefile = tar.get_template(data['package'], template)
             template_id = template.replace('/', '-slash-')
-            template_filename = join(path, 'template-%s' % template_id)
+            template_filename = os.path.join(path, 'template-%s' % template_id)
             if not os.path.exists(template_filename):
                 print "in suite %s trait %s" % (suite, trait.name)
                 print "exported template %s not converted yet" % template
-                template_filename = join(path, 'template-%d' % n)
+                template_filename = os.path.join(path, 'template-%d' % n)
             templatefile = file(template_filename)
             idata = {'template' : template}
             #print idata
@@ -278,7 +280,7 @@ class Trait(object):
             n += 1
         for script in trait.scripts:
             #scriptfile = tar.get_script(script)
-            scriptfile = file(join(path, 'script-%s' % script))
+            scriptfile = file(os.path.join(path, 'script-%s' % script))
             self._scripts.insert_script(script, scriptfile)
         environ = TraitEnvironment(self.conn, suite, trait.name)
         environ.update(trait.environ)
@@ -287,11 +289,16 @@ class Trait(object):
     def export_trait(self, suite_path):
         xmldata = TraitElement(self.conn, self.suite)
         xmldata.set(self.current_trait)
-        bkup_path = join(suite_path, self.current_trait)
+        bkup_path = os.path.join(suite_path, self.current_trait)
         makepaths(bkup_path)
-        xmlfile = file(join(bkup_path, 'trait.xml'), 'w')
+        xmlfile = file(os.path.join(bkup_path, 'trait.xml'), 'w')
         xmlfile.write(xmldata.toprettyxml())
         xmlfile.close()
+        row = self._traits.select_row(clause=Eq('trait', self.current_trait))
+        if row['description'] is not None:
+            descfile = file(os.path.join(bkup_path, 'description.txt'), 'w')
+            descfile.write(row['description'])
+            descfile.close()
         self._templates.export_templates(bkup_path)
         self._scripts.export_scripts(bkup_path)
         #print 'all exported', os.listdir(bkup_path)

@@ -1,38 +1,4 @@
-import os
-
-from useless.base import Error, debug
-from useless.base.util import ujoin, makepaths
-from useless.base.util import readfile, wget, strfile
-
-from paella.debian.base import RepositorySource
-from paella.debian.repos import LocalRepos
-from paella.debian.repos import RemoteRepos
-
-from useless.sqlgen.classes import Column, Table
-from useless.sqlgen.defaults import Text, DefaultNamed, Bool
-from useless.sqlgen.defaults import PkBigname, Bigname, Name, Num
-from useless.sqlgen.defaults import PkBignameTable, PkNameTable, PkName
-
-from useless.sqlgen.statement import Statement
-from useless.sqlgen.admin import grant_public
-from useless.sqlgen.clause import Eq
-
-from useless.db.lowlevel import OperationalError
-from useless.db.midlevel import StatementCursor
-
 from useless.db.plsql import pgsql_delete
-
-from paella_tables import suite_tables, primary_tables, primary_sequences
-from paella_tables import packages_columns, SCRIPTS
-from paella_tables import MTSCRIPTS
-
-from paella import deprecated
-
-PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
-SUITES = ['sid', 'woody'] 
-
-
-
 
 plpgsql_delete_trait = """create or replace function delete_trait(varchar, varchar) returns integer as '
 	begin
@@ -67,14 +33,16 @@ def pgsql_delete_filesystem():
     tables = ['filesystem_mounts', 'filesystems']
     return pgsql_delete('delete_filesystem', tables, 'filesystem')
 
+def create_pgsql_functions(cursor):
+    cursor.execute(plpgsql_delete_trait)
+    cursor.execute(pgsql_delete_profile())
+    cursor.execute(pgsql_delete_family())
+    cursor.execute(pgsql_delete_disk())
+    cursor.execute(pgsql_delete_mtype())
+    cursor.execute(pgsql_delete_filesystem())
+
 
     
 
 if __name__ == '__main__':
-    from useless.db.lowlevel import QuickConn
-    from useless.db.midlevel import StatementCursor
-    from paella.debian.base import parse_packages, full_parse
-    #cmd = CommandCursor(c, 'dsfsdf')
-    def dtable():
-        cmd.execute('drop table ptable')
-
+    pass

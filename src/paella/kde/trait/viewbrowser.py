@@ -17,6 +17,7 @@ from paella.kde.base import split_url
 from paella.kde.base.viewbrowser import ViewBrowser
 from paella.kde.base.recordedit import BaseVariablesEditor
 from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.base.mainwin import BaseTextEditWindow
 
 from base import ParentAssigner
 from base import ViewWindow
@@ -25,6 +26,36 @@ from base import ScriptNameDialog
 from docgen import TraitDoc
 from template import TemplateViewWindow
 from traitvariables import TraitVariablesWindow
+
+class TraitDescriptionWindow(BaseTextEditWindow):
+    def __init__(self, parent, trait, suite, name='TraitDescriptionWindow'):
+        BaseTextEditWindow.__init__(self, parent, KTextEdit, name=name)
+        self.initPaellaCommon()
+        self.trait = Trait(self.conn, suite=suite)
+        self.trait.set_trait(trait)
+        self.resize(600, 800)
+        desc = self.trait.get_description()
+        if desc is not None:
+            self.mainView.setText(desc)
+
+    def _status_msg(self, status=None):
+        msg = 'Description of trait %s' % self.trait.current_trait
+        if status is None:
+            return msg
+        else:
+            return '%s %s' % (status, msg)
+        
+    def slotSave(self):
+        text = str(self.mainView.text())
+        oldtext = self.trait.get_description()
+        if oldtext is None:
+            oldtext = ''
+        if oldtext != text:
+            self.trait.set_description(text)
+            self._update_status('Saved')
+        else:
+            KMessageBox.information(self, 'Nothing has changed')
+            self._update_status()
         
 class TraitView(ViewBrowser):
     # The TraitDoc holds the main traitdb object
@@ -63,6 +94,7 @@ class TraitView(ViewBrowser):
             raise NotImplementedError(self, url)
 
     def _perform_show_action(self, context, ident):
+        win = None
         if context == 'parent':
             mainwin = self.parent().parent()
             winclass = mainwin.__class__
@@ -84,9 +116,13 @@ class TraitView(ViewBrowser):
             scriptfile = self.doc.trait._scripts.scriptdata(ident)
             win = ViewWindow(self.parent(), KTextEdit, name='ScriptView')
             win.mainView.setText(scriptfile)
+        elif context == 'description':
+            self.doc.toggle_description()
+            self.resetView()
         else:
             raise MethodNotImplementedError(self, 'TraitView._perform_show_action')
-        win.show()
+        if win is not None:
+            win.show()
         
     def _perform_edit_action(self, context, ident):
         if context == 'templates':
@@ -128,7 +164,10 @@ class TraitView(ViewBrowser):
             win.connect(win, SIGNAL('okClicked()'), self.slotUpdateTemplateData)
             win.show()
             self._dialog = win
-            
+        elif context == 'description':
+            #KMessageBox.information(self, 'edit description for %s' % ident)
+            win = TraitDescriptionWindow(self, ident, self.doc.suite)
+            win.show()
         else:
             raise MethodNotImplementedError(self, 'TraitView._perform_edit_action')
         

@@ -14,7 +14,9 @@ from useless.kdebase.dialogs import BaseRecordDialog
 
 from paella.db.trait.main import Trait
 
-from paella.kde.base.mainwin import BasePaellaWindow
+#from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.base.mainwin import BaseTextEditWindow
+
 from paella.kde.base.dialogs import NewTraitVariableDialog
 
 class TemplateHighlighter(QSyntaxHighlighter):
@@ -36,7 +38,6 @@ class TemplateTextEdit(KTextEdit):
         KTextEdit.__init__(self, parent, name)
         self.app = get_application_pointer()
         self.hl = TemplateHighlighter(self)
-        self.trait = parent.trait
 
     def createPopupMenu(self, pos=None):
         if pos is None:
@@ -107,26 +108,17 @@ class TemplateTextEdit(KTextEdit):
         self._dialog = None
         self.tag_selection(self.trait.current_trait, name)
         
-        
-        
-            
-class TemplateViewWindow(BasePaellaWindow):
+
+class TemplateViewWindow(BaseTextEditWindow):
     def __init__(self, parent, suite, trait, template, name='TemplateViewWindow'):
-        BasePaellaWindow.__init__(self, parent, name=name)
+        BaseTextEditWindow.__init__(self, parent, TemplateTextEdit, name=name)
         self.initPaellaCommon()
         self.trait = Trait(self.conn, suite=suite)
+        self.mainView.trait = self.trait
         self.trait.set_trait(trait)
-        self.mainView = TemplateTextEdit(self)
-        self.connect(self.mainView, SIGNAL('textChanged()'), self.slotTextChanged)
-        self.statusBar()
-        self.setCentralWidget(self.mainView)
         self.resize(600, 800)
-        self.initActions()
-        self.initMenus()
-        self.initToolbar()
         self.set_template(template)
-        
-
+            
     def set_template(self, template):
         self.current_template = template
         self._set_template()
@@ -150,9 +142,8 @@ class TemplateViewWindow(BasePaellaWindow):
         self._update_status()
     
     def initActions(self):
+        BaseTextEditWindow.initActions(self)
         collection = self.actionCollection()
-        self.quitAction = KStdAction.quit(self.close, collection)
-        self.saveAction = KStdAction.save(self.slotSave, collection)
         self.newAction = KStdAction.openNew(self.mainView.slotCreateNewVariable, collection)
         
     def initMenus(self):
@@ -161,14 +152,9 @@ class TemplateViewWindow(BasePaellaWindow):
     def initToolbar(self):
         toolbar = self.toolBar()
         self.newAction.plug(toolbar)
-        self.saveAction.plug(toolbar)
-        self.quitAction.plug(toolbar)
+        BaseTextEditWindow.initToolbar(self)
 
-    def slotTextChanged(self):
-        self._update_status('CHANGED')
-        
     def slotSave(self):
-        #data = dict(template=self.current_template)
         text = str(self.mainView.text())
         oldtext = self.trait.get_template_contents(self.current_template)
         if oldtext != text:
