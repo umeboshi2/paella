@@ -7,7 +7,7 @@ from kdecore import KCmdLineArgs
 from useless.kdebase.error import excepthook
 
 from paella.kde.base.about import AboutData
-from paella.kde.main import PaellaMainApplication
+from paella.kde.application import PaellaMainApplication
 
 # these imports will stay like this until the kdenew is ready to be tested
 from paella.kde.main import PaellaMainWindow

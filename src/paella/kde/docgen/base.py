@@ -170,4 +170,3 @@ class TraitTable(Table):
             tablerow.append(TableCell(row.ord))
             self.append(tablerow)
 
-# first draft completed

@@ -109,3 +109,37 @@ class ExportDatabaseAction(BaseAction):
         BaseAction.__init__(self, ExportDatabaseItem(), 'ExportDatabaseAction',
                             slot, parent)
         
+class ConnectDatabaseItem(BaseItem):
+    def __init__(self):
+        tt = 'Connect to a database'
+        BaseItem.__init__(self, 'Connect to database', 'connect_creating', tt, tt)
+        
+class ConnectDatabaseAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ConnectDatabaseItem(), 'ConnectDatabaseAction',
+                            slot, parent)
+        
+class DisconnectDatabaseItem(BaseItem):
+    def __init__(self):
+        tt = 'Disconnect from a database'
+        BaseItem.__init__(self, 'Disconnect from database', 'disconnect', tt, tt)
+        
+class DisconnectDatabaseAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, DisconnectDatabaseItem(), 'DisconnectDatabaseAction',
+                            slot, parent)
+        
+dbactions = dict(export=ExportDatabaseAction,
+                 connect=ConnectDatabaseAction, disconnect=DisconnectDatabaseAction)
+dbactions['import'] = ImportDatabaseAction
+
+class ManageAptSourcesItem(BaseItem):
+    def __init__(self):
+        tt = 'Manage Apt Sources'
+        BaseItem.__init__(self, tt, 'player_playlist', tt, tt)
+
+class ManageAptSourcesAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageAptSourcesItem(), 'ManageAptSourcesAction',
+                            slot, parent)
+        

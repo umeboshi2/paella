@@ -148,17 +148,14 @@ class ProfileFamilyTable(Table):
 def trait_columns():
     return [
         PkName('trait'),
-        Name('priority'),
         Text('description')]
 
 class TraitTable(Table):
-    def __init__(self, suite, traits_table, prio_table):
+    def __init__(self, suite, traits_table):
         tablename = ujoin(suite, 'traits')
         columns = trait_columns()
         trait = getcolumn('trait', columns)
-        priority = getcolumn('priority', columns)
         trait.set_fk(traits_table)
-        priority.set_fk(prio_table)
         Table.__init__(self, tablename, columns)
 
 class PackagesTable(Table):
@@ -392,7 +389,7 @@ class MachinesTable(Table):
 
 def suite_tables(suite):
     pack_table = PackagesTable(suite)
-    trait_table = TraitTable(suite, 'traits', 'priorities')
+    trait_table = TraitTable(suite, 'traits')
     trait_parent = TraitParent(suite, trait_table.name)
     trait_package = TraitPackage(suite, trait_table.name, pack_table.name)
     trait_variable = TraitEnvironment(suite, trait_table.name)

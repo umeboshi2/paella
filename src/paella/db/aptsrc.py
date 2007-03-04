@@ -16,8 +16,14 @@ class AptSourceHandler(object):
         self.conn = conn
         self.cursor = self.conn.cursor(statement=True)
         self.local_mirror = 'file:/tmp/paellamirror'
-        
 
+    def get_apt_rows(self):
+        return self.cursor.select(table='apt_sources', order=['apt_id'])
+    
+    def get_apt_row(self, apt_id):
+        clause = Eq('apt_id', apt_id)
+        return self.cursor.select_row(table='apt_sources', clause=clause)
+    
     def insert_packages(self, apt_id, uri=None):
         repos = self._make_repository(apt_id, uri)
         self._get_packages_file(repos)
@@ -52,7 +58,10 @@ class AptSourceHandler(object):
         return packages
     
     def report_package_inserted(self, package):
-        print 'package %s inserted' % package['package']
+        debug('package %s inserted' % package['package'])
+
+    def report_total_packages(self, total):
+        print "%s packages" % total
         
 
     def _make_repository_source(self, apt_id, uri=None):

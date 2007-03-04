@@ -35,6 +35,36 @@ from aptsrc import AptSourceHandler
 # imports for ClientManager
 from useless.base.config import Configuration
 
+class PaellaDatabaseElement(Element):
+    def __init__(self, conn, path='/'):
+        Element.__init__(self, 'paelladatabase')
+        self.aptsources = AptSourceListElement()
+        self.appendChild(self.aptsources)
+        self.suites_element = SuitesElement()
+        self.suites = {}
+        self.appendChild(self.suites)
+        
+    def append_apt_source(self, apt_id, uri, dist, sections, local_path):
+        element = AptSourceElement(apt_id, uri, dist, sections, local_path)
+        self.aptsources.appendChild(element)
+        
+
+    def append_suite(self, suite):
+        element = SuiteElement(suite)
+        self.suites[suite] = element
+        self.suites_element.appendChild(element)
+
+    def append_suite_apt_source(self, suite, apt_id, order):
+        element = SuiteAptElement(suite, apt_id, order)
+        self.suites[suite].appendChild(element)
+
+    
+class PaellaExporter(object):
+    def __init__(self, conn):
+        self.conn = conn
+        self.stmt = StatementCursor(self.conn)
+        self.element = Element('paelladatabase')
+
 #generate xml        
 class PaellaDatabase(Element):
     def __init__(self, conn, path='/'):
@@ -123,8 +153,9 @@ class PaellaProcessor(object):
 
     def start_schema(self):
         start_schema(self.conn)
+
+    def insert_apt_sources(self):
         self._insert_aptsources()
-        self._sync_suites()
 
     def _sync_suites(self):
         self.main.set_table('suites')
@@ -283,6 +314,8 @@ class DatabaseManager(object):
         self.conn = conn
         self.import_dir = self.cfg.get('database', 'import_path')
         self.export_dir = self.cfg.get('database', 'export_path')
+        self.importer = PaellaProcessor(self.conn, self.cfg)
+        #self.exporter = PaellaDatabase(self.conn, '/')
 
     def backup(self, path):
         if not os.path.isdir(path):

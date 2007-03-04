@@ -1,8 +1,5 @@
 from qt import SIGNAL
-
-from kdecore import KApplication
-from kdecore import KStandardDirs
-
+from qt import PYSIGNAL
 from kdeui import KPopupMenu
 from kdeui import KStdAction
 from kdeui import KMessageBox
@@ -12,9 +9,6 @@ from kfile import KDirSelectDialog
 
 from useless.kdebase.mainwin import BaseMainWindow
 
-from paella.base import PaellaConfig
-from paella.db import PaellaConnection
-
 # database manager
 from paella.db.main import DatabaseManager
 
@@ -22,11 +16,15 @@ from paella.db.main import DatabaseManager
 from paella.kde.base.actions import ManageFamilies
 from paella.kde.base.actions import EditTemplateAction
 from paella.kde.base.actions import ManageSuiteAction
-from paella.kde.base.actions import ImportDatabaseAction
-from paella.kde.base.actions import ExportDatabaseAction
-
+#from paella.kde.base.actions import ImportDatabaseAction
+#from paella.kde.base.actions import ExportDatabaseAction
+#from paella.kde.base.actions import ConnectDatabaseAction
+#from paella.kde.base.actions import DisconnectDatabaseAction
+from paella.kde.base.actions import dbactions
+from paella.kde.base.actions import ManageAptSourcesAction
 
 from paella.kde.base.mainwin import BasePaellaWindow
+from paella.kde.base.dialogs import PaellaConnectionDialog
 
 # import child windows
 from paella.kde.trait.main import TraitMainWindow
@@ -36,53 +34,55 @@ from paella.kde.environ import EnvironmentWindow
 from paella.kde.family import FamilyMainWindow
 from paella.kde.machine.main import MachineMainWindow
 from paella.kde.clients import ClientsMainWindow
-
-class PaellaMainApplication(KApplication):
-    def __init__(self):
-        KApplication.__init__(self)
-        self.cfg = PaellaConfig()
-        self.conn = PaellaConnection(self.cfg)
-        dirs = KStandardDirs()
-        self.tmpdir = str(dirs.findResourceDir('tmp', '/'))
-        self.datadir = str(dirs.findResourceDir('data', '/'))
-        # I probably don't need the socket dir
-        self.socketdir = str(dirs.findResourceDir('socket', '/'))
+from paella.kde.dbmanager import AptSourceMainWindow
 
 class BasePaellaMainWindow(BasePaellaWindow):
     def __init__(self, parent=None, name='BasePaellaMainWindow'):
         BasePaellaWindow.__init__(self, None, name)
         self.initPaellaCommon()
+        self._suites = []
         # make a cursor
-        self.cursor = self.conn.cursor(statement=True)
-        # figure out what suites are available
-        if 'suites' in self.cursor.tables():
-            self._suites = [row.suite for row in self.cursor.select(table='suites')]
-        else:
-            self._suites = []
+        if self.conn is not None:
+            self.cursor = self.conn.cursor(statement=True)
+            # figure out what suites are available
+            if 'suites' in self.cursor.tables():
+                self._suites = [row.suite for row in self.cursor.select(table='suites')]
         # setup actions, menus, and toolbar
         self.initActions()
         self.initMenus()
         self.initToolbar()
-
+        self.statusbar = self.statusBar()
+        self.statusbar.message('Disconnected')
+        
         # setup dialog pointers
         self._import_export_dirsel_dialog = None
         
     def initActions(self):
         collection = self.actionCollection()
-        self.manageFamiliesAction = ManageFamilies(self.slotManageFamilies,
-                                                   collection)
-        self.editTemplatesAction = EditTemplateAction(self.slotEditTemplates,
-                                                      collection)
+        self.manageFamiliesAction = \
+                                  ManageFamilies(self.slotManageFamilies,
+                                                 collection)
+        self.editTemplatesAction = \
+                                 EditTemplateAction(self.slotEditTemplates,
+                                                    collection)
+        self.manageAptSourcesAction = \
+                                    ManageAptSourcesAction(self.slotManageAptSources,
+                                                           collection)
         # in the main window assign quit to app.quit
         self.quitAction = KStdAction.quit(self.app.quit, collection)
         self.suiteActions = {}
         for suite in self._suites:
             self.suiteActions[suite] = ManageSuiteAction(suite,
                                                          self.slotManageSuite, collection)
-        self.dbactions = {}
-        self.dbactions['import'] = ImportDatabaseAction(self.slotImportDatabase, collection)
-        self.dbactions['export'] = ExportDatabaseAction(self.slotExportDatabase, collection)
-        
+        # define database action slots
+        self._dbactionslots = dict(export=self.slotExportDatabase,
+                                   connect=self.slotConnectDatabase,
+                                   disconnect=self.slotDisconnectDatabase)
+        # don't collide with keyword
+        self._dbactionslots['import'] = self.slotImportDatabase
+        self.dbactions = dict()
+        for action in dbactions.keys():
+            self.dbactions[action] = dbactions[action](self._dbactionslots[action], collection)
         # these will be similar to suiteActions
         # where the key is the context
         self.environActions = {}
@@ -91,33 +91,79 @@ class BasePaellaMainWindow(BasePaellaWindow):
     def initMenus(self):
         mainmenu = KPopupMenu(self)
         dbmenu = KPopupMenu(self)
-        suitemenu = KPopupMenu(self)
+        self.suitemenu = KPopupMenu(self)
         suite_actions = self.suiteActions.values()
-        main_actions = [self.manageFamiliesAction,
+        main_actions = [self.manageAptSourcesAction,
+                        self.manageFamiliesAction,
                         self.editTemplatesAction,
                         self.quitAction]
-        dbactions = [self.dbactions[action] for action in ('import', 'export')]
+        actions = ['connect', 'disconnect', 'import', 'export']
+        dbactions = [self.dbactions[action] for action in actions]
         menubar = self.menuBar()
         menubar.insertItem('&Main', mainmenu)
         menubar.insertItem('&Database', dbmenu)
-        menubar.insertItem('&Suite', suitemenu)
+        menubar.insertItem('&Suite', self.suitemenu)
         menubar.insertItem('&Help', self.helpMenu(''))
         for action in main_actions:
             action.plug(mainmenu)
         for action in dbactions:
             action.plug(dbmenu)
         for action in suite_actions:
-            action.plug(suitemenu)
+            action.plug(self.suitemenu)
         
     def initToolbar(self):
         toolbar = self.toolBar()
-        actions = [self.manageFamiliesAction,
+        actions = [self.dbactions['connect'],
+                   self.dbactions['disconnect'],
+                   self.manageAptSourcesAction,
+                   self.manageFamiliesAction,
                    self.editTemplatesAction,
                    self.quitAction]
         for action in actions:
             action.plug(toolbar)
             
 
+    def slotConnectDatabase(self):
+        win = PaellaConnectionDialog(self)
+        dsn = self.cfg.get_dsn()
+        fields = ['dbhost', 'dbname', 'dbusername']
+        data = dict([(f, dsn[f]) for f in fields])
+        win.setRecordData(data)
+        win.connect(win, SIGNAL('okClicked()'), win.slotConnectDatabase)
+        win.connect(win, PYSIGNAL('dbconnected(data)'), self.slotDbConnected)
+        win.show()
+
+    def slotDisconnectDatabase(self):
+        self.app.disconnect_database()
+        self.statusbar.message('Disconnected')
+        
+    def slotDbConnected(self, dsn):
+        print dsn
+        print 'slotDbConnected'
+        for action in self.suiteActions.values():
+            action.unplug(self.suitemenu)
+        self.suite_actions = {}
+        self.cursor = self.app.conn.cursor(statement=True)
+        if 'suites' in self.cursor.tables():
+            self._suites = [row.suite for row in self.cursor.select(table='suites')]
+        collection = self.actionCollection()
+        for suite in self._suites:
+            self.suiteActions[suite] = ManageSuiteAction(suite,
+                                                         self.slotManageSuite, collection)
+        for action in self.suiteActions.values():
+            action.plug(self.suitemenu)
+        self.statusbar.message('Connected to %s on host %s' % (dsn['dbname'], dsn['dbhost']))
+        if not self.cursor.tables():
+            yesno = KMessageBox.questionYesNo(self, 'create primary tables?')
+            if yesno == KMessageBox.Yes:
+                dbm = DatabaseManager(self.app.conn)
+                dbm.importer.start_schema()
+            print yesno == KMessageBox.Yes
+            
+    def slotManageAptSources(self):
+        win = AptSourceMainWindow(self)
+        win.show()
+        
 # This is the old way to select what you want to do
 # It probably breaks some HIG's, but it may be preferable.
 class PaellaMainWindowSmall(BasePaellaMainWindow):
@@ -130,19 +176,15 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         self.listView.setRootIsDecorated(True)
         self.listView.addColumn('widget')
         self.setCentralWidget(self.listView)
-        self.refreshListView()
+        if self.app.conn is not None:
+            self.refreshListView()
         self.setCaption('Main Menu')
         self.connect(self.listView,
                      SIGNAL('selectionChanged()'),
                      self.selectionChanged)
-        tables = self.cursor.tables()
-        #print 'tables', tables
-        if not tables:
-            msg = 'There are no tables in the database.\n'
-            msg += 'Please import a database.'
-            KMessageBox.error(self, msg)
-        
+
     def refreshListView(self):
+        self.listView.clear()
         suite_folder = KListViewItem(self.listView, 'suites')
         suite_folder.folder = True
         for suite in self._suites:
@@ -258,6 +300,14 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             dbm.backup(fullpath)
         else:
             KMessageBox.error(self, 'action %s not supported' % action)
+
+    def slotDbConnected(self, dsn):
+        BasePaellaMainWindow.slotDbConnected(self, dsn)
+        self.refreshListView()
+
+    def slotDisconnectDatabase(self):
+        BasePaellaMainWindow.slotDisconnectDatabase(self)
+        self.listView.clear()
     
 class PaellaMainWindow(BasePaellaMainWindow):
     pass

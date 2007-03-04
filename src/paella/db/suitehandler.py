@@ -8,11 +8,12 @@ from paella.debian.base import RepositorySource
 from paella.debian.repos import RemoteRepos
 
 from useless.sqlgen.admin import grant_public
-from useless.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq, In
 
 from useless.db.lowlevel import OperationalError
 
 from schema.paella_tables import suite_tables
+from schema.paella_tables import packages_columns
 
 from schema.util import insert_packages
 
@@ -30,17 +31,46 @@ class SuiteHandler(object):
         self.suite = suite
         self.sources_rows = self.get_sources_rows(self.suite)
 
-    def make_suite(self):
+    def _check_suite(self):
         if self.suite is None:
             raise RuntimeError, 'the suite needs to be set first'
+
+    def _get_apt_ids(self):
+        return [row.apt_id for row in self.sources_rows]
+
+    def make_suite(self):
+        self._check_suite()
         debug("in make_suite ->", self.suite)
         self._make_suite_tables()
-        self.update_packagelists()
-        for row in self.sources_rows:
-            self._insert_packages(row)
+        
+        #self.update_packagelists()
+        #for row in self.sources_rows:
+        #    self._insert_packages(row)
+        apt_ids = self._get_apt_ids()
+        clause = In('apt_id', apt_ids)
+        select = str(self.cursor.stmt.select(table='apt_source_packages' ,
+                                  fields=['distinct package'], clause=clause))
+        table = '%s_packages' % self.suite
+        insert = 'insert into %s %s' % (table, select)
+        self.cursor.execute(insert)
+        #print 'inserting %d packages for suite %s' % (len(rows), self.suite)
+        #for row in rows:
+        #    self.cursor.insert(table=table, data=dict(package=row.package))
             
     def _make_suite_tables(self):
+        # make a new Statement
+        stmt = self.cursor.stmt.__class__()
+        table = 'apt_source_packages'
+        fields = [col.name for col in packages_columns()]
+        apt_ids = self._get_apt_ids()
+        clause = In('apt_id', apt_ids)
+        order = ['apt_id', 'package']
+        select = stmt.select(fields=fields, table=table, clause=clause, order=order)
+        suite_packages = '%s_packages' % self.suite
+        create_view = 'create view %s as %s' % (suite_packages, select)
+        #self.cursor.execute(create_view)
         tables = suite_tables(self.suite)
+        #tables = tables[1:]
         map(self.cursor.create_table, tables)
         self.cursor.execute(grant_public([x.name for x in tables]))
         
