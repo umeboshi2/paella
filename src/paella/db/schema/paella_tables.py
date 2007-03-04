@@ -79,7 +79,26 @@ class SuiteAptSourcesTable(Table):
         name = 'suite_apt_sources'
         Table.__init__(self, name, [suite, apt_id, order])
         
+#packages
+def packages_columns():
+    return [
+        PkBigname('package'),
+        Name('priority'),
+        Bigname('section'),
+        Num('installedsize'),
+        Bigname('filename'),
+        Bigname('maintainer'),
+        Bigname('size'),
+        Name('md5sum'),
+        Bigname('version'),
+        Text('description')]
 
+class AptSourcePackagesTable(Table):
+    def __init__(self):
+        apt_id = PkName('apt_id')
+        pkg_columns = packages_columns()
+        Table.__init__(self, 'apt_source_packages', [apt_id] + pkg_columns)
+        
 #family table
 class FamilyTable(Table):
     def __init__(self):
@@ -141,20 +160,6 @@ class TraitTable(Table):
         trait.set_fk(traits_table)
         priority.set_fk(prio_table)
         Table.__init__(self, tablename, columns)
-
-#packages
-def packages_columns():
-    return [
-        PkBigname('package'),
-        Name('priority'),
-        Bigname('section'),
-        Num('installedsize'),
-        Bigname('filename'),
-        Bigname('maintainer'),
-        Bigname('size'),
-        Name('md5sum'),
-        Bigname('version'),
-        Text('description')]
 
 class PackagesTable(Table):
     def __init__(self, suite):
@@ -415,77 +420,79 @@ def primary_sequences():
     
 def primary_tables():
     tables = []
-    #Textfiles
+    # Textfiles
     tables.append(TextFilesTable())
-    #All Suites
+    # All Suites
     tables.append(SuitesTable())
-    #Apt Sources Table
+    # Apt Sources Table
     tables.append(AptSourcesTable())
-    #Suite-AptSource Relation
+    # Apt Source Packages Table
+    tables.append(AptSourcePackagesTable())
+    # Suite-AptSource Relation
     tables.append(SuiteAptSourcesTable())
-    #All Traits
+    # All Traits
     tables.append(PkNameTable('traits', 'trait'))
-    #All Priorities
+    # All Priorities
     tables.append(PkNameTable('priorities', 'priority'))
-    #All Families
+    # All Families
     tables.append(FamilyTable())
-    #Family Parents
+    # Family Parents
     tables.append(FamilyParentsTable())
-    #Family Environment
+    # Family Environment
     tables.append(FamilyEnviromentTable())
-    #All Profiles
+    # All Profiles
     profiles = ProfileTable('suites')
     tables.append(profiles)
-    #All Script Names
+    # All Script Names
     scripts = PkNameTable('scriptnames', 'script')
     tables.append(scripts)
-    #Profile - Trait relation
+    # Profile - Trait relation
     profile_trait_table = ProfileTrait('profiles', 'traits')
     tables.append(profile_trait_table)
-    #Profile Environment
+    # Profile Environment
     profile_variables = ProfileEnvironment('profiles')
     tables.append(profile_variables)
-    #Profile Family
+    # Profile Family
     tables.append(ProfileFamilyTable())
-    #Default Environment
+    # Default Environment
     defaultenv = Table('default_environment', defaultenv_columns())
     tables.append(defaultenv)
-    #Current Environment
+    # Current Environment
     currentenv = Table('current_environment', currentenv_columns())
     tables.append(currentenv)
-    #Disks
+    # Disks
     tables.append(DisksTable())
-    #Machine Types
+    # Machine Types
     tables.append(MachineTypesTable())
-    #Mounts
+    # Mounts
     tables.append(MountsTable())
-    #Kernels
+    # Kernels
     tables.append(KernelsTable())
-    #Partitions
+    # Partitions
     tables.append(PartitionsTable('partitions', 'disks'))
-    #Partition Workspace
+    # Partition Workspace
     pwcols = [PkName('diskname')] + partition_columns()
     tables.append(Table('partition_workspace', pwcols))
-    #MachineTypesTables
+    # MachineTypesTables
     mtfamily = MachineTypeFamilyTable('machine_types')
     tables.append(mtfamily)
     mtenviron = MachineTypeEnvironment('machine_types')
     tables.append(mtenviron)
     mtscript = MachineTypeScript('machine_types')
     tables.append(mtscript)
-    #Machine Disks
+    # Machine Disks
     machine_disks = MachineDisksTable('machine_disks', 'machine_types', 'disks')
     tables.append(machine_disks)
-    #Machine Modules
+    # Machine Modules
     machine_modules = MachineModulesTable('machine_modules', 'machine_types')
     tables.append(machine_modules)
-    #Filesystems
+    # Filesystems
     tables.append(FilesystemsTable())
-    #Filesystem Mounts
+    # Filesystem Mounts
     tables.append(FilesystemMountsTable('filesystems', 'mounts'))
-    #Filesystem Disks
+    # Filesystem Disks
     tables.append(FilesystemDisksTable('filesystems', 'disks'))
-    #Machines
+    # Machines
     machines = MachinesTable('machine_types', 'kernels', 'profiles', 'filesystems')
     tables.append(machines)
 

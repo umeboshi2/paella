@@ -11,7 +11,6 @@ from useless.sqlgen.clause import Eq
 from paella.base import PaellaConfig
 
 from paella.db.schema.main import start_schema
-from paella.db.schema.suitehandler import SuiteHandler
 
 from trait import Trait
 from trait.main import TraitsElement
@@ -29,6 +28,9 @@ from machine import MachineHandler
 from xmlgen import AptSourceElement, AptSourceListElement
 from xmlgen import SuiteElement, SuitesElement, SuiteAptElement
 from xmlparse import PaellaParser
+
+from suitehandler import SuiteHandler
+from aptsrc import AptSourceHandler
 
 # imports for ClientManager
 from useless.base.config import Configuration
@@ -112,6 +114,8 @@ class PaellaProcessor(object):
         self.__set_cursors__()
         self.main_path = None
         self.suitehandler = SuiteHandler(self.conn, self.cfg)
+        self.aptsrc = AptSourceHandler(self.conn)
+        
         
     def parse_xml(self, filename):
         self.dbdata = PaellaParser(filename)
@@ -139,11 +143,10 @@ class PaellaProcessor(object):
 
     def _insert_aptsources(self):
         for apt in self.dbdata.aptsources:
-            data = dict(apt_id=apt.apt_id, uri=apt.uri, dist=apt.dist,
-                        sections=apt.sections, local_path=apt.local_path)
-            self.main.insert(table='apt_sources', data=data)
+            self.aptsrc.insert_apt_source_row(apt.apt_id, apt.uri, apt.dist,
+                                              apt.sections, apt.local_path)
+            self.aptsrc.insert_packages(apt.apt_id)
             
-    
     def insert_families(self):
         path = os.path.join(self.main_path, 'families')
         print 'path is in insert_families', path

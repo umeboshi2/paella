@@ -69,6 +69,10 @@ class InstallerTools(object):
             raise Error, 'need to set trait first'
         return self._envv.dereference(key)
 
+    def lget(self, key):
+        key = '_'.join([self.trait, key])
+        return self.get(key)
+
     def install_modules(self, name):
         modules = str2list(self.get(name))
         print 'installing modules', modules, 'to %s/etc/modules' % self.target
