@@ -155,11 +155,3 @@ if __name__ == '__main__':
     from paella.profile.base import PaellaConfig, PaellaConnection
     cfg = PaellaConfig()
     
-    xfile = file(join(cfg['export_path'], 'machine_database.xml'))
-    mdata = xfile.read()
-    xfile.close()
-    
-    element = parseString(mdata)
-    
-    md = MachineDatabaseParser(element.firstChild)
-    

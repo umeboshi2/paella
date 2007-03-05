@@ -53,7 +53,6 @@ class PaellaConnectionDialog(BaseRecordDialog):
 
     def slotConnectDatabase(self):
         data = self.getRecordData()
-        data['autocommit'] = 'true'
         self.app.connect_database(data)
         self.emit(PYSIGNAL('dbconnected(data)'), (data,))
 

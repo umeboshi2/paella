@@ -29,8 +29,7 @@ opts, args = parser.parse_args(sys.argv[1:])
 dsn = dict(dbusername=opts.dbusername,
            dbhost=opts.dbhost,
            dbname=opts.dbname,
-           dbpassword=None,
-           autocommit=cfg.get(db, 'autocommit'))
+           dbpassword=None)
 conn = PaellaConnection(dsn)
 if not args:
     raise RuntimeError, 'need a directory arguement'

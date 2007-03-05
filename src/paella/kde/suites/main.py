@@ -1,23 +1,47 @@
-#from qt import SIGNAL
+from qt import SIGNAL
 from qt import QListBoxText
 
 from kdeui import KStdAction
 from kdeui import KListViewItem
+from kdeui import KMessageBox
 
 from useless.kdebase.mainwin import BaseSplitWindow
 from useless.kdebase.dialogs import BaseAssigner
+from useless.kdebase.dialogs import BaseRecordDialog
 
 from paella.db.suitehandler import SuiteHandler
 
 from paella.kde.base.mainwin import BasePaellaWindow
 from paella.kde.base.viewbrowser import ViewBrowser
+from paella.kde.base.widgets import BasePaellaWidget
 
 from docgen import SuiteManagerDoc
 
-class SuiteAptAssigner(BaseAssigner):
-    def __init__(self, parent, name='SuiteAptAssigner'):
-        pass
-    
+class SuiteAptAssigner(BaseAssigner, BasePaellaWidget):
+    def __init__(self, parent, suite, name='SuiteAptAssigner'):
+        self.suite = suite
+        self.initPaellaCommon()
+        self.aptsrc = AptSourceHandler(self.conn)
+        BaseAssigner.__init__(self, parent, name=name,
+                              udbuttons=True)
+        self.connect(self, SIGNAL('okClicked()'), self.slotAssignAptSrcs)
+        
+
+    def initView(self):
+        abox = self.listBox.availableListBox()
+        apt_ids = [r.apt_id for r in self.aptsrc.get_apt_rows()]
+        for apt_id in apt_ids:
+            QListBoxText(abox, apt_id)
+            
+        
+        
+    def slotAssignAptSrcs(self):
+        sbox = self.listBox.selectedListBox()
+        apt_ids = [str(sbox.item(n)) for n in range(sbox.numRows())]
+        suite = self.suite
+        self.
+        for order in range(len(apt_ids)):
+            
 class SuiteManagerView(ViewBrowser):
     def __init__(self, parent):
         ViewBrowser.__init__(self, parent, SuiteManagerDoc)
@@ -72,4 +96,23 @@ class SuiteManagerWindow(BaseSplitWindow, BasePaellaWindow):
         self.mainView.set_suite(item.suite)
 
     def slotNew(self):
-        print 'new suite'
+        win = BaseRecordDialog(self, ['name'])
+        win.connect(win, SIGNAL('okClicked()'), self.slotNewSuiteNamed)
+        self._dialog = win
+        win.show()
+        
+    def slotNewSuiteNamed(self):
+        win = self._dialog
+        suite = win.getRecordData()['name']
+        suite = suite.strip()
+        if not suite:
+            raise RuntimeError, 'no suite in slotNewSuiteNamed'
+        win = SuiteAptAssigner(self, suite)
+        win.show()
+    
+    def _destroy_dialog(self):
+        self._dialog = None
+
+    def _connect_dialog_destroy(self, dialog):
+        pass
+    

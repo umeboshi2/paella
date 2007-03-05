@@ -5,7 +5,7 @@ from useless.base.util import ujoin, strfile, filecopy
 from useless.db.midlevel import StatementCursor
 
 from useless.sqlgen.admin import grant_public
-from useless.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq, In
 
 from paella.base.objects import TextFileManager
 from schema.tables import suite_tables
@@ -36,11 +36,33 @@ class SuiteCursor(StatementCursor):
     def set_suite(self, suite):
         self.current = suite
 
+    def get_apt_sources(self):
+        table = 'apt_sources'
+        return self.select(table=table, order=['apt_id'])
+    
     def get_apt_rows(self, suite=None):
         if suite is None:
             suite = self.current
         table = 'suite_apt_sources natural join apt_sources'
         return self.select(table=table, clause=Eq('suite', suite), order='ord')
+
+    def make_suite(self, suite, apt_ids):
+        if not len(apt_ids):
+            raise RuntimeError, "can't make_suite without apt_ids"
+        self.insert(table='suites', data=dict(suite=suite))
+        table = 'suite_apt_sources'
+        data = dict(suite=suite)
+        for order in range(len(apt_ids)):
+            data.update(dict(ord=order, apt_id=apt_ids[order]))
+            self.insert(table=table, data=data)
+        self.make_suite_tables(suite=suite)
+        select = self.stmt.select(table='apt_source_packages',
+                                  fields=['distinct package'],
+                                  clause=In('apt_id', apt_ids))
+        table = '%s_packages' % suite
+        insert = 'insert into %s %s' % (table, select)
+        self.cursor.execute(insert)
+        
 
     def make_suite_tables(self, suite=None):
         if suite is None:

@@ -60,7 +60,6 @@ class PaellaDatabaseElement(Element):
         element = AptSourceElement(apt_id, uri, dist, sections, local_path)
         self.aptsources.appendChild(element)
         
-
     def append_suite(self, suite):
         element = SuiteElement(suite)
         self.suites[suite] = element
@@ -183,7 +182,11 @@ class PaellaExporter(object):
         for suite in suites:
             self.export_suite(suite, path=path)
             self.report_suite_exported(suite)
-                                 
+
+    def export_machine_database(self, path=None):
+        if path is None:
+            path = self.db_export_path
+        self.machines.export_machine_database(path)
                                 
     def report_total_suites(self, total):
         print 'exporting %d suites' % total
@@ -205,75 +208,6 @@ class PaellaExporter(object):
 
             
 #generate xml        
-class PaellaDatabase(Element):
-    def __init__(self, conn, path='/'):
-        Element.__init__(self, 'paelladatabase')
-        self.conn = conn
-        self.stmt = StatementCursor(self.conn)
-        self._profile_traits_ = ProfileTrait(self.conn)
-        self.path = path
-        self.aptsources = AptSourceListElement()
-        self.appendChild(self.aptsources)
-        if 'apt_sources' in self.stmt.tables():
-            for row in self.stmt.select(table='apt_sources', order=['apt_id']):
-                element = AptSourceElement(row.apt_id, row.uri, row.dist, row.sections,
-                                           row.local_path)
-                self.aptsources.appendChild(element)
-            self.suites = SuitesElement()
-            self.appendChild(self.suites)
-            for row in self._suite_rows():
-                args = map(str, [row.suite, row.nonus, row.updates, row.local, row.common])
-                element = SuiteElement(*args)
-                for suiteapt in self.stmt.select(table='suite_apt_sources', order=['ord'],
-                                                 clause=Eq('suite', row.suite)):
-                    element.appendChild(SuiteAptElement(row.suite,
-                                                        suiteapt.apt_id, str(suiteapt.ord)))
-                self.suites.appendChild(element)
-        else:
-            print 'WARNING, apt_sources table does not exist, backing up anyway'
-        self.profiles = PaellaProfiles(self.conn)
-        self.family = Family(self.conn)
-        suites = [x.suite for x in self._suite_rows()]
-        for suite in suites:
-            self.appendChild(TraitsElement(self.conn, suite))
-
-    def _suite_rows(self):
-        return self.stmt.select(table='suites', order='suite')
-
-    def write(self, filename):
-        path = os.path.join(self.path, filename)
-        xmlfile = file(path, 'w')
-        self.writexml(xmlfile, indent='\t', newl='\n', addindent='\t')
-
-    def backup(self, path=None):
-        if path is None:
-            path = self.path
-        if not os.path.isdir(path):
-            raise Error, '%s not a directory' % path
-        dbfile = file(os.path.join(path, 'database.xml'), 'w')
-        self.writexml(dbfile, indent='\t', newl='\n', addindent='\t')
-        dbfile.close()
-        self.backup_profiles(path)
-        self.backup_families(path)
-        suites = [x.suite for x in self._suite_rows()]
-        for suite in suites:
-            makepaths(os.path.join(path, suite))
-            trait = Trait(self.conn, suite)
-            for t in trait.get_trait_list():
-                trait.set_trait(t)
-                trait.export_trait(os.path.join(path, suite))
-
-    def backup_profiles(self, path=None):
-        profiles_dir = os.path.join(path, 'profiles')
-        makepaths(profiles_dir)
-        self.profiles.export_profiles(profiles_dir)
-
-    def backup_families(self, path=None):
-        fpath = os.path.join(path, 'families')
-        makepaths(fpath)
-        self.family.export_families(fpath)
-        
-        
         
 class PaellaProcessor(object):
     def __init__(self, conn, cfg=None):
@@ -451,8 +385,9 @@ class DatabaseManager(object):
     def __init__(self, conn):
         self.cfg = PaellaConfig()
         self.conn = conn
-        self.import_dir = self.cfg.get('database', 'import_path')
-        self.export_dir = self.cfg.get('database', 'export_path')
+        default_path = self.cfg.get('database', 'default_path')
+        self.import_dir = default_path
+        self.export_dir = default_path
         self.importer = PaellaProcessor(self.conn, self.cfg)
         #self.exporter = PaellaDatabase(self.conn, '/')
         self.exporter = PaellaExporter(self.conn)
@@ -464,15 +399,8 @@ class DatabaseManager(object):
         self.exporter.export_all_suites()
         self.exporter.export_all_profiles()
         self.exporter.export_all_families()
+        self.exporter.export_machine_database()
         
-    def backup(self, path):
-        if not os.path.isdir(path):
-            raise Error, 'argument needs to be a directory'
-        pdb = PaellaDatabase(self.conn, path)
-        pdb.backup(path)
-        mh = MachineHandler(self.conn)
-        mh.export_machine_database(path)
-
     def restore(self, path):
         if not os.path.isdir(path):
             raise Error, 'argument needs to be a directory'

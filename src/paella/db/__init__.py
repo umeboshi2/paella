@@ -29,16 +29,13 @@ class PaellaConnection(BasicConnection):
         host = dsn['dbhost']
         dbname = dsn['dbname']
         passwd = dsn['dbpassword']
-        autocommit = 0
-        if dsn['autocommit'] == 'true':
-            autocommit = 1
         if 'dbport' in dsn:
             port = dsn['dbport']
         else:
             port = 5432
         BasicConnection.__init__(self, user=user, host=host,
                                 dbname=dbname, passwd=passwd, port=port)
-        self.autocommit = autocommit
+        self.autocommit = 1
 
     # this is kind of hacky looking
     # don't know if I'll keep this or not
