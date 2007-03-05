@@ -15,6 +15,7 @@ from useless.db.midlevel import Environment, MultiEnvironment
 from paella.base.objects import VariablesConfig
 from paella.base.util import make_deplist
 
+from paella.db.base import SuiteCursor
 #from base import Suites, make_deplist
 
 from xmlgen import FamilyElement
@@ -64,7 +65,6 @@ class Family(object):
         self.conn = conn
         #self.suites = Suites(conn).list()
         self.cursor = StatementCursor(self.conn)
-        self.suites = [r.suite for r in self.cursor.select(table='suites')]
         self.current = None
         self.parent = SimpleRelation(self.conn, 'family_parent', 'family')
         self.env = FamilyEnvironment(self.conn)
@@ -119,7 +119,9 @@ class Family(object):
         return [r.family for r in self.family_rows()]
 
     def get_all_defaults(self):
-        stmt = select_multisuite_union(self.suites, 'variables')
+        suite_cursor = SuiteCursor(self.conn)
+        suites = suite_cursor.get_suites()
+        stmt = select_multisuite_union(suites, 'variables')
         print stmt
         self.cursor.execute(stmt)
         return self.cursor.fetchall()
@@ -168,9 +170,10 @@ class Family(object):
         
     def export_families(self, path):
         families = self.all_families()
+        self.report_total_families(len(families))
         for f in families:
             self.write_family(f, path)
-            
+            self.report_family_exported(f, path)
 
     def import_family(self, element):
         parsed = FamilyParser(element)
@@ -235,7 +238,12 @@ class Family(object):
             data['value'] = value
             self.cursor.insert(table='family_environment', data=data)
         
-    
+    def report_family_exported(self, family, path):
+        print 'family %s exported to %s' % (family, path)
+
+    def report_total_families(self, total):
+        print 'exporting %d families' % total
+        
 if __name__ == '__main__':
     import os
     from base import PaellaConnection

@@ -3,9 +3,12 @@ from os.path import join
 from useless.base import Error
 from useless.base.util import ujoin, strfile, filecopy
 from useless.db.midlevel import StatementCursor
+
+from useless.sqlgen.admin import grant_public
 from useless.sqlgen.clause import Eq
 
 from paella.base.objects import TextFileManager
+from schema.tables import suite_tables
 
 class Suites(StatementCursor):
     def __init__(self, conn):
@@ -28,7 +31,7 @@ class SuiteCursor(StatementCursor):
         self.current = None
 
     def get_suites(self):
-        return [x.suite for x in self.select(table='suites')]
+        return [x.suite for x in self.select(table='suites', order=['suite'])]
     
     def set_suite(self, suite):
         self.current = suite
@@ -38,6 +41,15 @@ class SuiteCursor(StatementCursor):
             suite = self.current
         table = 'suite_apt_sources natural join apt_sources'
         return self.select(table=table, clause=Eq('suite', suite), order='ord')
+
+    def make_suite_tables(self, suite=None):
+        if suite is None:
+            suite = self.current
+        tables = suite_tables(suite)
+        for table in tables:
+            self.cursor.create_table(table)
+        self.cursor.execute(grant_public[t.name for t in tables])
+        
 
     # the base suite is the dist column of the first apt source of a suite
     def get_base_suite(self, suite):

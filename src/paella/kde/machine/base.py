@@ -3,7 +3,7 @@ from kdeui import KTextEdit
 
 from useless.kdebase.dialogs import VboxDialog
 
-from paella.db.schema.paella_tables import MTSCRIPTS
+from paella.db.schema.tables import MTSCRIPTS
 
 class MTScriptComboBox(KComboBox):
     def __init__(self, parent):

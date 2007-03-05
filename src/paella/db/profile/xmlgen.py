@@ -54,13 +54,13 @@ class PaellaProfiles(Element):
     def __init__(self, conn):
         Element.__init__(self, 'profiles')
         self.conn = conn
-        self.stmt = StatementCursor(self.conn)
+        self.cursor = StatementCursor(self.conn)
         self.env = ProfileEnvironment(self.conn)
         self.profiletraits = ProfileTrait(self.conn)
         self._profiles = {}
         self._profile = Profile(self.conn)
         
-        for row in self.stmt.select(table='profiles', order='profile'):
+        for row in self.cursor.select(table='profiles', order='profile'):
             self._append_profile(row.profile, row.suite)
                 
     def _append_profile(self, profile, suite):
@@ -70,7 +70,7 @@ class PaellaProfiles(Element):
 
     def export_profile(self, profile, suite=None):
         if suite is None:
-            row = self.stmt.select_row(table='profiles',clause=Eq('profile', profile))
+            row = self.cursor.select_row(table='profiles',clause=Eq('profile', profile))
             suite = row['suite']
         suite = str(suite)
         profile = str(profile)
@@ -84,7 +84,7 @@ class PaellaProfiles(Element):
     def insert_profile(self, profile):
         idata = {'profile' : profile.name,
                  'suite' : profile.suite}
-        self.stmt.insert(table='profiles', data=idata)
+        self.cursor.insert(table='profiles', data=idata)
         idata = {'profile' : profile.name,
                  'trait' : None,
                  'ord' : 0}
@@ -92,7 +92,7 @@ class PaellaProfiles(Element):
             print trait, ord
             idata['trait'] = trait
             idata['ord'] = ord #str(ord)
-            self.stmt.insert(table='profile_trait', data=idata)
+            self.cursor.insert(table='profile_trait', data=idata)
         idata = {'profile' : profile.name,
                  'trait' : None,
                  'name' : None,
@@ -100,18 +100,20 @@ class PaellaProfiles(Element):
         idata = dict(profile=profile.name)
         for family in profile.families:
             idata['family'] = family
-            self.stmt.insert(table='profile_family', data=idata)
+            self.cursor.insert(table='profile_family', data=idata)
         idata = dict(profile=profile.name)
         for trait, name, value in profile.vars:
             idata['trait'] = trait
             idata['name'] = name
             idata['value'] = value
-            self.stmt.insert(table='profile_variables', data=idata)
+            self.cursor.insert(table='profile_variables', data=idata)
 
     def export_profiles(self, path):
-        rows = self.stmt.select(fields='profile', table='profiles', clause=None)
+        rows = self.cursor.select(fields='profile', table='profiles', clause=None)
+        self.report_total_profiles(len(rows))
         for row in rows:
             self.write_profile(row.profile, path)
+            self.report_profile_exported(row.profile, path)
         
     def write_profile(self, profile, path):
         xmlfile = file(join(path, '%s.xml' % profile), 'w')
@@ -119,6 +121,12 @@ class PaellaProfiles(Element):
         data.writexml(xmlfile, indent='\t', newl='\n', addindent='\t')
         xmlfile.close()
         
+
+    def report_profile_exported(self, profile, path):
+        print 'profile %s exported to %s' % (profile, path)
+
+    def report_total_profiles(self, total):
+        print 'exporting %d profiles' % total
         
 if __name__ == '__main__':
     pass

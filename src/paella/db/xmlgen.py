@@ -30,13 +30,10 @@ class SuiteAptElement(Element):
         
 # generate xml
 class SuiteElement(Element):
-    def __init__(self, suite, nonus=False, updates=False, local=False, common=False):
+    def __init__(self, suite):
         Element.__init__(self, 'suite')
         self.setAttribute('name', suite)
-        self.setAttribute('nonus', nonus)
-        self.setAttribute('updates', updates)
-        self.setAttribute('local', local)
-        self.setAttribute('common', common)
+
         
 # generate xml        
 class SuitesElement(Element):

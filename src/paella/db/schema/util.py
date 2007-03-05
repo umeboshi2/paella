@@ -1,6 +1,6 @@
 from useless.db.lowlevel import OperationalError
 
-from paella_tables import packages_columns
+from tables import packages_columns
 
 def convert_package_data(packagedict, section='main'):
     pcolumns = packages_columns()

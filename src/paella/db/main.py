@@ -31,18 +31,30 @@ from xmlparse import PaellaParser
 
 from suitehandler import SuiteHandler
 from aptsrc import AptSourceHandler
-
+from base import SuiteCursor
 # imports for ClientManager
 from useless.base.config import Configuration
 
+class TraitsElement(Element):
+    def __init__(self, suite):
+        Element.__init__(self, 'traits')
+        self.suite = suite
+        self.setAttribute('suite', self.suite)
+
+    def append_trait(self, trait):
+        element = Element('trait')
+        element.setAttribute('name', trait)
+        self.appendChild(element)
+        
 class PaellaDatabaseElement(Element):
-    def __init__(self, conn, path='/'):
+    def __init__(self):
         Element.__init__(self, 'paelladatabase')
         self.aptsources = AptSourceListElement()
         self.appendChild(self.aptsources)
         self.suites_element = SuitesElement()
         self.suites = {}
-        self.appendChild(self.suites)
+        self.suite_traits = {}
+        self.appendChild(self.suites_element)
         
     def append_apt_source(self, apt_id, uri, dist, sections, local_path):
         element = AptSourceElement(apt_id, uri, dist, sections, local_path)
@@ -58,13 +70,140 @@ class PaellaDatabaseElement(Element):
         element = SuiteAptElement(suite, apt_id, order)
         self.suites[suite].appendChild(element)
 
-    
+    def append_suite_traits(self, suite, traits=[]):
+        element = TraitsElement(suite)
+        self.suite_traits[suite] = element
+        for trait in traits:
+            self.append_trait(suite, trait)
+        self.appendChild(element)
+
+    def append_trait(self, suite, trait):
+        self.suite_traits[suite].append_trait(trait)
+        
 class PaellaExporter(object):
     def __init__(self, conn):
         self.conn = conn
-        self.stmt = StatementCursor(self.conn)
-        self.element = Element('paelladatabase')
+        self.cursor = self.conn.cursor(statement=True)
+        self.suitecursor = SuiteCursor(self.conn)
+        self.init_db_element()
+        if len(self.cursor.tables()):
+            self.setup_cursors()
+            
+    def setup_cursors(self):
+        self.profiles = PaellaProfiles(self.conn)
+        self.family = Family(self.conn)
+        self.machines = MachineHandler(self.conn)
 
+    def init_db_element(self):
+        self.dbelement = PaellaDatabaseElement()
+        
+
+    def make_complete_db_element(self):
+        self.init_db_element()
+        self._append_apt_sources_to_db_element()
+        fields = ['suite']
+        for suite in self.suitecursor.get_suites():
+            self._append_suite_to_db_element(suite)
+            
+    def _append_apt_sources_to_db_element(self):
+        rows = self.cursor.select(table='apt_sources', order=['apt_id'])
+        for row in rows:
+            self.dbelement.append_apt_source(row.apt_id, row.uri, row.dist,
+                                             row.sections, row.local_path)
+            
+    def _append_suite_to_db_element(self, suite):
+        self.dbelement.append_suite(suite)
+        rows = self.cursor.select(table='suite_apt_sources', order=['ord'],
+                                  clause=Eq('suite', suite))
+        for row in rows:
+            self.dbelement.append_suite_apt_source(row.suite, row.apt_id,
+                                                   str(row.ord))
+        rows = self.cursor.select(fields=['trait'], table='%s_traits' % suite,
+                                  order=['trait'])
+        traits = [row.trait for row in rows]
+        self.dbelement.append_suite_traits(suite, traits=traits)
+        
+    
+    def set_db_export_path(self, path):
+        self.db_export_path = path
+
+    def export_db_element(self, dirname=None, filename='database.xml'):
+        if dirname is None:
+            dirname = self.db_export_path
+        dbfile = file(os.path.join(dirname, filename), 'w')
+        self.dbelement.writexml(dbfile, indent='\t', newl='\n', addindent='\t')
+        dbfile.close()
+        
+        
+    def _make_suite_export_path(self, suite):
+        path = os.path.join(self.db_export_path, suite)
+        makepaths(path)
+        return path
+    
+    def export_all_profiles(self, path=None):
+        if path is None:
+            path = os.path.join(self.db_export_path, 'profiles')
+        makepaths(path)
+        self.profiles.export_profiles(path)
+
+    def export_all_families(self, path=None):
+        if path is None:
+            path = os.path.join(self.db_export_path, 'families')
+        makepaths(path)
+        self.family.export_families(path)
+
+    def export_trait(self, trait, suite=None, path=None, traitdb=None):
+        if traitdb is None:
+            if suite is None:
+                RuntimeError, "you must pass a suite if you don't pass a Trait object"
+            traitdb = Trait(self.conn, suite)
+        traitdb.set_trait(trait)
+        if suite is None:
+            suite = traitdb.suite
+        if path is None:
+            path = self._make_suite_export_path(suite)
+        traitdb.export_trait(path)
+
+    def export_all_traits(self, suite, path=None):
+        self.report_start_exporting_traits()
+        traitdb = Trait(self.conn, suite)
+        traits = traitdb.get_trait_list()
+        self.report_total_traits(len(traits))
+        for trait in traits:
+            self.export_trait(trait, path=path, traitdb=traitdb)
+            self.report_trait_exported(trait, path)
+        #self.report_all_traits_exported()
+            
+    def export_suite(self, suite, path=None):
+        self.export_all_traits(suite, path=path)
+
+    def export_all_suites(self, path=None):
+        suites = self.suitecursor.get_suites()
+        self.report_total_suites(len(suites))
+        for suite in suites:
+            self.export_suite(suite, path=path)
+            self.report_suite_exported(suite)
+                                 
+                                
+    def report_total_suites(self, total):
+        print 'exporting %d suites' % total
+
+    def report_suite_exported(self, suite):
+        print 'suite %s exported'
+        
+    def report_total_traits(self, total):
+        print 'exporting %d traits' % total
+
+    def report_trait_exported(self, trait, path):
+        print 'trait %s exported to %s' % (trait, path)
+
+    def report_all_traits_exported(self, *args):
+        print 'all traits exported'
+
+    def report_start_exporting_traits(self):
+        print 'starting to export traits'
+
+            
 #generate xml        
 class PaellaDatabase(Element):
     def __init__(self, conn, path='/'):
@@ -316,7 +455,16 @@ class DatabaseManager(object):
         self.export_dir = self.cfg.get('database', 'export_path')
         self.importer = PaellaProcessor(self.conn, self.cfg)
         #self.exporter = PaellaDatabase(self.conn, '/')
+        self.exporter = PaellaExporter(self.conn)
 
+    def export_all(self, path):
+        self.exporter.make_complete_db_element()
+        self.exporter.set_db_export_path(path)
+        self.exporter.export_db_element()
+        self.exporter.export_all_suites()
+        self.exporter.export_all_profiles()
+        self.exporter.export_all_families()
+        
     def backup(self, path):
         if not os.path.isdir(path):
             raise Error, 'argument needs to be a directory'

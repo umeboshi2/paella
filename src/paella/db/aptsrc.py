@@ -39,6 +39,7 @@ class AptSourceHandler(object):
     def _insert_packages(self, apt_id, packages):
         table = 'apt_source_packages'
         extra = dict(apt_id=apt_id)
+        self.report_total_packages(len(packages))
         for package in packages:
             data = convert_package_data(package)
             data.update(extra)

@@ -1,8 +1,8 @@
 from useless.sqlgen.admin import grant_public
 
-from paella_tables import primary_sequences
-from paella_tables import primary_tables
-from paella_tables import SCRIPTS, MTSCRIPTS
+from tables import primary_sequences
+from tables import primary_tables
+from tables import SCRIPTS, MTSCRIPTS
 
 from pgsql_functions import create_pgsql_functions
 

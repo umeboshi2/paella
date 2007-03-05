@@ -210,7 +210,9 @@ class TraitInstaller(Installer):
     def install(self, packages, templates):
         trait = self._current_trait_
         package_args = ' '.join([p.package for p in packages])
-        cmd = 'apt-get -y --force-yes install %s' % package_args
+        #opts = '--force-yes'
+        opts = ''
+        cmd = 'apt-get -y %s install %s' % (opts, package_args)
         stmt = 'install command for %s is %s' % (trait, cmd)
         self.log.info(stmt)
         runvalue = self.run('install', cmd, proc=False, keeprunning=False)

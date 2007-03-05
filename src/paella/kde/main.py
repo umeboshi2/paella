@@ -22,9 +22,11 @@ from paella.kde.base.actions import ManageSuiteAction
 #from paella.kde.base.actions import DisconnectDatabaseAction
 from paella.kde.base.actions import dbactions
 from paella.kde.base.actions import ManageAptSourcesAction
+from paella.kde.base.actions import OpenSuiteManagerAction
 
 from paella.kde.base.mainwin import BasePaellaWindow
 from paella.kde.base.dialogs import PaellaConnectionDialog
+from paella.kde.base.dialogs import ExportDbProgressDialog
 
 # import child windows
 from paella.kde.trait.main import TraitMainWindow
@@ -35,6 +37,7 @@ from paella.kde.family import FamilyMainWindow
 from paella.kde.machine.main import MachineMainWindow
 from paella.kde.clients import ClientsMainWindow
 from paella.kde.dbmanager import AptSourceMainWindow
+from paella.kde.dbmanager import SuiteManagerWindow
 
 class BasePaellaMainWindow(BasePaellaWindow):
     def __init__(self, parent=None, name='BasePaellaMainWindow'):
@@ -68,6 +71,9 @@ class BasePaellaMainWindow(BasePaellaWindow):
         self.manageAptSourcesAction = \
                                     ManageAptSourcesAction(self.slotManageAptSources,
                                                            collection)
+        self.openSuiteManagerAction = OpenSuiteManagerAction(
+            self.slotOpenSuiteManager, collection)
+        
         # in the main window assign quit to app.quit
         self.quitAction = KStdAction.quit(self.app.quit, collection)
         self.suiteActions = {}
@@ -94,8 +100,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
         self.suitemenu = KPopupMenu(self)
         suite_actions = self.suiteActions.values()
         main_actions = [self.manageAptSourcesAction,
-                        self.manageFamiliesAction,
-                        self.editTemplatesAction,
+                        self.openSuiteManagerAction,
                         self.quitAction]
         actions = ['connect', 'disconnect', 'import', 'export']
         dbactions = [self.dbactions[action] for action in actions]
@@ -116,8 +121,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
         actions = [self.dbactions['connect'],
                    self.dbactions['disconnect'],
                    self.manageAptSourcesAction,
-                   self.manageFamiliesAction,
-                   self.editTemplatesAction,
+                   self.openSuiteManagerAction,
                    self.quitAction]
         for action in actions:
             action.plug(toolbar)
@@ -272,41 +276,77 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         print 'slotExportDatabase called'
         self._select_import_export_directory('export')
 
+    def slotOpenSuiteManager(self):
+        win = SuiteManagerWindow(self)
+        win.show()
+
+    def _destroy_dialog(self):
+        self._dialog = None
+        self._import_export_dirsel_dialog = None
+        
+    def _connect_destroy_dialog(self, dialog):
+        dialog.connect(dialog, SIGNAL('cancelClicked()'), self._destroy_dialog)
+        dialog.connect(dialog, SIGNAL('closeClicked()'), self._destroy_dialog)
+        
     # here action is either 'import' or 'export'
     def _select_import_export_directory(self, action):
         if self._import_export_dirsel_dialog is None:
             default_db_path = self.app.cfg.get('database', 'import_path')
-            dlg = KDirSelectDialog(default_db_path, False , self)
-            dlg.connect(dlg, SIGNAL('okClicked()'), self._import_export_directory_selected)
-            dlg.db_action = action
-            dlg.show()
-            self._import_export_dirsel_dialog = dlg
+            win = KDirSelectDialog(default_db_path, False , self)
+            win.connect(win, SIGNAL('okClicked()'), self._import_export_directory_selected)
+            self._connect_destroy_dialog(win)
+            win.db_action = action
+            win.show()
+            self._import_export_dirsel_dialog = win
         else:
-            KMessageBox.error('This dialog is already open, or bug in code.')
+            KMessageBox.error(self, 'This dialog is already open, or bug in code.')
             
     def _import_export_directory_selected(self):
-        dlg = self._import_export_dirsel_dialog
-        if dlg is None:
+        win = self._import_export_dirsel_dialog
+        if win is None:
             raise RuntimeError, 'There is no import export dialog'
-        url = dlg.url()
+        url = win.url()
         fullpath = str(url.path())
-        action = dlg.db_action
+        action = win.db_action
         print 'selected fullpath', fullpath
-        print 'action is', dlg.db_action
-        dbm = DatabaseManager(self.conn)
+        print 'action is', win.db_action
+        dbm = DatabaseManager(self.app.conn)
         if action == 'import':
             dbm.restore(fullpath)
         elif action == 'export':
-            dbm.backup(fullpath)
+            #dbm.backup(fullpath)
+            win = ExportDbProgressDialog(self)
+
+            exporter = dbm.exporter
+            exporter.report_total_suites = win.suite_progess.setTotalSteps
+            exporter.report_suite_exported = win.suite_progess.step_progress
+            exporter.report_total_traits = win.trait_progress.setTotalSteps
+            exporter.report_trait_exported = win.trait_progress.step_progress
+            #exporter.report_all_traits_exported = win.trait_progress.progressbar.reset
+            exporter.report_start_exporting_traits = win.trait_progress.progressbar.reset
+            
+            profiles = exporter.profiles
+            family = exporter.family
+            profiles.report_total_profiles = win.profile_progress.setTotalSteps
+            profiles.report_profile_exported = win.profile_progress.step_progress
+            family.report_total_families = win.family_progress.setTotalSteps
+            family.report_family_exported = win.family_progress.step_progress
+
+                        
+            win.show()
+            self.app.processEvents()
+            dbm.export_all(fullpath)
         else:
             KMessageBox.error(self, 'action %s not supported' % action)
 
     def slotDbConnected(self, dsn):
         BasePaellaMainWindow.slotDbConnected(self, dsn)
+        self.conn = self.app.conn
         self.refreshListView()
 
     def slotDisconnectDatabase(self):
         BasePaellaMainWindow.slotDisconnectDatabase(self)
+        self.conn = None
         self.listView.clear()
     
 class PaellaMainWindow(BasePaellaMainWindow):

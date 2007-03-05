@@ -128,7 +128,17 @@ class DisconnectDatabaseAction(BaseAction):
     def __init__(self, slot, parent):
         BaseAction.__init__(self, DisconnectDatabaseItem(), 'DisconnectDatabaseAction',
                             slot, parent)
-        
+
+class OpenSuiteManagerItem(BaseItem):
+    def __init__(self):
+        tt = 'Open SuiteManager'
+        BaseItem.__init__(self, tt, 'colors', tt, tt)
+
+class OpenSuiteManagerAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, OpenSuiteManagerItem(), 'OpenSuiteManagerAction',
+                            slot, parent)
+    
 dbactions = dict(export=ExportDatabaseAction,
                  connect=ConnectDatabaseAction, disconnect=DisconnectDatabaseAction)
 dbactions['import'] = ImportDatabaseAction
