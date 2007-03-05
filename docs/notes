@@ -682,6 +682,118 @@ Environment Variables used by Paella
 
   - **CONCURRENCY_LEVEL** - this helps speed things up on smp systems.
 
+------------------------------------------------
+
+
+Paellarc Configuration File
+------------------------------------------------
+
+I'm trying to move as much as possible from the paellarc file to
+the default environment in the database.
+(installer) means that the section or option is meaningful only to the installer code.
+(manager) means that the section or option is meaningful only to the db manager code.
+Otherwise the section or option is applicable to both the installer and manager parts of 
+paella.
+
++ Section **database**
+
+  - dbhost:  hostname or ip of host where paella database resides
+
+  - dbname:  name of paella database
+
+  - dbusername:  username to connect to database with
+
+  - dbpassword:  password to use for authentication (if necessary)
+
+  - import_path:  default path for import and export of database data
+
+  - export_path:  **deprecated, use import_path***
+
+  - autocommit:  **deprecated, don't use**
+
++ Section **debrepos**
+
+  - I'm probably going to deprecate much of the paella-debrepos package
+    as there are much better tools to handle this now.
+
+  - repos_host:  **no info now**
+
+  - debroot:  **no info now**
+
+  - repos_root:  **no info now**
+
+  - official_suite:  **no info now**
+
+  - local_suites:  **no info now**
+
+  - sid_suites:  **no info now**
+
+  - http_mirror:  **no info now**
+
+  - official_main:  **deprecated**
+
+  - official_nonus:  **deprecated**
+
+  - official_security:  **deprecated**
+
+  - other_repos:  **no info now**
+
+  - other_repos_names:  **no info now**
+
++ Section **installer**
+
+  - I'm probably going to deprecate much of the paella-debrepos package
+    as there are much better tools to handle this now.
+
+  - enable_bad_hacks:  
+
+    - this ugly option needs to be removed
+
+  - paella_storage:  
+
+    - parent directory for storing files that the installer needs
+      like base tarballs, etc.
+
+  - suite_storage:  
+
+    - default %(paella_storage)s/suites - where the base
+      tarballs are stored.
+
+  - bootstrap_suites:  
+
+    - a comma separated list of suites to keep tarballs of.
+      this will probably be removed soon
+
+  - use_devices_tarball:  
+
+    - This used to be handy as the MAKEDEV script used
+      to take a long time to run.  We can now use udev to do most of the work that
+      this option was here for.
+
++ Section **management_gui** (manager)
+
+  - This section is for using the management gui interface.
+
+  - env_editor_size:
+
+  - bkuptarball_path:
+
+  - template_profile:
+
+  - default_profile_suite:
+
+  - client_path:
+
+  - manager_pos:
+
+  - manager_size:
+
+  - manager_type:
+
+
+
+
+------------------------------------------------
 
 .. _mounts: #mount
 .. _families: #family
