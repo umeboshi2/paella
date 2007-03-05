@@ -48,7 +48,7 @@ class SuiteCursor(StatementCursor):
         tables = suite_tables(suite)
         for table in tables:
             self.cursor.create_table(table)
-        self.cursor.execute(grant_public[t.name for t in tables])
+        self.cursor.execute(grant_public([t.name for t in tables]))
         
 
     # the base suite is the dist column of the first apt source of a suite

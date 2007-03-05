@@ -36,8 +36,8 @@ from paella.kde.environ import EnvironmentWindow
 from paella.kde.family import FamilyMainWindow
 from paella.kde.machine.main import MachineMainWindow
 from paella.kde.clients import ClientsMainWindow
-from paella.kde.dbmanager import AptSourceMainWindow
-from paella.kde.dbmanager import SuiteManagerWindow
+from paella.kde.aptsrc.main import AptSourceMainWindow
+from paella.kde.suites.main import SuiteManagerWindow
 
 class BasePaellaMainWindow(BasePaellaWindow):
     def __init__(self, parent=None, name='BasePaellaMainWindow'):
