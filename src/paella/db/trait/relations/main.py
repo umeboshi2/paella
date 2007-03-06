@@ -13,8 +13,8 @@ from useless.db.midlevel import Environment
 
 from paella.base.objects import TextFileManager
 
-from base import TraitRelation
-from base import Template
+from paella.db.trait.base import TraitRelation
+from paella.db.trait.base import Template
 
 from paella import deprecated
 
