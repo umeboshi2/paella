@@ -13,14 +13,32 @@ pd = {'' : 'src'}
 #print os.environ
 
 PACKS = {
-    'base' : ['paella', 'paella/base'],
-    'db' : ['paella/db', 'paella/db/schema',
-            'paella/db/trait', 'paella/db/family',
-            'paella/db/profile', 'paella/db/machine'],
-    'debian' : ['paella/debian', 'paella/debian/newrepos'],
-    'admin' : ['paella/kde', 'paella/kde/base', 'paella/kde/trait',
-               'paella/kde/machine', 'paella/kde/docget', 'paella/kde/umlmanager'
-               ]
+    'base' : ['paella',
+              'paella/base'
+              ],
+    'db' : ['paella/db',
+            'paella/db/trait',
+            'paella/db/trait/relations',
+            'paella/db/schema',
+            'paella/db/family',
+            'paella/db/profile',
+            'paella/db/machine'
+            ],
+    'debian' : ['paella/debian',
+                'paella/debian/newrepos'
+                ],
+    'admin' : ['paella/kde',
+               'paella/kde/base',
+               'paella/kde/trait',
+               'paella/kde/machine',
+               'paella/kde/docget',
+               'paella/kde/umlmanager',
+               'paella/kde/aptsrc',
+               'paella/kde/suites'
+               ],
+    'installer' : ['paella/installer',
+                   'paella/installer/util'
+                   ]
     }
 
 if package is not None:
@@ -31,6 +49,7 @@ else:
     packages = []
     package = 'dummy'
 
+_myfindcmdforpackages = 'find src -type d | grep -v svn | cut -f2- -d/'
 url = 'http://paella.berlios.de'
 setup(name='paella-'+package,
       version="0.2",
