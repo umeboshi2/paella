@@ -16,9 +16,11 @@ from useless.sqlgen.clause import Eq
 
 
 from base import AllTraits, Traits
-from relations import TraitParent, TraitPackage
-from relations import TraitTemplate, TraitEnvironment
-from relations import TraitScript
+from relations.parent import TraitParent
+from relations.package import TraitPackage
+from relations.template import TraitTemplate
+from relations.script import TraitScript
+from relations.main import TraitEnvironment
 
 from xmlgen import EnvironElement, ParentElement
 from xmlgen import TraitVariableElement

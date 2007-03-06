@@ -15,8 +15,9 @@ from paella.db.schema.main import AlreadyPresentError
 
 from trait import Trait
 from trait.main import TraitsElement
-from trait.relations import TraitPackage, TraitParent
-from trait.relations import TraitTemplate
+from trait.relations.parent import TraitParent
+from trait.relations.package import TraitPackage
+from trait.relations.template import TraitTemplate
 
 from family import Family
 

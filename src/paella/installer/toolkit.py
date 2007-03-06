@@ -6,7 +6,7 @@ from paella.base import PaellaConfig
 from paella.db import DefaultEnvironment
 from paella.db.base import get_suite
 from paella.db.trait import Trait
-from paella.db.trait.relations import TraitParent
+from paella.db.trait.relations.parent import TraitParent
 from paella.db.family import Family
 from paella.db.profile import Profile
 from paella.db.profile.main import ProfileEnvironment

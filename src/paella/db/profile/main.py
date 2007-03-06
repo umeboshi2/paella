@@ -7,7 +7,7 @@ from paella.base.util import make_deplist
 from paella.base.objects import VariablesConfig
 from paella.db.base import get_suite
 from paella.db.trait import Trait
-from paella.db.trait.relations import TraitParent
+from paella.db.trait.relations.parent import TraitParent
 from paella.db.family import Family
 
 class ProfileVariablesConfig(VariablesConfig):

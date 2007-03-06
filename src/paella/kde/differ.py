@@ -17,7 +17,8 @@ from useless.sqlgen.clause import Eq
 from paella.base.objects import Differ
 
 from paella.db.base import Suites, Traits
-from paella.db.trait.relations import TraitTemplate, TraitScript
+from paella.db.trait.relations.template import TraitTemplate
+from paella.db.trait.relations.script import TraitScript
 from paella.db.family import Family, FamilyVariablesConfig
 
 # for mainwin class

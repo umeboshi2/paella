@@ -3,7 +3,8 @@ from qt import QScrollView
 
 from kdeui import KStdAction
 
-from paella.db.trait.relations import TraitParent, TraitEnvironment
+from paella.db.trait.relations.parent import TraitParent
+from paella.db.trait.relations.main import TraitEnvironment
 
 from paella.kde.base.mainwin import BasePaellaWindow
 from paella.kde.base.recordedit import BaseVariablesEditor

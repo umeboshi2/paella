@@ -14,7 +14,9 @@ from paella.base import PaellaConfig
 
 from paella.db import PaellaConnection
 from paella.db.base import get_traits, get_suite
-from paella.db.trait.relations import TraitParent, TraitPackage
+from paella.db.trait.relations.parent import TraitParent
+from paella.db.trait.relations.package import TraitPackage
+
 from paella.db.profile import Profile
 from paella.db.profile.main import ProfileTrait, ProfileEnvironment
 

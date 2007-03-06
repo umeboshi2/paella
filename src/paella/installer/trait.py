@@ -4,9 +4,10 @@ from os.path import join, dirname, isfile, isdir
 from useless.base.util import makepaths
 
 from paella.debian.debconf import copy_configdb
-#from paella.db import CurrentEnvironment
-from paella.db.trait.relations import TraitPackage, TraitTemplate
-from paella.db.trait.relations import TraitScript
+
+from paella.db.trait.relations.package import TraitPackage
+from paella.db.trait.relations.template import TraitTemplate
+from paella.db.trait.relations.script import TraitScript
 
 from base import Installer, InstallError
 from base import CurrentEnvironment
