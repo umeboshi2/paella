@@ -3,7 +3,6 @@ from forgetHTML import Table, TableRow, TableCell
 #from forgetHTML import Anchor
 #from forgetHTML import Paragraph
 from paella.db.aptsrc import AptSourceHandler
-from paella.db.suitehandler import SuiteHandler
 
 from paella.kde.docgen.base import BaseDocument
 from paella.kde.docgen.base import Bold
@@ -39,14 +38,3 @@ class AptSourceDoc(BaseDocument):
             self.apt_table.set_apt_source(self.aptsrc.get_apt_row(apt_id))
         
 
-class SuiteManagerDoc(BaseDocument):
-    def __init__(self, app, **atts):
-        BaseDocument.__init__(self, app, **atts)
-        self.handler = SuiteHandler(self.conn, self.app.cfg)
-        
-
-    def set_suite(self, suite):
-        self.suite = suite
-        self.handler.set_suite(suite)
-        self.clear_body()
-        self.body.append('Suite:  %s' % suite)

@@ -133,6 +133,10 @@ elif action == 'bootstrap':
     target = '/tmp/target'
     bootstrapper = UmlBootstrapper(suite, cfg=cfg)
     bootstrapper.set_mode('guest')
+    bootsrap_opts = ['bootstrap_script', 'bootstrap_mirror']
+    for bootsrap_opt in bootsrap_opts:
+        if bootsrap_opt in kernopts:
+            bootstrapper.options[bootsrap_opt] = kernopts[bootsrap_opt]
     bootstrapper.mount_backup('/mnt', backup_filesystem)
     print 'backup_filesystem mounted'
     bootstrapper.set_target(target)

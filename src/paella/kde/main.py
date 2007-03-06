@@ -39,6 +39,8 @@ from paella.kde.clients import ClientsMainWindow
 from paella.kde.aptsrc.main import AptSourceMainWindow
 from paella.kde.suites.main import SuiteManagerWindow
 
+from application import NotConnectedError
+
 class BasePaellaMainWindow(BasePaellaWindow):
     def __init__(self, parent=None, name='BasePaellaMainWindow'):
         BasePaellaWindow.__init__(self, None, name)
@@ -336,6 +338,8 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             win.show()
             self.app.processEvents()
             dbm.export_all(fullpath)
+            self.app.processEvents()
+            win.close()
         else:
             KMessageBox.error(self, 'action %s not supported' % action)
 
@@ -345,7 +349,10 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         self.refreshListView()
 
     def slotDisconnectDatabase(self):
-        BasePaellaMainWindow.slotDisconnectDatabase(self)
+        try:
+            BasePaellaMainWindow.slotDisconnectDatabase(self)
+        except NotConnectedError:
+            pass
         self.conn = None
         self.listView.clear()
     

@@ -14,7 +14,7 @@ class UmlBootstrapper(UmlChroot):
         if rootimage is None:
             rootimage = suite + '.base'
         if cfg is None:
-            cfg = PaellaConfig()
+            cfg = UmlConfig()
         UmlChroot.__init__(self, cfg)
         self.set_targetimage(rootimage)
         o = self.options
@@ -31,13 +31,20 @@ class UmlBootstrapper(UmlChroot):
         # guest mode method
         self.check_guest()
         suite = self.options['paellasuite'].value
-        mirror = self.cfg.get('umlmachines', 'bootstrap_debmirror')
-        bs = Debootstrap(suite, self.target, mirror)
+        script = ''
+        if 'bootstrap_script' in self.options.keys():
+            script = self.options['bootstrap_script'].value
+        if 'bootstrap_mirror' in self.options.keys():
+            mirror = self.options['bootstrap_mirror'].value
+        else:
+            mirror = self.cfg.get('umlmachines', 'bootstrap_debmirror')
+        bs = Debootstrap(suite=suite, root=self.target, mirror=mirror, script=script)
         bs.exclude.append('pcmcia-cs')
         self.make_filesystem()
         self.mount_target()
         print 'mirror is', bs.mirror
         print 'command is', bs.command()
+        print 'script is', bs.script
         os.system(bs.command())
         remove_debs(self.target)
         

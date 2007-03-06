@@ -16,7 +16,6 @@ from paella.base.objects import VariablesConfig
 from paella.base.util import make_deplist
 
 from paella.db.base import SuiteCursor
-#from base import Suites, make_deplist
 
 from xmlgen import FamilyElement
 from xmlparse import FamilyParser
@@ -63,7 +62,6 @@ class Family(object):
     def __init__(self, conn):
         object.__init__(self)
         self.conn = conn
-        #self.suites = Suites(conn).list()
         self.cursor = StatementCursor(self.conn)
         self.current = None
         self.parent = SimpleRelation(self.conn, 'family_parent', 'family')

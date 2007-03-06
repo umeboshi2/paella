@@ -61,7 +61,7 @@ class SuiteCursor(StatementCursor):
                                   clause=In('apt_id', apt_ids))
         table = '%s_packages' % suite
         insert = 'insert into %s %s' % (table, select)
-        self.cursor.execute(insert)
+        self.execute(insert)
         
 
     def make_suite_tables(self, suite=None):
@@ -69,8 +69,8 @@ class SuiteCursor(StatementCursor):
             suite = self.current
         tables = suite_tables(suite)
         for table in tables:
-            self.cursor.create_table(table)
-        self.cursor.execute(grant_public([t.name for t in tables]))
+            self.create_table(table)
+        self.execute(grant_public([t.name for t in tables]))
         
 
     # the base suite is the dist column of the first apt source of a suite

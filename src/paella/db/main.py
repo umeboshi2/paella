@@ -11,6 +11,7 @@ from useless.sqlgen.clause import Eq
 from paella.base import PaellaConfig
 
 from paella.db.schema.main import start_schema
+from paella.db.schema.main import AlreadyPresentError
 
 from trait import Trait
 from trait.main import TraitsElement
@@ -29,7 +30,6 @@ from xmlgen import AptSourceElement, AptSourceListElement
 from xmlgen import SuiteElement, SuitesElement, SuiteAptElement
 from xmlparse import PaellaParser
 
-from suitehandler import SuiteHandler
 from aptsrc import AptSourceHandler
 from base import SuiteCursor
 # imports for ClientManager
@@ -216,7 +216,7 @@ class PaellaProcessor(object):
         self.cfg = cfg
         self.__set_cursors__()
         self.main_path = None
-        self.suitehandler = SuiteHandler(self.conn, self.cfg)
+        self.suitecursor = SuiteCursor(self.conn)
         self.aptsrc = AptSourceHandler(self.conn)
         
         
@@ -225,8 +225,12 @@ class PaellaProcessor(object):
         self.main_path = os.path.dirname(filename)
 
     def start_schema(self):
-        start_schema(self.conn)
-
+        try:
+            start_schema(self.conn)
+        except AlreadyPresentError:
+            print "primary tables already present"
+            pass
+        
     def insert_apt_sources(self):
         self._insert_aptsources()
 
@@ -235,12 +239,8 @@ class PaellaProcessor(object):
         current_suites = [row.suite for row in self.main.select()]
         for suite in self.dbdata.suites:
             if suite.name not in current_suites:
-                self.main.insert(data=suite)
-                for apt in suite.aptsources:
-                    data = dict(suite=suite.name, apt_id=apt.apt_id, ord=apt.order)
-                    self.main.insert(table='suite_apt_sources', data=data)
-                self.suitehandler.set_suite(suite.name)
-                self.suitehandler.make_suite()
+                apt_ids = [e.apt_id for e in suite.aptsources]
+                self.suitecursor.make_suite(suite.name, apt_ids)
             else:
                 raise Error, '%s already exists.' % suite
                 #self.main.update(data=suite)
@@ -371,6 +371,9 @@ class PaellaProcessor(object):
     def create(self, filename):
         self.parse_xml(filename)
         self.start_schema()
+        self.insert_apt_sources()
+        self._sync_suites()
+        
         for suite in self.dbdata.suites:
             self.insert_traits(suite.name)
         self.insert_families()

@@ -26,11 +26,12 @@ class PaellaMainApplication(KApplication):
         # I probably don't need the socket dir
         self.socketdir = str(dirs.findResourceDir('socket', '/'))
 
-    def connect_database(self, cfg=None):
+    def connect_database(self, dsn=None):
         if self.conn is not None:
             raise AlreadyConnectedError, 'already connected to a database'
-        self.conn = PaellaConnection(cfg=cfg)
-
+        self.conn = PaellaConnection(dsn=dsn)
+        self.current_dsn = self.conn.get_dsn()
+        
     def disconnect_database(self):
         if self.conn is not None:
             self.conn.close()

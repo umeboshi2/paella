@@ -122,7 +122,7 @@ class ConnectDatabaseAction(BaseAction):
 class DisconnectDatabaseItem(BaseItem):
     def __init__(self):
         tt = 'Disconnect from a database'
-        BaseItem.__init__(self, 'Disconnect from database', 'disconnect', tt, tt)
+        BaseItem.__init__(self, 'Disconnect from database', 'connect_no', tt, tt)
         
 class DisconnectDatabaseAction(BaseAction):
     def __init__(self, slot, parent):
