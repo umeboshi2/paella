@@ -14,6 +14,7 @@ from useless.db.midlevel import Environment
 from paella.base.objects import TextFileManager
 
 from base import TraitRelation
+from parent import TraitParent
 
 from paella import deprecated
 

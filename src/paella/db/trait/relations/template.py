@@ -15,6 +15,7 @@ from paella.base.objects import TextFileManager
 
 from base import TraitRelation
 from base import Template
+from parent import TraitParent
 
 from paella import deprecated
 
