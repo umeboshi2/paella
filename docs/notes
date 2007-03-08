@@ -15,7 +15,7 @@ networks.
 -------------------
 
 Objects and Definitions
---------------------------------
+==========================
 
 Apt Source
 ------------------
@@ -258,7 +258,7 @@ the target fstab will be completely formed from the filesystem information
 
 
 Installer
-----------
+==========
 
 The installers in paella are layered.  There is a `trait installer`_, a `profile installer`_,
 and a `nfs installer`_.  The installers are layered to make the whole installing
@@ -364,7 +364,7 @@ installer called paella-submit-machine.  You pass it a machine name
 argument
 
 Database Schema
-----------------------------
+=================
 
 The database schema is not very complicated.
 
@@ -538,7 +538,7 @@ Other tables are in related sets:
 -----------------------------------
 
 Getting started with paella
---------------------------------------
+=============================
 
 People who will get the most benefit out of paella are IT consultants that manage
 multiple disjoint networks.  You may also benefit from it if your network is large enough,
@@ -646,6 +646,9 @@ using paella will have to bear through using it until the kde interface is ready
 
 
 -----------------------------------------------------
+
+Reserved Word/Option Reference
+===================================
 
 Environment Variables used by Paella
 ------------------------------------------------------
