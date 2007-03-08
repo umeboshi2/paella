@@ -138,7 +138,7 @@ class MainUmlManagerWidget(BaseUmlManagerWidget):
         mainview = UmlMachineView
         BaseUmlManagerWidget.__init__(self, parent, mainview,
                                       name='MainUmlManagerWidget')
-        cfg = UmlConfig()
+        cfg = self.app.umlcfg
         self.umlmachines = UmlMachineManager(cfg)
         self.initListView()
         

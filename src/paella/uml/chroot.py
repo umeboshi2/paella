@@ -7,13 +7,15 @@ from useless.base.util import makepaths, runlog
 from useless.base.util import parse_proc_mounts
 
 from paella.installer.util.filesystem import mount_tmpfs
+from paella.installer.util.filesystem import make_filesystem
 from paella.installer.util.misc import make_interfaces_simple
 from paella.installer.util.misc import backup_target_command
 from paella.installer.util.misc import extract_tarball
 
 
 from base import Uml, UmlConfig
-from util import mount, mount_target, mkrootfs, setup_target
+from base import host_mode, guest_mode
+from util import mount, mount_target, setup_target
 from util import ready_base_for_install
 
 # This is a class that runs under hostfs,
@@ -35,43 +37,49 @@ class UmlChroot(Uml):
         
         
     def set_options(self):
-        o = self.options
-        o['root'] = '/dev/root'
-        o['rootflags'] = '/'
-        o['rootfstype'] = 'hostfs'
-        o['paella_action'] = 'nothing'
-        o['devfs'] = 'nomount'
-        o['init'] = self.cfg['uml_initscript']
-        o.update(self.cfg.get_umlopts())
+        opts = self.options
+        opts['root'] = '/dev/root'
+        opts['rootflags'] = '/'
+        opts['rootfstype'] = 'hostfs'
+        opts['paella_action'] = 'nothing'
+        opts['devfs'] = 'nomount'
+        opts['init'] = self.cfg['uml_initscript']
+        opts.update(self.cfg.get_umlopts())
 
                 
     def set_mode(self, mode):
         Uml.set_mode(self, mode)
         if self.mode == 'guest':
             self._init_uml_system()
-            
-    def set_targetimage(self, path):
-        self.check_host()
-        self.options['ubd1'] = path
 
+    @host_mode
+    def set_targetimage(self, path, device='ubda'):
+        self.options[device] = path
+        
+    @guest_mode
     def set_target(self, target='/tmp/target'):
-        self.check_guest()
         self.target = target
 
+    @guest_mode
+    def make_filesystem(self):
+        import warnings
+        warnings.warn('UmlChroot.make_filesystem hardcoded')
+        make_filesystem('/dev/ubda', 'ext2')
+        
+    @guest_mode
     def mount_dev(self):
-        self.check_guest()
         mount_tmpfs(target='/dev')
 
+    @guest_mode
     def mount_tmp(self):
-        self.check_guest()
         mount_tmpfs(target='/tmp')
 
+    @guest_mode
     def mount_target(self):
-        self.check_guest()
-        mount_target(self.target, device='/dev/ubd1')
+        mount_target(self.target, device='/dev/ubda')
 
+    @guest_mode
     def mount_backup(self, mtpnt, fstype='hostfs', export=None):
-        self.check_guest()
         mounts = parse_proc_mounts()
         mounted = False
         for m in mounts:
@@ -87,8 +95,8 @@ class UmlChroot(Uml):
             print '%s is already mounted' % mtpnt
             
 
+    @guest_mode
     def backup_target_nfs(self, name):
-        self.check_guest()
         self.mount_backup('/mnt', 'nfs')
         tarname = os.path.join('/mnt', '%s.tar' % name)
         dirname = os.path.dirname(tarname)
@@ -100,8 +108,8 @@ class UmlChroot(Uml):
         os.system(tarcmd)
         os.system('umount /mnt')
 
+    @guest_mode
     def backup_target_hostfs(self, name):
-        self.check_guest()
         self.mount_backup('/mnt', 'hostfs')
         bkup_path = self.cfg.get('umlmachines', 'hostfs_backup_path')
         while bkup_path.startswith('/'):
@@ -116,8 +124,8 @@ class UmlChroot(Uml):
         os.system(tarcmd)
         os.system('umount /mnt')
         
+    @guest_mode
     def backup_target(self, name):
-        self.check_guest()
         fs = self.cfg.get('umlmachines', 'backup_filesystem')
         if fs == 'nfs':
             self.backup_target_nfs(name)
@@ -126,16 +134,12 @@ class UmlChroot(Uml):
         else:
             raise Error, 'unsupported backup filesystem'
         
-    def mkrootfs(self):
-        self.check_guest()
-        mkrootfs()
-        
+    @guest_mode
     def extract_root_tarball(self, basetarball):
-        self.check_guest()
         extract_tarball(self.target, basetarball)
 
-    def setup_target(self, target='/tmp/target', device='/dev/ubd1'):
-        self.check_guest()
+    @guest_mode
+    def setup_target(self, target='/tmp/target', device='/dev/ubda'):
         self.set_target(target)
         setup_target(self.target, device=device)
         

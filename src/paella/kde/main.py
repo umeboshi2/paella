@@ -61,6 +61,8 @@ class BasePaellaMainWindow(BasePaellaWindow):
         
         # setup dialog pointers
         self._import_export_dirsel_dialog = None
+
+        self._all_my_children = []
         
     def initActions(self):
         collection = self.actionCollection()
@@ -169,6 +171,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
     def slotManageAptSources(self):
         win = AptSourceMainWindow(self)
         win.show()
+        self._all_my_children.append(win)
         
 # This is the old way to select what you want to do
 # It probably breaks some HIG's, but it may be preferable.
@@ -247,13 +250,15 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             KMessageBox.error(self, 'something bad happened in the list selection')
         if win is not None:
             win.show()
-        
+            self._all_my_children.append(win)
+            
     def slotManageFamilies(self):
         print 'running families'
         #FamilyMainWindow(self.app, self)
         #KMessageBox.error(self, 'Managing families unimplemented')
         win = FamilyMainWindow(self)
         win.show()
+        self._all_my_children.append(win)
         
     def slotEditTemplates(self):
         print 'edit templates'
@@ -281,7 +286,8 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
     def slotOpenSuiteManager(self):
         win = SuiteManagerWindow(self)
         win.show()
-
+        self._all_my_children.append(win)
+        
     def _destroy_dialog(self):
         self._dialog = None
         self._import_export_dirsel_dialog = None
@@ -355,6 +361,8 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             pass
         self.conn = None
         self.listView.clear()
-    
+        while self._all_my_children:
+            self._all_my_children[0].close()
+            del self._all_my_children[0]
 class PaellaMainWindow(BasePaellaMainWindow):
     pass

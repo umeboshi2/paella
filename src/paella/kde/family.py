@@ -56,6 +56,8 @@ class FamilyMainWindow(BaseSplitWindow, BasePaellaWindow):
         collection = self.actionCollection()
         self.quitAction = KStdAction.quit(self.close, collection)
         self.newFamilyAction = KStdAction.openNew(self.newFamily, collection)
+        self.importFamilyAction = KStdAction.open(self.slotImportFamily, collection)
+        self.exportFamilyAction = KStdAction.saveAs(self.slotExportFamily, collection)
         
     def initMenus(self):
         mainmenu = KPopupMenu(self)
@@ -63,11 +65,15 @@ class FamilyMainWindow(BaseSplitWindow, BasePaellaWindow):
         menubar.insertItem('&Main', mainmenu)
         menubar.insertItem('&Help', self.helpMenu(''))
         self.newFamilyAction.plug(mainmenu)
+        self.importFamilyAction.plug(mainmenu)
+        self.exportFamilyAction.plug(mainmenu)
         self.quitAction.plug(mainmenu)
 
     def initToolbar(self):
         toolbar = self.toolBar()
         self.newFamilyAction.plug(toolbar)
+        self.importFamilyAction.plug(toolbar)
+        self.exportFamilyAction.plug(toolbar)
         self.quitAction.plug(toolbar)
 
     def initlistView(self):
@@ -90,3 +96,10 @@ class FamilyMainWindow(BaseSplitWindow, BasePaellaWindow):
     def insertNewFamily(self):
         raise NotImplementedError, 'need to implement FamilyMainWindow.insertNewFamily'
     
+    def slotImportFamily(self):
+        KMessageBox.information(self, 'Import unimplemented')
+
+    def slotExportFamily(self):
+        KMessageBox.information(self, 'Export unimplemented')
+        
+        

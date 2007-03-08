@@ -1,4 +1,4 @@
-import os
+import os, sys
 from os.path import isfile, join, dirname
 import subprocess
 import tarfile
@@ -11,6 +11,15 @@ from useless.base.config import Configuration, list_rcfiles
 from paella.debian.base import RepositorySource, debootstrap
 from paella.db.base import get_suite
 from paella.installer.util.filesystem import mount_tmpfs
+
+class UmlModeError(RuntimeError):
+    pass
+
+class WrongModeError(UmlModeError):
+    pass
+
+class UndefinedModeError(UmlModeError):
+    pass
 
 class UmlConfig(Configuration):
     def __init__(self, section='umlmachines',
@@ -37,6 +46,8 @@ class UmlConfig(Configuration):
         sections = [s for s in self.sections() if s != 'umlmachines' ]
         return sections
 
+    # returns a list of (option, value) items
+    # that have been changed from the defaults
     def nondefault_items(self, section):
         items = self.items(section)
         default_items = self.items('DEFAULT')
@@ -98,6 +109,24 @@ class Options(object):
     def clear(self):
         self._dict.clear()
     
+# here is where we start requiring python 2.4
+# here we make some method decorators for
+# checking host/guest mode
+def guest_mode(func):
+    def wrapper(self, *args, **kw):
+        if self.mode != 'guest':
+            raise WrongModeError, 'Need to be in guest mode.'
+        return func(self, *args, **kw)
+    return wrapper
+
+def host_mode(func):
+    def wrapper(self, *args, **kw):
+        if self.mode != 'host':
+            raise WrongModeError, 'Need to be in host mode.'
+    
+        return func(self, *args, **kw)
+    return wrapper
+
 class Uml(object):
     def __init__(self):
         object.__init__(self)
@@ -118,22 +147,20 @@ class Uml(object):
 
     def set_mode(self, mode):
         if mode not in ['host', 'guest']:
-            raise RuntimeError, 'unknown mode %s' % mode
+            raise UndefinedModeError, 'unknown mode %s' % mode
         self.mode = mode
-
-    def check_guest(self):
-        if self.mode != 'guest':
-            raise RuntimeError, 'not in guest mode'
-
-    def check_host(self):
-        if self.mode != 'host':
-            raise RuntimeError, 'not in host mode'
+        # if in guest mode, reset options from /proc/cmdline
+        if mode == 'guest':
+            kernopts = sys.kernopts
+            print 'kernopts', kernopts
+            print '^^kernopts^^'
+            self.options.update(kernopts)
         
     # the popen and use_pipe will probably be removed later
     # popen is now ignored use call parameter
+    @host_mode
     def run_uml(self, popen=False, use_pipe=False,
                 call=False, stdout=None, stderr=None):
-        self.check_host()
         cmd = str(self)
         print 'cmd ->', cmd
         if call:
@@ -163,17 +190,16 @@ class Uml(object):
         self.run_process = subprocess.Popen(cmd, **args)
         return self.run_process
             
+    @guest_mode
     def _init_uml_system(self):
-        self.check_guest()
         print 'initializing uml system'
         for target in ['/tmp', '/dev']:
             mount_tmpfs(target=target)
         # we need something better here
         os.system('mknod /dev/null c 1 3')
-        os.system('mknod /dev/ubd0 b 98 0')
-        os.system('mknod /dev/ubd1 b 98 16')
-
-        
+        os.system('mknod /dev/ubda b 98 0')
+        os.system('mknod /dev/ubdb b 98 16')
 
 if __name__ == '__main__':
-    pass
+    u = Uml()
+    

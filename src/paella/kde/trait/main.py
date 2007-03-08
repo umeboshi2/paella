@@ -63,7 +63,9 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         collection = self.actionCollection()
         self.quitAction = KStdAction.quit(self.close, collection)
         self.newTraitAction = KStdAction.openNew(self.newTrait, collection)
-
+        self.importTraitAction = KStdAction.open(self.slotImportTrait, collection)
+        self.exportTraitAction = KStdAction.saveAs(self.slotExportTrait, collection)
+        
     def initMenus(self):
         mainmenu = KPopupMenu(self)
         menus = [mainmenu]
@@ -71,11 +73,17 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         menubar.insertItem('&Main', mainmenu)
         menubar.insertItem('&Help', self.helpMenu(''))
         self.newTraitAction.plug(mainmenu)
+        self.importTraitAction.plug(mainmenu)
+        self.importTraitAction.setText('Import trait')
+        self.exportTraitAction.plug(mainmenu)
+        self.exportTraitAction.setText('Export trait')
         self.quitAction.plug(mainmenu)
 
     def initToolbar(self):
         toolbar = self.toolBar()
         self.newTraitAction.plug(toolbar)
+        self.importTraitAction.plug(toolbar)
+        self.exportTraitAction.plug(toolbar)
         self.quitAction.plug(toolbar)
 
     def initlistView(self):
@@ -101,6 +109,12 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.refreshListView()
         
 
+    def slotImportTrait(self):
+        print 'slotImportTrait'
+
+    def slotExportTrait(self):
+        print 'slotExportTrait'
+        
     def selectionChanged(self):
         item = self.listView.currentItem()
         self.mainView.set_trait(item.trait)

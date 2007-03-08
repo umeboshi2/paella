@@ -2,11 +2,15 @@ import os
 from os.path import isfile, join, dirname
 
 from useless.base.util import makepaths
+
 from paella.debian.base import debootstrap, Debootstrap
 from paella.installer.util.misc import remove_debs
 
+from paella.installer.util.filesystem import make_filesystem
+
 from base import UmlConfig
-from util import mkrootfs, create_sparse_file
+from base import guest_mode
+from util import create_sparse_file
 from chroot import UmlChroot
 
 class UmlBootstrapper(UmlChroot):
@@ -21,15 +25,8 @@ class UmlBootstrapper(UmlChroot):
         o['paellasuite'] = suite
         o['paella_action'] = 'bootstrap'
 
-    def make_filesystem(self):
-        # guest mode method
-        self.check_guest()
-        # this function needs to be removed
-        mkrootfs()
-        
+    @guest_mode
     def bootstrap(self):
-        # guest mode method
-        self.check_guest()
         suite = self.options['paellasuite'].value
         script = ''
         if 'bootstrap_script' in self.options.keys():

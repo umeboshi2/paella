@@ -42,7 +42,7 @@ class UmlMachineManager(Uml):
         self.set_root_filesystem(self.cfg['basefile'])
         
     def set_root_filesystem(self, basefile):
-        self.options['ubd0'] = basefile
+        self.options['ubda'] = basefile
 
     def backup_machine(self, basefile=None):
         self._check_current()
@@ -95,7 +95,7 @@ class UmlRunner(Uml):
         self.options['umlmachine'] = machine
         self.options['umid'] = machine
         self.options.update(self.cfg.get_umlopts())
-        self.options['ubd0'] = self.cfg['basefile']
+        self.options['ubda'] = self.cfg['basefile']
         
 
     def run(self, oldway=True):

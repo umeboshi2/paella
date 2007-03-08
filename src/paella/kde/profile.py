@@ -153,18 +153,24 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
         collection = self.actionCollection()
         self.quitAction = KStdAction.quit(self.close, collection)
         self.newProfileAction = KStdAction.openNew(self.newProfile, collection)
-
+        self.importProfileAction = KStdAction.open(self.slotImportProfile, collection)
+        self.exportProfileAction = KStdAction.saveAs(self.slotExportProfile, collection)
+        
     def initMenus(self):
         mainmenu = KPopupMenu(self)
         menubar = self.menuBar()
         menubar.insertItem('&Main', mainmenu)
         menubar.insertItem('&Help', self.helpMenu(''))
         self.newProfileAction.plug(mainmenu)
+        self.importProfileAction.plug(mainmenu)
+        self.exportProfileAction.plug(mainmenu)
         self.quitAction.plug(mainmenu)
 
     def initToolbar(self):
         toolbar = self.toolBar()
         self.newProfileAction.plug(toolbar)
+        self.importProfileAction.plug(toolbar)
+        self.exportProfileAction.plug(toolbar)
         self.quitAction.plug(toolbar)
 
     def initlistView(self):
@@ -238,3 +244,11 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
             self.profile.set_suite(suite)
             self.mainView.resetView()
             
+    def slotImportProfile(self):
+        KMessageBox.information(self, 'Import unimplemented')
+        print 'slotImportProfile'
+
+    def slotExportProfile(self):
+        KMessageBox.information(self, 'Export unimplemented')
+        
+        

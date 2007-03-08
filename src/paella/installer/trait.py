@@ -271,28 +271,31 @@ class TraitInstaller(Installer):
         tmpl = self.traittemplate.template.template
         self.traittemplate.template.update(data)
         self._make_template_common(template, tmpl)
-        
-    def _make_template_common(self, template, tmpl):
-        sub = self.traittemplate.template.sub()
-        newpath = join(self.target, template.template)
-        bkuppath = join(self.target, self.paelladir, 'original_files', template.template)
-        makepaths(dirname(newpath), dirname(bkuppath))
-        self.log.info('target template %s' % newpath)
-        if tmpl != sub:
-            self.log.info('template %s subbed' % (template.template))
-        if isfile(newpath):
-            if not isfile(bkuppath):
-                os.system('mv %s %s' % (newpath, dirname(bkuppath)))
-                self.log.info('%s backed up' % template.template)
+
+    def _install_template(self, template, text):
+        target_filename = os.path.join(self.target, template.template)
+        self.log.info('target template %s' % target_filename)
+        backup_filename = os.path.join(self.target,
+                                       self.paelladir, 'original_files', template.template)
+        for p in target_filename, backup_filename:
+            makepaths(os.path.dirname(p))
+        if os.path.isfile(target_filename):
+            if not os.path.isfile(backup_filename):
+                cmd = 'mv %s %s' % (target_filename, os.path.dirname(backup_filename))
+                os.system(cmd)
+                self.log.info('template %s backed up' % template.template)
             else:
                 self.log.info('overwriting previously installed template %s' % template.template)
         else:
             self.log.info('installing new template %s' % template.template)
-        newfile = file(newpath, 'w')
-        newfile.write(sub)
+        newfile = file(target_filename, 'w')
+        newfile.write(text)
         newfile.close()
-        mode = template.mode
         
+        # Set Ownership and Permissions
+
+        mode = template.mode
+
         # a simple attempt to insure mode is a valid octal string
         # this is one of the very rare places eval is used
         # there are a few strings with 8's and 9's that will pass
@@ -300,13 +303,23 @@ class TraitInstaller(Installer):
         # If the mode is unusable the install will fail at this point.
         if mode[0] == '0' and len(mode) <= 7 and mode.isdigit():
             mode = eval(mode)
-            os.chmod(newpath, mode)
+            os.chmod(target_filename, mode)
         else:
             raise InstallError, 'bad mode %s, please use octal prefixed by 0' % mode
         
         own = ':'.join([template.owner, template.grp_owner])
+        # This command is run in a chroot to make the correct uid, gid
         os.system(self.command('chown', "%s '%s'" %(own, join('/', template.template))))
 
+        
+    def _make_template_common(self, template, tmpl):
+        sub = self.traittemplate.template.sub()
+        if tmpl != sub:
+            self.log.info('template %s subbed' % (template.template))
+        self._install_template(template, sub)
+        
+
+    # order of updates is important here
     def _update_templatedata(self):
         self.traittemplate.template.update(self.familydata)
         self.traittemplate.template.update(self.mtypedata)

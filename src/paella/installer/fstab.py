@@ -84,8 +84,8 @@ class SimpleFstab(_Fstab):
 
 
 class UmlFstab(_Fstab):
-    def __init__(self, home='/dev/ubd1'):
-        self.root = Root('/dev/ubd0', 'ext2')
+    def __init__(self, home='/dev/ubdb'):
+        self.root = Root('/dev/ubda', 'ext2')
         self.proc = Proc()
         self.dev = Dev()
         self.tmp = Tmp()

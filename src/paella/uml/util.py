@@ -43,23 +43,18 @@ def mount(mtpnt, fstype='hostfs', export=None):
     if mounted:
         raise Error, 'problem with %s' % mount
 
-def mount_target(target, device='/dev/ubd1'):
+def mount_target(target, device='/dev/ubda'):
     makepaths(target)
     os.system('mount %s %s' % (device, target))
     print target, 'mounted'
 
-
-# this function is deprecated
-def mkrootfs(fstype='ext2', primary='/dev/ubd1',
-             secondary='/dev/ubd1'):
-    make_filesystem(primary, fstype)
-    
-def setup_target(target='/tmp/target', device='/dev/ubd1'):
+def setup_target(target='/tmp/target', device='/dev/ubda', fstype='ext2'):
     mount_tmpfs(target='/tmp')
-    mkrootfs(primary=device)
+    make_filesystem(device, fstype)
     mount_target(target, device)
 
 def make_ubd_nodes(target):
+    print 'calling make_ubd_nodes'
     rdev = os.path.join(target, 'dev/ubd')
     for partition in map(str, range(6)):
         os.system('mknod %s b 98 %s' % (rdev + partition, partition))    
