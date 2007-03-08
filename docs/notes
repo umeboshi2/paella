@@ -1,6 +1,8 @@
 Paella Notes
 ===========================
 
+.. contents:: :backlinks: entry
+
 What is Paella
 --------------------
 
@@ -15,11 +17,18 @@ networks.
 Objects and Definitions
 --------------------------------
 
+Apt Source
+------------------
+An apt source is similar to a line in an /etc/apt/sources.list file.
+
+
 Suite
 -------
 A suite is a similiar to debian suites like woody or sarge.  A suite 
 can be used to make different versions of configurations, or different
 styles of design and configurations.  Traits are held in suites.
+
+Basically a suite is an ordered list of apt sources, and a set of traits.
 
 
 Trait 
@@ -130,7 +139,7 @@ A machine type is going to be the main identifier of a particular type of machin
 This currently includes disks and kernel modules.  The disks of a machine type are a
 list of tuples in the database (machine_type, diskname, device) .  The current policy is 
 to treat all devices of a certain  diskname as a raid1 array if there is more than one
-device.
+device.  Machine Types will have parents soon.
 
 Machine Type Scripts
 -------------------------------
@@ -791,6 +800,57 @@ paella.
   - manager_type:
 
 
+------------------------------------------------
+
+
+Uml Machine Configuration File
+------------------------------------------------
+
+This is the structure of the umlmachines.conf configuration file.
+Every section in this configuration file defines a uml machine, using
+the name of the section.
+
++ Section **DEFAULT**
+
+  - The DEFAULT section is used to set defaults for the uml
+    machines.
+
++ Section **umlmachines**
+
+  - This section may be removed, and the options placed in DEFAULT
+
+---------------------------------------------------------------------
+
+Uml Kernel Options used by paella-init script
+----------------------------------------------------------------------
+
+These are the command line options understood by the paella-init for
+the user mode linux kernel.
+
+- **python_path**:  sets the PYTHONPATH
+
+- **logfile**:  path to logfile
+
+- **LOGFILE**:  another name for logfile
+
+- **paella_action**:  action to be performed by paella-init
+
+- **umlconfig**:  path to umlmachines.conf
+
+- **umlmachine**:  name of the uml machine that being run
+
+- **paellaprofile**:  profile to be installed if applicable
+
+- **paellasuite**:  suite to be bootstrapped if applicable
+
+- **paella_system_tarball**:  a system backup to be restored if applicable
+
+- **bootstrap_script**:  path to script to run with debootstrap
+
+- **bootstrap_mirror**:  mirror to use with debootstrap
+
+- **backup_target**:  option used  before paella-init set the umlmachine, should
+  be removed soon.
 
 
 ------------------------------------------------
