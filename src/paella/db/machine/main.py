@@ -109,12 +109,19 @@ class MachineHandler(BaseMachineHandler):
         self.fsmounts.insert(data=dict(mnt_name=mnt_name, filesystem=filesystem,
                                        ord=ord, partition=partition, size=size))
 
-    def make_a_machine(self, machine, mtype, profile, fs):
+    def make_a_machine(self, machine, mtype, profile, kernel, fs):
         self.cursor.insert(table='machines',
                            data=dict(machine=machine,
-                                     machine_type=machine_type,
-                                     filesystem=fs, profile=profile))
+                                     machine_type=mtype,
+                                     filesystem=fs, profile=profile,
+                                     kernel=kernel))
 
+    def update_a_machine(self, machine, mtype, profile, kernel, fs):
+        clause = Eq('machine', machine)
+        data = dict(machine_type=mtype, profile=profile,
+                    kernel=kernel, filesystem=fs)
+        self.cursor.update(table='machines', data=data, clause=clause)
+        
     def insert_parsed_element(self, element):
         map(self.add_new_kernel, element.kernels)
         for mount in element.mounts:

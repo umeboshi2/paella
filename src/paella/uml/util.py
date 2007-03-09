@@ -66,8 +66,9 @@ def make_generic_devices(target):
     os.system('MAKEDEV generic')
     os.chdir(here)
     
-#this is done after bootstrap or
-#this is done after extracting the base tar
+# this is done after bootstrap or
+# this is done after extracting the base tar
+# this function is called in guest mode
 def ready_base_for_install(target, conn, suite):
     #_ready_base_for_install(target, conn, suite, UmlFstab())
     #set_root_passwd(target, myline)
@@ -76,6 +77,7 @@ def ready_base_for_install(target, conn, suite):
     make_fstab(UmlFstab(), target)
     make_ubd_nodes(target)
     modpath = os.path.join(target, 'lib/modules')
+    # this command needs to be run in guest mode
     kernel_version = commands.getoutput('uname -r')
     umlmodpath = os.path.join('/usr/lib/uml/modules', kernel_version)
     os.system('cp -R %s %s' % (umlmodpath, modpath))

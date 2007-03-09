@@ -92,7 +92,7 @@ class PackageDoc(BaseDocument):
             self.body.append(PackageFieldTable(row, bgcolor='MistyRose2'))
             self.body.append(Ruler())
             
-class TraitDoc(BaseDocument):
+class TraitDocument(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)
         self.trait = Trait(self.conn)

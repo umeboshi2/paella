@@ -2,6 +2,7 @@ from os.path import join
 from xml.dom.minidom import parseString
 
 from useless.base.util import strfile
+from useless.base import NoExistError
 from useless.db.midlevel import StatementCursor, Environment
 from useless.sqlgen.clause import Eq
 
@@ -175,10 +176,49 @@ class MachineTypeScript(BaseMachineTypeObject, ScriptCursor):
     def scripts(self, key=None):
         return self.select(clause=self._mtype_clause())
 
+
+# machine types can only have one parent
+# unlike traits
+class MachineTypeParent(BaseMachineTypeCursor):
+    def __init__(self, conn):
+        BaseMachineTypeCursor.__init__(self, conn, 'machine_type_parent')
+
+    def get_parent(self, mtype):
+        clause = Eq('machine_type', mtype)
+        try:
+            row = self.select_row(clause=clause)
+            # NoExistError should be raised on above statement
+            # if parent doesn't exist
+            return row.parent
+        except NoExistError:
+            return None
+
+    def set_parent(self, mtype, parent):
+        data = dict(parent=parent)
+        if self.get_parent(mtype) is None:
+            data.update(dict(machine_type=mtype))
+            self.insert(data=data)
+        else:
+            clause = Eq('machine_type', mtype)
+            self.update(data=data, clause=clause)
+        
+
+    def get_parent_list(self, mtype, childfirst=True):
+        parents = []
+        parent = self.get_parent(mtype)
+        while parent is not None:
+            parents.append(parent)
+            parent = self.get_parent(parent)
+        if not childfirst:
+            parents.reverse()
+        return parents
+    
+        
+        
 class MachineTypeFamily(BaseMachineTypeCursor):
     def __init__(self, conn):
         BaseMachineTypeCursor.__init__(self, conn, 'machine_type_family')
-        
+
 class MachineTypeEnvironment(BaseMachineTypeObject, Environment):
     def __init__(self, conn, machine_type):
         BaseMachineTypeObject.__init__(self)
@@ -199,15 +239,18 @@ class MachineTypeEnvironment(BaseMachineTypeObject, Environment):
 class MachineTypeHandler(BaseMachineTypeHandler):
     def __init__(self, conn):
         BaseMachineTypeHandler.__init__(self, conn)
+        self._parents = MachineTypeParent(self.conn)
         self._mtfam = MachineTypeFamily(self.conn)
         self._fam = Family(self.conn)
         self._mtscript = MachineTypeScript(self.conn)
+        self.parent = None
 
     def set_machine_type(self, machine_type):
         BaseMachineTypeHandler.set_machine_type(self, machine_type)
         self._mtenv = MachineTypeEnvironment(self.conn, machine_type)
         self._mtcfg = MachineTypeVariablesConfig(self.conn, machine_type)
         self._mtscript.set_machine_type(machine_type)
+        self.parent = self._parents.get_parent(machine_type)
         
     def family_rows(self):
         clause = self._mtype_clause()
@@ -329,3 +372,7 @@ if __name__ == '__main__':
     from os.path import join
     from paella.db import PaellaConnection
     conn = PaellaConnection()
+    pmtypes = ['ggf', 'gf', 'f', 's', 'gs', 'ggs']
+    mp = MachineTypeParent(conn)
+    mt = MachineTypeHandler(conn)
+    

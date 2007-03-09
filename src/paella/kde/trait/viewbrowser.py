@@ -23,7 +23,7 @@ from base import ParentAssigner
 from base import ViewWindow
 from base import ScriptNameDialog
 
-from docgen import TraitDoc
+from docgen import TraitDocument
 from template import TemplateViewWindow
 from traitvariables import TraitVariablesWindow
 
@@ -60,7 +60,7 @@ class TraitDescriptionWindow(BaseTextEditWindow):
 class TraitView(ViewBrowser):
     # The TraitDoc holds the main traitdb object
     def __init__(self, parent):
-        ViewBrowser.__init__(self, parent, TraitDoc)
+        ViewBrowser.__init__(self, parent, TraitDocument)
         # setup dialog pointers
         # just one now
         self._dialog = None

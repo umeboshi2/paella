@@ -1,0 +1,36 @@
+#!/bin/bash
+#cd $HOME
+pushd $HOME
+
+if ! [ -d local ]; then
+    mkdir local
+fi
+if ! [ -d workspace ]; then
+    mkdir workspace
+fi
+pushd workspace
+if ! [ -d paella ]; then
+    svn co svn://svn.berlios.de/paella/trunk paella
+fi
+if ! [ -d useless ]; then
+    svn co svn://svn.berlios.de/useless/trunk useless
+fi
+popd
+pushd local
+if ! [ -L paella ]; then
+    ln -s ../workspace/paella/src/paella
+fi
+if ! [ -L useless ]; then
+    ln -s ../workspace/useless/useless
+fi
+popd
+PACKAGES="python-xml python-pycurl python-sqlite python-pgsql python-kde3
+python-qtext libqt3-mt-psql python-dev python-docutils cdbs devscripts python-apt 
+debootstrap debconf-utils python-pyparsing reiserfsprogs xfsprogs hdparm mdadm
+mkisofs gawk xxdiff xemacs21 python-kjbuckets kernel-package postgresql 
+postgresql-contrib apache user-mode-linux uml-utilities"
+sudo apt-get install $PACKAGES
+
+sudo adduser $USER uml-net
+
+popd

@@ -82,7 +82,8 @@ class MachineMainWindow(BasePaellaWindow):
         self.mainView = None
         self.resize(400, 300)
         self.setCaption('Machine Manager')
-
+        self.statusbar = self.statusBar()
+        
     def _killmainView(self):
         if self.mainView is not None:
             del self.mainView
@@ -94,6 +95,7 @@ class MachineMainWindow(BasePaellaWindow):
         self.setCentralWidget(manager)
         manager.show()
         self.mainView = manager
+        self.mainView.setSizes([100, 300])
         
     def initActions(self):
         collection = self.actionCollection()
@@ -124,14 +126,17 @@ class MachineMainWindow(BasePaellaWindow):
             
     def slotManagemachine(self):
         self._setMainView(MachineManager)
+        self.statusbar.message('Manage Machines')
         
     def slotManagemachine_type(self):
         self._setMainView(MachineTypeManager)
+        self.statusbar.message('Manage Machine Types')
 
 
 
     def slotManagefilesystem(self):
         self._setMainView(FilesystemManager)
+        self.statusbar.message('Manage Filesystems')
 
     def slotManagekernels(self):
         self._setMainView(KListView)
@@ -142,6 +147,7 @@ class MachineMainWindow(BasePaellaWindow):
         self.mainView.addColumn('kernel')
         for row in rows:
             KListViewItem(self.mainView, row.kernel)
+        self.statusbar.message('Manage kernels')
             
     def slotManagedisk(self):
         raise NotImplementedError, 'slotManagedisk not implemented'

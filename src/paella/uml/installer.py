@@ -8,13 +8,14 @@ from paella.db.base import SuiteCursor
 
 from paella.installer.util.misc import extract_tarball
 from paella.installer.profile import ProfileInstaller
+from paella.installer.machine import MachineInstaller
 from paella.installer.base import CurrentEnvironment
 
 from base import host_mode, guest_mode
 from util import ready_base_for_install, create_sparse_file
 from chroot import UmlChroot
 
-class UmlInstaller(UmlChroot):
+class BaseUmlInstaller(UmlChroot):
     def __init__(self, conn=None, cfg=None):
         self.conn = conn
         UmlChroot.__init__(self, cfg=cfg)
@@ -22,11 +23,23 @@ class UmlInstaller(UmlChroot):
         paellarc_files = [self.cfg['paellarc']]
         self.paellarc = PaellaConfig(files=paellarc_files)
         
-        
-
     def setup_target(self, **kwargs):
         UmlChroot.setup_target(self, **kwargs)
+    
+    @guest_mode
+    def process(self):
+        self.installer.process()
+
+    @host_mode
+    def make_root_device(self, path, size=None):
+        if size is None:
+            size = self.cfg['basefile_size']
+        msg = 'making uml root device of size %s at %s' % (size, path)
+        print msg
+        create_sparse_file(path, size)
+        self.set_targetimage(path)
         
+class UmlProfileInstaller(BaseUmlInstaller):
     @guest_mode
     def set_suite(self, suite):
         self.installer = ProfileInstaller(self.conn)
@@ -52,19 +65,6 @@ class UmlInstaller(UmlChroot):
     def set_template_path(self, path=None): 
         self.installer.set_template_path(path)
 
-    @guest_mode
-    def process(self):
-        self.installer.process()
-
-    @host_mode
-    def make_root_device(self, path, size=None):
-        if size is None:
-            size = self.cfg['basefile_size']
-        msg = 'making uml root device of size %s at %s' % (size, path)
-        print msg
-        create_sparse_file(path, size)
-        self.set_targetimage(path)
-        
     @host_mode
     def install_profile(self, profile, path):
         self.set_profile(profile)
@@ -119,5 +119,18 @@ class UmlInstaller(UmlChroot):
         curenv[mpkey] = 'process'
         self.process()
         
+class UmlMachineInstaller(BaseUmlInstaller):
+    def __init__(self, conn=None, cfg=None):
+        self.conn = conn
+        UmlChroot.__init__(self, cfg=cfg)
+        self.options['paella_action'] = 'install'
+        paellarc_files = [self.cfg['paellarc']]
+        self.paellarc = PaellaConfig(files=paellarc_files)
+        
+    def setup_target(self, **kwargs):
+        UmlChroot.setup_target(self, **kwargs)
+        
+UmlInstaller = UmlProfileInstaller
+
 if __name__ == '__main__':
     pass

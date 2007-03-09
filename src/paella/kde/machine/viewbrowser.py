@@ -15,6 +15,7 @@ from paella.kde.docgen.machine import MachineTypeDoc
 from paella.kde.docgen.machine import FilesystemDoc
 
 from base import NewMachineDialog
+from base import EditMachineDIalog
 from base import NewMTScriptDialog
 
 class MachineView(ViewBrowser):
@@ -31,10 +32,19 @@ class MachineView(ViewBrowser):
             if context == 'machine':
                 handler = self.doc.machine
                 dialog = NewMachineDialog(self, handler)
+                dialog.show()
+                self._dialog = dialog
             else:
-                KMessageBox.error('%s not supported' % url)
+                KMessageBox.error(self, '%s not supported' % url)
+        elif action == 'edit':
+            if context == 'machine':
+                handler = self.doc.machine
+                dialog = EditMachineDIalog(self, handler, ident)
+                dialog.show()
+                self._dialog = dialog
+                print 'edit machine', dialog.machine
         else:
-            KMessageBox.error('%s not supported' % url)
+            KMessageBox.error(self, '%s not supported' % url)
 
 class MachineTypeView(ViewBrowser):
     def __init__(self, parent):
@@ -61,6 +71,9 @@ class MachineTypeView(ViewBrowser):
         elif context == 'Variables':
             fields = ['trait', 'name', 'value']
             dialog_message = 'Add a new variable.'
+        elif context == 'machine_type':
+            fields = ['name']
+            dialog_message = 'Add a new machine type.'
         if action == 'new':
             if context == 'Scripts':
                 dialog = NewMTScriptDialog(self)
@@ -89,13 +102,16 @@ class MachineTypeView(ViewBrowser):
     def _perform_delete_action(self, context, ident):
         if context == 'Families':
             self.doc.mtype.delete_family(ident)
+            self.resetView()
         elif context == 'Variables':
-            msg = 'Use edit action to delete variables.'
-            KMessageBox.information(self, msg)
+            self.doc.mtype.edit_variables()
         elif context == 'Scripts':
             self.doc.mtype.delete_script(ident)
         elif context == 'Modules':
             msg = 'Deleting modules is not supported.'
+            KMessageBox.information(self, msg)
+        elif context == 'machine_type':
+            msg = "Can't delete machine types yet."
             KMessageBox.information(self, msg)
         else:
             msg = 'Problem with delete - context %s id %s' % (context, ident)
@@ -106,6 +122,8 @@ class MachineTypeView(ViewBrowser):
             self.doc.mtype.edit_variables()
         elif context == 'Scripts':
             self.doc.mtype.edit_script(ident)
+        elif context == 'machine_type':
+            KMessageBox.information(self, 'Editing of machine types is unimplemented')
         else:
             msg = 'edit context %s id %s is unsupported' % (context, ident)
             KMessageBox.error(self, msg)
@@ -121,6 +139,8 @@ class MachineTypeView(ViewBrowser):
         elif context == 'Variables':
             self.doc.mtype.append_variable(data['trait'], data['name'],
                                            data['value'])
+        elif context == 'machine_type':
+            self.doc.mtype.add_new_type(data['name'])
         else:
             KMessageBox.error(self, 'Error handling context %s' % context)
         self._dialog = None

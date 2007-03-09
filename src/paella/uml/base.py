@@ -151,9 +151,8 @@ class Uml(object):
         self.mode = mode
         # if in guest mode, reset options from /proc/cmdline
         if mode == 'guest':
+            # we depend on paella-init to set sys.kernopts
             kernopts = sys.kernopts
-            print 'kernopts', kernopts
-            print '^^kernopts^^'
             self.options.update(kernopts)
         
     # the popen and use_pipe will probably be removed later

@@ -288,6 +288,14 @@ class PartitionsTable(Table):
         columns = [diskname_col] + partition_columns()
         Table.__init__(self, name, columns)
 
+class MachineTypeParentsTable(Table):
+    def __init__(self, mach_types_table):
+        mtype_col = PkName('machine_type')
+        mtype_col.set_fk(mach_types_table)
+        pcol = PkName('parent')
+        pcol.set_fk(mach_types_table)
+        Table.__init__(self, 'machine_type_parent', [mtype_col, pcol])
+
 class MachineTypeFamilyTable(Table):
     def __init__(self, mach_types_table):
         mtype_col = PkName('machine_type')
@@ -471,6 +479,8 @@ def primary_tables():
     pwcols = [PkName('diskname')] + partition_columns()
     tables.append(Table('partition_workspace', pwcols))
     # MachineTypesTables
+    mtparent = MachineTypeParentsTable('machine_types')
+    tables.append(mtparent)
     mtfamily = MachineTypeFamilyTable('machine_types')
     tables.append(mtfamily)
     mtenviron = MachineTypeEnvironment('machine_types')
@@ -506,6 +516,7 @@ if __name__ == '__main__':
     from useless.sqlgen.statement import Statement
     from paella.debian.base import parse_packages, full_parse
     from paella.db import PaellaConnection
+    
     def dtable():
         cmd.execute('drop table ptable')
 

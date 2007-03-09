@@ -246,7 +246,6 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
             
     def slotImportProfile(self):
         KMessageBox.information(self, 'Import unimplemented')
-        print 'slotImportProfile'
 
     def slotExportProfile(self):
         KMessageBox.information(self, 'Export unimplemented')
