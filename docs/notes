@@ -855,6 +855,39 @@ the user mode linux kernel.
 - **backup_target**:  option used  before paella-init set the umlmachine, should
   be removed soon.
 
+------------------------------------------------
+
+
+Default Environment
+------------------------------------------------
+
+The default environment is a ini type configuration file stored in the database as the
+default_enviroment table.
+
++ Section **installer**
+
+  - bootstrap_target:  bool that determines wheter the install will run debootstrap, or
+    use a pre-made base tarball.
+
+  - devices_tarball:  location of a tarball full of preliminary devices, useful as MAKEDEV
+    takes quite a while.  (This option will probably be removed soon due to udev.)
+
+  - enable_bad_hacks:  This option is used for testing the installer and should always
+    be set to false
+
+  - http_mirror:  uri of debian mirror used during installation.
+
+  - nfs_log_export:	 Path to log directory of nfs server, allows installer to write to a log
+    file.
+
+  - nfs_log_host:  host for the log export
+
+  - nfs_log_path:  subdirectory path of nfs_log_export.  This is where the logfile will be stored.
+
+  - paella_storage:  main storage area
+
+  - suite_storage:  subdirectory path of paella_storage.  This is where the base tarballs are kept.
+
 
 ------------------------------------------------
 
