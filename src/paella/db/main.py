@@ -245,7 +245,7 @@ class PaellaImporter(object):
         self.main_path = dirname
         
     def parse_main_xml(self, filename=None):
-        if filename = None:
+        if filename is None:
             filename = os.path.join(self.main_path, 'database.xml')
         parsed = PaellaParser(filename)
         return parsed
