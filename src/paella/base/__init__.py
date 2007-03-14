@@ -10,7 +10,10 @@ class PaellaConfig(Configuration):
             paellarc = os.environ['PAELLARC']
             print 'reading paellarc at', paellarc
             self.read([paellarc])
-            
+
+    def get_dsn(self):
+        return Configuration.get_dsn(self, fields=['dbname', 'dbhost', 'dbusername', 'dbpassword'])
+    
             
 
 if __name__ == '__main__':

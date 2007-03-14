@@ -75,20 +75,10 @@ class ChangeSuiteItem(BaseItem):
     def __init__(self):
         BaseItem.__init__(self, 'change suite', 'colors',
                           'change suite', 'change suite')
-class ManageSuiteItem(BaseItem):
-    def __init__(self, suite):
-        msg = 'manage suite %s' % suite
-        BaseItem.__init__(self, msg, 'colors', msg, msg)
-                          
 class ChangeSuiteAction(BaseAction):
     def __init__(self, slot, parent):
         BaseAction.__init__(self, ChangeSuiteItem(), 'ChangeSuite', slot, parent)
 
-class ManageSuiteAction(BaseAction):
-    def __init__(self, suite, slot, parent):
-        BaseAction.__init__(self, ManageSuiteItem(suite), 'ManageSuite%s' % suite,
-                            slot, parent)
-        
 class ImportDatabaseItem(BaseItem):
     def __init__(self):
         tt = 'Import the database from a previous xml export.'

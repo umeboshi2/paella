@@ -10,6 +10,9 @@ from useless.sqlgen.clause import Eq
 
 from paella.base import PaellaConfig
 
+from paella.db import DefaultEnvironment
+from paella.db import CurrentEnvironment
+
 from paella.db.schema.main import start_schema
 from paella.db.schema.main import AlreadyPresentError
 
@@ -189,6 +192,30 @@ class PaellaExporter(object):
             path = self.db_export_path
         self.machines.export_machine_database(path)
                                 
+    def _export_environment_common(self, path, envtype):
+        if path is None:
+            path = self.db_export_path
+        if envtype == 'default':
+            envclass = DefaultEnvironment
+        elif envtype == 'current':
+            envclass = CurrentEnvironment
+        else:
+            raise RuntimeError, 'bad envtype %s' % envtype
+        env = envclass(self.conn)
+        filename = os.path.join(path, '%s-environment' % envtype)
+        efile = file(filename, 'w')
+        env.write(efile)
+        efile.close()
+        
+    def export_default_environment(self, path=None):
+        self._export_environment_common(path, 'default')
+        
+    def export_current_environment(self, path=None):
+        self._export_environment_common(path, 'common')
+
+    ###################
+    # reporting methods
+    ####################
     def report_total_suites(self, total):
         print 'exporting %d suites' % total
 
@@ -206,6 +233,34 @@ class PaellaExporter(object):
 
     def report_start_exporting_traits(self):
         print 'starting to export traits'
+
+class PaellaImporter(object):
+    def __init__(self):
+        self.conn = conn
+        self.suitecursor = SuiteCursor(self.conn)
+        self.aptsrc = AptSourceHandler(self.conn)
+        self.main_path = None
+
+    def set_main_path(self, dirname):
+        self.main_path = dirname
+        
+    def parse_main_xml(self, filename=None):
+        if filename = None:
+            filename = os.path.join(self.main_path, 'database.xml')
+        parsed = PaellaParser(filename)
+        return parsed
+
+    def start_schema(self):
+        try:
+            start_schema(self.conn)
+        except AlreadyPresentError:
+            print "primary tables already present"
+
+    def import_all_families(self, dirname):
+        pass
+    
+    def make_suite(self):
+        pass
 
             
 #generate xml        

@@ -1,19 +1,5 @@
 #configuration file for paella
 [DEFAULT]
-# $(suite)_common and $(suite)_local help determine how
-# to make the sources.list for apt on the target
-# these options reference the local debian mirror that you have
-# for your modified packages.  The current way I use the local
-# mirror and suites is this:
-# my local debian root is http://mymirror/debian/local
-# a common line is like:
-#  deb http://mymirror/debian/local common/
-# a local line is like:
-#  deb http://mymirror/debian/local $(suite)/
-sarge_common:		false
-sarge_local:		false
-
-
 # this is only referenced in this config file
 __myhome:		/home/umeboshi
 __paelladir:		%(__myhome)s/workspace/paella
@@ -25,63 +11,10 @@ dbname:			paella
 dbusername:		paella
 dbpassword:		apassword
 
-# these paths are used to import and export information
+# this path is used to import and export information
 # in the database.  These paths are used as hints in the
 # gui and aren't needed for the command line.
-#import_path:		/usr/share/paella/defaultdb
-#export_path:		/usr/share/paella/defaultdb
-import_path:		%(__paelladir)s/config/share/databases/defaultdb
-export_path:		%(import_path)s
-
-# paella is an older autocommiting database
-# this probably won't change until it needs to,
-# or the base gets rewritten.
-autocommit:		true
-
-[debrepos]
-repos_host:		localhost
-debroot:			/debian
-repos_root:		/freespace/debian
-# these are the official debian suites that you will mirror
-official_suites:		woody,sarge,sid
-
-# these are the local suites that you maintain
-# in order to create a local suite, shell into the mirror
-# and cp -a debian/dists/sourcesuite debian/dists/targetsuite
-# this just copies all of the package and source list files,
-# but still references the same files in the pool
-local_suites:		maverick,questron,gunny,kardinal
-
-# suites that have Packages.bz2 files in them need to be listed
-# here in a comma separated list
-# this will get to the installer to mirror the .bz2 files as well as the
-# .gz files
-sid_suites:		sid,questron,kardinal
-
-# these are suites that receive security updates
-updated_suites:		sarge,etch
-
-http_mirror:		http://%(repos_host)s%(debroot)s
-
-default_archs:		i386,amd64
-sarge_archs:		i386
-etch_archs:		i386,amd64
-sid_archs:		i386,amd64
-
-# these options are the urls for the official debian sites
-# it can be helpful to override these to partially mirror a mirror
-official_main:		http://ftp.us.debian.org/debian
-official_nonus:		http://nonus.debian.org/
-official_security:		http://security.debian.org
-
-# this is the location of the other repositories that you may mirror
-other_repos:		%(repos_root)s/other
-
-# this is a comma separated list of repositories that you
-# are mirroring.  There should be a section in this config file
-# named other_repos_$(repos) for each repository in this list.
-other_repos_names:	knoppix,marillat,logilab,marillat_src
-
+default_path:		%(__myhome)/paelladb
 
 [installer]
 # this is to enable ugly stuff in the paella installers
@@ -99,7 +32,7 @@ paella_storage:		/usr/share/paella/storage
 suite_storage:		%(paella_storage)s/suites
 
 # this is a list of suites that will be bootstrapped and tarred
-bootstrap_suites:		sarge, testing, kudzu
+bootstrap_suites:		sarge, etch
 
 # the default is not to have the installer bootstrap,
 # but extract tar files in suite_storage (quicker)
@@ -148,32 +81,5 @@ manager_pos:		0, 1075
 # manager window size
 manager_size:		170, 200
 
-# $(suite)_pos is the suite manager toolbar for that suite
-sarge_pos:		750, 0
-
-
-# the other_repos sections are sections that are mirrored
-# by the paella-update-other-repos script
-
-[other_repos__knoppix]
-uri:			http://developer.linuxtag.net/knoppix/
-localpath:			knoppix
-types:			both
-
-[other_repos__logilab]
-uri:			http://www.logilab.org/ftp/pub/debian
-localpath:			logilab
-distpath:			unstable
-types:			binary
-
-[other_repos__marillat]
-uri:			ftp://ftp.nerim.net/debian-marillat/
-localpath:			nerim
-distpath:			dists/unstable/main/binary-i386
-types:			binary
-
-[other_repos__marillat_src]
-uri:			ftp://ftp.nerim.net/debian-marillat/
-localpath:			nerim
-distpath:			dists/unstable/main/source
-types:			source
+# only listbox_select is supported now
+manager_type:		listbox_select

@@ -1,3 +1,4 @@
+from useless.base.path import path
 from useless.sqlgen.clause import Eq
 
 from useless.db.midlevel import StatementCursor, SimpleRelation
@@ -9,6 +10,9 @@ from paella.db.base import get_suite
 from paella.db.trait import Trait
 from paella.db.trait.relations.parent import TraitParent
 from paella.db.family import Family
+
+from xmlparse import parse_profile
+from xmlgen import PaellaProfiles
 
 class ProfileVariablesConfig(VariablesConfig):
     def __init__(self, conn, profile):
@@ -164,6 +168,8 @@ class Profile(StatementCursor):
         self._pfam = StatementCursor(conn)
         self._pfam.set_table('profile_family')
         self._fam = Family(conn)
+        # this is an ugly name (refactor this stuff later)
+        self._impexp = PaellaProfiles(conn)
         self.current = None
         
     def drop_profile(self, profile):
@@ -282,8 +288,29 @@ class Profile(StatementCursor):
             num += 1
             
             
-    
+    def import_profile(self, filename):
+        profile = parse_profile(filename)
+        self._impexp.insert_profile(profile)
         
+
+    def export_profile(self, dirname, profile=None):
+        if profile is None:
+            profile = self.current.profile
+        self._impexp.write_profile(profile, dirname)
+        
+    
+    def import_all_profiles(self, dirname):
+        dirname = path(dirname)
+        files = [p for p in dirname.listdir() if p.endswith('.xml')]
+        for filename in files:
+            self.import_profile(filename)
+            
+
+    def export_all_profiles(self, dirname):
+        for profile in self.get_profile_list():
+            self.export_profile(dirname, profile=profile)
+            
+    
     
 #class Profile(object):
 #    def __init__(self, conn):

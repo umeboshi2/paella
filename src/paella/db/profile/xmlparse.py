@@ -4,6 +4,12 @@ from xml.dom.minidom import parseString as parse_string
 from useless.base import Error
 from useless.base.xmlfile import ParserHelper
 
+class ParseError(RuntimeError):
+    pass
+
+class BadFormatError(ParseError):
+    pass
+
 class ProfileParser(ParserHelper):
     def __init__(self, element):
         ParserHelper.__init__(self)
@@ -56,6 +62,16 @@ class ProfilesParser(ParserHelper):
         self.profile_elements = self.get_elements_from_section(self.xml, 'profiles',
                                                                'profile')
         self.profiles = [ProfileParser(element) for element in self.profile_elements]
-        
+
+
+def parse_profile(filename):
+    doc = parse_file(filename)
+    elements = doc.getElementsByTagName('profile')
+    if len(elements) != 1:
+        raise BadFormatError, "%s is not a proper profile xml export"
+    element = elements[0]
+    return ProfileParser(element)
+
+    
 if __name__ == '__main__':
     pass
