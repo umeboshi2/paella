@@ -4,6 +4,7 @@ from xml.dom.minidom import Element
 from xml.dom.minidom import parse as parse_file
 
 from useless.base.util import makepaths, ujoin
+from useless.base.path import path
 from useless.base import Error, UnbornError
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
@@ -38,6 +39,21 @@ from aptsrc import AptSourceHandler
 from base import SuiteCursor
 # imports for ClientManager
 from useless.base.config import Configuration
+
+class MissingPackagesError(RuntimeError):
+    pass
+
+
+def report_missing_packages(missing):
+    traits = missing.keys()
+    traits.sort()
+    report = 'These packages for these traits do not exist.\n'
+    for trait in traits:
+        report += 'trait %s:\n' % trait
+        for package in missing[trait]:
+            report += '\t%s\n' % package
+            
+    return report
 
 class TraitsElement(Element):
     def __init__(self, suite):
@@ -93,7 +109,7 @@ class PaellaExporter(object):
             self.setup_cursors()
             
     def setup_cursors(self):
-        self.profiles = PaellaProfiles(self.conn)
+        self.profile = Profile(self.conn)
         self.family = Family(self.conn)
         self.machines = MachineHandler(self.conn)
 
@@ -127,35 +143,43 @@ class PaellaExporter(object):
         self.dbelement.append_suite_traits(suite, traits=traits)
         
     
-    def set_db_export_path(self, path):
-        self.db_export_path = path
+    def set_db_export_path(self, dirname):
+        self.db_export_path = path(dirname)
 
     def export_db_element(self, dirname=None, filename='database.xml'):
         if dirname is None:
             dirname = self.db_export_path
-        dbfile = file(os.path.join(dirname, filename), 'w')
-        self.dbelement.writexml(dbfile, indent='\t', newl='\n', addindent='\t')
+        filename = path(dirname) / filename
+        dbfile = filename.open('w')
+        self.dbelement.writexml(dbfile, indent='\t', newl='\n', addindent='\t')                                
         dbfile.close()
         
         
     def _make_suite_export_path(self, suite):
-        path = os.path.join(self.db_export_path, suite)
-        makepaths(path)
-        return path
+        suitedir = self.db_export_path / suite
+        makepaths(suitedir)
+        return suitedir
     
-    def export_all_profiles(self, path=None):
-        if path is None:
-            path = os.path.join(self.db_export_path, 'profiles')
-        makepaths(path)
-        self.profiles.export_profiles(path)
+    def export_all_profiles(self, dirname=None):
+        if dirname is None:
+            dirname = self.db_export_path / 'profiles'
+        makepaths(dirname)
+        profiles = self.profile.get_profile_list()
+        self.report_total_profiles(len(profiles))
+        env = self.profile.make_environment_object()
+        for profile in profiles:
+            env.set_profile(profile)
+            self.profile.export_profile(dirname, profile=profile, env=env)
+            self.report_profile_exported(profile)
+            
 
-    def export_all_families(self, path=None):
-        if path is None:
-            path = os.path.join(self.db_export_path, 'families')
-        makepaths(path)
-        self.family.export_families(path)
+    def export_all_families(self, dirname=None):
+        if dirname is None:
+            dirname = self.db_export_path / 'families'
+        makepaths(dirname)
+        self.family.export_families(dirname)
 
-    def export_trait(self, trait, suite=None, path=None, traitdb=None):
+    def export_trait(self, trait, suite=None, dirname=None, traitdb=None):
         if traitdb is None:
             if suite is None:
                 RuntimeError, "you must pass a suite if you don't pass a Trait object"
@@ -163,38 +187,44 @@ class PaellaExporter(object):
         traitdb.set_trait(trait)
         if suite is None:
             suite = traitdb.suite
-        if path is None:
-            path = self._make_suite_export_path(suite)
-        traitdb.export_trait(path)
+        if dirname is None:
+            dirname = self._make_suite_export_path(suite)
+        traitdb.export_trait(dirname)
+        
 
-    def export_all_traits(self, suite, path=None):
+    def export_all_traits(self, suite, dirname=None):
         self.report_start_exporting_traits()
         traitdb = Trait(self.conn, suite)
         traits = traitdb.get_trait_list()
         self.report_total_traits(len(traits))
         for trait in traits:
-            self.export_trait(trait, path=path, traitdb=traitdb)
-            self.report_trait_exported(trait, path)
+            self.export_trait(trait, dirname=dirname, traitdb=traitdb)
+            self.report_trait_exported(trait, dirname)
         #self.report_all_traits_exported()
             
-    def export_suite(self, suite, path=None):
-        self.export_all_traits(suite, path=path)
+    def export_suite(self, suite, dirname=None):
+        self.export_all_traits(suite, dirname=dirname)
 
-    def export_all_suites(self, path=None):
+    def export_all_suites(self, dirname=None):
         suites = self.suitecursor.get_suites()
         self.report_total_suites(len(suites))
         for suite in suites:
-            self.export_suite(suite, path=path)
+            self.report_exporting_suite(suite)
+            self.export_suite(suite, dirname=dirname)
             self.report_suite_exported(suite)
 
-    def export_machine_database(self, path=None):
-        if path is None:
-            path = self.db_export_path
-        self.machines.export_machine_database(path)
+    def export_machine_database(self, dirname=None):
+        if dirname is None:
+            dirname = self.db_export_path
+        else:
+            dirname = path(dirname)
+        self.machines.export_machine_database(dirname)
                                 
-    def _export_environment_common(self, path, envtype):
-        if path is None:
-            path = self.db_export_path
+    def _export_environment_common(self, dirname, envtype):
+        if dirname is None:
+            dirname = self.db_export_path
+        else:
+            dirname = path(dirname)
         if envtype == 'default':
             envclass = DefaultEnvironment
         elif envtype == 'current':
@@ -219,6 +249,9 @@ class PaellaExporter(object):
     def report_total_suites(self, total):
         print 'exporting %d suites' % total
 
+    def report_exporting_suite(self, suite):
+        print 'exporting suite %s' % suite
+        
     def report_suite_exported(self, suite):
         print 'suite %s exported'
         
@@ -234,19 +267,27 @@ class PaellaExporter(object):
     def report_start_exporting_traits(self):
         print 'starting to export traits'
 
+    def report_total_profiles(self, total):
+        print 'exporting %d profiles' % total
+
+    def report_profile_exported(self, profile):
+        print 'profile %s exported' % profile
+
 class PaellaImporter(object):
-    def __init__(self):
+    def __init__(self, conn):
         self.conn = conn
         self.suitecursor = SuiteCursor(self.conn)
         self.aptsrc = AptSourceHandler(self.conn)
         self.main_path = None
-
+        self.profile = Profile(self.conn)
+        self.family = Family(self.conn)
+        
     def set_main_path(self, dirname):
-        self.main_path = dirname
+        self.main_path = path(dirname)
         
     def parse_main_xml(self, filename=None):
         if filename is None:
-            filename = os.path.join(self.main_path, 'database.xml')
+            filename = self.main_path / 'database.xml'
         parsed = PaellaParser(filename)
         return parsed
 
@@ -256,13 +297,159 @@ class PaellaImporter(object):
         except AlreadyPresentError:
             print "primary tables already present"
 
-    def import_all_families(self, dirname):
-        pass
-    
-    def make_suite(self):
-        pass
-
+    def import_all_families(self, dirname=None):
+        if dirname is None:
+            dirname = self.main_path / 'families'
+        xmlfiles = dirname.listdir('*.xml')
+        self.report_total_families(len(xmlfiles))
+        while xmlfiles:
+            familyxml = xmlfiles.pop(0)
+            try:
+                self.import_family(familyxml)
+            except UnbornError:
+                xmlfiles.append(familyxml)
+                
             
+        print 'import families from', dirname
+        
+
+    def import_family(self, filename):
+        self.family.import_family_xml(filename)
+        self.report_family_imported(filename.namebase)
+        
+    
+    def import_all_profiles(self, dirname=None):
+        if dirname is None:
+            dirname = self.main_path / 'profiles'
+        dirname = path(dirname)
+        xmlfiles = dirname.listdir('*.xml')
+        self.report_total_profiles(len(xmlfiles))
+        for xmlfile in xmlfiles:
+            self.profile.import_profile(xmlfile)
+            self.report_profile_imported(xmlfile.namebase)
+            
+    
+    # here suite is a parsed xml object (find name)
+    def make_suite(self, suite):
+        current_suites = self.suitecursor.get_suites()
+        if suite.name not in current_suites:
+            apt_ids = [e.apt_id for e in suite.aptsources]
+            self.suitecursor.make_suite(suite.name, apt_ids)
+        else:
+            raise RuntimeError, 'suite %s already exists' % suite
+
+    # aptsources is the PaellaParser.aptsources attribute
+    def import_apt_sources(self, aptsources):
+        self.report_total_apt_sources(len(aptsources))
+        for apt in aptsources:
+            self.import_parsed_apt_source(apt)
+            
+    # here apt is an AptSourceParser object
+    def import_parsed_apt_source(self, apt):
+        self.report_importing_aptsrc(apt.apt_id)
+        self.aptsrc.insert_apt_source_row(apt.apt_id, apt.uri, apt.dist,
+                                          apt.sections, apt.local_path)
+        self.aptsrc.insert_packages(apt.apt_id)
+        self.report_aptsrc_imported(apt.apt_id)
+        
+
+    def _import_traits(self, suite, traitlist, dirname):
+        self.report_total_traits(len(traitlist))
+        missing = self._find_missing_packages(suite, traitlist, dirname)
+        if missing:
+            self.report_missing_packages(missing)
+            raise MissingPackagesError, report_missing_packages(missing)
+        else:
+            while len(traitlist):
+                trait = traitlist.pop(0)
+                try:
+                    self._import_trait(suite, dirname / trait)
+                    self.report_trait_imported(trait)
+                except UnbornError:
+                    traitlist.append(trait)
+
+    # the dirname here must have the trait.xml and
+    # scripts and templates for the trait
+    def _import_trait(self, suite, dirname):
+        traitdb = Trait(self.conn, suite)
+        traitdb.insert_trait(dirname, suite)
+        
+    def _find_missing_packages(self, suite, traits, dirname):
+        missing = dict()
+        traitdb = Trait(self.conn, suite)
+        for trait in traits:
+            tdir = dirname / trait
+            traitxml = traitdb.parse_trait_xml(tdir, suite=suite)
+            missing_list = traitdb.find_missing_packages(traitxml)
+            if missing_list:
+                missing[trait] = missing_list
+        return missing
+    
+
+    def perform_full_import(self, dirname):
+        self.set_main_path(dirname)
+        dbdata = self.parse_main_xml()
+        self.start_schema()
+        self.import_apt_sources(dbdata.aptsources)
+        self.report_total_suites(len(dbdata.suites))
+        for suite in dbdata.suites:
+            self.make_suite(suite)
+            suitedir = self.main_path / suite.name
+            self._import_traits(suite.name, dbdata.get_traits(suite.name), suitedir)
+            self.report_suite_imported(suite.name)
+            
+        self.import_all_families()
+        self.import_all_profiles()
+        machinedb = self.main_path / 'machine_database.xml'
+        if machinedb.isfile():
+            mh = MachineHandler(self.conn)
+            mh.restore_machine_database(self.main_path)
+            
+            
+        
+    
+    def report_missing_packages(self, missing):
+        print report_missing_packages(missing)
+        
+    def report_total_apt_sources(self, total):
+        print 'importing %d apt sources' % total
+
+    def report_importing_aptsrc(self, apt_id):
+        print 'importing %s' % apt_id
+        
+    def report_aptsrc_imported(self, apt_id):
+        print 'apt source %s imported' % apt_id
+
+    def report_total_suites(self, total):
+        print 'importing %d suites' % total
+
+    def report_importing_suite(self, suite):
+        print 'importing suite %s' % suite
+        
+    def report_suite_imported(self, suite):
+        print 'suite %s imported' % suite
+
+    def report_total_traits(self, total):
+        print 'importing %d traits' % total
+
+    def report_importing_trait(self, trait, numtraits):
+        print 'importing trait', trait
+
+    def report_trait_imported(self, trait, numtraits):
+        print 'trait %s imported' % trait
+
+    def report_total_families(self, total):
+        print 'importing %d families' % total
+
+    def report_family_imported(self, family):
+        print 'family %s imported' % family
+
+    def report_total_profiles(self, total):
+        print 'importing %d profiles' % total
+
+    def report_profile_imported(self, profile):
+        print 'profile %s imported' % profile
+        
 #generate xml        
         
 class PaellaProcessor(object):
@@ -447,10 +634,11 @@ class DatabaseManager(object):
         default_path = self.cfg.get('database', 'default_path')
         self.import_dir = default_path
         self.export_dir = default_path
-        self.importer = PaellaProcessor(self.conn, self.cfg)
+        #self.importer = PaellaProcessor(self.conn, self.cfg)
         #self.exporter = PaellaDatabase(self.conn, '/')
         self.exporter = PaellaExporter(self.conn)
-
+        self.importer = PaellaImporter(self.conn)
+        
     def export_all(self, path):
         self.exporter.make_complete_db_element()
         self.exporter.set_db_export_path(path)
@@ -459,6 +647,10 @@ class DatabaseManager(object):
         self.exporter.export_all_profiles()
         self.exporter.export_all_families()
         self.exporter.export_machine_database()
+
+    def import_all(self, dirname):
+        self.importer.perform_full_import(dirname)
+        
         
     def restore(self, path):
         if not os.path.isdir(path):

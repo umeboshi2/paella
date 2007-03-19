@@ -12,11 +12,15 @@ from paella.db.base import SuiteCursor
 from widgets import BasePaellaWidget
 
 from progress import SuiteProgress
+from progress import AptSrcProgress
+
 from progress import TraitProgress
 from progress import ProfileProgress
 from progress import FamilyProgress
 
-        
+from progress import LabeledProgress
+from progress import ActionLabelProgress
+
 class BasePaellaDialog(KDialogBase, BasePaellaWidget):
     pass
 
@@ -61,7 +65,7 @@ class VBoxDialog(BasePaellaDialog):
         BasePaellaDialog.__init__(self, parent, name)
         self.vbox = self.makeVBoxMainWidget()
 
-class ExportDbProgressDialog(VBoxDialog):
+class ExportDbProgressDialogOrig(VBoxDialog):
     def __init__(self, parent, name='ExportDbProgressDialog'):
         VBoxDialog.__init__(self, parent, name=name)
         self.suite_progess = SuiteProgress(self.vbox, 'suite_progess')
@@ -69,5 +73,38 @@ class ExportDbProgressDialog(VBoxDialog):
         self.profile_progress = ProfileProgress(self.vbox, 'profile_progress')
         self.family_progress = FamilyProgress(self.vbox, 'family_progress')
         
+
+
+
+class BaseDbProgressDialog(VBoxDialog):
+    def __init__(self, parent, action, name='BaseImportExportProgressDialog'):
+        VBoxDialog.__init__(self, parent, name=name)
+        if action == 'import':
+            #self.aptsrc_progress = LabeledProgress(self.vbox, 'apt source progress')
+            
+            self.aptsrc_progress = AptSrcProgress(self.vbox, 'aptsrc_progress')
+            self.package_progress = LabeledProgress(self.vbox, 'inserting packages')
+            #self.package_progress = ActionLabelProgress(action, 'package',
+            #                                            self.vbox, 'package_progress')
+        self.suite_progess = SuiteProgress(self.vbox, 'suite_progess')
+        self.trait_progress = ActionLabelProgress(action, 'trait',
+                                                  self.vbox, 'trait_progress')
+        self.trait_progress.label.setText('trait_progress')
+        self.profile_progress = ActionLabelProgress(action, 'profile',
+                                                    self.vbox, 'profile_progress')
+        self.profile_progress.label.setText('profile_progress')
+        self.family_progress = ActionLabelProgress(action, 'family',
+                                                   self.vbox, 'family_progress')
+        self.family_progress.label.setText('family_progress')
         
+    def report_total_traits(self, total):
+        self.trait_progress.progressbar.setProgress(0)
+        self.trait_progress.setTotalSteps(total)
         
+class ExportDbProgressDialog(BaseDbProgressDialog):
+    def __init__(self, parent, name='ExportDbProgressDialog'):
+        BaseDbProgressDialog.__init__(self, parent, 'export', name=name)
+
+class ImportDbProgressDialog(BaseDbProgressDialog):
+    def __init__(self, parent, name='ExportDbProgressDialog'):
+        BaseDbProgressDialog.__init__(self, parent, 'import', name=name)

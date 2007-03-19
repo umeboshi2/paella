@@ -7,8 +7,6 @@ from useless.sqlgen.clause import Eq
 
 from paella.db.xmlgen import BaseVariableElement
 
-from main import ProfileTrait, ProfileEnvironment, Profile
-
 class ProfileVariableElement(BaseVariableElement):
     def __init__(self, trait, name, value):
         BaseVariableElement.__init__(self, 'profile_variable',
@@ -43,12 +41,6 @@ class ProfileElement(Element):
             self.environ.appendChild(velement)
 
     
-#generate xml
-class _Profile_(Element):
-    def __init__(self, conn):
-        self.conn = conn
-        Element.__init__(self, 'profile')
-        
 #generate xml
 class PaellaProfiles(Element):
     def __init__(self, conn):

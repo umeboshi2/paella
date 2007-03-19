@@ -25,6 +25,7 @@ from paella.kde.base.actions import OpenSuiteManagerAction
 from paella.kde.base.mainwin import BasePaellaWindow
 from paella.kde.base.dialogs import PaellaConnectionDialog
 from paella.kde.base.dialogs import ExportDbProgressDialog
+from paella.kde.base.dialogs import ImportDbProgressDialog
 
 # import child windows
 from paella.kde.trait.main import TraitMainWindow
@@ -263,23 +264,52 @@ class BasePaellaMainWindow(BasePaellaWindow):
         print 'action is', win.db_action
         dbm = DatabaseManager(self.app.conn)
         if action == 'import':
-            dbm.restore(fullpath)
+            #dbm.restore(fullpath)
+            win = ImportDbProgressDialog(self)
+
+            importer = dbm.importer
+            importer.report_total_apt_sources = win.aptsrc_progress.setTotalSteps
+            #importer.report_aptsrc_imported = win.aptsrc_progress.step_progress
+            importer.report_importing_aptsrc = win.aptsrc_progress.start_step
+            importer.report_aptsrc_imported = win.aptsrc_progress.finish_step
+            
+            aptsrc = importer.aptsrc
+            aptsrc.report_total_packages = win.package_progress.setTotalSteps
+            aptsrc.report_package_inserted = win.package_progress.step_progress
+
+            importer.report_total_suites = win.suite_progess.setTotalSteps
+            importer.report_importing_suite = win.suite_progess.start_step
+            importer.report_suite_imported = win.suite_progess.finish_step
+            
+            #importer.report_total_traits = win.trait_progress.setTotalSteps
+            importer.report_total_traits = win.report_total_traits
+            importer.report_trait_imported = win.trait_progress.step_progress
+            
+            importer.report_total_families = win.family_progress.setTotalSteps
+            importer.report_family_imported = win.family_progress.step_progress
+            importer.report_total_profiles = win.profile_progress.setTotalSteps
+            importer.report_profile_imported = win.profile_progress.step_progress
+            
+            
+            win.show()
+            dbm.import_all(fullpath)
+            
         elif action == 'export':
             #dbm.backup(fullpath)
             win = ExportDbProgressDialog(self)
 
             exporter = dbm.exporter
             exporter.report_total_suites = win.suite_progess.setTotalSteps
-            exporter.report_suite_exported = win.suite_progess.step_progress
+            exporter.report_exporting_suite = win.suite_progess.start_step
+            exporter.report_suite_exported = win.suite_progess.finish_step
             exporter.report_total_traits = win.trait_progress.setTotalSteps
             exporter.report_trait_exported = win.trait_progress.step_progress
             #exporter.report_all_traits_exported = win.trait_progress.progressbar.reset
             exporter.report_start_exporting_traits = win.trait_progress.progressbar.reset
-            
-            profiles = exporter.profiles
+            exporter.report_total_profiles = win.profile_progress.setTotalSteps
+            exporter.report_profile_exported = win.profile_progress.step_progress
+
             family = exporter.family
-            profiles.report_total_profiles = win.profile_progress.setTotalSteps
-            profiles.report_profile_exported = win.profile_progress.step_progress
             family.report_total_families = win.family_progress.setTotalSteps
             family.report_family_exported = win.family_progress.step_progress
 
@@ -367,7 +397,8 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         elif hasattr(current, 'etype'):
             win = EnvironmentWindow(self, current.etype)
         elif hasattr(current, 'installer'):
-            win = InstallerMainWin(self)
+            #win = InstallerMainWin(self)
+            KMessageBox.information(self, 'Not Implemented')
         elif hasattr(current, 'clients'):
             win = ClientsMainWindow(self)
         elif hasattr(current, 'folder'):

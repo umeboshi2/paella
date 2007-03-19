@@ -44,7 +44,7 @@ class AptSourceHandler(object):
             data = convert_package_data(package)
             data.update(extra)
             self.cursor.insert(table=table, data=data)
-            self.report_package_inserted(package)
+            self.report_package_inserted(package['package'])
 
     def _get_packages_from_repository(self, repos):
         local = repos.local
@@ -59,7 +59,7 @@ class AptSourceHandler(object):
         return packages
     
     def report_package_inserted(self, package):
-        debug('package %s inserted' % package['package'])
+        debug('package %s inserted' % package)
 
     def report_total_packages(self, total):
         print "%s packages" % total

@@ -20,36 +20,43 @@ from paella.db.base import SuiteCursor
 def _is_option_true(cfg, section, option):
     return cfg.has_option(section, option) and cfg.get(section, option) == 'true'
 
-def _make_source_line(parts):
+def _make_line(parts):
     return ' '.join(parts) + '\n'
 
 def urlunparse(protocol, host, local_path):
     return urlparse.urlunparse((protocol, host, local_path, '', '', ''))
 
+def _make_repsource(full_uri, dist, sections):
+    source = RepositorySource()
+    source.uri = full_uri
+    if sections == '/' and dist.endswith('/'):
+        source.sections = []
+    else:
+        source.sections = [s.strip() for s in sections.split()]
+    source.suite = dist
+    return source
+
 
 # here uri is protocol://host/local_path
-def make_sources_list_lines(apt_rows, uri=None):
+def make_sources_list_lines(apt_rows, uri=None, installer=False):
     lines = []
     for row in apt_rows:
         if uri is None:
             main_uri = row.uri
         else:
             main_uri = uri
-        parsed = urlparse.urlparse(main_uri)
-        protocol = parsed[0]
-        host = parsed[1]
-        source = RepositorySource()
-        source.uri = urlunparse(protocol, host, row.local_path)
-        if row.sections == '/' and row.dist.endswith('/'):
-            source.sections = []
-        else:
-            source.sections = [s.strip() for s in row.sections.split()]
-        source.suite = row.dist
+        full_uri = main_uri
+        if installer:
+            parsed = urlparse.urlparse(main_uri)
+            protocol = parsed[0]
+            host = parsed[1]
+            # we only use row.local_path when installing
+            # and use the full uri otherwise
+            full_uri = urlunparse(protocol, host, row.local_path)
+        source = _make_repsource(full_uri, row.dist, row.sections)
         lines.append(str(source))
-        # will probably make this optional later
-        if True:
-            source.type = 'deb-src'
-            lines.append(str(source))
+        source.type = 'deb-src'
+        lines.append(str(source))
     return lines
 
 def make_sources_list_common(conn, target, suite, installer=False):
@@ -62,7 +69,7 @@ def make_sources_list_common(conn, target, suite, installer=False):
     else:
         # otherwise use official sources list
         uri = None
-    apt_lines = make_sources_list_lines(apt_rows, uri=uri)
+    apt_lines = make_sources_list_lines(apt_rows, uri=uri, installer=installer)
     aptdir = os.path.join(target, 'etc', 'apt')
     makepaths(aptdir)
     sources_list = file(os.path.join(aptdir, 'sources.list'), 'w')

@@ -1,3 +1,4 @@
+from useless.base import AlreadyExistsError
 from useless.base.path import path
 from useless.sqlgen.clause import Eq
 
@@ -12,7 +13,7 @@ from paella.db.trait.relations.parent import TraitParent
 from paella.db.family import Family
 
 from xmlparse import parse_profile
-from xmlgen import PaellaProfiles
+from xmlgen import ProfileElement
 
 class ProfileVariablesConfig(VariablesConfig):
     def __init__(self, conn, profile):
@@ -168,8 +169,6 @@ class Profile(StatementCursor):
         self._pfam = StatementCursor(conn)
         self._pfam.set_table('profile_family')
         self._fam = Family(conn)
-        # this is an ugly name (refactor this stuff later)
-        self._impexp = PaellaProfiles(conn)
         self.current = None
         
     def drop_profile(self, profile):
@@ -178,6 +177,9 @@ class Profile(StatementCursor):
     def make_new_profile(self, profile, suite):
         data = dict(profile=profile, suite=suite)
         self.insert(data=data)
+
+    def make_environment_object(self):
+        return ProfileEnvironment(self.conn)
     
     def set_profile(self, profile):
         self.clause = Eq('profile', profile)
@@ -288,15 +290,51 @@ class Profile(StatementCursor):
             num += 1
             
             
-    def import_profile(self, filename):
-        profile = parse_profile(filename)
-        self._impexp.insert_profile(profile)
-        
-
-    def export_profile(self, dirname, profile=None):
+    def generate_xml(self, profile=None, suite=None, env=None):
         if profile is None:
             profile = self.current.profile
-        self._impexp.write_profile(profile, dirname)
+            suite = self.current.suite
+        if suite is None:
+            row = self.select_row(clause=Eq('profile', profile))
+            suite = row.suite
+        if env is None:
+            env = ProfileEnvironment(self.conn, profile)
+        element = ProfileElement(profile, suite)
+        element.append_traits(self._traits.trait_rows(profile))
+        element.append_families(self.family_rows(profile))
+        element.append_variables(env.get_rows())
+        return element
+    
+    def import_profile(self, filename):
+        profile = parse_profile(filename)
+        if profile.name in self.get_profile_list():
+            raise AlreadyExistsError, '%s already exists.' % profile.name
+        self.insert(data=dict(profile=profile.name, suite=profile.suite))
+        # insert profile traits
+        idata = dict(profile=profile.name, trait=None, ord=0)
+        for trait, ord in profile.traits:
+            idata['trait'] = trait
+            idata['ord'] = ord
+            self.insert(table='profile_trait', data=idata)
+        # insert profile families
+        idata = dict(profile=profile.name)
+        for family in profile.families:
+            idata['family'] = family
+            self.insert(table='profile_family', data=idata)
+        # insert profile variables
+        idata = dict(profile=profile.name, trait=None, name=None,
+                     value=None)
+        for trait, name, value in profile.vars:
+            idata.update(dict(trait=trait, name=name, value=value))
+            self.insert(table='profile_variables', data=idata)
+        
+    def export_profile(self, dirname, profile=None, env=None):
+        element = self.generate_xml(profile=profile, env=env)
+        if profile is None:
+            profile = self.current.profile
+        filename = path(dirname) / ('%s.xml' % profile)
+        element.writexml(filename.open('w'), indent='\t', newl='\n',
+                         addindent='\t')
         
     
     def import_all_profiles(self, dirname):

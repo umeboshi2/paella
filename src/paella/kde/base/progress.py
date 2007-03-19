@@ -34,13 +34,50 @@ class LabeledProgress(QWidget):
 
     def step_progress(self, *args):
         self.progressbar.step_progress(*args)
+
+class ActionLabelProgress(LabeledProgress):
+    def __init__(self, action, obj, parent, name='ActionLabelProgress'):
+        LabeledProgress.__init__(self, parent, name=name)
+        self._actiondict = {
+            'import' : 'Imported',
+            'export' : 'Exported'
+            }
+        self._action = action
+        self._action_obj = obj
         
+    def step_progress(self, *args):
+        parts = [self._actiondict[self._action], self._action_obj] + list(args)
+        message = ' '.join(parts)
+        self.label.setText(message)
+        LabeledProgress.step_progress(self)
+
+class TwoStepLabeledProgress(LabeledProgress):
+    def setTotalSteps(self, total):
+        LabeledProgress.setTotalSteps(self, 2 * total)
         
-class SuiteProgress(LabeledProgress):
+class SuiteProgress(TwoStepLabeledProgress):
     def step_progress(self, suite):
         self.label.setText('Exported suite %s' % suite)
         LabeledProgress.step_progress(self)
 
+    def start_step(self, suite):
+        self.label.setText('Exporting suite %s' % suite)
+        LabeledProgress.step_progress(self)
+
+    def finish_step(self, suite):
+        self.label.setText('Exported suite %s' % suite)
+        LabeledProgress.step_progress(self)
+
+class AptSrcProgress(TwoStepLabeledProgress):
+    def start_step(self, apt_id):
+        self.label.setText('Importing apt source %s' % apt_id)
+        LabeledProgress.step_progress(self)
+
+    def finish_step(self, apt_id):
+        self.label.setText('Imported apt source %s' % apt_id)
+        LabeledProgress.step_progress(self)
+        
+        
 class TraitProgress(LabeledProgress):
     def step_progress(self, trait, path):
         print 'in TraitProgress, export trait', trait
@@ -48,7 +85,7 @@ class TraitProgress(LabeledProgress):
         LabeledProgress.step_progress(self)
         
 class ProfileProgress(LabeledProgress):
-    def step_progress(self, profile, path):
+    def step_progress(self, profile):
         self.label.setText('Profile %s exported' % profile)
         LabeledProgress.step_progress(self)
         
