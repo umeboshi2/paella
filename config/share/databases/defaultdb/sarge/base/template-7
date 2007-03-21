@@ -1,9 +1,0 @@
-# This file lists locales that you wish to have built. You can find a list
-# of valid supported locales at /usr/share/i18n/SUPPORTED. Other
-# combinations are possible, but may not be well tested. If you change
-# this file, you need to rerun locale-gen.
-#
-# paella - we now do these locales by default
-# paella - we will use utf8 as the default locale
-en_US ISO-8859-1
-en_US.UTF-8 UTF-8

@@ -1,5 +1,0 @@
-# password to add/delete/rename configuration profiles
-password: <--|ldap_server_lam_masterpw|-->
-
-# default profile, without ".conf"
-default: default

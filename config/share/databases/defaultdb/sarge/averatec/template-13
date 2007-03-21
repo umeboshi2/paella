@@ -1,4 +1,0 @@
-# This is a configuration file for /etc/init.d/sleepd.
-
-# Parameters to pass to sleepd.
-PARAMS="-u 0 0U 0 -b 3 -s /usr/sbin/sleep_shutdown.sh"

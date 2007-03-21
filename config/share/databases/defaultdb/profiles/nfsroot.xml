@@ -1,9 +1,0 @@
-	<profile name="nfsroot" suite="sarge">
-		<traits>
-			<trait ord="0">
-				simple_nfsroot
-			</trait>
-		</traits>
-		<families/>
-		<environ/>
-	</profile>

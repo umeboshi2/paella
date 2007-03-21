@@ -1,8 +1,0 @@
-.x-terminal-emulator.vt100.background: #6F7A63
-.x-terminal-emulator.vt100.foreground: cornsilk
-.x-terminal-emulator.vt100.color1: white
-.x-terminal-emulator.vt100.color3: white
-.x-terminal-emulator.vt100.dynamicColors: true
-.x-terminal-emulator.vt100.appcursorDefault:    true
-.x-terminal-emulator.vt100.font: -*-clean-*-*-*-*-10-*-*-*-*-50-*-*
-.x-terminal-emulator.vt100.colorAttrMode: true

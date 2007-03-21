@@ -1,2 +1,0 @@
-RUN_DAILY="true"
-RUN_DAILY_OPTS="-q"

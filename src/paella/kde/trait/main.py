@@ -56,7 +56,8 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.splitter.setSizes([100, 400])
         self.trait = Trait(self.conn, suite=suite)
         self.refreshListView()
-    
+        # dialog pointers
+        self._import_export_dirsel_dialog = None    
     
         
     def initActions(self):
@@ -109,11 +110,21 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.refreshListView()
         
 
+    def _select_import_export_directory(self, action):
+        default_path = path(self.app.cfg.get('database', 'default_path'))
+        win = KDirSelectDialog(default_path, False, self)
+        win.connect(win, SIGNAL('okClicked()'), self._import_export_directory_selected)
+        win.db_action = action
+        win.show()
+        self._import_export_dirsel_dialog = win
+        
     def slotImportTrait(self):
-        print 'slotImportTrait'
+        self._select_import_export_directory('import')
+        
 
     def slotExportTrait(self):
-        print 'slotExportTrait'
+        self._select_import_export_directory('export')
+        
         
     def selectionChanged(self):
         item = self.listView.currentItem()

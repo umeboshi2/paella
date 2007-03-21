@@ -1,8 +1,0 @@
-//####################################################//
-// AUTO generated config file. Don't touch this       //
-// use: dpkg-reconfigure mozilla-thunderbird          //
-//####################################################//
-
-pref("network.protocol-handler.app.http","x-www-browser");
-pref("network.protocol-handler.app.https","x-www-browser");
-

@@ -1,4 +1,0 @@
-#!/bin/bash
-echo "not doing --> apt-get -y update"
-echo "not doing --> apt-get -y install paella-installer"
-echo "paella-installer in paella database now :)"

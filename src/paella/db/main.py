@@ -190,6 +190,7 @@ class PaellaExporter(object):
         if dirname is None:
             dirname = self._make_suite_export_path(suite)
         traitdb.export_trait(dirname)
+        self.report_trait_exported(trait, dirname)
         
 
     def export_all_traits(self, suite, dirname=None):
@@ -199,7 +200,6 @@ class PaellaExporter(object):
         self.report_total_traits(len(traits))
         for trait in traits:
             self.export_trait(trait, dirname=dirname, traitdb=traitdb)
-            self.report_trait_exported(trait, dirname)
         #self.report_all_traits_exported()
             
     def export_suite(self, suite, dirname=None):
@@ -232,16 +232,30 @@ class PaellaExporter(object):
         else:
             raise RuntimeError, 'bad envtype %s' % envtype
         env = envclass(self.conn)
-        filename = os.path.join(path, '%s-environment' % envtype)
-        efile = file(filename, 'w')
-        env.write(efile)
-        efile.close()
+        #filename = os.path.join(path, '%s-environment' % envtype)
+        #efile = file(filename, 'w')
+        #env.write(efile)
+        #efile.close()
+        filename = '%s-environment' % envtype
+        fullname = dirname / filename
+        env.write(fullname.open('w'))
         
     def export_default_environment(self, path=None):
         self._export_environment_common(path, 'default')
         
     def export_current_environment(self, path=None):
         self._export_environment_common(path, 'common')
+
+    def perform_full_export(self, path):
+        self.make_complete_db_element()
+        self.set_db_export_path(path)
+        self.export_db_element()
+        self.export_all_suites()
+        self.export_all_profiles()
+        self.export_all_families()
+        self.export_machine_database()
+        self.export_default_environment()
+        
 
     ###################
     # reporting methods
@@ -640,13 +654,7 @@ class DatabaseManager(object):
         self.importer = PaellaImporter(self.conn)
         
     def export_all(self, path):
-        self.exporter.make_complete_db_element()
-        self.exporter.set_db_export_path(path)
-        self.exporter.export_db_element()
-        self.exporter.export_all_suites()
-        self.exporter.export_all_profiles()
-        self.exporter.export_all_families()
-        self.exporter.export_machine_database()
+        self.exporter.perform_full_export(path)
 
     def import_all(self, dirname):
         self.importer.perform_full_import(dirname)

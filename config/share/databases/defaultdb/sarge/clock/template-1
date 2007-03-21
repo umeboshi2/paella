@@ -1,6 +1,0 @@
-# servers to check
-NTPSERVERS="<--|localnet_ntpserver|-->"
-#
-# additional options for ntpdate
-#NTPOPTIONS="-v"
-NTPOPTIONS="-u"

@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-<entry name="max_size" mtime="1081404904" schema="/schemas/apps/quick_lounge_applet/prefs/max_size" muser="root" type="int" value="4"/>
-<entry name="rows" mtime="1081404904" schema="/schemas/apps/quick_lounge_applet/prefs/rows" muser="root" type="int" value="2"/>
-<entry name="min_size" mtime="1081404904" schema="/schemas/apps/quick_lounge_applet/prefs/min_size" type="int" value="4"/>
-</gconf>

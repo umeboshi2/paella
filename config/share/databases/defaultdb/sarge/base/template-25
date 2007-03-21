@@ -1,5 +1,0 @@
-# Options for klogd.
-#  Use KLOGD="-k /boot/System.map-$(uname -r)" to specify System.map
-#
-#  Use KLOGD="-x" for user-mode-linux kernels
-KLOGD=<--|base_klogd_options|-->

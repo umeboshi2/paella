@@ -1,9 +1,0 @@
-#!/bin/bash
-echo "adding umeboshi"
-adduser --disabled-password --gecos "Joseph Rawson" umeboshi
-adduser umeboshi audio
-adduser umeboshi video
-adduser umeboshi src
-adduser umeboshi staff
-adduser umeboshi operator
-chown -R umeboshi:umeboshi /home/umeboshi

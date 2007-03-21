@@ -35,16 +35,6 @@ Description: Documentation for paella
     many class and functions for use with debian related
     activities (dpkg, package repositories, debconf, etc.)
 
-Package: paella-dbgtk
-Section: admin
-Priority: optional
-Architecture: any
-Depends: paella-base, useless-gtk
-Description: db connected gui widgets needed by paella
-    This package contains gtk objects that have connections
-    to a postgres database making it easier to develop customized
-    widgets.
-
 Package: paella-installer
 Section: admin
 Priority: extra
@@ -66,7 +56,7 @@ Package: paella-admin
 Section: admin
 Priority: optional
 Architecture: any
-Depends: useless-kdb, paella-db, xxdiff
+Depends: useless-kdb, paella-db, xxdiff, python-forgethtml
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
 
@@ -74,7 +64,7 @@ Package: paella-db
 Section: optional
 Priority: optional
 Architecture: any
-Depends: paella-debian, python-kjbuckets, useless-db, useless-xmlgen
+Depends: paella-debian, python-kjbuckets, useless-db, useless-xmlgen, python-cheetah
 Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
     classes and functions to help create database schemas,
@@ -86,27 +76,6 @@ Description: skeletons for database generation
     kernels modules, and other things that need 
     to be kept track of on physical machines.
     (fixme)
-
-Package: paella-debrepos
-Section: admin
-Priority: extra
-Architecture: any
-Depends: paella-debian, mini-dinstall, dnotify
-Description: maintain debian a repository
-    this is a set of scripts to maintain a debian
-    repository.
-
-Package: paella-kernelbuilder
-Section: devel
-Priority: extra
-Architecture: all
-Depends: paella-base, kernel-package
-Description: build a bunch of kernels
-    the kernelbuilder is a system using make-kpkg to
-    maintain many different kernels.  For each kernel
-    you can define the version and patches.  You can 
-    then use debuild to build the packages, and dput
-    to upload them to a repository.
 
 Package: paella-defaultdb
 Section: devel

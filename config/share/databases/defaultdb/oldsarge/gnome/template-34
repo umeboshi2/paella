@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-<entry name="show_splash_screen" mtime="1081569201" schema="/schemas/apps/gnome-session/options/show_splash_screen"/>
-<entry name="auto_save_session" mtime="1081569201" schema="/schemas/apps/gnome-session/options/auto_save_session"/>
-<entry name="logout_prompt" mtime="1081569201" schema="/schemas/apps/gnome-session/options/logout_prompt"/>
-<entry name="allow_tcp_connections" mtime="1081569201" schema="/schemas/apps/gnome-session/options/allow_tcp_connections"/>
-<entry name="splash_image" mtime="1081569201" schema="/schemas/apps/gnome-session/options/splash_image"/>
-</gconf>

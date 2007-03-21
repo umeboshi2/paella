@@ -1,7 +1,0 @@
-#!/bin/bash
-if [ ! -d /etc/skel/.kde/Autostart ] ; then
-    mkdir /etc/skel/.kde/Autostart
-fi
-
-ln -s /usr/bin/kopete /etc/skel/.kde/Autostart/80kopete
-

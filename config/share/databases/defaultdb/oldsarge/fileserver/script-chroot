@@ -1,5 +1,0 @@
-#!/bin/bash
-#addgroup office
-#addgroup admin
-echo 'doing nothing'
-

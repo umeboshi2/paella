@@ -1,3 +1,0 @@
-# change the SAVEMIXER variable to "yes" if you want aumix to save
-# and restore mixer settings at shutdown/boot
-SAVEMIXER=no

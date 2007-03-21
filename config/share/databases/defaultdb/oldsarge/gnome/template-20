@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-<entry name="mute" mtime="1081404937" schema="/schemas/apps/mixer_applet/prefs/mute" muser="root" type="bool" value="true"/>
-<entry name="channel" mtime="1081404905" schema="/schemas/apps/mixer_applet/prefs/channel"/>
-<entry name="vol" mtime="1081404937" schema="/schemas/apps/mixer_applet/prefs/vol" muser="root" type="int" value="0"/>
-</gconf>

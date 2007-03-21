@@ -9,11 +9,18 @@ from paella.db.family import Family
 
 from useless.kdebase import get_application_pointer
 from useless.kdebase.mainwin import BaseSplitWindow
+from useless.kdebase.dialogs import BaseRecordDialog
 
 from paella.kde.base import split_url
 from paella.kde.base.viewbrowser import ViewBrowser
 from paella.kde.base.mainwin import BasePaellaWindow
 from paella.kde.docgen.family import FamilyDoc
+
+class NewFamilyDialog(BaseRecordDialog):
+    def __init__(self, parent, name='NewFamilyDialog'):
+        BaseRecordDialog.__init__(self, parent, ['name'], name=name)
+        self.setCaption('Add a new family')
+        
 
 class FamilyView(ViewBrowser):
     def __init__(self, parent):
@@ -51,6 +58,7 @@ class FamilyMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.refreshListView()
         self.resize(600, 800)
         self.setCaption('Paella Families')
+        self._new_family_dialog = None
 
     def initActions(self):
         collection = self.actionCollection()
@@ -91,10 +99,20 @@ class FamilyMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.mainView.set_family(item.family)
 
     def newFamily(self):
-        raise NotImplementedError, 'need to implement FamilyMainWindow.newFamily'
-
+        win = NewFamilyDialog(self)
+        win.frame.text_label.setText('Add a new family.')
+        win.connect(win, SIGNAL('okClicked()'), self.insertNewFamily)
+        win.show()
+        self._new_family_dialog = win
+        
     def insertNewFamily(self):
-        raise NotImplementedError, 'need to implement FamilyMainWindow.insertNewFamily'
+        win = self._new_family_dialog
+        family = win.getRecordData()['name']
+        self.family.create_family(family)
+        self.refreshListView()
+        self._new_family_dialog = None
+        
+        
     
     def slotImportFamily(self):
         KMessageBox.information(self, 'Import unimplemented')

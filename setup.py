@@ -31,7 +31,7 @@ PACKS = {
                'paella/kde/base',
                'paella/kde/trait',
                'paella/kde/machine',
-               'paella/kde/docget',
+               'paella/kde/docgen',
                'paella/kde/umlmanager',
                'paella/kde/aptsrc',
                'paella/kde/suites'

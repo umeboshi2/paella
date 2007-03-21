@@ -1,8 +1,0 @@
-image_nfsimagedir host_ip<[]>(ro no_root_squash)
-image_nfsimagedir host_ip<[]>/var/lib/dpkg(ro no_root_squash)
-image_nfshomedir host_ip<[]>(rw no_root_squash)
-
-image_nfshostsdir/host_ip/etc host_ip<[]>(rw no_root_squash)
-image_nfshostsdir/host_ip/var host_ip<[]>(rw no_root_squash)
-image_nfshostsdir/host_ip/dev host_ip<[]>(rw no_root_squash)
-image_nfshostsdir/host_ip/tmp host_ip<[]>(rw no_root_squash)

@@ -257,6 +257,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
         win = self._import_export_dirsel_dialog
         if win is None:
             raise RuntimeError, 'There is no import export dialog'
+        self._import_export_dirsel_dialog = None
         url = win.url()
         fullpath = str(url.path())
         action = win.db_action
@@ -293,7 +294,6 @@ class BasePaellaMainWindow(BasePaellaWindow):
             
             win.show()
             dbm.import_all(fullpath)
-            
         elif action == 'export':
             #dbm.backup(fullpath)
             win = ExportDbProgressDialog(self)
@@ -446,8 +446,10 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         self.conn = None
         self.listView.clear()
         while self._all_my_children:
-            self._all_my_children[0].close()
-            del self._all_my_children[0]
+            child = self._all_my_children.pop()
+            child.close()
+            #self._all_my_children[0].close()
+            #del self._all_my_children[0]
 
 class PaellaMainWindow(BasePaellaMainWindow):
     pass

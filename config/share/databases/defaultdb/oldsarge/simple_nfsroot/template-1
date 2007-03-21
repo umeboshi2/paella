@@ -1,3 +1,0 @@
-/dev/root	/	nfs	ro,nolock	0	0
-proc	/proc	proc	defaults	0	0
-/dev/mem        /tmp    tmpfs   defaults        0       0

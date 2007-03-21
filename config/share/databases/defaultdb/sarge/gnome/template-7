@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<gconf>
-<entry name="exec" mtime="1081569130" schema="/schemas/desktop/gnome/applications/browser/exec"/>
-<entry name="needs_term" mtime="1081569130" schema="/schemas/desktop/gnome/applications/browser/needs_term"/>
-<entry name="nremote" mtime="1081569130" schema="/schemas/desktop/gnome/applications/browser/nremote"/>
-</gconf>
