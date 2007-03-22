@@ -4,6 +4,7 @@ from kdeui import KStdAction
 from kdeui import KPopupMenu
 from kdeui import KListViewItem
 
+from useless.base.path import path
 from useless.kdebase.mainwin import BaseSplitWindow
 from useless.kdebase.dialogs import BaseRecordDialog
 
@@ -44,6 +45,7 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
     def __init__(self, parent, suite):
         BaseSplitWindow.__init__(self, parent, TraitView,
                                  name='TraitMainWindow-%s' % suite)
+        print 'in TraitMainWindow suite is', suite
         # from BasePaellaWindow
         self.initPaellaCommon()
         self.initActions()

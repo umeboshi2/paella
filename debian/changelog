@@ -1,3 +1,9 @@
+paella (0.7.34) etch; urgency=low
+
+  * move to etch
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 21 Mar 2007 14:29:19 -0500
+
 paella (0.7.33) common; urgency=low
 
   * adding support for fake start-stop-daemon in chroot installer

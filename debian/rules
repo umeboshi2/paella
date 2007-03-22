@@ -20,6 +20,9 @@ install/paella-installer::
 install/paella-admin::
 	python setup.py admin install --prefix=$(CURDIR)/debian/paella-admin/usr
 	rm -r build/	
+install/paella-uml-admin::
+	python setup.py uml-admin install --prefix=$(CURDIR)/debian/paella-uml-admin/usr
+	rm -r build/
 build/paella-doc::
 	rst2html docs/notes > notes.html
 

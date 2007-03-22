@@ -1,0 +1,7 @@
+config/scripts/paella-init usr/lib/paella/uml
+config/scripts/paella-umlrunner usr/bin
+config/scripts/paella-kde-umlmanager usr/bin
+config/share/umlmachines usr/share/doc/paella-uml/examples
+
+
+

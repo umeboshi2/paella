@@ -1,7 +1,7 @@
 import sys, os
 from distutils.core import setup
 
-PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin']
+PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin', 'uml-admin']
 package = None
 if sys.argv[1] in PACKAGES:
     package = sys.argv[1]
@@ -38,6 +38,9 @@ PACKS = {
                ],
     'installer' : ['paella/installer',
                    'paella/installer/util'
+                   ],
+    'uml-admin' : ['paella/uml',
+                   'paella/kde/umlmanager'
                    ]
     }
 

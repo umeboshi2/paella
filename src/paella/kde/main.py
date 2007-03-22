@@ -447,9 +447,11 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         self.listView.clear()
         while self._all_my_children:
             child = self._all_my_children.pop()
-            child.close()
-            #self._all_my_children[0].close()
-            #del self._all_my_children[0]
+            try:
+                child.close()
+            except RuntimeError, inst:
+                if inst.args[0] != 'underlying C/C++ object has been deleted':
+                    raise inst
 
 class PaellaMainWindow(BasePaellaMainWindow):
     pass

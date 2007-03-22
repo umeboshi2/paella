@@ -39,7 +39,7 @@ Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db, python-pyparsing
+Depends: paella-db, python-pyparsing, debootstrap, reiserfsprogs, mkisofs, initramfs-tools
 Description: python package for paella installers
  This package contains most of the code for installers to work.
  It also contains the chroot installer.
@@ -110,4 +110,13 @@ Description: database server package for paella
   the database server required for paella.  This package is
   not required to run paella, you can setup the database 
   manually.  This package just makes it easier.
+
+Package: paella-uml-admin
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-admin, user-mode-linux, uml-utilities
+Description: Use user-mode-linux to test paella installs
+  This package provides tools to help test paella using
+  user-mode-linux.
 

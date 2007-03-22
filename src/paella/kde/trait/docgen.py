@@ -95,7 +95,7 @@ class PackageDoc(BaseDocument):
 class TraitDocument(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)
-        self.trait = Trait(self.conn)
+        self.trait = None #Trait(self.conn)
         #self.title = SectionTitle('Trait Document')
         #self.title.attributes.update(dict(bgcolor='IndianRed', width='100%'))
         self._sectitle_atts = dict(bgcolor='IndianRed', width='100%')
