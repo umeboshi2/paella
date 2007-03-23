@@ -1,0 +1,24 @@
+<trait name="postgresql_server" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			postgresql
+		</package>
+		<package action="install">
+			postgresql-client
+		</package>
+		<package action="install">
+			postgresql-contrib
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

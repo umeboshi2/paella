@@ -1,0 +1,1 @@
+This trait is necessary for clients that use PXE to boot over the local network.

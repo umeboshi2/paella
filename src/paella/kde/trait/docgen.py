@@ -33,7 +33,7 @@ class PackageTable(Table):
             tablerow = TableRow()
             tablerow.append(TableCell(package))
             tablerow.append(TableCell(', '.join(package_actions[package])))
-            anchor = Anchor('delete', href='delete.package.%s|%s' % (row.package, row.action))
+            anchor = Anchor('delete', href='delete.package.%s' % package)
             tablerow.append(anchor)
             self.append(tablerow)
 

@@ -1,0 +1,4 @@
+This trait is the base for all traits that depend on a local network to operate.  This trait
+helps coordinate services on a network.  By default it points to a single server.  To make use 
+of this, create a family that describes the local network, and have a profile for each server that
+contains that family.

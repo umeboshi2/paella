@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+import os, sys
+from useless.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+it.set_trait('uml_head')
+#cmd = 'apt-get -y update'
+#os.system('chroot %s %s' % (it.target, cmd))
+#print 'second update'
+#os.system('chroot %s %s' % (it.target, cmd))
+print "yada yada yada, I forgot why i made this"

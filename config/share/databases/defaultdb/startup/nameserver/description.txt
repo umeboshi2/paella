@@ -1,0 +1,1 @@
+A nameserver for the local network.

@@ -189,7 +189,10 @@ class TraitView(ViewBrowser):
     def _perform_delete_action(self, context, ident):
         if context == 'package':
             debug(context, ident)
-            package, action = ident.split('|')
+            #package, action = ident.split('|')
+            package = ident
+            # right now we delete all actions with the package
+            action = None
             debug('delete package', package, action)
             self.doc.trait.delete_package(package, action)
             self.resetView()

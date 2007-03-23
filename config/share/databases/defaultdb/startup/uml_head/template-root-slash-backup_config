@@ -1,0 +1,4 @@
+#!/bin/bash
+mount -t hostfs none /mnt
+tar cv /etc/ /root /var/cache/debconf | gzip > <--|uml_head_systarball_bkup_path|-->/$1
+

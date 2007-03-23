@@ -58,7 +58,9 @@ class TraitPackage(TraitRelation):
         self.cmd.insert(data=idata)
 
     def delete_package(self, package, action):
-        clause = Eq('package', package) & Eq('action', action)
+        clause = Eq('package', package)
+        if action is not None:
+            clause = clause & Eq('action', action)
         self.cmd.delete(clause=clause)
         
 

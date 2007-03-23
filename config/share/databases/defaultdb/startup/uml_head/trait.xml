@@ -1,0 +1,53 @@
+<trait name="uml_head" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			boot_server
+		</parent>
+		<parent>
+			dhcp_server
+		</parent>
+		<parent>
+			nameserver
+		</parent>
+		<parent>
+			uml_static_host
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apt-move
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="aptmove_localdir" trait="uml_head">
+			/mnt/freespace/home/umeboshi/mirrors/debian
+		</trait_variable>
+		<trait_variable name="aptmove_pkgcomp" trait="uml_head">
+			'none gzip bzip2'
+		</trait_variable>
+		<trait_variable name="systarball_bkup_path" trait="uml_head">
+			/mnt/freespace/home/umeboshi/roots
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apt-move.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/dhcp3/dhcpd.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/network/interfaces.uml_head.orig
+		</template>
+		<template grp_owner="root" mode="0755" owner="root">
+			root/backup_config
+		</template>
+	</templates>
+	<scripts>
+		<script name="chroot"/>
+		<script name="post"/>
+	</scripts>
+</trait>

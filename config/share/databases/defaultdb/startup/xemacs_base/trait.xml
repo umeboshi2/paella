@@ -1,0 +1,14 @@
+<trait name="xemacs_base" suite="startup">
+	<description>
+		None
+	</description>
+	<parents/>
+	<packages>
+		<package action="install">
+			xemacs21
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>
