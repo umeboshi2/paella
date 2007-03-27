@@ -2,8 +2,8 @@
 #cd $HOME
 pushd $HOME
 
-if ! [ -d local ]; then
-    mkdir local
+if ! [ -d local/python ]; then
+    mkdir -p local/python
 fi
 if ! [ -d workspace ]; then
     mkdir workspace
@@ -16,19 +16,19 @@ if ! [ -d useless ]; then
     svn co svn://svn.berlios.de/useless/trunk useless
 fi
 popd
-pushd local
+pushd local/python
 if ! [ -L paella ]; then
-    ln -s ../workspace/paella/src/paella
+    ln -s ../../workspace/paella/src/paella
 fi
 if ! [ -L useless ]; then
-    ln -s ../workspace/useless/useless
+    ln -s ../../workspace/useless/useless
 fi
 popd
 PACKAGES="python-xml python-pycurl python-sqlite python-pgsql python-kde3
 python-qtext libqt3-mt-psql python-dev python-docutils cdbs devscripts python-apt 
 debootstrap debconf-utils python-pyparsing reiserfsprogs xfsprogs hdparm mdadm
 mkisofs gawk xxdiff xemacs21 python-kjbuckets kernel-package postgresql 
-postgresql-contrib apache user-mode-linux uml-utilities"
+postgresql-contrib apache user-mode-linux uml-utilities python-cheetah"
 sudo apt-get install $PACKAGES
 
 sudo adduser $USER uml-net

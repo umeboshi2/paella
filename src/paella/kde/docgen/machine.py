@@ -1,7 +1,7 @@
-from forgetHTML import Table, TableRow, TableCell
-from forgetHTML import TableHeader
-from forgetHTML import Anchor, Ruler, Break
-from forgetHTML import Header
+from useless.base.forgethtml import Table, TableRow, TableCell
+from useless.base.forgethtml import TableHeader
+from useless.base.forgethtml import Anchor, Ruler, Break
+from useless.base.forgethtml import Header
 
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
@@ -23,7 +23,7 @@ class _MachineBaseDocument(BaseDocument):
     def _add_table_row(self, table, fields, row):
         tablerow = TableRow()
         for field in fields:
-            tablerow.append(TableCell(row[field]))
+            tablerow.append(TableCell(str(row[field])))
         table.append(tablerow)
 
     # this has been changed from the xmlgen version
@@ -148,7 +148,7 @@ class MachineTypeDoc(_MachineBaseDocument):
     def _add_table_row(self, table, fields, row):
         tablerow = TableRow()
         for field in fields:
-            tablerow.append(TableCell(row[field]))
+            tablerow.append(TableCell(str(row[field])))
         durl = 'delete.%s.%s' % (table.context, row[fields[0]])
         eurl = 'edit.%s.%s' % (table.context, row[fields[0]])
         delanchor = Anchor('delete', href=durl)

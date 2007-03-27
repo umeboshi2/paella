@@ -1,4 +1,3 @@
-import os
 import select
 
 from qt import SIGNAL
@@ -7,62 +6,15 @@ from qt import QWidget
 from qt import QGridLayout
 from qt import QLabel
 
-from kdeui import KTextBrowser
 from kdeui import KDialogBase
 from kdeui import KProgress
 
 from useless.kdebase import get_application_pointer
 from paella.installer.base import CurrentEnvironment
 
-class BaseLogBrowser(KTextBrowser):
-    def __init__(self, parent, name='BaseLogBrowser'):
-        KTextBrowser.__init__(self, parent, name)
-        self.setTextFormat(self.LogText)
-        self.timer = QTimer(self)
-        self.connect(self.timer, SIGNAL('timeout()'), self.update_logtext)
-        self.resume_logging()
-        
-    def pause_logging(self):
-        self.timer.stop()
 
-    def resume_logging(self):
-        self.timer.start(500)
-        
-    def update_logtext(self):
-        raise NotImplementedError
-    
-class StdOutBrowser(BaseLogBrowser):
-    def __init__(self, parent, name='StdOutBrowser'):
-        BaseLogBrowser.__init__(self, parent, name=name)
-        self.pause_logging()
-        self.setVScrollBarMode(self.AlwaysOff)
-        
-        
-class LogBrowser(BaseLogBrowser):
-    def __init__(self, parent, logfile, name='LogBrowser'):
-        BaseLogBrowser.__init__(self, parent, name=name)
-        self.logfilename = logfile
-        if not os.path.exists(self.logfilename):
-            os.system('touch %s' % self.logfilename)
-        self.logfile_size = 0
-        self.setVScrollBarMode(self.AlwaysOff)
+from widgets import LogBrowser
 
-    def update_logtext(self):
-        height = self.contentsHeight()
-        self.setContentsPos(0, height)
-        if self.check_logfile_updated():
-            self.logfile_size = self._get_logfile_size()
-            text = file(self.logfilename).read()
-            self.setText(text)
-                    
-    def _get_logfile_size(self):
-        s = os.stat(self.logfilename)
-        return s.st_size
-    
-    def check_logfile_updated(self):
-        return self.logfile_size != self._get_logfile_size()
-        
-        
 class InstallerWidget(QWidget):
     def __init__(self, parent, umlmachines, name='InstallerWidget'):
         QWidget.__init__(self, parent, name)

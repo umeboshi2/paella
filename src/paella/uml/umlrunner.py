@@ -81,7 +81,8 @@ class UmlMachineManager(Uml):
 
     def run_machine(self, init=None):
         self._check_current()
-        return self.run_uml()
+        self.stdout_logfile = file('/tmp/umlmachine-%s' % self.current, 'w')
+        return self.run_uml(stdout=self.stdout_logfile)
         
 class UmlRunner(Uml):
     def __init__(self, cfg=None):

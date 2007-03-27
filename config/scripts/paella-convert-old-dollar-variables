@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+import os, sys
+
+from useless.sqlgen.clause import Eq, Like
+
+from paella.db import PaellaConnection
+
+
+def set_new_value(value):
+    value = value[1:]
+    if value.startswith('$'):
+        return value
+    else:
+        return '<--|%s|-->' % value
+
+dollar_var = Like('value', '$%')
+
+conn = PaellaConnection()
+cursor = conn.cursor(statement=True)
+
+suites = [row.suite for row in cursor.select(fields=['suite'], table='suites')]
+
+command = 'inspect'
+if len(sys.argv) > 1:
+    command = sys.argv[1]
+
+
+commit = False
+if command == 'commit':
+    commit = True
+    
+for suite in suites:
+    table = '%s_variables' % suite
+    rows = cursor.select(table=table, clause=dollar_var)
+    #print suite, rows
+    print 'in suite %s:' % suite
+    for row in rows:
+        new_value = set_new_value(row.value)
+        print 'change', '(%s, %s)' % (row.trait, row.value), 'from', row.value, 'to', new_value
+        clause = Eq('trait', row.trait) & Eq('name', row.name)
+        data = dict(value=set_new_value(row.value))
+        if commit:
+            cursor.update(table=table, data=data, clause=clause)
+        

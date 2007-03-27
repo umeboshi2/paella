@@ -203,6 +203,7 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
             skeleton = self.cfg.get('management_gui', 'template_profile')
             if skeleton in profile_list:
                 self.profile.copy_profile(skeleton, profile)
+                self.refreshListView()
             else:
                 dlg = BaseRecordDialog(win, ['suite'])
                 dlg.frame.text_label.setText('Select a suite for this profile')

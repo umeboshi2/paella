@@ -1,7 +1,7 @@
-from forgetHTML import Table, TableRow, TableCell
-from forgetHTML import Anchor, Ruler
-from forgetHTML import UnorderedList, ListItem
-from forgetHTML import Paragraph
+from useless.base.forgethtml import Table, TableRow, TableCell
+from useless.base.forgethtml import Anchor, Ruler
+from useless.base.forgethtml import UnorderedList, ListItem
+from useless.base.forgethtml import Paragraph
 
 from paella.db.trait import Trait
 

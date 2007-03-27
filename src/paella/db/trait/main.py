@@ -180,6 +180,9 @@ class Trait(object):
     def get_template_contents(self, template):
         return self._templates.templatedata(template)
 
+    def delete_template(self, template):
+        self._templates.drop_template(template)
+
     def get_full_environment(self):
         return self._parents.get_environment([self.current_trait])
         
@@ -443,11 +446,15 @@ if __name__ == '__main__':
     from paella.db import PaellaConnection
     conn = PaellaConnection()
     t = Trait(conn)
+    #t.set_trait('base')
+    #t.export_trait('.')
+    #tx = TraitXml(file('base/trait.xml'))
+    #tox = TraitXml(file('base.old/trait.xml'))
+    #t.set_trait('camserve')
+    #tcx = TraitXml(file('camserve/trait.xml'))
+    #tcox = TraitXml(file('camserve.old/trait.xml'))
     t.set_trait('base')
-    t.export_trait('.')
-    tx = TraitXml(file('base/trait.xml'))
-    tox = TraitXml(file('base.old/trait.xml'))
-    t.set_trait('camserve')
-    tcx = TraitXml(file('camserve/trait.xml'))
-    tcox = TraitXml(file('camserve.old/trait.xml'))
+    tp = t._templates
+    tp.set_template('etc/hostname')
+    tp.template['global_hostname'] = '<--|global_domain|-->//<--|global_domain|-->'
     

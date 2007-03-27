@@ -1,5 +1,5 @@
-from forgetHTML import UnorderedList, ListItem
-from forgetHTML import Anchor
+from useless.base.forgethtml import UnorderedList, ListItem
+from useless.base.forgethtml import Anchor
 
 from paella.db.family import Family
 

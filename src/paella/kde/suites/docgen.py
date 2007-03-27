@@ -1,7 +1,7 @@
-#from forgetHTML import UnorderedList, ListItem
-from forgetHTML import Table, TableRow, TableCell
-#from forgetHTML import Anchor
-#from forgetHTML import Paragraph
+#from useless.base.forgethtml import UnorderedList, ListItem
+from useless.base.forgethtml import Table, TableRow, TableCell
+#from useless.base.forgethtml import Anchor
+#from useless.base.forgethtml import Paragraph
 
 from paella.kde.docgen.base import BaseDocument
 from paella.kde.docgen.base import Bold

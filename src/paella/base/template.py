@@ -3,6 +3,10 @@ from os.path import isdir, isfile, join, basename, dirname
 
 from useless.base.template import Template as _Template
 
+from useless.base.util import RefDict, strfile
+
+
+
 class Template(_Template):
     def __init__(self, data={}):
         _Template.__init__(self, data)
@@ -39,3 +43,15 @@ class Template(_Template):
         self.trait = trait
         
 
+class TemplatedEnvironment(RefDict):
+    def dereference(self, key):
+        items = [(k,v) for k,v in self.items()]
+        data = dict(items)
+        print data
+        tmpl = _Template(data=data)
+        tmpl.update(data)
+        print 'tmpl.keys', tmpl.keys()
+        #value = RefDict.dereference(self, key)
+        tmpl.set_template(self[key])
+        return tmpl.sub()
+    

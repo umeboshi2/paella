@@ -87,9 +87,14 @@ class UmlProfileInstaller(BaseUmlInstaller):
             backup_path = self.cfg.get('umlmachines', 'hostfs_backup_path')
         else:
             backup_path = '/mnt'
-        basetarball = join(backup_path, '%s.base.tar' % suite)
-        extract_tarball(self.target, basetarball)
-
+        basetarball = join(backup_path, '%s.base.tar.gz' % suite)
+        if not os.path.isfile(basetarball):
+            basetarball = join(backup_path, '%s.base.tar' % suite)
+        if os.path.isfile(basetarball):
+            extract_tarball(self.target, basetarball)
+        else:
+            raise RuntimeError, 'No base tarball found for suite %s' % suite
+        
     @guest_mode
     def ready_base_for_install(self):
         cfg = self.installer.defenv

@@ -100,13 +100,16 @@ pkg_filename = archives_dir / kernel_package
 
 makepaths(kroot / 'tmp')
 subprocess.call('dpkg-deb -x %s tmp' % pkg_filename, shell=True)
+# this step doesn't imply that the initrd is created
 subprocess.call('mkinitramfs -r tmp -o initrd.img-diskless', shell=True)
 here = path.getcwd()
 print 'here', here
 print here.listdir()
 
 
-subprocess.call('mv initrd.img-diskless ..')
+# we need to wait until we use a better initrd script
+if False:
+    subprocess.call('mv initrd.img-diskless ..')
 
 
 
@@ -131,9 +134,11 @@ else:
     raise RuntimeError, 'too many kernel images -- aborting'
 
 kernel_image_path = imagedir / kernel_image
+
 subprocess.call('mv %s ..' % kernel_image_path, shell=True)
 os.chdir(bpaella)
 subprocess.call('ln -s %s vmlinuz-diskless' % kernel_image, shell=True)
+
 # we need to clean this up below
 # before continuing the script
 sys.exit(0)

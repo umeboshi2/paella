@@ -17,6 +17,7 @@
 			<trait name="boot_server"/>
 			<trait name="clock"/>
 			<trait name="clockserver"/>
+			<trait name="debrepos"/>
 			<trait name="default"/>
 			<trait name="development_base"/>
 			<trait name="development_debian"/>
@@ -38,6 +39,7 @@
 			<trait name="udev"/>
 			<trait name="uml_head"/>
 			<trait name="uml_static_host"/>
+			<trait name="web_server"/>
 			<trait name="xemacs_base"/>
 		</traits>
 	</paelladatabase>

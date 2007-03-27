@@ -41,6 +41,11 @@ from docgen import UmlMachineDoc
 
 from installer import LogBrowserWindow
 
+#from widgets import LogBrowser
+
+
+from runner import UmlRunnerWindow
+
 class UmlManagerApplication(KApplication):
     def __init__(self):
         KApplication.__init__(self)
@@ -167,8 +172,8 @@ class MainUmlManagerWidget(BaseUmlManagerWidget):
         print self.umlmachines.run_process, 'umlmachines.run_process'
 
     def launch_machine(self):
-        machine = self.umlmachines.current
-        self.umlmachines.run_machine()
+        win = UmlRunnerWindow(self, self.umlmachines)
+        win.show()
         
 class UmlMachineView(ViewBrowser):
     def __init__(self, parent):

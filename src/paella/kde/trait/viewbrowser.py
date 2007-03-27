@@ -196,6 +196,11 @@ class TraitView(ViewBrowser):
             debug('delete package', package, action)
             self.doc.trait.delete_package(package, action)
             self.resetView()
+        elif context == 'template':
+            debug(context, ident)
+            template = self._convert_template_id(ident)
+            self.doc.trait.delete_template(template)
+            self.resetView()
         else:
             raise RuntimeError, '%s context not implemented' % context
         

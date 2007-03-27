@@ -171,7 +171,7 @@ class Uml(object):
         if stdout is None:
             if use_pipe:
                 stdout = subprocess.PIPE
-        args = dict(shell=True, close_fds=True, stderr=stderr)
+        args = dict(shell=False, close_fds=True, stderr=stderr)
         # test stdout to logfile
         test_logfile = False
         if test_logfile:
@@ -186,7 +186,8 @@ class Uml(object):
         if stdout is not None:
             args['stdout'] = stdout
         print 'using popen', stdout
-        self.run_process = subprocess.Popen(cmd, **args)
+        # try to run cmd in background
+        self.run_process = subprocess.Popen(cmd.split(), **args)
         return self.run_process
             
     @guest_mode

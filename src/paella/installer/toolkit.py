@@ -1,8 +1,11 @@
 import os
 
-from useless.base.util import RefDict, str2list
+from useless.base.util import str2list
+from useless.base.path import path
 
 from paella.base import PaellaConfig
+from paella.base.template import TemplatedEnvironment
+
 from paella.db import DefaultEnvironment
 from paella.db.base import get_suite
 from paella.db.trait import Trait
@@ -22,7 +25,7 @@ class InstallerTools(object):
         self.cfg = PaellaConfig()
         self.conn = InstallerConnection()
         self.profile = os.environ['PAELLA_PROFILE']
-        self.target = os.environ['PAELLA_TARGET']
+        self.target = path(os.environ['PAELLA_TARGET'])
         self.machine = None
         self.trait = None
         self.suite = get_suite(self.conn, self.profile)
@@ -46,9 +49,10 @@ class InstallerTools(object):
         if os.environ.has_key('PAELLA_TRAIT'):
             self.set_trait(os.environ['PAELLA_TRAIT'])
              
-        
+
+    # this needs updating for machine type data
     def env(self):
-        env = RefDict(self.tp.Environment())
+        env = TemplatedEnvironment(self.tp.Environment())
         env.update(self.pr.get_family_data())
         env.update(self.pr.get_profile_data())
         return env
@@ -93,5 +97,12 @@ class InstallerTools(object):
     
         
 if __name__ == '__main__':
+    from paella.db import PaellaConnection
     conn = PaellaConnection()
-    tp = TraitParent(conn, 'gunny')
+    #tp = TraitParent(conn, 'gunny')
+    os.environ['PAELLA_PROFILE'] = 'ztest'
+    os.environ['PAELLA_TARGET'] = 'nowhere'
+    os.environ['PAELLA_LOGFILE'] = 'mylog'
+    it = InstallerTools()
+    it.set_trait('base')
+    

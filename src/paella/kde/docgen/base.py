@@ -1,9 +1,9 @@
-from forgetHTML import Element
-from forgetHTML import Link, Inline
-from forgetHTML import Table, TableRow, TableCell
-from forgetHTML import TableHeader
-from forgetHTML import SimpleDocument
-from forgetHTML import Header
+from useless.base.forgethtml import Element
+from useless.base.forgethtml import Link, Inline
+from useless.base.forgethtml import Table, TableRow, TableCell
+from useless.base.forgethtml import TableHeader
+from useless.base.forgethtml import SimpleDocument
+from useless.base.forgethtml import Header
 
 # some elements not in forgetHTML
 # these classes taken from useless.webframe.forgethtml
@@ -167,6 +167,6 @@ class TraitTable(Table):
         for row in rows:
             tablerow = TableRow()
             tablerow.append(TableCell(row.trait))
-            tablerow.append(TableCell(row.ord))
+            tablerow.append(TableCell(str(row.ord)))
             self.append(tablerow)
 

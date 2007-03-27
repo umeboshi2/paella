@@ -1,9 +1,9 @@
-from forgetHTML import Table, TableRow, TableCell
-from forgetHTML import TableHeader
-from forgetHTML import Anchor, Ruler, Break
-from forgetHTML import Header
+from useless.base.forgethtml import Table, TableRow, TableCell
+from useless.base.forgethtml import TableHeader
+from useless.base.forgethtml import Anchor, Ruler, Break
+from useless.base.forgethtml import Header
 
-from forgetHTML import SimpleDocument
+from useless.base.forgethtml import SimpleDocument
 
 class OptionsTable(Table):
     def set_options(self, items):
