@@ -1,0 +1,23 @@
+	<profile name="uml_head" suite="startup">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				uml_head
+			</trait>
+			<trait ord="2">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				tap_network
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				skeleton
+			</profile_variable>
+		</environ>
+	</profile>

@@ -1,0 +1,1 @@
+This trait installs the subversion client.

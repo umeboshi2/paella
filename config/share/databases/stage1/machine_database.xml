@@ -1,0 +1,8 @@
+<machine_database>
+	<machines/>
+	<machine_types/>
+	<disks/>
+	<mounts/>
+	<filesystems/>
+	<kernels/>
+</machine_database>

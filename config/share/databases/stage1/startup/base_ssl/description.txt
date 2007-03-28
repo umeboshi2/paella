@@ -1,0 +1,2 @@
+This trait will setup the default ssl certificate on this host.  This is a base trait
+for the server traits.
