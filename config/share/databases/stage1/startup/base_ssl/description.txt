@@ -1,2 +1,3 @@
 This trait will setup the default ssl certificate on this host.  This is a base trait
-for the server traits.
+for the server traits. we probably don't really need this trait on the startup suite.
+

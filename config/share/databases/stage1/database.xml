@@ -15,6 +15,7 @@
 			<trait name="base_server"/>
 			<trait name="base_ssl"/>
 			<trait name="boot_server"/>
+			<trait name="builder"/>
 			<trait name="clock"/>
 			<trait name="clockserver"/>
 			<trait name="debrepos"/>
@@ -30,6 +31,7 @@
 			<trait name="nameserver"/>
 			<trait name="network_base"/>
 			<trait name="network_head"/>
+			<trait name="nfs_client_base"/>
 			<trait name="nfs_server_base"/>
 			<trait name="paella_test"/>
 			<trait name="postgresql_server"/>
@@ -37,6 +39,9 @@
 			<trait name="subversion"/>
 			<trait name="test_trait1"/>
 			<trait name="udev"/>
+			<trait name="uml_builder"/>
+			<trait name="umlbuilder_account"/>
+			<trait name="uml_common"/>
 			<trait name="uml_head"/>
 			<trait name="uml_static_host"/>
 			<trait name="web_server"/>

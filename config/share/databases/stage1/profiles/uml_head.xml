@@ -12,12 +12,27 @@
 		</traits>
 		<families>
 			<family>
-				tap_network
+				uml_startup
 			</family>
 		</families>
 		<environ>
+			<profile_variable name="do_dselect_upgrade" trait="base">
+				False
+			</profile_variable>
 			<profile_variable name="hostname" trait="global">
-				skeleton
+				umlhead
+			</profile_variable>
+			<profile_variable name="eth0_address" trait="network_base">
+				10.0.1.4
+			</profile_variable>
+			<profile_variable name="eth0_gateway" trait="network_base">
+				10.0.1.1
+			</profile_variable>
+			<profile_variable name="eth0_method" trait="network_base">
+				static
+			</profile_variable>
+			<profile_variable name="eth0_netmask" trait="network_base">
+				255.255.255.0
 			</profile_variable>
 		</environ>
 	</profile>

@@ -13,10 +13,10 @@
 	<packages/>
 	<environ>
 		<trait_variable name="boot_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="db_server" trait="localnet">
-			$localnet_postgres_server
+			&lt;--|localnet_postgres_server|--&gt;
 		</trait_variable>
 		<trait_variable name="ddns_update_keyname" trait="localnet">
 			standard
@@ -25,34 +25,34 @@
 			ozEDawrG84aUSAf+JXf55hsw8RCT6OSKxQOzce25GZxd8UbXFZviDLgt gcehytZ49SQDHIbqp6txteVtO3k3sA==
 		</trait_variable>
 		<trait_variable name="dhcp_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="dict_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="diskless_server" trait="localnet">
-			$localnet_nfs_server
+			&lt;--|localnet_nfs_server|--&gt;
 		</trait_variable>
 		<trait_variable name="domain" trait="localnet">
-			$global_domain
+			&lt;--|global_domain|--&gt;
 		</trait_variable>
 		<trait_variable name="firewall" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="gateway" trait="localnet">
 			10.0.0.1
 		</trait_variable>
 		<trait_variable name="ldap_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="mainserver" trait="localnet">
-			$global_hostname
+			&lt;--|global_hostname|--&gt;
 		</trait_variable>
 		<trait_variable name="mysql_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="nameserver" trait="localnet">
-			$localnet_gateway
+			&lt;--|localnet_gateway|--&gt;
 		</trait_variable>
 		<trait_variable name="netmask" trait="localnet">
 			255.0.0.0
@@ -61,22 +61,22 @@
 			10.0.0.0
 		</trait_variable>
 		<trait_variable name="nfs_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="ntp_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="postgres_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="samba_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="squid_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="web_server" trait="localnet">
-			$localnet_mainserver
+			&lt;--|localnet_mainserver|--&gt;
 		</trait_variable>
 	</environ>
 	<templates>

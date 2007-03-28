@@ -1,0 +1,10 @@
+#!/bin/bash
+umask 022
+
+nfshost=<--|localnet_nameserver|-->
+nfsexport=<--|uml_common_hostfs_root|-->/debrepos/local/incoming
+mntpt=/incoming
+if ! [ -d $mntpt ] ; then
+    mkdir $mntpt
+fi
+echo -e "$nfshost:$nfsexport\t$mntpt\tnfs\tdefaults\t0\t0" >> /etc/fstab

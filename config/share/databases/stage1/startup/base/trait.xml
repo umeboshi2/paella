@@ -39,6 +39,9 @@
 			passwd
 		</package>
 		<package action="install">
+			python
+		</package>
+		<package action="install">
 			sudo
 		</package>
 		<package action="install">
@@ -104,6 +107,9 @@
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/hostname
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/hosts
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/issue

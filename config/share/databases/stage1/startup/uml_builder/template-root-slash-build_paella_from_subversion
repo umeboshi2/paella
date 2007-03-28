@@ -1,0 +1,126 @@
+#!/usr/bin/python
+import os, sys
+import subprocess
+
+svndir = '<--|uml_common_hostfs_root|-->/svn'
+
+useless_wc = os.path.join(svndir, 'useless.svn.tar.gz')
+paella_wc = os.path.join(svndir, 'paella.svn.tar.gz')
+
+svnroot = 'svn://svn.berlios.de'
+
+
+def checkout(project):
+    print 'checking %s out of subversion' % project
+    cmd = 'svn co %s/%s/trunk %s' % (svnroot, project, project)
+    return subprocess.call(cmd, shell=True)
+
+def tarball_name(project):
+    return os.path.join(svndir, '%s.tar.gz' % project)
+
+def create_tarball(project):
+    tarball = tarball_name(project)
+    print 'creating', tarball
+    cmd = 'tar c %s | gzip > %s' % (project, tarball)
+    return subprocess.call(cmd, shell=True)
+
+def extract_tarball(project):
+    tarball = tarball_name(project)
+    print 'extracting', tarball
+    cmd = 'gzip -cd %s | tar x' % tarball
+    return subprocess.call(cmd, shell=True)
+
+def export(project):
+    cmd = 'svn export %s %s-exported' % (project, project)
+    return subprocess.call(cmd, shell=True)
+
+# we need to havehave path module for this function
+def build_project(project):
+    here = path.getcwd()
+    exported = here / ('%s-exported' % project)
+    os.chdir(exported)
+    if subprocess.call('pdebuild', shell=True):
+        raise RuntimeError, 'problem running pdebuild for %s' % project
+    os.chdir(here)
+    dscfiles = here.files(pattern='%s*.dsc' % project)
+    if len(dscfiles) != 1:
+        if not len(dscfiles):
+            raise RuntimeError, "Couldn't find a .dsc file for %s" % project
+        else:
+            raise RuntimeError, "Please make sure there is only one .dsc file for %s" % project
+    dscfile = dscfiles.pop()
+    cmd = 'pbuilder build %s' % dscfile
+    action = 'building %s from %s' % (project, dscfile)
+    print action
+    if subprocess.call(cmd, shell=True):
+        raise RuntimeError, 'problem with %s' % action
+    
+    
+    
+
+if not os.path.isdir(svndir):
+    os.mkdir(svndir)
+    
+here = os.getcwd()
+workspace = '/root/workspace'
+if not os.path.isdir(workspace):
+    os.mkdir(workspace)
+os.chdir(workspace)
+
+projects = ['useless', 'paella']
+for project in projects:
+    if not os.path.isdir(project):
+        if os.path.exists(tarball_name(project)):
+            if extract_tarball(project):
+                raise RuntimeError, 'problem extracting tarball for %s' % project
+        else:
+            if checkout(project):
+                raise RuntimeError, 'problem with checkout of %s' % project
+            if create_tarball(project):
+                raise RuntimeError, 'problem with creating tarball for %s' % project
+
+os.chdir(here)
+# now that we have useless and paella, we can make use of them
+
+
+# use useless package from working copy
+pythonpath = '/root/pythonpath'
+if not os.path.isdir(pythonpath):
+    os.mkdir(pythonpath)
+
+if not os.path.exists(os.path.join(pythonpath, 'useless')):
+    os.chdir(pythonpath)
+    cmd = 'ln -s ../workspace/useless/useless'
+    subprocess.call(cmd, shell=True)
+    os.chdir(here)
+
+sys.path.insert(0, pythonpath)
+
+
+from useless.base.path import path
+
+here = path(here)
+workspace = path(workspace)
+#os.chdir(workspace)
+
+
+# make sure we have clean exports to build with
+for project in projects:
+    exported = workspace / ('%s-exported' % project)
+    if exported.isdir():
+        print 'exported.isdir True, remove %s' % exported
+        if subprocess.call('rm %s -fr' % exported, shell=True):
+            raise RuntimeError, 'problem removing %s' % exported
+            
+            
+os.chdir(workspace)
+
+for project in projects:
+    if export(project):
+        raise RuntimeError, 'problem with export of %s' % project
+    build_project(project)
+
+os.chdir(here)
+
+
+

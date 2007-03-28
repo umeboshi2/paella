@@ -9,6 +9,9 @@
 		<parent>
 			network_base
 		</parent>
+		<parent>
+			uml_common
+		</parent>
 	</parents>
 	<packages/>
 	<environ>

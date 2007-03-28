@@ -18,9 +18,6 @@
 			devscripts
 		</package>
 		<package action="install">
-			devscripts-el
-		</package>
-		<package action="install">
 			dh-make
 		</package>
 		<package action="install">
@@ -45,7 +42,27 @@
 			patchutils
 		</package>
 	</packages>
-	<environ/>
-	<templates/>
+	<environ>
+		<trait_variable name="debuild_linda" trait="development_debian">
+			no
+		</trait_variable>
+		<trait_variable name="debuild_lintian" trait="development_debian">
+			no
+		</trait_variable>
+		<trait_variable name="debuild_rootcmd" trait="development_debian">
+			fakeroot
+		</trait_variable>
+		<trait_variable name="dpkg_buildpkg_opts" trait="development_debian">
+			-us -uc -sa
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/devscripts.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/dput.cf
+		</template>
+	</templates>
 	<scripts/>
 </trait>

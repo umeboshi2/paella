@@ -7,13 +7,28 @@
 			boot_server
 		</parent>
 		<parent>
+			debrepos
+		</parent>
+		<parent>
 			dhcp_server
 		</parent>
 		<parent>
 			nameserver
 		</parent>
 		<parent>
+			nfs_server_base
+		</parent>
+		<parent>
+			umlbuilder_account
+		</parent>
+		<parent>
+			uml_common
+		</parent>
+		<parent>
 			uml_static_host
+		</parent>
+		<parent>
+			web_server
 		</parent>
 	</parents>
 	<packages>
@@ -22,28 +37,19 @@
 		</package>
 	</packages>
 	<environ>
-		<trait_variable name="aptmove_localdir" trait="uml_head">
-			/mnt/freespace/home/umeboshi/mirrors/debian
-		</trait_variable>
-		<trait_variable name="aptmove_pkgcomp" trait="uml_head">
-			'none gzip bzip2'
-		</trait_variable>
 		<trait_variable name="systarball_bkup_path" trait="uml_head">
 			/mnt/freespace/home/umeboshi/roots
 		</trait_variable>
 	</environ>
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/apt-move.conf
-		</template>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/dhcp3/dhcpd.conf
-		</template>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/network/interfaces.uml_head.orig
+			etc/exports
 		</template>
 		<template grp_owner="root" mode="0755" owner="root">
-			root/backup_config
+			root/setup_debrepos
+		</template>
+		<template grp_owner="root" mode="0755" owner="root">
+			root/setup_something
 		</template>
 	</templates>
 	<scripts>

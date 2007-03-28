@@ -1,1 +1,2 @@
 This trait is necessary for clients that use PXE to boot over the local network.
+This trait is not working properly right now, as there is no initrd being built yet.

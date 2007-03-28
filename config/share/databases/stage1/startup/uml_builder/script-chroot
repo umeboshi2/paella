@@ -5,5 +5,4 @@ dd if=/dev/zero of=/swap bs=1024 count=50K
 mkswap /swap
 echo -e "/swap\tnone\tswap\tsw\t0\t0" >> /etc/fstab
 
-echo "creating /incoming directory"
-mkdir -p /incoming
+/root/setup_incoming

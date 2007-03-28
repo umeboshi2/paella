@@ -1,0 +1,31 @@
+#!/bin/bash
+umask 022
+
+# be sure that hostfs is mounted in /mnt
+if ! [ `cat /proc/mounts | grep /mnt | wc -l` -gt 0 ] ; then
+    mount -t hostfs none /mnt
+fi
+
+debarchiverpath=<--|uml_common_hostfs_root|-->/debrepos/local
+if ! [ -d $debarchiverpath ]; then
+    mkdir -p $debarchiverpath
+    rsync -av /var/lib/debarchiver/ $debarchiverpath/
+fi
+
+
+
+packages=`cat /root/all_trait_packages`
+echo installing $packages
+
+export DEBIAN_FRONTEND=noninteractive
+apt-get install --option 'DPkg::Options::=--dry-run' --yes $packages
+
+apt-move update
+apt-move sync
+
+if ! [ -e /var/www/debian ]; then
+    echo "making link to debrepos for apache"
+    pushd /var/www
+    ln -s ../../mnt/freespace/shared/share/paella/debrepos debian
+    popd
+fi

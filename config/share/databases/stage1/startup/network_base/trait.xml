@@ -10,7 +10,7 @@
 	<packages/>
 	<environ>
 		<trait_variable name="automatic_interfaces" trait="network_base">
-			$network_base_interfaces
+			&lt;--|network_base_interfaces|--&gt;
 		</trait_variable>
 		<trait_variable name="default_method" trait="network_base">
 			dhcp

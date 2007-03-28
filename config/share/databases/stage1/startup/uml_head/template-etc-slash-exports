@@ -1,0 +1,12 @@
+# /etc/exports: the access control list for filesystems which may be exported
+#		to NFS clients.  See exports(5).
+#
+# Example for NFSv2 and NFSv3:
+# /srv/homes       hostname1(rw,sync) hostname2(ro,sync)
+#
+# Example for NFSv4:
+# /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt)
+# /srv/nfs4/homes  gss/krb5i(rw,sync)
+#
+/incoming	<--|localnet_network|-->/<--|localnet_netmask|-->(rw,sync)
+
