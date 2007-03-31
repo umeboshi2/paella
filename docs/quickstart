@@ -22,7 +22,8 @@ Debian Etch
 ------------------
 It is best to start with a running debian desktop.  The upcoming etch release is
 what is currently supported.  Sarge will probably not work as paella requires python 
-2.4 to operate.
+2.4 to operate.  Using sid may work also, especially while etch is still in testing, but this 
+has not been tested.
 
 Hardware
 -----------------
@@ -32,17 +33,97 @@ later.  Most of the memory is required to run the user mode linux processes, and
 adjusted by providing more swap for the user mode processes to use.
 
 
-
-
-
-
 Postgresql Database
 --------------------------------
+A postgresql database is required to use paella.  The database server must allow tcp 
+access.  A database user named "paella" must be created and allowed access to the paella 
+database without authentication.  The paella user has only read access to most tables, 
+although there are a couple of tables that are setup specifically for write access.
 
+More specific instructions on configuring the database server are provided in a later section.
+
+
+User Mode Linux
+----------------------------------
+User mode linux is used to help test paella installations  in a limited environment where it is 
+not feasible to setup a network of machines.  It can be useful when testing a new configuration 
+of network services on a test network without interfering with the normal network.
+
+In order to follow most of the steps in this guide, the user-mode-linux and uml-utilities packages 
+are required to be installed.  More specific instructions on configuring user-mode-linux and the 
+uml-utilities package are provided in a later section.
+
+Setup paella from subversion
+===============================================
+
+Install Subversion
+----------------------------
+You will need to install subversion to setup the environment necessary to run paella.
+As root::
+
+	apt-get install subversion
+
+Obtain the quick setup script
+-----------------------------------------------
+type::
+	
+	svn export svn://svn.berlios.de/paella/trunk/config/scripts/paella-devel-quick-setup
+
+This file should already be executable, if not, do chmod +x paella-devel-quick-setup.
+
+You should edit the file and change the variables at the top to your needs.  When you are
+ready, run the script, install the packages, and make the changes to your .bashrc .  If you 
+don't want to make the changes to your .bashrc, you can put the lines in another file that 
+you will have to source before running any of the scripts.
 
 Setup Database Server
 =====================
-describe setup dbserver
+Paella is developed and used with postgresql version 7.x .  It may work with newer versions, but 
+it is not tested.  It is recommended that you run the database server on a host on your local 
+network instead of the host you'll be using paella on.  This is not necessary, but it does help 
+the performance quite a bit.
+
+If you are new to using postgresql, I suggest reading 
+/usr/share/doc/postgresql-7.4/README.Debian.gz first.
+
+
+	Steps to setup paella database::
+		
+		apt-get install postgresql
+		su postgres
+		createuser -a -d adminuser
+		createuser -A -D paella
+		exit
+		su adminuser createdb paella
+		createlang plpgsql paella
+
+Next, you will have to edit a couple of configuration files as the postgres user.
+
+Edit postgresql.conf
+------------------------------
+You will probably have to edit /etc/postgresql/7.4/main/postgresql.conf , and
+set "tcpip_socket = true" .
+
+Edit pg_hba.conf
+--------------------------
+You will have to edit /etc/postgresql/7.4/main/pg_hba.conf, and add some lines:
+
+If your database server is not on your desktop, but on the local network, you
+will have to allow access to the paella database from your machine.
+example::
+
+	#TYPE	DATABASE	USER		IP-ADDRESS	IP-MASK		METHOD
+	host	paella		paella		<my ip address>	255.255.255.255	trust
+	host	paella		adminuser	<my ip address>	255.255.255.255	ident sameuser
+
+If your database server is on your desktop, you need to allow access from your uml network.
+example::
+
+	#TYPE	DATABASE	USER		IP-ADDRESS	IP-MASK		METHOD
+	host	paella		paella		10.0.1.0		255.255.255.0	trust
+	host	paella		adminuser	127.0.0.1		255.255.255.0	trust
+
+
 
 dbusers
 -------------
@@ -53,21 +134,47 @@ another section
 -------------------------------
 something else
 
-User Mode Linux
+
+Setup User Mode Linux
 ======================
 
-discuss setup of user-mode-linux and uml-utilities
+Install packages
+--------------------------
+First off, you will need to get root and install a couple of packages::
+
+      apt-get install user-mode-linux uml-utilities
 
 
-a section
--------------------
+Configure TAP Network
+---------------------------------------
+Be sure to read /usr/share/doc/uml-utilities/README.Debian, and follow the instructions 
+there to setup the tap network.  
 
-talk about it
+This quick start procedure uses the 10.0.1.0 network for the user-mode-linux machines by 
+default.  Here is what to add to /etc/network/interfaces::
 
-another section
----------------------------
+	       auto tap0
+	       iface tap0 inet static
+		     address 10.0.1.1
+		     netmask 255.255.255.0
+		     tunctl_user uml-net
 
-talk about it
+
+You will probably want to add yourself to the uml-net group::
+
+	 adduser username uml-net
+
+Masquerade TAP Network
+------------------------------------------------
+You will need to setup iptables to get your uml machines to access the rest of the network.
+As root type::
+
+	iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+	echo '1' > /proc/sys/net/ipv4/ip_forward
+
+This is assuming that eth0 is your main network interface.  You may want to add these lines
+to your /etc/rc.local script.
+
 
 startup database
 =================
@@ -78,8 +185,8 @@ section
 discuss it
 
 
-Getting started with paella
-=============================
+Getting started with paella (outdated)
+===============================================
 
 People who will get the most benefit out of paella are IT consultants that manage
 multiple disjoint networks.  You may also benefit from it if your network is large enough,
