@@ -1,36 +1,95 @@
 #!/bin/bash
-#cd $HOME
-pushd $HOME
 
-if ! [ -d local/python ]; then
-    mkdir -p local/python
-fi
-if ! [ -d workspace ]; then
-    mkdir workspace
-fi
-pushd workspace
+# localpython will be the directory containing python modules and packages
+# it will need to be exported as PYTHONPATH in your environment or .basrc
+localpython=$HOME/local/python
+
+# workspace is the parent path of where the subversion checkouts will be
+workspace=$HOME/workspace
+
+binpath=$HOME/bin
+
+
+# these packages are absolutely necessary
+depends="python-xml python-pycurl python-sqlite python-pgsql python-kde3
+python-qtext libqt3-mt-psql python-apt python-pyparsing
+python-cheetah python-kjbuckets"
+
+# you will need these if you wish to build paella debian packages
+build_deps="cdbs devscripts python-dev python-docutils python-all-dev"
+
+
+umlpackages=""
+# if you already have these packages comment them out
+umlpackages="user-mode-linux uml-utilities debootstrap"
+
+
+postgresql_packages=""
+# uncomment below if you plan on running the postgresql server
+# on this host.
+#postgresql_packages="postgresql postgresql-contrib"
+
+
+#extra="debconf-utils reiserfsprogs xfsprogs hdparm mdadm
+#mkisofs gawk xxdiff xemacs21 kernel-package apache"
+extra=""
+
+
+# you should not need to change anything below here
+
+for directory in $localpython $workspace $binpath
+  do
+  echo checking $directory
+  if ! [ -d $directory ]; then
+      echo creating $directory
+      mkdir -p $directory
+  fi
+  done
+
+
+pushd $workspace
+# checkout paella
 if ! [ -d paella ]; then
     svn co svn://svn.berlios.de/paella/trunk paella
 fi
+
+# checkout useless
 if ! [ -d useless ]; then
     svn co svn://svn.berlios.de/useless/trunk useless
 fi
 popd
-pushd local/python
+
+
+pushd $localpython
 if ! [ -L paella ]; then
-    ln -s ../../workspace/paella/src/paella
+    ln -s $workspace/paella/src/paella
 fi
 if ! [ -L useless ]; then
-    ln -s ../../workspace/useless/useless
+    ln -s $workspace/useless/useless
 fi
 popd
-PACKAGES="python-xml python-pycurl python-sqlite python-pgsql python-kde3
-python-qtext libqt3-mt-psql python-dev python-docutils cdbs devscripts python-apt 
-debootstrap debconf-utils python-pyparsing reiserfsprogs xfsprogs hdparm mdadm
-mkisofs gawk xxdiff xemacs21 python-kjbuckets kernel-package postgresql 
-postgresql-contrib apache user-mode-linux uml-utilities python-cheetah"
-sudo apt-get install $PACKAGES
 
-sudo adduser $USER uml-net
-
+pushd $binpath
+scripts="paella-management paella-make-base paella-kde-umlmanager"
+for script in $scripts
+  do
+  echo checking script $script
+  if ! [ -L $script ] ; then
+      ln -s $workspace/paella/config/scripts/$script
+  fi
+  done
 popd
+
+
+PACKAGES="$depends $build_deps $umlpackages $postgresql_packages $extra"
+
+echo "Cut and paste this command into the terminal to install the packages:"
+echo
+
+echo sudo apt-get install $PACKAGES
+echo
+
+echo add $binpath to your PATH, if not already there
+echo add \"export PYTHONPATH=$localpython\" to your .bashrc file
+
+
