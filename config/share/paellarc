@@ -6,7 +6,7 @@ __paelladir:		%(__myhome)s/workspace/paella
 
 [database]
 # regular database info
-dbhost:			localhost
+dbhost:			10.0.1.1
 dbname:			paella
 dbusername:		paella
 dbpassword:		apassword
@@ -14,7 +14,7 @@ dbpassword:		apassword
 # this path is used to import and export information
 # in the database.  These paths are used as hints in the
 # gui and aren't needed for the command line.
-default_path:		%(__myhome)/paelladb
+default_path:		%(__myhome)s/paelladb
 
 [installer]
 # this is to enable ugly stuff in the paella installers
@@ -47,21 +47,8 @@ devices_tarball:		%(paella_storage)s/devices.tar
 use_devices_tarball:	true
 
 [management_gui]
-env_editor_size:	500, 400
-
-bkuptarball_path:		/mirrors/bkups
-
-# a comma separated list of suites to manage
-# the suite management toolbars will appear for
-# these suites on paella-management startup
-management_suites:	sarge
-
 # this is the template that profiles will be created from
 template_profile:		skeleton
-
-# this option is probably deprecated by the template_profile
-# option above
-default_profile_suite:	sarge
 
 # this is the path used to import and export client
 # information and the paella database
@@ -69,17 +56,15 @@ default_profile_suite:	sarge
 # for general security reasons
 # the client information should be able to sit nicely
 # on top of the base paella database
-client_path:		/mirrors/bkups/clients
-
-# *_pos options locate the windows on
-# paella-management startup
-
-# manager is the main management window
-# will be located
-manager_pos:		0, 1075
-
-# manager window size
-manager_size:		170, 200
+client_path:		%(__myhome)s/clients
 
 # only listbox_select is supported now
 manager_type:		listbox_select
+
+# The text editor must make an X window
+text_editor:		kate
+
+# The x_differ must make an X window
+# the command must take these args -> x_differ left_file right_file
+x_differ:			xxdiff
+#x_differ:			kompare

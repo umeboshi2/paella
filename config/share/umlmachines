@@ -1,13 +1,15 @@
-#configuration file for umlmachines
+# configuration file for umlmachines
+# save as ~/.umlmachines.conf
+
 [DEFAULT]
 _myhome:		/home/umeboshi
 _workspace:		%(_myhome)s/workspace
 _config_path:		%(_workspace)s/paella/config
 _script_path:		%(_config_path)s/scripts
 _freespace:		/freespace
-_basepath:		%(_freespace)s/roots
+_basepath:		%(_myhome)s/roots
 
-_base_logfile:		paellalog/uml-installer.log
+_base_logfile:		uml-installer.log
 
 
 host_logfile:		/mirrors/bkups/%(_base_logfile)s.host
@@ -32,13 +34,13 @@ paellarc:			%(_myhome)s/.paellarc
 
 
 # other uml kernel options --
-uopt_python_path:		%(_workspace)s/paella/src
+uopt_python_path:		%(_myhome)s/local/python
 
 
 # all umlmachines read this option
 uopt_umlconfig:		%(_myhome)s/.umlmachines.conf
 
-uopt_LOGFILE:		/mnt/%(_base_logfile)s
+uopt_LOGFILE:		/tmp/%(_base_logfile)s
 
 #regular uml kernel options
 uopt_eth0:			daemon,,,%(uml_socket)s
@@ -56,12 +58,9 @@ basefile_size:		3000
 
 [umlmachines]
 bootstrap_basepath:	%(_basepath)s/bases
-bootstrap_debmirror:	http://192.168.0.2/debian
+bootstrap_debmirror:	http://ftp.us.debian.org/debian
 backup_filesystem:		hostfs
-#hostfs_backup_path:	%(_basepath)s/bkups
-hostfs_backup_path:	/mirrors/bkups
-nfs_backup_export:	192.168.0.2:/freespace/shared/bkups
-
+hostfs_backup_path:	%(_basepath)s/bkups
 
 #machines go below here
 ###

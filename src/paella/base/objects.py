@@ -110,7 +110,7 @@ class VariablesConfig(Configuration):
         rtmp = file(rpath, 'w')
         other.write(rtmp)
         rtmp.close()
-        os.system('xxdiff %s %s' % (lpath, rpath))
+        os.system('$X_DIFFER %s %s' % (lpath, rpath))
         ltmp, rtmp = file(lpath, 'r'), file(rpath, 'r')
         lcfg, rcfg = ConfigParser(), ConfigParser()
         lcfg.readfp(ltmp)
@@ -174,7 +174,7 @@ class Differ(object):
         self.rpath = self.__createfile__(self.rdata, 'right')
         
     def diff(self):
-        os.system('xxdiff %s %s' % (self.lpath, self.rpath))
+        os.system('$X_DIFFER %s %s' % (self.lpath, self.rpath))
         
     def __createfile__(self, data, name):
         tmp, path = tempfile.mkstemp('differ', name)

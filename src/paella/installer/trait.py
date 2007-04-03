@@ -221,7 +221,7 @@ class TraitInstaller(Installer):
             self.log.warn('PROBLEM installing %s' % trait)
             self.log.warn('packages --> %s' % package_args)
             raise InstallError, 'problem installing packages'
-        if not self.defenv.getboolean('installer', 'keep_installed_packges'):
+        if not self.defenv.getboolean('installer', 'keep_installed_packages'):
             runvalue = remove_debs(self.target)
             if runvalue:
                 self.log.warn('PROBLEM removing downloaded debs')

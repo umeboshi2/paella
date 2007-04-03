@@ -21,7 +21,7 @@ Package: paella-base
 Section: admin
 Priority: optional
 Architecture: any
-Depends: useless-db
+Depends: python-useless-db
 Description: base utils for paella
     This package is responsible for initial setup of the paella 
     environment. (need to ask for pghost, etc..)
@@ -56,7 +56,8 @@ Package: paella-admin
 Section: admin
 Priority: optional
 Architecture: any
-Depends: useless-kdb, paella-db, xxdiff, python-forgethtml
+Depends: python-useless-kdedb, paella-db, python-forgethtml
+Recommends: xxdiff
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
 
@@ -64,7 +65,7 @@ Package: paella-db
 Section: optional
 Priority: optional
 Architecture: any
-Depends: paella-debian, python-kjbuckets, useless-db, useless-xmlgen, python-cheetah
+Depends: paella-debian, python-kjbuckets, python-useless-db, python-useless-xmlgen, python-cheetah
 Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
     classes and functions to help create database schemas,
