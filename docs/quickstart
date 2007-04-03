@@ -1,5 +1,8 @@
 Paella Quick Start Guide
 ===========================
+This guide is unfinished.  If you are reading this, do not expect the guide to be correct or
+accurate.  This guide will not be ready to read, and the steps outlined should not be 
+attempted until this paragraph is removed.
 
 .. contents:: :backlinks: entry
 
@@ -94,8 +97,6 @@ If you are new to using postgresql, I suggest reading
 		createuser -a -d adminuser
 		createuser -A -D paella
 		exit
-		su adminuser createdb paella
-		createlang plpgsql paella
 
 Next, you will have to edit a couple of configuration files as the postgres user.
 
@@ -121,7 +122,7 @@ example::
 
 	#TYPE	DATABASE	USER		IP-ADDRESS	IP-MASK		METHOD
 	host	paella		paella		10.0.1.0		255.255.255.0	trust
-	host	paella		adminuser	127.0.0.1		255.255.255.0	trust
+	host	paella		adminuser	10.0.1.1		255.255.255.0	trust
 
 
 
@@ -129,6 +130,10 @@ dbusers
 -------------
 talk about admin, paella users
 
+create the database::
+
+		createdb paella
+		createlang plpgsql paella
 
 another section
 -------------------------------
