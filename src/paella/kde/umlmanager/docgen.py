@@ -15,7 +15,7 @@ class OptionsTable(Table):
             row = TableRow()
             self.append(row)
             row.append(TableCell(k))
-            row.append(TableCell(v))
+            row.append(TableCell(str(v)))
 
 class UmlMachineDoc(SimpleDocument):
     def __init__(self, app):

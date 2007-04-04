@@ -7,6 +7,7 @@ from kdeui import KListView, KListViewItem
 
 from kfile import KDirSelectDialog
 
+from useless.base.path import path
 from useless.kdebase.mainwin import BaseMainWindow
 
 # database manager
@@ -243,7 +244,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
     # here action is either 'import' or 'export'
     def _select_import_export_directory(self, action):
         if self._import_export_dirsel_dialog is None:
-            default_db_path = self.app.cfg.get('database', 'default_path')
+            default_db_path = path(self.app.cfg.get('database', 'default_path')).expand()
             win = KDirSelectDialog(default_db_path, False , self)
             win.connect(win, SIGNAL('okClicked()'), self._import_export_directory_selected)
             self._connect_destroy_dialog(win)

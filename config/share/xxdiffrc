@@ -1,0 +1,6 @@
+Accel.EditLeft: "Ctrl+["
+Accel.EditRight: "Ctrl+]"
+FontText: "Bitstream Vera Sans Mono,7,-1,5,50,0,0,0,0,0"
+DirDiffRecursive: True
+Show.Toolbar: True
+Command.DiffDirectoriesRec: "diff -q -s -r --exclude=.svn --exclude=SCCS --exclude=CVS --exclude=*.pyc --exclude=*~"

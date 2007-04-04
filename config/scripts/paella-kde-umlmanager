@@ -4,6 +4,8 @@ from qt import SIGNAL, SLOT
 
 from kdecore import KCmdLineArgs
 
+from useless.kdebase.error import excepthook
+
 from paella.kde.umlmanager.about import AboutData
 from paella.kde.umlmanager.main import UmlManagerApplication
 from paella.kde.umlmanager.main import UmlManagerMainWindow
@@ -13,6 +15,9 @@ if __name__ == '__main__':
     aboutData = AboutData()
     KCmdLineArgs.init(sys.argv, aboutData)
 
+    # setup error handling
+    sys.excepthook = excepthook
+    
     # setup application instance
     app = UmlManagerApplication()
     app.connect(app, SIGNAL('lastWindowClosed()'), app.quit)

@@ -113,7 +113,7 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         
 
     def _select_import_export_directory(self, action):
-        default_path = path(self.app.cfg.get('database', 'default_path'))
+        default_path = path(self.app.cfg.get('database', 'default_path')).expand()
         win = KDirSelectDialog(default_path, False, self)
         win.connect(win, SIGNAL('okClicked()'), self._import_export_directory_selected)
         win.db_action = action

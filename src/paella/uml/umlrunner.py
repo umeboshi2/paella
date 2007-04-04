@@ -5,6 +5,7 @@ import subprocess
 from umlrun import UML
 from useless.base.config import Configuration
 from useless.base.util import runlog
+from useless.base.path import path
 
 from paella.base import PaellaConfig
 from paella.installer.base import InstallerConnection
@@ -32,6 +33,9 @@ class UmlMachineManager(Uml):
 
     def _make_config(self, machine):
         return UmlConfig(machine)
+
+    def _get_basefile(self, cfg, machine):
+        return path(cfg.get(machine, 'basefile')).expand()
     
     def set_machine(self, machine):
         self.cfg.change(machine)
@@ -39,9 +43,11 @@ class UmlMachineManager(Uml):
         self.options['umlmachine'] = machine
         self.options['umid'] = machine
         self.options.update(self.cfg.get_umlopts())
-        self.set_root_filesystem(self.cfg['basefile'])
+        self.set_root_filesystem()
         
-    def set_root_filesystem(self, basefile):
+    def set_root_filesystem(self, basefile=None):
+        if basefile is None:
+            basefile = self._get_basefile(self.cfg, self.current)
         self.options['ubda'] = basefile
 
     def backup_machine(self, basefile=None):
@@ -50,7 +56,7 @@ class UmlMachineManager(Uml):
         cfg = self._make_config(machine)
         chroot = UmlChroot(cfg)
         if basefile is None:
-            basefile = cfg.get(machine, 'basefile')
+            basefile = self._get_basefile(cfg, machine)
         chroot.set_targetimage(basefile)
         chroot.options['backup_target'] = machine
         chroot.options['paella_action'] = 'backup'
@@ -65,7 +71,7 @@ class UmlMachineManager(Uml):
         installer.options['umid'] = machine
         runner = UmlRunner(cfg)
         if basefile is None:
-            basefile = cfg.get(machine, 'basefile')
+            basefile = self._get_basefile(cfg, machine)
         if profile is None:
             profile = cfg.get(machine, 'profile')
         installer.install_profile(profile, basefile)

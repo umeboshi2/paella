@@ -3,8 +3,10 @@ from os.path import join
 
 from useless.base import Error
 from useless.base import debug
+from useless.base.path import path
 from useless.base.util import makepaths, runlog
 from useless.base.util import parse_proc_mounts
+from useless.base.util import shell
 
 from paella.installer.util.filesystem import mount_tmpfs
 from paella.installer.util.filesystem import make_filesystem
@@ -33,6 +35,7 @@ class UmlChroot(Uml):
         else:
             logfile = cfg['host_logfile']
             os.environ[lvar] = logfile
+        logfile = path(logfile).expand()
         self.set_options()
         
         
@@ -43,8 +46,13 @@ class UmlChroot(Uml):
         opts['rootfstype'] = 'hostfs'
         opts['paella_action'] = 'nothing'
         opts['devfs'] = 'nomount'
-        opts['init'] = self.cfg['uml_initscript']
+        opts['init'] = path(self.cfg['uml_initscript']).expand()
+        backup_filesystem = self.cfg.get('umlmachines', 'backup_filesystem')
+        if backup_filesystem == 'hostfs':
+            p = path(self.cfg.get('umlmachines', 'hostfs_backup_path'))
+            opts['hostfs_backup_path'] = p.expand()
         opts.update(self.cfg.get_umlopts())
+        
 
                 
     def set_mode(self, mode):
@@ -53,12 +61,12 @@ class UmlChroot(Uml):
             self._init_uml_system()
 
     @host_mode
-    def set_targetimage(self, path, device='ubda'):
-        self.options[device] = path
+    def set_targetimage(self, filename, device='ubda'):
+        self.options[device] = path(filename).expand()
         
     @guest_mode
     def set_target(self, target='/tmp/target'):
-        self.target = target
+        self.target = path(target)
 
     @guest_mode
     def make_filesystem(self):
@@ -105,24 +113,28 @@ class UmlChroot(Uml):
             makepaths(dirname)
         tarcmd = backup_target_command(self.target, tarname)
         print tarcmd
-        os.system(tarcmd)
-        os.system('umount /mnt')
+        shell(tarcmd)
+        shell('umount /mnt')
 
     @guest_mode
     def backup_target_hostfs(self, name):
         self.mount_backup('/mnt', 'hostfs')
-        bkup_path = self.cfg.get('umlmachines', 'hostfs_backup_path')
+        #bkup_path = path(self.cfg.get('umlmachines', 'hostfs_backup_path')).expand()
+        bkup_path = path(self.options['hostfs_backup_path'].value)
         while bkup_path.startswith('/'):
             bkup_path = bkup_path[1:]
-        tarname = os.path.join('/mnt', bkup_path, name) + '.tar'
-        dirname = os.path.dirname(tarname)
-        if not os.path.isdir(dirname):
+        mnt = path('/mnt')
+        tarname = mnt / bkup_path / path('%s.tar' % name)        
+        #tarname = os.path.join('/mnt', bkup_path, name) + '.tar'
+        #dirname = os.path.dirname(tarname)
+        dirname = tarname.dirname()
+        if not dirname.isdir():
             print dirname, "doesn't exist.  Creating now."
             makepaths(dirname)
         tarcmd = backup_target_command(self.target, tarname)
         print 'tarcmd is', tarcmd
-        os.system(tarcmd)
-        os.system('umount /mnt')
+        shell(tarcmd)
+        shell('umount /mnt')
         
     @guest_mode
     def backup_target(self, name):

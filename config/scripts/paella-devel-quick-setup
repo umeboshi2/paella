@@ -89,7 +89,11 @@ echo
 echo sudo apt-get install $PACKAGES
 echo
 
+echo "export PATH=$binpath:\$PATH" > paella_environment
+echo "export PYTHONPATH=$localpython" >> paella_environment
+
 echo add $binpath to your PATH, if not already there
 echo add \"export PYTHONPATH=$localpython\" to your .bashrc file
 
-
+echo "or source the paella_environment file that was just created in this directory"
+echo before using paella.

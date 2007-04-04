@@ -1,7 +1,7 @@
-#configuration file for paella
+# configuration file for paella
 [DEFAULT]
-# this is only referenced in this config file
-__myhome:		/home/umeboshi
+# these options are only referenced in this config file
+__myhome:		~
 __paelladir:		%(__myhome)s/workspace/paella
 
 [database]
@@ -16,7 +16,10 @@ dbpassword:		apassword
 # gui and aren't needed for the command line.
 default_path:		%(__myhome)s/paelladb
 
+# the installer section is only needed on the installer system
+# it is not needed for paella-management
 [installer]
+
 # this is to enable ugly stuff in the paella installers
 enable_bad_hacks:	false
 
@@ -46,7 +49,10 @@ devices_tarball:		%(paella_storage)s/devices.tar
 # than running MAKEDEV
 use_devices_tarball:	true
 
+# the management_gui section is only needed for paella-management,
+# it is not needed for the paella installer
 [management_gui]
+
 # this is the template that profiles will be created from
 template_profile:		skeleton
 

@@ -2,6 +2,8 @@ import os
 from os.path import isfile, join, dirname
 import tarfile
 
+from useless.base.path import path
+
 from paella.base import PaellaConfig
 from paella.db.base import get_suite
 from paella.db.base import SuiteCursor
@@ -20,8 +22,9 @@ class BaseUmlInstaller(UmlChroot):
         self.conn = conn
         UmlChroot.__init__(self, cfg=cfg)
         self.options['paella_action'] = 'install'
-        paellarc_files = [self.cfg['paellarc']]
-        self.paellarc = PaellaConfig(files=paellarc_files)
+        paellarc = path(self.cfg['paellarc']).expand()
+        self.paellarc = PaellaConfig(files=[paellarc])
+        self.options['paellarc'] = paellarc
         
     def setup_target(self, **kwargs):
         UmlChroot.setup_target(self, **kwargs)
@@ -31,13 +34,13 @@ class BaseUmlInstaller(UmlChroot):
         self.installer.process()
 
     @host_mode
-    def make_root_device(self, path, size=None):
+    def make_root_device(self, rpath, size=None):
         if size is None:
             size = self.cfg['basefile_size']
-        msg = 'making uml root device of size %s at %s' % (size, path)
+        msg = 'making uml root device of size %s at %s' % (size, rpath)
         print msg
-        create_sparse_file(path, size)
-        self.set_targetimage(path)
+        create_sparse_file(rpath, size)
+        self.set_targetimage(rpath)
         
 class UmlProfileInstaller(BaseUmlInstaller):
     @guest_mode
@@ -84,13 +87,14 @@ class UmlProfileInstaller(BaseUmlInstaller):
         suite = self.suitecursor.get_base_suite(self._suite)
         fstype = self.cfg.get('umlmachines', 'backup_filesystem')
         if fstype == 'hostfs':
-            backup_path = self.cfg.get('umlmachines', 'hostfs_backup_path')
+            #backup_path = path(self.cfg.get('umlmachines', 'hostfs_backup_path')).expand()
+            backup_path = path(self.options['hostfs_backup_path'].value)
         else:
-            backup_path = '/mnt'
-        basetarball = join(backup_path, '%s.base.tar.gz' % suite)
-        if not os.path.isfile(basetarball):
-            basetarball = join(backup_path, '%s.base.tar' % suite)
-        if os.path.isfile(basetarball):
+            backup_path = path('/mnt')
+        basetarball = backup_path / path('%s.base.tar.gz' % suite)
+        if not basetarball.isfile():
+            basetarball = backup_path / path('%s.base.tar' % suite)
+        if basetarball.isfile():
             extract_tarball(self.target, basetarball)
         else:
             raise RuntimeError, 'No base tarball found for suite %s' % suite

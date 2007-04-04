@@ -8,6 +8,7 @@ from kdeui import KListView, KListViewItem
 from paella.db.profile import Profile
 from paella.db.family import Family
 
+from useless.base.path import path
 from useless.kdebase import get_application_pointer
 from useless.kdebase.dialogs import BaseAssigner
 

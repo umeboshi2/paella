@@ -6,7 +6,7 @@ import tarfile
 from useless.base.util import makepaths
 from useless.base.tarball import make_tarball
 from useless.base.config import Configuration, list_rcfiles
-
+from useless.base.path import path
 
 from paella.debian.base import RepositorySource, debootstrap
 from paella.db.base import get_suite
@@ -39,7 +39,12 @@ class UmlConfig(Configuration):
         #return dict([(x.split(pre)[1], self[x]) for x in uopt_keys])
         opts = {}
         for k in uopt_keys:
-            opts[k.split(pre)[1]] = self[k]
+            optkey = k.split(pre)[1]
+            if optkey.startswith('ubd') or optkey in ['python_path', 'umlconfig', 'LOGFILE']:
+                value = path(self[k]).expand()
+            else:
+                value = self[k]
+            opts[optkey] = value
         return opts
 
     def list_machines(self):

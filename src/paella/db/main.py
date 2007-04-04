@@ -645,7 +645,7 @@ class DatabaseManager(object):
     def __init__(self, conn):
         self.cfg = PaellaConfig()
         self.conn = conn
-        default_path = self.cfg.get('database', 'default_path')
+        default_path = path(self.cfg.get('database', 'default_path')).expand()
         self.import_dir = default_path
         self.export_dir = default_path
         #self.importer = PaellaProcessor(self.conn, self.cfg)

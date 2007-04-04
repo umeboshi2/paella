@@ -54,7 +54,10 @@ class PaellaConnectionDialog(BaseRecordDialog):
         self.frame.text_label.setText('Connect to a database.')
         self.setButtonOKText('connect', 'connect')
         self.app = get_application_pointer()
-
+        # setup the password entry
+        entry = self.frame.entries['dbpassword']
+        entry.setEchoMode(entry.Password)
+        
     def slotConnectDatabase(self):
         data = self.getRecordData()
         self.app.connect_database(data)

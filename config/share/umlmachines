@@ -1,8 +1,16 @@
 # configuration file for umlmachines
 # save as ~/.umlmachines.conf
+# all sections in this configuration file, with exception of
+# DEFAULT, and umlmachines, correspond to a uml machine.
+# The default options for the uml machines should go into the 
+# DEFAULT section.  The umlmachines section may be removed soon.
+# all options prefixed with an underscore "_" are not referenced in the code,
+# and are used only in this config file as a convenience.  They can be removed,
+# or renamed if wished.
 
 [DEFAULT]
-_myhome:		/home/umeboshi
+# these options define common paths
+_myhome:		~
 _workspace:		%(_myhome)s/workspace
 _config_path:		%(_workspace)s/paella/config
 _script_path:		%(_config_path)s/scripts
@@ -11,82 +19,124 @@ _basepath:		%(_myhome)s/roots
 
 _base_logfile:		uml-installer.log
 
+host_logfile:		/tmp/%(_base_logfile)s
 
-host_logfile:		/mirrors/bkups/%(_base_logfile)s.host
+##############
+# options particular to the paella-init script
+# these options are only meaningful when the 
+# paella-init script is to be run.
 
 # this is the script that the umlmachine runs
 uml_initscript:			%(_script_path)s/paella-init
 
 
 # uml network options
+# these options are used by the paella-init script
+# to start up networking.
 
-uml_socket:		/tmp/uml.ctl
+
+
+# the default is blank to use the default uml-utilities socket
+uml_socket:
+
+# we use this uml_socket for letting the uml machines talk
+# to qemu machines (requires the vde2 package).
+#uml_socket:		/var/run/vde2/%(host_tun_iface)s.ctl/ctl
+
+
+uml_hwaddr:
 host_tun_iface:		tap0
 host_tun_addr:		10.0.1.1
-#--# this can be either static or dhcp
+# this can be either static or dhcp
 guest_eth_ifconfig:		static
-#--#
 guest_eth_netmask:	255.255.255.0
 guest_eth_addr:		10.0.1.2
+# end uml network options
 
 # uml installer needs to read this file
 paellarc:			%(_myhome)s/.paellarc
 
 
 # other uml kernel options --
-uopt_python_path:		%(_myhome)s/local/python
-
+# this option is used by the paella-init script
+# to set the PYTHONPATH variable so you
+# can import paella and useless modules.
+uopt_python_path:	%(_myhome)s/local/python
 
 # all umlmachines read this option
+# this is used by the paella-init script
+# for retrieving this file while in guest mode
+# this option should point to the location of this
+# file.
 uopt_umlconfig:		%(_myhome)s/.umlmachines.conf
 
-uopt_LOGFILE:		/tmp/%(_base_logfile)s
+# this option is used by the paella-init script to
+# send all output to a log file.
+uopt_LOGFILE:		/mnt%(host_logfile)s
 
-#regular uml kernel options
-uopt_eth0:			daemon,,,%(uml_socket)s
+# profile is used to install to a new basefile
+profile:			_no_profile_
+
+# end of options for paella-init script
+###################
+
+##########
+# simple block device options
+
+# you will probably want to define this option in every uml machine section
+basefile:			%(_basepath)s/basefile
+
+# size in MB of basefile
+basefile_size:		3000
+basefile_device:		ubda
+
+
+# swap device support
+# these options are for future use and are not supported yet
+swapfile_enabled:		False
+swapfile_device:		ubdb
+swapfile:			%(basefile)s.swap
+# size in MB of swapfile
+swapfile_size:		200
+
+
+
+#########
+# any option prefixed with "uopt_" is placed on the kernel
+# command line with the "uopt_" prefix stripped.
+# regular uml kernel options
+# uopt_eth0:			daemon,,,%(uml_socket)s
+uopt_eth0:		daemon,%(uml_hwaddr)s,,%(uml_socket)s
 uopt_con:			pts
 uopt_con0:			fd:0,fd:1
 uopt_con1:			xterm
 uopt_mem:			64M
 
 
-#profile is used to install to a new basefile
-profile:			_no_profile_
-
-#size in MB of basefile
-basefile_size:		3000
-
 [umlmachines]
+# bootstrap options
 bootstrap_basepath:	%(_basepath)s/bases
 bootstrap_debmirror:	http://ftp.us.debian.org/debian
 backup_filesystem:		hostfs
 hostfs_backup_path:	%(_basepath)s/bkups
 
-#machines go below here
+###############
+# uml machines go below here
 ###
 
 
-[nameserver]
-profile:			umns
-basefile:			%(_basepath)s/umns
-uopt_eth0:			daemon,fe:fd:00:00:00:50,,%(uml_socket)s
-uopt_mem:				32M
+[uml_head]
+profile:			uml_head
+basefile:			%(_basepath)s/uml_head
+uopt_mem: 		32M
+uml_hwaddr:		fe:fd:00:00:00:53
+basefile_size:		1500
 
+[umlbuilder]
+profile:			uml_builder
+basefile:			%(_basepath)s/umlbuilder
+#uopt_mem:		128M
+uopt_mem:		64M
+basefile_size:		2000
+uml_hwaddr:		fe:fd:00:00:00:68
 
-[umtest]
-profile:			umtest
-basefile:			%(_basepath)s/umtest
-uopt_eth0:			daemon,fe:fd:00:00:00:93,,%(uml_socket)s
-
-[ummain]
-profile:			ummain
-basefile:			%(_basepath)s/ummain
-uopt_eth0:			daemon,fe:fd:00:00:00:54,,%(uml_socket)s
-uopt_mem:			128M
-basefile_size:		4500
-
-[um_desktop]
-uopt_eth0:			daemon,fe:fd:00:00:00:66,,%(uml_socket)s
-profile:			umedesktop
-basefile:			%(_basepath)s/um_desktop
-uopt_mem:		128M

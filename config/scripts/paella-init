@@ -97,7 +97,10 @@ else:
 print 'performing action', action
 # setup objects for actions that use database
 if action in ['install', 'restore']:
-    cfile = cfg['paellarc']
+    if 'paellarc' in kernopts:
+        cfile = kernopts['paellarc']
+    else:
+        cfile = cfg['paellarc']
     os.environ['PAELLARC'] = cfile
     pcfg = PaellaConfig(files=[cfile])
     conn = InstallerConnection(pcfg)
