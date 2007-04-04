@@ -77,7 +77,12 @@ This file should already be executable, if not, do chmod +x paella-devel-quick-s
 You should edit the file and change the variables at the top to your needs.  When you are
 ready, run the script, install the packages, and make the changes to your .bashrc .  If you 
 don't want to make the changes to your .bashrc, you can put the lines in another file that 
-you will have to source before running any of the scripts.
+you will have to source before running any of the scripts.  There is such a file, called 
+paella_environment that is created for you when you run the script.
+
+If you change any of the variables, make a copy of the script first. Keep in mind that throughout 
+this guide I will be referencing things according to the default configuration provided.
+
 
 Setup Database Server
 =====================
@@ -125,6 +130,9 @@ example::
 	host	paella		adminuser	10.0.1.1		255.255.255.0	trust
 
 
+There is no real authentication support, except for limited password support.  There has not 
+been enough reason to pursue this yet, as the database is always either developed or used in 
+a trusted environment.
 
 dbusers
 -------------
@@ -181,13 +189,90 @@ This is assuming that eth0 is your main network interface.  You may want to add 
 to your /etc/rc.local script.
 
 
-startup database
-=================
+Configuration files
+================================
 
-section
------------------------------------
+Setup .paellarc
+-------------------
+.. __: http://docs.python.org/lib/module-ConfigParser.html
 
-discuss it
+If you used the quick setup script above, the example paellarc file will be here,
+~/workspace/paella/config/share/paellarc .  You can copy this file to ~/.paellarc and edit it.
+If you are not familiar with the file format, you can read about it here__ .
+
+In the database section, the dbhost option should be the ip address of the tap interface you 
+created in the section above.  You will probably want to change the dbusername option to
+the database admin user that you created above.
+
+You can either ignore or completely remove the installer section.  It is only needed for the
+paella machine installer.  It is not needed for the user-mode-linux installer which we are 
+using here.
+
+The management_gui section has options for the paella-management application.  The options 
+that you may want to change here are "text_editor", and "x_differ".  Both of these commands 
+should display an X window.  For the x_differ, I highly recommend xxdiff.  The x_differ command 
+line conform to this::
+
+     x_differ LeftFile RightFile
+
+
+You should not need to change any other options.
+
+Setup .umlmachines.conf
+----------------------------------------
+If you used the quick setup script above, the example umlmachines config file will be here, 
+~/workspace/paella/config/share/umlmachines.  You can copy this file to ~/.umlmachines.conf 
+and edit it.  The file format is the same as the paellarc file.  Reading through this file can give 
+you a good idea of how the paella uml system works.
+
+If you are not using the default tap network described above, you will have to modify the uml 
+network options accordingly.
+
+
+Using paella-management
+=======================================
+You should be ready to use the paella-management PyKDE interface now.  Before running 
+the application, check the **management_gui** section of your ~/.paellarc file, 
+and make sure that both the **text_editor** and **x_differ** options 
+are set to applications that exist on your system and work in X windows.
+
+Start paella-management
+------------------------------
+Run the paella-management script to start the management interface.  The first thing that you 
+will want to do is to connect to the database.  There is a connect button on the toolbar for you 
+to press.  The connection dialog entries are taken from your ~/.paellarc file.
+
+Once you connect to the database, you should get a dialog asking to create the primary 
+tables.  You should click yes here to setup an empty database structure.  If you don't do 
+this, the database import procedure will create these tables for you, but you won't be able to
+use the paella-management interface until you do this.
+
+Import stage1 database
+--------------------------
+Now we are going to import the startup database.  You will need an internet connection to 
+import the database.  The importer downloads the Packages files from the debian mirror in 
+the database.xml file, and inserts them into the database.  Go to the menubar, and in the 
+database menu, select "import database".  A directory selection dialog will appear.  You 
+need to select the "stage1" directory.  Note that the default debian mirror is 
+http://ftp.us.debian.org/debian .  If you need to change this, edit the database.xml file
+in the stage1 directory, and alter the uri attribute to the aptsource xml element at the 
+top of the file.  You can change this to a local mirror if you already have one.  Paella has only 
+been tested with http apt sources, it's behaviour on other methods is unknown.
+
+      If you are working from a subversion copy from the quick setup script, the directory
+      you will want to select is here, ~/workspace/paella/config/share/databases/stage1/ .
+
+If everything is working, you should be seeing an ugly little progress dialog displaying 
+something resembling what it should be doing.  The packages will probably take a little 
+while to insert.  The apt_source_packages table can take a lot of space that could be
+better saved.  In the future, it will probably default to only holding package names rather 
+than the other attributes in the Packages file.  The reason they are there is to help keep the 
+automated installations from bombing due to unavailable or misspelled packages.
+
+
+Configure stage1 database
+-------------------------------
+discuss.
 
 
 Getting started with paella (outdated)
