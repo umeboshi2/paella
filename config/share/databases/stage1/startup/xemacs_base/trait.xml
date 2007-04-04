@@ -10,5 +10,7 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<scripts/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
 </trait>

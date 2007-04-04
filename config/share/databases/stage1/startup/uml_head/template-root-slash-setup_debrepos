@@ -6,10 +6,13 @@ if ! [ `cat /proc/mounts | grep /mnt | wc -l` -gt 0 ] ; then
     mount -t hostfs none /mnt
 fi
 
-debarchiverpath=<--|uml_common_hostfs_root|-->/debrepos/local
+debarchiverpath=<--|uml_common_hostfs_root|-->/debrepos
 if ! [ -d $debarchiverpath ]; then
     mkdir -p $debarchiverpath
-    rsync -av /var/lib/debarchiver/ $debarchiverpath/
+fi
+
+if ! [ -L $debarchiverpath/local ]; then
+    ln -s /var/lib/debarchiver $debarchiverpath/local
 fi
 
 

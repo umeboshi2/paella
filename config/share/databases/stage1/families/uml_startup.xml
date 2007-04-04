@@ -14,11 +14,8 @@
 			<family_variable name="aptmove_localdir" trait="debrepos">
 				&lt;--|uml_common_hostfs_root|--&gt;/debrepos
 			</family_variable>
-			<family_variable name="debarchiver_destdir" trait="debrepos">
-				&lt;--|uml_common_hostfs_root|--&gt;/debrepos/local/dists
-			</family_variable>
 			<family_variable name="debarchiver_inputdir" trait="debrepos">
-				/incoming
+				/var/lib/debarchiver/incoming
 			</family_variable>
 			<family_variable name="gecos" trait="umlbuilder_account">
 				Paella Builder,,,
@@ -28,6 +25,9 @@
 			</family_variable>
 			<family_variable name="username" trait="umlbuilder_account">
 				umlbuilder
+			</family_variable>
+			<family_variable name="debrepos_incoming" trait="uml_common">
+				&lt;--|debrepos_debarchiver_inputdir|--&gt;
 			</family_variable>
 			<family_variable name="hostfs_root" trait="uml_common">
 				/mnt/freespace/shared/share/paella

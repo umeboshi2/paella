@@ -9,6 +9,9 @@
 	</parents>
 	<packages/>
 	<environ>
+		<trait_variable name="debrepos_incoming" trait="uml_common">
+			incoming
+		</trait_variable>
 		<trait_variable name="hostfs_root" trait="uml_common">
 			/mnt/home/username/paella
 		</trait_variable>

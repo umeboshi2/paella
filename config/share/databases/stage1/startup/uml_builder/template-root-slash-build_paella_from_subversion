@@ -76,8 +76,9 @@ for project in projects:
         else:
             if checkout(project):
                 raise RuntimeError, 'problem with checkout of %s' % project
-            if create_tarball(project):
-                raise RuntimeError, 'problem with creating tarball for %s' % project
+    if not os.path.exists(tarball_name(project)):
+        if create_tarball(project):
+            raise RuntimeError, 'problem with creating tarball for %s' % project
 
 os.chdir(here)
 # now that we have useless and paella, we can make use of them
@@ -122,5 +123,11 @@ for project in projects:
 
 os.chdir(here)
 
+resultpath = path('/var/cache/pbuilder/result')
+changes_list = resultpath.files('*.changes')
+for changes in changes_list:
+    print 'Run dput on %s' % changes
+    subprocess.call('dput local %s' % changes, shell=True)
+    
 
 

@@ -2,7 +2,7 @@
 umask 022
 
 nfshost=<--|localnet_nameserver|-->
-nfsexport=<--|uml_common_hostfs_root|-->/debrepos/local/incoming
+nfsexport=<--|uml_common_debrepos_incoming|-->
 mntpt=/incoming
 if ! [ -d $mntpt ] ; then
     mkdir $mntpt

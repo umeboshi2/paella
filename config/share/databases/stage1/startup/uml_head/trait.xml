@@ -46,6 +46,9 @@
 			etc/exports
 		</template>
 		<template grp_owner="root" mode="0755" owner="root">
+			etc/rc.local
+		</template>
+		<template grp_owner="root" mode="0755" owner="root">
 			root/setup_debrepos
 		</template>
 		<template grp_owner="root" mode="0755" owner="root">

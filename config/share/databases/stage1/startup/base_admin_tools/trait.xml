@@ -15,6 +15,9 @@
 			members
 		</package>
 		<package action="install">
+			minicom
+		</package>
+		<package action="install">
 			most
 		</package>
 		<package action="install">
@@ -29,5 +32,7 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<scripts/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
 </trait>
