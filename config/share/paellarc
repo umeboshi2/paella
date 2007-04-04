@@ -74,3 +74,19 @@ text_editor:		kate
 # the command must take these args -> x_differ left_file right_file
 x_differ:			xxdiff
 #x_differ:			kompare
+
+
+# document colors
+#traitdoc_bgcolor:			LightSkyBlue4
+#traitdoc_section_title_color:		IndianRed
+#traitdoc_package_table_color:	SkyBlue3
+#traitdoc_template_table_color:	DarkSeaGreen3
+#traitdoc_variables_table_color:	MistyRose3
+
+_basecolor:			SkyBlue
+traitdoc_bgcolor:			%(_basecolor)s
+traitdoc_section_title_color:		%(_basecolor)s4
+traitdoc_section_title_font_color:	%(_basecolor)s1
+traitdoc_package_table_color:	%(_basecolor)s3
+traitdoc_template_table_color:	%(_basecolor)s3
+traitdoc_variables_table_color:	%(_basecolor)s3

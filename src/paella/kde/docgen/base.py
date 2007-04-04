@@ -38,7 +38,7 @@ class RecordTable(Table):
                 stringlist = map(str, [action, field, record[idcol]])
                 url = '.'.join(stringlist)
             row = TableRow()
-            keycell = TableCell(bgcolor='DarkSeaGreen')
+            keycell = TableCell()
             keycell.set(Bold(field))
             row.append(keycell)
             valcell = TableCell()

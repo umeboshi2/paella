@@ -10,6 +10,11 @@ from paella.kde.docgen.base import RecordTable
 from paella.kde.docgen.base import BaseFieldTable, BaseDocument
 from paella.kde.docgen.base import TraitTable
 
+class TraitSectionTitle(SimpleTitleElement):
+    def __init__(self, cfg, title, **attributes):
+        SimpleTitleElement.__init__(self, title, **attributes)
+        fontcolor = cfg.get('management_gui', 'traitdoc_section_title_font_color')
+        self.set_font(color=fontcolor)
 
 class TraitEnvTable(RecordTable):
     def __init__(self, trait, env, **atts):
@@ -96,10 +101,14 @@ class TraitDocument(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)
         self.trait = None #Trait(self.conn)
+        self.cfg = self.app.cfg
         #self.title = SectionTitle('Trait Document')
         #self.title.attributes.update(dict(bgcolor='IndianRed', width='100%'))
-        self._sectitle_atts = dict(bgcolor='IndianRed', width='100%')
+        bgcolor = self.cfg.get('management_gui', 'traitdoc_section_title_color')
+        self._sectitle_atts = dict(bgcolor=bgcolor, width='100%')
         self._show_description = False
+        bgcolor = self.cfg.get('management_gui', 'traitdoc_bgcolor')
+        self.body['bgcolor'] = bgcolor
 
     def show_description(self):
         self._show_description = True
@@ -114,7 +123,7 @@ class TraitDocument(BaseDocument):
             self.show_description()
             
     def _make_trait_title(self, trait):
-        title = SimpleTitleElement('Trait:  %s' % trait, **self._sectitle_atts)
+        title = TraitSectionTitle(self.cfg, 'Trait:  %s' % trait, **self._sectitle_atts)
         title.cell.append(Anchor('(description)', href='edit.description.%s' % trait))
         show = '(show)'
         if self._show_description:
@@ -126,7 +135,7 @@ class TraitDocument(BaseDocument):
         return self.trait.get_description()
     
     def _make_parent_section(self, trait):
-        parent_section = SimpleTitleElement('Parents', **self._sectitle_atts)
+        parent_section = TraitSectionTitle(self.cfg, 'Parents', **self._sectitle_atts)
         parent_section.create_rightside_table()
         parent_url = 'edit.parents.%s' % trait
         parent_section.append_rightside_anchor(Anchor('edit', href=parent_url))
@@ -141,7 +150,7 @@ class TraitDocument(BaseDocument):
         return plist
 
     def _make_packages_section(self, trait):
-        ptitle = SimpleTitleElement('Packages', **self._sectitle_atts)
+        ptitle = TraitSectionTitle(self.cfg, 'Packages', **self._sectitle_atts)
         ptitle_anchor = Anchor('(new)', href='new.package.%s' % trait)
         cell = TableCell(ptitle_anchor)
         ptitle.row.append(cell)
@@ -150,33 +159,36 @@ class TraitDocument(BaseDocument):
     def _make_packages_table(self, trait):
         rows = self.trait.packages(trait=trait, action=True)
         if rows:
-            return PackageTable(rows, bgcolor='SkyBlue3', width='100%')
+            bgcolor = self.cfg.get('management_gui', 'traitdoc_package_table_color')
+            return PackageTable(rows, bgcolor=bgcolor, width='100%')
         else:
             return None
         
     def _make_templates_section(self, trait):
         ttitle = Anchor('Templates', href='edit.templates.%s' % trait)
-        return SimpleTitleElement(ttitle, **self._sectitle_atts)
+        return TraitSectionTitle(self.cfg, ttitle, **self._sectitle_atts)
 
     def _make_templates_table(self, trait):
         rows = self.trait.templates(trait=trait, fields=['*'])
         if rows:
-            return TemplateTable(rows, bgcolor='DarkSeaGreen3', width='100%')
+            bgcolor = self.cfg.get('management_gui', 'traitdoc_template_table_color')
+            return TemplateTable(rows, bgcolor=bgcolor, width='100%')
         else:
             return None
         
     def _make_variables_section(self, trait):
         vtitle = Anchor('Variables', href='edit.variables.%s' % trait)
-        return SimpleTitleElement(vtitle, **self._sectitle_atts)
+        return TraitSectionTitle(self.cfg, vtitle, **self._sectitle_atts)
     
     def _make_variables_table(self, trait):
         if len(self.trait.environ.keys()):
-            return TraitEnvTable(trait, self.trait.environ, bgcolor='MistyRose3', width='100%')
+            bgcolor = self.cfg.get('management_gui', 'traitdoc_variables_table_color')
+            return TraitEnvTable(trait, self.trait.environ, bgcolor=bgcolor, width='100%')
         else:
             return None
         
     def _make_scripts_section(self, trait):
-        stitle = SimpleTitleElement('Scripts', **self._sectitle_atts)
+        stitle = TraitSectionTitle(self.cfg, 'Scripts', **self._sectitle_atts)
         stitle.create_rightside_table()
         stitle.append_rightside_anchor(Anchor('new', href='new.script.%s' % trait))
         return stitle
