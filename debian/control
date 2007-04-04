@@ -56,7 +56,7 @@ Package: paella-admin
 Section: admin
 Priority: optional
 Architecture: any
-Depends: python-useless-kdedb, paella-db, python-forgethtml
+Depends: python-useless-kdedb, paella-db
 Recommends: xxdiff
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
