@@ -14,7 +14,6 @@ _myhome:		~
 _workspace:		%(_myhome)s/workspace
 _config_path:		%(_workspace)s/paella/config
 _script_path:		%(_config_path)s/scripts
-_freespace:		/freespace
 _basepath:		%(_myhome)s/roots
 
 _base_logfile:		uml-installer.log
@@ -27,7 +26,12 @@ host_logfile:		/tmp/%(_base_logfile)s
 # paella-init script is to be run.
 
 # this is the script that the umlmachine runs
-uml_initscript:			%(_script_path)s/paella-init
+
+# this value is for working from a source tree
+#uml_initscript:			%(_script_path)s/paella-init
+
+# this is the default location
+uml_initscript:			/usr/lib/paella/uml/paella-init
 
 
 # uml network options

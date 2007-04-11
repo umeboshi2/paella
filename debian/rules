@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
-
+DEB_CLEAN_EXCLUDE := *.orig */*.orig
 install/paella-base::
 	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
 	rm -r build/
@@ -27,7 +27,4 @@ build/paella-doc::
 	rst2html docs/notes > notes.html
 
 clean::
-	dh_clean `find -path *.pyc`
-	dh_clean `find -path *~`
-	dh_clean configure-stamp notes.html
-
+	dh_clean -X*.orig configure-stamp notes.html

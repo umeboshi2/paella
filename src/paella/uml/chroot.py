@@ -46,7 +46,16 @@ class UmlChroot(Uml):
         opts['rootfstype'] = 'hostfs'
         opts['paella_action'] = 'nothing'
         opts['devfs'] = 'nomount'
-        opts['init'] = path(self.cfg['uml_initscript']).expand()
+        initscript = path(self.cfg['uml_initscript']).expand()
+        # assert initscript exists before running uml
+        # since this is called before setting guest mode
+        # we check for sys.kernopts instead of self.mode
+        # I would like a better way to do this, but this seems to work ok.
+        if not hasattr(sys, 'kernopts'):
+            if initscript.isfile():
+                opts['init'] = initscript
+            else:
+                raise RuntimeError, 'No initscript found at %s' % initscript
         backup_filesystem = self.cfg.get('umlmachines', 'backup_filesystem')
         if backup_filesystem == 'hostfs':
             p = path(self.cfg.get('umlmachines', 'hostfs_backup_path'))

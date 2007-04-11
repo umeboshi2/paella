@@ -57,6 +57,7 @@ class FamilyMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.family = Family(self.conn)
         self.refreshListView()
         self.resize(600, 800)
+        self.splitter.setSizes([100, 500])
         self.setCaption('Paella Families')
         self._new_family_dialog = None
 
