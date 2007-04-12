@@ -30,6 +30,9 @@
 			hdparm
 		</package>
 		<package action="install">
+			kate
+		</package>
+		<package action="install">
 			libqt3-mt-psql
 		</package>
 		<package action="install">
@@ -55,6 +58,9 @@
 		</package>
 		<package action="install">
 			python-kde3
+		</package>
+		<package action="install">
+			python-kjbuckets
 		</package>
 		<package action="install">
 			python-pgsql

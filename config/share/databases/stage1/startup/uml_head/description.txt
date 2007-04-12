@@ -4,4 +4,3 @@ The uml_head is the network head of the uml/qemu tap network.
 
 It has a nameserver, dhcp_server and a boot server for pxe boots.
 
-<b>bold</b>

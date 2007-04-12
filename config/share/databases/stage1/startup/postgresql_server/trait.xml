@@ -19,6 +19,10 @@
 		</package>
 	</packages>
 	<environ/>
-	<templates/>
+	<templates>
+		<template grp_owner="root" mode="0755" owner="root">
+			root/setup_paella_database
+		</template>
+	</templates>
 	<scripts/>
 </trait>

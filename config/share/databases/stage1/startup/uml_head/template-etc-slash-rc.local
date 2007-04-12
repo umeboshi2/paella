@@ -13,6 +13,7 @@
 
 # be sure that hostfs is mounted in /mnt
 if ! [ `cat /proc/mounts | grep /mnt | wc -l` -gt 0 ] ; then
+    echo "mounting hostfs filesystem. at /mnt"
     mount -t hostfs none /mnt
 fi
 

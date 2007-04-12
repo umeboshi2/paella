@@ -19,6 +19,9 @@
 			nfs_server_base
 		</parent>
 		<parent>
+			postgresql_server
+		</parent>
+		<parent>
 			umlbuilder_account
 		</parent>
 		<parent>
@@ -34,6 +37,9 @@
 	<packages>
 		<package action="install">
 			apt-move
+		</package>
+		<package action="install">
+			rdiff-backup
 		</package>
 	</packages>
 	<environ>

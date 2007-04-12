@@ -1,5 +1,2 @@
-Installed Traits:
-global
-base
-final
-$localnet_mainserver
+#!/bin/bash
+echo "I do nothing yet"
