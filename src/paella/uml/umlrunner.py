@@ -26,7 +26,7 @@ class UmlMachineManager(Uml):
         self.options.update(self.cfg.get_umlopts())
         self.current = None
         self.run_process = None
-
+        
     def _check_current(self):
         if self.current is None:
             raise MachineUnsetError, 'Set a machine in UmlMachineManager'
@@ -67,20 +67,19 @@ class UmlMachineManager(Uml):
         machine = self.current
         cfg = self._make_config(machine)
         installer = UmlInstaller(cfg=cfg)
+        installer.run_background = self.run_background
         installer.options['umlmachine'] = machine
         installer.options['umid'] = machine
-        runner = UmlRunner(cfg)
         if basefile is None:
             basefile = self._get_basefile(cfg, machine)
         if profile is None:
             profile = cfg.get(machine, 'profile')
         installer.install_profile(profile, basefile)
-        self.run_process = installer.run_process
-        print 'self.run_process', self.run_process
+        if self.run_background:
+            self.run_process = installer.run_process
+            print 'self.run_process', self.run_process
         if backupalso:
             self.backup_machine(basefile=basefile)
-        runner.set(machine)
-        return runner
 
     def restore_machine(self, basefile=None, archive=None):
         pass

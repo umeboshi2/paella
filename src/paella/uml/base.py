@@ -137,7 +137,8 @@ class Uml(object):
         object.__init__(self)
         self.mode = 'host'
         self.options = Options()
-
+        self.run_background = True
+        
     def command(self):
         return self._cmd_()
     
@@ -163,7 +164,7 @@ class Uml(object):
     # the popen and use_pipe will probably be removed later
     # popen is now ignored use call parameter
     @host_mode
-    def run_uml(self, popen=False, use_pipe=False,
+    def run_uml_orig(self, popen=False, use_pipe=False,
                 call=False, stdout=None, stderr=None):
         cmd = str(self)
         print 'cmd ->', cmd
@@ -194,6 +195,28 @@ class Uml(object):
         # try to run cmd in background
         self.run_process = subprocess.Popen(cmd.split(), **args)
         return self.run_process
+            
+    # the popen and use_pipe will probably be removed later
+    # popen is now ignored use call parameter
+    @host_mode
+    def run_uml(self, popen=False, use_pipe=False,
+                call=False, stdout=None, stderr=None):
+        cmd = str(self)
+        print 'cmd ->', cmd
+        if not self.run_background:
+            print 'calling cmd'
+            return subprocess.call(cmd, shell=True)
+        else:
+            args = dict(shell=False, close_fds=True, stderr=stderr) 
+            if stdout is None:
+                if use_pipe:
+                    stdout = subprocess.PIPE
+            if stdout is not None:
+                args['stdout'] = stdout
+            print 'using popen', stdout
+            # try to run cmd in background
+            self.run_process = subprocess.Popen(cmd.split(), **args)
+            return self.run_process
             
     @guest_mode
     def _init_uml_system(self):
