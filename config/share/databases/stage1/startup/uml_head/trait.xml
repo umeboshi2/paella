@@ -55,6 +55,12 @@
 			etc/rc.local
 		</template>
 		<template grp_owner="root" mode="0755" owner="root">
+			root/backup_debarchiver_repos
+		</template>
+		<template grp_owner="root" mode="0755" owner="root">
+			root/restore_debarchiver_repos
+		</template>
+		<template grp_owner="root" mode="0755" owner="root">
 			root/setup_debrepos
 		</template>
 		<template grp_owner="root" mode="0755" owner="root">
