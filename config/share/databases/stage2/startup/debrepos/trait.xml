@@ -1,0 +1,44 @@
+<trait name="debrepos" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apt-move
+		</package>
+		<package action="install">
+			debarchiver
+		</package>
+		<package action="install">
+			debmirror
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="aptmove_localdir" trait="debrepos">
+			/mirrors/debian
+		</trait_variable>
+		<trait_variable name="aptmove_pkgcomp" trait="debrepos">
+			none gzip bzip2
+		</trait_variable>
+		<trait_variable name="debarchiver_destdir" trait="debrepos">
+			/var/lib/debarchiver/dists
+		</trait_variable>
+		<trait_variable name="debarchiver_inputdir" trait="debrepos">
+			/var/lib/debarchiver/incoming
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apt-move.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/debarchiver.conf
+		</template>
+	</templates>
+	<scripts/>
+</trait>

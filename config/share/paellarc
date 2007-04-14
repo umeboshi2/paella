@@ -8,6 +8,7 @@ __paelladir:		%(__myhome)s/workspace/paella
 # regular database info
 dbhost:			10.0.1.1
 dbname:			paella
+#dbusername:		dbadmin
 dbusername:		paella
 dbpassword:		apassword
 

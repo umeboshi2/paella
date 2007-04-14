@@ -1,0 +1,39 @@
+#!/bin/bash
+umask 022
+
+# be sure that hostfs is mounted in /mnt
+if ! [ `cat /proc/mounts | grep /mnt | wc -l` -gt 0 ] ; then
+    mount -t hostfs none /mnt
+fi
+
+debarchiverpath=<--|uml_common_hostfs_root|-->/debrepos
+if ! [ -d $debarchiverpath ]; then
+    mkdir -p $debarchiverpath
+fi
+
+if ! [ -L $debarchiverpath/local ]; then
+    ln -s /var/lib/debarchiver $debarchiverpath/local
+fi
+
+
+
+packages=`cat /root/all_trait_packages`
+echo installing $packages
+
+export DEBIAN_FRONTEND=noninteractive
+# python-doc and gnupg-doc are added to generate valid contrib and non-free sections
+# this makes things easier on the default configuration.  Paella itself requires nothing 
+# outside of debian main, so you don't have to mirror the contrib and non-free sections.
+# It is recommended that you let the package mirror work like this until paella is up and running, 
+# and you are ready to start a database from scratch.
+apt-get install --option 'DPkg::Options::=--dry-run' --yes $packages python-doc gnupg-doc
+
+apt-move update
+apt-move sync
+
+if ! [ -e /var/www/debian ]; then
+    echo "making link to debrepos for apache"
+    pushd /var/www
+    ln -s ../..<--|uml_common_hostfs_root|-->/debrepos debian
+    popd
+fi

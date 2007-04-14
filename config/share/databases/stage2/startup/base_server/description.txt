@@ -1,0 +1,2 @@
+This is the base trait for all server traits.  It depends on localnet, because
+services are primarily oriented for the local network.

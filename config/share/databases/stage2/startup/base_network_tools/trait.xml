@@ -1,0 +1,54 @@
+<trait name="base_network_tools" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			dnsutils
+		</package>
+		<package action="install">
+			ftp
+		</package>
+		<package action="install">
+			ncftp
+		</package>
+		<package action="install">
+			nload
+		</package>
+		<package action="install">
+			nmap
+		</package>
+		<package action="install">
+			tcpdump
+		</package>
+		<package action="install">
+			tcpflow
+		</package>
+		<package action="install">
+			tcpreplay
+		</package>
+		<package action="install">
+			tcpslice
+		</package>
+		<package action="install">
+			tcptraceroute
+		</package>
+		<package action="install">
+			tcputils
+		</package>
+		<package action="install">
+			telnet
+		</package>
+		<package action="install">
+			whois
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

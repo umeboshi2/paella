@@ -1,0 +1,18 @@
+<trait name="subversion" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			subversion
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

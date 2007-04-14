@@ -1,0 +1,24 @@
+<trait name="default" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_admin_tools
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ca-certificates
+		</package>
+		<package action="install">
+			dc
+		</package>
+		<package action="install">
+			file
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

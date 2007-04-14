@@ -1,0 +1,104 @@
+<trait name="paella_test" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			development_debian
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apache
+		</package>
+		<package action="install">
+			cdbs
+		</package>
+		<package action="install">
+			debconf-utils
+		</package>
+		<package action="install">
+			debootstrap
+		</package>
+		<package action="install">
+			devscripts
+		</package>
+		<package action="install">
+			hdparm
+		</package>
+		<package action="install">
+			kate
+		</package>
+		<package action="install">
+			libqt3-mt-psql
+		</package>
+		<package action="install">
+			mdadm
+		</package>
+		<package action="install">
+			postgresql-contrib
+		</package>
+		<package action="install">
+			python-all-dev
+		</package>
+		<package action="install">
+			python-apt
+		</package>
+		<package action="install">
+			python-cheetah
+		</package>
+		<package action="install">
+			python-dev
+		</package>
+		<package action="install">
+			python-docutils
+		</package>
+		<package action="install">
+			python-kde3
+		</package>
+		<package action="install">
+			python-kjbuckets
+		</package>
+		<package action="install">
+			python-pgsql
+		</package>
+		<package action="install">
+			python-pycurl
+		</package>
+		<package action="install">
+			python-pyparsing
+		</package>
+		<package action="install">
+			python-qtext
+		</package>
+		<package action="install">
+			python-sqlite
+		</package>
+		<package action="install">
+			python-xml
+		</package>
+		<package action="install">
+			reiserfsprogs
+		</package>
+		<package action="install">
+			uml-utilities
+		</package>
+		<package action="install">
+			user-mode-linux
+		</package>
+		<package action="install">
+			xfsprogs
+		</package>
+		<package action="install">
+			xxdiff
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts>
+		<script name="pre"/>
+	</scripts>
+</trait>

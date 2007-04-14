@@ -1,0 +1,30 @@
+<trait name="umlbuilder_account" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="gecos" trait="umlbuilder_account">
+			Paella Builder,,,
+		</trait_variable>
+		<trait_variable name="uid" trait="umlbuilder_account">
+			1000
+		</trait_variable>
+		<trait_variable name="username" trait="umlbuilder_account">
+			builder
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0755" owner="root">
+			root/setup_umlbuilder_account
+		</template>
+	</templates>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

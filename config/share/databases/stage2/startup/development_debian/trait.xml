@@ -1,0 +1,68 @@
+<trait name="development_debian" suite="startup">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			development_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			cdbs
+		</package>
+		<package action="install">
+			debhelper
+		</package>
+		<package action="install">
+			devscripts
+		</package>
+		<package action="install">
+			dh-make
+		</package>
+		<package action="install">
+			diffstat
+		</package>
+		<package action="install">
+			dpatch
+		</package>
+		<package action="install">
+			dpkg-dev
+		</package>
+		<package action="install">
+			dput
+		</package>
+		<package action="install">
+			linda
+		</package>
+		<package action="install">
+			lintian
+		</package>
+		<package action="install">
+			patchutils
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="debuild_linda" trait="development_debian">
+			no
+		</trait_variable>
+		<trait_variable name="debuild_lintian" trait="development_debian">
+			no
+		</trait_variable>
+		<trait_variable name="debuild_rootcmd" trait="development_debian">
+			fakeroot
+		</trait_variable>
+		<trait_variable name="dpkg_buildpkg_opts" trait="development_debian">
+			-us -uc -sa
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/devscripts.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/dput.cf
+		</template>
+	</templates>
+	<scripts/>
+</trait>
