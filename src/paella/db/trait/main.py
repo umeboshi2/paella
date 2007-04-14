@@ -343,7 +343,10 @@ class TraitElement(Element):
         
     def set_suite(self, suite):
         self.suite = suite
-        self.setAttribute('suite', self.suite)
+        # will probably make this a configuration option later
+        # turning it off for now.
+        if False:
+            self.setAttribute('suite', self.suite)
         self.traitparent = TraitParent(self.conn, self.suite)
         self.traitpackage = TraitPackage(self.conn, self.suite)
         self.traittemplate = TraitTemplate(self.conn, self.suite)

@@ -1,4 +1,4 @@
-<trait name="uml_builder" suite="startup">
+<trait name="uml_builder">
 	<description>
 		None
 	</description>
@@ -10,10 +10,10 @@
 			nfs_client_base
 		</parent>
 		<parent>
-			umlbuilder_account
+			uml_common
 		</parent>
 		<parent>
-			uml_common
+			umlbuilder_account
 		</parent>
 	</parents>
 	<packages/>

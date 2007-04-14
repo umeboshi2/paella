@@ -1,4 +1,4 @@
-<trait name="base_ssl" suite="startup">
+<trait name="base_ssl">
 	<description>
 		None
 	</description>

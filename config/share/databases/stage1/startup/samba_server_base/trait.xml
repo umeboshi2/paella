@@ -1,4 +1,4 @@
-<trait name="samba_server_base" suite="startup">
+<trait name="samba_server_base">
 	<description>
 		None
 	</description>

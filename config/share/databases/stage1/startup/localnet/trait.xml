@@ -1,4 +1,4 @@
-<trait name="localnet" suite="startup">
+<trait name="localnet">
 	<description>
 		None
 	</description>

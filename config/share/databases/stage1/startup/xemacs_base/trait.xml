@@ -1,4 +1,4 @@
-<trait name="xemacs_base" suite="startup">
+<trait name="xemacs_base">
 	<description>
 		None
 	</description>

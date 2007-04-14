@@ -1,4 +1,4 @@
-<trait name="udev" suite="startup">
+<trait name="udev">
 	<description>
 		None
 	</description>

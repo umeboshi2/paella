@@ -1,4 +1,4 @@
-<trait name="dhcp_server" suite="startup">
+<trait name="dhcp_server">
 	<description>
 		None
 	</description>

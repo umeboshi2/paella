@@ -1,4 +1,4 @@
-<trait name="builder" suite="startup">
+<trait name="builder">
 	<description>
 		None
 	</description>

@@ -1,4 +1,4 @@
-<trait name="fileserver_base" suite="startup">
+<trait name="fileserver_base">
 	<description>
 		None
 	</description>
