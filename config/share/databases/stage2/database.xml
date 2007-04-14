@@ -1,13 +1,14 @@
 	<paelladatabase>
 		<aptsources>
-			<aptsource apt_id="etch_base" dist="etch" local_path="/debian" sections="main contrib non-free" uri="http://ftp.us.debian.org/debian"/>
+			<aptsource apt_id="etch_local" dist="etch" local_path="/debian/local" sections="main contrib non-free" uri="http://10.0.1.4/debian/local"/>
 		</aptsources>
 		<suites>
-			<suite name="startup">
-				<suiteapt apt_id="etch_base" order="0" suite="startup"/>
+			<suite name="stage2">
+				<suiteapt apt_id="etch_base" order="0" suite="stage2"/>
+				<suiteapt apt_id="etch_local" order="1" suite="stage2"/>
 			</suite>
 		</suites>
-		<traits suite="startup">
+		<traits suite="stage2">
 			<trait name="base"/>
 			<trait name="base_admin_tools"/>
 			<trait name="base_debian_admin_tools"/>
