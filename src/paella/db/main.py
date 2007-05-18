@@ -183,6 +183,7 @@ class PaellaExporter(object):
         if traitdb is None:
             if suite is None:
                 RuntimeError, "you must pass a suite if you don't pass a Trait object"
+            print "make new traitdb"
             traitdb = Trait(self.conn, suite)
         traitdb.set_trait(trait)
         if suite is None:

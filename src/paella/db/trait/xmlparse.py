@@ -58,7 +58,7 @@ class TraitParser(ParserHelper):
                 if num_newtags and num_newtags != num_children:
                     raise Error, "There are more elements than elements with tag trait_variable"
                 if num_newtags:
-                    print "parsing new trait_variable tags"
+                    #print "parsing new trait_variable tags"
                     self.environ = {}
                     for child in tagged_children:
                         key = child.getAttribute('name')

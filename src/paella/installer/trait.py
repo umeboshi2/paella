@@ -213,6 +213,8 @@ class TraitInstaller(Installer):
         package_args = ' '.join([p.package for p in packages])
         #opts = '--force-yes'
         opts = ''
+        if self.defenv.getboolean('installer', 'allow_unauthenticated_packages'):
+            opts = '--allow-unauthenticated'
         cmd = 'apt-get -y %s install %s' % (opts, package_args)
         stmt = 'install command for %s is %s' % (trait, cmd)
         self.log.info(stmt)

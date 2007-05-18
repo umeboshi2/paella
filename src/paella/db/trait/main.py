@@ -96,6 +96,7 @@ class Trait(object):
         self._scripts = TraitScript(self.conn, self.suite)
         self.current_trait = None
         self.environ = {}
+        self._xmldata = TraitElement(self.conn, self.suite)
         
     def set_trait(self, trait):
         self.current_trait = trait
@@ -292,20 +293,31 @@ class Trait(object):
         self.set_trait(lasttrait)
 
     def export_trait(self, suite_path):
-        xmldata = TraitElement(self.conn, self.suite)
+        #print "----Begin export trait", self.current_trait
+        #print "start xml", self.current_trait
+        #xmldata = TraitElement(self.conn, self.suite)
+        xmldata = self._xmldata
+        #print 'set xml data'
         xmldata.set(self.current_trait)
+        #print 'xml data set'
         bkup_path = os.path.join(suite_path, self.current_trait)
         makepaths(bkup_path)
+        #print 'render xml'
         xmlfile = file(os.path.join(bkup_path, 'trait.xml'), 'w')
         xmlfile.write(xmldata.toprettyxml())
         xmlfile.close()
+        #print 'xml rendered'
+        #print "end xml", self.current_trait
         row = self._traits.select_row(clause=Eq('trait', self.current_trait))
         if row['description'] is not None:
+            print 'export description', self.current_trait
             descfile = file(os.path.join(bkup_path, 'description.txt'), 'w')
             descfile.write(row['description'])
             descfile.close()
+        #print "start templates,scripts", self.current_trait
         self._templates.export_templates(bkup_path)
         self._scripts.export_scripts(bkup_path)
+        #print "end templates,scripts", self.current_trait
         #print 'all exported', os.listdir(bkup_path)
         print 'trait', self.current_trait, 'exported in suite', self.suite
 
@@ -406,7 +418,9 @@ class TraitElement(Element):
 
     def set(self, name):
         self.set_name(name)
-        self.set_suite(self.suite)
+        # this is probably not needed here, and slows things down
+        # considerably
+        #self.set_suite(self.suite)
         self.set_environ()
         self.set_parents()
         self.set_packages()

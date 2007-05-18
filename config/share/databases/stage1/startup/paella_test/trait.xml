@@ -27,6 +27,9 @@
 			devscripts
 		</package>
 		<package action="install">
+			dh-buildinfo
+		</package>
+		<package action="install">
 			hdparm
 		</package>
 		<package action="install">
@@ -34,6 +37,9 @@
 		</package>
 		<package action="install">
 			libqt3-mt-psql
+		</package>
+		<package action="install">
+			linux-image-2.6.18-4-486
 		</package>
 		<package action="install">
 			mdadm
