@@ -239,7 +239,9 @@ class PaellaExporter(object):
         #efile.close()
         filename = '%s-environment' % envtype
         fullname = dirname / filename
-        env.write(fullname.open('w'))
+        envfile = fullname.open('w')
+        env.write(envfile)
+        envfile.close()
         
     def export_default_environment(self, path=None):
         self._export_environment_common(path, 'default')

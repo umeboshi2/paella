@@ -13,6 +13,7 @@ from paella.kde.base.viewbrowser import ViewBrowser
 from paella.kde.docgen.machine import MachineDoc
 from paella.kde.docgen.machine import MachineTypeDoc
 from paella.kde.docgen.machine import FilesystemDoc
+from paella.kde.docgen.machine import MountDoc
 
 from base import NewMachineDialog
 from base import EditMachineDIalog
@@ -172,3 +173,14 @@ class FilesystemView(ViewBrowser):
     def setSource(self, url):
         KMessageBox.error(self, 'setSource unsupported now %s' % url)
     
+class MountView(ViewBrowser):
+    def __init__(self, parent):
+        ViewBrowser.__init__(self, parent, MountDoc)
+
+    def set_mount(self, mount):
+        self.doc.set_mount(mount)
+        self.setText(self.doc.output())
+
+    def setSource(self, url):
+        KMessageBox.error(self, 'setSource unsupported now %s' % url)
+        

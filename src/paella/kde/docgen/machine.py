@@ -2,6 +2,7 @@ from useless.base.forgethtml import Table, TableRow, TableCell
 from useless.base.forgethtml import TableHeader
 from useless.base.forgethtml import Anchor, Ruler, Break
 from useless.base.forgethtml import Header
+from useless.base.forgethtml import Pre
 
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
@@ -160,21 +161,46 @@ class MachineTypeDoc(_MachineBaseDocument):
         table.append(tablerow)
 
 class FilesystemDoc(_MachineBaseDocument):
+    def __init__(self, app, **atts):
+        _MachineBaseDocument.__init__(self, app, **atts)
+        self.mtype = MachineTypeHandler(self.conn)
+        
     def set_filesystem(self, filesystem):
         clause = Eq('filesystem', filesystem)
         self.clear_body()
         title = SectionTitle('Filesystem:  %s' % filesystem)
-        title['bgcolor'] = 'IndianRed'
-        title['width'] = '100%'
+        attributes = dict(bgcolor='IndianRed', width='100%')
+        title.attributes.update(attributes)
         self.body.append(title)
         self.body.append(Header('Filesystem Mounts', level=2))
+        
         rows = self.cursor.select(table='filesystem_mounts', clause=clause,
                                   order=['ord'])
-        fields = ['mnt_name', 'partition', 'ord']
+        fields = ['mnt_name', 'partition', 'ord', 'size']
         mounttable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
         self.body.append(mounttable)
+        self.body.append(Ruler())
+        self.body.append(Header('Fstab for %s' % filesystem, level=2))
+        fstab = self.mtype.make_fstab(filesystem)
+        self.body.append(Pre(fstab))
         self._make_footer_anchors('filesystem', filesystem)
 
+
+class MountDoc(_MachineBaseDocument):
+    def set_mount(self, mount):
+        clause = Eq('mnt_name', mount)
+        self.clear_body()
+        title = SectionTitle('Mount:  %s' % mount)
+        attributes = dict(bgcolor='IndianRed', width='100%')
+        title.attributes.update(attributes)
+        self.body.append(title)
+        self.body.append(Header('Mounts', level=2))
+        rows = self.cursor.select(table='mounts', clause=clause)
+        fields = ['mnt_name', 'mnt_point', 'fstype', 'mnt_opts', 'dump', 'pass']
+        mtable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
+        self.body.append(mtable)
+        self._make_footer_anchors('mount', mount)
+        
 
 class MachineFieldTable(BaseFieldTable):
     def __init__(self, row, **atts):

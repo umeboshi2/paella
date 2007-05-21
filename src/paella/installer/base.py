@@ -13,6 +13,7 @@ from paella.debian.base import debootstrap
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection, DefaultEnvironment
 from paella.db.base import get_traits, get_suite
+from paella.db.base import SuiteCursor
 
 
 class InstallError(SystemExit):
@@ -153,10 +154,12 @@ class Installer(object):
         if logfile is None:
             if env.has_key('PAELLA_LOGFILE'):
                 self.logfile = env['PAELLA_LOGFILE']
+                env['LOGFILE'] = self.logfile
             elif env.has_key('LOGFILE'):
                 self.logfile = env['LOGFILE']
             elif self.defenv.has_option('installer', 'default_logfile'):
                 self.logfile = self.defenv.get('installer', 'default_logfile')
+                env['LOGFILE'] = self.logfile
             else:
                 raise InstallSetupError, 'There is no log file defined, giving up.'
         else:
@@ -234,6 +237,8 @@ class BaseChrootInstaller(Installer):
         self._bootstrapped = False
         self.installer = installer
         self.debmirror = self.defenv.get('installer', 'http_mirror')
+        self.suitecursor = SuiteCursor(self.conn)
+        
         
     def _make_target_dir(self, target):
         makepaths(target)
@@ -266,8 +271,14 @@ class BaseChrootInstaller(Installer):
         self._check_target_exists()
         runlog('echo extracting premade base tarball')
         suite_path = self.defenv.get('installer', 'suite_storage')
-        basefile = join(suite_path, '%s.tar' % suite)
-        runvalue = runlog('tar -C %s -xf %s' % (self.target, basefile))
+        filename = '%s.tar.gz' % suite
+        basefile = join(suite_path, filename)
+        taropts = '-xzf'
+        if not os.path.exists(basefile):
+            filename = '%s.tar' % suite
+            basefile = join(suite_path, filename)
+            taropts = '-xf'
+        runvalue = runlog('tar -C %s %s %s' % (self.target, taropts, basefile))
         if runvalue:
             raise InstallError, 'problems extracting %s' % basefile
         else:
@@ -275,12 +286,11 @@ class BaseChrootInstaller(Installer):
 
     def _bootstrap_target(self):
         self._check_installer()
+        suite = self.suitecursor.get_base_suite(self.suite)
         if self.defenv.is_it_true('installer', 'bootstrap_target'):
             mirror = self.debmirror
-            suite = self.suite
             self._run_bootstrap(mirror, suite)
         else:
-            suite = self.suite
             self._extract_base_tarball(suite)
 
     def _mount_target_proc(self):
@@ -305,8 +315,9 @@ class BaseChrootInstaller(Installer):
             
     def _run_bootstrap(self, mirror, suite):
         self._check_target_exists()
-        runvalue = runlog(debootstrap(suite, self.target, mirror))
+        runvalue = runlog(debootstrap(suite, self.target, mirror, keeprunning=True))
         if runvalue:
+            print "runvalue returned from bootstrap", runvalue
             raise InstallError, 'bootstrapping %s on %s failed.' % (suite, self.target)
         else:
             self._bootstrapped = True

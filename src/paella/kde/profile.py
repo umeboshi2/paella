@@ -145,6 +145,7 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.profile = Profile(self.conn)
         self.refreshListView()
         self.resize(600, 800)
+        self.splitter.setSizes([150, 450])
         self.setCaption('Paella Profiles')
         self._dialog = None
         self.connect(self.mainView, PYSIGNAL('changeSuite'), self.slotChangeSuite)
@@ -176,11 +177,12 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
     def initlistView(self):
         self.listView.setRootIsDecorated(False)
         self.listView.addColumn('profile')
-
+        self.listView.addColumn('suite')
+        
     def refreshListView(self):
         self.listView.clear()
         for row in self.profile.select(fields=['profile', 'suite'], order=['profile']):
-            item = KListViewItem(self.listView, row.profile)
+            item = KListViewItem(self.listView, row.profile, row.suite)
             item.profile = row.profile
 
     def newProfile(self):

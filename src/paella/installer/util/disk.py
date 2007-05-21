@@ -15,6 +15,11 @@ def setup_disk_fai(disk_config, logpath,
     disk_config_file.close()
     options = '-X -f %s' % disk_config_path
     env = 'env LOGDIR=%s diskvar=%s' % (logpath, os.path.join(logpath, 'diskvar'))
+
+    # use this to keep script running on machines
+    # that don't reread the partition table properly
+    os.environ['sfdisk'] = '--no-reread'
+    
     command = '%s %s %s' % (env, script, options)
     return runlog(command)
     

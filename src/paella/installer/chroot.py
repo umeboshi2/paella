@@ -16,10 +16,12 @@ from paella.db import PaellaConnection
 
 #from base import Installer
 from base import BaseChrootInstaller
-from util import ready_base_for_install, make_filesystem
-from util import install_kernel
-from util import make_fake_start_stop_daemon
-from util import remove_fake_start_stop_daemon
+from util.preinst import ready_base_for_install
+from util.filesystem import make_filesystem
+from util.postinst import install_kernel
+from util.base import make_fake_start_stop_daemon
+from util.base import remove_fake_start_stop_daemon
+
 from profile import ProfileInstaller
 
 class ChrootInstaller(BaseChrootInstaller):
@@ -31,6 +33,10 @@ class ChrootInstaller(BaseChrootInstaller):
         self._installer_ready  = False
         self._base_ready = False
         if logfile is None:
+            self.set_logfile(logfile)
+        if logfile and type(logfile) is str:
+            if not os.environ.has_key('PAELLA_LOGFILE'):
+                os.environ['PAELLA_LOGFILE'] = logfile
             self.set_logfile(logfile)
         if logfile is False:
             pass
@@ -60,7 +66,7 @@ class ChrootInstaller(BaseChrootInstaller):
     def ready_base_for_install(self):
         self._check_bootstrap()
         fstab = '#unconfigured for chroot install\n'
-        ready_base_for_install(self.target, self.defenv, self.suite, fstab)
+        ready_base_for_install(self.target, self.conn, self.suite, fstab)
         self._mount_target_proc()
         self._check_target_proc()
         cmd = self.command('apt-get', '-y update', chroot=True)

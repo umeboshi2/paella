@@ -11,6 +11,7 @@ from paella.kde.base.mainwin import BasePaellaWindow
 from viewbrowser import MachineView
 from viewbrowser import MachineTypeView
 from viewbrowser import FilesystemView
+from viewbrowser import MountView
 
 #from actions import ManageMachinesAction
 #from actions import ManageMachineTypesAction
@@ -72,6 +73,25 @@ class FilesystemManager(PaellaManagerWidget):
         item = self.listView.currentItem()
         self.mainView.set_filesystem(str(item.text(0)))
 
+class MountManager(PaellaManagerWidget):
+    def __init__(self, parent):
+        mainview = MountView
+        PaellaManagerWidget.__init__(self, parent, mainview, name='MountManager')
+        self.initlistView()
+
+    def initlistView(self):
+        self.cursor = self.conn.cursor(statement=True)
+        rows = self.cursor.select(table='mounts')
+        self.listView.addColumn('mount')
+        for row in rows:
+            KListViewItem(self.listView, row.mnt_name)
+
+    def selectionChanged(self):
+        item = self.listView.currentItem()
+        mount = str(item.text(0))
+        self.mainView.set_mount(mount)
+        
+            
 class MachineMainWindow(BasePaellaWindow):
     def __init__(self, parent):
         BasePaellaWindow.__init__(self, parent, name='MachineMainWindow')
@@ -95,7 +115,8 @@ class MachineMainWindow(BasePaellaWindow):
         self.setCentralWidget(manager)
         manager.show()
         self.mainView = manager
-        self.mainView.setSizes([100, 300])
+        if hasattr(self.mainView, 'setSizes'):
+            self.mainView.setSizes([100, 300])
         
     def initActions(self):
         collection = self.actionCollection()
@@ -153,5 +174,6 @@ class MachineMainWindow(BasePaellaWindow):
         raise NotImplementedError, 'slotManagedisk not implemented'
 
     def slotManagemount(self):
-        raise NotImplementedError, 'slotManagemount not implemented'
-    
+        self._setMainView(MountManager)
+        self.statusbar.message('Manage Mounts')
+        

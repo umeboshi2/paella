@@ -21,7 +21,7 @@ opts, args = parser.parse_args(sys.argv[1:])
 conn = InstallerConnection()
 config = DefaultEnvironment(conn)
 
-http_mirror = config.get('debrepos', 'http_mirror')
+http_mirror = config.get('installer', 'http_mirror')
 devices_tarball = config.get('installer', 'devices_tarball')
 
 def setup_bootstrap_tarball(suite):
