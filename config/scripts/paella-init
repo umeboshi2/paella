@@ -8,6 +8,8 @@ print 'paella-init started'
 os.system("mount -t proc proc /proc")
 
 print 'proc mounted'
+# mount /mnt
+os.system('mount -t hostfs none /mnt')
 
 # parse kernel command line options
 _opts = file('/proc/cmdline').read().strip().split() 
@@ -57,6 +59,10 @@ from paella.installer.profile import get_profile_packages
 from paella.installer.profile import ProfileInstaller
 
 
+from useless.base import Log
+if logfile is not None:
+    logger = Log('paella-uml-guest', logfile)
+    sys.paella_logger = logger
 
 
 

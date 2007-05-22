@@ -2,7 +2,7 @@ import os
 from os.path import join
 
 from useless.base import Error
-from useless.base.util import makepaths, runlog
+from useless.base.util import makepaths
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, Gt
 
@@ -10,12 +10,16 @@ from useless.sqlgen.clause import Eq, Gt
 from paella.base import PaellaConfig
 from paella.debian.base import debootstrap
 from paella.db import PaellaConnection
-#from paella.db.base import get_suite
 
-
-
-#from base import Installer
+# to be deprecated
 from base import BaseChrootInstaller
+
+# going to start using BaseInstaller
+from base import BaseInstaller
+
+# using new runlog
+from base import runlog
+
 from util.preinst import ready_base_for_install
 from util.filesystem import make_filesystem
 from util.postinst import install_kernel
@@ -23,6 +27,12 @@ from util.base import make_fake_start_stop_daemon
 from util.base import remove_fake_start_stop_daemon
 
 from profile import ProfileInstaller
+
+class NewChrootInstaller(BaseInstaller):
+    def __init__(self, conn, logfile=None):
+        BaseInstaller.__init__(self)
+
+    
 
 class ChrootInstaller(BaseChrootInstaller):
     def __init__(self, conn, logfile=None):

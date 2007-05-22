@@ -1,6 +1,6 @@
 import os
 
-from useless.base.util import runlog
+from paella.installer.base import runlog
 
 def install_kernel(package, target):
     script = "#!/bin/bash\n"

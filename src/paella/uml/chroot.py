@@ -4,7 +4,7 @@ from os.path import join
 from useless.base import Error
 from useless.base import debug
 from useless.base.path import path
-from useless.base.util import makepaths, runlog
+from useless.base.util import makepaths
 from useless.base.util import parse_proc_mounts
 from useless.base.util import shell
 

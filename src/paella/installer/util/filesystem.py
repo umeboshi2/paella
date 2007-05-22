@@ -1,10 +1,11 @@
 import os
 
-from useless.base.util import runlog, echo
+from useless.base.util import echo
 from useless.base.util import makepaths
 
 from paella import deprecated
 
+from paella.installer.base import runlog
 
 def mount_tmp(target='/tmp'):
     deprecated('mount_tmp is deprecated use mount_tmpfs instead')
@@ -28,7 +29,7 @@ def make_filesystem(device, fstype):
     else:
         raise RuntimeError,  'unhandled fstype %s '  % fstype
     echo(cmd)
-    runlog(cmd, keeprunning=True)
+    return runlog(cmd)
 
 def make_filesystems(device, fsmounts, env):
     mddev = False

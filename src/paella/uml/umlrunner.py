@@ -4,7 +4,6 @@ import subprocess
 
 from umlrun import UML
 from useless.base.config import Configuration
-from useless.base.util import runlog
 from useless.base.path import path
 
 from paella.base import PaellaConfig

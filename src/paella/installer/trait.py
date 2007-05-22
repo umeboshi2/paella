@@ -1,5 +1,6 @@
 import os
 from os.path import join, dirname, isfile, isdir
+import subprocess
 
 from useless.base.util import makepaths
 
@@ -25,6 +26,123 @@ INGDICT = {
 
 DEFAULT_PROCESSES = ['pre', 'remove', 'install',
                      'templates', 'config', 'chroot', 'reconfig', 'post']
+
+# ------------------------------------------------------------
+# new code using BaseProcessor starts here
+# ------------------------------------------------------------
+from useless.base.path import path
+from base import BaseProcessor
+
+# this class is a preliminary outline for now
+class TraitInstallerHelper(object):
+    def __init__(self, conn, suite, target):
+        # target should already be a path object
+        self.target = path(target)
+        self.trait = None
+        
+        # setup relation objects
+        self.traitpackage = TraitPackage(conn, suite)
+        self.traittemplate = TraitTemplate(conn, suite)
+        self.traitscripts = TraitScript(conn, suite)
+
+        # setup empty variable containers
+        self.profiledata = {}
+        self.mtypedata = {}
+        self.familydata = {}
+
+    def remove_packages(self, packages):
+        packages_arg = ' '.join(packages)
+        command = 'apt-get -y remove %s' % packages_arg
+
+    def install_packages(self, packages, unauthenticated=False):
+        packages_arg = ' '.join(packages)
+        opts = ''
+        if unauthenticated:
+            opts = '--allow-unauthenticated'
+        command = 'apt-get -y %s install %s' % (opts, packages_arg)
+
+    def set_trait(self, trait):
+        self.traitpackage.set_trait(trait)
+        self.traittemplate.set_trait(trait)
+        self.traitscripts.set_trait(trait)
+        self.trait = trait
+        self.packages = self.traitpackage.packages()
+        self.templates = self.traittemplate.templates()
+        os.environ['PAELLA_TRAIT'] = trait
+        #self.log.info('trait set to %s' % trait)
+        
+    # the template argument is a template row
+    # in retrospect the template column should've  been 'filename'
+    def install_template(self, template, text):
+        target_filename = self.target / template.template
+        makepaths(target_filename.dirname())
+        if target_filename.isfile():
+            backup_filename = self.target / path('root/paella') / template.template
+            if not backup_filename.isfile():
+                makepaths(backup_filename.dirname())
+                target_filename.copy(backup_filename)
+        target_filename.write_bytes(text)
+
+        mode = template.mode
+        # a simple attempt to insure mode is a valid octal string
+        # this is one of the very rare places eval is used
+        # there are a few strings with 8's and 9's that will pass
+        # the if statement, but the eval will raise SyntaxError then.
+        # If the mode is unusable the install will fail at this point.
+        if mode[0] == '0' and len(mode) <= 7 and mode.isdigit():
+            mode = eval(mode)
+            target_filename.chmod(mode)
+        else:
+            raise InstallError, 'bad mode %s, please use octal prefixed by 0' % mode
+        
+        own = ':'.join([template.owner, template.grp_owner])
+        # This command is run in a chroot to make the correct uid, gid
+        os.system(self.command('chown', "%s '%s'" %(own, join('/', template.template))))
+
+        
+
+
+class TraitProcessor(BaseProcessor):
+    def __init__(self, conn, suite):
+        BaseProcessor.__init__(self)
+
+        # setup process list
+        self._processes = DEFAULT_PROCESSES
+        if self.defenv.has_option('installer', 'trait_processes'):
+            self.trait_processes = self.defenv.get_list('trait_processes', 'installer')
+            
+        # setup process map
+        # pre and post here are not the same as in the BaseProcessor
+        # For example, if a script exists for for pre, it works like this:
+        #   self.pre_process()
+        #   self.run_process_script(pre)
+        #   self.post_process()         
+        self._process_map = {
+            'pre' : self._process_pre,
+            'remove' : self._process_remove,
+            'install' : self._process_install,
+            'templates' : self._process_templates,
+            'config' : self._process_config,
+            'chroot' : self._process_chroot,
+            'reconfig' : self._process_reconfig,
+            'post' : self._process_post
+            }
+        
+        
+    def set_trait(self, trait):
+        self.traitpackage.set_trait(trait)
+        self.traittemplate.set_trait(trait)
+        self.traitscripts.set_trait(trait)
+        self.current_trait = trait
+        self.packages = self.traitpackage.packages()
+        self.templates = self.traittemplate.templates()
+        os.environ['PAELLA_TRAIT'] = trait
+        self.log.info('trait set to %s' % trait)
+
+# ------------------------------------------------------------
+# new code using BaseProcessor stops here
+# ------------------------------------------------------------
+
 
 class TraitInstaller(Installer):
     def __init__(self, conn, suite):
@@ -149,8 +267,7 @@ class TraitInstaller(Installer):
         tname = 'trait-%s-%s' % (self._current_trait_, name)
         self.log.info('running %s' % tname)
         runvalue = Installer.run(self, tname, command, args=args, proc=proc,
-                                 chroot=chroot,
-                                 keeprunning=keeprunning)
+                                 chroot=chroot)
         return runvalue
 
     def runscript(self, script, name, info, chroot=False):
@@ -314,9 +431,11 @@ class TraitInstaller(Installer):
             raise InstallError, 'bad mode %s, please use octal prefixed by 0' % mode
         
         own = ':'.join([template.owner, template.grp_owner])
+        command = 'chown %s %s' % (own, path('/') / template.template)
+        chroot = 'chroot %s %s' % (self.target, command)
         # This command is run in a chroot to make the correct uid, gid
-        os.system(self.command('chown', "%s '%s'" %(own, join('/', template.template))))
-
+        subprocess.call(chroot, shell=True)
+        
         
     def _make_template_common(self, template, tmpl):
         sub = self.traittemplate.template.sub()

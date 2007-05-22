@@ -2,7 +2,7 @@ import os
 from os.path import join, basename, dirname
 
 from useless.base import Error
-from useless.base.util import makepaths, runlog
+from useless.base.util import makepaths
 from useless.base.util import echo
 
 from paella.debian.base import debootstrap
@@ -11,6 +11,8 @@ from paella.db.machine import MachineHandler
 from base import CurrentEnvironment
 from base import BaseChrootInstaller
 from base import InstallError
+from base import runlog
+
 from profile import ProfileInstaller
 
 from util.base import makedev

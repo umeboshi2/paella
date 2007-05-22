@@ -5,10 +5,11 @@ import commands
 from time import sleep
 
 from useless.base import Error
-from useless.base.util import makepaths, runlog, echo
+from useless.base.util import makepaths, echo
 
 from paella import deprecated
 from paella.debian.base import RepositorySource
+from paella.installer.base import runlog
 
 def reverse_ip(ip):
     octets = ip.split('.')

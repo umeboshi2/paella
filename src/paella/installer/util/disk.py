@@ -3,7 +3,9 @@ import tempfile
 import commands
 from time import sleep
 
-from useless.base.util import makepaths, runlog
+from useless.base.util import makepaths
+
+from paella.installer.base import runlog
 
 #from paella import deprecated
 
