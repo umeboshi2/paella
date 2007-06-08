@@ -1,3 +1,5 @@
+.. -*- mode: rst -*-
+
 Paella Notes
 ===========================
 
@@ -363,6 +365,132 @@ have to use python interactively, or psql.  There is a script on the nfs
 installer called paella-submit-machine.  You pass it a machine name 
 argument
 
+New Installer Outline
+---------------------------
+
+Here is an outline of the new installer system.  It is centered around a 
+base processor class.  The base processor class has a list of processes and a map
+that links the processes to methods in the processor class.  The base processor includes 
+a logging object and pre/post hooks that can be applied to each process.  A processor can 
+have a processor as an attribute, and have it's run_all_processes method invoked as a 
+process.  In this manner, processors can be chained together.  Each process can have 
+a script attached to it.  This script will be invoked instead of the normal process if it is 
+present.  It is up to the subclass to define a make_script method to do this.
+
+
+Each installer object will be a subclass of the base processor.
+
+class hierarchy
+
++ **BaseProcessor(object)**
+
++ **BaseInstaller(BaseProcessor)**
+
+  - properties:
+
+    - has a target, can create target directory
+
+    - there is no process list in this class
+
+    - process list to be defined in subclass
+
+    - logging is setup here
+
+    - takes a db connection as init arg
+
+    - suite is set here, base_suite is also determined
+
+    
+		
++ **ChrootInstaller(BaseInstaller)**
+
+  - properties:
+
+    - process list defined
+
+    - has installer attribute (usually ProfileInstaller)
+
+    - set profile and target path before processing
+
+  - processes:
+
+    - ready_target
+
+    - bootstrap
+
+    - mount_target_proc
+
+    - mount_target_sys
+
+    - make_device_entries (probably deprecated by udev)
+
+    - apt_sources_installer
+
+    - ready_base_for_install
+
+    - pre_install
+
+    - install
+
+    - post_install
+
+    - apt_sources_final
+
+    - umount_target_sys
+
+    - umount_target_proc
+
++ **MachineInstaller(ChrootInstaller)**
+
+  - processes:
+
+    - pre - MachineInstaller
+
+    - setup_disks - MachineInstaller
+
+    - set_target - inherit from ChrootInstaller
+
+    - ready_target - inherit from ChrootInstaller
+
+    - mount_target - MachineInstaller
+
+    - bootstrap - inherit from ChrootInstaller
+
+    - mount_target_proc - inherit from ChrootInstaller
+
+    - mount_target_sys - inherit from ChrootInstaller
+
+    - make_device_entries (probably deprecated by udev) - inherit from ChrootInstaller
+
+    - apt_sources_installer - inherit from ChrootInstaller
+
+    - ready_base_for_install - inherit from ChrootInstaller
+
+    - pre_install - inherit from ChrootInstaller
+
+    - install - inherit from ChrootInstaller 
+
+    - post_install - inherit from ChrootInstaller
+
+    - install_fstab 
+
+    - install_modules
+
+    - install_kernel
+
+    - apt_sources_final
+
+    - umount_target_proc
+
+    - post
+
+
++ **TraitInstaller(BaseProcessor)**
+
++ **ProfileInstaller(BaseProcessor)**
+
+
+		
 Database Schema
 =================
 

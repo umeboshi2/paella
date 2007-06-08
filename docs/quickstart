@@ -1,3 +1,5 @@
+.. -*- mode: rst -*-
+
 Paella Quick Start Guide
 ===========================
 This guide is unfinished.  If you are reading this, do not expect the guide to be correct or
@@ -13,7 +15,13 @@ Introduction
 
 
 Paella depends on a particular type of setup to operate.  This document details how to 
-bootstrap that setup, starting from the bare minimum requirements.
+bootstrap that setup, starting from the bare minimum requirements.  This guide is written 
+with the goal of minimizing the requirement for the root account to setup the system.  The 
+former method of working with paella, required (possibly) extensive configuring of a local 
+network.  In order to effectively use paella in a "production" environment, where you are 
+actually installing machines, still requires the same type of network configuration.  It is hoped 
+that the method outlined here can help prepare this by using paella to generate the 
+configuration that paella requires.
 
 
 -------------------
@@ -56,6 +64,8 @@ In order to follow most of the steps in this guide, the user-mode-linux and uml-
 are required to be installed.  More specific instructions on configuring user-mode-linux and the 
 uml-utilities package are provided in a later section.
 
+-------------------
+
 Setup paella from subversion
 ===============================================
 
@@ -83,6 +93,16 @@ paella_environment that is created for you when you run the script.
 If you change any of the variables, make a copy of the script first. Keep in mind that throughout 
 this guide I will be referencing things according to the default configuration provided.
 
+-------------------------------
+
+Build paella packages from source tree
+===============================================
+You may wish to go ahead and build debian packages from the source tree.  If you do this, you 
+will also have to build the useless_ packages.  Going this route has the advantage of keeping 
+you from having possibly modify your PATH and PYTHONPATH environment variables
+
+
+------------------------
 
 Setup Database Server
 =====================
@@ -120,14 +140,14 @@ example::
 
 	#TYPE	DATABASE	USER		IP-ADDRESS	IP-MASK		METHOD
 	host	paella		paella		<my ip address>	255.255.255.255	trust
-	host	paella		adminuser	<my ip address>	255.255.255.255	ident sameuser
+	host	paella		dbadmin		<my ip address>	255.255.255.255	ident sameuser
 
 If your database server is on your desktop, you need to allow access from your uml network.
 example::
 
 	#TYPE	DATABASE	USER		IP-ADDRESS	IP-MASK		METHOD
 	host	paella		paella		10.0.1.0		255.255.255.0	trust
-	host	paella		adminuser	10.0.1.1		255.255.255.0	trust
+	host	paella		dbadmin		10.0.1.1		255.255.255.0	trust
 
 
 There is no real authentication support, except for limited password support.  There has not 
@@ -147,6 +167,7 @@ another section
 -------------------------------
 something else
 
+---------------------
 
 Setup User Mode Linux
 ======================
@@ -188,6 +209,7 @@ As root type::
 This is assuming that eth0 is your main network interface.  You may want to add these lines
 to your /etc/rc.local script.
 
+----------
 
 Configuration files
 ================================
@@ -198,7 +220,9 @@ Setup .paellarc
 
 If you used the quick setup script above, the example paellarc file will be here,
 ~/workspace/paella/config/share/paellarc .  You can copy this file to ~/.paellarc and edit it.
-If you are not familiar with the file format, you can read about it here__ .
+If you are not familiar with the file format, you can read about it here__ .  Options that are 
+prefixed by an underscore are not referenced in the code.  You can make your own if you 
+wish.
 
 In the database section, the dbhost option should be the ip address of the tap interface you 
 created in the section above.  You will probably want to change the dbusername option to
@@ -221,13 +245,26 @@ You should not need to change any other options.
 Setup .umlmachines.conf
 ----------------------------------------
 If you used the quick setup script above, the example umlmachines config file will be here, 
-~/workspace/paella/config/share/umlmachines.  You can copy this file to ~/.umlmachines.conf 
-and edit it.  The file format is the same as the paellarc file.  Reading through this file can give 
-you a good idea of how the paella uml system works.
+~/workspace/paella/config/share/umlmachines.  If you built packages, install the 
+paella-uml-admin package, and you will find the file at 
+/usr/share/doc/paella-uml-admin/examples/umlmachines.conf .  You can copy this 
+file to ~/.umlmachines.conf and edit it.  The file format is the same as the paellarc file.  
+Reading through this file can give you a good idea of how the paella uml system works.
+
+The top of the file is where most of the paths are defined.  You shouldn't have to change these 
+if you are using the quick setup script, although you will probably need to modify the 
+**uml_initscript** option to point to the correct location of the paella-init file.  This 
+is the option with the value "%(_script_path)s/paella-init" .
+
 
 If you are not using the default tap network described above, you will have to modify the uml 
 network options accordingly.
 
+
+You may want to modify the **bootstrap_debmirror** option in the 
+`umlmachines` section.
+
+----------------
 
 Using paella-management
 =======================================
@@ -270,9 +307,92 @@ than the other attributes in the Packages file.  The reason they are there is to
 automated installations from bombing due to unavailable or misspelled packages.
 
 
+After importing the database, you will have to disconnect and then reconnect to the 
+database to refresh the available widgets in the paella-management application.  You may  
+wish to restart the application instead, as when an import occurs, a lot of memory is used 
+to parse the Packages file, and insert the packages into the database.  This memory is not 
+freed after the import process.  Fixing this has not been a major goal, as imports are fairly 
+rare during the normal use of paella-management.
+
+
 Configure stage1 database
--------------------------------
-discuss.
+-------------------------------------------
+There should be very little effort needed to configure the stage1 database.
+Check default environment.
+Check tap_network family.
+Check uml_startup family.
+
+------------------
+
+Install the UML Machines
+======================================
+Now we should be ready to install the uml machines.  The uml installer is currently limited to 
+installing one machine at a time.  This is due to the default configuration for this quickstart 
+guide using a static ip.  This can be easily changed later if you wish to use the uml installer 
+for testing purposes.
+
+Install uml_head
+-------------------------
+type::
+
+	paella-umlrunner install uml_head
+
+Install umlbuilder
+------------------------
+type::
+
+	paella-umlrunner install umlbuilder
+
+
+
+Running the UML Machines
+======================================
+Now we should be ready to start running the uml machines.
+
+Run uml_head
+-------------------------
+Make sure your umask is set to 022.
+
+type::
+
+	paella-umlrunner run uml_head
+
+Login as root.  There should be no password required.
+type::
+
+	./setup_debrepos
+
+This will run a script that will setup a partial debian mirror.  This is to keep from 
+having to use a full debian mirror, that used to be required previously to use paella.  This 
+partial mirror should be under 400MB in size.
+
+
+Run umlbuilder
+------------------------
+type::
+
+	paella-umlrunner run umlbuilder
+
+Login as root.  There should be no password required.
+type::
+
+	./init_pbuilder
+
+This will run a script that will prepare pbuilder to build the paella and useless packages.  
+Basically it either generates or restores the base.tgz for pbuilder.  The base.tgz is copied to 
+the hostfs mount, in case it is needed in the future.  Once the script finishes, the next step 
+is to get the useless and paella packages built.  There is a script that does this too.
+type::
+
+	./build_paella_from_subversion
+
+This script will checkout the sources from subversion.  It then exports the working copies and 
+uses pbuilder to build the exports.  Once the packages are built, they are uploaded to 
+the uml_head machine, and placed in the debian mirror.
+
+
+
+.. scavenge, then trash what remains below
 
 
 Getting started with paella (outdated)
@@ -388,6 +508,9 @@ ending section
 
 
 
+
+
+.. _useless:  http://useless.berlios.de/
 
 
 .. _mounts: #mount
