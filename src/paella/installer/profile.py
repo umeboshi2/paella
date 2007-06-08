@@ -21,60 +21,103 @@ from paella.db.profile import Profile
 from paella.db.profile.main import ProfileTrait, ProfileEnvironment
 
 from base import InstallerConnection, CurrentEnvironment
-from base import Installer
+
+from base import BaseInstaller
+
 from trait import TraitInstaller
+
+class ProfileInstaller(BaseInstaller):
+    # here parent is the chroot installer
+    # The target needs to be set in the parent before
+    # this class is initialized.
+    def __init__(self, parent):
+        BaseInstaller.__init__(self, parent.conn)
+        self._parent = parent
+        self.target = parent.target
+        # we need this paelladir attribute for now
+        # but may replace/redo this later
+        self.paelladir = self.target / 'root/paella'
+        self.profile = None
+        self.suite = None
+        self.profiletrait = ProfileTrait(self.conn)
+        self._profile = Profile(self.conn)
+        if False:
+            # setup logfile
+            if hasattr(parent, 'log'):
+                self.log = parent.log
+                self.log.info('profile installer initialized')
+            else:
+                raise RuntimeError, 'No logfile for parent defined'
+        if hasattr(parent, 'mainlog'):
+            self.mainlog = parent.mainlog
+            name = self.__class__.__name__
+            self.mainlog.add_logger(name)
+            self.log = self.mainlog.loggers[name]
+            
+        # make empty data dicts
+        self.mtypedata = {}
+        self.familydata = {}
+        self.profiledata = {}
         
 
-class ProfileInstaller(Installer):
-    def __init__(self, conn):
-        os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-        Installer.__init__(self, conn)
-        self.profiletrait = ProfileTrait(self.conn)
-        self.profile = None
-        self.installer = None
-        self._profile = Profile(self.conn)
-        if hasattr(self, 'log'):
-            self.log.info('profile installer initialized')
-        else:
-            self.set_logfile()
-            self.log.info('profile installer initialized')
-        self.mtypedata = {}
-        
-        
+    # this method is called within set_profile
+    def _init_attributes(self):
+        self.traits = self.profiletrait.trait_rows()
+        self.env = ProfileEnvironment(self.conn, self.profile)
+        self.familydata = self._profile.get_family_data()
+        self.profiledata = self._profile.get_profile_data()
+        self.suite = get_suite(self.conn, self.profile)
+
+    # this method is called within set_profile
+    # here is where the trait installer is setup
+    # the data attributes need to be filled before this is called
+    # this method needs to be fixed to use the new trait installer
+    def _setup_installer(self, suite):
+        self.installer = TraitInstaller(self)
+        self.installer.familydata = self.familydata
+        self.installer.profiledata = self.profiledata
+        self.installer.mtypedata = self.mtypedata
+
+    # here is where the processes are setup
+    # every process is a trait and it maps to the same
+    # function.  a "current_index" attribute keeps track
+    # of which trait is being processed.
+    def _setup_trait_processes(self, traitlist):
+        self.setup_initial_paellainfo_env(traitlist)
+        self._processes = traitlist
+        self._process_map = {}.fromkeys(traitlist, self.process_trait)
+
+    # setting the profile involves a lot of work
+    # there are helper methods defined to help split
+    # the code up into more manageable pieces.
     def set_profile(self, profile):
         self.profile = profile
         self._profile.set_profile(profile)
         os.environ['PAELLA_PROFILE'] = profile
         self.profiletrait.set_profile(profile)
-        self.traits = self.profiletrait.trait_rows()
-        self.env = ProfileEnvironment(self.conn, self.profile)
-        self.familydata = self._profile.get_family_data()
-        self.profiledata = self._profile.get_profile_data()
-        self.suite = get_suite(self.conn, profile)
-        self.installer = TraitInstaller(self.conn, self.suite)
-        self.installer.log = self.log
-        self.installer.familydata = self.familydata
-        self.installer.profiledata = self.profiledata
-        self.installer.mtypedata = self.mtypedata
+        self._init_attributes()
+        self._setup_installer(self.suite)
         self.traitparent = TraitParent(self.conn, self.suite)
         self.log.info('profile set to %s' % profile)
         traitlist = self.make_traitlist()
-        self.setup_initial_paellainfo_env(traitlist)
-        
-    def get_profile_data(self):
-        return self.env.ProfileData()
-    
-    def set_logpath(self, logpath):
-        Installer.set_logpath(self, logpath)
-        if hasattr(self, 'installer'):
-            self.installer.set_logpath(logpath)
-        
+        self._setup_trait_processes(traitlist)
+
+    # currently there is no script functionality
+    # but there may be in the future.
+    def make_script(self, procname):
+        return None
+     
+    # this method needs to be checked
     def make_traitlist(self):
         listed = [x.trait for x in self.profiletrait.trait_rows()]
-        #log = self.log
         log = None
         return self._profile.make_traitlist_with_traits(listed, log=log)
 
+    def get_profile_data(self):
+        return self.env.ProfileData()
+    
+    # this method needs to be checked
+    # self.paelladir needs to be defined
     def setup_initial_paellainfo_files(self, traits):
         makepaths(self.paelladir)
         traitlist = file(join(self.paelladir, 'traitlist'), 'w')
@@ -85,6 +128,8 @@ class ProfileInstaller(Installer):
         itraits.write('Installed Traits:\n')
         itraits.close()
 
+    # initialize data in current_environment,
+    # if PAELLA_MACHINE is set
     def setup_initial_paellainfo_env(self, traits):
         if os.environ.has_key('PAELLA_MACHINE'):
             machine = os.environ['PAELLA_MACHINE']
@@ -92,23 +137,72 @@ class ProfileInstaller(Installer):
             curenv['current_profile'] = self.profile
             curenv['traitlist'] = ', '.join(traits)
             curenv['installed_traits'] = ''
+
             
-    def process(self):
+    # this method has been rewritten to use
+    # self.current_index
+    # the UnbornError should never be raised
+    def process_trait(self):
+        trait = self._processes[self.current_index]
+        self.traitparent.set_trait(trait)
+        self.installer.set_trait(trait)
+        parents = [r.parent for r in self.traitparent.parents()]
+        for p in parents:
+            if p not in self.processed:
+                raise UnbornError
+        self.log.info('processing trait %s' % trait)
+        self.installer.run_all_processes()
+        self.processed.append(trait)
+        self.current_index += 1
+        self.log.info('processed:  %s' % ', '.join(self.processed))
+        self.append_installed_traits(trait)
+        
+    # this used to be called process
+    def run_all_processes(self):
         traits = self.make_traitlist()
         self.setup_initial_paellainfo_files(traits)
         self.setup_initial_paellainfo_env(traits)
         self.processed = []
-        for trait in traits:
-            self.process_trait(trait)
-            self.log.info('currently processed %s' % ','.join(self.processed))
+        self.current_index = 0
+        BaseInstaller.run_all_processes(self)
         self.log.info('all traits processed for profile %s' % self.profile)
         self.log.info('------------------------------------')
+
+    # this method needs to be checked
+    def set_template_path(self, tpath):
+        self.installer.set_template_path(tpath)
+
+    # this method needs to be checked
+    # target should be set upon init.
+    # need to remove apt-get update command
+    def set_target(self, target, update=False):
+        Installer.set_target(self, target)
+        self.installer.set_target(target)
+        if update:
+            os.system(self.command('apt-get update'))
+
+    # this method needs to be checked
+    # this method doesn't belong in the profile installer
+    # this is a machine installer method
+    def install_kernel(self, package):
+        os.system(self.command('touch /boot/vmlinuz-fake'))
+        os.system(self.command('ln -s boot/vmlinuz-fake vmlinuz'))
+        os.system(self.command('apt-get -y install %s' % package))
+        print 'kernel %s installed' % package
+
+    # This helps reporting when when a trait is processed
+    def append_installed_traits(self, trait):
+        self._append_installed_traits_file(trait)
+        self._append_installed_traits_db(trait)
         
+    # this method needs to be checked
+    # self.paelladir needs to be defined
     def _append_installed_traits_file(self, trait):
         itraits = file(join(self.paelladir, 'installed_traits'), 'a')
         itraits.write(trait + '\n')
         itraits.close()
 
+    # this method needs to be checked
     def _append_installed_traits_db(self, trait):
         if os.environ.has_key('PAELLA_MACHINE'):
             machine = os.environ['PAELLA_MACHINE']
@@ -118,40 +212,10 @@ class ProfileInstaller(Installer):
             traits.append(trait)
             curenv['installed_traits'] = ', '.join(traits)
             
-            
-        
-    def process_trait(self, trait):
-        self.traitparent.set_trait(trait)
-        self.installer.set_trait(trait)
-        parents = [r.parent for r in self.traitparent.parents()]
-        for p in parents:
-            if p not in self.processed:
-                raise UnbornError
-        self.log.info('processing trait %s' % trait)
-        self.installer.process()
-        self.processed.append(trait)
-        self.log.info('processed:  %s' % ', '.join(self.processed))
-        self.append_installed_traits(trait)
+# ---------------------------------------------
+# end new profile installer
+# ---------------------------------------------
 
-    def set_template_path(self, path):
-        self.installer.set_template_path(path)
-
-    def set_target(self, target, update=False):
-        Installer.set_target(self, target)
-        self.installer.set_target(target)
-        if update:
-            os.system(self.command('apt-get update'))
-
-    def install_kernel(self, package):
-        os.system(self.command('touch /boot/vmlinuz-fake'))
-        os.system(self.command('ln -s boot/vmlinuz-fake vmlinuz'))
-        os.system(self.command('apt-get -y install %s' % package))
-        print 'kernel %s installed' % package
-
-    def append_installed_traits(self, trait):
-        self._append_installed_traits_file(trait)
-        self._append_installed_traits_db(trait)
-        
 def get_profile_packages(conn, suite, profile):
     traits = get_traits(conn, profile)
     tp = TraitParent(conn, suite)

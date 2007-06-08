@@ -9,6 +9,8 @@ from useless.db.midlevel import StatementCursor
 from paella.base import PaellaConfig
 from paella.base.objects import VariablesConfig
 
+from base import SuiteCursor
+
 class PaellaConnection(BasicConnection):
     def __init__(self, dsn=None, cfg=None):
         if dsn is None:
@@ -39,7 +41,8 @@ class PaellaConnection(BasicConnection):
         BasicConnection.__init__(self, user=user, host=host,
                                 dbname=dbname, passwd=passwd, port=port)
         self.autocommit = 1
-                
+        self.__dict__['suitecursor'] = SuiteCursor(self)
+        
     # this is kind of hacky looking
     # don't know if I'll keep this or not
     # this should keep me from having to import StatementCursor

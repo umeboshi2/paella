@@ -9,8 +9,8 @@ from paella.db.base import get_suite
 from paella.db.base import SuiteCursor
 
 from paella.installer.util.misc import extract_tarball
-from paella.installer.profile import ProfileInstaller
-from paella.installer.machine import MachineInstaller
+from paella.oldinstaller.profile import ProfileInstaller
+from paella.oldinstaller.machine import MachineInstaller
 from paella.installer.base import CurrentEnvironment
 
 from base import host_mode, guest_mode

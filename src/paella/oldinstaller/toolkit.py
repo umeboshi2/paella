@@ -16,11 +16,8 @@ from paella.db.profile.main import ProfileEnvironment
 
 from base import InstallError, InstallerConnection, Modules
 from util.main import setup_modules
-
 #from trait import TraitInstaller
-#from profile import ProfileInstaller
-
-from paella.oldinstaller.profile import ProfileInstaller
+from profile import ProfileInstaller
 
 class InstallerTools(object):
     def __init__(self):

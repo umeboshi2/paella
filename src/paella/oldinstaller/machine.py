@@ -4,7 +4,6 @@ from os.path import join, basename, dirname
 from useless.base import Error
 from useless.base.util import makepaths
 from useless.base.util import echo
-from useless.base.path import path
 
 from paella.debian.base import debootstrap
 from paella.db.machine import MachineHandler
@@ -14,15 +13,19 @@ from base import BaseChrootInstaller
 from base import InstallError
 from base import runlog
 
-from chroot import ChrootInstaller
 from profile import ProfileInstaller
-from machinehelper import MachineInstallerHelper
 
 from util.base import makedev
 from util.base import make_script
 from util.aptsources import make_sources_list
 from util.aptsources import make_official_sources_list
+from util.disk import setup_disk_fai
+from util.disk import partition_disk
+from util.disk import create_raid_partition
+from util.disk import wait_for_resync
 from util.disk import create_mdadm_conf
+from util.filesystem import make_filesystem
+from util.filesystem import make_filesystems
 from util.filesystem import mount_target
 from util.filesystem import make_fstab
 from util.filesystem import mount_target_proc
@@ -32,10 +35,6 @@ from util.misc import make_interfaces_simple
 from util.misc import extract_tarball
 from util.preinst import ready_base_for_install
 from util.postinst import install_kernel
-
-# an error class to help me remember to finish things
-class NotYetWrittenError(StandardError):
-    pass
 
 #from profile import ProfileInstaller
 #from fstab import HdFstab
@@ -49,63 +48,122 @@ DEFAULT_PROCESSES = [
     'apt_sources_final', 'umount_target_proc', 'post'
     ]
 
-class MachineInstaller(ChrootInstaller):
-    def __init__(self, conn):
-        ChrootInstaller.__init__(self, conn)
-        # the processes are mostly the same as in the
-        # ChrootInstaller
-        self._processes = [
-            'pre',
-            'setup_disks',
-            'ready_target',
-            'mount_target',
-            'bootstrap',
-            'mount_target_proc',
-            'mount_target_sys',
-            'make_device_entries',
-            'apt_sources_installer',
-            'ready_base_for_install',
-            'pre_install',
-            'install',
-            'post_install',
-            'install_fstab',
-            'install_modules',
-            'install_kernel',
-            'apt_sources_final',
-            'umount_target_sys',
-            'umount_target_proc',
-            'post'
-            ]
-
-        pmap = dict(setup_disks=self.__str__)
-        self.machine = MachineHandler(self.conn)
-        self.helper = None
-
-    def set_machine(self, machine):
-        self.machine.set_machine(machine)
-        # this needs to be a configuration option
-        # in the default environment
-        logdir = path('/paellalog')
-        logfile = logdir / 'paella-install-%s.log' % machine
-        os.environ['PAELLA_MACHINE'] = machine
-        self.disklogpath = logdir / 'disklog-%s'  % machine
-        self.set_logfile(logfile)
-        profile = self.machine.current.profile
-        self.set_profile(profile)
-        
-    def make_script(self, procname):
-        raise NotYetWrittenError, 'make_script not implemented yet.'
-
-    
-# ---------------------------------------------
-# old machine installer code below
-# ---------------------------------------------
-
 def scriptinfo(name):
     return dict(start='%s script started' % name,
                 done='%s script finished' % name)
 
-class MachineInstallerOrig(BaseChrootInstaller):
+class MachineInstallerHelper(object):
+    def __init__(self, installer):
+        object.__init__(self)
+        if installer.machine.current is None:
+            raise Error, 'installer must have machine selected'
+        if installer.target is None:
+            raise Error, 'installer must have target set'
+        self.installer = installer
+        self.machine = self.installer.machine
+        self.conn = self.machine.conn
+        self.target = self.installer.target
+        self.disklogpath = self.installer.disklogpath
+        self.defenv = self.installer.defenv
+        self.curenv = None
+        
+    def _partition_disk(self, diskname, device):
+        print 'partitioning', diskname, device
+        dump = self.machine.make_partition_dump(diskname, device)
+        partition_disk(dump, device)
+            
+    def set_machine(self, machine):
+        self.machine.set_machine(machine)
+
+    def partition_disks(self):
+        disks = self.machine.check_machine_disks()
+        for diskname in disks:
+            for device in disks[diskname]:
+                self._partition_disk(diskname, device)
+            if len(disks[diskname]) > 1:
+                self._raid_setup = True
+                self._raid_drives = {}
+                self._raid_drives[diskname] = disks[diskname]
+                print 'doing raid setup on %s' % diskname
+                fsmounts = self.machine.get_installable_fsmounts()
+                pnums = [r.partition for r in fsmounts]
+                mdnum = 0 
+                for p in pnums:
+                    runvalue = create_raid_partition(disks[diskname], p,
+                                                     mdnum, raidlevel=1)
+                    mdnum += 1
+                wait_for_resync()
+                    
+    def check_raid_setup(self):
+        raid_setup = False
+        disks = self.machine.check_machine_disks()
+        for diskname in disks:
+            if len(disks[diskname]) > 1:
+                raid_setup = True
+        return raid_setup
+
+    def get_raid_devices(self):
+        disks = self.machine.check_machine_disks()
+        for diskname in disks:
+            if len(disks[diskname]) > 1:
+                return disks[diskname]
+        return []
+    
+    def make_filesystems(self):
+        device = self.machine.mtype.array_hack()
+        all_fsmounts = self.machine.get_installable_fsmounts()
+        env = CurrentEnvironment(self.conn, self.machine.current.machine)
+        make_filesystems(device, all_fsmounts, env)
+
+    def check_if_mounted(self, device):
+        mounts = file('/proc/mounts')
+        for line in file:
+            if line.startswith(device):
+                return True
+        return False
+
+    def unmount_device(self, device):
+        mounted = os.system('umount %s' % device)
+        
+    def setup_disks(self):
+        disks = self.machine.check_machine_disks()
+        disknames = disks.keys()
+        if not len(disknames):
+            self._setup_disk_fai('/dev/hda')
+        else:
+            self.partition_disks()
+            self.make_filesystems()
+            
+
+    def _setup_disk_fai(self, device):
+        disk_config = self.machine.make_disk_config_info(device, curenv=self.curenv)
+        setup_disk_fai(disk_config, self.disklogpath)
+        
+    def extract_basebootstrap(self):
+        echo('extracting premade base tarball')
+        suite_path = self.defenv.get('installer', 'suite_storage')
+        basefile = join(suite_path, '%s.tar' % self.installer.suite)
+        runvalue = extract_tarball(self.target, basefile)
+        if runvalue:
+            raise InstallError, 'problems extracting %s to %s' % (basefile, self.target)
+
+    def debootstrap_target(self):
+        suite = self.installer.suite
+        debmirror = self.installer.debmirror
+        cmd = debootstrap(suite, self.target, debmirror)
+        info = self.installer.log.info
+        info('running debootstrap with cmd %s' % cmd)
+        runvalue = runlog(debootstrap(self.installer.suite, self.target, self.installer.debmirror))
+        if runvalue:
+            raise InstallError, 'problems bootstrapping with %s' % cmd
+
+    def bootstrap_target(self):
+        if self.defenv.is_it_true('installer', 'bootstrap_target'):
+            self.debootstrap_target()
+        else:
+            self.extract_basebootstrap()
+    
+class MachineInstaller(BaseChrootInstaller):
     def __init__(self, conn):
         BaseChrootInstaller.__init__(self, conn)
         self.machine = MachineHandler(self.conn)
@@ -126,7 +184,7 @@ class MachineInstallerOrig(BaseChrootInstaller):
             'umount_target_proc' : self.umount_target_proc
             }
         self.helper = None
-
+        
     def process(self):
         mach = self.machine.current.machine
         self.log.info('Starting machine install process for %s' % mach)

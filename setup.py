@@ -36,7 +36,9 @@ PACKS = {
                'paella/kde/suites'
                ],
     'installer' : ['paella/installer',
-                   'paella/installer/util'
+                   'paella/installer/util',
+                   'paella/oldinstaller',
+                   'paella/oldinstaller/util'
                    ],
     'uml-admin' : ['paella/uml',
                    'paella/kde/umlmanager'
