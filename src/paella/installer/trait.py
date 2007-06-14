@@ -257,6 +257,10 @@ class TraitInstaller(BaseInstaller):
         self.helper = TraitInstallerHelper(self.conn, self.suite, self.target)
         # pass the log object to the helper
         self.helper.log = self.log
+        # this is really ugly, but works for now
+        for attr in ['familydata', 'profiledata', 'mtypedata']:
+            setattr(self, attr, getattr(parent, attr))
+            setattr(self.helper, attr, getattr(self, attr))
 
     def set_trait(self, trait):
         self.helper.set_trait(trait)
