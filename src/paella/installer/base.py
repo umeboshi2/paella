@@ -157,6 +157,7 @@ class BaseProcessor(object):
     def __init__(self):
         self._processes = []
         self._process_map = {}
+        self.current = None
 
     def insert_process(self, index, name, function):
         if name not in self._processes:
@@ -175,9 +176,11 @@ class BaseProcessor(object):
     def run_all_processes(self):
         self.log_all_processes_started()
         for procname in self._processes:
+            self.current = procname
             self.run_process(procname)
         self.log_all_processes_finished()
-
+        self.current = None
+        
     def run_process(self, procname):
         self.pre_process(procname)
         script = self.make_script(procname)
@@ -228,7 +231,7 @@ class BaseProcessor(object):
         self.log.info('Starting all processes')
         
     def log_all_processes_finished(self):
-        self.log.info('Finished all processes')
+        self.log.info('Finished all processes for %s' % self.__class__.__name__)
 
     def log_process_started(self, procname):
         self.log.info('Starting %s process' % procname)
@@ -285,29 +288,12 @@ class BaseInstaller(BaseProcessor):
         if not self.target.isdir():
             raise InstallError, 'unable to create target directory %s' % self.target
         
-    def set_logfileOrig(self, logfile):
-        self.logfile = path(logfile)
-        format = '%(name)s - %(asctime)s - %(levelname)s: %(message)s'
-        logdir = self.logfile.dirname()
-        if not logdir.isdir():
-            makepaths(logdir)
-        self.log = Log('paella-installer', self.logfile, format)
-
-        # the mailserver trait used to somehow erase the logfile
-        # so a bkup is generated here.
-        bkup = self.logfile + '.bkup'
-        if not bkup.exists():
-            self.logfile.link(bkup)
-        sys.paella_logger = self.log
-        os.environ['PAELLA_LOGFILE'] = self.logfile
-        
     def set_logfile(self, logfile):
         self.logfile = path(logfile)
         self.mainlog = PaellaLogger(self.logfile)
         name = self.__class__.__name__
         self.mainlog.add_logger(name)
         self.log = self.mainlog.loggers[name]
-        
         
         # the mailserver trait used to somehow erase the logfile
         # so a bkup is generated here.

@@ -100,6 +100,15 @@ def requires_installer_set(func):
         return func(self, *args, **kw)
     return wrapper
 
+
+def requires_install_complete(func):
+    def wrapper(self, *args, **kw):
+        if not self._install_finished:
+            raise UnsatisfiedRequirementsError, 'install needs to be complete first'
+        return func(self, *args, **kw)
+    return wrapper
+
+
 # basic operation:
 # 1. setup installer db connection
 # 2. init ChrootInstaller
@@ -112,6 +121,8 @@ class ChrootInstaller(BaseInstaller):
     def __init__(self, conn):
         BaseInstaller.__init__(self, conn)
         self._bootstrapped = False
+        self._install_finished = False
+        
         self._processes = [
             'ready_target',
             'bootstrap',
@@ -141,7 +152,8 @@ class ChrootInstaller(BaseInstaller):
                                  umount_target_sys=self.umount_target_sys,
                                  umount_target_proc=self.umount_target_proc
                                  )
-        
+        # this is only used in the machine installer
+        self.mtypedata = {}
     
     # the default script for the chroot installer is None
     def make_script(self, procname):
@@ -157,6 +169,7 @@ class ChrootInstaller(BaseInstaller):
     @requires_target_set
     def set_profile(self, profile):
         self.installer = ProfileInstaller(self)
+        self.installer.mtypedata.update(self.mtypedata)
         self.installer.set_profile(profile)
         self.set_suite(self.installer.suite)
     
@@ -204,17 +217,23 @@ class ChrootInstaller(BaseInstaller):
     @requires_bootstrap
     def apt_sources_installer(self):
         make_sources_list(self.conn, self.target, self.suite)
-
-    @requires_bootstrap
+        
+    @requires_install_complete
     def apt_sources_final(self):
+        sourceslist = self.target / 'etc/apt/sources.list'
+        sourceslist_installer = path('%s.installer' % sourceslist)
+        os.rename(sourceslist, sourceslist_installer)
         make_official_sources_list(self.conn, self.target, self.suite)
 
     # this is probably not useful anymore
     # it still has a purpose in the machine installer -
     #  it sets up the mdadm.conf file with the raid devices it creates
     #  if it creates any.
+    @requires_bootstrap
     def ready_base_for_install(self):
-        print "nothing done in ready_base_for_install anymore"
+        # update the package lists
+        self.chroot('apt-get -y update')
+        
         
     # common method for mounting /proc and /sys
     # here fs is either 'proc' or 'sys'
@@ -266,13 +285,19 @@ class ChrootInstaller(BaseInstaller):
     @requires_installer_set
     def install(self):
         self.installer.run_all_processes()
-        
+        self._install_finished = True
 
     def log_all_processes_finished(self):
         self.log.info('-'*30)
-        self.log.info('ChrootInstaller processes finished')
+        self.log.info('%s processes finished' % self.__class__.__name__)
         self.log.info('-'*30)
 
+    def save_logfile_in_target(self):
+        install_log = self.target / 'root/paella/install.log'
+        self.mainlog.filename.copyfile(install_log)
+        
+        
+        
 if __name__ == '__main__':
     from paella.db import PaellaConnection
     conn = PaellaConnection()

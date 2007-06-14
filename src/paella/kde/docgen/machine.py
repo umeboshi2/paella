@@ -202,6 +202,21 @@ class MountDoc(_MachineBaseDocument):
         self._make_footer_anchors('mount', mount)
         
 
+class DiskDoc(_MachineBaseDocument):
+    def set_disk(self, diskname):
+        clause = Eq('diskname', diskname)
+        self.clear_body()
+        title = SectionTitle('Disk:  %s' % diskname)
+        attributes = dict(bgcolor='IndianRed', width='100%')
+        title.attributes.update(attributes)
+        self.body.append(title)
+        self.body.append(Header('Partitions', level=2))
+        rows = self.cursor.select(table='partitions', clause=clause, order='partition')
+        fields = ['partition', 'start', 'size', 'Id']
+        ptable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
+        self.body.append(ptable)
+        self._make_footer_anchors('disk', diskname)
+        
 class MachineFieldTable(BaseFieldTable):
     def __init__(self, row, **atts):
         fields = ['machine', 'machine_type', 'kernel', 'profile', 'filesystem']

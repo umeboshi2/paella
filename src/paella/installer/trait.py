@@ -69,24 +69,31 @@ class TraitInstallerHelper(object):
         #self.log.info('trait set to %s' % trait)
 
     # helper to run commands in a chroot on the target
-    def chroot(self, command):
-        return runlog('chroot %s %s' % (self.target, command))
+    def chroot(self, command, failure_suppressed=False):
+        cmd = 'chroot %s %s' % (self.target, command)
+        return runlog(cmd, failure_suppressed=failure_suppressed)
         
     def remove_packages(self, packages):
-        packages_arg = ' '.join(packages)
-        command = 'apt-get -y remove %s' % packages_arg
-        self.chroot(command)
+        if packages:
+            packages_arg = ' '.join(packages)
+            command = 'apt-get -y remove %s' % packages_arg
+            self.chroot(command)
+        else:
+            self.log.info('No packages to remove')
         
     def install_packages(self, packages, unauthenticated=False):
-        packages_arg = ' '.join(packages)
-        opts = ''
-        if unauthenticated:
-            opts = '--allow-unauthenticated'
-        command = 'apt-get -y %s install %s' % (opts, packages_arg)
-        stmt = 'install command for trait %s is:  %s' % (self.trait, command)
-        self.log.info(stmt)
-        self.chroot(command)
-
+        if packages:
+            packages_arg = ' '.join(packages)
+            opts = ''
+            if unauthenticated:
+                opts = '--allow-unauthenticated'
+            command = 'apt-get -y %s install %s' % (opts, packages_arg)
+            stmt = 'install command for trait %s is:  %s' % (self.trait, command)
+            self.log.info(stmt)
+            self.chroot(command)
+        else:
+            self.log.info('No packages to install')
+            
     def remove_cached_debs(self):
         archives = self.target / 'var/cache/apt/archives'
         partial = archives / 'partial'
@@ -287,7 +294,23 @@ class TraitInstaller(BaseInstaller):
             # a hacky way to configure debconf
             if t.template == 'root/paella-debconf.sh':
                 self.log.info('Running paella-debconf.sh script ...')
-                self.helper.chroot('/root/paella-debconf.sh')
+                retval = self.helper.chroot('/root/paella-debconf.sh', failure_suppressed=True)
+                # sometimes this script returns 128 and can't be reproduced reliably
+                # so we try running it again, until we have no 128 returned
+                if retval == 128:
+                    count = 0
+                    while retval == 128:
+                        count += 1
+                        if count < 20:
+                            self.log.info('/root/paella-debconf.sh returned 128, running again')
+                            # this time we will fail on 128
+                            retval = self.helper.chroot('/root/paella-debconf.sh',
+                                                        failure_suppressed=True)
+                        else:
+                            raise InstallDebconfError, 'Too many attempts to run debconf script'
+                elif retval and retval != 128:
+                    msg = "problem running debconf script, returned %d" % retval
+                    raise InstallDebconfError, msg
                 # rename script
                 filename = self.target / 'root/paella-debconf.sh'
                 newname = self.target / 'root/%s-paella-debconf.sh' % self.helper.trait

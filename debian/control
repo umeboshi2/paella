@@ -44,11 +44,19 @@ Description: python package for paella installers
  This package contains most of the code for installers to work.
  It also contains the chroot installer.
 
+Package: paella-machine-installer
+Section: admin
+Priority: extra
+Architecture: any
+Depends: paella-installer, xfsprogs, hdparm, mdadm, gawk, grub
+Description: package for machine installer
+    This package should be installed on a live system.
+
 Package: paella-nfs-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db, paella-installer, reiserfsprogs, xfsprogs, hdparm, mdadm, mkisofs, gawk
+Depends: paella-machine-installer
 Description: package for nfsroot installer
     This package should be installed on the nfsroot installer.
 

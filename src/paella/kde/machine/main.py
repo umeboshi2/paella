@@ -12,6 +12,7 @@ from viewbrowser import MachineView
 from viewbrowser import MachineTypeView
 from viewbrowser import FilesystemView
 from viewbrowser import MountView
+from viewbrowser import DiskView
 
 #from actions import ManageMachinesAction
 #from actions import ManageMachineTypesAction
@@ -91,7 +92,24 @@ class MountManager(PaellaManagerWidget):
         mount = str(item.text(0))
         self.mainView.set_mount(mount)
         
-            
+class DiskManager(PaellaManagerWidget):
+    def __init__(self, parent):
+        mainview = DiskView
+        PaellaManagerWidget.__init__(self, parent, mainview, name='DiskManager')
+        self.initlistView()
+
+    def initlistView(self):
+        self.cursor = self.conn.cursor(statement=True)
+        rows = self.cursor.select(table='disks', order='diskname')
+        self.listView.addColumn('diskname')
+        for row in rows:
+            KListViewItem(self.listView, row.diskname)
+
+    def selectionChanged(self):
+        item = self.listView.currentItem()
+        diskname = str(item.text(0))
+        self.mainView.set_disk(diskname)
+        
 class MachineMainWindow(BasePaellaWindow):
     def __init__(self, parent):
         BasePaellaWindow.__init__(self, parent, name='MachineMainWindow')
@@ -171,7 +189,8 @@ class MachineMainWindow(BasePaellaWindow):
         self.statusbar.message('Manage kernels')
             
     def slotManagedisk(self):
-        raise NotImplementedError, 'slotManagedisk not implemented'
+        self._setMainView(DiskManager)
+        self.statusbar.message('Manage Disks')
 
     def slotManagemount(self):
         self._setMainView(MountManager)

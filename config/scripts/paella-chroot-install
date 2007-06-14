@@ -37,7 +37,7 @@ installer.set_target(target)
 installer.set_profile(profile)
 print "installing %s to %s" % (profile, target)
 installer.run_all_processes()
-
+installer.save_logfile_in_target()
 
 
 

@@ -14,6 +14,7 @@ from paella.kde.docgen.machine import MachineDoc
 from paella.kde.docgen.machine import MachineTypeDoc
 from paella.kde.docgen.machine import FilesystemDoc
 from paella.kde.docgen.machine import MountDoc
+from paella.kde.docgen.machine import DiskDoc
 
 from base import NewMachineDialog
 from base import EditMachineDIalog
@@ -96,7 +97,7 @@ class MachineTypeView(ViewBrowser):
             msg = 'Problem with action in url %s' % url
             KMessageBox.error(self, msg)
         if self._dialog is not None:
-            self._dialog.connect(dialog, SIGNAL('cancelClicked()'), self._destroy_dialog)
+            self._dialog.connect(self._dialog, SIGNAL('cancelClicked()'), self._destroy_dialog)
             self._dialog.show()
         self.resetView()
 
@@ -179,6 +180,18 @@ class MountView(ViewBrowser):
 
     def set_mount(self, mount):
         self.doc.set_mount(mount)
+        self.setText(self.doc.output())
+
+    def setSource(self, url):
+        KMessageBox.error(self, 'setSource unsupported now %s' % url)
+        
+
+class DiskView(ViewBrowser):
+    def __init__(self, parent):
+        ViewBrowser.__init__(self, parent, DiskDoc)
+
+    def set_disk(self, diskname):
+        self.doc.set_disk(diskname)
         self.setText(self.doc.output())
 
     def setSource(self, url):

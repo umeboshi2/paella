@@ -1,6 +1,5 @@
 import os
 
-from useless.base.util import echo
 from useless.base.util import makepaths
 
 from paella import deprecated
@@ -28,7 +27,7 @@ def make_filesystem(device, fstype):
         cmd = 'mkfs.ext2 -F -q %s' % device
     else:
         raise RuntimeError,  'unhandled fstype %s '  % fstype
-    echo(cmd)
+    runlog('echo make_filesystem command "%s"' % cmd)
     return runlog(cmd)
 
 def make_filesystems(device, fsmounts, env):
@@ -43,14 +42,14 @@ def make_filesystems(device, fsmounts, env):
         else:
             pdev = device + str(row.partition)
         if row.mnt_name in env.keys():
-            echo('%s held' % row.mnt_name)
+            runlog('echo %s held' % row.mnt_name)
         elif row.fstype == 'swap':
             runlog('echo making swap on %s' % pdev)
             runvalue = runlog('mkswap %s' % pdev)
             if runvalue:
                 raise RuntimeError, 'problem making swap on %s' % pdev
         else:
-            echo('making filesystem for %s' % row.mnt_name)
+            runlog('echo making filesystem for %s' % row.mnt_name)
             make_filesystem(pdev, row.fstype)
             
 def mount_target(target, mounts, device):

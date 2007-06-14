@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+import os, sys
+from optparse import OptionParser
+
+from useless.base import Error, debug
+
+from paella.base import PaellaConfig
+from paella.installer.base import InstallerConnection
+#from paella.installer.nfsinstaller import NewInstaller
+from paella.installer.machine import MachineInstaller
+
+parser = OptionParser()
+
+parser.usage = '%prog [options] install machine target'
+parser.add_option('--logfile', action='store', type='string', dest='logfile',
+                  default='/tmp/paella-machine-installer.log')
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+if os.getuid():
+    raise Error, 'need to be root'
+
+cfg = PaellaConfig()
+conn = InstallerConnection(cfg)
+installer = MachineInstaller(conn)
+
+if len(args) != 3:
+    raise Error, 'need three args'
+
+command, machine, target = args
+if command == 'install':
+    installer.set_target(target)
+    installer.set_machine(machine)
+    installer.run_all_processes()
+    installer.save_logfile_in_target()
+else:
+    raise Error, 'unsupported command'
+
+sys.stdout.write('all done.\n')
+
+
