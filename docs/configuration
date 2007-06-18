@@ -1,0 +1,260 @@
+.. -*- mode: rst -*-
+
+Paella Notes
+===========================
+
+.. contents:: :backlinks: entry
+
+
+Reserved Word/Option Reference
+===================================
+
+Environment Variables used by Paella
+------------------------------------------------------
+
++ these are used to help override a configured db connection:
+
+  - **PAELLA_DBHOST** - hostname or ip of host paella database resides
+
+  - **PAELLA_DBNAME** - the name of the paella database
+
+
++ these are used in the installers:
+
+  - **PAELLA_TRAIT** - name of the trait currently being processed
+
+  - **PAELLA_TARGET** - path to target system (/tmp/target by default)
+
+  - **PAELLA_MACHINE** - name of the machine currently being processed
+
+  - **PAELLA_PROFILE** - name of the profile currently being installed
+
+  - **PAELLA_LOGFILE** - absolute name of logfile
+
+  - **LOGFILE** -- this needs to be deprecated
+
+  - **FAKE_START_STOP_DAEMON** - fill me in
+
+  - **DEBIAN_FRONTEND** - set to noninteractive
+
+
++ These are used in scripts and are mostly unimportant:
+
+  - **SUITES**
+
+  - **USER**
+
+  - **PATH**
+
+
++ these are used in the kernelbuilder:
+
+  - **INITRD_OK** - used when building initrd kernel
+
+  - **CONCURRENCY_LEVEL** - this helps speed things up on smp systems.
+
+------------------------------------------------
+
+
+Paellarc Configuration File
+------------------------------------------------
+
+I'm trying to move as much as possible from the paellarc file to
+the default environment in the database.
+(installer) means that the section or option is meaningful only to the installer code.
+(manager) means that the section or option is meaningful only to the db manager code.
+Otherwise the section or option is applicable to both the installer and manager parts of 
+paella.
+
++ Section **database**
+
+  - dbhost:  hostname or ip of host where paella database resides
+
+  - dbname:  name of paella database
+
+  - dbusername:  username to connect to database with
+
+  - dbpassword:  password to use for authentication (if necessary)
+
+  - import_path:  default path for import and export of database data
+
+  - export_path:  **deprecated, use import_path***
+
+  - autocommit:  **deprecated, don't use**
+
++ Section **debrepos**
+
+  - I'm probably going to deprecate much of the paella-debrepos package
+    as there are much better tools to handle this now.
+
+  - repos_host:  **no info now**
+
+  - debroot:  **no info now**
+
+  - repos_root:  **no info now**
+
+  - official_suite:  **no info now**
+
+  - local_suites:  **no info now**
+
+  - sid_suites:  **no info now**
+
+  - http_mirror:  **no info now**
+
+  - official_main:  **deprecated**
+
+  - official_nonus:  **deprecated**
+
+  - official_security:  **deprecated**
+
+  - other_repos:  **no info now**
+
+  - other_repos_names:  **no info now**
+
++ Section **installer**
+
+  - I'm probably going to deprecate much of the paella-debrepos package
+    as there are much better tools to handle this now.
+
+  - enable_bad_hacks:  
+
+    - this ugly option needs to be removed
+
+  - paella_storage:  
+
+    - parent directory for storing files that the installer needs
+      like base tarballs, etc.
+
+  - suite_storage:  
+
+    - default %(paella_storage)s/suites - where the base
+      tarballs are stored.
+
+  - bootstrap_suites:  
+
+    - a comma separated list of suites to keep tarballs of.
+      this will probably be removed soon
+
+  - use_devices_tarball:  
+
+    - This used to be handy as the MAKEDEV script used
+      to take a long time to run.  We can now use udev to do most of the work that
+      this option was here for.
+
++ Section **management_gui** (manager)
+
+  - This section is for using the management gui interface.
+
+  - env_editor_size:
+
+  - bkuptarball_path:
+
+  - template_profile:
+
+  - default_profile_suite:
+
+  - client_path:
+
+  - manager_pos:
+
+  - manager_size:
+
+  - manager_type:
+
+
+------------------------------------------------
+
+
+Uml Machine Configuration File
+------------------------------------------------
+
+This is the structure of the umlmachines.conf configuration file.
+Every section in this configuration file defines a uml machine, using
+the name of the section.
+
++ Section **DEFAULT**
+
+  - The DEFAULT section is used to set defaults for the uml
+    machines.
+
++ Section **umlmachines**
+
+  - This section may be removed, and the options placed in DEFAULT
+
+---------------------------------------------------------------------
+
+Uml Kernel Options used by paella-init script
+----------------------------------------------------------------------
+
+These are the command line options understood by the paella-init for
+the user mode linux kernel.
+
+- **python_path**:  sets the PYTHONPATH
+
+- **logfile**:  path to logfile
+
+- **LOGFILE**:  another name for logfile
+
+- **paella_action**:  action to be performed by paella-init
+
+- **umlconfig**:  path to umlmachines.conf
+
+- **umlmachine**:  name of the uml machine that being run
+
+- **paellaprofile**:  profile to be installed if applicable
+
+- **paellasuite**:  suite to be bootstrapped if applicable
+
+- **paella_system_tarball**:  a system backup to be restored if applicable
+
+- **bootstrap_script**:  path to script to run with debootstrap
+
+- **bootstrap_mirror**:  mirror to use with debootstrap
+
+- **backup_target**:  option used  before paella-init set the umlmachine, should
+  be removed soon.
+
+------------------------------------------------
+
+
+Default Environment
+------------------------------------------------
+
+The default environment is a ini type configuration file stored in the database as the
+default_enviroment table.
+
++ Section **installer**
+
+  - bootstrap_target:  bool that determines wheter the install will run debootstrap, or
+    use a pre-made base tarball.
+
+  - devices_tarball:  location of a tarball full of preliminary devices, useful as MAKEDEV
+    takes quite a while.  (This option will probably be removed soon due to udev.)
+
+  - enable_bad_hacks:  This option is used for testing the installer and should always
+    be set to false
+
+  - http_mirror:  uri of debian mirror used during installation.
+
+  - nfs_log_export:	 Path to log directory of nfs server, allows installer to write to a log
+    file.
+
+  - nfs_log_host:  host for the log export
+
+  - nfs_log_path:  subdirectory path of nfs_log_export.  This is where the logfile will be stored.
+
+  - paella_storage:  main storage area
+
+  - suite_storage:  subdirectory path of paella_storage.  This is where the base tarballs are kept.
+
+
+------------------------------------------------
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+.. _machines: #machine

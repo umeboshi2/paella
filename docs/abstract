@@ -1,5 +1,9 @@
 .. -*- mode: rst -*-
+
 abstract
+===========
+
+.. contents:: :backlinks: entry
 
 Paella is system for creating/installing customized debian systems.
 There are no current plans for configuration updates on live systems,

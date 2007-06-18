@@ -1,0 +1,258 @@
+.. -*- mode: rst -*-
+
+Objects and Definitions
+==========================
+
+Apt Source
+------------------
+An apt source is similar to a line in an /etc/apt/sources.list file.
+
+
+Suite
+-------
+A suite is a similiar to debian suites like woody or sarge.  A suite 
+can be used to make different versions of configurations, or different
+styles of design and configurations.  Traits are held in suites.
+
+Basically a suite is an ordered list of apt sources, and a set of traits.
+
+
+Trait 
+------
+A trait is the atomic unit that signifies a feature. 
+A trait belongs to a suite.  The table in the database that holds the list of traits
+is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
+and a set of variables.
+
+- **parents**
+
+  + no trait can be processed during the installation before all
+    of its parents are processed.	     
+  + parents are not required, but most traits should depend on a default
+    trait.
+  + no trait can be processed during the installation before all of its
+    parents are processed. 
+    
+  
+- **packages**
+
+  + this is a list of packages to install or remove 
+    - although other options are available, only install and remove are supported now 
+  + packages are not required 
+ 
+- **templates** 
+
+  + templates can have simple tags for variable substitution 
+  + templates store user/group and chmod permissions 
+  + a template must currently be attached to a package 
+    
+    - this feature should be removed, because traits that only need 
+      traits get vestigial packages assigned to them like base-files, 
+      initscripts, or bash 
+  + currently the var/cache/debconf/config.dat template is reserved 
+    for debconf 
+
+- **environment** 
+
+  + a collection of name, value pairs for use in the templates and scripts 
+  + a trait's environment contains its parents' environment 
+  + a big python dictionary is made of the environment where the keys
+      are formed as "trait_name" where trait is the trait and name is the 
+      name of the variable.
+
+- **scripts** 
+
+  + a trait is not required to have a script 
+  + only three types of scripts are currently supported, pre, post, and chroot 
+
+    - chroot is a special script that is run in a chrooted environment in the target area. 
+      This script should be aware of what's on the target system and only depend on 
+      those things. The script shouldn't connect to paella or depend on other installation 
+      tools not present in the target system. 
+    - pre is executed before anything else is processed in the trait. 
+
+      + The pre script is executed with an os.system. 
+
+    - post is the very last action to perform in the trait 
+
+      + post should be able to talk to database and environment 
+
+  + other scripts
+    
+    - you can define a script for any
+      step in the trait install process.
+
+    - if you make a script named install, remove, config,
+      or reconfig, that step in the trait process is ignored,
+      and the script run instead.  The script doesn't have
+      to do anything, so it's a good way to skip a step in the 
+      trait installation
+
+    - in order for a script to be executed its name must match
+      a step in the trait processes.
+
+Family
+--------
+
+- A family is a collection of variables from different traits 
+
+  + a family can have parents
+  + a family is not tied to a suite
+  + a variable in a family doesn't have to exist in a trait,
+    but it has to be tied to a trait.
+
+Profile
+-------
+
+- A profile is a collection of traits, and an environment
+
+  + Traits - the traits listed in the profile are ordered 
+  + Families - an unordered list of families 
+  + Environment
+	- the profile environment overrides the trait environments 
+	  and the family environment 
+
+
+Machine Database
+=================
+This section describes the machine database part of paella.  Profile, traits, and families
+should not be machine specific.  The Machine database trying to be design to hold
+information about physical systems to install logical systems from.
+
+Machine Type
+-------------
+A machine type is going to be the main identifier of a particular type of machine.
+This currently includes disks and kernel modules.  The disks of a machine type are a
+list of tuples in the database (machine_type, diskname, device) .  The current policy is 
+to treat all devices of a certain  diskname as a raid1 array if there is more than one
+device.  Machine Types will have parents soon.
+
+Machine Type Scripts
+-------------------------------
+
+Machine type scripts are steps in the install process for machines.  These steps
+will be treated similiar to the trait scripts. The default steps/scripts are:
+
+- pre
+
+  + this step normally does nothing.
+
+- setup_disks
+
+  + this step is responsible for partitioning the disks and
+    for creating the filesystems
+
+- mount_target
+
+  + this step is responsible for mounting the filesystems
+    created in the previous step to the target directory
+
+  + the script will need to make the subdirectories in target
+    for filesystems under the target root, and mount the
+    appropriate ones.
+
+- bootstrap
+
+  + this step is responsible for bootstrapping the base
+    system into the target directory.
+
+- apt_sources_installer
+
+  + this step should create a sources.list file that is appropriate
+    for the installer environment.  It should place the file in 
+    $target/etc/apt/sources.list
+
+- ready_base
+
+  + this is a legacy step in the installer that would setup a root
+    password, a simple /etc/network/interfaces file, and a fstab.
+
+- pre_install
+
+  + this step normally does nothing.
+
+- install
+
+  + this step performs the install process
+
+- post_install
+
+  + this step normally does nothing.
+
+- install_modules
+
+  + this step should create a $target/etc/modules file appropriate for
+    the machine type.
+
+- install_kernel
+
+  + this step is reponsible for installing a kernel in the target and
+    preparing the bootloader for booting.
+
+  +  the machine should be ready to reboot after this step
+
+- apt_sources_final
+
+  + this step is reponsible for making a sources.list that will
+    be used when the machine is on the target site.  This step can be
+    skipped for on-site installations.
+
+- install_fstab
+
+  + this step is reponsible for installing the fstab on the target system.
+
+- post
+
+  + this step normally does nothing.
+
+Machine
+--------
+
+a machine contains 
+
+- a **name**
+
+- a **machine_type**
+
+  + this is one of the machine types that are already defined
+
+- a **kernel** 
+  
+  + a kernel is simply the name of a kernel image package 
+  + the package must be install-able by apt, in a chroot environment, on the target system. 
+
+- a **filesystem** 
+  
+  + a filesystem_ is a named ordered map of mounts_ to partition numbers 
+
+- a **profile**
+
+
+Mount
+------
+
+a mount_ is named 
+
+a mount describes filesystem type, mount option, dump, pass and the mount point 
+
+Filesystem
+---------------
+
+this is done on filesystem_mounts 
+
+the target fstab will be completely formed from the filesystem information 
+
+
+
+
+--------------------------------------
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+
+.. _machines: #machine
