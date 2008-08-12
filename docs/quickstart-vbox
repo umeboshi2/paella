@@ -43,20 +43,30 @@ You will need to run an operating system that can host VirtualBox OSE.
 VirtualBox OSE
 -----------------------
 
-This quickstart will use Virtualbox OSE to setup the machine that will act as the main 
-paella server, and also to test to make machines to test the installs.
+This quickstart will use VirtualBox OSE to setup the machine that will act as the main 
+paella server, and also to test to make machines to test the installs.  The procedure outlined 
+below is assuming that you are using a GNU/Linux system as a host for VirtualBox OSE, but 
+there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.
 
-Debian Lenny
-------------------
+
+Debian Installer for Lenny
+-------------------------------------
 
 .. _page: http://www.debian.org/devel/debian-installer/
 
+.. _url: ftp://ftp.nl.debian.org/debian/dists/testing/main/installer-i386/current/images/
 It is best to start with a running debian desktop.  The upcoming lenny release is
 what is currently supported.  You should get the netinst iso, which available on this 
 page_.  I used the i386_ image.
 
 .. _i386: http://cdimage.debian.org/cdimage/lenny_di_beta2/i386/iso-cd/debian-LennyBeta2-i386-netinst.iso
 
+The upcoming lenny release is what is currently supported.  You should get the netboot 
+folder, which available on this  page_.  You need to download the whole netboot folder.  
+I used this url_ in an ftp client and  grabbed the whole netboot folder.  You'll need to use an 
+ftp client that's able to download the directory recursively.  Personally, I used wget to get the 
+directory, and retested getting with kftpgrabber.  Using konqueror didn't seem to work for some 
+reason.
 
 -------------------
 
@@ -84,6 +94,10 @@ to add another network interface to this machine, so select the Adapter 1 tab.  
 Network".  You will need to name the network in the field that says "Network Name".  Any name 
 should do just fine.  I used "lapnet" (no quotes), since I'm on a laptop.  Remember this name, 
 since you'll need this for the other machine(s) that you will use paella to install to.
+
+Now, select the General part of the list of the left hand side of the settings dialog.  Click the 
+Advanced tab at the top.  Select the Network box in the Boot Order section, and use the arrows 
+on the right to make sure that Network is the boot method on the top of the list.
 
 
 Setup paella from subversion
