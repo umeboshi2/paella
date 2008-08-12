@@ -124,7 +124,7 @@ Package: paella-uml-admin
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-admin, user-mode-linux, uml-utilities
+Depends: paella-admin, user-mode-linux, uml-utilities, umlrun
 Description: Use user-mode-linux to test paella installs
   This package provides tools to help test paella using
   user-mode-linux.

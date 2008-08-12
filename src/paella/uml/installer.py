@@ -37,6 +37,14 @@ class BaseUmlInstaller(UmlChroot):
     def make_root_device(self, rpath, size=None):
         if size is None:
             size = self.cfg['basefile_size']
+        dirname = path(rpath).dirname()
+        if not dirname.isdir():
+            if not dirname.exists():
+                print "Creating directory %s" % str(dirname)
+                dirname.makedirs()
+            else:
+                print "Can't create directory %s" % str(dirname)
+                raise ValueError, "file exists that should be a directory"
         msg = 'making uml root device of size %s at %s' % (size, rpath)
         print msg
         create_sparse_file(rpath, size)
