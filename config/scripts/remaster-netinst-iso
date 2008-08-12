@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# WARNING!!! 
+#This script uses sudo, and shouldn't be run without inspection.
+
+# commands needed to run this script
+# rsync - apt-get install rsync
+# sudo - apt-get install sudo
+# svn - apt-get install subversion
+
+
+# you may need to set these variables
+ARCH=i386
+
+
+official_netinst_image=$1
+
+# if there's no iso argument, download the iso
+if [ -z $official_netinst_image ]; then
+    wget http://cdimage.debian.org/cdimage/lenny_di_beta2/$ARCH/iso-cd/debian-LennyBeta2-$ARCH-netinst.iso
+    official_netinst_image=debian-LennyBeta2-$ARCH-netinst.iso
+fi
+
+# this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
+mkdir -p loopdir
+sudo mount -o loop $official_netinst_image loopdir 
+rm -rf cd
+mkdir cd
+rsync -a -H --exclude=TRANS.TBL loopdir/ cd
+sudo umount loopdir
+
+rmdir loopdir
+
+chmod +w -R cd/
+
+
+
+svn export --force svn://svn.berlios.de/paella/website/netinst cd
+
+echo "Here you may need to examine and modify the preseed files"
+echo "Use another terminal, and do this. When you're ready,"
+echo "press enter to continue."
+read
+
+
+
+
+
+# this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
+#Fix md5sum's
+pushd cd
+md5sum `find ! -name "md5sum.txt" ! -path "./isolinux/*" -follow -type f` > md5sum.txt
+popd
+
+
+# this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
+mkisofs -o paella-netinst.iso -r -J -no-emul-boot -boot-load-size 4 \
+ -boot-info-table -b isolinux/isolinux.bin -c isolinux/boot.cat ./cd
