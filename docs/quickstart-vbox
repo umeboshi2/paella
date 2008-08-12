@@ -29,9 +29,18 @@ configuration that paella requires.
 Requirements
 ==========================
 
+Debian
+----------
+
+You should be running debian to follow this quickstart procedure.  It's technically not 
+required, but this document will assume that your running either lenny, sid, or etch 
+with VirtualBox running (from backports.org or similar).  This procedure has been tested 
+while running sid, although lenny should work just fine.  There also shouldn't really be 
+any problem with using etch, save for having to have VirtualBox installed.
+
 Hardware
 -----------------
-This quick start routine was developed and tested using a laptop with 3GB of memory.
+This quickstart routine was developed and tested using a laptop with 3GB of memory.
 You could probably get by with less which I will try to estimate later.  Most of the memory 
 is required to run the virtual machines.  I estimate that only 2GB of ram will be required.  
 Please note that this is only the hardware requirements for following this quickstart 
@@ -49,26 +58,48 @@ below is assuming that you are using a GNU/Linux system as a host for VirtualBox
 there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.
 
 
-Debian Installer for Lenny
+Debian Netinst CD Image (LennyBeta2)
 -------------------------------------
 
 .. _page: http://www.debian.org/devel/debian-installer/
 
 .. _url: ftp://ftp.nl.debian.org/debian/dists/testing/main/installer-i386/current/images/
-It is best to start with a running debian desktop.  The upcoming lenny release is
-what is currently supported.  You should get the netinst iso, which available on this 
-page_.  I used the i386_ image.
+
+The upcoming lenny release is what is currently supported.  You should get the netinst iso, 
+which available on this page_.  I used the i386_ image.  Hopefully any architecture should work, 
+but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll 
+be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.
+
 
 .. _i386: http://cdimage.debian.org/cdimage/lenny_di_beta2/i386/iso-cd/debian-LennyBeta2-i386-netinst.iso
 
-The upcoming lenny release is what is currently supported.  You should get the netboot 
-folder, which available on this  page_.  You need to download the whole netboot folder.  
-I used this url_ in an ftp client and  grabbed the whole netboot folder.  You'll need to use an 
-ftp client that's able to download the directory recursively.  Personally, I used wget to get the 
-directory, and retested getting with kftpgrabber.  Using konqueror didn't seem to work for some 
-reason.
 
--------------------
+Remaster the netinst iso
+-------------------------------------------
+
+This step is optional, but it may be handy, especially if you have an application that can remaster 
+an iso image.  This allows you to preseed the debian installer and make an automated install.  
+Even though this step is technically optional, it would be a very good idea to get the script below, 
+and the files that are obtained through subversion in the script to get an idea of how to proceed 
+manually without performing this step.  This step is highly recommended
+
+If you are running debian, remastering the iso is easy::
+
+       svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
+
+**WARNING!!!**  This script uses sudo to perform the loopback mounting of the iso 
+image.  Be sure to look over the script really good before you execute it.  You may want to 
+change the ARCH variable near the top of the file.  Be sure that you have rsync, sudo, and 
+subversion installed.
+
+Either download the iso, and enter the filename as the first argument, or just run the script 
+without arguments.  The script will download the debian-LennyBeta2-i386-netinst.iso for you.
+
+The script will give you a chance to review and edit the preseed files before you create the 
+remastered iso image.  When the script is finished, the iso image will be ./paella-netinst.iso .
+
+
+
 
 Setup the paella virtual machine
 ===============================================
@@ -95,9 +126,15 @@ Network".  You will need to name the network in the field that says "Network Nam
 should do just fine.  I used "lapnet" (no quotes), since I'm on a laptop.  Remember this name, 
 since you'll need this for the other machine(s) that you will use paella to install to.
 
-Now, select the General part of the list of the left hand side of the settings dialog.  Click the 
-Advanced tab at the top.  Select the Network box in the Boot Order section, and use the arrows 
-on the right to make sure that Network is the boot method on the top of the list.
+Boot the paella virtual machine
+================================
+
+Now you should be ready to boot the virtual machine, and install debian lenny.
+
+Boot the machine by pressing Start (the green arrow) on the virtualbox frontend (make sure 
+the paella virtual machine is the one that's selected).  When the boot screen appears, select 
+one of the first two menu options.  Don't bother selecting the second option unless you have 
+a local debian mirror, and you have modified the preseed files.
 
 
 Setup paella from subversion
