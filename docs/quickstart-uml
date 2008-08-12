@@ -1,0 +1,523 @@
+.. -*- mode: rst -*-
+
+Paella Quick Start Guide
+===========================
+This guide is unfinished.  If you are reading this, do not expect the guide to be correct or
+accurate.  This guide will not be ready to read, and the steps outlined should not be 
+attempted until this paragraph is removed.
+
+.. contents:: :backlinks: entry
+
+Introduction
+--------------------
+
+.. introductory comment
+
+
+Paella depends on a particular type of setup to operate.  This document details how to 
+bootstrap that setup, starting from the bare minimum requirements.  This guide is written 
+with the goal of minimizing the requirement for the root account to setup the system.  The 
+former method of working with paella, required (possibly) extensive configuring of a local 
+network.  In order to effectively use paella in a "production" environment, where you are 
+actually installing machines, still requires the same type of network configuration.  It is hoped 
+that the method outlined here can help prepare this by using paella to generate the 
+configuration that paella requires.
+
+
+-------------------
+
+Requirements
+==========================
+
+Debian Etch
+------------------
+It is best to start with a running debian desktop.  The upcoming etch release is
+what is currently supported.  Sarge will probably not work as paella requires python 
+2.4 to operate.  Using sid may work also, especially while etch is still in testing, but this 
+has not been tested.
+
+Hardware
+-----------------
+This quick start routine was developed and tested using a laptop with 512MB of memory,
+and a 1GB swap partition.  You could probably get by with less which I will try to estimate 
+later.  Most of the memory is required to run the user mode linux processes, and this can be 
+adjusted by providing more swap for the user mode processes to use.
+
+
+Postgresql Database
+--------------------------------
+A postgresql database is required to use paella.  The database server must allow tcp 
+access.  A database user named "paella" must be created and allowed access to the paella 
+database without authentication.  The paella user has only read access to most tables, 
+although there are a couple of tables that are setup specifically for write access.
+
+More specific instructions on configuring the database server are provided in a later section.
+
+
+User Mode Linux
+----------------------------------
+User mode linux is used to help test paella installations  in a limited environment where it is 
+not feasible to setup a network of machines.  It can be useful when testing a new configuration 
+of network services on a test network without interfering with the normal network.
+
+In order to follow most of the steps in this guide, the user-mode-linux and uml-utilities packages 
+are required to be installed.  More specific instructions on configuring user-mode-linux and the 
+uml-utilities package are provided in a later section.
+
+-------------------
+
+Setup paella from subversion
+===============================================
+
+Install Subversion
+----------------------------
+You will need to install subversion to setup the environment necessary to run paella.
+As root::
+
+	apt-get install subversion
+
+Obtain the quick setup script
+-----------------------------------------------
+type::
+	
+	svn export svn://svn.berlios.de/paella/trunk/config/scripts/paella-devel-quick-setup
+
+This file should already be executable, if not, do chmod +x paella-devel-quick-setup.
+
+You should edit the file and change the variables at the top to your needs.  When you are
+ready, run the script, install the packages, and make the changes to your .bashrc .  If you 
+don't want to make the changes to your .bashrc, you can put the lines in another file that 
+you will have to source before running any of the scripts.  There is such a file, called 
+paella_environment that is created for you when you run the script.
+
+If you change any of the variables, make a copy of the script first. Keep in mind that throughout 
+this guide I will be referencing things according to the default configuration provided.
+
+-------------------------------
+
+Build paella packages from source tree
+===============================================
+You may wish to go ahead and build debian packages from the source tree.  If you do this, you 
+will also have to build the useless_ packages.  Going this route has the advantage of keeping 
+you from having possibly modify your PATH and PYTHONPATH environment variables
+
+
+------------------------
+
+Setup Database Server
+=====================
+Paella is developed and used with postgresql version 7.x .  It may work with newer versions, but 
+it is not tested.  It is recommended that you run the database server on a host on your local 
+network instead of the host you'll be using paella on.  This is not necessary, but it does help 
+the performance quite a bit.
+
+If you are new to using postgresql, I suggest reading 
+/usr/share/doc/postgresql-7.4/README.Debian.gz first.
+
+
+	Steps to setup paella database::
+		
+		apt-get install postgresql
+		su postgres
+		createuser -a -d adminuser
+		createuser -A -D paella
+		exit
+
+Next, you will have to edit a couple of configuration files as the postgres user.
+
+Edit postgresql.conf
+------------------------------
+You will probably have to edit /etc/postgresql/7.4/main/postgresql.conf , and
+set "tcpip_socket = true" .
+
+Edit pg_hba.conf
+--------------------------
+You will have to edit /etc/postgresql/7.4/main/pg_hba.conf, and add some lines:
+
+If your database server is not on your desktop, but on the local network, you
+will have to allow access to the paella database from your machine.
+example::
+
+	#TYPE	DATABASE	USER		IP-ADDRESS	IP-MASK		METHOD
+	host	paella		paella		<my ip address>	255.255.255.255	trust
+	host	paella		dbadmin		<my ip address>	255.255.255.255	ident sameuser
+
+If your database server is on your desktop, you need to allow access from your uml network.
+example::
+
+	#TYPE	DATABASE	USER		IP-ADDRESS	IP-MASK		METHOD
+	host	paella		paella		10.0.1.0		255.255.255.0	trust
+	host	paella		dbadmin		10.0.1.1		255.255.255.0	trust
+
+
+There is no real authentication support, except for limited password support.  There has not 
+been enough reason to pursue this yet, as the database is always either developed or used in 
+a trusted environment.
+
+dbusers
+-------------
+talk about admin, paella users
+
+create the database::
+
+		createdb paella
+		createlang plpgsql paella
+
+another section
+-------------------------------
+something else
+
+---------------------
+
+Setup User Mode Linux
+======================
+
+Install packages
+--------------------------
+First off, you will need to get root and install a couple of packages::
+
+      apt-get install user-mode-linux uml-utilities
+
+
+Configure TAP Network
+---------------------------------------
+Be sure to read /usr/share/doc/uml-utilities/README.Debian, and follow the instructions 
+there to setup the tap network.  
+
+This quick start procedure uses the 10.0.1.0 network for the user-mode-linux machines by 
+default.  Here is what to add to /etc/network/interfaces::
+
+	       auto tap0
+	       iface tap0 inet static
+		     address 10.0.1.1
+		     netmask 255.255.255.0
+		     tunctl_user uml-net
+
+
+You will probably want to add yourself to the uml-net group::
+
+	 adduser username uml-net
+
+Masquerade TAP Network
+------------------------------------------------
+You will need to setup iptables to get your uml machines to access the rest of the network.
+As root type::
+
+	iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+	echo '1' > /proc/sys/net/ipv4/ip_forward
+
+This is assuming that eth0 is your main network interface.  You may want to add these lines
+to your /etc/rc.local script.
+
+----------
+
+Configuration files
+================================
+
+Setup .paellarc
+-------------------
+.. __: http://docs.python.org/lib/module-ConfigParser.html
+
+If you used the quick setup script above, the example paellarc file will be here,
+~/workspace/paella/config/share/paellarc .  You can copy this file to ~/.paellarc and edit it.
+If you are not familiar with the file format, you can read about it here__ .  Options that are 
+prefixed by an underscore are not referenced in the code.  You can make your own if you 
+wish.
+
+In the database section, the dbhost option should be the ip address of the tap interface you 
+created in the section above.  You will probably want to change the dbusername option to
+the database admin user that you created above.
+
+You can either ignore or completely remove the installer section.  It is only needed for the
+paella machine installer.  It is not needed for the user-mode-linux installer which we are 
+using here.
+
+The management_gui section has options for the paella-management application.  The options 
+that you may want to change here are "text_editor", and "x_differ".  Both of these commands 
+should display an X window.  For the x_differ, I highly recommend xxdiff.  The x_differ command 
+line conform to this::
+
+     x_differ LeftFile RightFile
+
+
+You should not need to change any other options.
+
+Setup .umlmachines.conf
+----------------------------------------
+If you used the quick setup script above, the example umlmachines config file will be here, 
+~/workspace/paella/config/share/umlmachines.  If you built packages, install the 
+paella-uml-admin package, and you will find the file at 
+/usr/share/doc/paella-uml-admin/examples/umlmachines.conf .  You can copy this 
+file to ~/.umlmachines.conf and edit it.  The file format is the same as the paellarc file.  
+Reading through this file can give you a good idea of how the paella uml system works.
+
+The top of the file is where most of the paths are defined.  You shouldn't have to change these 
+if you are using the quick setup script, although you will probably need to modify the 
+**uml_initscript** option to point to the correct location of the paella-init file.  This 
+is the option with the value "%(_script_path)s/paella-init" .
+
+
+If you are not using the default tap network described above, you will have to modify the uml 
+network options accordingly.
+
+
+You may want to modify the **bootstrap_debmirror** option in the 
+`umlmachines` section.
+
+----------------
+
+Using paella-management
+=======================================
+You should be ready to use the paella-management PyKDE interface now.  Before running 
+the application, check the **management_gui** section of your ~/.paellarc file, 
+and make sure that both the **text_editor** and **x_differ** options 
+are set to applications that exist on your system and work in X windows.
+
+Start paella-management
+------------------------------
+Run the paella-management script to start the management interface.  The first thing that you 
+will want to do is to connect to the database.  There is a connect button on the toolbar for you 
+to press.  The connection dialog entries are taken from your ~/.paellarc file.
+
+Once you connect to the database, you should get a dialog asking to create the primary 
+tables.  You should click yes here to setup an empty database structure.  If you don't do 
+this, the database import procedure will create these tables for you, but you won't be able to
+use the paella-management interface until you do this.
+
+Import stage1 database
+--------------------------
+Now we are going to import the startup database.  You will need an internet connection to 
+import the database.  The importer downloads the Packages files from the debian mirror in 
+the database.xml file, and inserts them into the database.  Go to the menubar, and in the 
+database menu, select "import database".  A directory selection dialog will appear.  You 
+need to select the "stage1" directory.  Note that the default debian mirror is 
+http://ftp.us.debian.org/debian .  If you need to change this, edit the database.xml file
+in the stage1 directory, and alter the uri attribute to the aptsource xml element at the 
+top of the file.  You can change this to a local mirror if you already have one.  Paella has only 
+been tested with http apt sources, it's behaviour on other methods is unknown.
+
+      If you are working from a subversion copy from the quick setup script, the directory
+      you will want to select is here, ~/workspace/paella/config/share/databases/stage1/ .
+
+If everything is working, you should be seeing an ugly little progress dialog displaying 
+something resembling what it should be doing.  The packages will probably take a little 
+while to insert.  The apt_source_packages table can take a lot of space that could be
+better saved.  In the future, it will probably default to only holding package names rather 
+than the other attributes in the Packages file.  The reason they are there is to help keep the 
+automated installations from bombing due to unavailable or misspelled packages.
+
+
+After importing the database, you will have to disconnect and then reconnect to the 
+database to refresh the available widgets in the paella-management application.  You may  
+wish to restart the application instead, as when an import occurs, a lot of memory is used 
+to parse the Packages file, and insert the packages into the database.  This memory is not 
+freed after the import process.  Fixing this has not been a major goal, as imports are fairly 
+rare during the normal use of paella-management.
+
+
+Configure stage1 database
+-------------------------------------------
+There should be very little effort needed to configure the stage1 database.
+Check default environment.
+Check tap_network family.
+Check uml_startup family.
+
+------------------
+
+Install the UML Machines
+======================================
+Now we should be ready to install the uml machines.  The uml installer is currently limited to 
+installing one machine at a time.  This is due to the default configuration for this quickstart 
+guide using a static ip.  This can be easily changed later if you wish to use the uml installer 
+for testing purposes.
+
+Install uml_head
+-------------------------
+type::
+
+	paella-umlrunner install uml_head
+
+Install umlbuilder
+------------------------
+type::
+
+	paella-umlrunner install umlbuilder
+
+
+
+Running the UML Machines
+======================================
+Now we should be ready to start running the uml machines.
+
+Run uml_head
+-------------------------
+Make sure your umask is set to 022.
+
+type::
+
+	paella-umlrunner run uml_head
+
+Login as root.  There should be no password required.
+type::
+
+	./setup_debrepos
+
+This will run a script that will setup a partial debian mirror.  This is to keep from 
+having to use a full debian mirror, that used to be required previously to use paella.  This 
+partial mirror should be under 400MB in size.
+
+
+Run umlbuilder
+------------------------
+type::
+
+	paella-umlrunner run umlbuilder
+
+Login as root.  There should be no password required.
+type::
+
+	./init_pbuilder
+
+This will run a script that will prepare pbuilder to build the paella and useless packages.  
+Basically it either generates or restores the base.tgz for pbuilder.  The base.tgz is copied to 
+the hostfs mount, in case it is needed in the future.  Once the script finishes, the next step 
+is to get the useless and paella packages built.  There is a script that does this too.
+type::
+
+	./build_paella_from_subversion
+
+This script will checkout the sources from subversion.  It then exports the working copies and 
+uses pbuilder to build the exports.  Once the packages are built, they are uploaded to 
+the uml_head machine, and placed in the debian mirror.
+
+
+
+.. scavenge, then trash what remains below
+
+
+Getting started with paella (outdated)
+===============================================
+
+People who will get the most benefit out of paella are IT consultants that manage
+multiple disjoint networks.  You may also benefit from it if your network is large enough,
+and you have mostly debian machines on it.  If you only maintain one network with a few
+machines, e.g. a firewall, a server, and a couple of desktops, the time involved it setting up
+paella and maintaining configurations might probably be more than just using more simple
+backup and restore methods.
+
+There are currently no real releases of paella, because i dislike the file release system at
+berlios, so you will have to check out the code via subversion, or alternately you can grab
+the debian packages from http://gregscomputerservice.com.  The line for the sources.list
+is 'deb http://gregscomputerservice.com/debian/local common/'.
+
+A person who uses paella is expected to understand how to perform basic system 
+administration on a debian system.  They should also be comfortable with building their
+own debian packages from source, and debianizing a generic source application.  Paella 
+makes use of mini-dinstall to maintain a local mini-repository and can install systems that 
+reference that repository.  This provides a fairly simple way to add custom packages to the 
+systems that you will be designing.
+
+If you feel that you may benefit out of paella, here is how to get started.  If you don't want to
+use the apt source above, you can check it out from subversion at berlios.  Paella
+depends on Useless.  Useless is a collection of python modules that I use in other database 
+applications.
+
+to get useless:
+svn checkout svn://svn.berlios.de/useless/trunk useless
+
+to get paella:
+svn checkout svn://svn.berlios.de/paella/trunk paella
+
+You can build the packages with debuild, or fakeroot debian/rules binary.
+
+
+--------------------------------------
+
+Hardware Recommendations
+------------------------------------------
+
+Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network 
+to support this.  Paella works best with at least one dedicated server and a management 
+desktop, both running debian.  
+
+Server:
+
+The server will be responsible for running the nfs-server, the boot-server, the postgresql 
+server, and the webserver. It is recommended that you have a local mirror of a debian 
+repository on the server, and have it accessible over http.  You should also install the 
+paella-debrepos package on this machine to create and maintain your custom debian 
+repository.
+
+	Database Setup::
+		
+		apt-get install postgresql
+		su postgres
+		createuser -a -d adminuser
+		createuser -A -D paella
+		createlang plpgsql template1	
+		exit
+		su adminuser createdb paella
+
+You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
+paella from anywhere on the local network, and allow adminuser from your management
+desktop.
+
+The setup of the boot-server and the nfs-server are beyond the scope of this 
+document, but the profiles are defined in the default database provided with paella.  So 
+instead of taking the time to setup the boot-server and nfs-server manually, you can use the 
+paella-chroot-install script to create the machine and tar it up.
+
+Desktop:
+
+The desktop should be about 400MHz Pentium or better with >= 1024x768 resolution, 
+capable of running kde.  It is necessary to have access to your database on the server.  You
+should also have your EDITOR environment variable set to something that will pop-up 
+a window in X.  On this machine you will want to install the paella-admin and the 
+paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
+probably want to copy this to ~/.paellarc and edit it.
+
+
+-----------------------------------
+
+Local Debian Repository
+------------------------------------
+
+Paella is built to make use of you local debian repository.  The paella-debrepos package 
+uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review 
+the documentation for it.  Install the paella-debrepos package on the server.  The init script 
+should fail because you are likely not to have a debrepos user.  This will be fixed later.  
+Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The 
+mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a 
+directory for each suite you have in paella, plus one called 'common'.
+
+------------------------------------
+
+Using Paella-Management
+-------------------------------------
+
+The management interface is going through changes.  Paella started with a gtk interface, 
+and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
+gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do 
+very much right now, but bugs will be fixed on it.  A good portion of setting up and 
+configuring the machines is done with the gtk interface, so for the time being, anybody 
+using paella will have to bear through using it until the kde interface is ready.
+
+
+ending section
+-----------------------------------------------------
+
+
+
+
+
+.. _useless:  http://useless.berlios.de/
+
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+.. _machines: #machine
