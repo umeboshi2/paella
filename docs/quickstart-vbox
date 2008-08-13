@@ -77,15 +77,24 @@ be testing the amd64 architecture.  Feedback on any other architectures would be
 Remaster the netinst iso
 -------------------------------------------
 
-This step is optional, but it may be handy, especially if you have an application that can remaster 
-an iso image.  This allows you to preseed the debian installer and make an automated install.  
-Even though this step is technically optional, it would be a very good idea to get the script below, 
-and the files that are obtained through subversion in the script to get an idea of how to proceed 
-manually without performing this step.  This step is highly recommended
+This step is highly recommended.  This step is technically optional, but it may be handy, 
+especially if you have an application that can remaster an iso image.  This allows you to 
+preseed the debian installer and make an automated install.  Even though this step is 
+technically optional, it would be a very good idea to get the script below, and the files that 
+are obtained through subversion in the script to get an idea of how to proceed manually 
+without performing this step.  
 
 If you are running debian, remastering the iso is easy::
 
-       svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
+   svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
+   
+if you already grabbed the netinst iso image, type::
+
+   ./remaster-netinst-iso /path/to/debian-LennyBeta2-i386-netinst.iso
+
+if you haven't gotten the netinst iso image yet, type::
+
+   ./remaster-netinst-iso
 
 **WARNING!!!**  This script uses sudo to perform the loopback mounting of the iso 
 image.  Be sure to look over the script really good before you execute it.  You may want to 
@@ -98,6 +107,10 @@ without arguments.  The script will download the debian-LennyBeta2-i386-netinst.
 The script will give you a chance to review and edit the preseed files before you create the 
 remastered iso image.  When the script is finished, the iso image will be ./paella-netinst.iso .
 
+**Note**  The preseed configuration files, and the setup scripts assume that the locale 
+is set to en_US.UTF-8 .  If you are using another locale, you really need to modify both the 
+preseed.cfg file, and the setup-paella-server script.  The postgresql database server will not 
+run unless your locale is generated, and referenced in the postgresql.conf file.
 
 
 
@@ -129,6 +142,9 @@ since you'll need this for the other machine(s) that you will use paella to inst
 Boot the paella virtual machine
 ================================
 
+Install the paella virtual machine
+----------------------------------------
+
 Now you should be ready to boot the virtual machine, and install debian lenny.
 
 Boot the machine by pressing Start (the green arrow) on the virtualbox frontend (make sure 
@@ -136,44 +152,81 @@ the paella virtual machine is the one that's selected).  When the boot screen ap
 one of the first two menu options.  Don't bother selecting the second option unless you have 
 a local debian mirror, and you have modified the preseed files.
 
+If you remastered the netinst iso, the install will proceed automatically.  The setup scripts 
+will be copied to /usr/local/bin by the debian installer.
 
-Setup paella from subversion
-===============================================
+.. _netinst: http://paella.berlios.de/netinst/
 
-Install Subversion
-----------------------------
-You will need to install subversion to setup the environment necessary to run paella.
-As root::
+If you didn't remaster the netinst file, you can find the preseed files, and the setup scripts 
+in the netinst_ directory on the paella website.  You can just install debian in the normal 
+manner.  You'll need to select the standard, desktop, and database-server tasks.  Look at 
+the preseed file to see how the default setup is configured.  The hostname, main user, and 
+the main user's password are all set to "paella" to make it easy to remember.  The paella 
+user should be added to the src, staff, adm, and sudo groups, but this probably isn't 
+an absolute necessity.  Set the dhcp3-server to listen to eth1 on the debconf question.
 
-	apt-get install subversion
+The rest of the instructions will assume that you installed from a remastered iso.
 
-Obtain the quick setup script
------------------------------------------------
-type::
-	
-	svn export svn://svn.berlios.de/paella/trunk/config/scripts/paella-devel-quick-setup
+First boot on the paella virtual machine
+--------------------------------------------------
 
-This file should already be executable, if not, do chmod +x paella-devel-quick-setup.
+After the debian installer is finished, the virtual machine should reboot .  You should take 
+this time to disassociate the iso image from the machine in the VirtualBox frontend, else 
+the iso will boot everytime you boot the virtual machine.
 
-You should edit the file and change the variables at the top to your needs.  When you are
-ready, run the script, install the packages, and make the changes to your .bashrc .  If you 
-don't want to make the changes to your .bashrc, you can put the lines in another file that 
-you will have to source before running any of the scripts.  There is such a file, called 
-paella_environment that is created for you when you run the script.
+When the sytem boots up for the first time, login as paella (password paella), and type::
 
-If you change any of the variables, make a copy of the script first. Keep in mind that throughout 
-this guide I will be referencing things according to the default configuration provided.
+     sudo setup-paella-server
 
--------------------------------
+This should set up everything that couldn't be done on the debian installer.  This script 
+will setup the cofiguration of the database, firewall, dhcp server, and the network interface 
+for the internal network.
 
-Build paella packages from source tree
-===============================================
+While I've tried to make things work by restarting services, things don't always work right.  
+You may need to reboot the virtual machine after this script, if you notice errors in restarting 
+the servers at the end of the execution of the script.  If you do encounter the errors, and don't 
+feel like rebooting, restart these services::
+
+     sudo /etc/init.d/networking restart
+     sudo /etc/init.d/postgresql-8.3 restart
+     sudo /etc/init.d/shorewall restart
+
+
+
+In the xorg.conf file, the screen resolution is set to 1024x768.  This is because the default 
+screen size for VESA is 1280x1024, which is too big for my laptop.  Feel free to edit this file, 
+or restore the original at /etc/X11/xorg.conf.orig .  You may also want to use the virtualbox 
+guest drivers, but the input drivers (mouse and keyboard) stopped working when I tried 
+them.  The vesa driver is known to work, even though it's probably not nearly as efficient.
+
+Now you're ready to setup the development environment, and get the source code from 
+subversion.  to do this, type ::
+	     
+	     
+	     
+	     cd
+	     paella-devel-quick-setup
+
+This will setup the directories, and download the source code from the berlios subversion 
+repository.  You'll need to either source the paella_environment file, add the lines of that file 
+to your .bashrc, or source the file from your .bashrc .  Since you're using a virtual machine, it
+would probably be best to add it to your .bashrc ::
+
+      cat paella_environment >> .bashrc
+
+If you didn't remaster the iso, you can cut and paste the apt-get command from the output of 
+the script.  The list of packages is likely not accurate, and you really need to read the preseed 
+files for a reference.
+
+
+
+Build paella packages from source tree (optional)
+--------------------------------------------------------------------
+
 You may wish to go ahead and build debian packages from the source tree.  If you do this, you 
 will also have to build the useless_ packages.  Going this route has the advantage of keeping 
 you from having possibly modify your PATH and PYTHONPATH environment variables
 
-
-------------------------
 
 Setup Database Server
 =====================
@@ -463,124 +516,6 @@ type::
 This script will checkout the sources from subversion.  It then exports the working copies and 
 uses pbuilder to build the exports.  Once the packages are built, they are uploaded to 
 the uml_head machine, and placed in the debian mirror.
-
-
-
-.. scavenge, then trash what remains below
-
-
-Getting started with paella (outdated)
-===============================================
-
-People who will get the most benefit out of paella are IT consultants that manage
-multiple disjoint networks.  You may also benefit from it if your network is large enough,
-and you have mostly debian machines on it.  If you only maintain one network with a few
-machines, e.g. a firewall, a server, and a couple of desktops, the time involved it setting up
-paella and maintaining configurations might probably be more than just using more simple
-backup and restore methods.
-
-There are currently no real releases of paella, because i dislike the file release system at
-berlios, so you will have to check out the code via subversion, or alternately you can grab
-the debian packages from http://gregscomputerservice.com.  The line for the sources.list
-is 'deb http://gregscomputerservice.com/debian/local common/'.
-
-A person who uses paella is expected to understand how to perform basic system 
-administration on a debian system.  They should also be comfortable with building their
-own debian packages from source, and debianizing a generic source application.  Paella 
-makes use of mini-dinstall to maintain a local mini-repository and can install systems that 
-reference that repository.  This provides a fairly simple way to add custom packages to the 
-systems that you will be designing.
-
-If you feel that you may benefit out of paella, here is how to get started.  If you don't want to
-use the apt source above, you can check it out from subversion at berlios.  Paella
-depends on Useless.  Useless is a collection of python modules that I use in other database 
-applications.
-
-to get useless:
-svn checkout svn://svn.berlios.de/useless/trunk useless
-
-to get paella:
-svn checkout svn://svn.berlios.de/paella/trunk paella
-
-You can build the packages with debuild, or fakeroot debian/rules binary.
-
-
---------------------------------------
-
-Hardware Recommendations
-------------------------------------------
-
-Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network 
-to support this.  Paella works best with at least one dedicated server and a management 
-desktop, both running debian.  
-
-Server:
-
-The server will be responsible for running the nfs-server, the boot-server, the postgresql 
-server, and the webserver. It is recommended that you have a local mirror of a debian 
-repository on the server, and have it accessible over http.  You should also install the 
-paella-debrepos package on this machine to create and maintain your custom debian 
-repository.
-
-	Database Setup::
-		
-		apt-get install postgresql
-		su postgres
-		createuser -a -d adminuser
-		createuser -A -D paella
-		createlang plpgsql template1	
-		exit
-		su adminuser createdb paella
-
-You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
-paella from anywhere on the local network, and allow adminuser from your management
-desktop.
-
-The setup of the boot-server and the nfs-server are beyond the scope of this 
-document, but the profiles are defined in the default database provided with paella.  So 
-instead of taking the time to setup the boot-server and nfs-server manually, you can use the 
-paella-chroot-install script to create the machine and tar it up.
-
-Desktop:
-
-The desktop should be about 400MHz Pentium or better with >= 1024x768 resolution, 
-capable of running kde.  It is necessary to have access to your database on the server.  You
-should also have your EDITOR environment variable set to something that will pop-up 
-a window in X.  On this machine you will want to install the paella-admin and the 
-paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
-probably want to copy this to ~/.paellarc and edit it.
-
-
------------------------------------
-
-Local Debian Repository
-------------------------------------
-
-Paella is built to make use of you local debian repository.  The paella-debrepos package 
-uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review 
-the documentation for it.  Install the paella-debrepos package on the server.  The init script 
-should fail because you are likely not to have a debrepos user.  This will be fixed later.  
-Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The 
-mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a 
-directory for each suite you have in paella, plus one called 'common'.
-
-------------------------------------
-
-Using Paella-Management
--------------------------------------
-
-The management interface is going through changes.  Paella started with a gtk interface, 
-and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
-gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do 
-very much right now, but bugs will be fixed on it.  A good portion of setting up and 
-configuring the machines is done with the gtk interface, so for the time being, anybody 
-using paella will have to bear through using it until the kde interface is ready.
-
-
-ending section
------------------------------------------------------
-
-
 
 
 
