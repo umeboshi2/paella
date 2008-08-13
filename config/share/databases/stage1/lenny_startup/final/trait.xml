@@ -1,0 +1,14 @@
+<trait name="final">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			global
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

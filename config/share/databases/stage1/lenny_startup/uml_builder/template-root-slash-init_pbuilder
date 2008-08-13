@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# be sure that hostfs is mounted in /mnt
+if ! [ `cat /proc/mounts | grep /mnt | wc -l` -gt 0 ] ; then
+    mount -t hostfs none /mnt
+fi
+
+hostfsroot=<--|uml_common_hostfs_root|-->
+pbbkup=$hostfsroot/pbuilder
+
+if ! [ -d $pbbkup ] ; then
+    mkdir -p $pbbkup
+fi
+
+
+. /etc/pbuilderrc
+
+
+if ! [ -f $BASETGZ ] ; then
+    if [ -f $pbbkup/base.tgz ] ; then
+	echo "copying previously generated base tarball."
+	cp $pbbkup/base.tgz $BASETGZ
+    fi
+fi
+
+
+if ! [ -f $BASETGZ ] ; then
+    echo "generating base tarball."
+    pbuilder create
+fi
+
+if ! [ -f $pbbkup/base.tgz ] ; then
+    echo "copying base tarball to " $pbbkup
+    cp $BASETGZ $pbbkup
+fi
+

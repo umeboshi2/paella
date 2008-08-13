@@ -1,0 +1,3 @@
+This trait should be the very last trait that is processed.  This trait is used to install 
+configuration files that can't be installed during installation.  This trait can also be used
+for many other things that need to be done at the end of an install.

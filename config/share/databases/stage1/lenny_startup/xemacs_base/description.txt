@@ -1,0 +1,1 @@
+This trait holds just the basic xemacs package.

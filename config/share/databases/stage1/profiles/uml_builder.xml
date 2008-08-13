@@ -1,4 +1,4 @@
-	<profile name="uml_builder" suite="startup">
+	<profile name="uml_builder" suite="lenny_startup">
 		<traits>
 			<trait ord="0">
 				default

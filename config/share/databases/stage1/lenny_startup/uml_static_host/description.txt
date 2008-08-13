@@ -1,0 +1,1 @@
+This is a temporary trait that is used to help assign static ip's to test uml hosts.
