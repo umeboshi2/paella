@@ -22,13 +22,13 @@
 			postgresql_server
 		</parent>
 		<parent>
+			umlbuilder_account
+		</parent>
+		<parent>
 			uml_common
 		</parent>
 		<parent>
 			uml_static_host
-		</parent>
-		<parent>
-			umlbuilder_account
 		</parent>
 		<parent>
 			web_server

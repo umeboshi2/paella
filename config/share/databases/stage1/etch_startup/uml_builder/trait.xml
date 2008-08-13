@@ -10,10 +10,10 @@
 			nfs_client_base
 		</parent>
 		<parent>
-			uml_common
+			umlbuilder_account
 		</parent>
 		<parent>
-			umlbuilder_account
+			uml_common
 		</parent>
 	</parents>
 	<packages/>

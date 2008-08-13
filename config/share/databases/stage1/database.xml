@@ -5,10 +5,10 @@
 		</aptsources>
 		<suites>
 			<suite name="etch_startup">
-				<suiteapt apt_id="etch_base" order="0" suite="startup"/>
+				<suiteapt apt_id="etch_base" order="0" suite="etch_startup"/>
 			</suite>
 			<suite name="lenny_startup">
-				<suiteapt apt_id="lenny_base" order="0" suite="startup"/>
+				<suiteapt apt_id="lenny_base" order="0" suite="lenny_startup"/>
 			</suite>
 		</suites>
 		<traits suite="etch_startup">

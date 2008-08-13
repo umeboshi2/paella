@@ -9,13 +9,13 @@
 	</parents>
 	<packages>
 		<package action="install">
+			dctrl-tools
+		</package>
+		<package action="install">
 			debconf-utils
 		</package>
 		<package action="install">
 			debian-keyring
-		</package>
-		<package action="install">
-			dctrl-tools
 		</package>
 		<package action="install">
 			rcconf
