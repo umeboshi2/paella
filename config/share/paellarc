@@ -15,7 +15,7 @@ dbpassword:		apassword
 # this path is used to import and export information
 # in the database.  These paths are used as hints in the
 # gui and aren't needed for the command line.
-default_path:		%(__myhome)s/paelladb
+default_path:		%(__paelladir)s/config/share/databases
 
 # the installer section is only needed on the installer system
 # it is not needed for paella-management
