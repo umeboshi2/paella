@@ -1,0 +1,30 @@
+<trait name="base_debian_admin_tools">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_admin_tools
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			debconf-utils
+		</package>
+		<package action="install">
+			debian-keyring
+		</package>
+		<package action="install">
+			grep-dctrl
+		</package>
+		<package action="install">
+			rcconf
+		</package>
+		<package action="install">
+			reportbug
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,27 @@
+<trait name="global">
+	<description>
+		None
+	</description>
+	<parents/>
+	<packages/>
+	<environ>
+		<trait_variable name="domain" trait="global">
+			localnetwork
+		</trait_variable>
+		<trait_variable name="hostname" trait="global">
+			debian
+		</trait_variable>
+		<trait_variable name="mailname" trait="global">
+			(none)
+		</trait_variable>
+		<trait_variable name="timezone" trait="global">
+			US/Central
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			root/scratchpad
+		</template>
+	</templates>
+	<scripts/>
+</trait>

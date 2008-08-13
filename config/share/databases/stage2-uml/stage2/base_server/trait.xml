@@ -1,0 +1,17 @@
+<trait name="base_server">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_ssl
+		</parent>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,34 @@
+<trait name="nameserver">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			bind9
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="bind" mode="0644" owner="root">
+			etc/bind/named.conf
+		</template>
+		<template grp_owner="bind" mode="0644" owner="root">
+			etc/bind/named.conf.local
+		</template>
+		<template grp_owner="bind" mode="0644" owner="root">
+			etc/bind/named.conf.options
+		</template>
+		<template grp_owner="bind" mode="0640" owner="bind">
+			etc/bind/rndc.key.orig
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/bind9
+		</template>
+	</templates>
+	<scripts/>
+</trait>
