@@ -219,6 +219,131 @@ the script.  The list of packages is likely not accurate, and you really need to
 files for a reference.
 
 
+Make a gpg key
+------------------------
+
+You'll need a gpg key to sign the Release files of the local debian repository.  This is important, 
+since debian has spent a great deal of time making it possible to verify the authenticity of the 
+packages being installed on your system.  Full instructions on how to generate a key and use it 
+properly are beyond the scope of this docuement.  You can find more detailed 
+at http://www.gnupg.org/ .
+
+If you just want to get up and running, you can follow these quick and **potentially insecure** instructions.
+Type::
+
+	echo $USER@`cat /etc/mailname`
+
+This will be the default email address used to search for the key that signs the packages you build.  We will also use this key to sign the Release file in the locally generated mirror.
+
+Now type::
+
+	getent passwd | grep $USER | cut -f5 -d: | cut -f1 -d,
+
+This will be the "Real Name" that you will use for the key.  Either remember the email and "Real 
+Name", or use another terminal to generate the key.
+
+Now type::
+
+	gpg --gen-key
+
+Answer the questions in the dialog.  It should be ok to answer the defaults, until you get to
+the question asking "Is this correct?".  After this, you'll need to enter the "Real Name" and 
+email address that you obtained from the steps above.  You can enter an empty passphrase, 
+but remember that you can't use this key for anything more serious than working with paella 
+in a testing environment.  If you do want a passphrase, you'll also need to know how to use 
+gpg-agent, which is also beyond the scope of this document.
+
+You'll need to know the fingerprint of the gpg key for the steps below. Here, I'm assuming 
+that the "Real Name" you entered above is "Paella User".  To obtain it, type::
+
+	    gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
+
+You should get an eight digit hexadecimal fingerprint, which you'll need to remember.  From
+here on, I'll just refer to it as your gpg fingerprint.
+
+
+
+Setup initial debian mirror
+-------------------------------------------
+
+If you already have a local debian mirror, you can probably skip this step.
+
+type::
+
+	sudo apt-move update
+	sudo rm /freespace/debian/.apt-move -fr
+	sudo chown -R paella:staff /freespace/debian/*
+
+This will move all the packages installed on the virtual machine to /freespace/debian .  This will 
+be the last that apt-move will be used, since we just needed it to move the installed packages 
+and setup the initial repository structure.
+
+Now type::
+
+	mkdir /freespace/debian/conf
+	dpkg --get-selections > /freespace/debian/conf/paella-startup-packages
+
+This will be the configuration directory for reprepro.  We will be using reprepro to generate
+and maintain the local debian mirror for here on.
+
+Now type::
+
+	editor /freespace/debian/conf/distributions
+
+In the editor you want to type something similar to this::
+
+       Origin: Debian
+       Label: Debian
+       Suite: testing
+       Version: 4.0
+       Codename: lenny
+       Architectures: i386
+       Components: main contrib non-free
+       UDebComponents: main non-free
+       Description: Debian x.y Testing - Not Yet Released
+       Log: logfile
+       Update: lenny lenny-di security-testing
+       SignWith: <your gpg fingerprint>
+
+and save it.
+
+Now we want to use the editor again::
+
+	   editor /freespace/debian/conf/updates
+
+In the editor you want to type  something similar to this::
+
+   Name: lenny
+   Method: http://ftp.us.debian.org/debian
+   Fallback: http://ftp.de.debian.org/debian
+   VerifyRelease: 6070D3A1
+   Architectures: i386
+   Components: main contrib non-free 
+   UDebComponents: main non-free
+   FilterList: deinstall paella-startup-packages
+
+   Name: lenny-di
+   Method: http://ftp.us.debian.org/debian
+   Fallback: http://ftp.de.debian.org/debian
+   VerifyRelease: 6070D3A1
+   Architectures: i386 
+   Components: none
+   UDebComponents: main non-free
+
+   Name: security-testing
+   Method: http://security.debian.org/debian-security
+   VerifyRelease: 6070D3A1
+   Suite: testing/updates
+   Architectures: i386
+   Components: main contrib non-free 
+   UDebComponents: none
+   FilterList: deinstall paella-startup-packages
+
+
+In order to verify the release files, you'll need to import the debian archive signing key::
+
+   gpg --recv-keys 6070D3A1
+
 
 Build paella packages from source tree (optional)
 --------------------------------------------------------------------
@@ -241,13 +366,9 @@ If you are not familiar with the file format, you can read about it here__ .  Op
 prefixed by an underscore are not referenced in the code.  You can make your own if you 
 wish.
 
-In the database section, the dbhost option should be the ip address of the tap interface you 
-created in the section above.  You will probably want to change the dbusername option to
-the database admin user that you created above.
-
-You can either ignore or completely remove the installer section.  It is only needed for the
-paella machine installer.  It is not needed for the user-mode-linux installer which we are 
-using here.
+In the database section, the dbhost option should be the ip address of the eth1 interface, 
+which should be 10.0.1.1 .  You will also probably need to change the dbusername option to
+the database admin user (dbadmin).
 
 The management_gui section has options for the paella-management application.  The options 
 that you may want to change here are "text_editor", and "x_differ".  Both of these commands 
@@ -259,32 +380,6 @@ line conform to this::
 
 You should not need to change any other options.
 
-Setup .umlmachines.conf
-----------------------------------------
-If you used the quick setup script above, the example umlmachines config file will be here, 
-~/workspace/paella/config/share/umlmachines.  If you built packages, install the 
-paella-uml-admin package, and you will find the file at 
-/usr/share/doc/paella-uml-admin/examples/umlmachines.conf .  You can copy this 
-file to ~/.umlmachines.conf and edit it.  The file format is the same as the paellarc file.  
-Reading through this file can give you a good idea of how the paella uml system works.
-
-The top of the file is where most of the paths are defined.  You shouldn't have to change these 
-if you are using the quick setup script, although you will probably need to modify the 
-**uml_initscript** option to point to the correct location of the paella-init file.  This 
-is the option with the value "%(_script_path)s/paella-init" , and has a comment above it for 
-working from the source tree.  Simply uncomment this option, and comment out the option 
-for the default location right below it.
-
-
-If you are not using the default tap network described above, you will have to modify the uml 
-network options accordingly.
-
-
-You may want to modify the **bootstrap_debmirror** option in the 
-`umlmachines` section, if you already have a debian mirror that you can run 
-debootstrap from.
-
-----------------
 
 Using paella-management
 =======================================
