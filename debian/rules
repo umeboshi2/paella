@@ -1,6 +1,8 @@
 #!/usr/bin/make -f
 include /usr/share/cdbs/1/rules/debhelper.mk
+DEB_PYTHON_SYSTEM=pysupport
 include /usr/share/cdbs/1/class/python-distutils.mk
+
 DEB_CLEAN_EXCLUDE := *.orig */*.orig
 notes.html:
 	rst2html docs/notes > notes.html
