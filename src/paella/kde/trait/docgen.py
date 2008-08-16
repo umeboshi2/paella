@@ -1,7 +1,7 @@
 from useless.base.forgethtml import Table, TableRow, TableCell
 from useless.base.forgethtml import Anchor, Ruler
 from useless.base.forgethtml import UnorderedList, ListItem
-from useless.base.forgethtml import Paragraph
+from useless.base.forgethtml import Paragraph, Text
 
 from paella.db.trait import Trait
 
@@ -132,7 +132,11 @@ class TraitDocument(BaseDocument):
         return title
 
     def _make_desc_section(self, trait):
-        return self.trait.get_description()
+        desc = self.trait.get_description()
+        if desc is not None:
+            desc = Text(desc)
+            desc.set_rawtext(True)
+        return desc
     
     def _make_parent_section(self, trait):
         parent_section = TraitSectionTitle(self.cfg, 'Parents', **self._sectitle_atts)

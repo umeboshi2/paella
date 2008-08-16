@@ -212,10 +212,10 @@ class ChrootInstaller(BaseInstaller):
             self._bootstrap_with_tarball(self.base_suite)
         # here we add the apt keys that are needed
         aptkeys = AptKeyHandler(self.conn)
-        keys = self.defenv.get_list('installer', 'archive_keys')
+        keys = self.defenv.get_list('archive_keys', 'installer')
         for key in keys:
             data = aptkeys.get_key(key)
-            filename = self.target / '%s.key' % key
+            filename = self.target / ('%s.key' % key)
             if filename.exists():
                 raise RuntimeError, "%s already exists" % filename
             keyfile = file(filename, 'w')

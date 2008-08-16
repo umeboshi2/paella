@@ -193,6 +193,29 @@ class TraitInstallerHelper(object):
         copy_configdb(config_path, target_path)
         os.remove(config_path)
         self._check_debconf_destroyed(config_path)
+
+    def set_debconf_selections(self, template):
+        trait = self.trait
+        self.log.info('Setting debconf selections for trait %s' % trait)
+        self.traittemplate.set_template(template.template)
+        tmpl = self.traittemplate.template.template
+        self._update_templatedata()
+        sub = self.traittemplate.template.sub()
+        if tmpl == sub:
+            msg = "static debconf selections, no substitutions for trait %s" % trait
+        else:
+            msg = "debconf selections contain substitutions for trait %s" % trait
+        self.log.info(msg)
+        config_path = self.target / 'tmp/paella_debconf'
+        self._check_debconf_destroyed(config_path)
+        config_path.write_bytes(sub + '\n')
+        cmd = ['chroot', self.target, 'debconf-set-selections', '/tmp/paella_debconf']
+        retval = subprocess.call(cmd)
+        if retval:
+            raise RuntimeError, "there was a problem with debconf-set-selections"
+        os.remove(config_path)
+        self._check_debconf_destroyed()
+        
         
     def reconfigure_debconf(self, packages):
         self.log.info('running reconfigure')
@@ -292,6 +315,9 @@ class TraitInstaller(BaseInstaller):
             if t.template == 'var/cache/debconf/config.dat':
                 self.log.info('Installing Debconf template ...')
                 self.helper.install_debconf_template(t)
+            elif t.template == 'debconf':
+                self.log.info('Found debconf selections')
+                self.helper.set_debconf_selections(t)
             else:
                 text = self.helper.make_template(t)
                 self.helper.install_template(t, text)
