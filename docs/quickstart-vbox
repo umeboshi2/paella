@@ -190,6 +190,8 @@ feel like rebooting, restart these services::
      sudo /etc/init.d/networking restart
      sudo /etc/init.d/postgresql-8.3 restart
      sudo /etc/init.d/shorewall restart
+     sudo /etc/init.d/apache2 restart
+
 
 
 
@@ -233,7 +235,8 @@ Type::
 
 	echo $USER@`cat /etc/mailname`
 
-This will be the default email address used to search for the key that signs the packages you build.  We will also use this key to sign the Release file in the locally generated mirror.
+This will be the default email address used to search for the key that signs the packages 
+you build.  We will also use this key to sign the Release file in the locally generated mirror.
 
 Now type::
 
@@ -259,7 +262,10 @@ that the "Real Name" you entered above is "Paella User".  To obtain it, type::
 	    gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
 
 You should get an eight digit hexadecimal fingerprint, which you'll need to remember.  From
-here on, I'll just refer to it as your gpg fingerprint.
+here on, I'll just refer to it as your gpg fingerprint.  If you need more random bytes, type this 
+in another window::
+
+     find /usr/share | xargs sha1sum
 
 
 
@@ -305,6 +311,18 @@ In the editor you want to type something similar to this::
        Update: lenny lenny-di security-testing
        SignWith: <your gpg fingerprint>
 
+       Origin: Paella
+       Label: Paella
+       Suite: paella
+       Version: 4.0
+       Codename: paella
+       Architectures: i386 source
+       Components: main contrib non-free
+       UDebComponents: main non-free
+       Description: Paella local repository
+       Log: logfile
+       SignWith: <your gpg fingerprint>
+
 and save it.
 
 Now we want to use the editor again::
@@ -344,13 +362,73 @@ In order to verify the release files, you'll need to import the debian archive s
 
    gpg --recv-keys 6070D3A1
 
+Now would also be a good time to export the public key you made above::
 
-Build paella packages from source tree (optional)
+    gpg --export -a > /freespace/debian/paella.key
+
+Let apt on paella know about it too::
+
+    sudo apt-key add /freespace/debian/paella.key
+
+To make sure apt got the key::
+
+   sudo apt-key list
+
+Make sure the key is on the list
+
+
+Now we're ready to use reprepro to manage the repository::
+
+    reprepro -b /freespace/debian/  -VV update
+    reprepro -b /freespace/debian/  -VV export
+
+The -VV options sets the verbosity of reprepro to 10, which will help determine if anything 
+goes wrong, and where it does go wrong.
+
+Since reprepro doesn't make verbatim mirrors, when you update from security.debian.org, 
+the updated packages are added to the main package list for the suite, instead of 
+<suite>/updates .  This is generally a good thing, since when you use a local mirror generated 
+by reprepro, you only need one apt source line.  Paella, however was developed before 
+reprepro existed, and used to mirror the complete debian archive.  Until paella is fixed to work 
+better with this, the workaround is to trick paella into thinking
+Hopefully things went well.
+
+
+
+
+Build paella packages from source tree
 --------------------------------------------------------------------
 
-You may wish to go ahead and build debian packages from the source tree.  If you do this, you 
-will also have to build the useless_ packages.  Going this route has the advantage of keeping 
-you from having possibly modify your PATH and PYTHONPATH environment variables
+Now it's time to build the useless and paella packages.  First we're going to start with the 
+useless package.  Pay attention to the lines below, as you won't be able to just cut-n-paste 
+these lines::
+
+	cd ~/workspace/useless
+	dch -n  # This will create and NMU (Non-maintainer upload)
+	# save the file in the text editor
+	debuild
+	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../useless_<version>_i386.changes
+
+
+Repeat this process for paella::
+
+	cd ~/workspace/paella
+	dch -n  # This will create and NMU (Non-maintainer upload)
+	# save the file in the text editor
+	debuild
+	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../paella_<version>_i386.changes
+
+Let's test our new mirror.  Add these lines to /etc/apt/sources.list ::
+
+      deb http://paella/debian lenny main contrib non-free
+      deb http://paella/debian paella main contrib non-free
+      deb-src http://paella/debian paella main contrib non-free
+
+And now type::
+
+    sudo apt-get update
+
+Hopefully you won't get any errors.
 
 
 Configuration files
