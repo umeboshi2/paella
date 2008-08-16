@@ -244,7 +244,7 @@ class Trait(object):
         all = Set([x.trait for x in self._alltraits.select()])
         suite_traits = Set([x.trait for x in self._traits.select()])
         parents = Set(trait.parents)
-        debug(parents)
+        debug("parents for trait %s, %s" % (trait.name, parents))
         if not parents.issubset(suite_traits):
             raise UnbornError, 'Parent Unborn'        
         if trait.name in suite_traits:

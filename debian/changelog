@@ -1,8 +1,15 @@
-paella (0.7.34) etch; urgency=low
+paella (0.7.35) paella; urgency=low
+
+  * added initial support for adding gpg keys for local  mirrors
+
+ -- Joseph Rawson <umeboshi3@gmail.com>  Sat, 16 Aug 2008 03:44:55 -0500
+
+paella (0.7.34) paella; urgency=low
 
   * move to etch
+  * move to paella
 
- -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed, 21 Mar 2007 14:29:19 -0500
+ -- Joseph Rawson <umeboshi3@gmail.com>  Fri, 15 Aug 2008 13:28:55 -0500
 
 paella (0.7.33) common; urgency=low
 

@@ -142,4 +142,14 @@ class ManageAptSourcesAction(BaseAction):
     def __init__(self, slot, parent):
         BaseAction.__init__(self, ManageAptSourcesItem(), 'ManageAptSourcesAction',
                             slot, parent)
+
+class ManageAptKeysItem(BaseItem):
+    def __init__(self):
+        tt = 'Manage Apt Keys'
+        BaseItem.__init__(self, tt, 'key', tt, tt)
+
+class ManageAptKeysAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageAptKeysItem(), 'ManageAptKeysAction',
+                            slot, parent)
         

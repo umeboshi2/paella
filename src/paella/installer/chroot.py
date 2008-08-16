@@ -8,6 +8,7 @@ from useless.sqlgen.clause import Eq, Gt
 
 
 from paella.debian.base import debootstrap
+from paella.db.aptkey import AptKeyHandler
 
 from base import BaseInstaller
 from base import runlog
@@ -209,7 +210,24 @@ class ChrootInstaller(BaseInstaller):
         else:
             self.log.info('bootstrapping with premade tarball')
             self._bootstrap_with_tarball(self.base_suite)
-
+        # here we add the apt keys that are needed
+        aptkeys = AptKeyHandler(self.conn)
+        keys = self.defenv.get_list('installer', 'archive_keys')
+        for key in keys:
+            data = aptkeys.get_key(key)
+            filename = self.target / '%s.key' % key
+            if filename.exists():
+                raise RuntimeError, "%s already exists" % filename
+            keyfile = file(filename, 'w')
+            keyfile.write(data)
+            keyfile.close()
+            self.chroot('apt-key add %s.key' % key)
+            os.remove(filename)
+            if filename.exists():
+                raise RuntimeError, "%s wasn't deleted" % filename
+            
+            
+        
     @requires_bootstrap
     def make_device_entries(self):
         self.log.info('nothing done for make_device_entries yet')

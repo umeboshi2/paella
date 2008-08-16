@@ -1,3 +1,5 @@
+import os
+
 from qt import PYSIGNAL
 
 from kdeui import KDialogBase
@@ -57,7 +59,9 @@ class PaellaConnectionDialog(BaseRecordDialog):
         # setup the password entry
         entry = self.frame.entries['dbpassword']
         entry.setEchoMode(entry.Password)
-        
+        if os.environ.has_key('PAELLA_DBPASSWD'):
+            entry.setText(os.environ['PAELLA_DBPASSWD'])
+            
     def slotConnectDatabase(self):
         data = self.getRecordData()
         self.app.connect_database(data)

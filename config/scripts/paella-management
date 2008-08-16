@@ -55,6 +55,16 @@ if __name__ == '__main__':
     # set main window in application
     app.setMainWidget(win)
 
+    # a hack to auto connect to the database
+    if os.environ.has_key('PAELLA_DB_AUTOCONNECT'):
+        win.slotConnectDatabase()
+        children = win.children()
+        dlg = [c for c in children if c.__class__.__name__ == "PaellaConnectionDialog"][0]
+        dlg.slotConnectDatabase()
+        dlg.close()
+
+    
+
     # start application loop
     #import profile
     #profile.run('app.exec_loop()')

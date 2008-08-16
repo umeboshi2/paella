@@ -3,6 +3,9 @@ from qt import SIGNAL
 from kdeui import KStdAction
 from kdeui import KPopupMenu
 from kdeui import KListViewItem
+from kdeui import KMessageBox
+
+from kfile import KDirSelectDialog
 
 from useless.base.path import path
 from useless.kdebase.mainwin import BaseSplitWindow
@@ -112,14 +115,6 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         self.refreshListView()
         
 
-    def _select_import_export_directory(self, action):
-        default_path = path(self.app.cfg.get('database', 'default_path')).expand()
-        win = KDirSelectDialog(default_path, False, self)
-        win.connect(win, SIGNAL('okClicked()'), self._import_export_directory_selected)
-        win.db_action = action
-        win.show()
-        self._import_export_dirsel_dialog = win
-        
     def slotImportTrait(self):
         self._select_import_export_directory('import')
         
@@ -128,6 +123,28 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
         self._select_import_export_directory('export')
         
         
+    def _select_import_export_directory(self, action):
+        default_path = path(self.app.cfg.get('database', 'default_path')).expand()
+        win = KDirSelectDialog(default_path, False, self)
+        win.connect(win, SIGNAL('okClicked()'), self._import_export_directory_selected)
+        win.db_action = action
+        win.show()
+        self._import_export_dirsel_dialog = win
+
+    def _import_export_directory_selected(self):
+        win = self._import_export_dirsel_dialog
+        if win is None:
+            raise RuntimeError, "There is no import/export dialog"
+        url = win.url()
+        fullpath = str(url.path())
+        action = win.db_action
+        if action == 'import':
+            KMessageBox.information(self, "%s trait not implemented yet" % action)
+        elif action == 'export':
+            KMessageBox.information(self, "%s trait not implemented yet" % action)
+        else:
+            KMessageBox.error(self, "action %s is not supported" % action)
+            
     def selectionChanged(self):
         item = self.listView.currentItem()
         self.mainView.set_trait(item.trait)

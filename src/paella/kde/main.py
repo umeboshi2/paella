@@ -22,8 +22,11 @@ from paella.kde.base.actions import ManageFamilies
 from paella.kde.base.actions import EditTemplateAction
 from paella.kde.base.actions import ManageAptSourcesAction
 from paella.kde.base.actions import OpenSuiteManagerAction
+from paella.kde.base.actions import ManageAptKeysAction
 
 from paella.kde.base.mainwin import BasePaellaWindow
+
+# import dialogs
 from paella.kde.base.dialogs import PaellaConnectionDialog
 from paella.kde.base.dialogs import ExportDbProgressDialog
 from paella.kde.base.dialogs import ImportDbProgressDialog
@@ -38,6 +41,7 @@ from paella.kde.machine.main import MachineMainWindow
 from paella.kde.clients import ClientsMainWindow
 from paella.kde.aptsrc.main import AptSourceMainWindow
 from paella.kde.suites.main import SuiteManagerWindow
+from paella.kde.aptkey import AptKeyWindow
 
 from application import NotConnectedError
 
@@ -111,6 +115,10 @@ class BasePaellaMainWindow(BasePaellaWindow):
                                                            collection)
         self.openSuiteManagerAction = OpenSuiteManagerAction(
             self.slotOpenSuiteManager, collection)
+
+        self.manageAptKeysAction = \
+                                 ManageAptKeysAction(self.slotManageAptKeys,
+                                                     collection)
         
         # in the main window assign quit to app.quit
         self.quitAction = KStdAction.quit(self.app.quit, collection)
@@ -140,6 +148,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
         suite_actions = self.manageTraitsActions.values()
         main_actions = [self.manageAptSourcesAction,
                         self.openSuiteManagerAction,
+                        self.manageAptKeysAction,
                         self.quitAction]
         actions = ['connect', 'disconnect', 'import', 'export']
         dbactions = [self.dbactions[action] for action in actions]
@@ -212,6 +221,14 @@ class BasePaellaMainWindow(BasePaellaWindow):
     def slotManageAptSources(self):
         if self.app.conn is not None:
             win = AptSourceMainWindow(self)
+            win.show()
+            self._all_my_children.append(win)
+        else:
+            self._connect_first_dialog()
+
+    def slotManageAptKeys(self):
+        if self.app.conn is not None:
+            win = AptKeyWindow(self)
             win.show()
             self._all_my_children.append(win)
         else:
