@@ -174,9 +174,13 @@ After the debian installer is finished, the virtual machine should reboot .  You
 this time to disassociate the iso image from the machine in the VirtualBox frontend, else 
 the iso will boot everytime you boot the virtual machine.
 
-When the sytem boots up for the first time, login as paella (password paella), and type::
+When the sytem boots up for the first time, login as paella (password paella).  You may 
+want to load this webpage in a web browser in the virtual machine, so you can more easily 
+cut and paste from this page.  We need to start configuring the server. Start a terminal 
+and type::
 
      sudo setup-paella-server
+
 
 This should set up everything that couldn't be done on the debian installer.  This script 
 will setup the cofiguration of the database, firewall, dhcp server, and the network interface 
@@ -390,7 +394,14 @@ the updated packages are added to the main package list for the suite, instead o
 <suite>/updates .  This is generally a good thing, since when you use a local mirror generated 
 by reprepro, you only need one apt source line.  Paella, however was developed before 
 reprepro existed, and used to mirror the complete debian archive.  Until paella is fixed to work 
-better with this, the workaround is to trick paella into thinking
+better with this, the workaround is to trick paella into thinking it's looking at <suite>/updates .
+To do this, type::
+
+   pushd /freespace/debian/dists/lenny
+   ln -s . updates
+   popd
+
+
 Hopefully things went well.
 
 
