@@ -260,17 +260,21 @@ but remember that you can't use this key for anything more serious than working 
 in a testing environment.  If you do want a passphrase, you'll also need to know how to use 
 gpg-agent, which is also beyond the scope of this document.
 
-You'll need to know the fingerprint of the gpg key for the steps below. Here, I'm assuming 
+You'll need to know the key ID of the gpg key for the steps below. Here, I'm assuming 
 that the "Real Name" you entered above is "Paella User".  To obtain it, type::
 
 	    gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
 
-You should get an eight digit hexadecimal fingerprint, which you'll need to remember.  From
-here on, I'll just refer to it as your gpg fingerprint.  If you need more random bytes, type this 
+You should get an eight digit hexadecimal number, which you'll need to remember.  From
+here on, I'll just refer to it as your gpg key ID.  If you need more random bytes, type this 
 in another window::
 
      find /usr/share | xargs sha1sum
 
+In an earlier version of this document, I referred to the key ID as the fingerprint, which is 
+inaccurate.  The code for paella may still refer to the key ID as a fingerprint, and might not 
+be corrected by the time you read this.  Please keep this in mind as you use paella.  I hope to 
+have the code corrected after I'm sure that this quickstart routine is fully functional.
 
 
 Setup initial debian mirror
@@ -309,11 +313,10 @@ In the editor you want to type something similar to this::
        Codename: lenny
        Architectures: i386
        Components: main contrib non-free
-       UDebComponents: main non-free
        Description: Debian x.y Testing - Not Yet Released
        Log: logfile
-       Update: lenny lenny-di security-testing
-       SignWith: <your gpg fingerprint>
+       Update: lenny security-testing
+       SignWith: <your gpg key ID>
 
        Origin: Paella
        Label: Paella
@@ -322,10 +325,9 @@ In the editor you want to type something similar to this::
        Codename: paella
        Architectures: i386 source
        Components: main contrib non-free
-       UDebComponents: main non-free
        Description: Paella local repository
        Log: logfile
-       SignWith: <your gpg fingerprint>
+       SignWith: <your gpg key ID>
 
 and save it.
 
@@ -341,16 +343,8 @@ In the editor you want to type  something similar to this::
    VerifyRelease: 6070D3A1
    Architectures: i386
    Components: main contrib non-free 
-   UDebComponents: main non-free
-   FilterList: deinstall paella-startup-packages
-
-   Name: lenny-di
-   Method: http://ftp.us.debian.org/debian
-   Fallback: http://ftp.de.debian.org/debian
-   VerifyRelease: 6070D3A1
-   Architectures: i386 
-   Components: none
-   UDebComponents: main non-free
+   UDebComponents: none
+   FilterList: deinstall paella-startup-packages paella-extra-packages
 
    Name: security-testing
    Method: http://security.debian.org/debian-security
@@ -359,7 +353,7 @@ In the editor you want to type  something similar to this::
    Architectures: i386
    Components: main contrib non-free 
    UDebComponents: none
-   FilterList: deinstall paella-startup-packages
+   FilterList: deinstall paella-startup-packages paella-extra-packages
 
 
 In order to verify the release files, you'll need to import the debian archive signing key::
@@ -415,7 +409,7 @@ useless package.  Pay attention to the lines below, as you won't be able to just
 these lines::
 
 	cd ~/workspace/useless
-	dch -n  # This will create and NMU (Non-maintainer upload)
+	dch -n  # This will create an NMU (Non-maintainer upload)
 	# save the file in the text editor
 	debuild
 	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../useless_<version>_i386.changes
@@ -424,7 +418,7 @@ these lines::
 Repeat this process for paella::
 
 	cd ~/workspace/paella
-	dch -n  # This will create and NMU (Non-maintainer upload)
+	dch -n  # This will create an NMU (Non-maintainer upload)
 	# save the file in the text editor
 	debuild
 	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../paella_<version>_i386.changes
@@ -439,25 +433,47 @@ And now type::
 
     sudo apt-get update
 
-Hopefully you won't get any errors.
+Hopefully you won't get any errors.  If you get hash mismatch errors, when running apt-get
+update, try this::
+
+	rm /freespace/debian/dists/* -fr
+	reprepro -b /freespace/debian -VV export
+
+Don't forget to make the updates symlink mentioned above if you need to erase and 
+re-export the packages lists.
 
 
-Configuration files
-================================
+Using Paella Management Interface
+=======================================================
 
-Setup .paellarc
+Install the Admin Package
+---------------------------------
+
+Now we're almost ready to use the management interface.  To install it, type::
+
+    apt-get install paella-admin
+
+The executable is called **paella-management**.  You can either type it into a 
+terminal, or find it in the debian menu (but not in the kde menu, yet).  Don't run it yet, you 
+should set up the configuration file first.
+
+
+Setup ~/.paellarc
 -------------------
+
 .. __: http://docs.python.org/lib/module-ConfigParser.html
 
-If you used the quick setup script above, the example paellarc file will be here,
-~/workspace/paella/config/share/paellarc .  You can copy this file to ~/.paellarc and edit it.
-If you are not familiar with the file format, you can read about it here__ .  Options that are 
-prefixed by an underscore are not referenced in the code.  You can make your own if you 
-wish.
+The master config file will be found at /etc/paellarc .  The master config file is the one that 
+the installer will use.  You can copy this file to ~/.paellarc and edit it.  The paella-management 
+program will read the master config file, then the local one at ~/.paellarc .  The local file will 
+override options in the master file.  If you are not familiar with the file format, you can read 
+about it here__ .  Options that are prefixed by an underscore are not referenced in the code.  
+You can make your own underscored options, if you wish, to make it easier to edit.
 
 In the database section, the dbhost option should be the ip address of the eth1 interface, 
 which should be 10.0.1.1 .  You will also probably need to change the dbusername option to
-the database admin user (dbadmin).
+the database admin user (dbadmin).  The dbusername in the master config file should 
+always be "paella".
 
 The management_gui section has options for the paella-management application.  The options 
 that you may want to change here are "text_editor", and "x_differ".  Both of these commands 
@@ -466,29 +482,29 @@ line conform to this::
 
      x_differ LeftFile RightFile
 
+If your differ needs options on the command line, please write a wrapper for it, and use that.
 
 You should not need to change any other options.
 
-
-Using paella-management
-=======================================
-You should be ready to use the paella-management PyKDE interface now.  Before running 
-the application, check the **management_gui** section of your ~/.paellarc file, 
-and make sure that both the **text_editor** and **x_differ** options 
-are set to applications that exist on your system and work in X windows.
 
 Start paella-management
 ------------------------------
 Run the paella-management script to start the management interface.  The first thing that you 
 will want to do is to connect to the database.  There is a connect button on the toolbar for you 
-to press.  The connection dialog entries are taken from your ~/.paellarc file.
+to press.  The connection dialog entries are taken from your ~/.paellarc file.  The settings 
+for postgresql in this quickstart don't require a password for dbadmin, but you'll want to use 
+one if you use paella in a production environment.
 
 Once you connect to the database, you should get a dialog asking to create the primary 
 tables.  You should click yes here to setup an empty database structure.  If you don't do 
 this, the database import procedure will create these tables for you, but you won't be able to
 use the paella-management interface until you do this.
 
-Import stage1 database
+
+The information below is outdated.  To be continued ....
+
+
+Import the database
 --------------------------
 Now we are going to import the startup database.  You will need an internet connection to 
 import the database.  The importer downloads the Packages files from the debian mirror in 
@@ -499,6 +515,8 @@ http://ftp.us.debian.org/debian .  If you need to change this, edit the database
 in the stage1 directory, and alter the uri attribute to the aptsource xml element at the 
 top of the file.  You can change this to a local mirror if you already have one.  Paella has only 
 been tested with http apt sources, it's behaviour on other methods is unknown.
+
+
 
       If you are working from a subversion copy from the quick setup script, the directory
       you will want to select is here, ~/workspace/paella/config/share/databases/stage1/ .
