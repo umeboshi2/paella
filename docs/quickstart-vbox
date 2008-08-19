@@ -205,26 +205,6 @@ or restore the original at /etc/X11/xorg.conf.orig .  You may also want to use t
 guest drivers, but the input drivers (mouse and keyboard) stopped working when I tried 
 them.  The vesa driver is known to work, even though it's probably not nearly as efficient.
 
-Now you're ready to setup the development environment, and get the source code from 
-subversion.  to do this, type ::
-	     
-	     
-	     
-	     cd
-	     paella-devel-quick-setup
-
-This will setup the directories, and download the source code from the berlios subversion 
-repository.  You'll need to either source the paella_environment file, add the lines of that file 
-to your .bashrc, or source the file from your .bashrc .  Since you're using a virtual machine, it
-would probably be best to add it to your .bashrc ::
-
-      cat paella_environment >> .bashrc
-
-If you didn't remaster the iso, you can cut and paste the apt-get command from the output of 
-the script.  The list of packages is likely not accurate, and you really need to read the preseed 
-files for a reference.
-
-
 Make a gpg key
 ------------------------
 
@@ -304,11 +284,17 @@ Create the config files for reprepro
 --------------------------------------------------------------
 
 In the instructions below, you don't have to create these files.  You can copy them from the 
-remaster netinst cdrom that you made. To do this, type::
+remastered netinst cdrom that you made. You may need to attach the image in virtualbox using 
+the devices menu.  You can check that the cd image is attached by pulling up the Session 
+Information Dialog from the Machine menu on the far left.  Once you're sure that the image is
+attached in virtualbox, you need to mount it. To do this, type::
 
 	 mount /media/cdrom
-	 cp /media/cdrom/paella/reprepro/* /freespace/debian/conf
 
+Then copy the files for reprepro::
+
+	 cp /media/cdrom/paella/reprepro/* /freespace/debian/conf
+	 chmod +w /freespace/debian/conf/*
 
 Now type::
 
@@ -339,7 +325,7 @@ In the editor you want to type something similar to this::
        Log: logfile
        SignWith: <your gpg key ID>
 
-
+Be sure to replace <your gpg key ID> with the actual key ID that you obtained above.
 
 Now we want to use the editor again::
 
@@ -388,10 +374,19 @@ Make sure the key is on the list
 Now we're ready to use reprepro to manage the repository::
 
     reprepro -b /freespace/debian/  -VV update
-    reprepro -b /freespace/debian/  -VV export
 
 The -VV options sets the verbosity of reprepro to 10, which will help determine if anything 
 goes wrong, and where it does go wrong.
+
+Take a break.  Grab some coffee.  This will take a bit, depending on your internet 
+connection.  I've taken care to only include the packages that needed, plus a few 
+extra packages that I use as tools to help me test this quickstart routine.  As of the time 
+this was written, the pool directory was 421MB in size.
+
+After the update is done, you may need to export the packages lists::
+
+    reprepro -b /freespace/debian/  -VV export
+
 
 Since reprepro doesn't make verbatim mirrors, when you update from security.debian.org, 
 the updated packages are added to the main package list for the suite, instead of 
@@ -406,9 +401,45 @@ To do this, type::
    popd
 
 
-Hopefully things went well.
+Hopefully things went well.  You should wind up with just enough of a partial mirror to complete 
+the instructions and get a feel for paella.
+
+Now it's time to add the new mirror to the sources list::
+
+    sudo editor /etc/apt/sources.list
+
+Make sure these lines are at the top::
+
+     deb http://paella/debian lenny main contrib non-free
+     deb http://paella/debian paella main contrib non-free
+     deb-src http://paella/debian paella main contrib non-free
+
+Now update apt with the new sources::
+
+    sudo apt-get update
 
 
+Obtain paella from subversion
+------------------------------------
+
+Now you're ready to get the source code from subversion.  To do this, type ::
+
+    	     cd
+	     paella-devel-quick-setup
+
+This will setup the directories, and download the source code from the berlios subversion 
+repository.  If you plan on working on the code in the working copy, you'll need to either source 
+the paella_environment file, add the lines of that file to your .bashrc, or source the file from 
+your .bashrc if you plan on working on the code.  Since you're using a virtual machine, it 
+would probably be best to add it to your .bashrc ::
+
+      cat paella_environment >> .bashrc
+
+This is optional, as it's only needed to work with the code, and possibly fix bugs that you 
+encounter.
+
+You need to cut and paste the apt-get command from the output of the script, to build all of 
+the paella and python-useless-* packages.
 
 
 Build paella packages from source tree
@@ -420,6 +451,7 @@ these lines::
 
 	cd ~/workspace/useless
 	dch -n  # This will create an NMU (Non-maintainer upload)
+	# type something like "testing paella" to the right of the asterisk
 	# save the file in the text editor
 	debuild
 	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../useless_<version>_i386.changes
@@ -429,28 +461,27 @@ Repeat this process for paella::
 
 	cd ~/workspace/paella
 	dch -n  # This will create an NMU (Non-maintainer upload)
+	# type something like "testing paella" to the right of the asterisk
 	# save the file in the text editor
 	debuild
 	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../paella_<version>_i386.changes
 
-Let's test our new mirror.  Add these lines to /etc/apt/sources.list ::
-
-      deb http://paella/debian lenny main contrib non-free
-      deb http://paella/debian paella main contrib non-free
-      deb-src http://paella/debian paella main contrib non-free
-
-And now type::
+Let's test our new mirror::
 
     sudo apt-get update
 
-Hopefully you won't get any errors.  If you get hash mismatch errors, when running apt-get
-update, try this::
+If you are getting hash mismatches from apt, try this::
 
-	rm /freespace/debian/dists/* -fr
-	reprepro -b /freespace/debian -VV export
+   rm /freespace/debian/dists/* -fr
+   reprepro -b /freespace/debian/  -VV export
+   pushd /freespace/debian/dists/lenny
+   ln -s . updates
+   popd
 
-Don't forget to make the updates symlink mentioned above if you need to erase and 
-re-export the packages lists.
+
+I got these mismatches a few times, and don't know what caused the errors.  When I get 
+the time to investigate the problem further, I'll find a better solution, but this solution should 
+work just fine for our purposes here.
 
 
 Using Paella Management Interface
@@ -461,7 +492,7 @@ Install the Admin Package
 
 Now we're almost ready to use the management interface.  To install it, type::
 
-    apt-get install paella-admin
+    sudo apt-get install paella-admin
 
 The executable is called **paella-management**.  You can either type it into a 
 terminal, or find it in the debian menu (but not in the kde menu, yet).  Don't run it yet, you 
@@ -480,10 +511,15 @@ override options in the master file.  If you are not familiar with the file form
 about it here__ .  Options that are prefixed by an underscore are not referenced in the code.  
 You can make your own underscored options, if you wish, to make it easier to edit.
 
+Type::
+	cd
+	cp /etc/paellarc .paellarc
+
+
+
 In the database section, the dbhost option should be the ip address of the eth1 interface, 
-which should be 10.0.1.1 .  You will also probably need to change the dbusername option to
-the database admin user (dbadmin).  The dbusername in the master config file should 
-always be "paella".
+which should be 10.0.1.1 .  You will also need to change the dbusername option to the database 
+admin user (dbadmin).  The dbusername in the master config file should  always be "paella".
 
 The management_gui section has options for the paella-management application.  The options 
 that you may want to change here are "text_editor", and "x_differ".  Both of these commands 
