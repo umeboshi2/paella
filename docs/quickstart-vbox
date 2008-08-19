@@ -275,7 +275,7 @@ and setup the initial repository structure.
 Now type::
 
 	mkdir /freespace/debian/conf
-	dpkg --get-selections > /freespace/debian/conf/paella-packages
+	dpkg --get-selections > /freespace/debian/conf/local-packages
 
 This will be the configuration directory for reprepro.  We will be using reprepro to generate
 and maintain the local debian mirror for here on.
@@ -340,7 +340,7 @@ In the editor you want to type  something similar to this::
    Architectures: i386
    Components: main contrib non-free 
    UDebComponents: none
-   FilterList: deinstall paella-startup-packages paella-extra-packages paella-packages
+   FilterList: deinstall startup-packages extra-packages local-packages
 
    Name: security-testing
    Method: http://security.debian.org/debian-security
@@ -349,7 +349,7 @@ In the editor you want to type  something similar to this::
    Architectures: i386
    Components: main contrib non-free 
    UDebComponents: none
-   FilterList: deinstall paella-startup-packages paella-extra-packages paella-packages
+   FilterList: deinstall startup-packages extra-packages local-packages
 
 
 In order to verify the release files, you'll need to import the debian archive signing key::
@@ -358,11 +358,11 @@ In order to verify the release files, you'll need to import the debian archive s
 
 Now would also be a good time to export the public key you made above::
 
-    gpg --export -a > /freespace/debian/paella.key
+    gpg --export -a > /freespace/debian/paella.gpg
 
 Let apt on paella know about it too::
 
-    sudo apt-key add /freespace/debian/paella.key
+    sudo apt-key add /freespace/debian/paella.gpg
 
 To make sure apt got the key::
 
