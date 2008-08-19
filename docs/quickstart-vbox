@@ -295,10 +295,20 @@ and setup the initial repository structure.
 Now type::
 
 	mkdir /freespace/debian/conf
-	dpkg --get-selections > /freespace/debian/conf/paella-startup-packages
+	dpkg --get-selections > /freespace/debian/conf/paella-packages
 
 This will be the configuration directory for reprepro.  We will be using reprepro to generate
 and maintain the local debian mirror for here on.
+
+Create the config files for reprepro
+--------------------------------------------------------------
+
+In the instructions below, you don't have to create these files.  You can copy them from the 
+remaster netinst cdrom that you made. To do this, type::
+
+	 mount /media/cdrom
+	 cp /media/cdrom/paella/reprepro/* /freespace/debian/conf
+
 
 Now type::
 
@@ -329,7 +339,7 @@ In the editor you want to type something similar to this::
        Log: logfile
        SignWith: <your gpg key ID>
 
-and save it.
+
 
 Now we want to use the editor again::
 
@@ -344,7 +354,7 @@ In the editor you want to type  something similar to this::
    Architectures: i386
    Components: main contrib non-free 
    UDebComponents: none
-   FilterList: deinstall paella-startup-packages paella-extra-packages
+   FilterList: deinstall paella-startup-packages paella-extra-packages paella-packages
 
    Name: security-testing
    Method: http://security.debian.org/debian-security
@@ -353,7 +363,7 @@ In the editor you want to type  something similar to this::
    Architectures: i386
    Components: main contrib non-free 
    UDebComponents: none
-   FilterList: deinstall paella-startup-packages paella-extra-packages
+   FilterList: deinstall paella-startup-packages paella-extra-packages paella-packages
 
 
 In order to verify the release files, you'll need to import the debian archive signing key::
