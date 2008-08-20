@@ -15,8 +15,8 @@ class AptKeyHandler(object):
         clause = Eq('name', name)
         return self.cursor.select_row(table='archive_keys', clause=clause)
 
-    def insert_key(self, name, data, fingerprint=None):
-        row = dict(name=name, fingerprint=fingerprint, data=data)
+    def insert_key(self, name, data, keyid=None):
+        row = dict(name=name, keyid=keyid, data=data)
         self.cursor.insert(table='archive_keys', data=row)
 
     def get_key(self, name):

@@ -1,4 +1,5 @@
 import os
+from ConfigParser import RawConfigParser
 
 from xml.dom.minidom import Element
 from xml.dom.minidom import parse as parse_file
@@ -421,7 +422,15 @@ class PaellaImporter(object):
         if machinedb.isfile():
             mh = MachineHandler(self.conn)
             mh.restore_machine_database(self.main_path)
-            
+        default_environment_basename = 'default-environment'
+        filename = self.main_path / default_environment_basename
+        if filename.isfile():
+            # similar code exists in kde/environ.py
+            defenv = DefaultEnvironment(self.conn)
+            newcfg = RawConfigParser()
+            newcfg.read(filename)
+            defenv.update(newcfg)
+        
             
         
     

@@ -2,6 +2,8 @@ import os
 from os.path import join, dirname, isfile, isdir
 import subprocess
 
+from useless import deprecated
+
 from useless.base.util import makepaths
 
 from paella.debian.debconf import copy_configdb
@@ -214,7 +216,7 @@ class TraitInstallerHelper(object):
         if retval:
             raise RuntimeError, "there was a problem with debconf-set-selections"
         os.remove(config_path)
-        self._check_debconf_destroyed()
+        self._check_debconf_destroyed(config_path)
         
         
     def reconfigure_debconf(self, packages):
@@ -313,6 +315,9 @@ class TraitInstaller(BaseInstaller):
         self.log.info(stmt)
         for t in templates:
             if t.template == 'var/cache/debconf/config.dat':
+                msg = "using /var/cache/debconf/config.dat is now deprecated"
+                deprecated(msg)
+                self.log.warn(msg)
                 self.log.info('Installing Debconf template ...')
                 self.helper.install_debconf_template(t)
             elif t.template == 'debconf':

@@ -46,10 +46,10 @@ class TextFilesTable(Table):
 class ArchiveKeyTable(Table):
     def __init__(self):
         idcol = PkName('name')
-        fingerprint = Name('fingerprint')
-        fingerprint.constraint.unique = True
+        keyid = Name('keyid')
+        keyid.constraint.unique = True
         data = Text('data')
-        columns = [idcol, fingerprint, data]
+        columns = [idcol, keyid, data]
         Table.__init__(self, 'archive_keys', columns)
         
 def family_env_columns():
