@@ -78,8 +78,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
         if self.conn is not None:
             self.cursor = self.conn.cursor(statement=True)
             # figure out what suites are available
-            if 'suites' in self.cursor.tables():
-                self._suites = [row.suite for row in self.cursor.select(table='suites')]
+            self._refresh_suites()
         # setup actions, menus, and toolbar
         self.initActions()
         self.initMenus()
@@ -91,6 +90,11 @@ class BasePaellaMainWindow(BasePaellaWindow):
         self._import_export_dirsel_dialog = None
 
         self._all_my_children = []
+
+    def _refresh_suites(self):
+        if 'suites' in self.cursor.tables():
+            self._suites = [row.suite for row in self.cursor.select(table='suites')]
+        
         
         
     def _initTraitsActions(self, suites):
@@ -281,6 +285,8 @@ class BasePaellaMainWindow(BasePaellaWindow):
         action = win.db_action
         print 'selected fullpath', fullpath
         print 'action is', win.db_action
+        win.close()
+        #self.app.processEvents()
         dbm = DatabaseManager(self.app.conn)
         if action == 'import':
             #dbm.restore(fullpath)
@@ -312,6 +318,10 @@ class BasePaellaMainWindow(BasePaellaWindow):
             
             win.show()
             dbm.import_all(fullpath)
+            self.app.processEvents()
+            win.close()
+            KMessageBox.information(self, 'Database Imported')
+            
         elif action == 'export':
             #dbm.backup(fullpath)
             win = ExportDbProgressDialog(self)
@@ -364,8 +374,13 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
                      SIGNAL('selectionChanged()'),
                      self.selectionChanged)
 
+    def _import_export_directory_selected(self):
+        BasePaellaMainWindow._import_export_directory_selected(self)
+        self.refreshListView()
+        
     def refreshListView(self):
         self.listView.clear()
+        self._refresh_suites()
         suite_folder = KListViewItem(self.listView, 'suites')
         suite_folder.folder = True
         for suite in self._suites:

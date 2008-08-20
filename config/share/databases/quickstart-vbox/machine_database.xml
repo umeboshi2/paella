@@ -1,7 +1,10 @@
 <machine_database>
 	<machines>
-k		<machine filesystem="default" kernel="linux-image-2.6-686" machine_type="default" profile="default">
+		<machine filesystem="default" kernel="linux-image-2.6-686" machine_type="default" profile="default">
 			default
+		</machine>
+		<machine filesystem="default_small" kernel="linux-image-2.6-686" machine_type="default" profile="default">
+			testmachine
 		</machine>
 	</machines>
 	<machine_types>
@@ -167,10 +170,10 @@ k		<machine filesystem="default" kernel="linux-image-2.6-686" machine_type="defa
 	</filesystems>
 	<kernels>
 		<kernel>
-			kernel-image-2.6-486
+			linux-image-2.6-486
 		</kernel>
 		<kernel>
-			kernel-image-2.6-686
+			linux-image-2.6-686
 		</kernel>
 	</kernels>
 </machine_database>

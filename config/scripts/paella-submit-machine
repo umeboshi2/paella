@@ -9,7 +9,7 @@ from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, In
 
 from paella.installer.base import InstallerConnection
-from paella.installer.util import get_mac_addresses
+from paella.installer.util.misc import get_mac_addresses
 
 parser = OptionParser()
 opts, args = parser.parse_args(sys.argv[1:])

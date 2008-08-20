@@ -1,4 +1,4 @@
-	<profile name="skeleton" suite="bootstrap">
+	<profile name="default" suite="bootstrap">
 		<traits>
 			<trait ord="50">
 				default

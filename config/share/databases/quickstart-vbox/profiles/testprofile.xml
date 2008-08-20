@@ -7,11 +7,7 @@
 				final
 			</trait>
 		</traits>
-		<families>
-			<family>
-				standard
-			</family>
-		</families>
+		<families/>
 		<environ>
 			<profile_variable name="hostname" trait="global">
 				testhost
