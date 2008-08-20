@@ -1,0 +1,14 @@
+<trait name="base_ssl">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo "adding <--|umlbuilder_account_username|--> user account"
-adduser --disabled-password --gecos "<--|umlbuilder_account_gecos|-->" --uid <--|umlbuilder_account_uid|--> <--|umlbuilder_account_username|--> 
-passwd -d <--|umlbuilder_account_username|-->

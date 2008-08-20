@@ -1,9 +1,0 @@
-auto lo eth0
-iface lo inet loopback
-#iface eth0 inet dhcp
-iface eth0 inet static
-	address	<--|uml_static_host_ip_address|-->
-	netmask	<--|uml_static_host_netmask|-->
-	gateway	<--|uml_static_host_gateway|-->
-
-

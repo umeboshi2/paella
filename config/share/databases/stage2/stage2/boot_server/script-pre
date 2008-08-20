@@ -1,6 +1,0 @@
-#!/usr/bin/python
-import os, sys
-
-print "pre script is now post script"
-sys.exit(0)
-

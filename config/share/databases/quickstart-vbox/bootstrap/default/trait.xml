@@ -1,0 +1,14 @@
+<trait name="default">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_admin_tools
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,2 +1,0 @@
-This trait creates a reference clock for your local network.  This helps minimize traffic 
-and keep the network in better sync.

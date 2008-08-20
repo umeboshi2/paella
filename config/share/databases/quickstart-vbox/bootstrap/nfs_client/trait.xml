@@ -1,0 +1,14 @@
+<trait name="nfs_client">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

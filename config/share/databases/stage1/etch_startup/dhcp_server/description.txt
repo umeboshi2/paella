@@ -1,1 +1,0 @@
-A dhcp server for the local network.

@@ -1,0 +1,6 @@
+The base trait is the first trait that does anything. It's main responsibility is to configure the system as described in the Debian GNU/Linux Installation Guide's appendix for installing debian manually with debootstrap.
+<hr>
+Notes:
+<ul>
+	<li>/etc/timezone determines the timezone set this file and run dpkg-reconfigure -pcritical tzdata</li>
+</ul>

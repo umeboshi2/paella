@@ -1,0 +1,47 @@
+	<profile name="desktest" suite="lenny">
+		<traits>
+			<trait ord="50">
+				desktop
+			</trait>
+			<trait ord="50">
+				gnome
+			</trait>
+			<trait ord="99">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				75dpi
+			</family>
+			<family>
+				frobozz
+			</family>
+			<family>
+				insecure
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="issue_release" trait="base">
+				testing/desktest
+			</profile_variable>
+			<profile_variable name="gdm_bgprog" trait="desktop">
+				/usr/lib/xscreensaver/rd-bomb  -root
+			</profile_variable>
+			<profile_variable name="gdm_bgtype" trait="desktop">
+				0
+			</profile_variable>
+			<profile_variable name="kmods" trait="desktop">
+				via82cxxx, psmouse, mousedev, hid, ohci-hcd, uhci-hcd, ehci-hcd
+			</profile_variable>
+			<profile_variable name="theme" trait="gkrellm">
+				Jewel_gkrellm
+			</profile_variable>
+			<profile_variable name="hostname" trait="global">
+				desktest
+			</profile_variable>
+			<profile_variable name="widget_style" trait="kde">
+				plastik
+			</profile_variable>
+		</environ>
+	</profile>

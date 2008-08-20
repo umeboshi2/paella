@@ -1,0 +1,53 @@
+<trait name="firewall">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			shorewall
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="startup" trait="firewall">
+			0
+		</trait_variable>
+		<trait_variable name="wait_interface" trait="firewall">
+			&quot;&quot;
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/shorewall
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/interfaces
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/Makefile
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/masq
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/policy
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/routestopped
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/rules
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/shorewall.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/zones
+		</template>
+	</templates>
+	<scripts/>
+</trait>

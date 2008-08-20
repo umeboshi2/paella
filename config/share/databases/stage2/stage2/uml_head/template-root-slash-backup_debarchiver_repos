@@ -1,3 +1,0 @@
-#!/bin/bash
-rdiff-backup /var/lib/debarchiver <--|uml_common_hostfs_root|-->/debarchiver
-

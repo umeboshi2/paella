@@ -1,0 +1,35 @@
+<trait name="clock">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ntp
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="internet_server_0" trait="clock">
+			#server 0.debian.pool.ntp.org iburst dynamic
+		</trait_variable>
+		<trait_variable name="internet_server_1" trait="clock">
+			#server 1.debian.pool.ntp.org iburst dynamic
+		</trait_variable>
+		<trait_variable name="internet_server_2" trait="clock">
+			#server 2.debian.pool.ntp.org iburst dynamic
+		</trait_variable>
+		<trait_variable name="internet_server_3" trait="clock">
+			#server 3.debian.pool.ntp.org iburst dynamic
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/ntp.conf
+		</template>
+	</templates>
+	<scripts/>
+</trait>

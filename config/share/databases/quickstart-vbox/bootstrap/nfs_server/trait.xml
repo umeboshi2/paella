@@ -1,0 +1,14 @@
+<trait name="nfs_server">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			fileserver_base
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

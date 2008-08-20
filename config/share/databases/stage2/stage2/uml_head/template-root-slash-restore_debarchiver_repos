@@ -1,6 +1,0 @@
-#!/bin/bash
-
-#rdiff-backup /var/lib/debarchiver /mnt/freespace/shared/share/paella/debarchiver
-#pushd /var/lib/debarchiver
-rdiff-backup --force -r now <--|uml_common_hostfs_root|-->/debarchiver /var/lib/debarchiver
-

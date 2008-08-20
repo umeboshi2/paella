@@ -1,3 +1,0 @@
-OPTIONS="-u bind"
-# Set RESOLVCONF=no to not run resolvconf
-RESOLVCONF=yes

@@ -1,0 +1,24 @@
+<trait name="web_server">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apache2
+		</package>
+		<package action="install">
+			apache2-mpm-prefork
+		</package>
+		<package action="install">
+			apache2-utils
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

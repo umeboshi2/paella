@@ -1,0 +1,1 @@
+This is the default trait.  Many traits will depend on this trait directly.  This trait should be included (at least indirectly) on most profiles.

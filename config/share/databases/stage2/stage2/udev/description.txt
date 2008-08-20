@@ -1,2 +1,0 @@
-Base trait responsible for defining and setting up default devices.
-Machine Types can make use of these variables.

@@ -1,0 +1,41 @@
+<trait name="base">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			global
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			locales
+		</package>
+		<package action="install">
+			sudo
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="debconf_frontend" trait="base">
+			Dialog
+		</trait_variable>
+		<trait_variable name="debconf_priority" trait="base">
+			high
+		</trait_variable>
+		<trait_variable name="tcpd_paranoid_mode" trait="base">
+			false
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			debconf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/rcS
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/timezone
+		</template>
+	</templates>
+	<scripts/>
+</trait>

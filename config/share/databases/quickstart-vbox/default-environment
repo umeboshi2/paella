@@ -1,0 +1,10 @@
+[installer]
+allow_unauthenticated_packages:	False
+archive_keys:	paella
+bootstrap_target:	True
+devices_tarball:	/root/devices.tar
+http_mirror:	http://127.0.0.1/debian
+keep_installed_packages:	True
+suite_storage:	/root
+use_devices_tarball:	False
+

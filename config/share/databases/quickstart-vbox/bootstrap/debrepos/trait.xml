@@ -1,0 +1,25 @@
+<trait name="debrepos">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			fileserver_base
+		</parent>
+		<parent>
+			web_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			reprepro
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="debian_basedir" trait="debrepos">
+			/freespace/debian
+		</trait_variable>
+	</environ>
+	<templates/>
+	<scripts/>
+</trait>

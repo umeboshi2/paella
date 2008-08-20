@@ -1,0 +1,1 @@
+This trait is for a simple two interface firewall.

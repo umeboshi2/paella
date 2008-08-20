@@ -1,0 +1,24 @@
+<trait name="samba_server">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			fileserver_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			libpam-smbpass
+		</package>
+		<package action="install">
+			samba
+		</package>
+		<package action="install">
+			winbind
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

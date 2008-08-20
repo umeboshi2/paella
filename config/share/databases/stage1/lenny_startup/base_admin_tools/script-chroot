@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# set most to be default pager
-update-alternatives --install /usr/bin/pager pager /usr/bin/most 999
-
-
-

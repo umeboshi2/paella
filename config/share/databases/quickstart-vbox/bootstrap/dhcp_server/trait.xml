@@ -1,0 +1,34 @@
+<trait name="dhcp_server">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="authoritative" trait="dhcp_server">
+			#authoritative
+		</trait_variable>
+		<trait_variable name="default_lease_time" trait="dhcp_server">
+			600
+		</trait_variable>
+		<trait_variable name="interfaces" trait="dhcp_server">
+			
+		</trait_variable>
+		<trait_variable name="max_lease_time" trait="dhcp_server">
+			7200
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/dhcp3-server
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/dhcp3/dhcpd.conf
+		</template>
+	</templates>
+	<scripts/>
+</trait>

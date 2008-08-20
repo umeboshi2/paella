@@ -1,4 +1,0 @@
-[installer]
-http_mirror:	http://10.0.1.4/debian
-keep_installed_packages:	True
-allow_unauthenticated_packages:	True

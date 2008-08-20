@@ -1,0 +1,27 @@
+<trait name="debian_admin_base">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			dctrl-tools
+		</package>
+		<package action="install">
+			debconf-utils
+		</package>
+		<package action="install">
+			rcconf
+		</package>
+		<package action="install">
+			reportbug
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>
