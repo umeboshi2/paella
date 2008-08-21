@@ -124,7 +124,7 @@ def install_iso_contents(iso, install_path, removeiso=True,
     map(makepaths, [install_path, mtpt])
     mntcmd = ['mount', '-t', 'iso9660', '-o', 'loop', iso, mtpt]
     retval = subprocess.call(mntcmd)
-    files = '%s/*' mtpt
+    files = '%s/*' % mtpt
     cpcmd = ['cp', '-a', files, install_path]
     subprocess.call(cpcmd)
     subprocess.call(['umount', mtpt])
