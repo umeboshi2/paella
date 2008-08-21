@@ -78,6 +78,7 @@ DEFAULT_PROCESSES = [
     'mount_target_proc',
     'mount_target_sys',
     'make_device_entries',
+    'mount_target_devpts',
     'apt_sources_installer',
     'ready_base_for_install',
     'pre_install',
