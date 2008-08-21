@@ -21,7 +21,7 @@ Package: paella-base
 Section: admin
 Priority: optional
 Architecture: any
-Depends: python-useless-db
+Depends: python-useless-db (>= 0.1.10)
 Description: base utils for paella
     This package is responsible for initial setup of the paella 
     environment. (need to ask for pghost, etc..)

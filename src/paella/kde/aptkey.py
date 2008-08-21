@@ -77,13 +77,14 @@ class AptKeyWindow(BaseSplitWindow, BasePaellaWindow):
 
     def initlistView(self):
         self.listView.addColumn('name')
-
+        self.listView.addColumn('keyid')
+        
     def refreshListView(self):
         self.listView.clear()
         for row in self.db.get_keys():
-            item = KListViewItem(self.listView, row.name)
+            item = KListViewItem(self.listView, row.name, row.keyid)
             item.keyname = row.name
-            item.keydata = row.data
+            item.keyid = row.keyid
             
     def initActions(self):
         collection = self.actionCollection()
@@ -121,7 +122,6 @@ class AptKeyWindow(BaseSplitWindow, BasePaellaWindow):
 
     def selectionChanged(self):
         item = self.listView.currentItem()
-        self.mainView.set_key(item.keydata)
-        
+        self.mainView.set_key(item.keydata)        
 
 

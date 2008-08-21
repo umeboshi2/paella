@@ -1,6 +1,7 @@
 import os
 
 from useless.base import debug
+from useless.base.util import Gpg
 from useless.sqlgen.clause import Eq
 
 class AptKeyHandler(object):
@@ -15,7 +16,13 @@ class AptKeyHandler(object):
         clause = Eq('name', name)
         return self.cursor.select_row(table='archive_keys', clause=clause)
 
-    def insert_key(self, name, data, keyid=None):
+    def get_keyid(self, keydata):
+        gpg = Gpg()
+        return gpg.importkey(keydata)
+        
+
+    def insert_key(self, name, data):
+        keyid = self.get_keyid(data)
         row = dict(name=name, keyid=keyid, data=data)
         self.cursor.insert(table='archive_keys', data=row)
 

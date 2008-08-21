@@ -41,9 +41,10 @@ if machine is not None:
         auto = env.is_it_true('autoinstall', machine)
         if auto:
             print 'auto installing machine %s' % machine
-            os.system('paella-nfsinstaller install %s %s' % (machine, target))
+            os.system('paella-machine-installer install %s %s' % (machine, target))
     print 'skipping installation of machine %s' % machine
 else:
-    print 'This is an unknown machine'
+    print 'This is an unknown machine, use paella-submit-machine to tell paella about it.'
+    
     
         

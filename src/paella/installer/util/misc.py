@@ -3,6 +3,7 @@ from os.path import join
 import tempfile
 import commands
 from time import sleep
+import subprocess
 
 from useless.base import Error
 from useless.base.util import makepaths, echo
@@ -121,23 +122,31 @@ def pxe_base_data(label, kernel=None, initrd=None):
 def install_iso_contents(iso, install_path, removeiso=True,
                          mtpt='/tmp/isomount'):
     map(makepaths, [install_path, mtpt])
-    mntcmd = 'mount -t iso9660 -o loop %s %s' % (iso, mtpt)
-    os.system(mntcmd)
-    cpcmd = 'cp -a %s/* %s' % (mtpt, install_path)
-    os.system(cpcmd)
-    os.system('umount %s' % mtpt)
+    mntcmd = ['mount', '-t', 'iso9660', '-o', 'loop', iso, mtpt]
+    retval = subprocess.call(mntcmd)
+    files = '%s/*' mtpt
+    cpcmd = ['cp', '-a', files, install_path]
+    subprocess.call(cpcmd)
+    subprocess.call(['umount', mtpt])
     if removeiso:
         os.remove(iso)
-        
-def get_mac_addresses():
-    if os.getuid():
-        raise Error, 'must be root to use get_mac_addresses'
-    i, o = os.popen2('ifconfig')
+
+def get_mac_addresses(interface=''):
+    process = subprocess.Popen(['/sbin/ifconfig'], stdout=subprocess.PIPE)
+    retval = process.wait()
+    if retval:
+        raise RuntimeError, "ifconfig returned %d" % retval
+    if interface:
+        raise RuntimeError, "interface keyword is currently ignored"
     macs = []
-    for line in o:
+    for line in process.stdout:
         if line.startswith('eth'):
             columns = [c.strip() for c in line.split()]
             mac = 'hwaddr_%s' % columns[4].replace(':', '_')
             macs.append(mac)
     return macs
 
+
+if __name__ == '__main__':
+    macs = get_mac_addresses()
+    

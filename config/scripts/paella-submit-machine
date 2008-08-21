@@ -14,6 +14,12 @@ from paella.installer.util.misc import get_mac_addresses
 parser = OptionParser()
 opts, args = parser.parse_args(sys.argv[1:])
 
+if not len(args):
+    print "We need a machine name as an argument"
+    sys.exit(1)
+
+
+
 machine = args[0]
 macs = get_mac_addresses()
 
@@ -33,10 +39,10 @@ print 'config looks like:\n\n'
 mcfg = Configuration()
 rows = cursor.select(clause=In('name', macs))
 for row in rows:
-    section = row.hostname
+    section = 'machines'
     if not mcfg.has_section(section):
         mcfg.add_section(section)
-    mcfg.set(row.hostname, row.name, row.value)
+    mcfg.set(section, row.name, row.value)
 
     
 mcfg.write(sys.stdout)
