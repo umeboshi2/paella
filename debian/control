@@ -9,7 +9,7 @@ Package: paella
 Section: admin
 Architecture: all
 Priority: extra
-Depends: paella-management
+Depends: paella-management (= ${binary:Version})
 Description: meta-package for default paella packages
     Paella is a installation/configuration management system
     centered on being able to easily define, configure, maintain and
@@ -30,7 +30,7 @@ Package: paella-debian
 Section: admin
 Priority: optional
 Architecture: any
-Depends: paella-base, python-apt, debootstrap, debconf-utils
+Depends: paella-base (= ${binary:Version}), python-apt, debootstrap, debconf-utils
 Description: Documentation for paella
     many class and functions for use with debian related
     activities (dpkg, package repositories, debconf, etc.)
@@ -39,7 +39,7 @@ Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db, python-pyparsing, debootstrap, reiserfsprogs, mkisofs, initramfs-tools
+Depends: paella-db (= ${binary:Version}), python-pyparsing, debootstrap, reiserfsprogs, mkisofs, initramfs-tools
 Description: python package for paella installers
  This package contains most of the code for installers to work.
  It also contains the chroot installer.
@@ -48,7 +48,7 @@ Package: paella-machine-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-installer, xfsprogs, hdparm, mdadm, gawk, grub
+Depends: paella-installer (= ${binary:Version}), xfsprogs, hdparm, mdadm, gawk, grub
 Description: package for machine installer
     This package should be installed on a live system.
 
@@ -56,7 +56,7 @@ Package: paella-nfs-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-machine-installer
+Depends: paella-machine-installer (= ${binary:Version})
 Description: package for nfsroot installer
     This package should be installed on the nfsroot installer.
 
@@ -64,7 +64,7 @@ Package: paella-admin
 Section: admin
 Priority: optional
 Architecture: any
-Depends: python-useless-kdedb, paella-db
+Depends: python-useless-kdedb, paella-db (= ${binary:Version})
 Recommends: xxdiff
 Description: package for configuration of profiles
     This package should be installed on the developer's machine
@@ -73,7 +73,7 @@ Package: paella-db
 Section: optional
 Priority: optional
 Architecture: any
-Depends: paella-debian, python-kjbuckets, python-useless-db, python-useless-xmlgen, python-cheetah
+Depends: paella-debian (= ${binary:Version}), python-kjbuckets, python-useless-db, python-useless-xmlgen, python-cheetah
 Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
     classes and functions to help create database schemas,
@@ -90,7 +90,7 @@ Package: paella-defaultdb
 Section: devel
 Priority: optional
 Architecture: all
-Depends: paella-base
+Depends: paella-base (= ${binary:Version})
 Description: a default database to start with
     The provided default database should contain
     enough toget started.  Included are profiles and
@@ -100,7 +100,7 @@ Package: paella-doc
 Section: doc
 Priority: optional
 Architecture: all
-Depends: paella-base
+Depends: paella-base (= ${binary:Version})
 Description: documentation for paella
   Paella is a system for  installing and managing
   configurations of debian systems.  This package
@@ -112,7 +112,7 @@ Package: paella-dbserver
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-defaultdb, postgresql, postgresql-contrib
+Depends: paella-defaultdb (= ${binary:Version}), postgresql, postgresql-contrib
 Description: database server package for paella
   Paella is a system for  installing and managing
   configurations of debian systems.  This package will setup
@@ -124,7 +124,7 @@ Package: paella-uml-admin
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-admin, user-mode-linux, uml-utilities, umlrun
+Depends: paella-admin (= ${binary:Version}), user-mode-linux, uml-utilities, umlrun
 Description: Use user-mode-linux to test paella installs
   This package provides tools to help test paella using
   user-mode-linux.
