@@ -130,6 +130,7 @@ class ChrootInstaller(BaseInstaller):
             'mount_target_proc',
             'mount_target_sys',
             'make_device_entries',
+            'mount_target_devpts',
             'apt_sources_installer',
             'ready_base_for_install',
             'pre_install',
@@ -146,6 +147,7 @@ class ChrootInstaller(BaseInstaller):
                                  mount_target_proc=self.mount_target_proc,
                                  mount_target_sys=self.mount_target_sys,
                                  make_device_entries=self.make_device_entries,
+                                 mount_target_devpts=self.mount_target_devpts,
                                  apt_sources_installer=self.apt_sources_installer,
                                  ready_base_for_install=self.ready_base_for_install,
                                  install=self.install,
@@ -254,16 +256,22 @@ class ChrootInstaller(BaseInstaller):
         
         
     # common method for mounting /proc and /sys
-    # here fs is either 'proc' or 'sys'
+    # here fs is either 'proc' or 'sys' or 'devpts'
     def _mount_target_virtfs(self, fs):
-        fstype = dict(proc='proc', sys='sysfs')
-        cmd = 'mount -t %s none %s' % (fstype[fs], self.target / fs)
+        fstype = dict(proc='proc', sys='sysfs', devpts='devpts')
+        target = self.target / fs
+        if fs == 'devpts':
+            target = self.target / 'dev' / 'pts'
+        if not target.isdir():
+            target.mkdir()
+        cmd = 'mount -t %s none %s' % (fstype[fs], target)
         runlog(cmd)
         
         
     def _umount_target_virtfs(self, fs):
         # work around binfmt-support /proc locking
         # found this idea while messing around in live-helper
+        target = self.target / fs
         if fs == 'proc':
             binfmt_misc = self.target / 'proc/sys/fs/binfmt_misc'
             status = binfmt_misc / 'status'
@@ -271,7 +279,9 @@ class ChrootInstaller(BaseInstaller):
                 self.log.info('Unmounting /proc/sys/fs/binfmt_misc in chroot')
                 cmd = 'umount %s' % binfmt
                 runlog(cmd)
-        cmd = 'umount %s' % (self.target / fs)
+        if fs == 'devpts':
+            target = self.target / 'dev' / 'pts'
+        cmd = 'umount %s' % target
         runlog(cmd)
         
     def _target_proc_mounted(self):
@@ -290,6 +300,9 @@ class ChrootInstaller(BaseInstaller):
     def mount_target_sys(self):
         self._mount_target_virtfs('sys')
 
+    def mount_target_devpts(self):
+        self._mount_target_virtfs('devpts')
+        
     @requires_target_proc_mounted
     def umount_target_proc(self):
         self._umount_target_virtfs('proc')
@@ -298,6 +311,9 @@ class ChrootInstaller(BaseInstaller):
     def umount_target_sys(self):
         self._umount_target_virtfs('sys')
 
+    def umount_target_devpts(self):
+        self._umount_target_virtfs('devpts')
+        
     @requires_target_proc_mounted
     @requires_target_sys_mounted
     @requires_installer_set
