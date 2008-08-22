@@ -489,6 +489,89 @@ I got these mismatches a few times, and don't know what caused the errors.  When
 the time to investigate the problem further, I'll find a better solution, but this solution should 
 work just fine for our purposes here.
 
+Debian Live
+============
+
+Why Debian Live?
+----------------------------------------
+Now you're ready to make the live nfsroot installer.  In the past, I had done this with paella, 
+and I had a flaky configuration that worked, albeit just barely.  In the beginning, I had to 
+compile a special kernel to allow me to mount an nfsroot, and have the network drivers 
+compiled right into the kernel image.  Later, the work on the initrd filesystem allowed me to 
+use stock kernels to boot from an nfsroot, but the readonly live nfsroot was flaky an limited 
+at best.  These days, there's DebianLive_ to help do much of the dirty work here.  It's even 
+possible to use DebianLive to make a live iso with the paella installer on it, for machines 
+that won't boot off of the network.  I actually had to do this with the older livecd package in 
+the past, but DebianLive is much better.  Now I can leave the management of a good live 
+system in somebody else's hands, and just concentrate on using that live system as an 
+installer for paella.
+
+Starting with DebianLive
+------------------------------------
+
+To begin making the nfsroot installer, we need to change directories to the place I've setup 
+for you to build the installer::
+
+    cd /freespace/live
+
+You'll need to stay in this directory for the rest of the instructions on building the DebianLive 
+nfsroot installer.
+
+Copy DebianLive config from CD
+----------------------------------------------------------------
+
+If you haven't yet mounted the netinst cdrom image, do so now::
+
+   mount /media/cdrom
+
+You need to copy the DebianLive configuration files from the cd::
+
+    cp -a /media/cdrom/paella/live-config/ config
+    chmod +w -R config/
+
+
+Modify the DebianLive Configuration
+------------------------------------------------------------
+
+If you had to change the network ip's from the defaults, you'll need to perform the steps 
+mentioned in the list below.  If the ip of the eth1 interface is 10.0.1.1, you can probably 
+skip this step.
+
+- edit config/bootstrap and set LH_MIRROR_BOOTSTAP with the ip of your eth1 interface.
+
+- edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.
+
+- edit config/chroot_sources/paella.chroot and set the ip address there to the address 
+  of your eth1 interface.
+
+- edit config/chroot_local-includes/etc/rc.local and set the ip address in that file to the 
+  address of your eth1 interface.
+
+Copy the Archive Key
+-----------------------------------------------
+
+Now, copy the archive key to the DebianLive config::
+
+     cp /freespace/debian/paella.gpg config/chroot_sources/paella.chroot.gpg
+
+
+Build the DebianLive nfsroot
+-------------------------------------------------------
+
+Now type::
+
+    sudo lh_clean
+    sudo lh_build  #(this will take a while)
+
+If the lh_build ended without raising an error, you can move the result to it's proper
+resting places::
+
+    sudo mv tftpboot/* /var/lib/tftpboot/
+    sudo mv binary/* /freespace/paella/
+
+Now you'll be able to boot machines off the local internal VM network, but it won't be 
+useful without a database prepared for paella to use.
+
 
 Using Paella Management Interface
 =======================================================
@@ -518,6 +601,7 @@ about it here__ .  Options that are prefixed by an underscore are not referenced
 You can make your own underscored options, if you wish, to make it easier to edit.
 
 Type::
+
 	cd
 	cp /etc/paellarc .paellarc
 
@@ -541,19 +625,24 @@ You should not need to change any other options.
 
 Start paella-management
 ------------------------------
-Run the paella-management script to start the management interface.  The first thing that you 
-will want to do is to connect to the database.  There is a connect button on the toolbar for you 
-to press.  The connection dialog entries are taken from your ~/.paellarc file.  The settings 
-for postgresql in this quickstart don't require a password for dbadmin, but you'll want to use 
-one if you use paella in a production environment.
+Run the paella-management script to start the management interface.  The little window that 
+pops up is the main menu for paella.  From here on, I'll refer it as the "main paella window".  
+There are two menu systems on the "main paella window".  One of them is the standard 
+menu bar at the top.  The other one is the list right below the menu bar.  This is the list that 
+contains "differs, environ, familes, ...".  This is the part of the interface that has so far 
+defied any conformance to standards that you might be used to.  I'm going to be calling 
+this part of the interface the "list menu".
+
+ 
+The first thing that you will want to do is to connect to the database.  There is a connect button 
+on the toolbar for you to press.  The connection dialog entries are taken from your ~/.paellarc 
+file.  The settings for postgresql in this quickstart don't require a password for dbadmin, but 
+you'll want to use one if you use paella in a production environment.
 
 Once you connect to the database, you should get a dialog asking to create the primary 
 tables.  You should click yes here to setup an empty database structure.  If you don't do 
 this, the database import procedure will create these tables for you, but you won't be able to
 use the paella-management interface until you do this.
-
-
-**The information below is outdated.  To be continued ....**
 
 
 Import the database
@@ -587,7 +676,37 @@ to help when creating traits, but that's in the future.
 
 
 Configure quickstart-vbox database
----------------------------------------------------------------
+======================================================
+
+Add the archive key
+-------------------------------------
+
+Now you'll need to add the gpg key you made above to paella, so that paella can install 
+the packages from the new mirror.  This is a rather new part of the gui, so the interface 
+is far from complete.  At the moment you can only add keys, not remove them.  The apt 
+key manager can be reached from the "main paella window" Main menu on the menu 
+bar.
+
+This will make a child window appear that lists all of the apt keys in the database.  At the 
+moment, there shouldn't be anything there.  Each key needs a unique name that you must 
+create.  This will help you to know which key is which, instead of having to memorize key 
+ID's.  To make a new key, press the "new" icon on the toolbar.  You'll be presented with a 
+dialog window.  Enter the name of the key in the top entry (use paella for the name).  In the 
+space below, you need to enter in the ascii gpg block for your public key.  I'll make a file 
+dialog to select the key from in the future, but for now, you'll have to cut and paste the 
+key.  This operation isn't going to be done very much for the lifetime of the database, so 
+a better interface isn't a high priority for me.  If you've been following the instructions 
+you can open the web browser to http://paella/debian/paella.gpg and cut and paste 
+the key from there.
+
+If you did this right, you should see paella and the key id in the left hand column.
+
+
+Edit the Default Environment
+--------------------------------------------
+
+
+**The information below is outdated.  To be continued ....**
 
 
 
@@ -679,3 +798,4 @@ the uml_head machine, and placed in the debian mirror.
 .. _machine_types: #machine-type
 .. _traits: #trait
 .. _machines: #machine
+.. _DebianLive: http://wiki.debian.org/DebianLive
