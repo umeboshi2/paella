@@ -266,6 +266,7 @@ type::
 
 	sudo apt-move update
 	sudo rm /freespace/debian/.apt-move -fr
+	sudo rm /freespace/debian/dists -fr
 	sudo chown -R paella:staff /freespace/debian/*
 
 This will move all the packages installed on the virtual machine to /freespace/debian .  This will 
@@ -438,8 +439,8 @@ would probably be best to add it to your .bashrc ::
 This is optional, as it's only needed to work with the code, and possibly fix bugs that you 
 encounter.
 
-You need to cut and paste the apt-get command from the output of the script, to build all of 
-the paella and python-useless-* packages.
+**Important:**  You need to cut and paste the apt-get command from the output 
+of the script, to build all of the paella and python-useless-* packages.
 
 
 Build paella packages from source tree
@@ -557,35 +558,37 @@ use the paella-management interface until you do this.
 
 Import the database
 --------------------------
-Now we are going to import the startup database.  You will need an internet connection to 
+Now we are going to import the startup database.  You may need an internet connection to 
 import the database.  The importer downloads the Packages files from the debian mirror in 
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the 
-database menu, select "import database".  A directory selection dialog will appear.  You 
-need to select the "stage1" directory.  Note that the default debian mirror is 
-http://ftp.us.debian.org/debian .  If you need to change this, edit the database.xml file
-in the stage1 directory, and alter the uri attribute to the aptsource xml element at the 
-top of the file.  You can change this to a local mirror if you already have one.  Paella has only 
-been tested with http apt sources, it's behaviour on other methods is unknown.
+database menu, select "import database".  A directory selection dialog will appear.  The 
+database directory will be at::
 
+	 ~/workspace/paella/config/share/databases/quickstart-vbox/
 
+Note that the default debian mirror is  http://ftp.us.debian.org/debian .  If you need to 
+change this, edit the database.xml file in the quickstart-vbox  directory, and alter the uri 
+attribute to the aptsource xml element at the top of the file.  You can change this to a local 
+mirror if you already have one.  I recommend against using the local mirror that you just 
+created in this quickstart routine, as you would likely want to make new traits with packages 
+that aren't available in that mirror.  Paella has only been tested with http apt sources, it's 
+behaviour on other methods is unknown.
 
-      If you are working from a subversion copy from the quick setup script, the directory
-      you will want to select is here, ~/workspace/paella/config/share/databases/stage1/ .
 
 If everything is working, you should be seeing an ugly little progress dialog displaying 
-something resembling what it should be doing.  The packages will probably take a little 
-while to insert.  The apt_source_packages table can take a lot of space that could be
-better saved.  In the future, it will probably default to only holding package names rather 
-than the other attributes in the Packages file.  The reason they are there is to help keep the 
-automated installations from bombing due to unavailable or misspelled packages.
+something resembling what it should be doing.  I need to fix this dialog to make it more 
+accurate, but at least you'll see it working while it inserts the information into the 
+database.  The packages will probably take a little while to insert.  The apt_source_packages 
+table can take a lot of space that could be better saved.  In the future, it will probably default 
+to only holding package names rather than the other attributes in the Packages file.  The 
+reason they are there is to help keep the automated installations from bombing due to 
+unavailable or misspelled packages.  It would also be nice to have a little package browser 
+to help when creating traits, but that's in the future.
 
 
-After importing the database, you will have to disconnect and then reconnect to the 
-database to refresh the available widgets in the paella-management application.  You may  
-wish to restart the application instead, as when an import occurs, a lot of memory is used 
-to parse the Packages file, and insert the packages into the database.  This memory is not 
-freed after the import process.  Fixing this has not been a major goal, as imports are fairly 
-rare during the normal use of paella-management.
+Configure quickstart-vbox database
+---------------------------------------------------------------
+
 
 
 Configure stage1 database
