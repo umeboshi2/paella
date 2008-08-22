@@ -57,6 +57,18 @@ paella server, and also to test to make machines to test the installs.  The proc
 below is assuming that you are using a GNU/Linux system as a host for VirtualBox OSE, but 
 there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.
 
+Networking
+------------------
+
+This quickstart has been written to use 10.0.1.0 for the internal network that the virtual 
+machines will be using.  The main virtual machine (paella.lapnet) will be using the 10.0.1.1 
+ip, while the other virtual machines will be obtaining their ip's from the dhcp server running 
+on paella.lapnet.  It is desirable to keep these defaults if at all possible.  If these ip numbers 
+conflict with your setup, I have tried to make it as easy as possible to use another block of
+ip's.  If you can't use the 10.0.1.0 network, I recommend that you still use some block inside 
+the 10.0.x.0 network.  I have tested the quickstart while changing the network to 10.0.x.0, and 
+it appears to work without problems.
+
 
 Debian Netinst CD Image (LennyBeta2)
 -------------------------------------
@@ -176,8 +188,12 @@ the iso will boot everytime you boot the virtual machine.
 
 When the sytem boots up for the first time, login as paella (password paella).  You may 
 want to load this webpage in a web browser in the virtual machine, so you can more easily 
-cut and paste from this page.  We need to start configuring the server. Start a terminal 
-and type::
+cut and paste from this page.  We need to start configuring the server.  There is a script 
+written to help with this.  It's located at /usr/local/bin/setup-paella-server .  If you can't use 
+the default 10.0.1.0 internal network, there is a place at the top of the script to change these 
+values.
+
+Start a terminal and type::
 
      sudo setup-paella-server
 
@@ -235,19 +251,18 @@ Now type::
 
 Answer the questions in the dialog.  It should be ok to answer the defaults, until you get to
 the question asking "Is this correct?".  After this, you'll need to enter the "Real Name" and 
-email address that you obtained from the steps above.  You can enter an empty passphrase, 
-but remember that you can't use this key for anything more serious than working with paella 
-in a testing environment.  If you do want a passphrase, you'll also need to know how to use 
-gpg-agent, which is also beyond the scope of this document.
+email address that you obtained from the steps above.  You will probably want to enter 
+"(insecure testing key)" or something similar for the comment.  After you tell gpg that the 
+information is "Okay", you'll be prompted for a passphrase.  You can enter an empty 
+passphrase, but remember that you can't use this key for anything more serious than 
+working with paella in a testing environment.  If you do want a passphrase, you'll also 
+need to know how to use gpg-agent, which is also beyond the scope of this document.  It's 
+recommended that you just use an empty passphrase, and keep the fact that this is a 
+testing key in mind (The comment and bogus email address should remind you, in case you 
+forget later).
 
-You'll need to know the key ID of the gpg key for the steps below. Here, I'm assuming 
-that the "Real Name" you entered above is "Paella User".  To obtain it, type::
-
-	    gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
-
-You should get an eight digit hexadecimal number, which you'll need to remember.  From
-here on, I'll just refer to it as your gpg key ID.  If you need more random bytes, type this 
-in another window::
+If you need more random bytes, try moving the mouse around a lot, and pecking the keyboard 
+randomly in a text editor.  To get the disk moving, type this in another terminal window::
 
      find /usr/share | xargs sha1sum
 
@@ -256,11 +271,19 @@ inaccurate.  The code for paella may still refer to the key ID as a fingerprint,
 be corrected by the time you read this.  Please keep this in mind as you use paella.  I hope to 
 have the code corrected after I'm sure that this quickstart routine is fully functional.
 
+You'll need to know the key ID of the gpg key for the steps below. Here, I'm assuming 
+that the "Real Name" you entered above is "Paella User".  To obtain it, type::
+
+	    gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
+
+You should get an eight digit hexadecimal number, which you'll need to remember.  From
+here on, I'll just refer to it as your gpg key ID.
+
+
 
 Setup initial debian mirror
 -------------------------------------------
 
-If you already have a local debian mirror, you can probably skip this step.
 
 type::
 
@@ -359,7 +382,7 @@ In order to verify the release files, you'll need to import the debian archive s
 
 Now would also be a good time to export the public key you made above::
 
-    gpg --export -a > /freespace/debian/paella.gpg
+    gpg --export -a "Paella User" > /freespace/debian/paella.gpg
 
 Let apt on paella know about it too::
 
