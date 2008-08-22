@@ -547,6 +547,12 @@ skip this step.
 - edit config/chroot_local-includes/etc/rc.local and set the ip address in that file to the 
   address of your eth1 interface.
 
+- edit config/chroot_local-includes/etc/paellarc and set the dbhost option to the address 
+  of your eth1 interface.
+
+This should be all the files that you have to edit in the DebianLive configuration.
+
+
 Copy the Archive Key
 -----------------------------------------------
 
