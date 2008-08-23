@@ -556,24 +556,11 @@ You need to copy the DebianLive configuration files from the cd::
 Modify the DebianLive Configuration
 ------------------------------------------------------------
 
-If you had to change the network ip's from the defaults, you'll need to perform the steps 
-mentioned in the list below.  If the ip of the eth1 interface is 10.0.1.1, you can probably 
-skip this step.
-
-- edit config/bootstrap and set LH_MIRROR_BOOTSTAP with the ip of your eth1 interface.
-
-- edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.
-
-- edit config/chroot_sources/paella.chroot and set the ip address there to the address 
-  of your eth1 interface.
-
-- edit config/chroot_local-includes/etc/rc.local and set the ip address in that file to the 
-  address of your eth1 interface.
-
-- edit config/chroot_local-includes/etc/paellarc and set the dbhost option to the address 
-  of your eth1 interface.
-
-This should be all the files that you have to edit in the DebianLive configuration.
+**Important** If you had to change the network ip's from the defaults, you'll need to 
+edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.  If the ip 
+of the eth1 interface is 10.0.1.1, you can probably skip this step.  This should be the only file 
+that you have to edit in the DebianLive configuration.  If this variable isn't set properly, the 
+live system will boot, but the root filesystem will never be mounted.
 
 
 Copy the Archive Key
@@ -642,14 +629,25 @@ admin user (dbadmin).  The dbusername in the master config file should  always b
 
 The management_gui section has options for the paella-management application.  The options 
 that you may want to change here are "text_editor", and "x_differ".  Both of these commands 
-should display an X window.  For the x_differ, I highly recommend xxdiff.  The x_differ command 
-line conform to this::
+should display an X window.  For the x_differ, I highly recommend xxdiff.  I have a config file that 
+makes it easier to use xxdiff, located at /usr/share/doc/paella-admin/xxdiffrc .  You'll want to 
+copy this file to ~/.xxdiffrc .  The x_differ command line in the paellarc file conforms 
+to this::
 
      x_differ LeftFile RightFile
 
 If your differ needs options on the command line, please write a wrapper for it, and use that.
 
+There are only two text editors that I included with this quickstart routine.  They are 
+kate (the default) and xemacs.  If you wish to use another one, go ahead and install it and 
+put the command in the ~/.paellarc file.
+
 You should not need to change any other options.
+
+The paellarc configuration file is used by two distinct users, the database admin, and the 
+paella installer.  Much of the configuration in the paellarc file is used for the database admin.  
+The paella installer user only needs the database section of the paellarc file, as this user 
+uses the paella database for the rest of his configuration.
 
 
 Start paella-management
@@ -679,8 +677,9 @@ Import the database
 Now we are going to import the startup database.  You may need an internet connection to 
 import the database.  The importer downloads the Packages files from the debian mirror in 
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the 
-database menu, select "import database".  A directory selection dialog will appear.  The 
-database directory will be at::
+database menu, select "import database".  A directory selection dialog will appear.  On the 
+VM I tested, this window was a little bit too skinny, so you'll probably need to make it bigger 
+with your mouse.  The database directory will be at::
 
 	 ~/workspace/paella/config/share/databases/quickstart-vbox/
 
@@ -701,7 +700,9 @@ table can take a lot of space that could be better saved.  In the future, it wil
 to only holding package names rather than the other attributes in the Packages file.  The 
 reason they are there is to help keep the automated installations from bombing due to 
 unavailable or misspelled packages.  It would also be nice to have a little package browser 
-to help when creating traits, but that's in the future.
+to help when creating traits, but that's in the future, and it would need the full record of each 
+package to be stored in the database.
+
 
 
 Configure quickstart-vbox database
@@ -733,6 +734,28 @@ If you did this right, you should see paella and the key id in the left hand col
 
 Edit the Default Environment
 --------------------------------------------
+
+Access to the default environment is provided on the "list menu" in the "main paella 
+window", under the "environ" item in the list.  Click on the "+" to the left of the "environ" 
+list item, and two list items will be displayed below the environ item, named "current" and 
+"default".  You will want to click on "default".  This will bring up the "Default Environment" 
+manager.  To edit the default environment, press the "edit" button in the toolbar.  This will 
+bring up a text editor (if you're using kate, you'll have to select the session first).  The file 
+format is the same as the paellarc config file.  
+
+There are only two options that you will probably want to change.  The "archive_keys" 
+option is a comma separated list of key names that will be used for the installer.  The key, 
+"paella", should already be here.  If you named your key something else, or have other keys 
+that you want to use, you need to list them here.  The other option is "http_mirror", and you 
+will want to either set this to "http://paella.lapnet/debian" .  You must save the file and 
+exit the text editor for paella to save the information to the database.
+
+
+
+Create A Machine to Install
+===================================
+
+
 
 
 **The information below is outdated.  To be continued ....**
