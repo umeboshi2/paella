@@ -34,17 +34,29 @@ for mac in macs:
         if env.has_option('machines', mac):
             machine = env.get('machines', mac)
 
+known = False
 if machine is not None:
     section = 'autoinstall'
     has_it =  env.has_section(section) and env.has_option(section, machine)
     if has_it:
+        known = True
         auto = env.is_it_true('autoinstall', machine)
         if auto:
             print 'auto installing machine %s' % machine
             os.system('paella-machine-installer install %s %s' % (machine, target))
-    print 'skipping installation of machine %s' % machine
+        else:
+            print 'skipping auto installation of machine %s' % machine
+    else:
+        msg = "Machine is %s but has no entry in " % machine
+        msg += "autoinstall section of default environment."
+        print msg
 else:
-    print 'This is an unknown machine, use paella-submit-machine to tell paella about it.'
-    
+    msg = 'This is an unknown machine, use paella-submit-machine '
+    msg += 'to tell paella about it.'
+    print msg
+
+if known:
+    print "paella-init-nfsinstaller is finished."
+
     
         

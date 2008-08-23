@@ -132,7 +132,8 @@ class MachineInstallerHelper(object):
         setup_modules(self.target, modules)
 
     # this is a really ugly way
-    # to install the kernel
+    # to install the kernel.  This needs to be
+    # changed soon.
     def install_kernel(self):
         # force grub to be installed
         cmd = 'apt-get -y install grub'
@@ -140,7 +141,7 @@ class MachineInstallerHelper(object):
         runlog(chrootcmd)
         
         self.log.info('Preparing grub bootloader before installing kernel')
-        basecmd = 'grub-install --root-directory=%s --recheck' % self.target
+        basecmd = '/usr/sbin/grub-install --root-directory=%s --recheck' % self.target
         if not self._get_disks():
             device = '/dev/hda'
         else:

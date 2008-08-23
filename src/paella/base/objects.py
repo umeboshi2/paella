@@ -99,6 +99,9 @@ class VariablesConfig(Configuration):
         newconfig.readfp(tmp)
         tmp.close()
         os.remove(path)
+        backupfile = '%s~' % path
+        if os.path.exists(backupfile):
+            os.remove(backupfile)
         return newconfig
 
     def diff(self, other):

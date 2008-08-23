@@ -23,15 +23,13 @@ if not len(args):
 machine = args[0]
 macs = get_mac_addresses()
 
-data = dict(hostname=machine)
-
 conn = InstallerConnection()
     
 cursor = StatementCursor(conn)
 cursor.set_table('current_environment')
 for mac in macs:
-    data['name'] = mac
-    data['value'] = machine
+    data = dict(hostname='machines', name=mac, value=machine)
+    # FIXME: we need to check for existence before inserting
     print 'inserting %s for %s' % (mac, machine)
     cursor.insert(data=data)
 
