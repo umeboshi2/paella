@@ -755,6 +755,44 @@ exit the text editor for paella to save the information to the database.
 Create A Machine to Install
 ===================================
 
+We're done with the paella VM for a little bit.  Now it's time to create a new VM which will be 
+used to install a system.  You don't want to poweroff or reboot the paella VM, since we'll be 
+using again shortly.
+
+Side Salad to a Paella
+----------------------------------
+Creating the next machine will be almost just like creating the paella VM.  This new machine 
+should be named "sidesalad", as that's what I'm going to be calling for the remainder of this 
+quickstart document.  Follow the instructions for making the paella VM, except keep the 
+memory at its default setting (or you can probably go down to 128M without problems if you're 
+starved for memory).  Make sure that you create the 8GB virtual hard drive, else we won't have 
+a device on which to install.  
+
+Now with "sidesalad" selected in the VirtualBox frontend, press the Settings button on the 
+toolbar.  On this machine, you'll need to configure the network interface to use the internal 
+network, just as you configured the secondary network adapter on the paella VM.  Be sure to 
+use the name "lapnet" for the network name.  Also, in the General settings, click the Advanced 
+tab.  You need to check the box to the left of Network in the "Boot Order" window, and move 
+Network all the way to the top.  This will let it boot from the network first.  These should be the 
+only configuration changes you'll need to make.
+
+Boot the new machine
+----------------------------------
+Now we're ready to boot the machine.  The machine should boot straight from the network 
+without any problems.  If this doesn't happen, it's a sign that something went wrong.  If I have 
+time later, I might write a short troubleshooting section to help figure out what went wrong.  If 
+you haven't strayed from the defaults, and have been following this document closely, the 
+machine should boot.  I've done everything I can think of to make this process as easy as 
+possible, so that when you get to this step, you'll have a VM booting from the internal network, 
+but it's possible that I forgot something somewhere.  If you are absolutely sure that you have 
+followed this quickstart step by step and haven't got the new machine to boot from the network, 
+I'd really like to know about it, so we can figure out what went wrong, and how to adjust this 
+document to be prepared for that possibility.
+
+**If you've made it this far, and the "unfinished" disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.**
+
+
+
 
 
 
