@@ -7,4 +7,5 @@ http_mirror:	http://127.0.0.1/debian
 keep_installed_packages:	True
 suite_storage:	/root
 use_devices_tarball:	False
+bootstrap_suites:	lenny
 

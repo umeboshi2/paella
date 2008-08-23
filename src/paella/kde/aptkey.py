@@ -122,6 +122,8 @@ class AptKeyWindow(BaseSplitWindow, BasePaellaWindow):
 
     def selectionChanged(self):
         item = self.listView.currentItem()
-        self.mainView.set_key(item.keydata)        
+        keydata = self.db.get_key(item.keyname)
+        self.mainView.set_key(keydata)
+        
 
 
