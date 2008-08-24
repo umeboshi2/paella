@@ -1,0 +1,34 @@
+<trait name="uml_static_host">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base
+		</parent>
+		<parent>
+			network_base
+		</parent>
+		<parent>
+			uml_common
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="gateway" trait="uml_static_host">
+			10.0.1.1
+		</trait_variable>
+		<trait_variable name="ip_address" trait="uml_static_host">
+			10.0.1.23
+		</trait_variable>
+		<trait_variable name="netmask" trait="uml_static_host">
+			255.255.255.0
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/network/interfaces_uml_static_host.orig
+		</template>
+	</templates>
+	<scripts/>
+</trait>

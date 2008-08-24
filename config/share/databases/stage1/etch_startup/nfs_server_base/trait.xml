@@ -1,0 +1,21 @@
+<trait name="nfs_server_base">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			fileserver_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			nfs-common
+		</package>
+		<package action="install">
+			nfs-kernel-server
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

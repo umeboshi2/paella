@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# set xemacs to be default editor
+update-alternatives --install /usr/bin/pager pager /usr/bin/xemacs21 999

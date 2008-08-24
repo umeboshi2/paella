@@ -1,0 +1,38 @@
+	<profile name="uml_head" suite="startup">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				uml_head
+			</trait>
+			<trait ord="2">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				uml_startup
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="do_dselect_upgrade" trait="base">
+				False
+			</profile_variable>
+			<profile_variable name="hostname" trait="global">
+				umlhead
+			</profile_variable>
+			<profile_variable name="eth0_address" trait="network_base">
+				10.0.1.4
+			</profile_variable>
+			<profile_variable name="eth0_gateway" trait="network_base">
+				10.0.1.1
+			</profile_variable>
+			<profile_variable name="eth0_method" trait="network_base">
+				static
+			</profile_variable>
+			<profile_variable name="eth0_netmask" trait="network_base">
+				255.255.255.0
+			</profile_variable>
+		</environ>
+	</profile>

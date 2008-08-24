@@ -1,0 +1,48 @@
+	<family name="uml_startup">
+		<parents>
+			<parent>
+				tap_network
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="debootstrap" trait="builder">
+				debootstrap
+			</family_variable>
+			<family_variable name="mirrorsite" trait="builder">
+				http://10.0.1.4/debian
+			</family_variable>
+			<family_variable name="aptmove_localdir" trait="debrepos">
+				&lt;--|uml_common_hostfs_root|--&gt;/debrepos
+			</family_variable>
+			<family_variable name="debarchiver_inputdir" trait="debrepos">
+				/var/lib/debarchiver/incoming
+			</family_variable>
+			<family_variable name="gecos" trait="umlbuilder_account">
+				Paella Builder,,,
+			</family_variable>
+			<family_variable name="uid" trait="umlbuilder_account">
+				1000
+			</family_variable>
+			<family_variable name="username" trait="umlbuilder_account">
+				umlbuilder
+			</family_variable>
+			<family_variable name="debrepos_incoming" trait="uml_common">
+				&lt;--|debrepos_debarchiver_inputdir|--&gt;
+			</family_variable>
+			<family_variable name="hostfs_root" trait="uml_common">
+				/mnt/freespace/shared/share/paella
+			</family_variable>
+			<family_variable name="systarball_bkup_path" trait="uml_common">
+				/mnt/freespace/home/umeboshi/roots
+			</family_variable>
+			<family_variable name="maxspareservers" trait="web_server">
+				2
+			</family_variable>
+			<family_variable name="minspareservers" trait="web_server">
+				2
+			</family_variable>
+			<family_variable name="startservers" trait="web_server">
+				2
+			</family_variable>
+		</environ>
+	</family>

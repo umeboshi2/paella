@@ -1,0 +1,5 @@
+#!/bin/bash
+su --command "createdb paella" postgres
+su --command "createlang -d paella plpgsql" postgres
+su --command "createuser -D -A paella" postgres
+su --command "createuser -a -d dbadmin" postgres

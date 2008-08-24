@@ -1,0 +1,44 @@
+#!/usr/bin/env python
+import os, sys
+from useless.base.util import makepaths
+from paella.installer.toolkit import InstallerTools
+
+TRAIT = 'network_base'
+
+def _get_full_key(key):
+    return '_'.join([TRAIT, key])
+
+def _get_iface_key(iface, key):
+    return _get_full_key('_'.join([iface, key]))
+
+
+def make_iface_stanza(it, iface):
+    method = it.get(_get_iface_key(iface, 'method'))
+    stanza = 'iface %s inet %s\n' % (iface, method)
+    if method == 'static':
+        for value in ['address', 'netmask', 'gateway']:
+            stanza += '\t%s\t%s\n' % (value, it.get(_get_iface_key(iface, value)))
+    return stanza
+
+def make_udev_rule(it, iface):
+    line = 'SUBSYSTEM=="net", DRIVERS=="?*"'
+    
+it = InstallerTools()
+it.set_trait('network_base')
+print dir(it)
+
+ifaces = it.lget('interfaces').split()
+auto = it.lget('automatic_interfaces').split()
+ifacesfilename = os.path.join(it.target, 'etc/network/interfaces')
+ifacesfile = file(ifacesfilename, 'w')
+for iface in ifaces:
+    if iface in auto:
+        ifacesfile.write('auto %s\n' % iface)
+    ifacesfile.write(make_iface_stanza(it, iface))
+ifacesfile.close()
+
+print 'Network Interfaces File:'
+print file(ifacesfilename).read()
+
+
+    

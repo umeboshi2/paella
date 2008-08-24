@@ -1,0 +1,68 @@
+<trait name="web_server">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apache
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="documentroot" trait="web_server">
+			/var/www
+		</trait_variable>
+		<trait_variable name="documentroot_options" trait="web_server">
+			Indexes Includes FollowSymLinks MultiViews
+		</trait_variable>
+		<trait_variable name="group" trait="web_server">
+			www-data
+		</trait_variable>
+		<trait_variable name="hostnamelookups" trait="web_server">
+			Off
+		</trait_variable>
+		<trait_variable name="keepalivetimeout" trait="web_server">
+			15
+		</trait_variable>
+		<trait_variable name="maxclients" trait="web_server">
+			150
+		</trait_variable>
+		<trait_variable name="maxkeepaliverequests" trait="web_server">
+			100
+		</trait_variable>
+		<trait_variable name="maxrequestsperchild" trait="web_server">
+			100
+		</trait_variable>
+		<trait_variable name="maxspareservers" trait="web_server">
+			10
+		</trait_variable>
+		<trait_variable name="minspareservers" trait="web_server">
+			5
+		</trait_variable>
+		<trait_variable name="port" trait="web_server">
+			80
+		</trait_variable>
+		<trait_variable name="serveradmin" trait="web_server">
+			webmaster@localhost
+		</trait_variable>
+		<trait_variable name="startservers" trait="web_server">
+			5
+		</trait_variable>
+		<trait_variable name="timeout" trait="web_server">
+			300
+		</trait_variable>
+		<trait_variable name="user" trait="web_server">
+			www-data
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apache/httpd.conf
+		</template>
+	</templates>
+	<scripts/>
+</trait>

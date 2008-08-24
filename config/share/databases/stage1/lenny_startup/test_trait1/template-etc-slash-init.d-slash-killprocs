@@ -1,0 +1,51 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          killprocs
+# Required-Start:    $local_fs
+# Required-Stop:
+# Default-Start:     1
+# Default-Stop:
+# Short-Description: executed by init(8) upon entering runlevel 1 (single).
+### END INIT INFO
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+
+. /lib/lsb/init-functions
+
+do_start () {
+	# Kill all processes.
+	log_action_begin_msg "Sending all processes the TERM signal"
+	killall5 -15
+	log_action_end_msg 0
+	sleep 5
+	log_action_begin_msg "Sending all processes the KILL signal"
+	killall5 -9
+	log_action_end_msg 0
+
+	# We start update here, since we just killed it.
+	if [ -x /sbin/update ] && [ "$(uname -s)" = Linux ]
+	then
+		case "$(uname -r)" in
+		  0.*|1.*|2.[0123].*)
+			/sbin/update
+			;;
+		esac
+	fi
+}
+
+case "$1" in
+  start)
+	do_start
+	;;
+  restart|reload|force-reload)
+	echo "Error: argument '$1' not supported" >&2
+	exit 3
+	;;
+  stop)
+	# No-op
+	;;
+  *)
+	echo "Usage: $0 start|stop" >&2
+	exit 3
+	;;
+esac

@@ -1,0 +1,88 @@
+<trait name="localnet">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			default
+		</parent>
+		<parent>
+			network_base
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="boot_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="db_server" trait="localnet">
+			&lt;--|localnet_postgres_server|--&gt;
+		</trait_variable>
+		<trait_variable name="ddns_update_keyname" trait="localnet">
+			standard
+		</trait_variable>
+		<trait_variable name="ddns_update_secret_key" trait="localnet">
+			ozEDawrG84aUSAf+JXf55hsw8RCT6OSKxQOzce25GZxd8UbXFZviDLgt gcehytZ49SQDHIbqp6txteVtO3k3sA==
+		</trait_variable>
+		<trait_variable name="dhcp_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="dict_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="diskless_server" trait="localnet">
+			&lt;--|localnet_nfs_server|--&gt;
+		</trait_variable>
+		<trait_variable name="domain" trait="localnet">
+			&lt;--|global_domain|--&gt;
+		</trait_variable>
+		<trait_variable name="firewall" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="gateway" trait="localnet">
+			10.0.0.1
+		</trait_variable>
+		<trait_variable name="ldap_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="mainserver" trait="localnet">
+			&lt;--|global_hostname|--&gt;
+		</trait_variable>
+		<trait_variable name="mysql_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="nameserver" trait="localnet">
+			&lt;--|localnet_gateway|--&gt;
+		</trait_variable>
+		<trait_variable name="netmask" trait="localnet">
+			255.0.0.0
+		</trait_variable>
+		<trait_variable name="network" trait="localnet">
+			10.0.0.0
+		</trait_variable>
+		<trait_variable name="nfs_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="ntp_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="postgres_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="samba_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="squid_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="web_server" trait="localnet">
+			&lt;--|localnet_mainserver|--&gt;
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			root/scratchpad
+		</template>
+	</templates>
+	<scripts/>
+</trait>

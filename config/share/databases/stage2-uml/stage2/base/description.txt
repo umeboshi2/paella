@@ -1,0 +1,4 @@
+The base trait is the first trait that does anything.  It's main
+responsibility is to update the apt sources lists with apt-get update.
+There are also some important templates.
+The behaviour of adduser and default home directories is handled here.

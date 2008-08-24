@@ -1,0 +1,29 @@
+	<profile name="uml_builder" suite="lenny_startup">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				builder
+			</trait>
+			<trait ord="2">
+				subversion
+			</trait>
+			<trait ord="3">
+				uml_builder
+			</trait>
+			<trait ord="4">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				uml_startup
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				umlbuilder
+			</profile_variable>
+		</environ>
+	</profile>
