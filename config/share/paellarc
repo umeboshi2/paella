@@ -65,6 +65,15 @@ template_profile:		skeleton
 # on top of the base paella database
 client_path:		%(__myhome)s/clients
 
+# this option either enables or disables access
+# to the clients widget.  This is currently broken
+# in pykde, and hasn't been used since the gtk
+# gui was running.  This option should be left
+# as False.  This option will remain here, regardless
+# of whether the widget actually works or not, 
+# since it's an optional feature of paella.
+client_widget:		False
+
 # only listbox_select is supported now
 manager_type:		listbox_select
 

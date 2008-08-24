@@ -19,10 +19,10 @@ from paella.kde.base.widgets import BasePaellaWidget
 from paella.kde.base.actions import BaseItem, BaseAction
 from paella.kde.base.actions import dbactions
 from paella.kde.base.actions import ManageFamilies
-from paella.kde.base.actions import EditTemplateAction
 from paella.kde.base.actions import ManageAptSourcesAction
 from paella.kde.base.actions import OpenSuiteManagerAction
 from paella.kde.base.actions import ManageAptKeysAction
+from paella.kde.base.actions import IdentifyMachinesAction
 
 from paella.kde.base.mainwin import BasePaellaWindow
 
@@ -111,9 +111,6 @@ class BasePaellaMainWindow(BasePaellaWindow):
         self.manageFamiliesAction = \
                                   ManageFamilies(self.slotManageFamilies,
                                                  collection)
-        self.editTemplatesAction = \
-                                 EditTemplateAction(self.slotEditTemplates,
-                                                    collection)
         self.manageAptSourcesAction = \
                                     ManageAptSourcesAction(self.slotManageAptSources,
                                                            collection)
@@ -124,6 +121,9 @@ class BasePaellaMainWindow(BasePaellaWindow):
                                  ManageAptKeysAction(self.slotManageAptKeys,
                                                      collection)
         
+        self.identifyMachinesAction = \
+                                    IdentifyMachinesAction(self.slotIdentifyMachines,
+                                                           collection)
         # in the main window assign quit to app.quit
         self.quitAction = KStdAction.quit(self.app.quit, collection)
         self.suiteActions = {}
@@ -153,6 +153,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
         main_actions = [self.manageAptSourcesAction,
                         self.openSuiteManagerAction,
                         self.manageAptKeysAction,
+                        self.identifyMachinesAction,
                         self.quitAction]
         actions = ['connect', 'disconnect', 'import', 'export']
         dbactions = [self.dbactions[action] for action in actions]
@@ -238,6 +239,9 @@ class BasePaellaMainWindow(BasePaellaWindow):
         else:
             self._connect_first_dialog()
             
+    def slotIdentifyMachines(self):
+        KMessageBox.information(self, "not implemented yet")
+        
     def slotImportDatabase(self):
         print 'slotImportDatabase called'
         self._select_import_export_directory('import')
@@ -404,10 +408,13 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         for etype in ['default', 'current']:
             item = KListViewItem(environ_folder, etype)
             item.etype = etype
-        installer_folder = KListViewItem(self.listView, 'installer')
-        installer_folder.installer = True
-        clients_folder = KListViewItem(self.listView, 'clients')
-        clients_folder.clients = True
+        # installer widget is still unimplemented
+        if False:
+            installer_folder = KListViewItem(self.listView, 'installer')
+            installer_folder.installer = True
+        if self.app.cfg.getboolean('management_gui', 'client_widget'):
+            clients_folder = KListViewItem(self.listView, 'clients')
+            clients_folder.clients = True
         
     def selectionChanged(self):
         current = self.listView.currentItem()
@@ -450,15 +457,6 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
         win = FamilyMainWindow(self)
         win.show()
         self._all_my_children.append(win)
-        
-    def slotEditTemplates(self):
-        print 'edit templates'
-        KMessageBox.error(self, 'Edit Templates unimplemented')
-        
-    def slotEditEnvironment(self, etype):
-        print 'in slotEditEnvironment etype is', etype, type(etype)
-        #DefEnvWin(self.app, self, etype)
-        KMessageBox.error(self, 'Edit Environment is unimplemented')
         
     def slotManageSuite(self, wid=-1):
         print 'in slotManageSuite suite is', wid

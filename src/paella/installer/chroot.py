@@ -7,7 +7,6 @@ from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, Gt
 
 
-from paella.debian.base import debootstrap
 from paella.db.aptkey import AptKeyHandler
 
 from base import BaseInstaller
@@ -29,6 +28,18 @@ class UnsatisfiedRequirementsError(BaseInstallError):
 
 class InstallTargetError(BaseInstallError):
     pass
+
+
+# the arch argument is ignored
+def debootstrap(suite, root, mirror=None, script='', arch='i386'):
+    cmd = ['debootstrap', suite, root]
+    if mirror is not None:
+        cmd.append(mirror)
+    if script:
+        cmd.append(script)
+    return cmd
+
+
 
 # here are some decorators to check requirements
 # needed to invoke a method
@@ -190,6 +201,8 @@ class ChrootInstaller(BaseInstaller):
         cmd = 'tar -C %s %s %s' % (self.target, taropts, basefile)
         # if cmd returns nonzero, runlog will raise an error
         runlog(cmd)
+        # we need to do certain things here that debootstrap
+        # does for us, like copy /etc/resolv.conf
         self._bootstrapped = True
             
     @requires_target_exists
@@ -223,7 +236,8 @@ class ChrootInstaller(BaseInstaller):
             keyfile = file(filename, 'w')
             keyfile.write(row.data)
             keyfile.close()
-            self.chroot('apt-key add %s.key' % key)
+            #self.chroot('apt-key add %s.key' % key)
+            self.chroot(['apt-key', 'add', '%s.key' % key])
             os.remove(filename)
             if filename.exists():
                 raise RuntimeError, "%s wasn't deleted" % filename
@@ -251,7 +265,8 @@ class ChrootInstaller(BaseInstaller):
     @requires_bootstrap
     def ready_base_for_install(self):
         # update the package lists
-        self.chroot('apt-get -y update')
+        #self.chroot('apt-get -y update')
+        self.chroot(['apt-get', '-y', 'update'])
         
         
     # common method for mounting /proc and /sys
@@ -263,7 +278,8 @@ class ChrootInstaller(BaseInstaller):
             target = self.target / 'dev' / 'pts'
         if not target.isdir():
             target.mkdir()
-        cmd = 'mount -t %s none %s' % (fstype[fs], target)
+        #cmd = 'mount -t %s none %s' % (fstype[fs], target)
+        cmd = ['mount', '-t', fstype[fs], 'none', str(target)]
         runlog(cmd)
         
         
@@ -276,11 +292,13 @@ class ChrootInstaller(BaseInstaller):
             status = binfmt_misc / 'status'
             if status.exists():
                 self.log.info('Unmounting /proc/sys/fs/binfmt_misc in chroot')
-                cmd = 'umount %s' % binfmt
+                #cmd = 'umount %s' % binfmt
+                cmd = ['umount', str(binfmt_misc)]
                 runlog(cmd)
         if fs == 'devpts':
             target = self.target / 'dev' / 'pts'
-        cmd = 'umount %s' % target
+        #cmd = 'umount %s' % target
+        cmd = ['umount', str(target)]
         runlog(cmd)
         
     def _target_proc_mounted(self):

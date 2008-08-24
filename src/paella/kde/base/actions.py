@@ -146,10 +146,21 @@ class ManageAptSourcesAction(BaseAction):
 class ManageAptKeysItem(BaseItem):
     def __init__(self):
         tt = 'Manage Apt Keys'
-        BaseItem.__init__(self, tt, 'key', tt, tt)
+        BaseItem.__init__(self, tt, 'lock', tt, tt)
 
 class ManageAptKeysAction(BaseAction):
     def __init__(self, slot, parent):
         BaseAction.__init__(self, ManageAptKeysItem(), 'ManageAptKeysAction',
+                            slot, parent)
+        
+
+class IdentifyMachinesItem(BaseItem):
+    def __init__(self):
+        tt = "Identify Machines"
+        BaseItem.__init__(self, tt, 'id', tt, tt)
+
+class IdentifyMachinesAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, IdentifyMachinesItem(), 'IdentifyMachinesAction',
                             slot, parent)
         

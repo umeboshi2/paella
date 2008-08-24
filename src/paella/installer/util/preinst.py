@@ -5,6 +5,7 @@ from misc import set_root_passwd, myline
 from aptsources import make_sources_list
 
 from paella import deprecated
+
 #this is done after bootstrap or
 #this is done after extracting the base tar
 def ready_base_for_install(target, conn, suite, fstabobj):

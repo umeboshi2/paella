@@ -11,8 +11,10 @@ def mount_tmp(target='/tmp'):
     os.system('mount -t tmpfs tmpfs %s' % target)
 
 def mount_tmpfs(target='/tmp'):
-    os.system('mount -t tmpfs tmpfs %s' % target)
-
+    #os.system('mount -t tmpfs tmpfs %s' % target)
+    cmd = ['mount', '-t', 'tmpfs', 'tmpfs', str(target)]
+    runlog(cmd)
+    
 def make_fstab(fstabobj, target):
     fstab = file(os.path.join(target, 'etc/fstab'), 'w')
     fstab.write(str(fstabobj))
@@ -54,6 +56,7 @@ def make_filesystems(device, fsmounts, env):
             
 def mount_target(target, mounts, device):
     mounts = [m for m in mounts if int(m.partition)]
+    echo = ['echo', 'mounting', 'target']
     if mounts[0].mnt_point != '/':
         raise RuntimeError, 'bad set of mounts', mounts
     mddev = False
@@ -64,8 +67,10 @@ def mount_target(target, mounts, device):
         mdnum += 1
     else:
         pdev = '%s%d' % (device, mounts[0].partition)
-    runlog('echo mounting target %s to %s' % (pdev, target))
-    runlog('mount %s %s' % (pdev, target))
+    #runlog('echo mounting target %s to %s' % (pdev, target))
+    runlog(echo + [pdev, 'to', str(target)])
+    #runlog('mount %s %s' % (pdev, target))
+    runlog(['mount', pdev, str(target)])
     mounts = mounts[1:]
     mountable = [m for m in mounts if m.fstype != 'swap']
     for mnt in mountable:
@@ -76,8 +81,10 @@ def mount_target(target, mounts, device):
         else:
             pdev = '%s%d' % (device, mnt.partition)
         mdnum += 1
-        runlog('echo mounting target %s to %s' % (pdev, tpath))
-        runlog('mount %s %s' % (pdev, tpath))
+        #runlog('echo mounting target %s to %s' % (pdev, tpath))
+        runlog(echo + [pdev, 'to', str(tpath)])
+        #runlog('mount %s %s' % (pdev, tpath))
+        runlog(['mount', pdev, str(tpath)])
         
 def mount_target_proc(target, umount=False):
     tproc = os.path.join(target, 'proc')

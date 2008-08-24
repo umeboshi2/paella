@@ -336,7 +336,10 @@ class BaseInstaller(BaseProcessor):
         
     # helper to run commands in a chroot on the target
     def chroot(self, command):
-        return runlog('chroot %s %s' % (self.target, command))
+        if type(command) is list:
+            return runlog(['chroot', str(self.target)] + command)
+        else:
+            return runlog('chroot %s %s' % (self.target, command))
 
 if __name__ == '__main__':
     from paella.db import PaellaConnection

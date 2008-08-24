@@ -17,6 +17,13 @@ from paella.kde.base.viewbrowser import ViewBrowser
 from paella.kde.base.mainwin import BasePaellaWindow
 
 
+## NOTE: this looks like I copied the Profile Manager as
+# a template for the ClientsMainWindow, but it looks like
+# that's as far as I got
+
+# I need to look a the old gtk widget before doing anything
+# here
+
 class ClientsMainWindow(BasePaellaWindow):
     def __init__(self, parent):
         BasePaellaWindow.__init__(self, parent, name='ClientsMainWindow')

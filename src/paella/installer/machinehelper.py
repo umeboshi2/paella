@@ -205,6 +205,7 @@ class MachineInstallerHelper(BaseHelper):
     def setup_disks(self):
         disks = self._get_disks()
         if not disks:
+            self.log.warn('HARDCODED /dev/hda in machinehelper.setup_disks')
             self._setup_disk_fai('/dev/hda')
         else:
             self.partition_disks()

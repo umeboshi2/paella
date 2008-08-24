@@ -72,25 +72,32 @@ class TraitInstallerHelper(object):
 
     # helper to run commands in a chroot on the target
     def chroot(self, command, failure_suppressed=False):
-        cmd = 'chroot %s %s' % (self.target, command)
+        # we need to remove this if/else when we're sure
+        # we don't need it anymore
+        if type(command) is list:
+            cmd = ['chroot', str(self.target)] + command
+        else:
+            cmd = 'chroot %s %s' % (self.target, command)
         return runlog(cmd, failure_suppressed=failure_suppressed)
         
     def remove_packages(self, packages):
         if packages:
-            packages_arg = ' '.join(packages)
-            command = 'apt-get -y remove %s' % packages_arg
+            #packages_arg = ' '.join(packages)
+            #command = 'apt-get -y remove %s' % packages_arg
+            command = ['apt-get', '-y', 'remove'] + packages
             self.chroot(command)
         else:
             self.log.info('No packages to remove')
         
     def install_packages(self, packages, unauthenticated=False):
         if packages:
-            packages_arg = ' '.join(packages)
-            opts = ''
+            #packages_arg = ' '.join(packages)
+            opts = []
             if unauthenticated:
-                opts = '--allow-unauthenticated'
-            command = 'apt-get -y %s install %s' % (opts, packages_arg)
-            stmt = 'install command for trait %s is:  %s' % (self.trait, command)
+                opts.append('--allow-unauthenticated')
+            #command = 'apt-get -y %s install %s' % (opts, packages_arg)
+            command = ['apt-get', '-y'] + opts + ['install'] + packages
+            stmt = 'install command for trait %s is:  %s' % (self.trait, ' '.join(command))
             self.log.info(stmt)
             self.chroot(command)
         else:
@@ -165,7 +172,9 @@ class TraitInstallerHelper(object):
             raise InstallError, 'bad mode %s, please use octal prefixed by 0' % mode
         
         own = ':'.join([template.owner, template.grp_owner])
-        command = 'chown %s %s' % (own, path('/') / template.template)
+        #command = 'chown %s %s' % (own, path('/') / template.template)
+        template_path = path('/') / template.template
+        command = ['chown', own, str(template_path)]
         # This command is run in a chroot to make the correct uid, gid
         self.chroot(command)
 
