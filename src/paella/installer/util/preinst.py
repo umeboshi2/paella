@@ -1,3 +1,4 @@
+from useless.base.path import path
 from misc import make_interfaces_simple
 from filesystem import make_fstab
 from misc import set_root_passwd, myline
@@ -12,5 +13,11 @@ def ready_base_for_install(target, conn, suite, fstabobj):
     make_sources_list(conn, target, suite)
     make_interfaces_simple(target)
     make_fstab(fstabobj, target)
+    target = path(target)
+    resolvconf = file('/etc/resolv.conf').read()
+    target_resolvconf = target / 'etc' / 'resolv.conf'
+    target_resolvconf.write(resolvconf)
+    
+    
     
 

@@ -216,19 +216,18 @@ class ChrootInstaller(BaseInstaller):
         aptkeys = AptKeyHandler(self.conn)
         keys = self.defenv.get_list('archive_keys', 'installer')
         for key in keys:
-            data = aptkeys.get_key(key)
+            row = aptkeys.get_row(key)
             filename = self.target / ('%s.key' % key)
             if filename.exists():
                 raise RuntimeError, "%s already exists" % filename
             keyfile = file(filename, 'w')
-            keyfile.write(data)
+            keyfile.write(row.data)
             keyfile.close()
             self.chroot('apt-key add %s.key' % key)
             os.remove(filename)
             if filename.exists():
                 raise RuntimeError, "%s wasn't deleted" % filename
-            
-            
+            self.log.info('added key %s (%s) to apt' % (key, row.keyid))
         
     @requires_bootstrap
     def make_device_entries(self):

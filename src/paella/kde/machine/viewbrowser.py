@@ -108,7 +108,9 @@ class MachineTypeView(ViewBrowser):
         elif context == 'Variables':
             self.doc.mtype.edit_variables()
         elif context == 'Scripts':
-            self.doc.mtype.delete_script(ident)
+            ans = KMessageBox.questionYesNo(self, "really delete this script?")
+            if ans == KMessageBox.Yes:
+                self.doc.mtype.delete_script(ident)
         elif context == 'Modules':
             msg = 'Deleting modules is not supported.'
             KMessageBox.information(self, msg)

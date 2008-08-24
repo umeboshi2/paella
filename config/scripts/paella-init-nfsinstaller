@@ -40,10 +40,11 @@ if machine is not None:
     has_it =  env.has_section(section) and env.has_option(section, machine)
     if has_it:
         known = True
+        retval = None
         auto = env.is_it_true('autoinstall', machine)
         if auto:
             print 'auto installing machine %s' % machine
-            os.system('paella-machine-installer install %s %s' % (machine, target))
+            retval = os.system('paella-machine-installer install %s %s' % (machine, target))
         else:
             print 'skipping auto installation of machine %s' % machine
     else:
@@ -56,7 +57,11 @@ else:
     print msg
 
 if known:
-    print "paella-init-nfsinstaller is finished."
+    if retval is not None:
+        if retval:
+            print "paella-machine-installer returned %d" % retval
+        else:
+            print "paella-init-nfsinstaller has finished successfully!"
 
     
         

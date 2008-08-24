@@ -1,6 +1,7 @@
 import os, sys
 from os.path import isdir, isfile, join, basename, dirname
 import subprocess
+import warnings
 
 from useless.base import Log
 from useless.base.config import Configuration
@@ -30,6 +31,12 @@ class RunLogError(OSError):
 
 class InvalidSuiteError(ValueError):
     pass
+
+
+class RunLogWarning(Warning):
+    pass
+
+warnings.simplefilter('always', RunLogWarning)
 
 
 class MainLog(object):
@@ -76,8 +83,15 @@ class PaellaLogger(MainLog):
         MainLog.warn(self, name, msg)
         
 
+# I've added some ugly looking warning code here
+# to help clean up previously bad ideas on how to use
+# this function
 def runlog(cmd, logfile=None, logobject=None, failure_suppressed=False):
     kw = dict(stderr=subprocess.STDOUT, shell=True)
+    # make a list of stacklevels
+    # this is temporary, until we determine the best levels to
+    # capture
+    stacklevels = range(1,5)
     if logobject is None:
         if logfile is not None:
             output = file(logfile, 'a')
@@ -88,7 +102,26 @@ def runlog(cmd, logfile=None, logobject=None, failure_suppressed=False):
             kw['stdout'] = stream
     else:
         kw['stdout'] = logobject.handlers[0].stream
+    if type(cmd) is list:
+        kw['shell'] = False
+    elif type(cmd) in [str, unicode]:
+        # Trying to keep from using the shell for the command
+        # since that's a good way for malicious things to happen.
+        for stacklevel in stacklevels:
+            msg = "StackLevel %d: passing strings to runlog is deprecated" % stacklevel
+            warnings.warn(msg, RunLogWarning, stacklevel=stacklevel)
+    else:
+        raise RunLogError, "unknown command type"
     retval = subprocess.call(cmd, **kw)
+    if failure_suppressed:
+        # we need to raise a warning about using failure_suppressed
+        # we'll eventually determine all the code that passes this arg,
+        # and replace them with try: runlog except: RunLogError ,
+        # so we can always raise RunLogError on a non-zero return from
+        # the subprocess call
+        for stacklevel in stacklevels:
+            msg = "StackLevel %d: failure_suppressed is true" % stacklevel
+            warnings.warn(msg, RunLogWarning, stacklevel=stacklevel)
     if retval and not failure_suppressed:
         raise RunLogError, 'command %s return exit code %d' % (cmd, retval)
     return retval

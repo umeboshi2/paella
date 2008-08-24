@@ -3,6 +3,7 @@ from os.path import join, basename, dirname
 
 from useless.base import Error
 from useless.base.util import echo
+from useless.base.path import path
 
 # some helper methods are now
 # used in the chroot installer
@@ -31,7 +32,7 @@ from util.postinst import install_kernel
 class BootLoaderNotImplementedError(InstallError):
     pass
 
-class MachineInstallerHelper(object):
+class BaseHelper(object):
     def __init__(self, installer):
         if installer.machine.current is None:
             raise InstallError, 'installer must have machine selected'
@@ -47,7 +48,89 @@ class MachineInstallerHelper(object):
         self.disklogpath = self.installer.disklogpath
         self.defenv = self.installer.defenv
         self.curenv = None
+
+# I don't really like making this
+# class, since it can go into the
+# the MachineInstallerHelper class,
+# but I don't want to make that class
+# too big.  Eventually, all of the
+# machine installer code needs
+# to be reorganized
+class KernelHelper(BaseHelper):
+    def __init__(self, installer):
+        BaseHelper.__init__(self, installer)
+        self.targetdev = self.target / 'dev'
+        self.targetdevpts = self.targetdev / 'pts'
+        self.chroot_precommand = ['chroot', str(self.target)]
+        self.aptinstall = ['apt-get', '-y', 'install']
         
+    def bind_mount_dev(self):
+        mount_cmd = ['mount', '-o', 'bind', '/dev', self.targetdev]
+        mount_devpts = ['mount', '-t', 'devpts', 'devpts', '/dev/pts']
+        runlog(mount_cmd)
+        runlog(self.chroot_precommand + mount_devpts)
+
+    def umount_dev(self):
+        umount_devpts = ['umount', '/dev/pts']
+        runlog(self.chroot_precommand + umount_devpts)
+        umount_cmd = ['umount', self.targetdev]
+        runlog(umount_cmd)
+
+    # pass a keyword arg, since there's a grub2 now
+    def install_grub_package(self, grub='grub'):
+        cmd = self.chroot_precommand + self.aptinstall + [grub]
+        runlog(cmd)
+        
+    # It's really bad form to specify /dev/hda here
+    def install_grub(self, device='/dev/hda', floppy=False):
+        if not device.startswith('/dev'):
+            device = '/dev/%s' % device
+        opts = ['--recheck']
+        if not floppy:
+            opts.append('--no-floppy')
+        bin = '/usr/sbin/grub-install'
+        runlog(self.chroot_precommand + [bin] + opts + [device])
+        
+    def update_grub(self):
+        runlog(self.chroot_precommand + ['update-grub'])
+
+    def install_kernel_package(self):
+        self.log.info('called install_kernel_package')
+        kernel = self.machine.current.kernel
+        cmd = self.chroot_precommand + self.aptinstall + [kernel]
+        self.log.info('install cmd is: %s' % ' '.join(cmd))
+        kimgconf = self.target / 'etc' / 'kernel-img.conf'
+        kimgconf_old = path('%s.paella-orig' % kimgconf)
+        kimgconflines = ['do_bootloader = No',
+                         'do_initrd = Yes',
+                         'warn_initrd = No'
+                         ]
+        if kimgconf.exists():
+            self.log.info('/etc/kernel-img.conf already exists')
+            k = '/etc/kernel-img.conf'
+            msg ='renaming %s to %s.paella-orig' % (k, k)
+            self.log.info(msg)
+            if kimgconf_old.exists():
+                raise RuntimeError, '%s already exists, aborting install.' % kimgconf_old
+            os.rename(kimgconf, kimgconf_old)
+        kimgconf.write_lines(kimgconflines)
+        runlog(cmd)
+        self.log.info('Kernel installation is complete.')
+        if kimgconf_old.exists():
+            self.log.info('Restoring /etc/kernel-img.conf')
+            os.remove(kimgconf)
+            os.rename(kimgconf_old, kimgconf)
+
+    def install_kernel(self, bootdevice='/dev/hda'):
+        self.bind_mount_dev()
+        self.install_kernel_package()
+        self.install_grub_package()
+        self.install_grub(device=bootdevice)
+        self.update_grub()
+        self.umount_dev()
+        
+    
+class MachineInstallerHelper(BaseHelper):
     def _partition_disk(self, diskname, device):
         msg = 'partitioning %s %s' % (diskname, device)
         self.log.info(msg)
@@ -105,8 +188,17 @@ class MachineInstallerHelper(object):
         return False
 
     def unmount_device(self, device):
-        mounted = os.system('umount %s' % device)
-
+        #mounted = os.system('umount %s' % device)
+        # this is how the command should look
+        #mounted = runlog(['umount', device])
+        # LOOK FOR WHERE THIS IS CALLED
+        # why assign the return to mounted if I wasn't going
+        # to return it?
+        # passing str to runlog to find where this
+        # is called.
+        mounted = runlog('umount %s' % device)
+        # return mounted
+        
     def _get_disks(self):
         return self.machine.check_machine_disks()
     
@@ -131,37 +223,14 @@ class MachineInstallerHelper(object):
         modules = self.machine.get_modules()
         setup_modules(self.target, modules)
 
-    # this is a really ugly way
-    # to install the kernel.  This needs to be
-    # changed soon.
-    def install_kernel(self):
-        # force grub to be installed
-        cmd = 'apt-get -y install grub'
-        chrootcmd = 'chroot %s %s' % (self.target, cmd)
-        runlog(chrootcmd)
-        
-        self.log.info('Preparing grub bootloader before installing kernel')
-        basecmd = '/usr/sbin/grub-install --root-directory=%s --recheck' % self.target
-        if not self._get_disks():
-            device = '/dev/hda'
-        else:
-            self.log.info('disks are %s' % str(self._get_disks()))
-            self.log.info('we are currently unable to handle this method.')
-            raise BootLoaderNotImplementedError, "grub is not implemented on this setup yet"
-        grubcmd = '%s %s' % (basecmd, device)
-        runlog(grubcmd)
-        self.log.info('grub-install completed.')
-        chrootcmd = 'chroot %s update-grub -y' % self.target
-        self.log.info('running update-grub in target')
-        runlog(chrootcmd)
-        self.log.info('update-grub completed.')
-        kernel = self.machine.current.kernel
-        #install_kernel(kernel, self.target)
-        cmd = 'apt-get -y install %s' % kernel
-        chrootcmd = 'chroot %s %s' % (self.target, cmd)
-        self.log.info('installing kernel with command: %s' % chrootcmd)
-        runlog(chrootcmd)
-        self.log.info('Kernel installation is complete.')
+
+    
+    # this is still an ugly way
+    # to install the kernel.  This method
+    # could use some work.
+    def install_kernel(self, bootdevice='/dev/hda'):
+        khelper = KernelHelper(self.installer)
+        khelper.install_kernel(bootdevice=bootdevice)
         
 
 if __name__ == '__main__':
