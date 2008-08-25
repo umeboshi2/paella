@@ -1,6 +1,3 @@
-import os
-
-from useless.base import debug
 from useless.base.util import Gpg
 from useless.sqlgen.clause import Eq
 

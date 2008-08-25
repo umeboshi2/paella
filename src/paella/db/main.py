@@ -46,9 +46,12 @@ class MissingPackagesError(RuntimeError):
 
 
 def report_missing_packages(suite, missing):
+    "missing is a dict with traits as keys \
+    and a list of packages as values"
     traits = missing.keys()
     traits.sort()
-    report = 'These packages for these traits, in suite %s, do not exist.\n' % suite
+    report = 'These packages for these traits, '
+    report += 'in suite %s, do not exist.\n' % suite
     for trait in traits:
         report += 'trait %s:\n' % trait
         for package in missing[trait]:
@@ -578,10 +581,11 @@ class PaellaProcessor(object):
     def _make_missing_packages_report(self, missing):
         traits = missing.keys()
         traits.sort()
-        for t in traits:
-            print '%s:' % t
-            for p in missing[t]:
-                print '\t%s' % p
+        for trait in traits:
+            print '%s:' % trait
+            for  package in missing[t]:
+                print '\t%s' % package
+                
         
     def _find_missing_packages(self, suite, traits):
         missing = dict()
@@ -609,7 +613,7 @@ class PaellaProcessor(object):
     def _insert_traits_(self, traits, suite):
         while len(traits):
             trait = traits[0]
-            print 'inserting %s' %trait, len(traits)
+            print 'inserting %s' % trait, len(traits)
             try:
                 self._insert_trait_(trait, suite)
             except UnbornError:
@@ -654,6 +658,9 @@ class PaellaProcessor(object):
             mh.restore_machine_database(self.main_path)
 
 class DatabaseManager(object):
+    """This class is used to import/export
+    the paella database
+    """
     def __init__(self, conn):
         self.cfg = PaellaConfig()
         self.conn = conn
