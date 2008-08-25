@@ -130,6 +130,10 @@ Each installer object will be a subclass of the base processor.
 class hierarchy
 
 + **BaseProcessor(object)**
+  
+  - This class is not meant to be instantiated, but to be subclassed.  It
+    won't work on it's own.  It expects the subclass to provide a python
+    logger at self.log .
 
 + **BaseInstaller(BaseProcessor)**
 
