@@ -1,4 +1,4 @@
-<trait name="global" suite="startup">
+<trait name="global">
 	<description>
 		None
 	</description>

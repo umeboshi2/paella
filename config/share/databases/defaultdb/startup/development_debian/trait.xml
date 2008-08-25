@@ -1,4 +1,4 @@
-<trait name="development_debian" suite="startup">
+<trait name="development_debian">
 	<description>
 		None
 	</description>

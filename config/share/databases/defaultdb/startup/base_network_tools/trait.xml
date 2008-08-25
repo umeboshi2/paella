@@ -1,4 +1,4 @@
-<trait name="base_network_tools" suite="startup">
+<trait name="base_network_tools">
 	<description>
 		None
 	</description>

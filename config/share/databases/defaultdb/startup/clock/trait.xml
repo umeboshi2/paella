@@ -1,4 +1,4 @@
-<trait name="clock" suite="startup">
+<trait name="clock">
 	<description>
 		None
 	</description>

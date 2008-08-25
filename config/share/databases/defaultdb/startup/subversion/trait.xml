@@ -1,4 +1,4 @@
-<trait name="subversion" suite="startup">
+<trait name="subversion">
 	<description>
 		None
 	</description>

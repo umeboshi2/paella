@@ -1,4 +1,4 @@
-<trait name="base_debian_admin_tools" suite="startup">
+<trait name="base_debian_admin_tools">
 	<description>
 		None
 	</description>
