@@ -27,7 +27,7 @@ install/paella-uml-admin::
 	rm -r build/
 build/paella-doc:: 
 	echo "building paella-doc"
-	python setup.py doc install --prefix=$(CURDIR)/debian/paella-doc/usr/share/doc/paella-doc/html
+	python setup.py doc install --prefix=$(CURDIR)/debian/paella-doc/usr/share/doc/paella-doc
 
 clean::
 	dh_clean -X*.orig configure-stamp notes.html docs/*.html

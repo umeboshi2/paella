@@ -33,6 +33,9 @@ class clean(_clean):
 
 
 data_files = []
+build_apidoc = False
+if os.environ.has_key('PAELLA_BUILD_APIDOC'):
+    build_apidoc = True
 
 class builddocs(_build):
     def run(self):
@@ -47,13 +50,23 @@ class builddocs(_build):
         files = [f for f in files if not f.startswith('.')]
         print "source doc files:", ', '.join(files)
         os.mkdir('html')
+        data_tuple = ('html', [])
+        data_files.append(data_tuple)
         for srcfile in files:
             print "building", srcfile
             htmlfile = 'html/%s.html' % srcfile
             os.system('rst2html %s %s' % (srcfile, htmlfile))
-            data_files.append('docs/%s' % htmlfile)
+            data_tuple[1].append('docs/%s' % htmlfile)
         os.chdir(here)
-            
+        if build_apidoc:
+            data_tuple = ('html/api', [])
+            data_files.append(data_tuple)
+            os.system('epydoc -o docs/html/api paella')
+            for root, dirs, files in os.walk('docs/html/api'):
+                for afile in files:
+                    bfile = os.path.join(root, afile)
+                    data_tuple[1].append(bfile)
+                        
 
 PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin', 'uml-admin']
 package = None
@@ -81,8 +94,7 @@ PACKS = {
             'paella/db/profile',
             'paella/db/machine'
             ],
-    'debian' : ['paella/debian',
-                'paella/debian/newrepos'
+    'debian' : ['paella/debian'
                 ],
     'admin' : ['paella/kde',
                'paella/kde/base',

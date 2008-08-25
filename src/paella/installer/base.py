@@ -187,6 +187,7 @@ class Modules(list):
 # --------------------------------------------------------------------
 
 class BaseProcessor(object):
+    "All the paella installers inherit from this class"
     def __init__(self):
         self._processes = []
         self._process_map = {}
