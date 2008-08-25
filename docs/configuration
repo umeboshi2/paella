@@ -138,7 +138,7 @@ paella.
     I recommend using xxdiff, which is the default.  This command must use these 
     arguments::
 
-	text_editor leftfile rightfile
+	x_differ leftfile rightfile
 
 ------------------------------------------------
 
