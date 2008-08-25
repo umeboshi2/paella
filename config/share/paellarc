@@ -18,37 +18,33 @@ dbpassword:		apassword
 default_path:		%(__paelladir)s/config/share/databases
 
 # the installer section is only needed on the installer system
-# it is not needed for paella-management
+# it is not needed for paella-management.  This whole section
+# can probably be removed, and you should only rely on the information
+# in the comments for this section to pertain to the corresponding options
+# in the installer section of the default environment in the paella database.
 [installer]
 
-# this is to enable ugly stuff in the paella installers
-enable_bad_hacks:	false
-
-# a directory for storing generated files that would be needed later
-# I put this in usr because it's mainly used on the nfsinstaller, and
-# /var on the nfsinstaller uses tmpfs instead of nfs
-paella_storage:		/usr/share/paella/storage
-
-# use this one for machines other than the nfsinstaller
-#paella_storage:		/var/cache/paella
+# this option is only referenced in the config file
+_paella_cache:		/var/cache/paella
 
 # the directory that will hold tarfiles of clean bootstrapped suites
-suite_storage:		%(paella_storage)s/suites
+suite_storage:		%(_paella_cache)s/suites
 
 # this is a list of suites that will be bootstrapped and tarred
 bootstrap_suites:		sarge, etch
 
 # the default is not to have the installer bootstrap,
 # but extract tar files in suite_storage (quicker)
-bootstrap_target:		false
+bootstrap_target:		True
 
 # this is the location of the devices tarball that can be used
-# in place of makedev
-devices_tarball:		%(paella_storage)s/devices.tar
+# in place of MAKEDEV.  This option is probably obsolete.
+devices_tarball:		%(_paella_cache)s/devices.tar
 
 # we default to using the devices tarball because it is quicker
-# than running MAKEDEV
-use_devices_tarball:	true
+# than running MAKEDEV.  This option is probably obsolete, but
+# may be useful for those who experience problems.
+use_devices_tarball:	False
 
 # the management_gui section is only needed for paella-management,
 # it is not needed for the paella installer
@@ -86,13 +82,24 @@ x_differ:			xxdiff
 #x_differ:			kompare
 
 
+
 # document colors
+# these are the old hardcoded defaults that
+# I used before I made these options configurable.
+# Try them out, and be happy these colors aren't
+# hardcoded anymore. ;)
+# btw, I left the machine document colors hardcoded
+# to some bright gaudy colors to remind me to eventually
+# make them configurable.  If you're a developer with extra
+# time on your hands, you may want to help out here.
 #traitdoc_bgcolor:			LightSkyBlue4
 #traitdoc_section_title_color:		IndianRed
 #traitdoc_package_table_color:	SkyBlue3
 #traitdoc_template_table_color:	DarkSeaGreen3
 #traitdoc_variables_table_color:	MistyRose3
 
+# These colors need to be understood by the
+# qt html engine, so any colors can be used here.
 _basecolor:			SkyBlue
 traitdoc_bgcolor:			%(_basecolor)s
 traitdoc_section_title_color:		%(_basecolor)s4

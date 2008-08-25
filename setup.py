@@ -42,6 +42,9 @@ class builddocs(_build):
         print "building docs"
         exclude = ['.svn', 'images']
         files = [f for f in os.listdir('.') if f not in exclude]
+        files = [f for f in files if not f.endswith('~')]
+        files = [f for f in files if '#' not in f]
+        files = [f for f in files if not f.startswith('.')]
         print "source doc files:", ', '.join(files)
         os.mkdir('html')
         for srcfile in files:

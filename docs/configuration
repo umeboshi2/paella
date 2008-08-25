@@ -18,8 +18,13 @@ Environment Variables used by Paella
 
   - **PAELLA_DBNAME** - the name of the paella database
 
+  - **PAELLA_DBPORT** - the port of the paella database (this currently
+    can't be set in the gui)
 
-+ these are used in the installers:
+  - **PAELLA_DBPASSWD** - the password to the paella database.
+
++ These environment variables are set by the installers, and can be used
+  in the scripts:
 
   - **PAELLA_TRAIT** - name of the trait currently being processed
 
@@ -33,9 +38,14 @@ Environment Variables used by Paella
 
   - **LOGFILE** -- this needs to be deprecated
 
-  - **FAKE_START_STOP_DAEMON** - fill me in
+  - **FAKE_START_STOP_DAEMON** - This was used in the old installer to make
+    and remove the start-stop-daemon in a manner similar to debootstrap.  While the
+    environment variable isn't checked anymore, the code to make and remove the
+    fake start-stop-daemon is still there, and can be used in the pre and post scripts 
+    of the traits that will need them most.
 
-  - **DEBIAN_FRONTEND** - set to noninteractive
+  - **DEBIAN_FRONTEND** - This is usually set to noninteractive by the paella 
+    installer, but it is never read from the environment by paella.
 
 
 + These are used in scripts and are mostly unimportant:
@@ -46,12 +56,6 @@ Environment Variables used by Paella
 
   - **PATH**
 
-
-+ these are used in the kernelbuilder:
-
-  - **INITRD_OK** - used when building initrd kernel
-
-  - **CONCURRENCY_LEVEL** - this helps speed things up on smp systems.
 
 ------------------------------------------------
 
@@ -68,102 +72,82 @@ paella.
 
 + Section **database**
 
-  - dbhost:  hostname or ip of host where paella database resides
+  - **dbhost**:  hostname or ip of host where paella database resides
 
-  - dbname:  name of paella database
+  - **dbname**:  name of paella database
 
-  - dbusername:  username to connect to database with
+  - **dbusername**:  username to connect to database with
 
-  - dbpassword:  password to use for authentication (if necessary)
+  - **dbpassword**:  password to use for authentication (if necessary)
 
-  - import_path:  default path for import and export of database data
+  - **default_path**:  default path for import and export of database data
 
-  - export_path:  **deprecated, use import_path***
++ Section **installer** 
 
-  - autocommit:  **deprecated, don't use**
+  - **IMPORTANT** - this whole section is now vestigial, and the documentation
+    is only being left here as a reference, in case I forget to mention something
+    on the `default-environment`_ page.  Now, the installer only reads the paellarc 
+    file at /etc/paellarc for the database connection.  All other information is provided 
+    by the default_environment table.
 
-+ Section **debrepos**
+  - **suite_storage**:  
 
-  - I'm probably going to deprecate much of the paella-debrepos package
-    as there are much better tools to handle this now.
-
-  - repos_host:  **no info now**
-
-  - debroot:  **no info now**
-
-  - repos_root:  **no info now**
-
-  - official_suite:  **no info now**
-
-  - local_suites:  **no info now**
-
-  - sid_suites:  **no info now**
-
-  - http_mirror:  **no info now**
-
-  - official_main:  **deprecated**
-
-  - official_nonus:  **deprecated**
-
-  - official_security:  **deprecated**
-
-  - other_repos:  **no info now**
-
-  - other_repos_names:  **no info now**
-
-+ Section **installer**
-
-  - I'm probably going to deprecate much of the paella-debrepos package
-    as there are much better tools to handle this now.
-
-  - enable_bad_hacks:  
-
-    - this ugly option needs to be removed
-
-  - paella_storage:  
-
-    - parent directory for storing files that the installer needs
-      like base tarballs, etc.
-
-  - suite_storage:  
-
-    - default %(paella_storage)s/suites - where the base
+    - default /var/cache/paella/suites - where the base
       tarballs are stored.
 
-  - bootstrap_suites:  
+  - **bootstrap_suites**:  
 
-    - a comma separated list of suites to keep tarballs of.
-      this will probably be removed soon
+    - a comma separated list of suites that will be debootstrapped and 
+      tarred for later extraction during installs..
 
-  - use_devices_tarball:  
+  - **use_devices_tarball**:  
 
     - This used to be handy as the MAKEDEV script used
       to take a long time to run.  We can now use udev to do most of the work that
-      this option was here for.
+      this option was here for.  This option is also vestigial, as it's now located
+      in the default environment.
 
 + Section **management_gui** (manager)
 
   - This section is for using the management gui interface.
 
-  - env_editor_size:
+  - **template_profile**:  This is the name of the profile that will be used as a
+    "template" when creating an new profile.  Default is "skeleton"
 
-  - bkuptarball_path:
+  - **client_path**:  This is the path that's used to import and export client 
+    information.  At the moment, the client widget isn't functional, so
+    this option is useless for the time being.
 
-  - template_profile:
+  - **client_widget**:  This option enables (or disables) the client widget.
+    Default: False
 
-  - default_profile_suite:
+  - **manager_type**:  This option is used to determine the type of manager
+    widget that will be used for the management gui.  At the moment, only
+    listbox_select is supported.  This is the widget that uses a listbox, instead
+    of a menu to display widget options.  This is not how most user interfaces 
+    work, but it works just fine anyway.
 
-  - client_path:
+  - **text_editor**:  This is the text editor that's used with the management gui.  
+    This command either needs to be in your PATH, or the full path to the file 
+    must be used.  This command doesn't handle options, if you need to pass
+    options to the editor, please use a wrapper.  The default is kate, but I really
+    recommend xemacs.
 
-  - manager_pos:
+  - **x_differ**:  This is the graphical differ that's used with the management gui.
+    This command has all the requirements of the **text_editor** option above.
+    I recommend using xxdiff, which is the default.  This command must use these 
+    arguments::
 
-  - manager_size:
-
-  - manager_type:
-
+	text_editor leftfile rightfile
 
 ------------------------------------------------
 
+User Mode Linux
+======================
+
+User mode linux is a great tool to help test paella, and installing configurations.  
+However, since VT technology has come around and VM's run reasonably fast, 
+maintainence of the uml related code will be a very low priority.
 
 Uml Machine Configuration File
 ------------------------------------------------
@@ -218,34 +202,13 @@ the user mode linux kernel.
 
 
 Default Environment
-------------------------------------------------
+======================================
+
+.. _here: default-environment.html
 
 The default environment is a ini type configuration file stored in the database as the
-default_enviroment table.
+default_enviroment table.  A page describing the default enviroment can be found here_ .
 
-+ Section **installer**
-
-  - bootstrap_target:  bool that determines wheter the install will run debootstrap, or
-    use a pre-made base tarball.
-
-  - devices_tarball:  location of a tarball full of preliminary devices, useful as MAKEDEV
-    takes quite a while.  (This option will probably be removed soon due to udev.)
-
-  - enable_bad_hacks:  This option is used for testing the installer and should always
-    be set to false
-
-  - http_mirror:  uri of debian mirror used during installation.
-
-  - nfs_log_export:	 Path to log directory of nfs server, allows installer to write to a log
-    file.
-
-  - nfs_log_host:  host for the log export
-
-  - nfs_log_path:  subdirectory path of nfs_log_export.  This is where the logfile will be stored.
-
-  - paella_storage:  main storage area
-
-  - suite_storage:  subdirectory path of paella_storage.  This is where the base tarballs are kept.
 
 
 ------------------------------------------------
@@ -258,3 +221,4 @@ default_enviroment table.
 .. _machine_types: #machine-type
 .. _traits: #trait
 .. _machines: #machine
+.. _default-environment:  default-environment.html
