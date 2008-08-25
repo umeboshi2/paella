@@ -66,8 +66,10 @@ Priority: optional
 Architecture: any
 Depends: python-useless-kdedb, paella-db (= ${binary:Version})
 Recommends: xxdiff
-Description: package for configuration of profiles
-    This package should be installed on the developer's machine
+Suggests: xemacs21
+Description: package for configuration of the paella database
+    This package should be installed on the admin's desktop.  This 
+    package holds the gui management tool for paella.
 
 Package: paella-db
 Section: optional
@@ -100,7 +102,8 @@ Package: paella-doc
 Section: doc
 Priority: optional
 Architecture: all
-Depends: paella-base (= ${binary:Version})
+Depends: doc-base
+Suggests: dwww
 Description: documentation for paella
   Paella is a system for  installing and managing
   configurations of debian systems.  This package
@@ -118,13 +121,16 @@ Description: database server package for paella
   configurations of debian systems.  This package will setup
   the database server required for paella.  This package is
   not required to run paella, you can setup the database 
-  manually.  This package just makes it easier.
+  manually.  This package just makes it easier.  This package 
+  is likely to be deprecated, and probably doesn't even work 
+  anymore, as it was designed to work with a much older version 
+  of postgresql.
 
 Package: paella-uml-admin
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-admin (= ${binary:Version}), user-mode-linux, uml-utilities, umlrun
+Depends: paella-admin (= ${binary:Version}), paella-installer (= ${binary:Version}), user-mode-linux, uml-utilities, umlrun
 Description: Use user-mode-linux to test paella installs
   This package provides tools to help test paella using
   user-mode-linux.

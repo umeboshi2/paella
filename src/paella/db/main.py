@@ -45,10 +45,10 @@ class MissingPackagesError(RuntimeError):
     pass
 
 
-def report_missing_packages(missing):
+def report_missing_packages(suite, missing):
     traits = missing.keys()
     traits.sort()
-    report = 'These packages for these traits do not exist.\n'
+    report = 'These packages for these traits, in suite %s, do not exist.\n' % suite
     for trait in traits:
         report += 'trait %s:\n' % trait
         for package in missing[trait]:
@@ -375,8 +375,8 @@ class PaellaImporter(object):
         self.report_total_traits(len(traitlist))
         missing = self._find_missing_packages(suite, traitlist, dirname)
         if missing:
-            self.report_missing_packages(missing)
-            raise MissingPackagesError, report_missing_packages(missing)
+            self.report_missing_packages(suite, missing)
+            raise MissingPackagesError, report_missing_packages(suite, missing)
         else:
             while len(traitlist):
                 trait = traitlist.pop(0)
@@ -434,8 +434,8 @@ class PaellaImporter(object):
             
         
     
-    def report_missing_packages(self, missing):
-        print report_missing_packages(missing)
+    def report_missing_packages(self, suite, missing):
+        print report_missing_packages(suite, missing)
         
     def report_total_apt_sources(self, total):
         print 'importing %d apt sources' % total

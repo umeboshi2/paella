@@ -1,0 +1,37 @@
+.. -*- mode: rst -*-
+
+=============================
+Paella
+=============================
+
+- abstract_
+
+- configuration_
+
+- `default-environment`_
+
+- gui_
+
+- installer_
+
+- notes_
+
+- objects_
+
+- problems_
+
+- `quickstart-vbox`_
+
+- schema_
+
+
+.. _abstract: abstract.html
+.. _configuration: configuration.html
+.. _default-environment: default-environment.html
+.. _gui: gui.html
+.. _installer: installer.html
+.. _notes: notes.html
+.. _objects: objects.html
+.. _problems: problems.html
+.. _quickstart-vbox: quickstart-vbox.html
+.. _schema: schema.html

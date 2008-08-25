@@ -4,8 +4,6 @@ DEB_PYTHON_SYSTEM=pysupport
 include /usr/share/cdbs/1/class/python-distutils.mk
 
 DEB_CLEAN_EXCLUDE := *.orig */*.orig
-notes.html:
-	rst2html docs/notes > notes.html
 install/paella-base::
 	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
 	rm -r build/
@@ -27,8 +25,9 @@ install/paella-admin::
 install/paella-uml-admin::
 	python setup.py uml-admin install --prefix=$(CURDIR)/debian/paella-uml-admin/usr
 	rm -r build/
-build/paella-doc:: notes.html
+build/paella-doc:: 
 	echo "building paella-doc"
+	python setup.py doc install --prefix=$(CURDIR)/debian/paella-doc/usr/share/doc/paella-doc/html
 
 clean::
-	dh_clean -X*.orig configure-stamp notes.html
+	dh_clean -X*.orig configure-stamp notes.html docs/*.html

@@ -1,6 +1,0 @@
-Source: paella-kernels
-Section: unknown
-Priority: optional
-Maintainer: Joseph Rawson <umeboshi@gregscomputerservice.com>
-Standards-Version: 3.6.0
-Build-Depends: modutils, kernel-package, debhelper, bin86, fakeroot, kernel-source-2.6.8, linux-source-2.6.16, gawk

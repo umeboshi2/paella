@@ -1,6 +1,10 @@
 paella for Debian
 -----------------
 
-<possible notes regarding this package - if none, delete this file>
+The documentation for paella is in the paella-doc package.  You can find it at:
 
- -- Debian User <umeboshi@premio.gregscomputerservice.com>, Tue,  8 Jul 2003 07:43:28 -0500
+/usr/share/doc/paella-doc/html/index.html
+
+
+
+ -- Joseph Rawson <umeboshi@bard.workgroup>, Sun, 24 Aug 2008 20:00:04 z
