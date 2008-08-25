@@ -789,6 +789,41 @@ followed this quickstart step by step and haven't got the new machine to boot fr
 I'd really like to know about it, so we can figure out what went wrong, and how to adjust this 
 document to be prepared for that possibility.
 
+Tell Paella about the new machine
+----------------------------------------------------------
+If sidesalad booted from the network correctly, at the end of the boot process, there should 
+be a message explaining that this is an unknown machine, and to use paella-submit-machine 
+to tell paella about it.  This is what we're going to do now.  Type::
+
+   paella-submit-machine sidesalad
+
+This will insert the mac addresses of all the ethernet interfaces into the database, tied to the 
+name "sidesalad".  These addresses are inserted into the current_environment table, which 
+is the only table that the paella database user has write access to.  This means that paella 
+still doesn't know about this machine yet, since the installer determines the machine from the 
+default_environment table.  So, what we have to do is take the relevant information from the 
+current_environment table and insert it into the default_environment table.
+
+Run psql::
+
+    psql -h paella.lapnet -U dbadmin paella
+
+at the **paella=#** prompt, type::
+
+   insert into default_environment (SELECT 'machines' as section , 
+   name as option , value from current_environment where name like 'hwaddr%' 
+   and value='sidesalad') ;
+
+I haven't made anything in the gui to do this specifically yet, as it's generally been easier to 
+just use either sql, or cut and paste from editing the environments with the enviroment 
+editors.  I'm considering placing some sort of widget in the gui, but until then, this operation 
+has to be done outside of the gui.  Please understand that the gui was originally designed to 
+assist, not replace, the tools that are already available.  I apologize if this is an inconvenience.
+
+
+
+
+
 **If you've made it this far, and the "unfinished" disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.**
 
 
