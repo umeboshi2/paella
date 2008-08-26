@@ -1,4 +1,3 @@
-config/scripts/paella-make-base usr/bin
 config/scripts/paella-restore-database usr/bin
 config/scripts/paella-management usr/bin
 config/scripts/paella-export-trait usr/bin

@@ -25,11 +25,12 @@ class clean(_clean):
                     os.remove(os.path.join(root, afile))
                 if afile.endswith('.pyc'):
                     os.remove(os.path.join(root, afile))
-        os.chdir('docs')
+        #os.chdir('docs')
         #map(os.remove, glob.glob('*.html'))
-        os.system('rm -fr html')
-        os.chdir(here)
-        
+        #os.system('rm -fr html')
+        #os.chdir(here)
+        print "removing docs/html (if there)"
+        os.system('rm -fr docs/html')
 
 
 data_files = []
@@ -43,12 +44,17 @@ class builddocs(_build):
         here = os.getcwd()
         os.chdir('docs')
         print "building docs"
-        exclude = ['.svn', 'images']
+        exclude = ['.svn', 'images', 'html']
         files = [f for f in os.listdir('.') if f not in exclude]
         files = [f for f in files if not f.endswith('~')]
         files = [f for f in files if '#' not in f]
         files = [f for f in files if not f.startswith('.')]
         print "source doc files:", ', '.join(files)
+        if os.path.exists('html'):
+            print "found html directory, removing it"
+            os.system('rm -fr html')
+        if os.path.exists('html'):
+            raise RuntimeError, "failed to remove docs/html"
         os.mkdir('html')
         data_tuple = ('html', [])
         data_files.append(data_tuple)
