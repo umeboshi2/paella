@@ -6,7 +6,7 @@ from time import sleep
 import subprocess
 
 from useless.base import Error
-from useless.base.util import makepaths, echo
+from useless.base.util import makepaths
 
 from paella import deprecated
 from paella.debian.base import RepositorySource
@@ -35,13 +35,16 @@ def remove_debs(target):
     return runlog('rm %s %s -f' % (debs, pdebs))
     
 def extract_tarball(target, tarball):
+    "this is used by the uml installer"
     opts = '-xf'
     if tarball[-7:] == '.tar.gz' or tarball[-4:] == '.tgz':
         opts = '-xzf'
     elif tarball[-8:] == '.tar.bz2':
         opts = '-xjf'
-    cmd = 'tar -C %s %s %s' % (target, opts, tarball)
-    echo('extracting tarball with command %s' % cmd)
+    #cmd = 'tar -C %s %s %s' % (target, opts, tarball)
+    cmd = ['tar', '-C', str(target), opts, str(tarball)]
+    #echo('extracting tarball with command %s' % cmd)
+    runlog(['echo', 'extracting tarball with command', ' '.join(cmd)])
     return runlog(cmd)
 
 #password is 'a'

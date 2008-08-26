@@ -17,12 +17,31 @@ from paella.db.profile.main import ProfileEnvironment
 from base import InstallError, InstallerConnection, Modules
 from util.main import setup_modules
 
-#from trait import TraitInstaller
+# we need to figure out why we've been using
+# the ProfileInstaller from the oldinstaller package
 #from profile import ProfileInstaller
 
-from paella.oldinstaller.profile import ProfileInstaller
+#from paella.oldinstaller.profile import ProfileInstaller
+from machine import MachineInstaller
+
+class ToolKitInstaller(MachineInstaller):
+    def __init__(self, conn):
+        MachineInstaller.__init__(self, conn)
+
+    def set_logfile(self):
+        pass
 
 class InstallerTools(object):
+    """This is a class that's meant to be called
+    in the installer scripts.  It's meant to be
+    instantiated as it ->  it = InstallerTools() .
+    This class is here to reduce the amount of
+    boilerplate code that many of the python
+    scripts would require.  A similar file of
+    functions for bash would be nice, but there
+    is none at the moment.
+    """
+
     def __init__(self):
         object.__init__(self)
         self.cfg = PaellaConfig()
@@ -32,26 +51,41 @@ class InstallerTools(object):
         self.machine = None
         self.trait = None
         self.suite = get_suite(self.conn, self.profile)
+
+        # These attributes should be renamed
+        # it's hard to look at the scripts after a
+        # few years of not using them to determine
+        # what these mean.
         self.pr = Profile(self.conn)
         self.pr.set_profile(self.profile)
-        self.traitlist = self.pr.make_traitlist()
         self.pe = ProfileEnvironment(self.conn, self.profile)
         self.tp = TraitParent(self.conn, self.suite)
         self.fm = Family(self.conn)
         self.tr = Trait(self.conn, self.suite)
+
+        self.traitlist = self.pr.make_traitlist()
         self.families = list(self.fm.get_related_families(self.pr.get_families()))
         self._envv = None
         self.default = DefaultEnvironment(self.conn)
-        #self.installer = TraitInstaller(self.conn, self.suite)
-        self.installer = ProfileInstaller(self.conn)
-        self.installer.set_logfile()
-        self.installer.set_profile(self.profile)
-        self.installer.set_target(self.target)
+        self.installer = None
+
         if os.environ.has_key('PAELLA_MACHINE'):
             self.machine = os.environ['PAELLA_MACHINE']
         if os.environ.has_key('PAELLA_TRAIT'):
             self.set_trait(os.environ['PAELLA_TRAIT'])
-             
+
+        # The installer attribute used to use the
+        # old installer and the code to the old
+        # installer is being removed.  When I get
+        # the time, I'm going to fix this problem.
+        
+        #self.installer = MachineInstaller(self.conn)
+
+        # The commented code below used
+        # the old ProfileInstaller
+        #self.installer.set_logfile()
+        #self.installer.set_profile(self.profile)
+        #self.installer.set_target(self.target)
 
     # this needs updating for machine type data
     def env(self):

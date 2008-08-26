@@ -262,7 +262,7 @@ class BaseProcessor(object):
     # below are logging methods that should be overridden in subclasses
 
     def log_all_processes_started(self):
-        self.log.info('Starting all processes')
+        self.log.info('Starting all processes for %s' % self.__class__.__name__)
         
     def log_all_processes_finished(self):
         self.log.info('Finished all processes for %s' % self.__class__.__name__)
@@ -301,7 +301,8 @@ class BaseInstaller(BaseProcessor):
         # check for default environment
         rows = self.defenv.cursor.select()
         if not len(rows):
-            raise DefaultEnvironmentError, 'There is no data in the default_environment table'
+            msg = 'There is no data in the default_environment table'
+            raise DefaultEnvironmentError, msg
 
     def set_suite(self, suite):
         suites = self.conn.suitecursor.get_suites()
@@ -309,7 +310,6 @@ class BaseInstaller(BaseProcessor):
             raise InvalidSuiteError, "%s is an invalid suite." % suite
         self.suite = suite
         self.base_suite = self.conn.suitecursor.get_base_suite(suite)
-        #os.environ['PAELLASUITE'] = suite
         
     def set_target(self, target):
         self.target = path(target)
@@ -331,9 +331,18 @@ class BaseInstaller(BaseProcessor):
         
         # the mailserver trait used to somehow erase the logfile
         # so a bkup is generated here.
-        bkup = self.logfile + '.bkup'
-        if not bkup.exists():
-            self.logfile.link(bkup)
+        # Come to think of it, it also erased the backup file also
+        # I guess the hard link wasn't sufficient to keep this from
+        # happening.  This problem existed in sarge and seemed
+        # to happen while installing the uw-imapd package.
+        # If this happens in the future, I'll start making actual
+        # copies of the log at the end of each trait (or even at
+        # the end of each trait process to narrow it down further)
+        # I'm leaving the comments here as a record to to the
+        # the curious
+        #bkup = self.logfile + '.bkup'
+        #if not bkup.exists():
+        #    self.logfile.link(bkup)
         
     # helper to run commands in a chroot on the target
     def chroot(self, command):

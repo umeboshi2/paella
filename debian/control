@@ -126,12 +126,3 @@ Description: database server package for paella
   anymore, as it was designed to work with a much older version 
   of postgresql.
 
-Package: paella-uml-admin
-Section: admin
-Priority: extra
-Architecture: all
-Depends: paella-admin (= ${binary:Version}), paella-installer (= ${binary:Version}), user-mode-linux, uml-utilities, umlrun
-Description: Use user-mode-linux to test paella installs
-  This package provides tools to help test paella using
-  user-mode-linux.
-

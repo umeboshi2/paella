@@ -21,15 +21,16 @@ def make_fstab(fstabobj, target):
     fstab.close()
 
 def make_filesystem(device, fstype):
+    "this function is used by the uml installer"
     if fstype == 'reiserfs':
-        cmd = 'mkreiserfs -f -q %s' % device
+        cmd = ['mkreiserfs',  '-f',  '-q',  device]
     elif fstype == 'ext3':
-        cmd = 'mkfs.ext3 -F -q %s' % device
+        cmd = ['mkfs.ext3',  '-F',  '-q', device]
     elif fstype == 'ext2':
-        cmd = 'mkfs.ext2 -F -q %s' % device
+        cmd = ['mkfs.ext2',  '-F',  '-q', device]
     else:
         raise RuntimeError,  'unhandled fstype %s '  % fstype
-    runlog('echo make_filesystem command "%s"' % cmd)
+    runlog(['echo',  'make_filesystem',  'command'] + cmd)
     return runlog(cmd)
 
 def make_filesystems(device, fsmounts, env):

@@ -68,7 +68,7 @@ class builddocs(_build):
                     data_tuple[1].append(bfile)
                         
 
-PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin', 'uml-admin']
+PACKAGES = ['base', 'debian', 'db', 'dbgtk', 'installer', 'admin']
 package = None
 docs = False
 if sys.argv[1] in PACKAGES:
@@ -105,12 +105,7 @@ PACKS = {
                'paella/kde/suites'
                ],
     'installer' : ['paella/installer',
-                   'paella/installer/util',
-                   'paella/oldinstaller',
-                   'paella/oldinstaller/util'
-                   ],
-    'uml-admin' : ['paella/uml',
-                   'paella/kde/umlmanager'
+                   'paella/installer/util'
                    ]
     }
 
