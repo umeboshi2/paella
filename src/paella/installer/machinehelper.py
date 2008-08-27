@@ -214,7 +214,15 @@ class MachineInstallerHelper(BaseHelper):
 
     def _setup_disk_fai(self, device):
         disk_config = self.machine.make_disk_config_info(device, curenv=self.curenv)
-        setup_disk_fai(disk_config, self.disklogpath)
+        cmd = setup_disk_fai(disk_config, self.disklogpath)
+        runlog(cmd)
+        for var in ['sfdisk', 'LOGDIR', 'diskvar']:
+            if var in os.environ:
+                self.log.info('%s in os.environ' % var)
+                self.log.info('deleting %s from os.environ' % var)
+                del os.environ[var]
+            else:
+                self.log.info('%s not defined' % var)
 
     def install_fstab(self):
         fstab = self.machine.make_fstab()

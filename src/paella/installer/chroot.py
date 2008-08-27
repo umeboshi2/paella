@@ -149,7 +149,8 @@ class ChrootInstaller(BaseInstaller):
             'post_install',
             'apt_sources_final',
             'umount_target_sys',
-            'umount_target_proc'
+            'umount_target_proc',
+            'umount_target_devpts'
             ]
         # pre_install is unmapped
         # post_install is unmapped
@@ -164,7 +165,8 @@ class ChrootInstaller(BaseInstaller):
                                  install=self.install,
                                  apt_sources_final=self.apt_sources_final,
                                  umount_target_sys=self.umount_target_sys,
-                                 umount_target_proc=self.umount_target_proc
+                                 umount_target_proc=self.umount_target_proc,
+                                 umount_target_devpts=self.umount_target_devpts
                                  )
         # this is only used in the machine installer
         self.mtypedata = {}
@@ -183,7 +185,11 @@ class ChrootInstaller(BaseInstaller):
     @requires_target_set
     def set_profile(self, profile):
         self.installer = ProfileInstaller(self)
+        if os.environ.has_key('DEBUG'):
+            self.log.info("ChrootInstaller.mtypedata: %s" % self.mtypedata)
         self.installer.mtypedata.update(self.mtypedata)
+        if os.environ.has_key('DEBUG'):
+            self.log.info("ProfileInstaller.mtypedata: %s" % self.installer.mtypedata)
         self.installer.set_profile(profile)
         self.set_suite(self.installer.suite)
     
@@ -194,16 +200,30 @@ class ChrootInstaller(BaseInstaller):
         filename = '%s.tar.gz' % suite
         basefile = suite_path / filename
         taropts = '-xzf'
+        # we normally expect a tar.gz
+        # but we'll check for a plain tar also
         if not basefile.exists():
             filename = '%s.tar' % suite
             basefile = suite_path / filename
             taropts = '-xf'
-        cmd = 'tar -C %s %s %s' % (self.target, taropts, basefile)
-        # if cmd returns nonzero, runlog will raise an error
-        runlog(cmd)
-        # we need to do certain things here that debootstrap
-        # does for us, like copy /etc/resolv.conf
-        self._bootstrapped = True
+        if not basefile.exists():
+            # We don't really want to ruin an install
+            # by not having a tarball, so we log a warning
+            # and proceed with a debootstrap.
+            msg = "base tarball not found, reverting to debootstrap"
+            self.log.warn(msg)
+            self._bootstrap_with_debootstrap(suite)
+        else:
+            #cmd = 'tar -C %s %s %s' % (self.target, taropts, basefile)
+            cmd = ['tar', '-C', str(self.target), taropts, str(basefile)]
+            # if cmd returns nonzero, runlog will raise an error
+            runlog(cmd)
+            # we need to do certain things after extraction
+            # that debootstrap does for us,
+            # like copy /etc/resolv.conf to the target.
+            # these things should be done in the
+            # ready_base_for_install process
+            self._bootstrapped = True
             
     @requires_target_exists
     def _bootstrap_with_debootstrap(self, suite):
@@ -226,6 +246,10 @@ class ChrootInstaller(BaseInstaller):
             self.log.info('bootstrapping with premade tarball')
             self._bootstrap_with_tarball(self.base_suite)
         # here we add the apt keys that are needed
+        # we should probably split this part off into
+        # another process.  This step needs to be done
+        # before the ready_base_for_install process, or
+        # at least at the beginning of that process.
         aptkeys = AptKeyHandler(self.conn)
         keys = self.defenv.get_list('archive_keys', 'installer')
         for key in keys:
@@ -236,7 +260,6 @@ class ChrootInstaller(BaseInstaller):
             keyfile = file(filename, 'w')
             keyfile.write(row.data)
             keyfile.close()
-            #self.chroot('apt-key add %s.key' % key)
             self.chroot(['apt-key', 'add', '%s.key' % key])
             os.remove(filename)
             if filename.exists():
@@ -258,14 +281,25 @@ class ChrootInstaller(BaseInstaller):
         os.rename(sourceslist, sourceslist_installer)
         make_official_sources_list(self.conn, self.target, self.suite)
 
-    # this is probably not useful anymore
-    # it still has a purpose in the machine installer -
-    #  it sets up the mdadm.conf file with the raid devices it creates
-    #  if it creates any.
+    
     @requires_bootstrap
     def ready_base_for_install(self):
+        """This gets the base that was either
+        debootstrapped or extracted ready
+        to install packages.  Since the
+        install hasn't happened yet, replacing
+        files like /etc/resolv.conf and the
+        package lists shouldn't affect anything.
+        the apt_sources_installer process is called
+        right before this one, so there should be
+        an appropriate sources.list to update packages
+        with.
+        """
+        # 'copy' /etc/resolv.conf to target
+        resolvconf = file('/etc/resolv.conf').read()
+        target_resolvconf = self.target / 'etc/resolv.conf'
+        target_resolvconf.write_text(resolvconf)
         # update the package lists
-        #self.chroot('apt-get -y update')
         self.chroot(['apt-get', '-y', 'update'])
         
         
@@ -284,6 +318,7 @@ class ChrootInstaller(BaseInstaller):
         
         
     def _umount_target_virtfs(self, fs):
+        self.log.info('running umount for %s' % fs)
         # work around binfmt-support /proc locking
         # found this idea while messing around in live-helper
         target = self.target / fs
@@ -317,6 +352,7 @@ class ChrootInstaller(BaseInstaller):
     def mount_target_sys(self):
         self._mount_target_virtfs('sys')
 
+    @requires_bootstrap
     def mount_target_devpts(self):
         self._mount_target_virtfs('devpts')
         

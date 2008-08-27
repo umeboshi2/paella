@@ -3,7 +3,7 @@
 		<machine filesystem="default" kernel="linux-image-2.6-686" machine_type="default" profile="default">
 			default
 		</machine>
-		<machine filesystem="default_small" kernel="linux-image-2.6-686" machine_type="default" profile="default">
+		<machine filesystem="all_in_one" kernel="linux-image-2.6-686" machine_type="default" profile="default">
 			testmachine
 		</machine>
 	</machines>
@@ -106,6 +106,12 @@
 		<mount dump="0" fstype="reiserfs" mnt_name="hard_tmp" mnt_opts="defaults" mnt_point="/tmp" pass="0"/>
 	</mounts>
 	<filesystems>
+		<filesystem name="all_in_one">
+			<filesystem_mount mnt_name="default_proc" ord="1" partition="0" size="None"/>
+			<filesystem_mount mnt_name="default_root" ord="0" partition="1" size="500-"/>
+			<filesystem_mount mnt_name="default_swap" ord="3" partition="5" size="500"/>
+			<filesystem_mount mnt_name="default_sys" ord="2" partition="0" size="None"/>
+		</filesystem>
 		<filesystem name="another"/>
 		<filesystem name="default">
 			<filesystem_mount mnt_name="default_home" ord="7" partition="7" size="2000-"/>

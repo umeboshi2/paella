@@ -1,0 +1,4 @@
+#!/usr/bin/python
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()

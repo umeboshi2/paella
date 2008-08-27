@@ -8,12 +8,15 @@ from distutils.command.build import build as _build
 
 def get_version(astuple=False):
     topline = file('debian/changelog').next()
-    VERSION = map(int, topline[topline.find('(')+1 :topline.find(')')].split('.'))
+    VERSION = topline[topline.find('(')+1 :topline.find(')')].split('.')
+    for character in '-+':
+        if character in VERSION[2]:
+            VERSION = VERSION[0:2] + [VERSION[2].split(character)[0]]
+    print 'VERSION is', VERSION
     if astuple:
         return tuple(VERSION)
     else:
         return '.'.join(map(str, VERSION))
-
 class clean(_clean):
     def run(self):
         _clean.run(self)

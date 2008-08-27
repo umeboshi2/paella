@@ -23,23 +23,26 @@ Priority: optional
 Architecture: any
 Depends: python-useless-db (>= 0.1.10)
 Description: base utils for paella
-    This package is responsible for initial setup of the paella 
-    environment. (need to ask for pghost, etc..)
+	This is the base package for paella.
+	All other paella packages depend on this 
+	package.
 
 Package: paella-debian
 Section: admin
 Priority: optional
 Architecture: any
 Depends: paella-base (= ${binary:Version}), python-apt, debootstrap, debconf-utils
-Description: Documentation for paella
-    many class and functions for use with debian related
-    activities (dpkg, package repositories, debconf, etc.)
+Description: debian specific modules for paella
+	This package contains many class and functions for 
+	use with debian related activities (dpkg, package repositories, 
+	debconf, etc.).  This package is becoming obsolete, and the
+	python-debian package will soon replace this one.
 
 Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db (= ${binary:Version}), python-pyparsing, debootstrap, reiserfsprogs, mkisofs, initramfs-tools
+Depends: paella-db (= ${binary:Version}), python-pyparsing, debootstrap, reiserfsprogs, genisoimage, initramfs-tools
 Description: python package for paella installers
  This package contains most of the code for installers to work.
  It also contains the chroot installer.
@@ -108,21 +111,4 @@ Description: documentation for paella
   Paella is a system for  installing and managing
   configurations of debian systems.  This package
   holds the pathetic documentation for it.
-
-
-
-Package: paella-dbserver
-Section: admin
-Priority: extra
-Architecture: all
-Depends: paella-defaultdb (= ${binary:Version}), postgresql, postgresql-contrib
-Description: database server package for paella
-  Paella is a system for  installing and managing
-  configurations of debian systems.  This package will setup
-  the database server required for paella.  This package is
-  not required to run paella, you can setup the database 
-  manually.  This package just makes it easier.  This package 
-  is likely to be deprecated, and probably doesn't even work 
-  anymore, as it was designed to work with a much older version 
-  of postgresql.
 

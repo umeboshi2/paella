@@ -15,6 +15,8 @@ from paella.db.trait.relations.script import TraitScript
 from base import InstallError
 from base import CurrentEnvironment
 
+from base import runlog, RunLogError
+
 
 from util.misc import remove_debs
 from util.base import make_script
@@ -27,7 +29,7 @@ INGDICT = {
     'reconfig' : 'reconfiguring'
     }
 
-DEFAULT_PROCESSES = ['pre', 'remove', 'install',
+DEFAULT_PROCESSES = ['pre', 'preseed', 'remove', 'install',
                      'templates', 'config', 'chroot', 'reconfig', 'post']
 
 # ------------------------------------------------------------
@@ -59,6 +61,24 @@ class TraitInstallerHelper(object):
         self.profiledata = {}
         self.mtypedata = {}
         self.familydata = {}
+
+        # It's odd, but running the same
+        # code for setting debconf selections
+        # returns a 1 on the preseed process, yet
+        # returns a 0 when it's done during
+        # the templates process.
+        # -- I found the problem, debconf reports
+        #    an error if the question doesn't exist
+        #    yet.
+        # This attribute helps keep track of the
+        # problem, and will run the debconf
+        # selections during the templates
+        # process, if the value is True.
+        # I don't really like this, but it seems
+        # to work for now, so I'm going to leave
+        # it as is, and come up with a better
+        # solution later.
+        self.debconf_problem = False
 
     def set_trait(self, trait):
         self.traitpackage.set_trait(trait)
@@ -108,6 +128,9 @@ class TraitInstallerHelper(object):
         partial = archives / 'partial'
         debs = archives.listdir('*.deb')
         pdebs = partial.listdir('*.deb')
+        if pdebs:
+            self.log.warn("we found some partial debs, and this shouldn't happen")
+            raise RuntimeError, "partial debs found"
         all_debs = debs + pdebs
         for deb in all_debs:
             deb.remove()
@@ -183,6 +206,68 @@ class TraitInstallerHelper(object):
             self.log.warn('%s is not supposed to be there' % config_path)
             raise InstallDebconfError, '%s is not supposed to be there' % config_path
 
+
+    def set_debconf_selections(self, template):
+        trait = self.trait
+        self.log.info('Setting debconf selections for trait %s' % trait)
+        self.traittemplate.set_template(template.template)
+        tmpl = self.traittemplate.template.template
+        self._update_templatedata()
+        sub = self.traittemplate.template.sub()
+        if tmpl == sub:
+            msg = "static debconf selections, no substitutions for trait %s" % trait
+        else:
+            msg = "debconf selections contain substitutions for trait %s" % trait
+        self.log.info(msg)
+        config_path = self.target / 'root/paella_debconf'
+        self._check_debconf_destroyed(config_path)
+        config_path.write_text(sub + '\n')
+        cmd = ['chroot', self.target,
+               'debconf-set-selections', '-v', '/root/paella_debconf']
+        try:
+            retval = runlog(cmd)
+        except RunLogError:
+            self.log.info('there was a problem with debconf-set-selections')
+            self.log.info('command was %s' % ' '.join(cmd))
+            # make sure that we raise an error if this is not the
+            # first run of debconf-set-selections
+            if self.debconf_problem:
+                msg = "We already had a problem with set_debconf_selections"
+                raise RuntimeError, msg
+            self.debconf_problem = True
+        # we're going to keep these files
+        # instead of rm'ing them, until I feel
+        # better about this code.  Besides, the
+        # format of the files has to be just so
+        # or debconf has problems, so this is a
+        # good way to figure out what happened.
+        if False:
+            os.remove(config_path)
+            self._check_debconf_destroyed(config_path)
+        os.rename(config_path, '%s-%s' % (config_path, trait))
+        
+    def reconfigure_debconf(self, packages):
+        self.log.info('running reconfigure')
+        os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
+        for package in packages:
+            self.log.info('RECONFIGURING %s' % package)
+            #self.chroot('dpkg-reconfigure -plow %s' % package)
+            self.chroot(['dpkg-reconfigure', '-plow', package])
+        
+    def make_script(self, procname):
+        script = self.traitscripts.get(procname)
+        if script is not None:
+            # special handling for the chroot script to ensure
+            # it's run in the target chroot
+            if procname == 'chroot':
+                tmpscript = make_script(procname, script, self.target, execpath=True)
+                #return 'chroot %s %s' % (self.target, tmpscript)
+                return ['chroot', str(self.target), tmpscript]
+            else:
+                return make_script(procname, script, self.target, execpath=False)
+        else:
+            return None
+
     # here template is the template row
     def install_debconf_template(self, template):
         trait = self.trait
@@ -204,50 +289,6 @@ class TraitInstallerHelper(object):
         copy_configdb(config_path, target_path)
         os.remove(config_path)
         self._check_debconf_destroyed(config_path)
-
-    def set_debconf_selections(self, template):
-        trait = self.trait
-        self.log.info('Setting debconf selections for trait %s' % trait)
-        self.traittemplate.set_template(template.template)
-        tmpl = self.traittemplate.template.template
-        self._update_templatedata()
-        sub = self.traittemplate.template.sub()
-        if tmpl == sub:
-            msg = "static debconf selections, no substitutions for trait %s" % trait
-        else:
-            msg = "debconf selections contain substitutions for trait %s" % trait
-        self.log.info(msg)
-        config_path = self.target / 'tmp/paella_debconf'
-        self._check_debconf_destroyed(config_path)
-        config_path.write_bytes(sub + '\n')
-        cmd = ['chroot', self.target, 'debconf-set-selections', '/tmp/paella_debconf']
-        retval = subprocess.call(cmd)
-        if retval:
-            raise RuntimeError, "there was a problem with debconf-set-selections"
-        os.remove(config_path)
-        self._check_debconf_destroyed(config_path)
-        
-        
-    def reconfigure_debconf(self, packages):
-        self.log.info('running reconfigure')
-        os.environ['DEBIAN_FRONTEND'] = 'noninteractive'
-        for package in packages:
-            self.log.info('RECONFIGURING %s' % package)
-            self.chroot('dpkg-reconfigure -plow %s' % package)
-        
-        
-    def make_script(self, procname):
-        script = self.traitscripts.get(procname)
-        if script is not None:
-            # special handling for the chroot script to ensure
-            # it's run in the target chroot
-            if procname == 'chroot':
-                tmpscript = make_script(procname, script, self.target, execpath=True)
-                return 'chroot %s %s' % (self.target, tmpscript)
-            else:
-                return make_script(procname, script, self.target, execpath=False)
-        else:
-            return None
         
 
 class TraitInstaller(BaseInstaller):
@@ -281,7 +322,8 @@ class TraitInstaller(BaseInstaller):
         #   self.post_process()
         # pre, chroot, config, and post are not mapped
         # as they are scripts only
-        self._process_map = dict(remove=self.run_process_remove,
+        self._process_map = dict(preseed=self.run_process_preseed,
+                                 remove=self.run_process_remove,
                                  install=self.run_process_install,
                                  templates=self.run_process_templates,
                                  reconfig=self.run_process_reconfig,
@@ -316,6 +358,19 @@ class TraitInstaller(BaseInstaller):
         else:
             self.log.info('keeping packages for %s' % self.helper.trait)
             
+    def run_process_preseed(self):
+        if self.helper.debconf_problem:
+            msg = "self.helper.debconf_problem is True, but shouldn't be."
+            raise RuntimeError, msg
+        self.log.info("running new preseed process!!!")
+        if self.helper.traittemplate.has_template('debconf'):
+            self.log.info("Trait %s has debconf selctions" % self.helper.trait)
+            template = self.helper.traittemplate.get_row('debconf')
+            self.helper.set_debconf_selections(template)
+        else:
+            self.log.info('No debconf selections found for trait %s' % self.helper.trait)
+            
+        
     def run_process_templates(self):
         templates = self.helper.templates
         num = len(templates)
@@ -331,7 +386,13 @@ class TraitInstaller(BaseInstaller):
                 self.helper.install_debconf_template(t)
             elif t.template == 'debconf':
                 self.log.info('Found debconf selections')
-                self.helper.set_debconf_selections(t)
+                if self.helper.debconf_problem:
+                    msg = "preseed process had debconf problem, running again"
+                    self.log.warn(msg)
+                    self.helper.set_debconf_selections(t)
+                    self.helper.debconf_problem = False
+                else:
+                    self.log.info('Ignoring debconf selections in templates process')
             else:
                 text = self.helper.make_template(t)
                 self.helper.install_template(t, text)
@@ -366,6 +427,16 @@ class TraitInstaller(BaseInstaller):
 
     def make_script(self, procname):
         return self.helper.make_script(procname)
+
+    def run_process_script(self, procname, script):
+        if procname == 'chroot':
+            retval = runlog(script)
+        else:
+            retval = runlog([script])
+        if retval:
+            msg = "script for process %s exited with error code %d" % (procname, retval)
+            raise RunLogError, msg
+            
 
 
 # ------------------------------------------------------------

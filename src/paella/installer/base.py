@@ -104,7 +104,7 @@ def runlog(cmd, logfile=None, logobject=None, failure_suppressed=False):
         kw['stdout'] = logobject.handlers[0].stream
     if type(cmd) is list:
         kw['shell'] = False
-    elif type(cmd) in [str, unicode]:
+    elif type(cmd) in [str, unicode, path]:
         # Trying to keep from using the shell for the command
         # since that's a good way for malicious things to happen.
         for stacklevel in stacklevels:
@@ -254,7 +254,7 @@ class BaseProcessor(object):
         raise NotImplementedError, 'make_script not implemented in BaseProcessor'
 
     def run_process_script(self, procname, script):
-        retval = runlog(script)
+        retval = runlog([script])
         if retval:
             msg = "script for process %s exited with error code %d" % (procname, retval)
             raise RunLogError, msg

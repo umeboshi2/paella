@@ -84,7 +84,7 @@ class TraitTarFile(TarFile):
     
 
 class Trait(object):
-    def __init__(self, conn, suite='sarge'):
+    def __init__(self, conn, suite):
         object.__init__(self)
         self.conn = conn
         self.suite = suite

@@ -90,6 +90,7 @@ DEFAULT_PROCESSES = [
     'apt_sources_final',
     'umount_target_sys',
     'umount_target_proc',
+    'umount_target_devpts',
     'post'
     ]
 
@@ -114,16 +115,15 @@ class MachineInstaller(ChrootInstaller):
     @requires_target_set
     def set_machine(self, machine):
         self.machine.set_machine(machine)
-        # this needs to be a configuration option
-        # in the default environment
-        logdir = path('/paellalog')
+        logdir = path(self.defenv.get('installer', 'base_log_directory'))
         if not logdir.isdir():
             logdir.mkdir()
         logfile = logdir / 'paella-install-%s.log' % machine
         os.environ['PAELLA_MACHINE'] = machine
-        self.disklogpath = logdir / ('disklog-%s'  % machine)
+        disklogpath = path(self.defenv.get('installer', 'disk_log_directory'))
+        self.disklogpath = disklogpath / ('disklog-%s'  % machine)
         if not self.disklogpath.isdir():
-            self.disklogpath.mkdir()
+            self.disklogpath.makedirs()
         self.set_logfile(logfile)
         self.log.info('machine set to %s' % machine)
         # we need to set mtypedata before setting the profile

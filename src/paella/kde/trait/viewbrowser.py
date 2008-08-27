@@ -198,9 +198,12 @@ class TraitView(ViewBrowser):
             self.resetView()
         elif context == 'template':
             debug(context, ident)
-            template = self._convert_template_id(ident)
-            self.doc.trait.delete_template(template)
-            self.resetView()
+            ans = KMessageBox.questionYesNo(self,
+                                            "really delete this template?")
+            if ans == KMessageBox.Yes:
+                template = self._convert_template_id(ident)
+                self.doc.trait.delete_template(template)
+                self.resetView()
         else:
             raise RuntimeError, '%s context not implemented' % context
         

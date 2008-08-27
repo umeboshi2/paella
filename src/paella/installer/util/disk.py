@@ -27,7 +27,8 @@ def setup_disk_fai(disk_config, logpath,
     
     #command = '%s %s %s' % (env, script, options)
     command = env + [script] + options
-    return runlog(command)
+    #return runlog(command)
+    return command
 
 # this function is hardly used anymore
 # but it may be resurrected, as it allows

@@ -47,11 +47,12 @@ class TemplatedEnvironment(RefDict):
     def dereference(self, key):
         items = [(k,v) for k,v in self.items()]
         data = dict(items)
-        print data
+        if os.environ.has_key('DEBUG'):
+            print data
         tmpl = _Template(data=data)
         tmpl.update(data)
-        print 'tmpl.keys', tmpl.keys()
-        #value = RefDict.dereference(self, key)
+        if os.environ.has_key('DEBUG'):
+            print 'tmpl.keys', tmpl.keys()
         tmpl.set_template(self[key])
         return tmpl.sub()
     

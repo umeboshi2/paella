@@ -9,10 +9,19 @@
 	</parents>
 	<packages>
 		<package action="install">
+			debconf-utils
+		</package>
+		<package action="install">
+			locales
+		</package>
+		<package action="reconfig">
 			locales
 		</package>
 		<package action="install">
 			sudo
+		</package>
+		<package action="reconfig">
+			tasksel
 		</package>
 	</packages>
 	<environ>
@@ -21,6 +30,9 @@
 		</trait_variable>
 		<trait_variable name="debconf_priority" trait="base">
 			high
+		</trait_variable>
+		<trait_variable name="tasksel_first" trait="base">
+			standard
 		</trait_variable>
 		<trait_variable name="tcpd_paranoid_mode" trait="base">
 			false
@@ -34,8 +46,15 @@
 			etc/default/rcS
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
+			etc/hostname
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
 			etc/timezone
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="chroot"/>
+		<script name="config"/>
+		<script name="pre"/>
+	</scripts>
 </trait>

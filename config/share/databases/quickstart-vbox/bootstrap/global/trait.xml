@@ -5,8 +5,11 @@
 	<parents/>
 	<packages/>
 	<environ>
+		<trait_variable name="default_charset" trait="global">
+			UTF-8
+		</trait_variable>
 		<trait_variable name="default_environment_locale" trait="global">
-			en_US.UTF-8
+			en_US.&lt;--|global_default_charset|--&gt;
 		</trait_variable>
 		<trait_variable name="domain" trait="global">
 			localnetwork

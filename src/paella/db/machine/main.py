@@ -223,6 +223,7 @@ class MachineHandler(BaseMachineHandler):
     def list_all_profiles(self):
         rows = self.cursor.select(table='profiles')
         return [r.profile for r in rows]
+
     def make_disk_config_info(self, device, filesystem=None, curenv=None):
         if filesystem is None:
             filesystem = self.current.filesystem
