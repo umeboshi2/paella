@@ -33,7 +33,9 @@ def setup_disk_fai(disk_config, logpath,
 # this function is hardly used anymore
 # but it may be resurrected, as it allows
 # the admin to maintain a specific
-# partition table
+# partition table.  If it's resurrected, it
+# needs to use subprocess instead of
+# os.popen2
 def partition_disk(dump, device):
     i, o = os.popen2('sfdisk %s' % device)
     i.write(dump)
