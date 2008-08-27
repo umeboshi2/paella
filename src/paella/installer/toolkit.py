@@ -91,7 +91,7 @@ class ToolkitDatabase(object):
         self.trait.set_trait(trait)
 
     def set_machine(self, machine):
-        self.db.set_machine(machine)
+        self.machine.set_machine(machine)
         
     def env(self):
         env = TemplatedEnvironment()
@@ -163,7 +163,7 @@ class InstallerTools(object):
 
     def set_machine(self, machine):
         self.machine = machine
-        self.db.machine.set_machine(machine)
+        self.db.set_machine(machine)
         
 if __name__ == '__main__':
     from paella.db import PaellaConnection
