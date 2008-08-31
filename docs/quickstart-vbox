@@ -798,29 +798,13 @@ to tell paella about it.  This is what we're going to do now.  Type::
    paella-submit-machine sidesalad
 
 This will insert the mac addresses of all the ethernet interfaces into the database, tied to the 
-name "sidesalad".  These addresses are inserted into the current_environment table, which 
-is the only table that the paella database user has write access to.  This means that paella 
-still doesn't know about this machine yet, since the installer determines the machine from the 
-default_environment table.  So, what we have to do is take the relevant information from the 
-current_environment table and insert it into the default_environment table.
-
-Run psql::
-
-    psql -h paella.lapnet -U dbadmin paella
-
-at the **paella=#** prompt, type::
-
-   insert into default_environment (SELECT 'machines' as section , 
-   name as option , value from current_environment where name like 'hwaddr%' 
-   and value='sidesalad') ;
-
-I haven't made anything in the gui to do this specifically yet, as it's generally been easier to 
-just use either sql, or cut and paste from editing the environments with the enviroment 
-editors.  I'm considering placing some sort of widget in the gui, but until then, this operation 
-has to be done outside of the gui.  Please understand that the gui was originally designed to 
-assist, not replace, the tools that are already available.  I apologize if this is an inconvenience.
-
-
+name "sidesalad".  These addresses are inserted into the default_environment table.  The 
+paella database user only has INSERT and SELECT access to the default_environment table.  
+If there are matching addresses already present in the table, the inserts will not take place.  
+This could mean that the addresses have already been matched to another machine (this 
+shouldn't happen in this quickstart, but it's something that the admin needs to be aware of).  
+The only table that the paella database user has full write access to is the current_environment 
+table.
 
 
 
@@ -830,85 +814,6 @@ assist, not replace, the tools that are already available.  I apologize if this 
 
 
 
-
-**The information below is outdated.  To be continued ....**
-
-
-
-Configure stage1 database
--------------------------------------------
-There should be very little effort needed to configure the stage1 database.
-Check default environment.
-Check tap_network family.
-Check uml_startup family.
-
-------------------
-
-Install the UML Machines
-======================================
-Now we should be ready to install the uml machines.  The uml installer is currently limited to 
-installing one machine at a time.  This is due to the default configuration for this quickstart 
-guide using a static ip.  This can be easily changed later if you wish to use the uml installer 
-for testing purposes.
-
-Install uml_head
--------------------------
-type::
-
-	paella-umlrunner install uml_head
-
-Install umlbuilder
-------------------------
-type::
-
-	paella-umlrunner install umlbuilder
-
-
-
-Running the UML Machines
-======================================
-Now we should be ready to start running the uml machines.
-
-Run uml_head
--------------------------
-Make sure your umask is set to 022.
-
-type::
-
-	paella-umlrunner run uml_head
-
-Login as root.  There should be no password required.
-type::
-
-	./setup_debrepos
-
-This will run a script that will setup a partial debian mirror.  This is to keep from 
-having to use a full debian mirror, that used to be required previously to use paella.  This 
-partial mirror should be under 400MB in size.
-
-
-Run umlbuilder
-------------------------
-type::
-
-	paella-umlrunner run umlbuilder
-
-Login as root.  There should be no password required.
-type::
-
-	./init_pbuilder
-
-This will run a script that will prepare pbuilder to build the paella and useless packages.  
-Basically it either generates or restores the base.tgz for pbuilder.  The base.tgz is copied to 
-the hostfs mount, in case it is needed in the future.  Once the script finishes, the next step 
-is to get the useless and paella packages built.  There is a script that does this too.
-type::
-
-	./build_paella_from_subversion
-
-This script will checkout the sources from subversion.  It then exports the working copies and 
-uses pbuilder to build the exports.  Once the packages are built, they are uploaded to 
-the uml_head machine, and placed in the debian mirror.
 
 
 
