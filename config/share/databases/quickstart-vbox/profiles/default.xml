@@ -1,9 +1,9 @@
 	<profile name="default" suite="bootstrap">
 		<traits>
-			<trait ord="50">
+			<trait ord="0">
 				default
 			</trait>
-			<trait ord="99">
+			<trait ord="1">
 				final
 			</trait>
 		</traits>

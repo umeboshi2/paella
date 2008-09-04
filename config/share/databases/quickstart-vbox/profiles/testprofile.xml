@@ -9,6 +9,9 @@
 		</traits>
 		<families/>
 		<environ>
+			<profile_variable name="install_standard" trait="base">
+				false
+			</profile_variable>
 			<profile_variable name="hostname" trait="global">
 				testhost
 			</profile_variable>

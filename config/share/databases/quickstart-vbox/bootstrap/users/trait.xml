@@ -1,0 +1,54 @@
+<trait name="users">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="admin_groups" trait="users">
+			admin
+		</trait_variable>
+		<trait_variable name="dhome" trait="users">
+			/home
+		</trait_variable>
+		<trait_variable name="dir_mode" trait="users">
+			0755
+		</trait_variable>
+		<trait_variable name="dshell" trait="users">
+			/bin/bash
+		</trait_variable>
+		<trait_variable name="extra_groups" trait="users">
+			dialout cdrom floppy audio video plugdev users games
+		</trait_variable>
+		<trait_variable name="grouphomes" trait="users">
+			no
+		</trait_variable>
+		<trait_variable name="letterhomes" trait="users">
+			no
+		</trait_variable>
+		<trait_variable name="setgid_home" trait="users">
+			no
+		</trait_variable>
+		<trait_variable name="skel" trait="users">
+			/etc/skel
+		</trait_variable>
+		<trait_variable name="sysadmin_groups" trait="users">
+			sudo staff adm
+		</trait_variable>
+		<trait_variable name="usergroups" trait="users">
+			yes
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/adduser.conf
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

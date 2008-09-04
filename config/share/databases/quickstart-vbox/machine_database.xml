@@ -3,7 +3,10 @@
 		<machine filesystem="default" kernel="linux-image-2.6-686" machine_type="default" profile="default">
 			default
 		</machine>
-		<machine filesystem="all_in_one" kernel="linux-image-2.6-686" machine_type="default" profile="default">
+		<machine filesystem="all_in_one" kernel="linux-image-2.6-486" machine_type="default" profile="default">
+			sidesalad
+		</machine>
+		<machine filesystem="all_in_one" kernel="linux-image-2.6-686" machine_type="default" profile="desktop">
 			testmachine
 		</machine>
 	</machines>

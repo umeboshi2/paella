@@ -6,9 +6,16 @@
 		<parent>
 			base_admin_tools
 		</parent>
+		<parent>
+			users
+		</parent>
 	</parents>
 	<packages/>
 	<environ/>
-	<templates/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			boot/grub/menu.lst
+		</template>
+	</templates>
 	<scripts/>
 </trait>

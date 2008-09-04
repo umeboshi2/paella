@@ -23,6 +23,9 @@
 		<trait_variable name="timezone" trait="global">
 			US/Central
 		</trait_variable>
+		<trait_variable name="umask" trait="global">
+			0022
+		</trait_variable>
 	</environ>
 	<templates/>
 	<scripts/>

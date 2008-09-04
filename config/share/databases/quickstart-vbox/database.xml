@@ -22,6 +22,8 @@
 			<trait name="debian_admin_base"/>
 			<trait name="debrepos"/>
 			<trait name="default"/>
+			<trait name="desktop"/>
+			<trait name="desktop_base"/>
 			<trait name="development"/>
 			<trait name="dhcp_server"/>
 			<trait name="fileserver_base"/>
@@ -38,6 +40,7 @@
 			<trait name="postgresql_server"/>
 			<trait name="samba_server"/>
 			<trait name="subversion"/>
+			<trait name="users"/>
 			<trait name="webdav_server"/>
 			<trait name="web_server"/>
 			<trait name="xemacs"/>

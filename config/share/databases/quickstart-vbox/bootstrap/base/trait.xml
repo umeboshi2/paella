@@ -31,6 +31,9 @@
 		<trait_variable name="debconf_priority" trait="base">
 			high
 		</trait_variable>
+		<trait_variable name="install_standard" trait="base">
+			False
+		</trait_variable>
 		<trait_variable name="tasksel_first" trait="base">
 			standard
 		</trait_variable>
@@ -47,6 +50,15 @@
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/hostname
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/nanorc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/pam.d/common-account
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/pam.d/common-session
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/timezone

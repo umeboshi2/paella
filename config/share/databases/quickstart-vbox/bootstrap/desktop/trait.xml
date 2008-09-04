@@ -1,22 +1,18 @@
-<trait name="network_base">
+<trait name="desktop">
 	<description>
 		None
 	</description>
 	<parents>
 		<parent>
-			base
+			desktop_base
 		</parent>
 	</parents>
 	<packages>
 		<package action="install">
-			resolvconf
+			xfce4
 		</package>
 	</packages>
 	<environ/>
-	<templates>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/network/interfaces
-		</template>
-	</templates>
+	<templates/>
 	<scripts/>
 </trait>

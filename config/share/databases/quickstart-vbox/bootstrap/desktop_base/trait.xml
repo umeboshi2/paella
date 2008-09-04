@@ -1,0 +1,30 @@
+<trait name="desktop_base">
+	<description>
+		None
+	</description>
+	<parents>
+		<parent>
+			default
+		</parent>
+		<parent>
+			network_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			desktop-base
+		</package>
+		<package action="install">
+			hotkey-setup
+		</package>
+		<package action="install">
+			iceweasel
+		</package>
+		<package action="install">
+			menu
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

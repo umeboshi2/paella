@@ -2,4 +2,11 @@
 from paella.installer.toolkit import InstallerTools
 
 it = InstallerTools()
+    
 
+cmd = ['aptitude', '-q', '--without-recommends',
+       '-o','APT::Install-Recommends=no', '-y', 'install',
+       '~pstandard', '~prequired', '~pimportant']
+
+if it.get('base_install_standard') in ["True", "true", 'yes', "Yes"]:
+    it.chroot(cmd)
