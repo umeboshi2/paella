@@ -199,10 +199,17 @@ class TraitView(ViewBrowser):
         elif context == 'template':
             debug(context, ident)
             ans = KMessageBox.questionYesNo(self,
-                                            "really delete this template?")
+                                            "%s: really delete this template?" % ident)
             if ans == KMessageBox.Yes:
                 template = self._convert_template_id(ident)
                 self.doc.trait.delete_template(template)
+                self.resetView()
+        elif context == 'script':
+            debug(context, ident)
+            ans = KMessageBox.questionYesNo(self,
+                                            "Really delete the %s script?" % ident)
+            if ans == KMessageBox.Yes:
+                self.doc.trait.delete_script(ident)
                 self.resetView()
         else:
             raise RuntimeError, '%s context not implemented' % context

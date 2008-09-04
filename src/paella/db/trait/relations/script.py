@@ -2,6 +2,7 @@ import os
 from os.path import join
 from sets import Set
 import tempfile
+import subprocess
 
 from kjbuckets import kjGraph
 
@@ -52,9 +53,6 @@ class TraitScript(TraitRelation):
         clause = self._clause(name)
         self.cmd.update(data=dict(scriptfile=str(id)), clause=clause)
 
-    def remove_scriptfile(self, name):
-        print 'remove_scriptfile deprecated'
-
     def _clause(self, name, trait=None):
         if trait is None:
             trait = self.current_trait
@@ -89,6 +87,10 @@ class TraitScript(TraitRelation):
         id = self.textfiles.insert_data(data)
         self.cmd.update(data=dict(scriptfile=str(id)), clause=clause)
 
+    def delete_script(self, name):
+        clause = self._clause(name)
+        self.cmd.delete(clause=clause)
+        
     def export_scripts(self, bkup_path):
         for row in self.scripts():
             npath = join(bkup_path, 'script-%s' % row.script)
@@ -98,20 +100,26 @@ class TraitScript(TraitRelation):
 
     def edit_script(self, name):
         sfile = self.get(name)
-        tmp, path = tempfile.mkstemp('paella', 'script')
+        tmp, filename = tempfile.mkstemp('paella', 'script')
         script = sfile.read()
         sfile.close()
-        tmp = file(path, 'w')
+        tmp = file(filename, 'w')
         tmp.write(script)
         tmp.close()
-        os.system('$EDITOR %s' % path)
-        tmp = file(path, 'r')
+        #os.system('$EDITOR %s' % filename)
+        editor = os.environ['EDITOR']
+        subprocess.call([editor, filename])
+        tmp = file(filename, 'r')
         mod = tmp.read()
         tmp.seek(0)
         if mod != script:
             print 'script modified'
             self.save_script(name, tmp)
-        os.remove(path)
+        os.remove(filename)
+        bkup = '%s~' % filename
+        if os.path.isfile(bkup):
+            os.remove(bkup)
+            
         
 if __name__ == '__main__':
     #f = file('tmp/trait.xml')

@@ -5,13 +5,16 @@ from optparse import OptionParser
 from useless.base import Error, debug
 
 from paella.base import PaellaConfig
+from paella.db import DefaultEnvironment
+from paella.db.machine import MachineHandler
+from paella.installer.util.misc import get_mac_addresses
 from paella.installer.base import InstallerConnection
-#from paella.installer.nfsinstaller import NewInstaller
 from paella.installer.machine import MachineInstaller
 
 parser = OptionParser()
 
-parser.usage = '%prog [options] install machine target'
+parser.usage = '%prog [options (ignored)] [install] [machine] [target]'
+# the options are ignored at the moment
 parser.add_option('--logfile', action='store', type='string', dest='logfile',
                   default='/tmp/paella-machine-installer.log')
 
@@ -23,18 +26,55 @@ if os.getuid():
 cfg = PaellaConfig()
 conn = InstallerConnection(cfg)
 installer = MachineInstaller(conn)
+env = DefaultEnvironment(conn)
+
+command = None
+machine = None
+target = None
 
 if len(args) != 3:
-    raise Error, 'need three args'
+    if len(args) == 2:
+        command, machine = args
+    elif len(args) == 1:
+        command = args[0]
+    elif len(args) == 0:
+        command = 'install'
+    else:
+        raise RuntimeError, "bad arguments --> %s" % ' '.join(args)
+else:
+    command, machine, target = args
 
-command, machine, target = args
+if target is None:
+    if env.has_option('installer', 'default_target'):
+        target = env.get('installer', 'default_target')
+    else:
+        print "WARNING: using hardcoded target directory /tmp/target"
+        print "Set the default_target in the default environment."
+        target = '/tmp/target'
+
+if machine is None:
+    # identify the machine
+    macs = get_mac_addresses()
+    machine = None
+    for mac in macs:
+        if machine is None:
+            if env.has_option('machines', mac):
+                machine = env.get('machines', mac)
+
+if machine is None:
+    raise RuntimeError, "Unable to install unknown machine"
+
+if command is None:
+    msg = "There is no command, bad arguments --> %s" % ' '.join(args)
+    raise RuntimeError, msg
+
 if command == 'install':
     installer.set_target(target)
     installer.set_machine(machine)
     installer.run_all_processes()
     installer.save_logfile_in_target()
 else:
-    raise Error, 'unsupported command'
+    raise RuntimeError, "Unknown command %s" % command
 
 sys.stdout.write('all done.\n')
 

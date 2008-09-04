@@ -22,7 +22,7 @@ from relations.template import TraitTemplate
 from relations.script import TraitScript
 from relations.main import TraitEnvironment
 
-from xmlgen import EnvironElement, ParentElement
+from xmlgen import ParentElement
 from xmlgen import TraitVariableElement
 from xmlgen import PackageElement, TemplateElement
 from xmlparse import TraitParser
@@ -194,6 +194,9 @@ class Trait(object):
 
     def insert_script(self, name, scriptfile):
         self._scripts.insert_script(name, scriptfile)
+
+    def delete_script(self, name):
+        self._scripts.delete_script(name)
         
     def create_trait(self, trait):
         insert_data = {'trait' : trait}

@@ -40,11 +40,6 @@ class SuitesElement(Element):
     def __init__(self):
         Element.__init__(self, 'suites')
 
-# generate xml        
-class EnvironElement(DictElement):
-    def __init__(self, environ):
-        DictElement.__init__(self, 'environ', environ)
-
 # generate xml
 class ProfileElement(Element):
     def __init__(self, name, suite):

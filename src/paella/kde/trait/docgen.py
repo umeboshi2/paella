@@ -197,6 +197,25 @@ class TraitDocument(BaseDocument):
         stitle.append_rightside_anchor(Anchor('new', href='new.script.%s' % trait))
         return stitle
 
+    def _make_scripts_table(self, trait):
+        rows = self.trait._scripts.scripts(trait=trait)
+        if rows:
+            bgcolor = self.cfg.get('management_gui', 'traitdoc_variables_table_color')
+            table = Table(bgcolor=bgcolor)
+            for row in rows:
+                script  = row.script
+                sa = Anchor(script, href='show.script.%s' % script)
+                ea = Anchor('(edit)', href='edit.script.%s' % script)
+                da = Anchor('(delete)', href='delete.script.%s' % script)
+                trow = TableRow()
+                trow.append(TableCell(sa))
+                trow.append(TableCell(ea))
+                trow.append(TableCell(da))
+                table.append(trow)
+            return table
+
+    # the list is deprecated
+    # I like the table better
     def _make_scripts_list(self, trait):
         rows = self.trait._scripts.scripts(trait=trait)
         if rows:
@@ -206,9 +225,15 @@ class TraitDocument(BaseDocument):
                 p = Paragraph()
                 sa = Anchor(script, href='show.script.%s' % script)
                 ea = Anchor('(edit)', href='edit.script.%s' % script)
+                da = Anchor('(delete)', href='delete.script.%s' % script)
                 p.append(sa)
+                p.append(' -- ')
                 p.append(ea)
+                p.append(' -- ')
+                p.append(da)
                 slist.append(ListItem(p))
+                #slist.append(Ruler())
+                slist.append('-----------')
             return slist
         else:
             return None
@@ -229,7 +254,8 @@ class TraitDocument(BaseDocument):
                  self._make_variables_section,
                  self._make_variables_table,
                  self._make_scripts_section,
-                 self._make_scripts_list
+                 #self._make_scripts_list
+                 self._make_scripts_table
                  ]
         for method in order:
             chunk = method(trait)

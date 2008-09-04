@@ -4,7 +4,7 @@ from useless.base import Error
 from useless.base.util import ujoin, strfile, filecopy
 from useless.db.midlevel import StatementCursor
 
-from useless.sqlgen.admin import grant_public
+from useless.sqlgen.admin import grant_public, grant_user
 from useless.sqlgen.clause import Eq, In
 
 from paella.base.objects import TextFileManager
@@ -70,8 +70,10 @@ class SuiteCursor(StatementCursor):
         tables = suite_tables(suite)
         for table in tables:
             self.create_table(table)
-        self.execute(grant_public([t.name for t in tables]))
+        #self.execute(grant_public([t.name for t in tables]))
         
+        paella_select = grant_user('SELECT', [t.name for t in tables], 'paella')
+        self.execute(paella_select)
 
     # the base suite is the dist column of the first apt source of a suite
     def get_base_suite(self, suite):

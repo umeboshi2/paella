@@ -4,8 +4,6 @@ from xml.dom.minidom import parseString as parse_string
 from useless.base import Error, debug
 from useless.base.xmlfile import ParserHelper, DictElement
 
-from xmlgen import EnvironElement
-
 from trait.xmlparse import TraitsParser
 
 class AptSourceParser(ParserHelper):

@@ -2,11 +2,18 @@ import os
 from os.path import join
 from sets import Set
 import tempfile
+import difflib
 
 from kjbuckets import kjGraph
 
+from Cheetah.Template import Template as ChTemplate
+from Cheetah.Parser import ParseError
+from Cheetah.NameMapper import NotFound
+
+
 from useless.base import Error
 from useless.base.util import ujoin, RefDict, strfile, filecopy
+from useless.base.template import Template
 
 from useless.sqlgen.clause import one_many, Eq, In
 from useless.db.midlevel import Environment
@@ -14,56 +21,10 @@ from useless.db.midlevel import Environment
 from paella.base.objects import TextFileManager
 
 from base import TraitRelation
-from base import Template
 from parent import TraitParent
 
 from paella import deprecated
 
-from Cheetah.Template import Template as ChTemplate
-from Cheetah.Parser import ParseError
-from Cheetah.NameMapper import NotFound
-import difflib
-
-class CheetahConversionError(RuntimeError):
-    pass
-
-def insert_raw_directives(text):
-        lines = text.split('\n')
-        if not lines[0].startswith('##cheetah'):
-            raise RuntimeError, 'need the ##cheetah comment on the top'
-        lines.insert(1, '#raw')
-        if not lines[-1]:
-            print 'insert at end'
-            lines[-1] = '#end raw'
-        else:
-            lines.append('#end raw')
-        #ctext = ''.join([line + '\n' for line in lines])
-        ctext = '\n'.join(lines)
-        return ctext
-
-def convert_text_to_cheetah_template(text):
-    assert not text.startswith('##cheetah')
-    ctext = '##cheetah\n#raw\n' + text + '#end raw\n'
-    if ctext.find('\$') > -1:
-        print "replacing \$"
-        ctext = ctext.replace('\$', '\\\$')
-    if ctext.find('\#') > -1:
-        print "replacing \#"
-        ctext = ctext.replace('\#', '\\\#')
-    ctemplate = ChTemplate(ctext)
-    if text == str(ctemplate):
-        return ctemplate
-    else:
-        added_endl = False
-        removed_endl = False
-        if str(ctemplate) + '\n' == text:
-            removed_endl = True
-        if str(ctemplate) == text + '\n':
-            added_endl = True
-        if added_endl or removed_endl:
-            print 'things could be ok'
-        else:
-            raise CheetahConversionError, 'unable to convert template'
 
 class TraitTemplate(TraitRelation):
     def __init__(self, conn, suite):
@@ -71,7 +32,6 @@ class TraitTemplate(TraitRelation):
         TraitRelation.__init__(self, conn, suite, table, name='TraitTemplate')
         self.traitparent = TraitParent(conn, suite)
         self.template = Template()
-        self.template.set_suite(suite)
         self.template_path = None
         self.textfiles = TextFileManager(self.conn)
         self._jtable = '%s as s join textfiles as t ' % table
@@ -134,19 +94,6 @@ class TraitTemplate(TraitRelation):
             update.update(data)
         self.cmd.update(data=update, clause=clause)
         
-    def convert_to_cheetah(self, template):
-        text = self.templatedata(template)
-        tmpl = convert_text_to_cheetah_template(text)
-        sefl.update_template(self, template, data=str(tmpl))
-        
-        
-    
-    def update_templatedata(self, template, data):
-        deprecated('update_templatedata is deprecated use update_template instead')
-        self.update_template(template, contents=data)
-        
-        
-
     def drop_template(self, template):
         clause = self._clause(template)
         self._drop_template(clause)
@@ -158,32 +105,21 @@ class TraitTemplate(TraitRelation):
     def set_trait(self, trait):
         TraitRelation.set_trait(self, trait)
         self.traitparent.set_trait(trait)
-        self.template.set_trait(trait)
         
     def set_template(self, template):
-        self.template.set_template(self.templatefile(template))
+        self.template.set_template(self.templatedata(template))
         self.template.update(self.traitparent.Environment())
 
     def set_template_path(self, path):
         self.template_path = join(path, self.suite, self.current_trait)
 
-        
-        
-    # set a keyword argument (to be removed sometime in the future)
-    # to revert to previous way of naming template files.  The default is to
-    # use the new method.
-    def export_templates(self, bkup_path, numbered_templates=False):
-        n = 0
+    def export_templates(self, bkup_path):
         for t in self.templates():
-            if numbered_templates:
-                filename  = join(bkup_path, 'template-%d' % n)
-            else:
-                template_id = t.template.replace('/', '-slash-')
-                filename = join(bkup_path, 'template-%s' % template_id)
+            template_id = t.template.replace('/', '-slash-')
+            filename = join(bkup_path, 'template-%s' % template_id)
             tfile = self.templatefile(t.template)
             filecopy(tfile, filename)
             tfile.close()
-            n += 1
             
     def templatefile(self, template):
         return strfile(self.templatedata(template))
@@ -219,29 +155,62 @@ class TraitTemplate(TraitRelation):
             self.save_template(template, tmp)
         os.remove(path)
         
-if __name__ == '__main__':
-    #f = file('tmp/trait.xml')
-    #tx = TraitXml(f)
-    import sys
-    ct = convert_text_to_cheetah_template
-    text = file('/etc/adduser.conf').read()
-    text = file('/etc/bash.bashrc').read()
-    ctest = file('ctest').read()
-    from paella.db import PaellaConnection
-    conn = PaellaConnection()
-    tt = TraitTemplate(conn, 'etch')
-    from paella.db.trait.main import Trait
-    trait = Trait(conn)
-    traits = trait.get_trait_list()
-    
-    def ptraits():
-        for trait in traits:
-            print 'trait', trait
-            print '-'*30
-            tt.set_trait(trait)
-            for template in [r.template for r in tt.templates()]:
-                print 'processing template', template
-                text = tt.templatedata(template)
-                ct(text)
-                print
-            print '='*30
+###################################
+#Cheetah Template test code
+###################################
+
+# The conversion only converts to raw
+# which isn't very useful
+# I haven't yet determined the best
+# way to provide an environment of
+# variables to be used in the templates
+# so the use of cheetah templates are on
+# hold.  I think that anything that uses
+# templates like cheetah, or jinja, etc. will
+# be using the InstallerTools class to have
+# a better chance of reaching all the variables
+# and classes that paella uses.
+
+
+
+class CheetahConversionError(RuntimeError):
+    pass
+
+def insert_raw_directives(text):
+        lines = text.split('\n')
+        if not lines[0].startswith('##cheetah'):
+            raise RuntimeError, 'need the ##cheetah comment on the top'
+        lines.insert(1, '#raw')
+        if not lines[-1]:
+            print 'insert at end'
+            lines[-1] = '#end raw'
+        else:
+            lines.append('#end raw')
+        #ctext = ''.join([line + '\n' for line in lines])
+        ctext = '\n'.join(lines)
+        return ctext
+
+def convert_text_to_cheetah_template(text):
+    assert not text.startswith('##cheetah')
+    ctext = '##cheetah\n#raw\n' + text + '#end raw\n'
+    if ctext.find('\$') > -1:
+        print "replacing \$"
+        ctext = ctext.replace('\$', '\\\$')
+    if ctext.find('\#') > -1:
+        print "replacing \#"
+        ctext = ctext.replace('\#', '\\\#')
+    ctemplate = ChTemplate(ctext)
+    if text == str(ctemplate):
+        return ctemplate
+    else:
+        added_endl = False
+        removed_endl = False
+        if str(ctemplate) + '\n' == text:
+            removed_endl = True
+        if str(ctemplate) == text + '\n':
+            added_endl = True
+        if added_endl or removed_endl:
+            print 'things could be ok'
+        else:
+            raise CheetahConversionError, 'unable to convert template'
+

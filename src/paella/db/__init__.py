@@ -21,7 +21,7 @@ class PaellaConnection(BasicConnection):
             if type(cfg) is PaellaConfig:
                 dsn = cfg.get_dsn()
         if dsn is None:
-            raise RuntimeError, 'Problem with the arguements to PaellaConnection'
+            raise RuntimeError, 'Problem with the arguments to PaellaConnection'
         if os.environ.has_key('PAELLA_DBHOST'):
             dsn['dbhost'] = os.environ['PAELLA_DBHOST']
         if os.environ.has_key('PAELLA_DBNAME'):

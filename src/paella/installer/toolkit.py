@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from useless.base.util import str2list
 from useless.base.path import path
@@ -157,10 +158,13 @@ class InstallerTools(object):
         env = self.env()
         return env.dereference(key)
 
+    def run(self, cmd):
+        return subprocess.call(cmd)
+    
     def chroot(self, cmd):
         cmd = ['chroot', str(self.target)] + cmd
-        return runlog(cmd)
-
+        return self.run(cmd)
+    
     def set_machine(self, machine):
         self.machine = machine
         self.db.set_machine(machine)

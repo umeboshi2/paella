@@ -1,4 +1,4 @@
-from useless.sqlgen.admin import grant_public
+from useless.sqlgen.admin import grant_public, grant_user
 
 from tables import primary_sequences
 from tables import primary_tables
@@ -16,7 +16,7 @@ def insert_list(cursor, table, field, list):
     for value in list:
         cursor.insert(table=table, data={field : value})
 
-def start_schema(conn):
+def start_schema(conn, installuser='paella'):
     cursor = conn.cursor(statement=True)
     tables, mapping = primary_tables()
     current_tables = cursor.tables()
@@ -31,9 +31,18 @@ def start_schema(conn):
         insert_list(cursor, 'scriptnames', 'script', SCRIPTS)
         newscripts = [s for s in MTSCRIPTS if s not in SCRIPTS]
         insert_list(cursor, 'scriptnames', 'script', newscripts)
-        cursor.execute(grant_public([x.name for x in tables]))
-        cursor.execute(grant_public(['current_environment'], 'ALL'))
-        cursor.execute(grant_public(['partition_workspace'], 'ALL'))
+        paella_select = grant_user('SELECT', [x.name for x in tables], installuser)
+        paella_full = grant_user('ALL',
+                                 ['current_environment', 'partition_workspace'],
+                                 installuser)
+        paella_insert = grant_user('INSERT', ['default_environment'],
+                                   installuser)
+        for grant in paella_select, paella_full, paella_insert:
+            cursor.execute(grant)
+        #cursor.execute(grant_public([x.name for x in tables]))
+        #cursor.execute(grant_public(['current_environment'], 'ALL'))
+        #cursor.execute(grant_public(['partition_workspace'], 'ALL'))
+        #cursor.execute(grant_user(['default_environment'], 'INSERT', 'paella')
         create_pgsql_functions(cursor)
     else:
         all_there = True

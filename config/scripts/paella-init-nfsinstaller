@@ -11,6 +11,7 @@ from paella.db import DefaultEnvironment
 from paella.db.machine import MachineHandler
 from paella.installer.base import InstallerConnection
 from paella.installer.util.misc import get_mac_addresses
+from paella.installer.machine import MachineInstaller
 
 parser = OptionParser()
 parser.add_option('--mirror', action='store', type='string', dest='remote',
@@ -18,14 +19,22 @@ parser.add_option('--mirror', action='store', type='string', dest='remote',
 
 opts, args = parser.parse_args(sys.argv[1:])
 
+if os.getuid():
+    raise RuntimeError, "Need to be root to run this script."
+
 config = PaellaConfig()
 conn = InstallerConnection(config)
+
 env = DefaultEnvironment(conn)
+
 if env.has_option('installer', 'default_target'):
     target = env.get('installer', 'default_target')
 else:
+    print "WARNING: using hardcoded target directory /tmp/target"
+    print "Set the default_target in the default environment."
     target = '/tmp/target'
     
+
 # identify the machine
 macs = get_mac_addresses()
 machine = None
@@ -34,34 +43,60 @@ for mac in macs:
         if env.has_option('machines', mac):
             machine = env.get('machines', mac)
 
-known = False
-if machine is not None:
-    section = 'autoinstall'
-    has_it =  env.has_section(section) and env.has_option(section, machine)
-    if has_it:
-        known = True
-        retval = None
-        auto = env.is_it_true('autoinstall', machine)
-        if auto:
-            print 'auto installing machine %s' % machine
-            retval = os.system('paella-machine-installer install %s %s' % (machine, target))
-        else:
-            print 'skipping auto installation of machine %s' % machine
-    else:
-        msg = "Machine is %s but has no entry in " % machine
-        msg += "autoinstall section of default environment."
-        print msg
-else:
+
+if machine is None:
     msg = 'This is an unknown machine, use paella-submit-machine '
     msg += 'to tell paella about it.'
     print msg
+    sys.exit(0)
 
-if known:
-    if retval is not None:
-        if retval:
-            print "paella-machine-installer returned %d" % retval
-        else:
-            print "paella-init-nfsinstaller has finished successfully!"
+autoinstall = None
+installed = False
 
+section = 'autoinstall'
+if env.has_section(section) and env.has_option(section, machine):
+    autoinstall = env.is_it_true(section, machine)
+
+if autoinstall is not None:
+    section = 'already_installed'
+    if env.has_section(section) and env.has_option(section, machine):
+        installed = env.is_it_true(section, machine)
+
+
+
+if autoinstall is None:
+    msg = "Machine is %s but has no entry in " % machine
+    msg += "autoinstall section of default environment."
+    print msg
+    sys.exit(0)
+
+if installed:
+    print machine, "is listed as already installed.  Aborting install."
+    sys.exit(0)
+
+if autoinstall:
+    print 'auto installing machine %s' % machine
+    # we used to use os.system to call paella-machine-installer
+    # but that creates another connection to the database, and
+    # wasn't really necessary.
+    installer = MachineInstaller(conn)
+    installer.set_target(target)
+    installer.set_machine(machine)
+    installer.run_all_processes()
+    installer.save_logfile_in_target()
+    installed = True
+else:
+    print 'skipping auto installation of machine %s' % machine
+    sys.exit(0)
     
-        
+
+if installed:
+    print "paella-init-nfsinstaller has finished successfully!"
+    print machine, "has been installed into", target
+    section = 'already_installed'
+    if not env.has_section(section):
+        env.add_section(section)
+    env.set(section, machine, 'True')
+    
+sys.exit(0)
+

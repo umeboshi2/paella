@@ -26,21 +26,22 @@ macs = get_mac_addresses()
 conn = InstallerConnection()
     
 cursor = StatementCursor(conn)
-cursor.set_table('current_environment')
+cursor.set_table('default_environment')
 for mac in macs:
-    data = dict(hostname='machines', name=mac, value=machine)
-    # FIXME: we need to check for existence before inserting
-    print 'inserting %s for %s' % (mac, machine)
-    cursor.insert(data=data)
-
-print 'config looks like:\n\n'
-mcfg = Configuration()
-rows = cursor.select(clause=In('name', macs))
-for row in rows:
-    section = 'machines'
-    if not mcfg.has_section(section):
-        mcfg.add_section(section)
-    mcfg.set(section, row.name, row.value)
-
+    clause = Eq('section', 'machines') & Eq('option', mac)
+    data = dict(section='machines', option=mac, value=machine)
+    rows = cursor.select(clause=clause)
+    if not rows:
+        print 'inserting %s for %s' % (mac, machine)
+        cursor.insert(data=data)
+    else:
+        print "%s is already in the default environment" % mac
+        
+clause = Eq('section', 'autoinstall') & Eq('option', machine)
+rows = cursor.select(clause=clause)
+if not rows:
+    print "inserting autoinstall (Default: False) for", machine
+    cursor.insert(data=dict(section='autoinstall', option=machine, value='False'))
+else:
+    print "autoinstall option already exists for", machine
     
-mcfg.write(sys.stdout)

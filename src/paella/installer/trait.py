@@ -152,6 +152,8 @@ class TraitInstallerHelper(object):
     def make_template(self, template):
         self.traittemplate.set_template(template.template)
         tmpl = self.traittemplate.template.template
+        if tmpl.startswith('##cheetah'):
+            self.log.info("%s is a cheetah template" % template.template)
         self._update_templatedata()
         return self._make_template_common(template, tmpl)
         

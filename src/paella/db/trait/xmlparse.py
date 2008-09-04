@@ -4,7 +4,6 @@ from xml.dom.minidom import parseString as parse_string
 from useless.base import Error, debug
 from useless.base.xmlfile import ParserHelper, DictElement
 
-from xmlgen import EnvironElement
 from xmlgen import TraitVariableElement
 
 #parse xml
@@ -67,9 +66,7 @@ class TraitParser(ParserHelper):
                 else:
                     print "This xmlfile needs updating to new trait_variable tags"
                     print "suite", self.suite, "name", self.name
-                    env_element = EnvironElement({})
-                    env_element.reform(environ[0])
-                    self.environ = dict(env_element.items())
+                    raise RuntimeError, "update this trait.xml file"
 
     def _get_templates(self, element):
         templates = self.get_elements_from_section(element, 'templates', 'template')
