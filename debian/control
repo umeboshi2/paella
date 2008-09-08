@@ -112,3 +112,24 @@ Description: documentation for paella
   configurations of debian systems.  This package
   holds the pathetic documentation for it.
 
+Package: paella-partman
+Section: admin
+Priority: extra
+Architecture: any
+Depends: paella-base (= ${binary:Version})
+Description:  a deb for partman
+ If this works, you can use partman to automatically
+ partition the drives, and create filesystems.  The Depends 
+ field needs to be updated to match the real dependencies
+ of partman.  The builddeps of paella also needs to be updated.
+
+Package: paella-partman-src
+Section: devel
+Priority: extra
+Architecture: all
+Description: sources for paella-partman
+ Due to the way paella-partman is built, this package
+ is present to make the sources easy to distribute.
+ If the sources have been patched, these source 
+ packages will contain that.
+

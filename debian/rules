@@ -23,6 +23,16 @@ build/paella-doc::
 	echo "building paella-doc"
 	python setup.py doc install \
 		--prefix=$(CURDIR)/debian/paella-doc/usr/share/doc/paella-doc
-
+build/paella-partman::
+	python build-partman.py configure
+	python build-partman.py build
+	python build-partman.py install
+	touch paella-partman-build-stamp
+install/paella-partman:: paella-partman-build-stamp
+	echo "hi, installing paella-partman"
+install/paella-partman-src:: paella-partman-build-stamp
+	echo "hey, installing paella-partman-src"
 clean::
+	python build-partman.py clean
+	dh_clean -X*.orig paella-partman-build-stamp
 	dh_clean -X*.orig configure-stamp docs/html/*.html 
