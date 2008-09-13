@@ -42,7 +42,7 @@ Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db (= ${binary:Version}), python-pyparsing, debootstrap, reiserfsprogs, genisoimage, initramfs-tools
+Depends: paella-db (= ${binary:Version}), python-pyparsing, debootstrap, genisoimage, initramfs-tools
 Description: python package for paella installers
  This package contains most of the code for installers to work.
  It also contains the chroot installer.
@@ -51,7 +51,7 @@ Package: paella-machine-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-installer (= ${binary:Version}), xfsprogs, hdparm, mdadm, gawk, grub
+Depends: paella-installer (= ${binary:Version}), xfsprogs, hdparm, mdadm, gawk, grub, fai-client, reiserfsprogs
 Description: package for machine installer
     This package should be installed on a live system.
 
