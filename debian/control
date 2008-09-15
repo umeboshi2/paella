@@ -3,7 +3,7 @@ Section: misc
 Priority: optional
 Maintainer: Joseph Rawson <umeboshi3@gmail.com>
 Build-Depends: debhelper (>> 4.2.0), python, python-dev, python-docutils, cdbs, python-all-dev, python-support, python-dev
-Standards-Version: 3.6.1
+Standards-Version: 3.8.0
 
 Package: paella
 Section: admin

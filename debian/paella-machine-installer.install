@@ -1,4 +1,3 @@
 config/scripts/paella-machine-installer usr/sbin
 config/scripts/paella-submit-machine usr/bin
-config/scripts/setup_harddisks_fai usr/lib/paella/scripts
 
