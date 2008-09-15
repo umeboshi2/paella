@@ -2,6 +2,7 @@ import os, sys
 from os.path import isdir, isfile, join, basename, dirname
 import subprocess
 import warnings
+import logging
 
 from useless.base import Log
 from useless.base.config import Configuration
@@ -22,6 +23,39 @@ from util.aptsources import make_sources_list
 from util.aptsources import make_official_sources_list
 
 
+def makePaellaLogger(name, filename=None, logformat='',
+                 host=None, port=None, url='', method='GET', syslog=False):
+    log = logging.getLogger(name)
+    handler = None
+    if filename is not None:
+        handler = logging.FileHandler(filename)
+    if syslog:
+        if host is not None:
+            if port is None:
+                port = 514
+            handler = logging.handlers.SysLogHandler((host, port))
+        else:
+            handler = logging.handlers.SysLogHandler()
+    if handler is None:
+        if host is not None:
+            if port is not None:
+                handler = logging.handlers.SocketHandler(host, port)
+            elif url:
+                handler = logging.handlers.HTTPHandler(host, url, method)
+            else:
+                raise RuntimeError , "unable to make handler for host %s" % host
+    if handler is None:
+        raise RuntimeError , "bad options, unable to make handler"
+    if not logformat:
+        logformat = '%(name)s - %(asctime)s - %(levelname)s: %(message)s'
+    formatter = logging.Formatter(logformat)
+    handler.setFormatter(formatter)
+    log.addHandler(handler)
+    # we should pass the level, too
+    log.setLevel(logging.DEBUG)
+    return log
+
+
 # using StandardError temporarily now
 class NoLogError(StandardError):
     pass
@@ -40,17 +74,28 @@ warnings.simplefilter('always', RunLogWarning)
 
 
 class MainLog(object):
-    def __init__(self, filename, logformat=''):
+    def __init__(self, filename=None, logformat='',
+                 host=None, port=None, url='', method='GET', syslog=False):
         self.filename = filename
+        if self.filename is not None:
+            self.filename = path(self.filename)
+        self.host = host
+        self.port = port
+        self.url = url
+        self.http_method = method
+        self.syslog = syslog
         self.loggers = {}
         if not logformat:
-            logformat = '%(name)s - %(levelname)s: %(message)s'
+            logformat = '%(name)s - %(asctime)s - %(levelname)s: %(message)s'
         self.main_logformat = logformat
 
     def add_logger(self, name, logformat=''):
         if not logformat:
             logformat = self.main_logformat
-        self.loggers[name] = Log(name, self.filename, format=logformat)
+        self.loggers[name] = makePaellaLogger(name, filename=self.filename,
+                                              logformat=logformat, host=self.host, port=self.port,
+                                              url=self.url, method=self.http_method,
+                                              syslog=self.syslog)
 
     def info(self, name, msg):
         self.loggers[name].info(msg)
@@ -60,17 +105,22 @@ class MainLog(object):
         
         
 class PaellaLogger(MainLog):
-    def __init__(self, filename):
-        format = '%(name)s - %(asctime)s - %(levelname)s: %(message)s'
-        filename = path(filename)
-        logdir = filename.dirname()
-        if not logdir.isdir():
-            makepaths(logdir)
-        MainLog.__init__(self, filename, logformat=format)
+    def __init__(self, filename=None, logformat='',
+                 host=None, port=None, url='', method='GET',
+                 syslog=False):
+        MainLog.__init__(self, filename=filename, logformat=logformat,
+                         host=host, port=port, url=url, method=method,
+                         syslog=syslog)
+        if self.filename is not None:
+            os.environ['PAELLA_LOGFILE'] = str(self.filename.abspath())
+            logdir = self.filename.abspath().dirname()
+            if not logdir.isdir():
+                makepaths(logdir)
         self._basename = 'paella-installer'
         self.add_logger(self._basename)
         sys.paella_logger = self.loggers[self._basename]
-        os.environ['PAELLA_LOGFILE'] = self.filename
+        
+
 
     def info(self, msg, name=''):
         if not name:
@@ -321,13 +371,19 @@ class BaseInstaller(BaseProcessor):
             makepaths(self.target)
         if not self.target.isdir():
             raise InstallError, 'unable to create target directory %s' % self.target
-        
-    def set_logfile(self, logfile):
-        self.logfile = path(logfile)
-        self.mainlog = PaellaLogger(self.logfile)
+
+    def set_logger(self, filename=None, host=None, port=None,
+                   url='', method='GET', syslog=False):
+        self.mainlog = PaellaLogger(filename=filename, host=host,
+                                    port=port, url=url, method=method, syslog=syslog)
         name = self.__class__.__name__
         self.mainlog.add_logger(name)
         self.log = self.mainlog.loggers[name]
+        
+    def set_logfile(self, logfile):
+        deprecated("set_logfile is deprecated, use set_logger instead")
+        self.set_logger(filename=logfile)
+        self.logfile = path(logfile)
         
         # the mailserver trait used to somehow erase the logfile
         # so a bkup is generated here.
@@ -354,4 +410,5 @@ class BaseInstaller(BaseProcessor):
 if __name__ == '__main__':
     from paella.db import PaellaConnection
     c = PaellaConnection()
-    
+    #log = PaellaLogger(host='127.0.0.1', port=2345)
+    bi = BaseInstaller(c)

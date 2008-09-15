@@ -50,10 +50,8 @@ class BaseMachineDialog(VboxDialog):
         self.profileLbl, self.profileBox = self._make_box('Profile', profiles)
         kernels = self.handler.list_all_kernels()
         self.kernelLbl, self.kernelBox = self._make_box('Kernel', kernels)
-        filesystems = self.handler.list_all_filesystems()
-        self.fsLbl, self.fsBox = self._make_box('Filesystem', filesystems)
         self._lists = dict(mtypes=mtypes, profiles=profiles,
-                           kernels=kernels, filesystems=filesystems)
+                           kernels=kernels)
 
     def _make_box(self, text, choices):
         lbl = QLabel(self.frame)
@@ -68,12 +66,11 @@ class BaseMachineDialog(VboxDialog):
         machine_type = str(self.mtypeBox.currentText())
         profile = str(self.profileBox.currentText())
         kernel = str(self.kernelBox.currentText())
-        filesystem = str(self.fsBox.currentText())
-        return machine_type, profile, kernel, filesystem
+        return machine_type, profile, kernel
 
     def _get_common_data_dict(self):
         values = self._get_common_data()
-        keys = ['machine_type', 'profile', 'kernel', 'filesystem']
+        keys = ['machine_type', 'profile', 'kernel']
         return dict(zip(keys, values))
     
     
@@ -82,12 +79,12 @@ class BaseMachineDialog(VboxDialog):
         if self.dbaction == 'insert':
             machine = str(self.machnameEntry.text())
             self.handler.make_a_machine(machine, mtype, profile,
-                                        kernel, filesystem)
+                                        kernel)
             performed = 'inserted'
         elif self.dbaction == 'update':
             machine = self.machine
             self.handler.update_a_machine(machine, mtype, profile,
-                                          kernel, filesystem)
+                                          kernel)
             performed = 'updated'
         else:
             raise RuntimeError , 'bad dbaction %s' % self.dbaction
@@ -124,7 +121,5 @@ class EditMachineDIalog(BaseMachineDialog):
         self.profileBox.setCurrentItem(profile)
         kernel = self._lists['kernels'].index(row.kernel)
         self.kernelBox.setCurrentItem(kernel)
-        filesystem = self._lists['filesystems'].index(row.filesystem)
-        self.fsBox.setCurrentItem(filesystem)
         
     

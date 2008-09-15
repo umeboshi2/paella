@@ -39,88 +39,53 @@ def debootstrap(suite, root, mirror=None, script='', arch='i386'):
         cmd.append(script)
     return cmd
 
-
-
-# here are some decorators to check requirements
-# needed to invoke a method
-
-# make sure target is set to a value
-def requires_target_set(func):
-    def wrapper(self, *args, **kw):
+class BaseChrootInstaller(BaseInstaller):
+    "this class will not work unless subclassed"
+    def check_target_set(self):
         if self.target is None:
             raise UnsatisfiedRequirementsError, "need to set target first"
-        return func(self, *args, **kw)
-    return wrapper
 
-# make sure the suite is set
-def requires_suite_set(func):
-    def wrapper(self, *args, **kw):
+    def check_suite_set(self):
         if self.suite is None:
             raise UnsatisfiedRequirementsError, "need to set suite first"
         if self.base_suite is None:
-            raise UnsatisfiedRequirementsError, "base_suite unset, need to set suite first"
-        return func(self, *args, **kw)
-    return wrapper
-    
+            msg = "base_suite unset, need to set suite first"
+            raise UnsatisfiedRequirementsError, msg
 
-# make sure target is directory
-def requires_target_exists(func):
-    @requires_target_set
-    def wrapper(self, *args, **kw):
+    def check_target_exists(self):
+        self.check_target_set()
         if not self.target.isdir():
             msg = "need to create target directory at %s first" % self.target
             raise UnsatisfiedRequirementsError, msg
-        return func(self, *args, **kw)
-    return wrapper
 
-# make sure target is bootstrapped
-def requires_bootstrap(func):
-    @requires_target_exists
-    def wrapper(self, *args, **kw):
+    def check_bootstrap(self):
+        self.check_target_exists()
         if not self._bootstrapped:
             msg = "need to bootstrap target directory at %s first" % self.target
             raise UnsatisfiedRequirementsError, msg
-        return func(self, *args, **kw)
-    return wrapper
 
-
-# make sure target /proc is mounted
-def requires_target_proc_mounted(func):
-    @requires_bootstrap
-    def wrapper(self, *args, **kw):
+    def check_target_proc_mounted(self):
+        self.check_bootstrap()
         if not self._target_proc_mounted():
             msg = "target /proc needs to be mounted first"
             raise UnsatisfiedRequirementsError, msg
-        return func(self, *args, **kw)
-    return wrapper
 
-# make sure target /sys is mounted
-def requires_target_sys_mounted(func):
-    @requires_bootstrap
-    def wrapper(self, *args, **kw):
+    def check_target_sys_mounted(self):
+        self.check_bootstrap()
         if not self._target_sys_mounted():
             msg = "target /sys needs to be mounted first"
             raise UnsatisfiedRequirementsError, msg
-        return func(self, *args, **kw)
-    return wrapper
-    
-# this may not be used later
-def requires_installer_set(func):
-    def wrapper(self, *args, **kw):
+
+    def check_installer_set(self):
         if self.installer is None:
-            raise UnsatisfiedRequirementsError, "need to set installer first"
-        return func(self, *args, **kw)
-    return wrapper
+            msg = "need to set installer first"
+            raise UnsatisfiedRequirementsError, msg
 
-
-def requires_install_complete(func):
-    def wrapper(self, *args, **kw):
+    def check_install_complete(self):
         if not self._install_finished:
-            raise UnsatisfiedRequirementsError, 'install needs to be complete first'
-        return func(self, *args, **kw)
-    return wrapper
-
-
+            msg = "install needs to be complete first"
+            raise UnsatisfiedRequirementsError, msg
+    
 # basic operation:
 # 1. setup installer db connection
 # 2. init ChrootInstaller
@@ -128,10 +93,10 @@ def requires_install_complete(func):
 # 4. set target
 # 5. set profile
 # 6. run_all_processes
-class ChrootInstaller(BaseInstaller):
+class ChrootInstaller(BaseChrootInstaller):
     # we may need more __init__ args later
     def __init__(self, conn):
-        BaseInstaller.__init__(self, conn)
+        BaseChrootInstaller.__init__(self, conn)
         self._bootstrapped = False
         self._install_finished = False
         
@@ -182,8 +147,8 @@ class ChrootInstaller(BaseInstaller):
         self.log.info(msg)
         self.log.info('-'*30)
         
-    @requires_target_set
     def set_profile(self, profile):
+        self.check_target_set()
         self.installer = ProfileInstaller(self)
         if os.environ.has_key('DEBUG'):
             self.log.info("ChrootInstaller.mtypedata: %s" % self.mtypedata)
@@ -194,8 +159,8 @@ class ChrootInstaller(BaseInstaller):
         self.set_suite(self.installer.suite)
     
     
-    @requires_target_exists
     def _bootstrap_with_tarball(self, suite):
+        self.check_target_exists()
         suite_path = path(self.defenv.get('installer', 'suite_storage'))
         filename = '%s.tar.gz' % suite
         basefile = suite_path / filename
@@ -225,16 +190,16 @@ class ChrootInstaller(BaseInstaller):
             # ready_base_for_install process
             self._bootstrapped = True
             
-    @requires_target_exists
     def _bootstrap_with_debootstrap(self, suite):
+        self.check_target_exists()
         mirror = self.defenv.get('installer', 'http_mirror')
         cmd = debootstrap(suite, self.target, mirror)
         # if cmd returns nonzero, runlog will raise an error
         runlog(cmd)
         self._bootstrapped = True
 
-    @requires_suite_set
     def bootstrap_target(self):
+        self.check_suite_set()
         if not self.target.exists():
             self.target.mkdir()
         if not self.target.isdir():
@@ -266,23 +231,22 @@ class ChrootInstaller(BaseInstaller):
                 raise RuntimeError , "%s wasn't deleted" % filename
             self.log.info('added key %s (%s) to apt' % (key, row.keyid))
         
-    @requires_bootstrap
     def make_device_entries(self):
+        self.check_bootstrap()
         self.log.info('nothing done for make_device_entries yet')
         
-    @requires_bootstrap
     def apt_sources_installer(self):
+        self.check_bootstrap()
         make_sources_list(self.conn, self.target, self.suite)
         
-    @requires_install_complete
     def apt_sources_final(self):
+        self.check_install_complete()
         sourceslist = self.target / 'etc/apt/sources.list'
         sourceslist_installer = path('%s.installer' % sourceslist)
         os.rename(sourceslist, sourceslist_installer)
         make_official_sources_list(self.conn, self.target, self.suite)
 
     
-    @requires_bootstrap
     def ready_base_for_install(self):
         """This gets the base that was either
         debootstrapped or extracted ready
@@ -295,6 +259,7 @@ class ChrootInstaller(BaseInstaller):
         an appropriate sources.list to update packages
         with.
         """
+        self.check_bootstrap()
         # 'copy' /etc/resolv.conf to target
         resolvconf = file('/etc/resolv.conf').read()
         target_resolvconf = self.target / 'etc/resolv.conf'
@@ -344,33 +309,33 @@ class ChrootInstaller(BaseInstaller):
         testdir = self.target / 'sys/kernel'
         return testdir.isdir()
     
-    @requires_bootstrap
     def mount_target_proc(self):
+        self.check_bootstrap()
         self._mount_target_virtfs('proc')
 
-    @requires_bootstrap
     def mount_target_sys(self):
+        self.check_bootstrap()
         self._mount_target_virtfs('sys')
 
-    @requires_bootstrap
     def mount_target_devpts(self):
+        self.check_bootstrap()
         self._mount_target_virtfs('devpts')
         
-    @requires_target_proc_mounted
     def umount_target_proc(self):
+        self.check_target_proc_mounted()
         self._umount_target_virtfs('proc')
 
-    @requires_target_sys_mounted
     def umount_target_sys(self):
+        self.check_target_sys_mounted()
         self._umount_target_virtfs('sys')
 
     def umount_target_devpts(self):
         self._umount_target_virtfs('devpts')
         
-    @requires_target_proc_mounted
-    @requires_target_sys_mounted
-    @requires_installer_set
     def install(self):
+        self.check_target_proc_mounted()
+        self.check_target_sys_mounted()
+        self.check_installer_set()
         self.installer.run_all_processes()
         self._install_finished = True
 

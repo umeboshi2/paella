@@ -111,8 +111,6 @@ class MachineTypeDoc(_MachineBaseDocument):
         title['width'] = '100%'
         self.body.append(title)
 
-        rows = self.cursor.select(table='machine_disks', clause=clause)
-        self._setup_section('Disks', ['diskname', 'device'], rows)
         modrows =  self.cursor.select(table='machine_modules', clause=clause,
                                       order=['ord'])
         self._setup_section('Modules', ['module', 'ord'], modrows)
@@ -123,8 +121,8 @@ class MachineTypeDoc(_MachineBaseDocument):
                                      order='script')
         self._setup_section('Scripts', ['script'], scripts)
         vars_ = self.cursor.select(table='machine_type_variables', clause=clause,
-                                   order=['trait', 'name'])
-        self._setup_section('Variables', ['trait', 'name', 'value'], vars_)
+                                   order=['name'])
+        self._setup_section('Variables', ['name', 'value'], vars_)
         self._make_footer_anchors('machine_type', machine_type)
 
     def _setup_section(self, name, fields, rows):
@@ -160,63 +158,6 @@ class MachineTypeDoc(_MachineBaseDocument):
         tablerow.append(cell)
         table.append(tablerow)
 
-class FilesystemDoc(_MachineBaseDocument):
-    def __init__(self, app, **atts):
-        _MachineBaseDocument.__init__(self, app, **atts)
-        self.mtype = MachineTypeHandler(self.conn)
-        
-    def set_filesystem(self, filesystem):
-        clause = Eq('filesystem', filesystem)
-        self.clear_body()
-        title = SectionTitle('Filesystem:  %s' % filesystem)
-        attributes = dict(bgcolor='IndianRed', width='100%')
-        title.attributes.update(attributes)
-        self.body.append(title)
-        self.body.append(Header('Filesystem Mounts', level=2))
-        
-        rows = self.cursor.select(table='filesystem_mounts', clause=clause,
-                                  order=['ord'])
-        fields = ['mnt_name', 'partition', 'ord', 'size']
-        mounttable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
-        self.body.append(mounttable)
-        self.body.append(Ruler())
-        self.body.append(Header('Fstab for %s' % filesystem, level=2))
-        fstab = self.mtype.make_fstab(filesystem)
-        self.body.append(Pre(fstab))
-        self._make_footer_anchors('filesystem', filesystem)
-
-
-class MountDoc(_MachineBaseDocument):
-    def set_mount(self, mount):
-        clause = Eq('mnt_name', mount)
-        self.clear_body()
-        title = SectionTitle('Mount:  %s' % mount)
-        attributes = dict(bgcolor='IndianRed', width='100%')
-        title.attributes.update(attributes)
-        self.body.append(title)
-        self.body.append(Header('Mounts', level=2))
-        rows = self.cursor.select(table='mounts', clause=clause)
-        fields = ['mnt_name', 'mnt_point', 'fstype', 'mnt_opts', 'dump', 'pass']
-        mtable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
-        self.body.append(mtable)
-        self._make_footer_anchors('mount', mount)
-        
-
-class DiskDoc(_MachineBaseDocument):
-    def set_disk(self, diskname):
-        clause = Eq('diskname', diskname)
-        self.clear_body()
-        title = SectionTitle('Disk:  %s' % diskname)
-        attributes = dict(bgcolor='IndianRed', width='100%')
-        title.attributes.update(attributes)
-        self.body.append(title)
-        self.body.append(Header('Partitions', level=2))
-        rows = self.cursor.select(table='partitions', clause=clause, order='partition')
-        fields = ['partition', 'start', 'size', 'Id']
-        ptable = self._make_table(fields, rows, bgcolor='DarkSeaGreen')
-        self.body.append(ptable)
-        self._make_footer_anchors('disk', diskname)
-        
 class MachineFieldTable(BaseFieldTable):
     def __init__(self, row, **atts):
         fields = ['machine', 'machine_type', 'kernel', 'profile', 'filesystem']

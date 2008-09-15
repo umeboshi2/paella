@@ -134,54 +134,8 @@ class KernelHelper(BaseHelper):
         self.umount_dev()
         
 class MachineInstallerHelper(BaseHelper):
-    def _partition_disk(self, diskname, device):
-        msg = 'partitioning %s %s' % (diskname, device)
-        self.log.info(msg)
-        dump = self.machine.make_partition_dump(diskname, device)
-        partition_disk(dump, device)
-            
     def set_machine(self, machine):
         self.machine.set_machine(machine)
-
-    def partition_disks(self):
-        disks = self.machine.check_machine_disks()
-        for diskname in disks:
-            for device in disks[diskname]:
-                self._partition_disk(diskname, device)
-            if len(disks[diskname]) > 1:
-                self._raid_setup = True
-                self._raid_drives = {}
-                self._raid_drives[diskname] = disks[diskname]
-                self.log.info('doing raid setup on %s' % diskname)
-                fsmounts = self.machine.get_installable_fsmounts()
-                pnums = [r.partition for r in fsmounts]
-                mdnum = 0 
-                for p in pnums:
-                    runvalue = create_raid_partition(disks[diskname], p,
-                                                     mdnum, raidlevel=1)
-                    mdnum += 1
-                wait_for_resync()
-                    
-    def check_raid_setup(self):
-        raid_setup = False
-        disks = self.machine.check_machine_disks()
-        for diskname in disks:
-            if len(disks[diskname]) > 1:
-                raid_setup = True
-        return raid_setup
-
-    def get_raid_devices(self):
-        disks = self.machine.check_machine_disks()
-        for diskname in disks:
-            if len(disks[diskname]) > 1:
-                return disks[diskname]
-        return []
-    
-    def make_filesystems(self):
-        device = self.machine.mtype.array_hack()
-        all_fsmounts = self.machine.get_installable_fsmounts()
-        env = CurrentEnvironment(self.conn, self.machine.current.machine)
-        make_filesystems(device, all_fsmounts, env)
 
     def check_if_mounted(self, device):
         mounts = file('/proc/mounts')
@@ -202,18 +156,9 @@ class MachineInstallerHelper(BaseHelper):
         mounted = runlog('umount %s' % device)
         # return mounted
         
-    def _get_disks(self):
-        return self.machine.check_machine_disks()
-    
     def setup_disks(self):
-        disks = self._get_disks()
-        if not disks:
-            self.log.warn('HARDCODED /dev/hda in machinehelper.setup_disks')
-            self._setup_disk_fai('/dev/hda')
-        else:
-            self.partition_disks()
-            self.make_filesystems()
-            
+        self.log.warn('HARDCODED /dev/hda in machinehelper.setup_disks')
+        self._setup_disk_fai('/dev/hda')
 
     def _setup_disk_fai(self, device):
         disk_config = self.machine.make_disk_config_info(device, curenv=self.curenv)

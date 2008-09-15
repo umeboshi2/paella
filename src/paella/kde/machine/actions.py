@@ -75,4 +75,4 @@ ManageActions = {
     }
 
 ManageActionsOrder = ['machine', 'machine_type',
-                      'filesystem', 'disk', 'mount', 'kernels']
+                      'kernels']

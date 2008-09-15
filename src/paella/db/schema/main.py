@@ -40,7 +40,7 @@ def start_schema(conn, installuser='paella'):
             
         paella_select = grant_user('SELECT', [x.name for x in tables], installuser)
         paella_full = grant_user('ALL',
-                                 ['current_environment', 'partition_workspace'],
+                                 ['current_environment'],
                                  installuser)
         paella_insert = grant_user('INSERT', ['default_environment'],
                                    installuser)

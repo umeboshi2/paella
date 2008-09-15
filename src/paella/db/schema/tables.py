@@ -263,47 +263,27 @@ class ProfileTrait(Table):
         ord_col = Num('ord')
         Table.__init__(self, 'profile_trait', [profile_col, trait_col, ord_col])
 
-class DisksTable(Table):
-    def __init__(self, name='disks'):
-        Table.__init__(self, name, [PkName('diskname')])
-
-
-class MachineTypesTable(Table):
-    def __init__(self, name='machine_types'):
-        Table.__init__(self, name, [PkName('machine_type')])
-
-def mounts_columns():
-    return [
-        PkName('mnt_name'),
-        Name('mnt_point'),
-        Name('fstype'),
-        Name('mnt_opts'),
-        Name('dump'),
-        Name('pass')
-        ]
-
-class MountsTable(Table):
-    def __init__(self, name='mounts'):
-        Table.__init__(self, name, mounts_columns())
-
+class DiskConfigTable(Table):
+    def __init__(self):
+        idcol = PkName('name')
+        diskconf_col = Text('content')
+        disklist_col = Text('disklist')
+        columns = [idcol, diskconf_col, disklist_col]
+        Table.__init__(self, 'diskconfig', columns)
+        
 class KernelsTable(Table):
     def __init__(self, name='kernels'):
         Table.__init__(self, name, [PkName('kernel')])
         
-
-def partition_columns():
-    return [
-        PkName('partition'),
-        Num('start'),
-        Num('size'),
-        Num('Id')
-        ]
-
-class PartitionsTable(Table):
-    def __init__(self, name, disks_table):
-        diskname_col = PkName('diskname')
-        diskname_col.set_fk(disks_table)
-        columns = [diskname_col] + partition_columns()
+class MachineTypesTable(Table):
+    def __init__(self, diskconfig_table, kernels_table):
+        name = 'machine_types'
+        idcol = PkName('machine_type')
+        diskconfig_col = Name('diskconfig')
+        diskconfig_col.set_fk(diskconfig_table)
+        kernel_col = Name('kernel')
+        kernel_col.set_fk(kernels_table)
+        columns = [idcol, diskconfig_col, kernel_col]
         Table.__init__(self, name, columns)
 
 class MachineTypeParentsTable(Table):
@@ -326,10 +306,9 @@ class MachineTypeEnvironment(Table):
     def __init__(self, mach_types_table):
         mtype_col = PkName('machine_type')
         mtype_col.set_fk(mach_types_table)
-        trait_col = PkName('trait')
         name_col = PkBigname('name')
         value_col = Text('value')
-        cols = [mtype_col, trait_col, name_col, value_col]
+        cols = [mtype_col, name_col, value_col]
         tablename = ujoin('machine_type', 'variables')
         Table.__init__(self, tablename, cols)
 
@@ -345,15 +324,6 @@ class MachineTypeScript(Table):
         script_columns = [mtype_col, script_column, sfile_column]
         Table.__init__(self, tablename, script_columns)
 
-class MachineDisksTable(Table):
-    def __init__(self, name, mach_types_table, disks_table):
-        mtype_col = PkName('machine_type')
-        mtype_col.set_fk(mach_types_table)
-        diskname_col = PkName('diskname')
-        diskname_col.set_fk(disks_table)
-        columns = [mtype_col, diskname_col, PkName('device')]
-        Table.__init__(self, name, columns)
-
 class MachineModulesTable(Table):
     def __init__(self, name, mach_types_table):
         mtype_col = PkName('machine_type')
@@ -362,54 +332,8 @@ class MachineModulesTable(Table):
         Table.__init__(self, name, columns)
     
 
-class FilesystemsTable(Table):
-    def __init__(self):
-        fs_col = PkName('filesystem')
-        Table.__init__(self, 'filesystems', [fs_col])
-        
-class FilesystemMountsTable(Table):
-    def __init__(self, fs_table, mounts_table):
-        fs_col = PkName('filesystem')
-        fs_col.set_fk(fs_table)
-        mnt_name_col = PkName('mnt_name')
-        mnt_name_col.set_fk(mounts_table)
-        ord_col = Num('ord')
-        partition_column = Num('partition')
-        size = Name('size')
-        columns = [fs_col, mnt_name_col, ord_col, partition_column, size]
-        Table.__init__(self, 'filesystem_mounts', columns)
-
-# This table isn't being used
-class FilesystemDisksTable(Table):
-    def __init__(self, fs_table, disks_table):
-        fs_col = PkName('filesystem')
-        fs_col.set_fk(fs_table)
-        diskname_col = PkName('diskname')
-        diskname_col.set_fk(disks_table)
-        columns = [fs_col, diskname_col]
-        Table.__init__(self, 'filesystem_disks', columns)
-
-class PartitionMountsTable(Table):
-    def __init__(self, mounts_table):
-        mnt_name_col = PkName('mnt_name')
-        mnt_name_col.set_fk(mounts_table)
-        partition_col = Num('partition')
-        columns = [mnt_name_col, partition_col]
-        Table.__init__(self, 'partition_mounts', columns)
-        
-
-class DiskConfigTable(Table):
-    def __init__(self, mach_types_table):
-        mtype_col = PkName('machine_type')
-        mtype_col.set_fk(mach_types_table)
-        diskconf_col = Text('diskconfig')
-        disklist_col = Text('disklist')
-        columns = [mtype_col, diskconf_col, disklist_col]
-        Table.__init__(self, 'diskconfig', columns)
-        
 class MachinesTable(Table):
-    def __init__(self, mach_types_table, kernels_table, profiles_table,
-                 filesystem_table):
+    def __init__(self, mach_types_table, kernels_table, profiles_table):
         machine_col = PkName('machine')
         mtype_col = Name('machine_type')
         mtype_col.set_fk(mach_types_table)
@@ -417,9 +341,7 @@ class MachinesTable(Table):
         kernel_col.set_fk(kernels_table)
         profile_col = Name('profile')
         profile_col.set_fk(profiles_table)
-        fs_col = Name('filesystem')
-        fs_col.set_fk(filesystem_table, 'filesystem')
-        columns = [machine_col, mtype_col, kernel_col, profile_col, fs_col]
+        columns = [machine_col, mtype_col, kernel_col, profile_col]
         Table.__init__(self, 'machines', columns)
         
 
@@ -496,19 +418,12 @@ def primary_tables():
     # Current Environment
     currentenv = Table('current_environment', currentenv_columns())
     tables.append(currentenv)
-    # Disks
-    tables.append(DisksTable())
-    # Machine Types
-    tables.append(MachineTypesTable())
-    # Mounts
-    tables.append(MountsTable())
+    # Disk Config
+    tables.append(DiskConfigTable())
     # Kernels
     tables.append(KernelsTable())
-    # Partitions
-    tables.append(PartitionsTable('partitions', 'disks'))
-    # Partition Workspace
-    pwcols = [PkName('diskname')] + partition_columns()
-    tables.append(Table('partition_workspace', pwcols))
+    # Machine Types
+    tables.append(MachineTypesTable('diskconfig', 'kernels'))
     # MachineTypesTables
     mtparent = MachineTypeParentsTable('machine_types')
     tables.append(mtparent)
@@ -518,20 +433,11 @@ def primary_tables():
     tables.append(mtenviron)
     mtscript = MachineTypeScript('machine_types')
     tables.append(mtscript)
-    # Machine Disks
-    machine_disks = MachineDisksTable('machine_disks', 'machine_types', 'disks')
-    tables.append(machine_disks)
     # Machine Modules
     machine_modules = MachineModulesTable('machine_modules', 'machine_types')
     tables.append(machine_modules)
-    # Filesystems
-    tables.append(FilesystemsTable())
-    # Filesystem Mounts
-    tables.append(FilesystemMountsTable('filesystems', 'mounts'))
-    # Disk Config
-    tables.append(DiskConfigTable('machine_types')
     # Machines
-    machines = MachinesTable('machine_types', 'kernels', 'profiles', 'filesystems')
+    machines = MachinesTable('machine_types', 'kernels', 'profiles')
     tables.append(machines)
 
     return tables, dict([(t.name, t) for t in tables])

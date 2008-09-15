@@ -15,10 +15,12 @@ from paella.db.family import Family
 from xmlgen import MachineTypeElement
 from xmlparse import MachineTypeParser
 
+## FIXME - we don't use traits here
+# we don't even use machine_type_variables at the moment
 class MachineTypeVariablesConfig(VariablesConfig):
     def __init__(self, conn, mtype):
         VariablesConfig.__init__(self, conn, 'machine_type_variables',
-                                 'trait', 'machine_type', mtype)
+                                 'machine_type', 'machine_type', mtype)
         
 class BaseMachineTypeObject(object):
     def __init__(self):
@@ -42,119 +44,12 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
     def __init__(self, conn):
         BaseMachineTypeCursor.__init__(self, conn, 'machine_types')
         
-    def add_disk(self, diskname, device):
-        msg = 'BaseMachineTypeCursor.add_disk is deprecated'
-        deprecated(msg)
-        table = 'machine_disks'
-        data = dict(machine_type=self.current,
-                    diskname=diskname,
-                    device=device)
-        self.insert(table=table, data=data)
-
     def add_new_type(self, machine_type):
         data = dict(machine_type=machine_type)
         self.insert(data=data)
 
     def get_machine_types(self):
         return [row.machine_type for row in self.select()]
-    
-    def get_disk_devices(self):
-        msg = 'BaseMachineTypeHandler.get_disk_devices is deprecated'
-        deprecated(msg)
-        table = 'machine_disks'
-        clause = self._mtype_clause()
-        rows = self.select(fields=['device'], table=table, clause=clause)
-        return [r.device for r in rows]
-
-    def check_machine_disks(self):
-        msg = 'BaseMachineTypeHandler.check_machine_disks is deprecated'
-        deprecated(msg)
-        table = 'machine_disks'
-        clause = self._mtype_clause()
-        rows = self.select(table=table, clause=clause)
-        dn_dict = {}
-        for row in rows:
-            if row.diskname not in dn_dict.keys():
-                dn_dict[row.diskname] = []
-            dn_dict[row.diskname].append(row.device)
-        return dn_dict
-
-    def make_partition_dump(self, diskname, device):
-        msg = 'BaseMachineTypeHandler.make_partition_dump is deprecated'
-        deprecated(msg)
-        table = 'partitions'
-        clause = Eq('diskname', diskname)
-        rows = self.select(table=table, clause=clause, order='partition')
-        firstline = '# partition table of %s' % device
-        secondline = 'unit: sectors'
-        blankline = ''
-        plines = []
-        for row in rows:
-            line = '%s%s : start=%9d, size=%9d, Id=%d' % \
-                   (device, row.partition, int(row.start), int(row.size), int(row.id))
-            plines.append(line)
-        return '\n'.join([firstline, secondline, blankline] + plines) + '\n'
-    
-
-
-    def array_hack(self):
-        msg = 'BaseMachineTypeHandler.array_hack is deprecated'
-        deprecated(msg)
-        dn_dict = self.check_machine_disks()
-        disknames = dn_dict.keys()
-        if len(disknames) == 1:
-            diskname = disknames[0]
-            if len(dn_dict[diskname]) > 1:
-                device = '/dev/md'
-            else:
-                device = dn_dict[diskname][0]
-        elif not len(dn_dict.keys()):
-            device = '/dev/hda'
-        else:
-            raise Error, "can't handle more than one disktype now"
-        return device
-        
-
-    def make_fstab(self, filesystem):
-        machine_type = self.current
-        fsmounts = self.get_all_fsmounts(filesystem=filesystem)
-        device = self.array_hack()
-        mddev = False
-        if device == '/dev/md':
-            mdnum = 0
-            mddev = True
-        fstab = []
-        for row in fsmounts:
-            fstype = row.fstype
-            if int(row.partition) == 0:
-                if fstype in ['tmpfs', 'proc', 'sysfs']:
-                    _dev = fstype
-                else:
-                    _dev = '/dev/null'
-            else:
-                if mddev:
-                    _dev = '/dev/md%d' % mdnum
-                    mdnum += 1
-                else:
-                    _dev = '%s%s' % (device, row.partition)
-            line = '%s\t%s\t%s' % (_dev, row.mnt_point, row.fstype)
-            line += '\t%s\t%s\t%s' % (row.mnt_opts, row.dump, row['pass'])
-            fstab.append(line)
-        return '\n'.join(fstab) + '\n'
-
-    def get_all_fsmounts(self, filesystem):
-        table = 'filesystem_mounts natural join mounts'
-        clause = Eq('filesystem', filesystem)
-        return self.select(table=table, clause=clause, order='ord')
-
-    def get_installable_fsmounts(self, filesystem):
-        fsmounts = self.get_all_fsmounts(filesystem)
-        return [r for r in fsmounts if int(r.partition)]
-
-    def get_ordered_fsmounts(self, filesystem):
-        table = 'filesystem_mounts natural join mounts'
-        clause = Eq('filesystem', filesystem)
-        return self.select(table=table, clause=clause, order='mnt_point')
     
     def get_modules(self):
         clause = self._mtype_clause()
@@ -290,8 +185,8 @@ class MachineTypeHandler(BaseMachineTypeHandler):
         clause = self._family_clause(oldfam)
         self._mtfam.update(data=dict(family=newfam), clause=clause)
         
-    def append_variable(self, trait, name, value):
-        data = dict(trait=trait, name=name, value=value,
+    def append_variable(self, name, value):
+        data = dict(name=name, value=value,
                     machine_type=self.current)
         self._mtenv.cursor.insert(data=data)
 
@@ -306,6 +201,7 @@ class MachineTypeHandler(BaseMachineTypeHandler):
         clause = self._variable_clause(trait, name)
         self._mtenv.update(data=dict(value=value), clause=clause)
 
+    # FIXME: were not using _mtcfg at the moment
     def edit_variables(self):
         newvars = self._mtcfg.edit()
         self._mtcfg.update(newvars)
@@ -359,11 +255,6 @@ class MachineTypeHandler(BaseMachineTypeHandler):
         mtype = mtype_element.mtype
         self.add_new_type(mtype.name)
         self.set_machine_type(mtype.name)
-        mdisktable = 'machine_disks'
-        for mdisk in  mtype.disks:
-            mdisk['machine_type'] = mtype.name
-            self.insert(table=mdisktable, data=mdisk)
-                
         mod_items = zip(range(len(mtype.modules)), mtype.modules)
         data = dict(machine_type=mtype.name)
         for i in range(len(mtype.modules)):
@@ -378,9 +269,9 @@ class MachineTypeHandler(BaseMachineTypeHandler):
             scriptfile = file(join(path, 'script-%s' % s))
             self._mtscript.insert_script(s, scriptfile)
             print 'imported %s' % s
-        for trait, name, value in mtype.variables:
+        for name, value in mtype.variables:
             data = dict(machine_type=mtype.name,
-                        trait=trait, name=name, value=value)
+                        name=name, value=value)
             self.insert(table='machine_type_variables', data=data)
         
     def import_machine_type_ignore(self, name, mtypepath):

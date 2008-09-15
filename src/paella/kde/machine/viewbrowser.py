@@ -12,9 +12,6 @@ from paella.kde.base.viewbrowser import ViewBrowser
 # import document objects
 from paella.kde.docgen.machine import MachineDoc
 from paella.kde.docgen.machine import MachineTypeDoc
-from paella.kde.docgen.machine import FilesystemDoc
-from paella.kde.docgen.machine import MountDoc
-from paella.kde.docgen.machine import DiskDoc
 
 from base import NewMachineDialog
 from base import EditMachineDIalog
@@ -64,14 +61,11 @@ class MachineTypeView(ViewBrowser):
         action, context, ident = split_url(url)
         fields = []
         dialog_message = 'We need a message here'
-        if context == 'Disks':
-            fields = ['diskname', 'device']
-            dialog_message = 'Add a new disk.'
-        elif context == 'Families':
+        if context == 'Families':
             fields = ['family']
             dialog_message = 'Add a new family.'
         elif context == 'Variables':
-            fields = ['trait', 'name', 'value']
+            fields = ['name', 'value']
             dialog_message = 'Add a new variable.'
         elif context == 'machine_type':
             fields = ['name']
@@ -136,12 +130,10 @@ class MachineTypeView(ViewBrowser):
         dialog = self._dialog
         context = dialog.context
         data = dialog.getRecordData()
-        if context == 'Disks':
-            self.doc.mtype.add_disk(data['diskname'], data['device'])
-        elif context == 'Families':
+        if context == 'Families':
             self.doc.mtype.append_family(data['family'])
         elif context == 'Variables':
-            self.doc.mtype.append_variable(data['trait'], data['name'],
+            self.doc.mtype.append_variable(data['name'],
                                            data['value'])
         elif context == 'machine_type':
             self.doc.mtype.add_new_type(data['name'])
@@ -164,38 +156,4 @@ class MachineTypeView(ViewBrowser):
     def _destroy_dialog(self):
         del self._dialog
         self._dialog = None
-        
-class FilesystemView(ViewBrowser):
-    def __init__(self, parent):
-        ViewBrowser.__init__(self, parent, FilesystemDoc)
-
-    def set_filesystem(self, filesystem):
-        self.doc.set_filesystem(filesystem)
-        self.setText(self.doc.output())
-
-    def setSource(self, url):
-        KMessageBox.error(self, 'setSource unsupported now %s' % url)
-    
-class MountView(ViewBrowser):
-    def __init__(self, parent):
-        ViewBrowser.__init__(self, parent, MountDoc)
-
-    def set_mount(self, mount):
-        self.doc.set_mount(mount)
-        self.setText(self.doc.output())
-
-    def setSource(self, url):
-        KMessageBox.error(self, 'setSource unsupported now %s' % url)
-        
-
-class DiskView(ViewBrowser):
-    def __init__(self, parent):
-        ViewBrowser.__init__(self, parent, DiskDoc)
-
-    def set_disk(self, diskname):
-        self.doc.set_disk(diskname)
-        self.setText(self.doc.output())
-
-    def setSource(self, url):
-        KMessageBox.error(self, 'setSource unsupported now %s' % url)
         
