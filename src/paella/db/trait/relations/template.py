@@ -80,7 +80,7 @@ class TraitTemplate(TraitRelation):
     def update_template(self, template, data=None, templatefile=None,
                         contents=None):
         if templatefile is not None and contents is not None:
-            raise RuntimeError, 'must either pass a file object or a string but not both'
+            raise RuntimeError , 'must either pass a file object or a string but not both'
         clause = self._clause(template)
         txtid = None
         if templatefile is not None:
@@ -179,7 +179,7 @@ class CheetahConversionError(RuntimeError):
 def insert_raw_directives(text):
         lines = text.split('\n')
         if not lines[0].startswith('##cheetah'):
-            raise RuntimeError, 'need the ##cheetah comment on the top'
+            raise RuntimeError , 'need the ##cheetah comment on the top'
         lines.insert(1, '#raw')
         if not lines[-1]:
             print 'insert at end'

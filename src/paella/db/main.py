@@ -186,7 +186,7 @@ class PaellaExporter(object):
     def export_trait(self, trait, suite=None, dirname=None, traitdb=None):
         if traitdb is None:
             if suite is None:
-                RuntimeError, "you must pass a suite if you don't pass a Trait object"
+                RuntimeError , "you must pass a suite if you don't pass a Trait object"
             print "make new traitdb"
             traitdb = Trait(self.conn, suite)
         traitdb.set_trait(trait)
@@ -235,7 +235,7 @@ class PaellaExporter(object):
         elif envtype == 'current':
             envclass = CurrentEnvironment
         else:
-            raise RuntimeError, 'bad envtype %s' % envtype
+            raise RuntimeError , 'bad envtype %s' % envtype
         env = envclass(self.conn)
         #filename = os.path.join(path, '%s-environment' % envtype)
         #efile = file(filename, 'w')
@@ -357,7 +357,7 @@ class PaellaImporter(object):
             apt_ids = [e.apt_id for e in suite.aptsources]
             self.suitecursor.make_suite(suite.name, apt_ids)
         else:
-            raise RuntimeError, 'suite %s already exists' % suite
+            raise RuntimeError , 'suite %s already exists' % suite
 
     # aptsources is the PaellaParser.aptsources attribute
     def import_apt_sources(self, aptsources):
@@ -436,6 +436,9 @@ class PaellaImporter(object):
         
             
         
+    ###################
+    # reporting methods
+    ####################
     
     def report_missing_packages(self, suite, missing):
         print report_missing_packages(suite, missing)
@@ -479,183 +482,7 @@ class PaellaImporter(object):
     def report_profile_imported(self, profile):
         print 'profile %s imported' % profile
         
-#generate xml        
-        
-class PaellaProcessor(object):
-    def __init__(self, conn, cfg=None):
-        object.__init__(self)
-        self.conn = conn
-        self.cfg = cfg
-        self.__set_cursors__()
-        self.main_path = None
-        self.suitecursor = SuiteCursor(self.conn)
-        self.aptsrc = AptSourceHandler(self.conn)
-        
-        
-    def parse_xml(self, filename):
-        self.dbdata = PaellaParser(filename)
-        self.main_path = os.path.dirname(filename)
 
-    def start_schema(self):
-        try:
-            start_schema(self.conn)
-        except AlreadyPresentError:
-            print "primary tables already present"
-            pass
-        
-    def insert_apt_sources(self):
-        self._insert_aptsources()
-
-    def _sync_suites(self):
-        self.main.set_table('suites')
-        current_suites = [row.suite for row in self.main.select()]
-        for suite in self.dbdata.suites:
-            if suite.name not in current_suites:
-                apt_ids = [e.apt_id for e in suite.aptsources]
-                self.suitecursor.make_suite(suite.name, apt_ids)
-            else:
-                raise Error, '%s already exists.' % suite
-                #self.main.update(data=suite)
-
-    def _insert_aptsources(self):
-        for apt in self.dbdata.aptsources:
-            self.aptsrc.insert_apt_source_row(apt.apt_id, apt.uri, apt.dist,
-                                              apt.sections, apt.local_path)
-            self.aptsrc.insert_packages(apt.apt_id)
-            
-    def insert_families(self):
-        path = os.path.join(self.main_path, 'families')
-        print 'path is in insert_families', path
-        self.family.import_families(path)
-        
-        
-    def insert_profiles(self):
-        path = os.path.join(self.main_path, 'profiles')
-        print 'path is in insert_profiles', path
-        xmlfiles = [os.path.join(path, x) for x in os.listdir(path) if x[-4:] == '.xml']
-        profiles = PaellaProfiles(self.conn)
-        for xmlfile in xmlfiles:
-            xml = parse_file(xmlfile)
-            elements = xml.getElementsByTagName('profile')
-            if len(elements) != 1:
-                raise Error, 'bad profile number %s' % len(elements)
-            element = elements[0]
-            parsed = ProfileParser(element)
-            profiles.insert_profile(parsed)
-        
-
-    def insert_profile(self, profile):
-        idata = {'profile' : profile.name,
-                 'suite' : profile.suite}
-        self.main.insert(table='profiles', data=idata)
-        idata = {'profile' : profile.name,
-                 'trait' : None,
-                 'ord' : 0}
-        for trait, ord in profile.traits:
-            print trait, ord
-            idata['trait'] = trait
-            idata['ord'] = ord #str(ord)
-            self.main.insert(table='profile_trait', data=idata)
-        idata = {'profile' : profile.name,
-                 'trait' : None,
-                 'name' : None,
-                 'value': None}
-        for trait, name, value in profile.vars:
-            idata['trait'] = trait
-            idata['name'] = name
-            idata['value'] = value
-            self.main.insert(table='profile_variables', data=idata)
-    
-
-    def insert_traits(self, suite):
-        self.__set_suite_cursors__(suite)
-        traits = [trait for trait in self.dbdata.get_traits(suite)]
-        missing = self._find_missing_packages(suite, traits)
-        if missing:
-            print 'missing these packages in suite', suite
-            self._make_missing_packages_report(missing)
-            raise RuntimeError, 'Missing packages declared in suite %s' % suite
-        else:
-            self._insert_traits_(traits, suite)
-
-    def _make_missing_packages_report(self, missing):
-        traits = missing.keys()
-        traits.sort()
-        for trait in traits:
-            print '%s:' % trait
-            for  package in missing[t]:
-                print '\t%s' % package
-                
-        
-    def _find_missing_packages(self, suite, traits):
-        missing = dict()
-        tdb = Trait(self.conn, suite)
-        print suite, traits
-        for trait in traits:
-            path = self._get_trait_path(suite, trait)
-            traitxml = tdb.parse_trait_xml(path, suite=suite)
-            missing_list = tdb.find_missing_packages(traitxml)
-            if missing_list:
-                #print 'in trait,', trait, ', missing packages:  ', missing_list
-                missing[trait] = missing_list
-        return missing
-    
-    def _clear_traits(self, suite):
-        self.__set_suite_cursors__(suite)
-        self.traitparent.cmd.delete()
-        self.traitpackage.cmd.delete()
-        self.main.delete(table=ujoin(suite, 'variables'))
-        self.traits.delete()
-
-    def _get_trait_path(self, suite, trait):
-        return os.path.join(self.main_path, suite, trait)
-    
-    def _insert_traits_(self, traits, suite):
-        while len(traits):
-            trait = traits[0]
-            print 'inserting %s' % trait, len(traits)
-            try:
-                self._insert_trait_(trait, suite)
-            except UnbornError:
-                traits.append(trait)
-            del traits[0]
-            
-    def _insert_trait_(self, trait, suite):
-        traitdb = Trait(self.conn, suite)
-        #path = join(self.main_path, suite, trait + '.tar')
-        path = self._get_trait_path(suite, trait)
-        traitdb.insert_trait(path, suite)
-        
-        
-    def __set_cursors__(self):
-        self.main = StatementCursor(self.conn, 'main_paella_cursor')
-        self.all_traits = StatementCursor(self.conn, 'all_traits')
-        self.all_traits.set_table('traits')
-
-    def __set_suite_cursors__(self, suite):
-        self.traits = StatementCursor(self.conn, 'traits')
-        self.traits.set_table(ujoin(suite, 'traits'))
-        self.traitparent = TraitParent(self.conn, suite)
-        self.traitpackage = TraitPackage(self.conn, suite)
-        self.traittemplate = TraitTemplate(self.conn, suite)
-        self.family = Family(self.conn)
-        
-
-    def create(self, filename):
-        self.parse_xml(filename)
-        self.start_schema()
-        self.insert_apt_sources()
-        self._sync_suites()
-        
-        for suite in self.dbdata.suites:
-            self.insert_traits(suite.name)
-        self.insert_families()
-        self.insert_profiles()
-        # use the machine handler to insert
-        # machine types and such
-        if os.path.isfile(os.path.join(self.main_path, 'machine_database.xml')):
-            mh = MachineHandler(self.conn)
-            mh.restore_machine_database(self.main_path)
 
 class DatabaseManager(object):
     """This class is used to import/export
@@ -667,27 +494,15 @@ class DatabaseManager(object):
         default_path = path(self.cfg.get('database', 'default_path')).expand()
         self.import_dir = default_path
         self.export_dir = default_path
-        #self.importer = PaellaProcessor(self.conn, self.cfg)
-        #self.exporter = PaellaDatabase(self.conn, '/')
         self.exporter = PaellaExporter(self.conn)
         self.importer = PaellaImporter(self.conn)
         
-    def export_all(self, path):
-        self.exporter.perform_full_export(path)
+    def export_all(self, dirname):
+        self.exporter.perform_full_export(dirname)
 
     def import_all(self, dirname):
         self.importer.perform_full_import(dirname)
         
-        
-    def restore(self, path):
-        if not os.path.isdir(path):
-            raise Error, 'argument needs to be a directory'
-        dbpath = os.path.join(path, 'database.xml')
-        mdbpath = os.path.join(path, 'machine_database.xml')
-        pp = PaellaProcessor(self.conn, self.cfg)
-        pp.create(dbpath)
-
-
 if __name__ == '__main__':
     pass
 

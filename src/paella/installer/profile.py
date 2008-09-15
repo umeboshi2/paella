@@ -47,7 +47,7 @@ class ProfileInstaller(BaseInstaller):
                 self.log = parent.log
                 self.log.info('profile installer initialized')
             else:
-                raise RuntimeError, 'No logfile for parent defined'
+                raise RuntimeError , 'No logfile for parent defined'
         if hasattr(parent, 'mainlog'):
             self.mainlog = parent.mainlog
             name = self.__class__.__name__

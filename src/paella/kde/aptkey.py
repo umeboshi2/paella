@@ -111,7 +111,7 @@ class AptKeyWindow(BaseSplitWindow, BasePaellaWindow):
     def newKeySelected(self):
         win = self._dialog
         if win is None:
-            raise RuntimeError, "No dialog present"
+            raise RuntimeError , "No dialog present"
         name = str(win.name_entry.text())
         data = str(win.data_entry.text())
         self.db.insert_key(name, data)

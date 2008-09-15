@@ -29,7 +29,7 @@ def make_filesystem(device, fstype):
     elif fstype == 'ext2':
         cmd = ['mkfs.ext2',  '-F',  '-q', device]
     else:
-        raise RuntimeError,  'unhandled fstype %s '  % fstype
+        raise RuntimeError ,  'unhandled fstype %s '  % fstype
     runlog(['echo',  'make_filesystem',  'command'] + cmd)
     return runlog(cmd)
 
@@ -50,7 +50,7 @@ def make_filesystems(device, fsmounts, env):
             runlog('echo making swap on %s' % pdev)
             runvalue = runlog('mkswap %s' % pdev)
             if runvalue:
-                raise RuntimeError, 'problem making swap on %s' % pdev
+                raise RuntimeError , 'problem making swap on %s' % pdev
         else:
             runlog('echo making filesystem for %s' % row.mnt_name)
             make_filesystem(pdev, row.fstype)
@@ -59,7 +59,7 @@ def mount_target(target, mounts, device):
     mounts = [m for m in mounts if int(m.partition)]
     echo = ['echo', 'mounting', 'target']
     if mounts[0].mnt_point != '/':
-        raise RuntimeError, 'bad set of mounts', mounts
+        raise RuntimeError , 'bad set of mounts', mounts
     mddev = False
     mdnum = 0
     if device == '/dev/md':

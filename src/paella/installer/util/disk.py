@@ -10,7 +10,7 @@ from paella.installer.base import runlog
 #from paella import deprecated
 
 def setup_disk_fai(disk_config, logpath,
-                   script='/usr/lib/paella/scripts/setup_harddisks_fai'):
+                   script='/usr/sbin/setup_harddisks'):
     fileid, disk_config_path = tempfile.mkstemp('paella', 'diskinfo')
     disk_config_file = file(disk_config_path, 'w')
     disk_config_file.write(disk_config)
@@ -29,6 +29,25 @@ def setup_disk_fai(disk_config, logpath,
     command = env + [script] + options
     #return runlog(command)
     return command
+
+# disklist is a python list
+# disk_config is a string that's written to a file
+def setup_storage_fai(disklist, disk_config, logdir,
+                      script='/usr/sbin/setup-storage'):
+    fileid, disk_config_path = tempfile.mkstemp('paella', 'diskinfo')
+    disk_config_file = file(disk_config_path, 'w')
+    disk_config_file.write(disk_config)
+    disk_config_file.close()
+    options = ['-X', '-f', disk_config_path]
+    env = ['env', 'LOGDIR=%s' % logdir,
+           'disklist="%s"' % '\n'.join(disklist)
+           ]
+    if 'DEBUG' in os.environ:
+        env.append('debug=1')
+    command = env + [script] + options
+    return command
+
+
 
 # this function is hardly used anymore
 # but it may be resurrected, as it allows

@@ -5,6 +5,7 @@ from kdeui import KComboBox
 from kdeui import KDialogBase
 
 from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import In
 from useless.kdebase import get_application_pointer
 from useless.kdebase.dialogs import BaseAssigner
 
@@ -50,17 +51,20 @@ class ParentAssigner(BaseAssigner):
         self.trait.update_parents(parents)
         
 class ScriptNameComboBox(KComboBox):
-    def __init__(self, parent, name='ScriptNameComboBox'):
+    def __init__(self, parent, type, name='ScriptNameComboBox'):
         KComboBox.__init__(self, parent, name)
         self.app = get_application_pointer()
         self.cursor = StatementCursor(self.app.conn)
-        self.scriptnames = [row.script for row in  self.cursor.select(table='scriptnames')]
+        clause=In('type', ['both', type])
+        rows = self.cursor.select(table='scriptnames', clause=clause)
+        #self.scriptnames = [row.script for row in  self.cursor.select(table='scriptnames')]
+        self.scriptnames = [row.script for row in rows]
         self.insertStrList(self.scriptnames)
 
 class ScriptNameDialog(KDialogBase):
-    def __init__(self, parent, name='ScriptNameDialog'):
+    def __init__(self, parent, type, name='ScriptNameDialog'):
         KDialogBase.__init__(self, parent, name)
-        self.scriptname_widget = ScriptNameComboBox(self)
+        self.scriptname_widget = ScriptNameComboBox(self, type)
         self.setMainWidget(self.scriptname_widget)
 
     def scriptname(self):

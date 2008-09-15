@@ -87,6 +87,7 @@ DEFAULT_PROCESSES = [
     'install_fstab',
     'install_modules',
     'install_kernel',
+    'prepare_bootloader',
     'apt_sources_final',
     'umount_target_sys',
     'umount_target_proc',
@@ -104,7 +105,8 @@ class MachineInstaller(ChrootInstaller):
                     mount_target=self.mount_target,
                     install_fstab=self.install_fstab,
                     install_modules=self.install_modules,
-                    install_kernel=self.install_kernel
+                    install_kernel=self.install_kernel,
+                    prepare_bootloader=self.prepare_bootloader
                     )
         self._process_map.update(pmap)
         self.machine = MachineHandler(self.conn)
@@ -163,6 +165,9 @@ class MachineInstaller(ChrootInstaller):
     def install_kernel(self):
         self.helper.install_kernel()
 
+    def prepare_bootloader(self):
+        self.helper.prepare_bootloader()
+        
     @requires_install_complete
     def install_fstab(self):
         self.helper.install_fstab()

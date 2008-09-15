@@ -23,9 +23,9 @@ Priority: optional
 Architecture: any
 Depends: python-useless-db (>= 0.1.10)
 Description: base utils for paella
-	This is the base package for paella.
-	All other paella packages depend on this 
-	package.
+ This is the base package for paella.
+ All other paella packages depend on this 
+ package.
 
 Package: paella-debian
 Section: admin
@@ -33,10 +33,10 @@ Priority: optional
 Architecture: any
 Depends: paella-base (= ${binary:Version}), python-apt, debootstrap, debconf-utils
 Description: debian specific modules for paella
-	This package contains many class and functions for 
-	use with debian related activities (dpkg, package repositories, 
-	debconf, etc.).  This package is becoming obsolete, and the
-	python-debian package will soon replace this one.
+ This package contains many class and functions for 
+ use with debian related activities (dpkg, package repositories, 
+ debconf, etc.).  This package is becoming obsolete, and the
+ python-debian package will soon replace this one.
 
 Package: paella-installer
 Section: admin
@@ -51,7 +51,7 @@ Package: paella-machine-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-installer (= ${binary:Version}), xfsprogs, hdparm, mdadm, gawk, grub, fai-client, reiserfsprogs
+Depends: paella-installer (= ${binary:Version}), xfsprogs, hdparm, mdadm, gawk, grub, fai-client (>= 3.2.10), reiserfsprogs, parted
 Description: package for machine installer
     This package should be installed on a live system.
 

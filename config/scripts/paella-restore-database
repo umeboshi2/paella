@@ -4,6 +4,7 @@ from os.path import join
 from optparse import OptionParser
 
 from useless.base import Error, debug
+from useless.base.path import path
 
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection
@@ -32,9 +33,11 @@ dsn = dict(dbusername=opts.dbusername,
            dbpassword=None)
 conn = PaellaConnection(dsn)
 if not args:
-    raise RuntimeError, 'need a directory arguement'
-path = args[0]
+    raise RuntimeError , 'need a directory arguement'
+
+dirname = path(args[0])
+if not dirname.isdir():
+    raise RuntimeError , "%s isn't a directory." % dirname
 
 dbm = DatabaseManager(conn)
-dbm.restore(path)
-
+dbm.import_all(dirname)

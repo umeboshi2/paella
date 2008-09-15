@@ -261,7 +261,7 @@ class Trait(object):
         if trait.name not in suite_traits:
             self._traits.insert(data=idata)
         else:
-            raise RuntimeError, '%s already there' % trait.name
+            raise RuntimeError , '%s already there' % trait.name
         lasttrait = self.current_trait
         self._parents.set_trait(trait.name)
         self._packages.set_trait(trait.name)

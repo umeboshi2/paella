@@ -11,13 +11,15 @@ from useless.sqlgen.statement import Statement
 PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
 SUITES = ['sid', 'woody'] 
 #SCRIPTS = ['chroot', 'pre', 'post', 'config']
-SCRIPTS = ['pre', 'remove', 'install', 'templates', 'config', 'chroot', 'reconfig', 'post']
+SCRIPTS = ['pre', 'preseed', 'remove', 'install',
+           'templates', 'config', 'chroot', 'reconfig', 'post']
 MTSCRIPTS = ['pre', 'setup_disks', 'mount_target',
              'bootstrap', 'make_device_entries',
              'apt_sources_installer', 'ready_base',
              'mount_target_proc',
              'pre_install', 'install', 'post_install',
-             'install_modules', 'install_kernel', 'apt_sources_final',
+             'install_modules', 'install_kernel',
+             'prepare_bootloader', 'apt_sources_final',
              'install_fstab', 'umount_target_proc', 'post'
              ]
 
@@ -28,6 +30,13 @@ def getcolumn(name, columns):
     else:
         raise Error, 'key not found'
 
+class ScriptNames(Table):
+    def __init__(self):
+        idcol = PkName('script')
+        typecol = Name('type')
+        cols = [idcol, typecol]
+        Table.__init__(self, 'scriptnames', cols)
+        
 class TextFileIdentifier(Sequence):
     def __init__(self):
         Sequence.__init__(self, 'textfile_ident')
@@ -370,6 +379,7 @@ class FilesystemMountsTable(Table):
         columns = [fs_col, mnt_name_col, ord_col, partition_column, size]
         Table.__init__(self, 'filesystem_mounts', columns)
 
+# This table isn't being used
 class FilesystemDisksTable(Table):
     def __init__(self, fs_table, disks_table):
         fs_col = PkName('filesystem')
@@ -388,6 +398,15 @@ class PartitionMountsTable(Table):
         Table.__init__(self, 'partition_mounts', columns)
         
 
+class DiskConfigTable(Table):
+    def __init__(self, mach_types_table):
+        mtype_col = PkName('machine_type')
+        mtype_col.set_fk(mach_types_table)
+        diskconf_col = Text('diskconfig')
+        disklist_col = Text('disklist')
+        columns = [mtype_col, diskconf_col, disklist_col]
+        Table.__init__(self, 'diskconfig', columns)
+        
 class MachinesTable(Table):
     def __init__(self, mach_types_table, kernels_table, profiles_table,
                  filesystem_table):
@@ -460,7 +479,8 @@ def primary_tables():
     profiles = ProfileTable('suites')
     tables.append(profiles)
     # All Script Names
-    scripts = PkNameTable('scriptnames', 'script')
+    #scripts = PkNameTable('scriptnames', 'script')
+    scripts = ScriptNames()
     tables.append(scripts)
     # Profile - Trait relation
     profile_trait_table = ProfileTrait('profiles', 'traits')
@@ -508,8 +528,8 @@ def primary_tables():
     tables.append(FilesystemsTable())
     # Filesystem Mounts
     tables.append(FilesystemMountsTable('filesystems', 'mounts'))
-    # Filesystem Disks
-    tables.append(FilesystemDisksTable('filesystems', 'disks'))
+    # Disk Config
+    tables.append(DiskConfigTable('machine_types')
     # Machines
     machines = MachinesTable('machine_types', 'kernels', 'profiles', 'filesystems')
     tables.append(machines)

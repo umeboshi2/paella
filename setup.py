@@ -58,7 +58,7 @@ class builddocs(_build):
             print "found html directory, removing it"
             os.system('rm -fr html')
         if os.path.exists('html'):
-            raise RuntimeError, "failed to remove docs/html"
+            raise RuntimeError , "failed to remove docs/html"
         os.mkdir('html')
         data_tuple = ('html', [])
         data_files.append(data_tuple)

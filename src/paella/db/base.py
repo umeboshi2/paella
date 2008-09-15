@@ -48,7 +48,7 @@ class SuiteCursor(StatementCursor):
 
     def make_suite(self, suite, apt_ids):
         if not len(apt_ids):
-            raise RuntimeError, "can't make_suite without apt_ids"
+            raise RuntimeError , "can't make_suite without apt_ids"
         self.insert(table='suites', data=dict(suite=suite))
         table = 'suite_apt_sources'
         data = dict(suite=suite)

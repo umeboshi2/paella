@@ -28,7 +28,7 @@ def make_fake_start_stop_daemon(target):
     fakescript.write('echo "Warning: Fake start-stop-daemon called, doing nothing"\n')
     fakescript.close()
     if os.system('chmod 755 %s' % daemon):
-        raise RuntimeError, 'problem changing permissions on %s' % daemon
+        raise RuntimeError , 'problem changing permissions on %s' % daemon
 
 def remove_fake_start_stop_daemon(target):
     daemon = join(target, 'sbin/start-stop-daemon')

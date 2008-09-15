@@ -87,7 +87,7 @@ class TemplateTextEdit(KTextEdit):
 
     def tag_selection(self, trait, name):
         if not self.hasSelectedText():
-            raise RuntimeError, 'we need selected text'
+            raise RuntimeError , 'we need selected text'
         template = Template()
         left, right = template.delimiters
         tagname = '_'.join([trait, name])

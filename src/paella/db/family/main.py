@@ -243,30 +243,6 @@ class Family(object):
         print 'exporting %d families' % total
         
 if __name__ == '__main__':
-    import os
-    from base import PaellaConnection
-    conn = PaellaConnection()
-    #path = g['db_bkup_path']
-    #db = XmlDatabase(conn, path)
-    #p = ProfileStruct
-    #t = _Trait_(conn, 'woody')
-    #ts = Traits(conn, 'woody')
-    #t.set('default')
-    #ss = parse_string(t.toxml())
-    #tp = TraitParser(ss.firstChild)
-    #pd = PaellaDatabase(conn, path)
-    #pp = PaellaProcessor(conn)
-    #pp.parse_xml('foo.xml')
-    f = Family(conn)
-
-    #cmd = CommandCursor(c, 'dsfsdf')
-    cmd = StatementCursor(conn)
-    def dtable():
-        cmd.execute('drop table ptable')
-
-    def dtables():
-        for t in cmd.tables():
-            if t != 'footable':
-                cmd.execute('drop table %s' %t)
+    pass
 
 

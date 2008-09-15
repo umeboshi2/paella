@@ -8,8 +8,7 @@ from paella.db.family import Family
 from paella.db.profile.xmlgen import PaellaProfiles
 from paella.db.machine import MachineHandler
 from paella.db.machine.xmlgen import ClientMachineDatabaseElement
-from paella.db.main import PaellaProcessor
-
+from paella.db.main import PaellaImporter
 
 
 class ClientManager(object):
@@ -76,9 +75,8 @@ class ClientManager(object):
             f = Family(self.conn)
             f.import_families(fpath)
         if profiles:
-            pp = PaellaProcessor(self.conn, self.cfg)
-            pp.main_path = cpath
-            pp.insert_profiles()
+            importer = PaellaImporter(self.conn)
+            importer.import_all_profiles(ppath)
         mh = MachineHandler(self.conn)
         md = mh.parse_xmlfile(mdbpath)
         mh.insert_parsed_element(md)    

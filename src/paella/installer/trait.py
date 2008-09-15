@@ -130,7 +130,7 @@ class TraitInstallerHelper(object):
         pdebs = partial.listdir('*.deb')
         if pdebs:
             self.log.warn("we found some partial debs, and this shouldn't happen")
-            raise RuntimeError, "partial debs found"
+            raise RuntimeError , "partial debs found"
         all_debs = debs + pdebs
         for deb in all_debs:
             deb.remove()
@@ -235,7 +235,7 @@ class TraitInstallerHelper(object):
             # first run of debconf-set-selections
             if self.debconf_problem:
                 msg = "We already had a problem with set_debconf_selections"
-                raise RuntimeError, msg
+                raise RuntimeError , msg
             self.debconf_problem = True
         # we're going to keep these files
         # instead of rm'ing them, until I feel
@@ -304,7 +304,7 @@ class TraitInstaller(BaseInstaller):
                 self.log = parent.log
                 self.log.info('trait installer initialized')
             else:
-                raise RuntimeError, 'No logfile for parent defined'
+                raise RuntimeError , 'No logfile for parent defined'
             
         if hasattr(parent, 'mainlog'):
             self.mainlog = parent.mainlog
@@ -363,7 +363,7 @@ class TraitInstaller(BaseInstaller):
     def run_process_preseed(self):
         if self.helper.debconf_problem:
             msg = "self.helper.debconf_problem is True, but shouldn't be."
-            raise RuntimeError, msg
+            raise RuntimeError , msg
         self.log.info("running new preseed process!!!")
         if self.helper.traittemplate.has_template('debconf'):
             self.log.info("Trait %s has debconf selctions" % self.helper.trait)
@@ -398,30 +398,6 @@ class TraitInstaller(BaseInstaller):
             else:
                 text = self.helper.make_template(t)
                 self.helper.install_template(t, text)
-            # a hacky way to configure debconf
-            if t.template == 'root/paella-debconf.sh':
-                self.log.info('Running paella-debconf.sh script ...')
-                retval = self.helper.chroot('/root/paella-debconf.sh', failure_suppressed=True)
-                # sometimes this script returns 128 and can't be reproduced reliably
-                # so we try running it again, until we have no 128 returned
-                if retval == 128:
-                    count = 0
-                    while retval == 128:
-                        count += 1
-                        if count < 20:
-                            self.log.info('/root/paella-debconf.sh returned 128, running again')
-                            # this time we will fail on 128
-                            retval = self.helper.chroot('/root/paella-debconf.sh',
-                                                        failure_suppressed=True)
-                        else:
-                            raise InstallDebconfError, 'Too many attempts to run debconf script'
-                elif retval and retval != 128:
-                    msg = "problem running debconf script, returned %d" % retval
-                    raise InstallDebconfError, msg
-                # rename script
-                filename = self.target / 'root/paella-debconf.sh'
-                newname = self.target / 'root/%s-paella-debconf.sh' % self.helper.trait
-                filename.rename(newname)
                 
     def run_process_reconfig(self):
         packages = [p.package for p in self.helper.packages if p.action == 'reconfig']

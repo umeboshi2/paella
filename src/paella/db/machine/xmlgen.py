@@ -1,6 +1,7 @@
 from os.path import join
 from xml.dom.minidom import Element
 
+from useless.base import NoExistError
 from useless.base.xmlfile import TextElement
 from useless.base.util import makepaths
 from useless.db.midlevel import StatementCursor
@@ -71,12 +72,23 @@ class MachineTypeElement(Element):
         self.variables = []
         self.machine_type = name
         clause = Eq('machine_type', name)
+        self.set_parent(clause)
         self._append_devices(clause)
         self._append_modules(clause)
         self._append_scripts(clause)
         self._append_families(clause)
         self._append_variables(clause)
-        
+
+    def set_parent(self, clause):
+        try:
+            row = self.cursor.select_row(table='machine_type_parent',
+                                         clause=clause)
+            parent = row.parent
+        except NoExistError:
+            parent = None
+        if parent is not None:
+            self.setAttribute('parent', parent)
+            
     def append_device(self, diskname, device):
         mdisk_element = MachineDiskElement(diskname, device)
         self.devices.append(mdisk_element)

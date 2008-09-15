@@ -134,7 +134,7 @@ class TraitMainWindow(BaseSplitWindow, BasePaellaWindow):
     def _import_export_directory_selected(self):
         win = self._import_export_dirsel_dialog
         if win is None:
-            raise RuntimeError, "There is no import/export dialog"
+            raise RuntimeError , "There is no import/export dialog"
         url = win.url()
         fullpath = str(url.path())
         action = win.db_action

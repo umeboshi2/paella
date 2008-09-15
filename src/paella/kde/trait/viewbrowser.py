@@ -103,7 +103,7 @@ class TraitView(ViewBrowser):
                 win.mainView.set_trait(ident)
             else:
                 msg = 'Unable to show parent with class %s' % winclass.__name__
-                raise RuntimeError, msg
+                raise RuntimeError , msg
         elif context == 'template':
             suite = self.doc.suite
             trait = self.doc.trait.current_trait
@@ -137,7 +137,7 @@ class TraitView(ViewBrowser):
                     self._current_tarball = None
                     self.selectSystemTarballDialog()
         elif context == 'packages':
-            raise RuntimeError, 'packages not implemented yet'
+            raise RuntimeError , 'packages not implemented yet'
         elif context == 'script':
             self.doc.trait.edit_script(ident)
         elif context == 'parents':
@@ -179,7 +179,7 @@ class TraitView(ViewBrowser):
             win.show()
             self._dialog = win
         elif context == 'script':
-            win = ScriptNameDialog(self)
+            win = ScriptNameDialog(self, 'trait')
             win.connect(win, SIGNAL('okClicked()'), self.slotMakeNewScript)
             win.show()
             self._dialog = win
@@ -212,7 +212,7 @@ class TraitView(ViewBrowser):
                 self.doc.trait.delete_script(ident)
                 self.resetView()
         else:
-            raise RuntimeError, '%s context not implemented' % context
+            raise RuntimeError , '%s context not implemented' % context
         
     # add package to trait from dialog
     def slotAddPackage(self):
@@ -259,7 +259,7 @@ class TraitView(ViewBrowser):
             self.doc.trait.insert_template_from_tarfile(tpath, tarfileobj)
             self.resetView()
         else:
-            raise RuntimeError, '%s does not contain %s' % (fullpath, tarball)
+            raise RuntimeError , '%s does not contain %s' % (fullpath, tarball)
 
         
     # don't know what job was supposed to be here

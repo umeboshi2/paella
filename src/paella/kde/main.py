@@ -282,7 +282,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
     def _import_export_directory_selected(self):
         win = self._import_export_dirsel_dialog
         if win is None:
-            raise RuntimeError, 'There is no import export dialog'
+            raise RuntimeError , 'There is no import export dialog'
         self._import_export_dirsel_dialog = None
         url = win.url()
         fullpath = str(url.path())
@@ -480,7 +480,7 @@ class PaellaMainWindowSmall(BasePaellaMainWindow):
             child = self._all_my_children.pop()
             try:
                 child.close()
-            except RuntimeError, inst:
+            except RuntimeError , inst:
                 if inst.args[0] != 'underlying C/C++ object has been deleted':
                     raise inst
 

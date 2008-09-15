@@ -1,6 +1,7 @@
 from os.path import join
 from xml.dom.minidom import parseString
 
+from useless import deprecated
 from useless.base.util import strfile
 from useless.base import NoExistError
 from useless.db.midlevel import StatementCursor, Environment
@@ -42,6 +43,8 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
         BaseMachineTypeCursor.__init__(self, conn, 'machine_types')
         
     def add_disk(self, diskname, device):
+        msg = 'BaseMachineTypeCursor.add_disk is deprecated'
+        deprecated(msg)
         table = 'machine_disks'
         data = dict(machine_type=self.current,
                     diskname=diskname,
@@ -56,12 +59,16 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
         return [row.machine_type for row in self.select()]
     
     def get_disk_devices(self):
+        msg = 'BaseMachineTypeHandler.get_disk_devices is deprecated'
+        deprecated(msg)
         table = 'machine_disks'
         clause = self._mtype_clause()
         rows = self.select(fields=['device'], table=table, clause=clause)
         return [r.device for r in rows]
 
     def check_machine_disks(self):
+        msg = 'BaseMachineTypeHandler.check_machine_disks is deprecated'
+        deprecated(msg)
         table = 'machine_disks'
         clause = self._mtype_clause()
         rows = self.select(table=table, clause=clause)
@@ -73,6 +80,8 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
         return dn_dict
 
     def make_partition_dump(self, diskname, device):
+        msg = 'BaseMachineTypeHandler.make_partition_dump is deprecated'
+        deprecated(msg)
         table = 'partitions'
         clause = Eq('diskname', diskname)
         rows = self.select(table=table, clause=clause, order='partition')
@@ -89,6 +98,8 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
 
 
     def array_hack(self):
+        msg = 'BaseMachineTypeHandler.array_hack is deprecated'
+        deprecated(msg)
         dn_dict = self.check_machine_disks()
         disknames = dn_dict.keys()
         if len(disknames) == 1:
@@ -224,6 +235,7 @@ class MachineTypeEnvironment(BaseMachineTypeObject, Environment):
         BaseMachineTypeObject.__init__(self)
         Environment.__init__(self, conn, 'machine_type_variables', 'trait')
         self.current = machine_type
+        self._parents = MachineTypeParent(self.conn)
 
     def _single_clause_(self):
         return self._mtype_clause() & Eq('trait', self.__main_value__)
@@ -232,8 +244,14 @@ class MachineTypeEnvironment(BaseMachineTypeObject, Environment):
         self.set_main(trait)
 
     def _make_superdict_(self):
+        parents = self._parents.get_parent_list(self.current, childfirst=False)
+        env = {}
+        for parent in parents:
+            clause = Eq('machine_type', parent)
+            env.update(Environment._make_superdict_(self, clause))
         clause = self._mtype_clause()
-        return Environment._make_superdict_(self, clause)
+        env.update(Environment._make_superdict_(self, clause))
+        return env
     
         
 class MachineTypeHandler(BaseMachineTypeHandler):
@@ -316,7 +334,19 @@ class MachineTypeHandler(BaseMachineTypeHandler):
         return self._mtenv._make_superdict_()
     
     def get_script(self, name):
-        return self._mtscript.get(name)
+        script = self._mtscript.get(name)
+        if script is None:
+            scripts = MachineTypeScript(self.conn)
+            # FIXME
+            # we should iterate here instead of
+            # getting a list, but this will do for now
+            parents = self._parents.get_parent_list(self.current, childfirst=True)
+            for parent in parents:
+                scripts.set_machine_type(parent)
+                script = scripts.get(name)
+                if script is not None:
+                    return script
+        return script
 
     def insert_script(self, name, scriptfile):
         self._mtscript.insert_script(name, scriptfile)

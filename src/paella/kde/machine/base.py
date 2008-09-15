@@ -10,6 +10,11 @@ from useless.kdebase.dialogs import VboxDialog
 
 from paella.db.schema.tables import MTSCRIPTS
 
+# this is inconsistent from the way the
+# the trait scripts are selected
+# we should probably use the database
+# here instead of the hardcoded MTSCRIPTS
+# list.
 class MTScriptComboBox(KComboBox):
     def __init__(self, parent):
         KComboBox.__init__(self, parent, 'MTScriptComboBox')
@@ -85,7 +90,7 @@ class BaseMachineDialog(VboxDialog):
                                           kernel, filesystem)
             performed = 'updated'
         else:
-            raise RuntimeError, 'bad dbaction %s' % self.dbaction
+            raise RuntimeError , 'bad dbaction %s' % self.dbaction
         KMessageBox.information(self, '%s %s' % (machine, performed))
 
 class NewMachineDialog(BaseMachineDialog):

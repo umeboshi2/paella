@@ -28,9 +28,16 @@ def start_schema(conn, installuser='paella'):
     if startup:
         map(cursor.create_sequence, primary_sequences())
         map(cursor.create_table, tables)
-        insert_list(cursor, 'scriptnames', 'script', SCRIPTS)
-        newscripts = [s for s in MTSCRIPTS if s not in SCRIPTS]
-        insert_list(cursor, 'scriptnames', 'script', newscripts)
+        both = [s for s in MTSCRIPTS if s in SCRIPTS]
+        traitscripts = [s for s in SCRIPTS if s not in both]
+        mtypescripts = [s for s in MTSCRIPTS if s not in both]
+        for script in both:
+            cursor.insert(table='scriptnames', data=dict(script=script, type='both'))
+        for script in traitscripts:
+            cursor.insert(table='scriptnames', data=dict(script=script, type='trait'))
+        for script in mtypescripts:
+            cursor.insert(table='scriptnames', data=dict(script=script, type='mtype'))
+            
         paella_select = grant_user('SELECT', [x.name for x in tables], installuser)
         paella_full = grant_user('ALL',
                                  ['current_environment', 'partition_workspace'],
@@ -39,10 +46,6 @@ def start_schema(conn, installuser='paella'):
                                    installuser)
         for grant in paella_select, paella_full, paella_insert:
             cursor.execute(grant)
-        #cursor.execute(grant_public([x.name for x in tables]))
-        #cursor.execute(grant_public(['current_environment'], 'ALL'))
-        #cursor.execute(grant_public(['partition_workspace'], 'ALL'))
-        #cursor.execute(grant_user(['default_environment'], 'INSERT', 'paella')
         create_pgsql_functions(cursor)
     else:
         all_there = True

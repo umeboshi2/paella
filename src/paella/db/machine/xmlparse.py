@@ -59,6 +59,9 @@ class MachineTypeParser(ParserHelper):
     def __init__(self, element):
         ParserHelper.__init__(self)
         self.name = element.getAttribute('name')
+        self.parent = None
+        if element.hasAttribute('parent'):
+            self.parent = element.getAttribute('parent')
         devs = element.getElementsByTagName('machine_disk')
         mods = element.getElementsByTagName('module')
         fams = element.getElementsByTagName('family')

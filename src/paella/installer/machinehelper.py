@@ -111,7 +111,7 @@ class KernelHelper(BaseHelper):
             msg ='renaming %s to %s.paella-orig' % (k, k)
             self.log.info(msg)
             if kimgconf_old.exists():
-                raise RuntimeError, '%s already exists, aborting install.' % kimgconf_old
+                raise RuntimeError , '%s already exists, aborting install.' % kimgconf_old
             os.rename(kimgconf, kimgconf_old)
         kimgconf.write_lines(kimgconflines)
         runlog(cmd)
@@ -124,12 +124,15 @@ class KernelHelper(BaseHelper):
     def install_kernel(self, bootdevice='/dev/hda'):
         self.bind_mount_dev()
         self.install_kernel_package()
+        self.umount_dev()        
+
+    def prepare_bootloader(self, bootdevice='/dev/hda'):
+        self.bind_mount_dev()
         self.install_grub_package()
         self.install_grub(device=bootdevice)
         self.update_grub()
         self.umount_dev()
         
-    
 class MachineInstallerHelper(BaseHelper):
     def _partition_disk(self, diskname, device):
         msg = 'partitioning %s %s' % (diskname, device)
@@ -240,6 +243,11 @@ class MachineInstallerHelper(BaseHelper):
     def install_kernel(self, bootdevice='/dev/hda'):
         khelper = KernelHelper(self.installer)
         khelper.install_kernel(bootdevice=bootdevice)
+
+    def prepare_bootloader(self, bootdevice='/dev/hda'):
+        khelper = KernelHelper(self.installer)
+        khelper.prepare_bootloader(bootdevice=bootdevice)
+        
         
 
 if __name__ == '__main__':

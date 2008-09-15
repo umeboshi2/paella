@@ -21,7 +21,7 @@ class PaellaConnection(BasicConnection):
             if type(cfg) is PaellaConfig:
                 dsn = cfg.get_dsn()
         if dsn is None:
-            raise RuntimeError, 'Problem with the arguments to PaellaConnection'
+            raise RuntimeError , 'Problem with the arguments to PaellaConnection'
         if os.environ.has_key('PAELLA_DBHOST'):
             dsn['dbhost'] = os.environ['PAELLA_DBHOST']
         if os.environ.has_key('PAELLA_DBNAME'):
@@ -30,6 +30,8 @@ class PaellaConnection(BasicConnection):
             dsn['dbport'] = int(os.environ['PAELLA_DBPORT'])
             if dsn['dbport'] not in range(1, 65536):
                 raise ValueError, 'bad database port %s' % dsn['dbport']
+        if os.environ.has_key('PAELLA_DBUSER'):
+            dsn['dbusername'] = os.environ['PAELLA_DBUSER']
         user = dsn['dbusername']
         host = dsn['dbhost']
         dbname = dsn['dbname']

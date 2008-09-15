@@ -66,7 +66,7 @@ class TraitParser(ParserHelper):
                 else:
                     print "This xmlfile needs updating to new trait_variable tags"
                     print "suite", self.suite, "name", self.name
-                    raise RuntimeError, "update this trait.xml file"
+                    raise RuntimeError , "update this trait.xml file"
 
     def _get_templates(self, element):
         templates = self.get_elements_from_section(element, 'templates', 'template')

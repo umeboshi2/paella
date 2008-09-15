@@ -256,14 +256,14 @@ class ChrootInstaller(BaseInstaller):
             row = aptkeys.get_row(key)
             filename = self.target / ('%s.key' % key)
             if filename.exists():
-                raise RuntimeError, "%s already exists" % filename
+                raise RuntimeError , "%s already exists" % filename
             keyfile = file(filename, 'w')
             keyfile.write(row.data)
             keyfile.close()
             self.chroot(['apt-key', 'add', '%s.key' % key])
             os.remove(filename)
             if filename.exists():
-                raise RuntimeError, "%s wasn't deleted" % filename
+                raise RuntimeError , "%s wasn't deleted" % filename
             self.log.info('added key %s (%s) to apt' % (key, row.keyid))
         
     @requires_bootstrap

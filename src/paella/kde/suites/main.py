@@ -108,7 +108,7 @@ class SuiteManagerWindow(BaseSplitWindow, BasePaellaWindow):
         suite = win.getRecordData()['name']
         suite = suite.strip()
         if not suite:
-            raise RuntimeError, 'no suite in slotNewSuiteNamed'
+            raise RuntimeError , 'no suite in slotNewSuiteNamed'
         win = SuiteAptAssigner(self, suite)
         win.show()
     
