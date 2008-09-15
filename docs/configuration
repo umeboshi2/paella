@@ -21,6 +21,8 @@ Environment Variables used by Paella
   - **PAELLA_DBPORT** - the port of the paella database (this currently
     can't be set in the gui)
 
+  - **PAELLA_DBUSER** - the name of the database user
+
   - **PAELLA_DBPASSWD** - the password to the paella database.
 
 + These environment variables are set by the installers, and can be used
