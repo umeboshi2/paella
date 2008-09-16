@@ -7,9 +7,6 @@ from useless.base.util import ujoin, makepaths
 
 from useless.db.midlevel import Environment
 
-from paella.debian.base import RepositorySource
-from paella.debian.debconf import install_debconf
-
 from paella.base import PaellaConfig
 
 from paella.db import PaellaConnection

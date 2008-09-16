@@ -233,42 +233,6 @@ def make_source(source):
 
 
 
-def debootstrap(suite, root, mirror=None, script=''):
-    cmd = 'debootstrap --arch i386'
-    if mirror is None:
-        mirror = 'file:/mirrors/debian'
-    return ' '.join([cmd, suite, root, mirror, script])
-
-
-class Debootstrap(object):
-    def __init__(self, suite='woody', root='base',
-                 mirror='file:/mirrors/debian', script=''):
-        self.arch = 'i386'
-        self.include = []
-        self.exclude = []
-        self.suite = suite
-        self.root = root
-        self.mirror = mirror
-        self.script = script
-
-    def _set_opts_(self):
-        opts = ''
-        if self.arch:
-            opts += '--arch %s' % self.arch
-        if len(self.include):
-            opts += ' --include=%s' % ','.join(self.include)
-        if len(self.exclude):
-            opts += ' --exclude=%s' % ','.join(self.exclude)
-        return opts
-
-    def command(self):
-        cmd = 'debootstrap'
-        opts = self._set_opts_()
-        args = '%s %s %s %s' % (self.suite, self.root, self.mirror, self.script)
-        return '%s %s %s' % (cmd, opts, args)
-    
-            
-
 if __name__ == '__main__':
     fname = '/mirrors/debian/dists/sid/main/binary-i386/Packages.gz'
     fp = full_parse(fname)

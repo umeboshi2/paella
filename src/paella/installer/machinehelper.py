@@ -10,8 +10,6 @@ from useless.base.path import path
 # used in the chroot installer
 from paella import deprecated
 
-from paella.debian.base import debootstrap
-
 from base import CurrentEnvironment
 from base import runlog
 

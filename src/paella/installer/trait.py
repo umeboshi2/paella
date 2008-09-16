@@ -6,8 +6,6 @@ from useless import deprecated
 
 from useless.base.util import makepaths
 
-from paella.debian.debconf import copy_configdb
-
 from paella.db.trait.relations.package import TraitPackage
 from paella.db.trait.relations.template import TraitTemplate
 from paella.db.trait.relations.script import TraitScript
@@ -270,29 +268,6 @@ class TraitInstallerHelper(object):
         else:
             return None
 
-    # here template is the template row
-    def install_debconf_template(self, template):
-        trait = self.trait
-        self.log.info('Installing debconf for %s' % trait)
-        self.traittemplate.set_template(template.template)
-        tmpl = self.traittemplate.template.template
-        self._update_templatedata()
-        sub = self.traittemplate.template.sub()
-        if tmpl == sub:
-            msg = 'static debconf, no substitutions for trait %s' % trait
-            self.log.info(msg)
-        else:
-            self.log.info('templated debconf for trait %s' % trait)
-        config_path = self.target / 'tmp/paella_debconf'
-        self._check_debconf_destroyed(config_path)
-        config_path.write_bytes(sub + '\n')
-        target_path = self.target / 'var/cache/debconf/config.dat'
-        self.log.info('debconf config is %s %s' % (config_path, target_path))
-        copy_configdb(config_path, target_path)
-        os.remove(config_path)
-        self._check_debconf_destroyed(config_path)
-        
-
 class TraitInstaller(BaseInstaller):
     def __init__(self, parent):
         BaseInstaller.__init__(self, parent.conn)
@@ -380,13 +355,7 @@ class TraitInstaller(BaseInstaller):
         stmt = '%s for trait %s' % (stmt, self.helper.trait)
         self.log.info(stmt)
         for t in templates:
-            if t.template == 'var/cache/debconf/config.dat':
-                msg = "using /var/cache/debconf/config.dat is now deprecated"
-                deprecated(msg)
-                self.log.warn(msg)
-                self.log.info('Installing Debconf template ...')
-                self.helper.install_debconf_template(t)
-            elif t.template == 'debconf':
+            if t.template == 'debconf':
                 self.log.info('Found debconf selections')
                 if self.helper.debconf_problem:
                     msg = "preseed process had debconf problem, running again"

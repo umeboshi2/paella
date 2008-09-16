@@ -3,7 +3,6 @@ from os.path import join, basename, dirname
 
 from useless.base.path import path
 
-from paella.debian.base import debootstrap
 from paella.db.machine import MachineHandler
 
 from base import CurrentEnvironment

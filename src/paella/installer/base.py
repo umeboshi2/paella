@@ -13,8 +13,6 @@ from useless.base.path import path
 
 from useless.db.midlevel import Environment
 
-from paella.debian.base import debootstrap
-
 from paella.base import PaellaConfig
 from paella.db import PaellaConnection, DefaultEnvironment
 from paella.db.base import get_traits, get_suite
