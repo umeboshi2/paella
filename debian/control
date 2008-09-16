@@ -11,11 +11,11 @@ Architecture: all
 Priority: extra
 Depends: paella-management (= ${binary:Version})
 Description: meta-package for default paella packages
-    Paella is a installation/configuration management system
-    centered on being able to easily define, configure, maintain and
-    update systems and networks.  Tries to not reinvent too many
-    wheels, and works hand in hand with fai.  It is planned to be
-    extended to work with buildroots and embedded systems.
+ Paella is a installation/configuration management system
+ centered on being able to easily define, configure, maintain and
+ update systems and networks.  Tries to not reinvent too many
+ wheels, and works hand in hand with fai.  It is planned to be
+ extended to work with buildroots and embedded systems.
 
 Package: paella-base
 Section: admin
@@ -31,7 +31,7 @@ Package: paella-debian
 Section: admin
 Priority: optional
 Architecture: any
-Depends: paella-base (= ${binary:Version}), python-apt, debootstrap, debconf-utils
+Depends: paella-base (= ${binary:Version}), python-apt, debconf-utils
 Description: debian specific modules for paella
  This package contains many class and functions for 
  use with debian related activities (dpkg, package repositories, 
@@ -42,7 +42,7 @@ Package: paella-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-db (= ${binary:Version}), python-pyparsing, debootstrap, genisoimage, initramfs-tools
+Depends: paella-db (= ${binary:Version}), debootstrap
 Description: python package for paella installers
  This package contains most of the code for installers to work.
  It also contains the chroot installer.
@@ -51,9 +51,10 @@ Package: paella-machine-installer
 Section: admin
 Priority: extra
 Architecture: any
-Depends: paella-installer (= ${binary:Version}), xfsprogs, hdparm, mdadm, gawk, grub, fai-client (>= 3.2.10), reiserfsprogs, parted
+Depends: paella-installer (= ${binary:Version}), grub, fai-client (>= 3.2.10), parted
+Recommends: mdadm, xfsprogs, reiserfsprogs, hdparm, dmsetup, cryptsetup
 Description: package for machine installer
-    This package should be installed on a live system.
+ This package should be installed on a live system.
 
 Package: paella-nfs-installer
 Section: admin
@@ -61,7 +62,7 @@ Priority: extra
 Architecture: any
 Depends: paella-machine-installer (= ${binary:Version})
 Description: package for nfsroot installer
-    This package should be installed on the nfsroot installer.
+ This package should be installed on the nfsroot installer.
 
 Package: paella-admin
 Section: admin
@@ -71,8 +72,8 @@ Depends: python-useless-kdedb, paella-db (= ${binary:Version})
 Recommends: xxdiff
 Suggests: xemacs21
 Description: package for configuration of the paella database
-    This package should be installed on the admin's desktop.  This 
-    package holds the gui management tool for paella.
+ This package should be installed on the admin's desktop.  This 
+ package holds the gui management tool for paella.
 
 Package: paella-db
 Section: optional
@@ -81,15 +82,10 @@ Architecture: any
 Depends: paella-debian (= ${binary:Version}), python-kjbuckets, python-useless-db, python-useless-xmlgen, python-cheetah
 Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
 Description: skeletons for database generation
-    classes and functions to help create database schemas,
-    generate and primer the databases.
-    This is the main package with the paella configuration applications
-    in it.  Remember, right now there is only gui and management for the
-    database, the config directory is not packaged yet.
-    machine definitions, filesystems, mounts,
-    kernels modules, and other things that need 
-    to be kept track of on physical machines.
-    (fixme)
+ classes and functions to help create database schemas,
+ generate and primer the databases.
+ This is the main package with the paella configuration applications
+ in it.
 
 Package: paella-defaultdb
 Section: devel
@@ -97,9 +93,9 @@ Priority: optional
 Architecture: all
 Depends: paella-base (= ${binary:Version})
 Description: a default database to start with
-    The provided default database should contain
-    enough toget started.  Included are profiles and
-    traits designed to create a paella installer system.
+ The provided default database should contain
+ enough toget started.  Included are profiles and
+ traits designed to create a paella installer system.
 
 Package: paella-doc
 Section: doc
@@ -108,7 +104,7 @@ Architecture: all
 Depends: doc-base
 Suggests: dwww
 Description: documentation for paella
-  Paella is a system for  installing and managing
-  configurations of debian systems.  This package
-  holds the pathetic documentation for it.
+ Paella is a system for  installing and managing
+ configurations of debian systems.  This package
+ holds the pathetic documentation for it.
 
