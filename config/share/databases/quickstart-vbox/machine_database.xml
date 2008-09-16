@@ -1,182 +1,18 @@
 <machine_database>
 	<machines>
-		<machine filesystem="default" kernel="linux-image-2.6-686" machine_type="default" profile="default">
+		<machine kernel="linux-image-2.6-686" machine_type="default" profile="default">
 			default
 		</machine>
-		<machine filesystem="all_in_one" kernel="linux-image-2.6-486" machine_type="default" profile="default">
+		<machine kernel="linux-image-2.6-486" machine_type="default" profile="default">
 			sidesalad
 		</machine>
-		<machine filesystem="all_in_one" kernel="linux-image-2.6-686" machine_type="default" profile="desktop">
+		<machine kernel="linux-image-2.6-686" machine_type="default" profile="desktop">
 			testmachine
 		</machine>
 	</machines>
 	<machine_types>
 		<machine_type name="default"/>
 	</machine_types>
-	<disks>
-		<diskname name="bard">
-			<partition Id="83" partition="1" size="385497" start="63"/>
-			<partition Id="5" partition="2" size="58219560" start="385560"/>
-			<partition Id="0" partition="3" size="0" start="0"/>
-			<partition Id="0" partition="4" size="0" start="0"/>
-			<partition Id="83" partition="5" size="7614747" start="385623"/>
-			<partition Id="83" partition="6" size="2923767" start="8000433"/>
-			<partition Id="83" partition="7" size="979902" start="10924263"/>
-			<partition Id="83" partition="8" size="45704862" start="11904228"/>
-			<partition Id="82" partition="9" size="995967" start="57609153"/>
-		</diskname>
-		<diskname name="max160">
-			<partition Id="83" partition="1" size="979902" start="63"/>
-			<partition Id="5" partition="2" size="319179420" start="979965"/>
-			<partition Id="0" partition="3" size="0" start="0"/>
-			<partition Id="0" partition="4" size="0" start="0"/>
-			<partition Id="83" partition="5" size="8787492" start="980028"/>
-			<partition Id="83" partition="6" size="14651217" start="9767583"/>
-			<partition Id="83" partition="7" size="294921207" start="24418863"/>
-			<partition Id="82" partition="8" size="819252" start="319340133"/>
-		</diskname>
-		<diskname name="max160fs">
-			<partition Id="83" partition="1" size="979902" start="63"/>
-			<partition Id="5" partition="2" size="319179420" start="979965"/>
-			<partition Id="0" partition="3" size="0" start="0"/>
-			<partition Id="0" partition="4" size="0" start="0"/>
-			<partition Id="83" partition="5" size="8787492" start="980028"/>
-			<partition Id="83" partition="6" size="14651217" start="9767583"/>
-			<partition Id="83" partition="7" size="4883697" start="24418863"/>
-			<partition Id="83" partition="8" size="289844667" start="29302623"/>
-			<partition Id="82" partition="9" size="1012032" start="319147353"/>
-		</diskname>
-		<diskname name="sg120fs">
-			<partition Id="83" partition="1" size="979902" start="63"/>
-			<partition Id="5" partition="2" size="233456580" start="979965"/>
-			<partition Id="0" partition="3" size="0" start="0"/>
-			<partition Id="0" partition="4" size="0" start="0"/>
-			<partition Id="83" partition="5" size="9767457" start="980028"/>
-			<partition Id="83" partition="6" size="13671252" start="10747548"/>
-			<partition Id="83" partition="7" size="29302497" start="24418863"/>
-			<partition Id="83" partition="8" size="179686962" start="53721423"/>
-			<partition Id="82" partition="9" size="1028097" start="233408448"/>
-		</diskname>
-		<diskname name="sg40">
-			<partition Id="83" partition="1" size="979902" start="63"/>
-			<partition Id="5" partition="2" size="77176260" start="979965"/>
-			<partition Id="0" partition="3" size="0" start="0"/>
-			<partition Id="0" partition="4" size="0" start="0"/>
-			<partition Id="83" partition="5" size="6843627" start="980028"/>
-			<partition Id="83" partition="6" size="4883697" start="7823718"/>
-			<partition Id="83" partition="7" size="64468782" start="12707478"/>
-			<partition Id="82" partition="8" size="979902" start="77176323"/>
-		</diskname>
-		<diskname name="sg40fs">
-			<partition Id="83" partition="1" size="979902" start="63"/>
-			<partition Id="5" partition="2" size="77176260" start="979965"/>
-			<partition Id="0" partition="3" size="0" start="0"/>
-			<partition Id="0" partition="4" size="0" start="0"/>
-			<partition Id="83" partition="5" size="6843627" start="980028"/>
-			<partition Id="83" partition="6" size="4883697" start="7823718"/>
-			<partition Id="83" partition="7" size="3903732" start="12707478"/>
-			<partition Id="83" partition="8" size="60564987" start="16611273"/>
-			<partition Id="82" partition="9" size="979902" start="77176323"/>
-		</diskname>
-		<diskname name="sg80fs">
-			<partition Id="83" partition="1" size="385497" start="63"/>
-			<partition Id="5" partition="2" size="155910825" start="385560"/>
-			<partition Id="0" partition="3" size="0" start="0"/>
-			<partition Id="0" partition="4" size="0" start="0"/>
-			<partition Id="83" partition="5" size="6843627" start="385623"/>
-			<partition Id="83" partition="6" size="4883697" start="7229313"/>
-			<partition Id="83" partition="7" size="3903732" start="12113073"/>
-			<partition Id="83" partition="8" size="139299552" start="16016868"/>
-			<partition Id="82" partition="9" size="979902" start="155316483"/>
-		</diskname>
-	</disks>
-	<mounts>
-		<mount dump="0" fstype="reiserfs" mnt_name="bad_area" mnt_opts="defaults" mnt_point="/BADAREA" pass="0"/>
-		<mount dump="0" fstype="iso9660" mnt_name="default_cdrom" mnt_opts="defaults,ro,user,noauto" mnt_point="/cdrom" pass="0"/>
-		<mount dump="0" fstype="iso9660" mnt_name="default_cdrom2" mnt_opts="defaults,ro,user,noauto" mnt_point="/cdrom" pass="0"/>
-		<mount dump="0" fstype="iso9660" mnt_name="default_cdrom3" mnt_opts="defaults,ro,user,noauto" mnt_point="/sd" pass="0"/>
-		<mount dump="0" fstype="reiserfs" mnt_name="default_freespace" mnt_opts="defaults" mnt_point="/freespace" pass="0"/>
-		<mount dump="0" fstype="reiserfs" mnt_name="default_home" mnt_opts="defaults" mnt_point="/home" pass="0"/>
-		<mount dump="0" fstype="reiserfs" mnt_name="default_mirrors" mnt_opts="defaults" mnt_point="/mirrors" pass="0"/>
-		<mount dump="0" fstype="proc" mnt_name="default_proc" mnt_opts="defaults" mnt_point="/proc" pass="0"/>
-		<mount dump="0" fstype="reiserfs" mnt_name="default_root" mnt_opts="defaults" mnt_point="/" pass="0"/>
-		<mount dump="0" fstype="swap" mnt_name="default_swap" mnt_opts="defaults" mnt_point="swap" pass="0"/>
-		<mount dump="0" fstype="sysfs" mnt_name="default_sys" mnt_opts="defaults" mnt_point="/sys" pass="0"/>
-		<mount dump="0" fstype="tmpfs" mnt_name="default_tmp" mnt_opts="defaults" mnt_point="/tmp" pass="0"/>
-		<mount dump="0" fstype="tmpfs" mnt_name="default_usbdisk" mnt_opts="defaults,ro,user,noauto" mnt_point="/media/usbdisk" pass="0"/>
-		<mount dump="0" fstype="reiserfs" mnt_name="default_usr" mnt_opts="defaults" mnt_point="/usr" pass="0"/>
-		<mount dump="0" fstype="reiserfs" mnt_name="default_var" mnt_opts="defaults" mnt_point="/var" pass="0"/>
-		<mount dump="0" fstype="reiserfs" mnt_name="hard_tmp" mnt_opts="defaults" mnt_point="/tmp" pass="0"/>
-	</mounts>
-	<filesystems>
-		<filesystem name="all_in_one">
-			<filesystem_mount mnt_name="default_proc" ord="1" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_root" ord="0" partition="1" size="500-"/>
-			<filesystem_mount mnt_name="default_swap" ord="3" partition="5" size="500"/>
-			<filesystem_mount mnt_name="default_sys" ord="2" partition="0" size="None"/>
-		</filesystem>
-		<filesystem name="another"/>
-		<filesystem name="default">
-			<filesystem_mount mnt_name="default_home" ord="7" partition="7" size="2000-"/>
-			<filesystem_mount mnt_name="default_proc" ord="2" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_root" ord="1" partition="1" size="500"/>
-			<filesystem_mount mnt_name="default_swap" ord="8" partition="8" size="500"/>
-			<filesystem_mount mnt_name="default_sys" ord="4" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_usr" ord="5" partition="5" size="5000"/>
-			<filesystem_mount mnt_name="default_var" ord="6" partition="6" size="1000-2000"/>
-		</filesystem>
-		<filesystem name="default_small">
-			<filesystem_mount mnt_name="default_home" ord="7" partition="7" size="200-"/>
-			<filesystem_mount mnt_name="default_proc" ord="2" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_root" ord="1" partition="1" size="200"/>
-			<filesystem_mount mnt_name="default_swap" ord="8" partition="8" size="500"/>
-			<filesystem_mount mnt_name="default_sys" ord="4" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_usr" ord="5" partition="5" size="2000"/>
-			<filesystem_mount mnt_name="default_var" ord="6" partition="6" size="1000-2000"/>
-		</filesystem>
-		<filesystem name="dindada">
-			<filesystem_mount mnt_name="default_freespace" ord="7" partition="8" size="2000-"/>
-			<filesystem_mount mnt_name="default_home" ord="6" partition="7" size="2000"/>
-			<filesystem_mount mnt_name="default_proc" ord="2" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_root" ord="1" partition="1" size="500"/>
-			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_usbdisk" ord="8" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_usr" ord="4" partition="5" size="5000"/>
-			<filesystem_mount mnt_name="default_var" ord="5" partition="6" size="1000-2000"/>
-		</filesystem>
-		<filesystem name="freespace">
-			<filesystem_mount mnt_name="default_freespace" ord="8" partition="8" size="2000-"/>
-			<filesystem_mount mnt_name="default_home" ord="7" partition="7" size="2000"/>
-			<filesystem_mount mnt_name="default_proc" ord="2" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_root" ord="1" partition="1" size="500"/>
-			<filesystem_mount mnt_name="default_sys" ord="4" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_usr" ord="5" partition="5" size="5000"/>
-			<filesystem_mount mnt_name="default_var" ord="6" partition="6" size="1000-2000"/>
-		</filesystem>
-		<filesystem name="server">
-			<filesystem_mount mnt_name="default_freespace" ord="7" partition="7" size="1000-"/>
-			<filesystem_mount mnt_name="default_proc" ord="2" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_root" ord="1" partition="1" size="500"/>
-			<filesystem_mount mnt_name="default_swap" ord="8" partition="8" size="500"/>
-			<filesystem_mount mnt_name="default_sys" ord="4" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_usr" ord="5" partition="5" size="5000"/>
-			<filesystem_mount mnt_name="default_var" ord="6" partition="6" size="3000-7000"/>
-		</filesystem>
-		<filesystem name="server_small">
-			<filesystem_mount mnt_name="default_freespace" ord="7" partition="7" size="1000-"/>
-			<filesystem_mount mnt_name="default_proc" ord="2" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_root" ord="1" partition="1" size="500"/>
-			<filesystem_mount mnt_name="default_swap" ord="8" partition="8" size="500"/>
-			<filesystem_mount mnt_name="default_sys" ord="4" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_tmp" ord="3" partition="0" size="None"/>
-			<filesystem_mount mnt_name="default_usr" ord="5" partition="5" size="1500"/>
-			<filesystem_mount mnt_name="default_var" ord="6" partition="6" size="1500"/>
-		</filesystem>
-	</filesystems>
 	<kernels>
 		<kernel>
 			linux-image-2.6-486

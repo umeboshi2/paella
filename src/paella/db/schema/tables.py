@@ -448,15 +448,4 @@ def primary_tables():
 
 if __name__ == '__main__':
     from useless.db.midlevel import StatementCursor
-    from useless.sqlgen.statement import Statement
-    from paella.debian.base import parse_packages, full_parse
     from paella.db import PaellaConnection
-    
-    def dtable():
-        cmd.execute('drop table ptable')
-
-    def dtables():
-        for t in cmd.tables():
-            if t != 'footable':
-                cmd.execute('drop table %s' %t)
-
