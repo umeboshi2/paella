@@ -1,5 +1,6 @@
 import os
 from os.path import join, basename, dirname
+import subprocess
 
 from useless.base import Error
 from useless.base.util import echo
@@ -19,6 +20,7 @@ from base import InstallError
 
 
 from util.disk import setup_disk_fai
+from util.disk import setup_storage_fai
 from util.disk import partition_disk
 from util.disk import create_raid_partition
 from util.disk import wait_for_resync
@@ -158,24 +160,55 @@ class MachineInstallerHelper(BaseHelper):
         
     def setup_disks(self):
         self.log.warn('HARDCODED /dev/hda in machinehelper.setup_disks')
-        self._setup_disk_fai('/dev/hda')
-
-    def _setup_disk_fai(self, device):
-        disk_config = self.machine.make_disk_config_info(device, curenv=self.curenv)
-        cmd = setup_disk_fai(disk_config, self.disklogpath)
+        self._setup_storage_fai()
+        
+    def _setup_storage_fai(self):
+        row = self.machine.get_diskconfig()
+        diskconfig = row.content
+        disklist = row.disklist
+        if disklist is None:
+            disklist = []
+            cmd = ['/usr/lib/fai/disk-info']
+            proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+            retval = proc.wait()
+            if retval:
+                raise RuntimeError , 'disk-info returned %d' % retval
+            for line in proc.stdout:
+                disklist.append(line.split()[0])
+            print disklist
+        #os.environ['DEBUG'] = 'true'
+        cmd = setup_storage_fai(disklist, diskconfig, self.disklogpath)
         runlog(cmd)
-        for var in ['sfdisk', 'LOGDIR', 'diskvar']:
-            if var in os.environ:
-                self.log.info('%s in os.environ' % var)
-                self.log.info('deleting %s from os.environ' % var)
-                del os.environ[var]
-            else:
-                self.log.info('%s not defined' % var)
-
+        print "done", self.disklogpath
+    
+    def mount_target(self):
+        print "in mount_target"
+        fstab_filename = self.disklogpath / 'fstab'
+        if not fstab_filename.isfile():
+            msg = "couldn't find fstab at %s" % fstab_filename
+            raise RuntimeError , msg
+        fstab_lines = [line.split() for line in fstab_filename.open() if not line.startswith('#')]
+        #print fstab_lines
+        # start mounting
+        for line in fstab_lines:
+            #print line
+            device = line[0]
+            mtpt = line[1]
+            fstype = line[2]
+            #print 'device, mtpt, fstype', device, mtpt, fstype
+            if mtpt.startswith('/'):
+                target_path = self.target / mtpt[1:]
+                if not target_path.isdir():
+                    target_path.mkdir()
+                cmd = ['mount', '-t', fstype, device, target_path]
+                #print ' '.join(cmd)
+                runlog(cmd)
+        
     def install_fstab(self):
-        fstab = self.machine.make_fstab()
-        make_fstab(fstab, self.target)
-
+        fstab_filename = self.disklogpath / 'fstab'
+        target_fstab = self.target / 'etc/fstab'
+        target_fstab.write_text(fstab_filename.text())
+        
     def install_modules(self):
         modules = self.machine.get_modules()
         setup_modules(self.target, modules)

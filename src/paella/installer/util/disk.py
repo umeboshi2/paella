@@ -40,7 +40,7 @@ def setup_storage_fai(disklist, disk_config, logdir,
     disk_config_file.close()
     options = ['-X', '-f', disk_config_path]
     env = ['env', 'LOGDIR=%s' % logdir,
-           'disklist="%s"' % '\n'.join(disklist)
+           'disklist=%s' % '\n'.join(disklist)
            ]
     if 'DEBUG' in os.environ:
         env.append('debug=1')

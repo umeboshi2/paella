@@ -137,13 +137,6 @@ class MachineInstaller(BaseMachineInstaller):
         self.check_target_mounted()
         # run ready_base_for_install from chroot installer first
         ChrootInstaller.ready_base_for_install(self)
-        self.log.info('checking for raid devices')
-        raid_devices = self.helper.get_raid_devices()
-        if raid_devices:
-            self.log.info('raid devices found')
-            create_mdadm_conf(self.target, raid_devices)
-        else:
-            self.log.info('no raid devices found')
         
     def install_modules(self):
         self.check_install_complete()
@@ -167,9 +160,7 @@ class MachineInstaller(BaseMachineInstaller):
     def mount_target(self):
         self.check_target_exists()
         self.check_disks_setup()
-        device = self.machine.array_hack()
-        mounts = self.machine.get_installable_fsmounts()
-        mount_target(self.target, mounts, device)
+        self.helper.mount_target()
         self._target_mounted = True
         
 if __name__ == '__main__':
