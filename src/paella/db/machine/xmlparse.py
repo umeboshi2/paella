@@ -32,12 +32,18 @@ class MachineTypeParser(ParserHelper):
         self.parent = None
         if element.hasAttribute('parent'):
             self.parent = element.getAttribute('parent')
+        self.diskconfig = None
+        if element.getAttribute('diskconfig'):
+            self.diskconfig = element.getAttribute('diskconfig')
         mods = element.getElementsByTagName('module')
         fams = element.getElementsByTagName('family')
         scripts = element.getElementsByTagName('script')
         vars_ = element.getElementsByTagName('machine_type_variable')
         
         self.mtype = MachineType(self.name)
+        self.mtype.parent = self.parent
+        self.mtype.diskconfig = self.diskconfig
+        
         moddict = dict(map(parse_module, mods))
         modorder = moddict.keys()
         modorder.sort()

@@ -12,6 +12,7 @@ from paella.base.objects import VariablesConfig
 from paella.db.base import ScriptCursor
 from paella.db.family import Family
 
+from base import DiskConfigHandler
 from xmlgen import MachineTypeElement
 from xmlparse import MachineTypeParser
 
@@ -44,10 +45,16 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
     def __init__(self, conn):
         BaseMachineTypeCursor.__init__(self, conn, 'machine_types')
         
-    def add_new_type(self, machine_type):
-        data = dict(machine_type=machine_type)
+    def add_new_type(self, mtype_element):
+        data = dict(machine_type=mtype_element.name,
+                    diskconfig=mtype_element.diskconfig)
+        #data = dict(machine_type=machine_type)
         self.insert(data=data)
 
+    def update_machine_type(self, name, data):
+        clause = Eq('machine_type', name)
+        self.update(data=data, clause=clause)
+        
     def get_machine_types(self):
         return [row.machine_type for row in self.select()]
     
@@ -67,7 +74,11 @@ class BaseMachineTypeHandler(BaseMachineTypeCursor):
             data['module'] = mod
             self.insert(table='machine_modules', data=data)
             next_ord += 1
-        
+
+    def get_row(self):
+        clause = Eq('machine_type', self.current)
+        return self.select_row(clause=clause)
+    
 class MachineTypeScript(BaseMachineTypeObject, ScriptCursor):
     def __init__(self, conn):
         BaseMachineTypeObject.__init__(self)
@@ -128,15 +139,12 @@ class MachineTypeFamily(BaseMachineTypeCursor):
 class MachineTypeEnvironment(BaseMachineTypeObject, Environment):
     def __init__(self, conn, machine_type):
         BaseMachineTypeObject.__init__(self)
-        Environment.__init__(self, conn, 'machine_type_variables', 'trait')
+        Environment.__init__(self, conn, 'machine_type_variables', 'machine_type')
         self.current = machine_type
         self._parents = MachineTypeParent(self.conn)
 
     def _single_clause_(self):
         return self._mtype_clause() & Eq('trait', self.__main_value__)
-
-    def set_trait(self, trait):
-        self.set_main(trait)
 
     def _make_superdict_(self):
         parents = self._parents.get_parent_list(self.current, childfirst=False)
@@ -156,15 +164,24 @@ class MachineTypeHandler(BaseMachineTypeHandler):
         self._mtfam = MachineTypeFamily(self.conn)
         self._fam = Family(self.conn)
         self._mtscript = MachineTypeScript(self.conn)
+        self._diskconfig = DiskConfigHandler(self.conn)
         self.parent = None
 
     def set_machine_type(self, machine_type):
         BaseMachineTypeHandler.set_machine_type(self, machine_type)
         self._mtenv = MachineTypeEnvironment(self.conn, machine_type)
-        self._mtcfg = MachineTypeVariablesConfig(self.conn, machine_type)
+        #self._mtcfg = MachineTypeVariablesConfig(self.conn, machine_type)
         self._mtscript.set_machine_type(machine_type)
         self.parent = self._parents.get_parent(machine_type)
+        self._row = self.select_row(clause=Eq('machine_type', machine_type))
         
+    def get_diskconfig(self, machine_type=None):
+        if machine_type is None:
+            machine_type = self.current
+        row = self.select_row(clause=Eq('machine_type', machine_type))
+        return self._diskconfig.get(row.diskconfig)
+    
+    
     def family_rows(self):
         clause = self._mtype_clause()
         return self._mtfam.select(clause=clause, order='family')
@@ -249,11 +266,10 @@ class MachineTypeHandler(BaseMachineTypeHandler):
 
     def delete_script(self, name):
         self._mtscript.delete_script(name)
-        
-    
+
     def insert_parsed_element(self, mtype_element, path):
         mtype = mtype_element.mtype
-        self.add_new_type(mtype.name)
+        self.add_new_type(mtype)
         self.set_machine_type(mtype.name)
         mod_items = zip(range(len(mtype.modules)), mtype.modules)
         data = dict(machine_type=mtype.name)

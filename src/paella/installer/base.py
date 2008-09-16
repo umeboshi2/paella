@@ -4,6 +4,7 @@ import subprocess
 import warnings
 import logging
 
+from useless import deprecated
 from useless.base import Log
 from useless.base.config import Configuration
 from useless.base.util import ujoin, makepaths

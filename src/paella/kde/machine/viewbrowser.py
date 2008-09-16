@@ -12,11 +12,41 @@ from paella.kde.base.viewbrowser import ViewBrowser
 # import document objects
 from paella.kde.docgen.machine import MachineDoc
 from paella.kde.docgen.machine import MachineTypeDoc
+from paella.kde.docgen.machine import DiskConfigDoc
 
 from base import NewMachineDialog
 from base import EditMachineDIalog
 from base import NewMTScriptDialog
+from base import NewDiskConfigDialog
 
+
+class DiskConfigView(ViewBrowser):
+    def __init__(self, parent):
+        ViewBrowser.__init__(self, parent, DiskConfigDoc)
+
+    def set_diskconfig(self, diskconfig):
+        self.doc.set_diskconfig(diskconfig)
+        self.setText(self.doc.output())
+
+    def setSource(self, url):
+        action, context, ident = split_url(url)
+        if action == 'new':
+            handler = self.doc.diskconfig
+            dialog = NewDiskConfigDialog(self, handler)
+            dialog.show()
+            dialog.connect(dialog, SIGNAL('okClicked()'), self.parent().resetView)
+            self._dialog = dialog
+        elif action == 'edit':
+            self.doc.diskconfig.edit_diskconfig(ident)
+            self.parent().resetView()
+        elif action == 'delete':
+            self.doc.diskconfig.delete(ident)
+            self.parent().resetView()
+        else:
+            msg = "unsupported action: %s" % action
+            KMessageBox.error(self, msg)
+    
+            
 class MachineView(ViewBrowser):
     def __init__(self, parent):
         ViewBrowser.__init__(self, parent, MachineDoc)
@@ -68,7 +98,7 @@ class MachineTypeView(ViewBrowser):
             fields = ['name', 'value']
             dialog_message = 'Add a new variable.'
         elif context == 'machine_type':
-            fields = ['name']
+            fields = ['name', 'parent', 'diskconfig']
             dialog_message = 'Add a new machine type.'
         if action == 'new':
             if context == 'Scripts':
@@ -121,7 +151,24 @@ class MachineTypeView(ViewBrowser):
         elif context == 'Scripts':
             self.doc.mtype.edit_script(ident)
         elif context == 'machine_type':
-            KMessageBox.information(self, 'Editing of machine types is unimplemented')
+            #KMessageBox.information(self, 'Editing of machine types is unimplemented')
+            dialog = BaseRecordDialog(self, ['diskconfig'])
+            dialog.context = context
+            dialog.mtype = ident
+            dialog.connect(dialog, SIGNAL('okClicked()'), self.updateRecord)
+            dialog.frame.setText("Edit Machine Type %s" % ident)
+            dialog.connect(dialog, SIGNAL('cancelClicked()'),
+                                          self._destroy_dialog)
+            row = self.doc.mtype.get_row()
+            data = {}
+            for field in ['diskconfig']:
+                if row[field] is not None:
+                    data[field] = row[field]
+            dialog.setRecordData(data)
+            dialog.setButtonOKText('update', 'update')
+            self._dialog = dialog
+            dialog.show()
+
         else:
             msg = 'edit context %s id %s is unsupported' % (context, ident)
             KMessageBox.error(self, msg)
@@ -143,7 +190,20 @@ class MachineTypeView(ViewBrowser):
         self.resetView()
         
     def updateRecord(self):
-        raise NotImplementedError, 'updateRecord not implemented'
+        dialog = self._dialog
+        context = dialog.context
+        data = dialog.getRecordData()
+        print data
+        if context == 'machine_type':
+            newdata = {}
+            for field, value in data.items():
+                if not value:
+                    newdata[field] = None
+                else:
+                    newdata[field] = value
+            self.doc.mtype.update_machine_type(dialog.mtype, newdata)
+        self.resetView()
+            
 
     def insertNewScript(self):
         dialog = self._dialog

@@ -44,6 +44,16 @@ class ManageDisksAction(BaseAction):
         BaseAction.__init__(self, ManageDisksItem(), 'ManageDisks',
                             slot, parent)
 
+class ManageDiskConfigItem(BaseItem):
+    def __init__(self):
+        comment = 'manage diskconfig'
+        BaseItem.__init__(self, comment, 'blockdevice', comment, comment)
+
+class ManageDiskConfigAction(BaseAction):
+    def __init__(self, slot, parent):
+        BaseAction.__init__(self, ManageDiskConfigItem(), 'ManageDiskConfig',
+                            slot, parent)
+        
 class ManageMountsItem(BaseItem):
     def __init__(self):
         comment = 'manage mounts'
@@ -71,8 +81,9 @@ ManageActions = {
     'filesystem' : ManageFilesystemsAction,
     'disk' : ManageDisksAction,
     'mount' : ManageMountsAction,
+    'diskconfig' : ManageDiskConfigAction,
     'kernels' : ManageKernelsAction
     }
 
-ManageActionsOrder = ['machine', 'machine_type',
+ManageActionsOrder = ['machine', 'machine_type', 'diskconfig',
                       'kernels']

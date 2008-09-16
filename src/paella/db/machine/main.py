@@ -1,9 +1,11 @@
 from os.path import basename, dirname, join
 from xml.dom.minidom import parseString
 
+from useless.base import NoExistError
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
+from base import DiskConfigHandler
 from mtype import MachineTypeHandler
 from xmlparse import MachineDatabaseParser
 from xmlgen import MachineDatabaseElement
@@ -20,6 +22,7 @@ class BaseMachineHandler(object):
         self.cursor.set_table('machines')
         self.kernels = Table_cursor(self.conn, 'kernels')
         self.mtype = MachineTypeHandler(self.conn)
+        self.diskconfig = DiskConfigHandler(self.conn)
         self.current = None
         
     def set_machine(self, machine):
@@ -77,9 +80,6 @@ class BaseMachineHandler(object):
         self._update_field_('machine', newname)
         self.set_machine(newname)
 
-    def get_disk_devices(self):
-        return self.mtype.get_disk_devices()
-    
     
 class MachineHandler(BaseMachineHandler):
     def add_machine_type(self, mtype):
@@ -148,10 +148,6 @@ class MachineHandler(BaseMachineHandler):
         rows = self.cursor.select(table='machine_types')
         return [r.machine_type for r in rows]
     
-    def list_all_filesystems(self):
-        rows = self.filesystems.select()
-        return [r.filesystem for r in rows]
-    
     def list_all_kernels(self):
         return [r.kernel for r in self.kernels.select()]
 
@@ -159,31 +155,9 @@ class MachineHandler(BaseMachineHandler):
         rows = self.cursor.select(table='profiles')
         return [r.profile for r in rows]
 
-    def make_disk_config_info(self, device, filesystem=None, curenv=None):
-        if filesystem is None:
-            filesystem = self.current.filesystem
-        rows = self.get_installable_fsmounts(filesystem=filesystem)
-        lines = []
-        if device[:4] == '/dev':
-            device = basename(device)
-        lines.append('disk_config %s' % device)
-        for row in rows:
-            ptype = 'logical'
-            if int(row.partition) < 5:
-                ptype = 'primary'
-            size = row.size
-            if curenv is not None:
-                if row.mnt_name in curenv.keys():
-                    size = 'preserve%d' % row.partition
-            line = '%s\t%s\t%s\t%s' % (ptype, row.mnt_point, size, row.mnt_opts)
-            fstype = row.fstype
-            if fstype == 'reiserfs':
-                fstype = 'reiser'
-            fline = '%s\t; %s' % (line, fstype)
-            lines.append(fline)
-        return '\n'.join(lines) + '\n'
-
-
+    def get_diskconfig(self):
+        #mtype = self.current.machine_type
+        return self.mtype.get_diskconfig()
             
 if __name__ == '__main__':
     from os.path import join

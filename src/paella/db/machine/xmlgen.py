@@ -41,13 +41,21 @@ class MachineTypeElement(Element):
         self.variables = []
         self.machine_type = name
         clause = Eq('machine_type', name)
-        self.set_parent(clause)
+        #self.set_parent(clause)
+        self.set_attributes(clause)
         self._append_modules(clause)
         self._append_scripts(clause)
         self._append_families(clause)
         # FIXME - we're not using variables yet
         self._append_variables(clause)
 
+    def set_attributes(self, clause):
+        self.set_parent(clause)
+        row = self.cursor.select_row(table='machine_types',
+                                     clause=clause)
+        if row.diskconfig is not None:
+            self.setAttribute('diskconfig', row.diskconfig)
+            
     def set_parent(self, clause):
         try:
             row = self.cursor.select_row(table='machine_type_parent',

@@ -101,7 +101,28 @@ class NewMachineDialog(BaseMachineDialog):
         self._make_common_boxes()
         self.dbaction = 'insert'
         
+class NewDiskConfigDialog(VboxDialog):
+    def __init__(self, parent, handler):
+        VboxDialog.__init__(self, parent)
+        self.diskconfig = handler
+        self.diskconfigLbl = QLabel(self.frame)
+        self.diskconfigLbl.setText('DiskConfig Name')
+        self.diskconfigEntry = KLineEdit(self.frame)
+        self.contentLbl = QLabel(self.frame)
+        self.contentLbl.setText('DiskConfig Content')
+        self.contentEntry = KTextEdit(self.frame)
+        self.vbox.addWidget(self.diskconfigLbl)
+        self.vbox.addWidget(self.diskconfigEntry)
+        self.vbox.addWidget(self.contentLbl)
+        self.vbox.addWidget(self.contentEntry)
+        self.connect(self, SIGNAL('okClicked()'), self.slotOkClicked)
 
+    def slotOkClicked(self):
+        name = str(self.diskconfigEntry.text())
+        content = str(self.contentEntry.text())
+        self.diskconfig.set(name, dict(content=content))
+        
+        
         
 class EditMachineDIalog(BaseMachineDialog):
     def __init__(self, parent, handler, machine):

@@ -21,7 +21,7 @@ Package: paella-base
 Section: admin
 Priority: optional
 Architecture: any
-Depends: python-useless-db (>= 0.1.10)
+Depends: python-useless-db (>= 0.1.11)
 Description: base utils for paella
  This is the base package for paella.
  All other paella packages depend on this 

@@ -276,14 +276,12 @@ class KernelsTable(Table):
         Table.__init__(self, name, [PkName('kernel')])
         
 class MachineTypesTable(Table):
-    def __init__(self, diskconfig_table, kernels_table):
+    def __init__(self, diskconfig_table):
         name = 'machine_types'
         idcol = PkName('machine_type')
         diskconfig_col = Name('diskconfig')
         diskconfig_col.set_fk(diskconfig_table)
-        kernel_col = Name('kernel')
-        kernel_col.set_fk(kernels_table)
-        columns = [idcol, diskconfig_col, kernel_col]
+        columns = [idcol, diskconfig_col]
         Table.__init__(self, name, columns)
 
 class MachineTypeParentsTable(Table):
@@ -423,7 +421,7 @@ def primary_tables():
     # Kernels
     tables.append(KernelsTable())
     # Machine Types
-    tables.append(MachineTypesTable('diskconfig', 'kernels'))
+    tables.append(MachineTypesTable('diskconfig'))
     # MachineTypesTables
     mtparent = MachineTypeParentsTable('machine_types')
     tables.append(mtparent)

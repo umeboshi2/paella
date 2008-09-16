@@ -32,6 +32,10 @@ from profile.xmlparse import ProfileParser
 
 from machine import MachineHandler
 
+# we should call this from MachineHandler
+# but this is convenient now
+from machine.base import DiskConfigHandler
+
 from xmlgen import AptSourceElement, AptSourceListElement
 from xmlgen import SuiteElement, SuitesElement, SuiteAptElement
 from xmlparse import PaellaParser
@@ -116,7 +120,8 @@ class PaellaExporter(object):
         self.profile = Profile(self.conn)
         self.family = Family(self.conn)
         self.machines = MachineHandler(self.conn)
-
+        self.diskconfig = DiskConfigHandler(self.conn)
+        
     def init_db_element(self):
         self.dbelement = PaellaDatabaseElement()
         
@@ -176,7 +181,15 @@ class PaellaExporter(object):
             self.profile.export_profile(dirname, profile=profile, env=env)
             self.report_profile_exported(profile)
             
-
+    def export_all_diskconfigs(self, dirname=None):
+        if dirname is None:
+            dirname = self.db_export_path / 'diskconfig'
+        makepaths(dirname)
+        for row in self.diskconfig.cursor.select():
+            filename = row.name
+            diskconfig = dirname / filename
+            diskconfig.write_text(row.content)
+            
     def export_all_families(self, dirname=None):
         if dirname is None:
             dirname = self.db_export_path / 'families'
@@ -260,6 +273,7 @@ class PaellaExporter(object):
         self.export_all_suites()
         self.export_all_profiles()
         self.export_all_families()
+        self.export_all_diskconfigs()
         self.export_machine_database()
         self.export_default_environment()
         
@@ -349,7 +363,18 @@ class PaellaImporter(object):
             self.profile.import_profile(xmlfile)
             self.report_profile_imported(xmlfile.namebase)
             
-    
+    def import_all_diskconfigs(self, dirname=None):
+        if dirname is None:
+            dirname = self.main_path / 'diskconfig'
+        dirname = path(dirname)
+        files = dirname.listdir()
+        cursor = self.conn.cursor(statement=True)
+        for diskconfig in files:
+            name= diskconfig.basename()
+            data = dict(name=name, content=file(diskconfig).read())
+            cursor.insert(table='diskconfig', data=data)
+            
+        
     # here suite is a parsed xml object (find name)
     def make_suite(self, suite):
         current_suites = self.suitecursor.get_suites()
@@ -421,6 +446,7 @@ class PaellaImporter(object):
             
         self.import_all_families()
         self.import_all_profiles()
+        self.import_all_diskconfigs()
         machinedb = self.main_path / 'machine_database.xml'
         if machinedb.isfile():
             mh = MachineHandler(self.conn)

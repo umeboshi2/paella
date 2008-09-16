@@ -2,13 +2,14 @@ from useless.base.forgethtml import Table, TableRow, TableCell
 from useless.base.forgethtml import TableHeader
 from useless.base.forgethtml import Anchor, Ruler, Break
 from useless.base.forgethtml import Header
-from useless.base.forgethtml import Pre
+from useless.base.forgethtml import Pre, Paragraph
 
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
 from paella.db.machine import MachineHandler
 from paella.db.machine.mtype import MachineTypeHandler
+from paella.db.machine.base import DiskConfigHandler
 
 from base import color_header
 from base import BaseDocument
@@ -58,7 +59,32 @@ class _MachineBaseDocument(BaseDocument):
         self.body.append(deleteanchor)
         self.body.append(Break())
         self.body.append(newanchor)
+
+class DiskConfigDoc(BaseDocument):
+    def __init__(self, app, **atts):
+        BaseDocument.__init__(self, app, **atts)
+        self.diskconfig = DiskConfigHandler(self.conn)
+        
+
+    def set_diskconfig(self, diskconfig):
+        row = self.diskconfig.get(diskconfig)
+        self.clear_body()
+        title = SectionTitle('DiskConfig: %s' % row.name)
+        self.body.append(title)
+        content = row.content
+        if content is None:
+            content = ''
+        pre = Pre(content)
+        self.body.append(pre)
+        self.body.append(Ruler())
+        editanchor = Anchor('edit', href='edit.diskconfig.%s' % row.name)
+        self.body.append(editanchor)
+        self.body.append(Ruler())
+        deleteanchor = Anchor('delete', href='delete.diskconfig.%s' % row.name)
+        self.body.append(deleteanchor)
+        
     
+        
 class MachineDoc(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)
@@ -110,7 +136,9 @@ class MachineTypeDoc(_MachineBaseDocument):
         title['bgcolor'] = 'IndianRed'
         title['width'] = '100%'
         self.body.append(title)
-
+        row = self.mtype.get_row()
+        diskconfig = Paragraph('DiskConfig: %s' % row.diskconfig)
+        self.body.append(diskconfig)
         modrows =  self.cursor.select(table='machine_modules', clause=clause,
                                       order=['ord'])
         self._setup_section('Modules', ['module', 'ord'], modrows)
@@ -122,7 +150,7 @@ class MachineTypeDoc(_MachineBaseDocument):
         self._setup_section('Scripts', ['script'], scripts)
         vars_ = self.cursor.select(table='machine_type_variables', clause=clause,
                                    order=['name'])
-        self._setup_section('Variables', ['name', 'value'], vars_)
+        #self._setup_section('Variables', ['name', 'value'], vars_)
         self._make_footer_anchors('machine_type', machine_type)
 
     def _setup_section(self, name, fields, rows):
