@@ -44,8 +44,12 @@ class BaseMachineTypeCursor(BaseMachineTypeObject, StatementCursor):
 class BaseMachineTypeHandler(BaseMachineTypeCursor):
     def __init__(self, conn):
         BaseMachineTypeCursor.__init__(self, conn, 'machine_types')
+
+    def add_new_type(self, name=None, diskconfig=None):
+        data = dict(machine_type=name, diskconfig=diskconfig)
+        self.insert(data=data)
         
-    def add_new_type(self, mtype_element):
+    def add_new_type_from_xml(self, mtype_element):
         data = dict(machine_type=mtype_element.name,
                     diskconfig=mtype_element.diskconfig)
         #data = dict(machine_type=machine_type)
@@ -269,7 +273,7 @@ class MachineTypeHandler(BaseMachineTypeHandler):
 
     def insert_parsed_element(self, mtype_element, path):
         mtype = mtype_element.mtype
-        self.add_new_type(mtype)
+        self.add_new_type_from_xml(mtype)
         self.set_machine_type(mtype.name)
         mod_items = zip(range(len(mtype.modules)), mtype.modules)
         data = dict(machine_type=mtype.name)

@@ -75,7 +75,7 @@ class BaseMachineDialog(VboxDialog):
     
     
     def slotOkClicked(self):
-        mtype, profile, kernel, filesystem = self._get_common_data()
+        mtype, profile, kernel = self._get_common_data()
         if self.dbaction == 'insert':
             machine = str(self.machnameEntry.text())
             self.handler.make_a_machine(machine, mtype, profile,

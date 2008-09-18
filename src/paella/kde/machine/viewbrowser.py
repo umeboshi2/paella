@@ -123,7 +123,8 @@ class MachineTypeView(ViewBrowser):
         if self._dialog is not None:
             self._dialog.connect(self._dialog, SIGNAL('cancelClicked()'), self._destroy_dialog)
             self._dialog.show()
-        self.resetView()
+        if action != 'new':
+            self.resetView()
 
     def _perform_delete_action(self, context, ident):
         if context == 'Families':
@@ -184,6 +185,7 @@ class MachineTypeView(ViewBrowser):
                                            data['value'])
         elif context == 'machine_type':
             self.doc.mtype.add_new_type(data['name'])
+            self.doc.mtype.set_machine_type(data['name'])
         else:
             KMessageBox.error(self, 'Error handling context %s' % context)
         self._dialog = None
