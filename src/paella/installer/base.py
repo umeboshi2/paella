@@ -145,10 +145,12 @@ def runlog(cmd, logfile=None, logobject=None, failure_suppressed=False):
         if logfile is not None:
             output = file(logfile, 'a')
             kw['stdout'] = output
+            print "using logfile for output"
         else:
             logger = sys.paella_logger
             stream = logger.handlers[0].stream
             kw['stdout'] = stream
+            print "using logger stream for output"
     else:
         kw['stdout'] = logobject.handlers[0].stream
     if type(cmd) is list:

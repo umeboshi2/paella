@@ -149,6 +149,26 @@ def get_mac_addresses(interface=''):
             macs.append(mac)
     return macs
 
+def add_host_to_dhcp(stdin, hostname, hwaddr, port=None,
+                     server=None):
+    proc = subprocess.Popen(['omshell'], stdin=subprocess.PIPE)
+    stdin = proc.stdin
+    lines = ['connect',
+             'new host',
+             'set name = "%s"' % hostname,
+             'set hardware-address = %s' % hwaddr.lower(),
+             'set hardware-type 1',
+             'create'
+             ]
+    if server is not None:
+        lines = ['server %s' % server] + lines
+    if port is not None:
+        lines = ['port %s' % port] + lines
+    for line in lines:
+        stdin.write(line + '\n')
+        stdin.flush()
+    stdin.close()
+    
 
 if __name__ == '__main__':
     macs = get_mac_addresses()
