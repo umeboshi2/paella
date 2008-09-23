@@ -2,7 +2,8 @@ from useless.sqlgen.admin import grant_public, grant_user
 
 from tables import primary_sequences
 from tables import primary_tables
-from tables import SCRIPTS, MTSCRIPTS
+#from tables import SCRIPTS, MACHINE_SCRIPTS
+from tables import TRAIT_SCRIPTS, MACHINE_SCRIPTS
 
 from pgsql_functions import create_pgsql_functions
 
@@ -28,15 +29,18 @@ def start_schema(conn, installuser='paella'):
     if startup:
         map(cursor.create_sequence, primary_sequences())
         map(cursor.create_table, tables)
-        both = [s for s in MTSCRIPTS if s in SCRIPTS]
-        traitscripts = [s for s in SCRIPTS if s not in both]
-        mtypescripts = [s for s in MTSCRIPTS if s not in both]
+        both = [s for s in MACHINE_SCRIPTS if s in TRAIT_SCRIPTS]
+        print both
+        traitscripts = [s for s in TRAIT_SCRIPTS if s not in both]
+        print traitscripts
+        machinescripts = [s for s in MACHINE_SCRIPTS if s not in both]
+        print machinescripts
         for script in both:
             cursor.insert(table='scriptnames', data=dict(script=script, type='both'))
         for script in traitscripts:
             cursor.insert(table='scriptnames', data=dict(script=script, type='trait'))
-        for script in mtypescripts:
-            cursor.insert(table='scriptnames', data=dict(script=script, type='mtype'))
+        for script in machinescripts:
+            cursor.insert(table='scriptnames', data=dict(script=script, type='machine'))
             
         paella_select = grant_user('SELECT', [x.name for x in tables], installuser)
         paella_full = grant_user('ALL',

@@ -10,6 +10,8 @@ from paella.db.machine import MachineHandler
 from paella.db.machine.xmlgen import ClientMachineDatabaseElement
 from paella.db.main import PaellaImporter
 
+raise RuntimeError , "the clients module needs to be updated badly"
+
 
 class ClientManager(object):
     def __init__(self, conn):
@@ -33,23 +35,17 @@ class ClientManager(object):
         return [profiles, families, traits]
     
     def _client_mdata(self, client):
-        disks = self.client_cfg.get_list('disks', client)
-        mtypes = self.client_cfg.get_list('machine_types', client)
         machines = self.client_cfg.get_list('machines', client)
-        return [disks, mtypes, machines]
+        return machines
         
     def export_client(self, client):
         cpath, ppath, fpath, tpath = self._cpaths_(client)
         makepaths(cpath)
         profiles, families, traits = self._client_schema(client) 
-        disks, mtypes, machines = self._client_mdata(client)
-        if not disks:
-            disks = None
-        if not mtypes:
-            mtypes = None
+        machines = self._client_mdata(client)
         if not machines:
             machines = None
-        element = ClientMachineDatabaseElement(self.conn, disks, mtypes, machines)
+        element = ClientMachineDatabaseElement(self.conn, machines)
         mdbpath = join(cpath, 'machine_database.xml')
         mdfile = file(mdbpath, 'w')
         mdfile.write(element.toprettyxml())
@@ -84,14 +80,10 @@ class ClientManager(object):
             
     def remove_client(self, client):
         profiles, families, traits = self._client_schema(client)
-        disks, mtypes, machines = self._client_mdata(client)
+        machines = self._client_mdata(client)
         cursor = StatementCursor(self.conn)
-        if machines:
-            cursor.delete(table='machines', clause=In('machine', machines))
-        for mtype in mtypes:
-            cursor.execute("select * from delete_mtype('%s')" % mtype)
-        for disk in disks:
-            cursor.execute("select * from delete_disk('%s')" % disk)
+        for machine in machines:
+            cursor.execute("select * from delete_machine('%s')" % machine)
         for profile in profiles:
             cursor.execute("select * from delete_profile('%s')" % profile)
         for family in families:

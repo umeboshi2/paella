@@ -10,7 +10,6 @@ from paella.kde.base.widgets import PaellaManagerWidget
 from paella.kde.base.mainwin import BasePaellaWindow
 
 from viewbrowser import MachineView
-from viewbrowser import MachineTypeView
 from viewbrowser import DiskConfigView
 
 from actions import ManageActions, ManageActionsOrder
@@ -28,6 +27,7 @@ class MachineManager(PaellaManagerWidget):
         self.refreshListView()
 
     def refreshListView(self):
+        self.listView.clear()
         rows = self.cursor.select(table='machines', order='machine')
         for row in rows:
             KListViewItem(self.listView, row.machine)
@@ -35,23 +35,6 @@ class MachineManager(PaellaManagerWidget):
     def selectionChanged(self):
         item = self.listView.currentItem()
         self.mainView.set_machine(str(item.text(0)))
-
-class MachineTypeManager(PaellaManagerWidget):
-    def __init__(self, parent):
-        mainview = MachineTypeView
-        PaellaManagerWidget.__init__(self, parent, mainview, name='MachineTypeManager')
-        self.initlistView()
-        
-    def initlistView(self):
-        self.cursor = self.conn.cursor(statement=True)
-        self.listView.addColumn('machine_type')
-        rows = self.cursor.select(table='machine_types')
-        for row in rows:
-            KListViewItem(self.listView, row.machine_type)
-
-    def selectionChanged(self):
-        item = self.listView.currentItem()
-        self.mainView.set_machine_type(str(item.text(0)))
 
 class DiskConfigManager(PaellaManagerWidget):
     def __init__(self, parent):
@@ -75,9 +58,12 @@ class DiskConfigManager(PaellaManagerWidget):
         self.mainView.set_diskconfig(str(item.text(0)))
 
     def resetView(self):
+        item = self.listView.currentItem()
+        diskconfig = str(item.text(0))
         self.refreshListView()
-        self.selectionChanged()
-    
+        #self.selectionChanged()
+        self.mainView.set_diskconfig(diskconfig)
+        
         
 class MachineMainWindow(BasePaellaWindow):
     def __init__(self, parent):
@@ -87,7 +73,7 @@ class MachineMainWindow(BasePaellaWindow):
         self.initMenus()
         self.initToolbar()
         self.mainView = None
-        self.resize(400, 300)
+        self.resize(500, 600)
         self.setCaption('Machine Manager')
         self.statusbar = self.statusBar()
         self._managing = None
@@ -105,7 +91,7 @@ class MachineMainWindow(BasePaellaWindow):
         manager.show()
         self.mainView = manager
         if hasattr(self.mainView, 'setSizes'):
-            self.mainView.setSizes([100, 300])
+            self.mainView.setSizes([75, 425])
         
     def initActions(self):
         collection = self.actionCollection()
@@ -142,11 +128,6 @@ class MachineMainWindow(BasePaellaWindow):
         self.statusbar.message('Manage Machines')
         self._managing = 'machine'
         
-    def slotManagemachine_type(self):
-        self._setMainView(MachineTypeManager)
-        self.statusbar.message('Manage Machine Types')
-        self._managing = 'mtype'
-        
     def slotManagediskconfig(self):
         self._setMainView(DiskConfigManager)
         self.statusbar.message('Manage diskconfig')
@@ -169,8 +150,6 @@ class MachineMainWindow(BasePaellaWindow):
             KMessageBox.information(self, 'Select something to manage first.')
         elif self._managing == 'machine':
             self.mainView.mainView.setSource('new.machine.foo')
-        elif self._managing == 'mtype':
-            self.mainView.mainView.setSource('new.machine_type.foo')
         elif self._managing == 'diskconfig':
             self.mainView.mainView.setSource('new.diskconfig.foo')
         else:

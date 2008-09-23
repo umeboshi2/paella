@@ -1,5 +1,9 @@
+from useless.base import NoExistError
 from useless.base.util import Gpg
 from useless.sqlgen.clause import Eq
+
+class NoAptKeyError(NoExistError):
+    pass
 
 class AptKeyHandler(object):
     def __init__(self, conn):
@@ -11,8 +15,13 @@ class AptKeyHandler(object):
     
     def get_row(self, name):
         clause = Eq('name', name)
-        return self.cursor.select_row(table='archive_keys', clause=clause)
-
+        try:
+            row = self.cursor.select_row(table='archive_keys', clause=clause)
+            return row
+        except NoExistError:
+            msg = "There's no apt key named %s in the database" % name
+            raise NoAptKeyError , msg
+        
     def get_keyid(self, keydata):
         gpg = Gpg()
         return gpg.importkey(keydata)

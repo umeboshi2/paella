@@ -57,7 +57,7 @@ class TraitInstallerHelper(object):
 
         # setup empty variable containers
         self.profiledata = {}
-        self.mtypedata = {}
+        self.machine_data = {}
         self.familydata = {}
 
         # It's odd, but running the same
@@ -138,8 +138,9 @@ class TraitInstallerHelper(object):
     # order of updates is important here
     def _update_templatedata(self):
         self.traittemplate.template.update(self.familydata)
-        self.traittemplate.template.update(self.mtypedata)
         self.traittemplate.template.update(self.profiledata)
+        self.traittemplate.template.update(self.machine_data)
+
         
     def _make_template_common(self, template, tmpl):
         sub = self.traittemplate.template.sub()
@@ -311,7 +312,7 @@ class TraitInstaller(BaseInstaller):
         # pass the log object to the helper
         self.helper.log = self.log
         # this is really ugly, but works for now
-        for attr in ['familydata', 'profiledata', 'mtypedata']:
+        for attr in ['familydata', 'profiledata', 'machine_data']:
             setattr(self, attr, getattr(parent, attr))
             setattr(self.helper, attr, getattr(self, attr))
 

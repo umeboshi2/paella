@@ -114,6 +114,18 @@ def get_suite(conn, profile):
     cursor.set_clause([('profile', profile)])
     return [r.suite for r in cursor.select()][0]
 
+# This whole class needs to be reworked
+# to keep communication with the database
+# down to a minimum.  The interface also
+# uses file objects instead of strings for
+# the script contents, due to the fact that
+# I used to store the scripts as blobs originally
+# and tried to keep a similar interface.  This
+# is currently unnecessary, and we can use
+# with a complete reworking of this class.
+# we should also note that the only subclass
+# is in the machines, the trait scripts object
+# uses it's own (probably similar) method.
 class ScriptCursor(StatementCursor):
     def __init__(self, conn, table, keyfield):
         StatementCursor.__init__(self, conn, name='AllTraits')
@@ -158,10 +170,11 @@ class ScriptCursor(StatementCursor):
         clause = self._clause(name)
         self.update(data=dict(scriptfile=str(id)), clause=clause)
 
-    def remove_scriptfile(self, name):
-        print 'remove_scriptfile deprecated'
-        raise Error, 'remove_scriptfile is deprecated'
     
+    # we're talking to the database way
+    # too much in this routine, and we need
+    # to work on this in the future to minimize
+    # communication with the database.
     def get(self, name):
         clause = self._clause(name)
         rows = self.select(clause=clause)

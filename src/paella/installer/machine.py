@@ -67,7 +67,7 @@ DEFAULT_PROCESSES = [
 
 class BaseMachineInstaller(ChrootInstaller):
     def check_machine_set(self):
-        if self.machine.current is None:
+        if self.machine.current_machine is None:
             raise UnsatisfiedRequirementsError, "need to set machine first"
 
     def check_disks_setup(self):
@@ -115,10 +115,10 @@ class MachineInstaller(BaseMachineInstaller):
             self.disklogpath.makedirs()
         self.set_logfile(logfile)
         self.log.info('machine set to %s' % machine)
-        # we need to set mtypedata before setting the profile
-        # so that the mtypedata is passed to the profile and trait installers
-        self.mtypedata = self.machine.mtype.get_machine_type_data()
-        profile = self.machine.current.profile
+        # we need to set machine_data before setting the profile
+        # so that the machine_data is passed to the profile and trait installers
+        self.machine_data = self.machine.get_machine_data()
+        profile = self.machine.get_profile()
         self.set_profile(profile)
         self.curenv = CurrentEnvironment(self.conn, machine)
         self.helper = MachineInstallerHelper(self)
@@ -126,7 +126,7 @@ class MachineInstaller(BaseMachineInstaller):
 
     def make_script(self, procname):
         self.check_machine_set()
-        script = self.machine.get_script(procname)
+        script = self.machine.relation.get_script(procname, inherited=True)
         if script is not None:
             return make_script(procname, script, '/')
         else:
@@ -139,7 +139,12 @@ class MachineInstaller(BaseMachineInstaller):
         
     def install_modules(self):
         self.check_install_complete()
-        self.helper.install_modules()
+        self.log.info("install_modules isn't being used anymore.")
+        msg = "This step is still here, in case you need to use a script"
+        msg += " to add modules to /etc/modules ."
+        self.log.info(msg)
+        if False:
+            self.helper.install_modules()
 
     def install_kernel(self):
         self.check_install_complete()

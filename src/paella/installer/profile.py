@@ -52,7 +52,7 @@ class ProfileInstaller(BaseInstaller):
             self.log = self.mainlog.loggers[name]
             
         # make empty data dicts
-        self.mtypedata = {}
+        self.machine_data = {}
         self.familydata = {}
         self.profiledata = {}
         
@@ -73,7 +73,7 @@ class ProfileInstaller(BaseInstaller):
         self.installer = TraitInstaller(self)
         self.installer.familydata = self.familydata
         self.installer.profiledata = self.profiledata
-        self.installer.mtypedata = self.mtypedata
+        self.installer.machine_data = self.machine_data
 
     # here is where the processes are setup
     # every process is a trait and it maps to the same

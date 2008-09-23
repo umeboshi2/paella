@@ -12,7 +12,7 @@ from useless.base.path import path
 from paella import deprecated
 
 from base import CurrentEnvironment
-from base import runlog
+from base import runlog, RunLogError
 
 # this import should probably be removed
 from base import InstallError
@@ -54,7 +54,7 @@ class BootLoaderNotImplementedError(InstallError):
 
 class BaseHelper(object):
     def __init__(self, installer):
-        if installer.machine.current is None:
+        if installer.machine.current_machine is None:
             raise InstallError, 'installer must have machine selected'
         if installer.target is None:
             raise InstallError, 'installer must have target set'
@@ -98,8 +98,13 @@ class KernelHelper(BaseHelper):
         umount_devpts = ['umount', '/dev/pts']
         runlog(self.chroot_precommand + umount_devpts)
         umount_cmd = ['umount', self.targetdev]
-        runlog(umount_cmd)
-
+        try:
+            runlog(umount_cmd)
+        except RunLogError:
+            self.log.error("There was a problem with unmounting /dev in target")
+            self.log.info("attempting to do a lazy umount")
+            umount_cmd = ['umount', '-l', self.targetdev]
+            runlog(umount_cmd)
     # pass a keyword arg, since there's a grub2 now
     def install_grub_package(self, grub='grub'):
         cmd = self.chroot_precommand + self.aptinstall + [grub]
@@ -112,6 +117,11 @@ class KernelHelper(BaseHelper):
         opts = ['--recheck']
         if not floppy:
             opts.append('--no-floppy')
+        if device.startswith('/dev/md'):
+            self.log.warn('The boot device appears to be a raid array.')
+            self.log.info('Trying to determine the mbr for installing grub')
+            device = self._determine_disks_for_grub(device)
+            
         bin = '/usr/sbin/grub-install'
         runlog(self.chroot_precommand + [bin] + opts + [device])
         
@@ -124,7 +134,7 @@ class KernelHelper(BaseHelper):
         if extra_modules:
             self.log.info('Checking if extra packages are required before kernel install.')
             self.install_packages_for_extra_modules(extra_modules)
-        kernel = self.machine.current.kernel
+        kernel = self.machine.get_kernel()
         cmd = self.chroot_precommand + self.aptinstall + [kernel]
         self.log.info('install cmd is: %s' % ' '.join(cmd))
         kimgconf = self.target / 'etc' / 'kernel-img.conf'
@@ -211,7 +221,33 @@ class KernelHelper(BaseHelper):
         new_menu = ''.join(menu)
         return new_menu
     
-
+    
+    def _determine_disks_for_grub(self, bootdevice):
+        if not bootdevice.startswith('/dev/md'):
+            msg = "This method is only to be used when the "
+            msg += "boot device is set to /dev/md*"
+            raise RuntimeError , msg
+        device_map = self.target / 'boot/grub/device.map'
+        if not device_map.isfile():
+            #raise RuntimeError , 'We need the device.map from grub'
+            cmd = self.chroot_precommand + ['grub-mkdevicemap', '-n']
+            runlog(cmd)
+            self.log.info('device.map should be created now.')
+            if not device_map.isfile():
+              raise RuntimeError , 'Failed to make device.map'  
+        else:
+            self.log.info('device.map has been found')
+        lines = [line for line in file(device_map) if line.startswith('(hd0)')]
+        if len(lines) != 1:
+            msg = "Unable to find (hd0) in device.map"
+            self.log.error(msg)
+            raise RuntimeError , msg
+        line = lines[0]
+        grubdev, bootdevice = line.split()
+        self.log.info('going to use %s as the boot device for grub' % bootdevice)
+        return bootdevice
+            
+            
     def _get_diskvar(self):
         filename = self.disklogpath / 'disk_var.sh'
         diskvar = file(filename).read()
@@ -240,21 +276,6 @@ class KernelHelper(BaseHelper):
             raise RuntimeError , "diskconfig isn't set yet"
         return determine_mods_from_diskconfig(self.diskconfig)
 
-    def add_extra_modules_to_initrd(self, modules):
-        filename = self.target / 'etc/initramfs-tools/initramfs.conf'
-        filename = self.target / 'etc/initramfs-tools/modules'
-        filename.write_lines(modules, append=True)
-
-    def update_initrd_with_extra_modules(self, modules):
-        self.add_extra_modules_to_initrd(extra_modules)
-        msg = 'adding these extra modules to initrd: %s' % ', '.join(extra_modules)
-        self.log.info(msg)
-        cmd = self.chroot_precommand + ['update-initramfs', '-u']
-        if 'DEBUG' in os.environ:
-            cmd.append('-v')
-        runlog(cmd)
-        
-
     # The packages that are installed are probably not complete
     # and more testing needs to be done on this to insure that
     # the proper packages are installed for each filesystem
@@ -274,7 +295,26 @@ class KernelHelper(BaseHelper):
         self.log.info(msg)
         cmd += packages
         runlog(cmd)
-    
+
+    ##########################
+    # unused methods
+    ##########################
+        
+    def add_extra_modules_to_initrd(self, modules):
+        filename = self.target / 'etc/initramfs-tools/initramfs.conf'
+        filename = self.target / 'etc/initramfs-tools/modules'
+        filename.write_lines(modules, append=True)
+
+    def update_initrd_with_extra_modules(self, modules):
+        self.add_extra_modules_to_initrd(extra_modules)
+        msg = 'adding these extra modules to initrd: %s' % ', '.join(extra_modules)
+        self.log.info(msg)
+        cmd = self.chroot_precommand + ['update-initramfs', '-u']
+        if 'DEBUG' in os.environ:
+            cmd.append('-v')
+        runlog(cmd)
+        
+
                 
         
 class MachineInstallerHelper(BaseHelper):
@@ -304,10 +344,10 @@ class MachineInstallerHelper(BaseHelper):
         self._setup_storage_fai()
         
     def _setup_storage_fai(self):
-        row = self.machine.get_diskconfig()
-        diskconfig = row.content
+        diskconfig = self.machine.get_diskconfig_content()
         self.diskconfig = diskconfig
-        disklist = row.disklist
+        # FIXME:  disklist is hardcoded here
+        disklist = None
         if disklist is None:
             disklist = []
             cmd = ['/usr/lib/fai/disk-info']
@@ -387,8 +427,10 @@ class MachineInstallerHelper(BaseHelper):
         khelper = KernelHelper(self.installer)
         if bootdevice is None:
             bootdevice = khelper.get_bootdevice_from_diskvar()
+            self.log.info('Boot Device is %s' % bootdevice)
         if root_partition is None:
             root_partition = khelper.get_rootpartition_from_diskvar()
+            self.log.info('Root Partition is %s' % root_partition)
         khelper.prepare_bootloader(bootdevice, root_partition)
         
         

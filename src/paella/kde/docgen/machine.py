@@ -8,8 +8,8 @@ from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
 from paella.db.machine import MachineHandler
-from paella.db.machine.mtype import MachineTypeHandler
 from paella.db.machine.base import DiskConfigHandler
+from paella.db.machine.relations import AttributeUnsetInAncestryError
 
 from base import color_header
 from base import BaseDocument
@@ -85,87 +85,221 @@ class DiskConfigDoc(BaseDocument):
         
     
         
-class MachineDoc(BaseDocument):
+class MachineDoc(_MachineBaseDocument):
     def __init__(self, app, **atts):
-        BaseDocument.__init__(self, app, **atts)
+        _MachineBaseDocument.__init__(self, app, **atts)
         self.machine = MachineHandler(self.conn)
+        self._bgcolor_body = 'Salmon'
+        self._bgcolor_section = 'IndianRed'
+        self._other_section_font_color = 'DarkViolet'
+        self._bgcolor_thead = 'MediumOrchid2'
+        self._bgcolor_table = 'MediumOrchid3'
+        self.body['bgcolor'] = self._bgcolor_body
 
     def set_machine(self, machine):
         self.machine.set_machine(machine)
         self.clear_body()
         title = SectionTitle('Machine:  %s' % machine)
-        title['bgcolor'] = 'IndianRed'
+        title['bgcolor'] = self._bgcolor_section
         title['width'] = '100%'
         self.body.append(title)
-        mtable = Table()
-        for k,v in self.machine.current.items():
-            tablerow = TableRow()
-            tablerow.append(TableCell(Bold(k)))
-            tablerow.append(TableCell(v))
-            mtable.append(tablerow)
-        self.body.append(mtable)
-        newanchor = Anchor('new', href='new.machine.foo')
-        editanchor = Anchor('edit', href='edit.machine.%s' % machine)
-        self.body.append(Ruler())
-        self.body.append(editanchor)
-        self.body.append(Break())
-        self.body.append(newanchor)
+        #mtable = Table()
+        self._setup_parent_table()
+        self._setup_main_attributes()
+        self._setup_relation_sections()
+        self._make_footer_anchors('machine', machine)
+        return
+
+    def _setup_parent_table(self):
+        machine = self.machine.current_machine
+        parent_table = Table(bgcolor=self._bgcolor_table, border=1)
+        parent = self.machine.parent
+        if parent is None:
+            parent = '(No Parent Set)'
+        headrow = TableRow(bgcolor=self._bgcolor_thead)
+        for col in ['parent', 'command']:
+            headrow.append(TableHeader(col))
+        parent_table.append(headrow)
+        mainrow = TableRow()
+        parent_cell = TableCell(parent)
+        mainrow.append(parent_cell)
+        select_anchor = Anchor('select', href='select.parent.%s' % machine)
+        delete_anchor = Anchor('delete', href='delete.parent.%s' % machine)
+        command_cell = TableCell()
+        command_cell.append(select_anchor)
+        if self.machine.parent is not None:
+            #command_cell.append(Break())
+            command_cell.append('|=====|')
+            command_cell.append(delete_anchor)
+        mainrow.append(command_cell)
+        parent_table.append(mainrow)
+        self.body.append(parent_table)
         
-    def set_clause(self, clause):
-        print 'clause---->', clause, type(clause)
-        self.clear_body()
-        title = SectionTitle('Machines')
-        title['bgcolor'] = 'IndianRed'
-        title['width'] = '100%'
-        self.body.append(title)
-        for row in self.machine.cursor.select(clause=clause):
-            self.body.append(MachineFieldTable(row, bgcolor='MistyRose3'))
-            self.body.append(Ruler())
-
-class MachineTypeDoc(_MachineBaseDocument):
-    def __init__(self, app, **atts):
-        _MachineBaseDocument.__init__(self, app, **atts)
-        self.mtype = MachineTypeHandler(self.conn)
-        self.body['bgcolor'] = 'Salmon'
-
-    def set_machine_type(self, machine_type):
-        clause = Eq('machine_type', machine_type)
-        self.clear_body()
-        self.mtype.set_machine_type(machine_type)
-        title = SectionTitle('Machine Type:  %s' % machine_type)
-        title['bgcolor'] = 'IndianRed'
-        title['width'] = '100%'
-        self.body.append(title)
-        row = self.mtype.get_row()
-        diskconfig = Paragraph('DiskConfig: %s' % row.diskconfig)
-        self.body.append(diskconfig)
-        modrows =  self.cursor.select(table='machine_modules', clause=clause,
-                                      order=['ord'])
-        self._setup_section('Modules', ['module', 'ord'], modrows)
-        famrows = self.cursor.select(table='machine_type_family', clause=clause,
+    def _setup_main_attributes(self):
+        machine = self.machine.current_machine
+        attribute_table = Table(bgcolor=self._bgcolor_table, border=1)
+        headrow = TableRow(bgcolor=self._bgcolor_thead)
+        for col in ['Attribute', 'Value', 'Inherited From', 'Command']:
+            headrow.append(TableHeader(col))
+        attribute_table.append(headrow)
+        for attribute in ['kernel', 'profile', 'diskconfig']:
+            errormsg = ''
+            try:
+                value, inherited_from = self.machine.get_attribute(attribute)
+            except AttributeUnsetInAncestryError:
+                errormsg = "WARNING: not set anywhere"
+                value, inherited_from = errormsg, errormsg
+            tablerow = TableRow()
+            href = 'select.attribute||%s.%s' % (attribute, machine)
+            anchor = Anchor(attribute, href=href)
+            cell = TableCell(Bold(anchor, ':'))
+            tablerow.append(cell)
+            cell = TableCell(value)
+            tablerow.append(value)
+            cell = TableCell()
+            if inherited_from is not None:
+                if errormsg:
+                    anchor = Bold(errormsg)
+                else:
+                    anchor = Anchor(inherited_from, href='select.machine.%s' % inherited_from)
+                cell.append(anchor)
+            else:
+                cell.append('(set here)')
+            tablerow.append(cell)
+            cell = TableCell()
+            anchor = Anchor('clear', href='delete.attribute||%s.%s' % (attribute, machine))
+            if inherited_from is None:
+                cell.set(anchor)
+            tablerow.append(cell)
+            attribute_table.append(tablerow)
+        self.body.append(attribute_table)
+        
+    def _setup_relation_sections(self):
+        machine = self.machine.current_machine
+        clause = Eq('machine', machine)
+        cursor = self.conn.cursor(statement=True)
+        famrows = cursor.select(table='machine_family', clause=clause,
                                      order='family')
         self._setup_section('Families', ['family'], famrows)
-        scripts = self.cursor.select(table='machine_type_scripts', clause=clause,
-                                     order='script')
-        self._setup_section('Scripts', ['script'], scripts)
-        vars_ = self.cursor.select(table='machine_type_variables', clause=clause,
+        self._setup_script_section()
+        vars_ = cursor.select(table='machine_variables', clause=clause,
                                    order=['name'])
-        #self._setup_section('Variables', ['name', 'value'], vars_)
-        self._make_footer_anchors('machine_type', machine_type)
+        #self._setup_section('Variables', ['trait', 'name', 'value'], vars_)
+        self._setup_variables_section(vars_)
+        
+    def _setup_script_section(self):
+        machine = self.machine.current_machine
+        relation = self.machine.relation
+        scriptnames = relation.scripts.scriptnames
+        scripts = []
+        for scriptname in scriptnames:
+            result = relation.get_script(scriptname, show_inheritance=True)
+            if result is not None:
+                # if result is not None, then result is a tuple
+                # that is (fileobj, parent)
+                # but we need scriptname, parent
+                scripts.append((scriptname, result[1]))
+        # make the section
+        title = SectionTitle('Scripts', bgcolor=self._bgcolor_section)
+        title.set_font(color=self._other_section_font_color)
+        anchor = Anchor('new', href='new.%s.machine' % 'Scripts')
+        title.row.append(TableCell(anchor))
+        self.body.append(title)
+        if len(scripts):
+            table = self._make_script_table(scripts, border=1, cellspacing=1)
+            color_header(table, self._bgcolor_thead)
+            self.body.append(table)
+
+    def _make_script_table(self, scripts, **atts):
+        table = Table(bgcolor=self._bgcolor_table, **atts)
+        table.context = 'Scripts'
+        fields= ['script', 'inherited', 'command']
+        self._add_table_header(table, fields)
+        for scriptname, parent in scripts:
+            self._add_script_table_row(table, scriptname, parent)
+        return table
+    
+    def _add_script_table_row(self, table, scriptname, parent):
+        tablerow = TableRow()
+        # scriptname cell
+        scriptname_cell = TableCell(scriptname)
+        
+        # command cell (we use
+        # an empty cell as default)
+        command_cell = TableCell()
+
+        # parent cell
+        if parent is None:
+            parent = '(defined here)'
+            # if script is defined here, instead of inherited
+            # we make the command anchors.
+            durl = 'delete.%s.%s' % (table.context, scriptname)
+            eurl = 'edit.%s.%s' % (table.context, scriptname)
+            delanchor = Anchor('delete', href=durl)
+            editanchor = Anchor('edit', href=eurl)
+            command_cell = TableCell(editanchor)
+            command_cell.append(Break())
+            command_cell.append(delanchor)
+        parent_cell = TableCell(parent)
+
+        # append the cells to the rows
+        tablerow.append(scriptname_cell)
+        tablerow.append(parent_cell)
+        tablerow.append(command_cell)
+        table.append(tablerow)
+
+    def _setup_variables_section(self, rows):
+        section = 'Variables'
+        machine = self.machine.current_machine
+        relation = self.machine.relation
+        # make the section
+        title = SectionTitle(section, bgcolor=self._bgcolor_section)
+        title.set_font(color=self._other_section_font_color)
+        anchor = Anchor('new', href='new.%s.machine' % section)
+        title.row.append(TableCell(anchor))
+        self.body.append(title)
+        if len(rows):
+            table = self._make_variables_table(rows, border=1, cellspacing=1)
+            color_header(table, self._bgcolor_thead)
+            self.body.append(table)
+
+    def _make_variables_table(self, rows, **atts):
+        table = Table(bgcolor=self._bgcolor_table, **atts)
+        table.context = 'Variables'
+        fields = ['trait', 'name', 'value']
+        self._add_table_header(table, fields + ['command'])
+        for row in rows:
+            self._add_variables_table_row(table, fields, row)
+        return table
+
+    def _add_variables_table_row(self, table, fields, row):
+        tablerow = TableRow()
+        for field in fields:
+            tablerow.append(TableCell(str(row[field])))
+        ident = '%s||%s' % (row['trait'], row['name'])
+        durl = 'delete.%s.%s' % (table.context, ident)
+        eurl = 'edit.%s.%s' % (table.context, ident)
+        delanchor = Anchor('delete', href=durl)
+        editanchor = Anchor('edit', href=eurl)
+        cell = TableCell(editanchor)
+        cell.append(Break())
+        cell.append(delanchor)
+        tablerow.append(cell)
+        table.append(tablerow)
 
     def _setup_section(self, name, fields, rows):
-        title = SectionTitle(name)
-        title.set_font(color='DarkViolet')
-        anchor = Anchor('new', href='new.%s.mtype' % name)
+        title = SectionTitle(name, bgcolor=self._bgcolor_section)
+        title.set_font(color=self._other_section_font_color)
+        anchor = Anchor('new', href='new.%s.machine' % name)
         title.row.append(TableCell(anchor))
         self.body.append(title)
         if len(rows):
             table = self._make_table(name, fields, rows, border=1, cellspacing=1)
-            color_header(table, 'MediumOrchid2')
+            color_header(table, self._bgcolor_thead)
             self.body.append(table)
             
     def _make_table(self, context, fields, rows, **atts):
-        table = Table(bgcolor='MediumOrchid3', **atts)
+        table = Table(bgcolor=self._bgcolor_table, **atts)
         table.context = context
         self._add_table_header(table, fields + ['command'])
         for row in rows:
@@ -186,10 +320,13 @@ class MachineTypeDoc(_MachineBaseDocument):
         tablerow.append(cell)
         table.append(tablerow)
 
-class MachineFieldTable(BaseFieldTable):
-    def __init__(self, row, **atts):
-        fields = ['machine', 'machine_type', 'kernel', 'profile', 'filesystem']
-        BaseFieldTable.__init__(self, fields, row, **atts)
+    def _make_footer_anchors(self, name, value):
+        newanchor = Anchor('new', href='new.%s.foo' % name)
+        deleteanchor = Anchor('delete', href='delete.%s.%s' % (name, value))
+        self.body.append(Ruler())
+        self.body.append(Break())
+        self.body.append(deleteanchor)
+        self.body.append(Break())
+        self.body.append(newanchor)
 
 
-# first draft completed

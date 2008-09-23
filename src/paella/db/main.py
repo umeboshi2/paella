@@ -450,7 +450,7 @@ class PaellaImporter(object):
         machinedb = self.main_path / 'machine_database.xml'
         if machinedb.isfile():
             mh = MachineHandler(self.conn)
-            mh.restore_machine_database(self.main_path)
+            mh.import_machine_database(self.main_path)
         default_environment_basename = 'default-environment'
         filename = self.main_path / default_environment_basename
         if filename.isfile():

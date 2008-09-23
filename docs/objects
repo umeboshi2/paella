@@ -119,18 +119,79 @@ This section describes the machine database part of paella.  Profile, traits, an
 should not be machine specific.  The Machine database trying to be design to hold
 information about physical systems to install logical systems from.
 
-Machine Type
--------------
-A machine type is going to be the main identifier of a particular type of machine.
-This currently includes disks and kernel modules.  The disks of a machine type are a
-list of tuples in the database (machine_type, diskname, device) .  The current policy is 
-to treat all devices of a certain  diskname as a raid1 array if there is more than one
-device.  Machine Types will have parents soon.
+Machine
+--------
 
-Machine Type Scripts
+a machine contains 
+
+- a **name**
+
+- a **parent** - This is a parent machine that current machine is based from.
+
+  + Unlike traits and families, a machine can only have one parent.
+
+  + This is an optional field.
+
+- a **kernel** 
+  
+  + A kernel is simply the name of a kernel image package (for example, 
+    linux-image-2.6-686).
+  + The package must be install-able by apt, in a chroot environment, on the target system. 
+  + This attribute must be set somewhere in the machine's ancestry.
+
+- a **diskconfig** 
+  
+  + a diskconfig is the name of a diskconfig file that will be used by setup-storage when
+    during the setup_disks part of the install.
+  + This attribute must be set somewhere in the machine's ancestry.
+
+- a **profile** - This is the profile that will be installed on the machine.
+
+  + This attribute must be set somewhere in the machine's ancestry.
+
+- **families** - These are the normal families in the paella database.  These families
+  override the families in the profile.
+
+- **scripts** - These are "hook" scripts to override steps in the install process.
+
+- **variables** - These are variables that will override the variables defined in the 
+  traits, families, profile, and families for the machine.  In other words, these are the
+  variables that override all other variables.
+
+Machine Inheritance
+-------------------------------------------
+
+Since machines can have parents, it's important to know how a parent affects the
+machine.  There are three main attributes that each machine has.  These are the
+kernel, profile, and diskconfig attributes.  If the child machine doesn't have one of 
+these attributes set, it is resolved by going up the ancestral chain until the attribute 
+is found.  So a kernel set on a parent machine will be installed on all the child machines, 
+unless one of the child machines has their kernel attribute set, which will override the
+parent machine's kernel.  This allows the administrator to make groups of machines 
+by using a parent, setting the attributes on the parent, and leaving them as NULL on the 
+children.
+
+Machine scripts are treated similarly to the attributes mentioned above.  A script set 
+on a parent machine will be run on each of the child machines, unless the child has 
+that script set itself.  There is currently not a way to tell a child machine to ignore a 
+parent's script and perform the regular step in the paella installer.
+
+
+Families and variables are done differently.  Here, the variables are resolved from 
+"oldest" to "youngest".  Each machine updates the variables with its families, then 
+its own variables.  If there is a parent family on a child machine that has a child family 
+on a parent machine, the parent family on the child machine will override the child 
+family on the parent machine.  This is because the variables are updated one machine 
+at a time from "oldest" to "youngest", families first, then variables.
+
+I'll put some examples here later, since this section is hard to write, and probably 
+even harder to read.
+
+
+Machine Scripts
 -------------------------------
 
-Machine type scripts are steps in the install process for machines.  These steps
+Machine scripts correspond to steps in the install process for machines.  These steps
 will be treated similiar to the trait scripts. The default steps/scripts are:
 
 - pre
@@ -182,7 +243,9 @@ will be treated similiar to the trait scripts. The default steps/scripts are:
 - install_modules
 
   + this step should create a $target/etc/modules file appropriate for
-    the machine type.
+    the machine type.  This step isn't implemented anymore.  I'm leaving
+    the step here as a step that does nothing now, in case a script is 
+    needed to perform this function.
 
 - install_kernel
 
@@ -204,44 +267,6 @@ will be treated similiar to the trait scripts. The default steps/scripts are:
 - post
 
   + this step normally does nothing.
-
-Machine
---------
-
-a machine contains 
-
-- a **name**
-
-- a **machine_type**
-
-  + this is one of the machine types that are already defined
-
-- a **kernel** 
-  
-  + a kernel is simply the name of a kernel image package 
-  + the package must be install-able by apt, in a chroot environment, on the target system. 
-
-- a **filesystem** 
-  
-  + a filesystem_ is a named ordered map of mounts_ to partition numbers 
-
-- a **profile**
-
-
-Mount
-------
-
-a mount_ is named 
-
-a mount describes filesystem type, mount option, dump, pass and the mount point 
-
-Filesystem
----------------
-
-this is done on filesystem_mounts 
-
-the target fstab will be completely formed from the filesystem information 
-
 
 
 

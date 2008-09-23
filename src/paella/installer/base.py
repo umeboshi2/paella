@@ -101,6 +101,9 @@ class MainLog(object):
 
     def warn(self, name, msg):
         self.loggers[name].warn(msg)
+
+    def error(self, name, msg):
+        self.loggers[name].error(msg)
         
         
 class PaellaLogger(MainLog):
@@ -130,6 +133,11 @@ class PaellaLogger(MainLog):
         if not name:
             name = self._basename
         MainLog.warn(self, name, msg)
+
+    def error(self, msg, name=''):
+        if not name:
+            name = self._basename
+        MainLog.error(self, name, msg)
         
 
 # I've added some ugly looking warning code here
@@ -150,7 +158,7 @@ def runlog(cmd, logfile=None, logobject=None, failure_suppressed=False):
             logger = sys.paella_logger
             stream = logger.handlers[0].stream
             kw['stdout'] = stream
-            print "using logger stream for output"
+            #print "using logger stream for output"
     else:
         kw['stdout'] = logobject.handlers[0].stream
     if type(cmd) is list:

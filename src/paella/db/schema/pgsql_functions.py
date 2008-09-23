@@ -21,26 +21,16 @@ def pgsql_delete_profile():
     tables = ['profile_variables', 'profile_family', 'profile_trait', 'profiles']
     return pgsql_delete('delete_profile', tables, 'profile')
 
-def pgsql_delete_disk():
-    tables = ['partitions', 'disk']
-    return pgsql_delete('delete_disk', tables, 'diskname')
-
-def pgsql_delete_mtype():
-    tables = ['machine_disks', 'machine_modules', 'machine_types']
-    return pgsql_delete('delete_mtype', tables, 'machine_type')
-
-def pgsql_delete_filesystem():
-    tables = ['filesystem_mounts', 'filesystems']
-    return pgsql_delete('delete_filesystem', tables, 'filesystem')
+def pgsql_delete_machine():
+    tables = ['machine_variables', 'machine_scripts', 'machine_parent',
+              'machine_family', 'machines']
+    return pgsql_delete('delete_machine', tables, 'machine')
 
 def create_pgsql_functions(cursor):
     cursor.execute(plpgsql_delete_trait)
     cursor.execute(pgsql_delete_profile())
     cursor.execute(pgsql_delete_family())
-    cursor.execute(pgsql_delete_disk())
-    cursor.execute(pgsql_delete_mtype())
-    cursor.execute(pgsql_delete_filesystem())
-
+    cursor.execute(pgsql_delete_machine())
 
     
 

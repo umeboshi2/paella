@@ -100,8 +100,8 @@ class ToolkitDatabase(object):
             env.update(self.trait._parents.Environment())
         env.update(self.profile.get_family_data())
         env.update(self.profile.get_profile_data())
-        if self.machine.current is not None:
-            env.update(self.machine.mtype.get_machine_type_data())
+        if self.machine.current_machine is not None:
+            env.update(self.machine.get_machine_data())
         return env
 
 class InstallerTools(object):
