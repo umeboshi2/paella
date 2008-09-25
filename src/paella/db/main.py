@@ -168,7 +168,20 @@ class PaellaExporter(object):
         suitedir = self.db_export_path / suite
         makepaths(suitedir)
         return suitedir
-    
+
+    def export_profile(self, profile, dirname=None):
+        if dirname is None:
+            dirname = path('.')
+        dirname = path(dirname)
+        makepaths(dirname)
+        # this env object should be handled
+        # inside the profile object instead
+        # of being handled here.
+        env = self.profile.make_environment_object()
+        env.set_profile(profile)
+        self.profile.export_profile(dirname, profile=profile, env=env)
+        
+
     def export_all_profiles(self, dirname=None):
         if dirname is None:
             dirname = self.db_export_path / 'profiles'
@@ -180,22 +193,40 @@ class PaellaExporter(object):
             env.set_profile(profile)
             self.profile.export_profile(dirname, profile=profile, env=env)
             self.report_profile_exported(profile)
-            
-    def export_all_diskconfigs(self, dirname=None):
+
+    def export_diskconfig(self, name=None, dirname=None, row=None):
         if dirname is None:
             dirname = self.db_export_path / 'diskconfig'
+        dirname = path(dirname)
         makepaths(dirname)
+        if name is None and row is None:
+            raise RuntimeError , 'either name or row must be passed to export_diskconfig'
+        if name is not None:
+            row = self.diskconfig.get(name)
+        filename = row.name
+        content = row.content
+        diskconfig = dirname / filename
+        diskconfig.write_text(content)
+        
+    def export_all_diskconfigs(self, dirname=None):
         for row in self.diskconfig.cursor.select():
-            filename = row.name
-            diskconfig = dirname / filename
-            diskconfig.write_text(row.content)
+            self.export_diskconfig(dirname=dirname, row=row)
             
     def export_all_families(self, dirname=None):
         if dirname is None:
             dirname = self.db_export_path / 'families'
+        dirname = path(dirname)
         makepaths(dirname)
         self.family.export_families(dirname)
 
+    def export_family(self, family, dirname=None):
+        if dirname is None:
+            dirname = self.db_export_path / 'families'
+        dirname = path(dirname)
+        makepaths(dirname)
+        self.family.write_family(family, dirname)
+        
+        
     def export_trait(self, trait, suite=None, dirname=None, traitdb=None):
         if traitdb is None:
             if suite is None:
@@ -237,7 +268,18 @@ class PaellaExporter(object):
         else:
             dirname = path(dirname)
         self.machines.export_machine_database(dirname)
-                                
+
+    def export_machine(self, machine, dirname=None):
+        if dirname is None:
+            dirname = self.db_export_path
+        dirname = path(dirname)
+        makepaths(dirname)
+        current_machine = self.machines.current_machine
+        self.machines.set_machine(machine)
+        self.machines.export_machine(dirname)
+        if current_machine is not None:
+            self.machines.set_machine(current_machine)
+        
     def _export_environment_common(self, dirname, envtype):
         if dirname is None:
             dirname = self.db_export_path
@@ -288,7 +330,7 @@ class PaellaExporter(object):
         print 'exporting suite %s' % suite
         
     def report_suite_exported(self, suite):
-        print 'suite %s exported'
+        print 'suite %s exported' % suite
         
     def report_total_traits(self, total):
         print 'exporting %d traits' % total

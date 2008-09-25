@@ -1,0 +1,107 @@
+#!/usr/bin/python -i
+
+##!/usr/bin/env python
+
+import os, sys
+from optparse import OptionParser
+
+from useless.base.path import path
+from paella.db import PaellaConnection
+from paella.db.main import PaellaExporter
+
+
+# setup option parser
+parser = OptionParser()
+# entity options
+parser.add_option('--diskconfig', action='store_const', const='diskconfig',
+                  dest='entity')
+parser.add_option('--family', action='store_const', const='family', dest='entity')
+parser.add_option('--profile', action='store_const', const='profile', dest='entity')
+parser.add_option('--machine', action='store_const', const='machine',
+                  dest='entity')
+parser.add_option('--trait', action='store_const', const='trait', dest='entity')
+
+
+parser.add_option('--suite', type='string',action='store', dest='suite', default='')
+parser.add_option('--directory', type='string', action='store', dest='export_path',
+                  default='.')
+parser.add_option('--all', action='store_true', dest='all', default=False)
+
+
+# get options and arguments
+opts, args = parser.parse_args(sys.argv[1:])
+
+#if opts.entity == 'trait' and not opts.suite:
+#    parser.error('The suite option must be set when exporting a trait')
+
+if opts.suite and opts.all:
+    print "exporting all traits in suite", opts.suite
+    
+
+print "entity is", opts.entity
+
+conn = PaellaConnection()
+exporter = PaellaExporter(conn)
+
+export_path = path(opts.export_path)
+exporter.set_db_export_path(export_path)
+
+if not args and not opts.all:
+    parser.error('If not exporting all of an entity type, use an argument')
+
+if len(args) and len(args) > 1:
+    parser.error("Can't handle multiple arguments yet")
+
+if len(args) and opts.all:
+    print "Ignoring arguments when --all is set"
+
+name = ''
+if not opts.all and len(args):
+    name = args[0]
+
+suite = opts.suite
+
+if opts.entity == 'diskconfig':
+    if opts.all:
+        exporter.export_all_diskconfigs(dirname=export_path)
+    else:
+        exporter.export_diskconfig(name=name, dirname=export_path)
+elif opts.entity == 'family':
+    if opts.all:
+        exporter.export_all_families(dirname=export_path)
+    else:
+        exporter.export_family(name, dirname=export_path)
+elif opts.entity == 'profile':
+    if opts.all:
+        exporter.export_all_profiles(dirname=export_path)
+    else:
+        exporter.export_profile(name, dirname=export_path)
+elif opts.entity == 'machine':
+    if opts.all:
+        exporter.export_machine_database(dirname=export_path)
+    else:
+        exporter.export_machine(name, dirname=export_path)
+elif opts.entity == 'trait':
+    if not suite and opts.all:
+        print "export all traits in all suites"
+        # Don't mind the dirname argument here
+        # it will work, since we're depending on it
+        # being set in the exporter
+        exporter.export_all_suites(dirname=None)
+    elif not suite and not opts.all:
+        raise RuntimeError , "--suite has to be set when exporting a trait"
+    elif suite and opts.all:
+        dirname = export_path / suite
+        exporter.export_suite(suite, dirname=dirname)
+    elif suite and not opts.all:
+        print "exporting trait %s in suite %s" % (name, suite)
+        exporter.export_trait(name, suite=suite, dirname=export_path)
+    else:
+        msg = "I don't know how to handle these arguments.\n"
+        msg += "Suite: %s, --all=%s, args=%s" % (suite, opts.all, ', '.join(args))
+        raise RuntimeError , msg
+else:
+    print "Entity is", opts.entity
+    print "I don't know what to do"
+    
+    
