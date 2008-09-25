@@ -7,7 +7,7 @@ from xml.dom.minidom import parse as parse_file
 
 from useless.base import ExistsError, Error, debug, UnbornError
 
-from useless.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq, In
 from useless.sqlgen.statement import Statement
 from useless.db.midlevel import StatementCursor, SimpleRelation
 from useless.db.midlevel import Environment, MultiEnvironment
@@ -82,9 +82,6 @@ class Family(object):
             raise Error, 'either pass a family argument or call set_family on this object'
         return family
     
-    def add_family(self, family, type='general'):
-        pass
-
     def get_related_families(self, families=[]):
         rows = self.cursor.select(table='family_parent')
         graph = kjGraph([(r.family, r.parent) for r in rows])
@@ -131,10 +128,24 @@ class Family(object):
         else:
             raise ExistsError, '%s already exists' % family
 
+    def delete_family(self, family=None):
+        family = self._check_family(family)
+        self.cursor.execute("select * from delete_family('%s')" % family)
+        
     def insert_parents(self, parents, family=None):
         family = self._check_family(family)
         self.parent.insert('parent', parents)
 
+    def delete_parents(self, parents=[], family=None):
+        family = self._check_family(family)
+        if not parents:
+            parents = self.parents()
+        if not parents:
+            return
+        table= 'family_parent'
+        clause = Eq('family', family) & In('parent', parents)
+        self.cursor.delete(table=table, clause=clause)
+        
     def FamilyData(self, families=[]):
         # change sep here
         sep = PAELLA_TRAIT_NAME_SEP

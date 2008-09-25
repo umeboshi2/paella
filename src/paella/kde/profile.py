@@ -128,6 +128,19 @@ class ProfileView(ViewBrowser):
                 print 'changeSuite emitted'
             else:
                 KMessageBox.error(self, 'bad change action %s' % url)
+        elif action == 'delete':
+            if context == 'profile':
+                msg = "Really delete profile %s" % ident
+                answer = KMessageBox.questionYesNo(self, msg)
+                if answer == KMessageBox.Yes:
+                    #msg = "we're supposed to delete this profile, but can't yet"
+                    self.doc.profile.delete_profile(ident)
+                    msg = "profile %s deleted" % ident
+                    KMessageBox.information(self, msg)
+                    self.parent().parent().refreshListView()
+                    self.setText('')
+            else:
+                KMessageBox.error(self, "Don't know how to delete %s" % context)
                 
                 
         else:

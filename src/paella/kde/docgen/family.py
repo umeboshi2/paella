@@ -1,5 +1,5 @@
 from useless.base.forgethtml import UnorderedList, ListItem
-from useless.base.forgethtml import Anchor
+from useless.base.forgethtml import Anchor, Ruler
 
 from paella.db.family import Family
 
@@ -22,7 +22,8 @@ class FamilyDoc(BaseDocument):
         title['width'] = '100%'
 
         self.body.append(title)
-        self.body.append(SectionTitle('Parents'))
+        parent_anchor = Anchor('Parents', href='edit.parents.%s' % family)
+        self.body.append(SectionTitle(parent_anchor))
         if len(parents):
             plist = UnorderedList()
             for p in parents:
@@ -32,7 +33,10 @@ class FamilyDoc(BaseDocument):
         self.body.append(SectionTitle(vtitle))
         if len(erows):
             self.body.append(PVarTable(erows, bgcolor='MistyRose2'))
-
+        self.body.append(Ruler())
+        del_anchor = Anchor('delete', href='delete.family.%s' % family)
+        self.body.append(del_anchor)
+        
 
 # first draft complete
 

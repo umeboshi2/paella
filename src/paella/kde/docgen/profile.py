@@ -2,6 +2,7 @@ from useless.base.forgethtml import UnorderedList, ListItem
 from useless.base.forgethtml import Table, TableRow, TableCell
 from useless.base.forgethtml import Anchor
 from useless.base.forgethtml import Paragraph
+from useless.base.forgethtml import Ruler
 
 from paella.db.profile import Profile
 
@@ -33,23 +34,28 @@ class ProfileDoc(BaseDocument):
         
         self.body.append(title)
         rows = self.profile.get_trait_rows()
-        ptitle = Anchor('Traits', href='edit.traits.%s' % self.profile.current.profile)
+        ptitle = Anchor('Traits', href='edit.traits.%s' % profile)
         self.body.append(SectionTitle(ptitle))
         if len(rows):
             self.body.append(TraitTable(rows, bgcolor='IndianRed1'))
-        vtitle = Anchor('Variables', href='edit.variables.%s' % self.profile.current.profile)
+        vtitle = Anchor('Variables', href='edit.variables.%s' % profile)
         self.body.append(SectionTitle(vtitle))
         erows = self.profile._env.get_rows()
         if len(erows):
             self.body.append(PVarTable(erows, bgcolor='MistyRose2'))
-        etitle = Anchor('Families', href='edit.families.%s' % self.profile.current.profile)
+        etitle = Anchor('Families', href='edit.families.%s' % profile)
         self.body.append(SectionTitle(etitle))
         families = self.profile.get_families()
         flist = UnorderedList()
         for f in families:
             flist.append(ListItem(f))
         self.body.append(flist)
+        self.body.append(Ruler())
+        del_anchor = Anchor('delete', href='delete.profile.%s' % profile)
+        self.body.append(del_anchor)
         
+
+
 class FamilyDoc(BaseDocument):
     def __init__(self, app, **atts):
         BaseDocument.__init__(self, app, **atts)

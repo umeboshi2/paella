@@ -164,8 +164,9 @@ class Profile(StatementCursor):
         self._fam = Family(conn)
         self.current = None
         
-    def drop_profile(self, profile):
-        self.delete(clause=Eq('profile', profile))
+    def delete_profile(self, profile):
+        self.execute("select * from delete_profile('%s')" % profile)
+        
 
     def make_new_profile(self, profile, suite):
         data = dict(profile=profile, suite=suite)
