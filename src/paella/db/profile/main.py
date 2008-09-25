@@ -5,6 +5,7 @@ from useless.sqlgen.clause import Eq
 from useless.db.midlevel import StatementCursor, SimpleRelation
 from useless.db.midlevel import Environment
 
+from paella import PAELLA_TRAIT_NAME_SEP
 from paella.base.util import make_deplist
 from paella.base.objects import VariablesConfig
 from paella.db.base import get_suite
@@ -91,19 +92,9 @@ class _ProfileEnvironment(Environment):
                                clause=self._double_clause_(key))
             
         
-    def _make_superdict__orig_(self):
+    def make_superdict(self, sep='_'):
         clause = Eq('profile', self.profile)
-        superdict = {}
-        traits = [row.trait for row in self.cursor.select(fields=['trait'], clause=clause)]
-        for trait in traits:
-            self.set_trait(trait)
-            items = [(trait + '_' + key, value) for key, value in self.items()]
-            superdict.update(dict(items))
-        return superdict
-
-    def _make_superdict_(self):
-        clause = Eq('profile', self.profile)
-        return Environment._make_superdict_(self, clause)
+        return Environment.make_superdict(self, clause, sep=sep)
     
     def _get_defaults_(self, trait):
         return self.traitparent.get_environment([trait])
@@ -141,7 +132,9 @@ class ProfileEnvironment(object):
         return list(self.env.traitparent.get_traitset(profile_traits))
 
     def ProfileData(self):
-        return self.env._make_superdict_()
+        # change sep here
+        sep = PAELLA_TRAIT_NAME_SEP
+        return self.env.make_superdict(sep=sep)
 
     def get_rows(self):
         clause = Eq('profile', self.profile)
@@ -186,10 +179,12 @@ class Profile(StatementCursor):
         self.current = self.select_row(clause=self.clause)
         self._traits.set_profile(profile)
         self._env.set_profile(profile)
-        
+
+    
     def get_profile_data(self):
         return self._env.ProfileData()
 
+    
     def get_family_data(self):
         families = self.get_families()
         return self._fam.FamilyData(families)

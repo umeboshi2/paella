@@ -9,7 +9,6 @@ from useless.base import ExistsError, UnbornError, Error, debug
 from useless.base import NoExistError
 
 
-from useless.xmlgen.base import TextElement
 from useless.base.util import ujoin, makepaths
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
@@ -184,6 +183,8 @@ class Trait(object):
     def delete_template(self, template):
         self._templates.drop_template(template)
 
+    # this method is used by the gui
+    # to fill the context menu
     def get_full_environment(self):
         return self._parents.get_environment([self.current_trait])
         
@@ -342,13 +343,11 @@ class TraitElement(Element):
         self.conn = conn
         self.cursor = StatementCursor(self.conn, name='_Trait_')
         Element.__init__(self, 'trait')
-        self.desc_element = TextElement('description', None)
         self.parent_element = Element('parents')
         self.pkg_element = Element('packages')
         self.env_element = Element('environ')
         self.templ_element = Element('templates')
         self.scripts_element = Element('scripts')
-        self.appendChild(self.desc_element)
         self.appendChild(self.parent_element)
         self.appendChild(self.pkg_element)
         self.appendChild(self.env_element)

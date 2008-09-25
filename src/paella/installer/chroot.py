@@ -228,14 +228,18 @@ class ChrootInstaller(BaseChrootInstaller):
                 raise UnsatisfiedRequirementsError , msg
             filename = self.target / ('%s.key' % key)
             if filename.exists():
-                raise RuntimeError , "%s already exists" % filename
+                msg = "%s already exists" % filename
+                self.log.error(msg)
+                raise RuntimeError , msg
             keyfile = file(filename, 'w')
             keyfile.write(row.data)
             keyfile.close()
             self.chroot(['apt-key', 'add', '%s.key' % key])
             os.remove(filename)
             if filename.exists():
-                raise RuntimeError , "%s wasn't deleted" % filename
+                msg = "%s wasn't deleted" % filename
+                self.log.error(msg)
+                raise RuntimeError , msg
             self.log.info('added key %s (%s) to apt' % (key, row.keyid))
         
     def make_device_entries(self):
@@ -283,6 +287,7 @@ class ChrootInstaller(BaseChrootInstaller):
         if fs == 'devpts':
             target = self.target / 'dev' / 'pts'
         if not target.isdir():
+            self.log.info('creating %s' % target)
             target.mkdir()
         #cmd = 'mount -t %s none %s' % (fstype[fs], target)
         cmd = ['mount', '-t', fstype[fs], 'none', str(target)]
@@ -305,9 +310,11 @@ class ChrootInstaller(BaseChrootInstaller):
             # hack to stop mdadm on target
             mdstat = self.target / 'proc/mdstat'
             if mdstat.isfile():
-                self.log.info("Stopping mdadm from running on target.")
-                cmd = ['chroot', self.target, '/etc/init.d/mdadm', 'stop']
-                runlog(cmd)
+                mdadm_initscript = self.target / 'etc/init.d/mdadm'
+                if mdadm_initscript.isfile():
+                    self.log.info("Stopping mdadm from running on target.")
+                    cmd = ['chroot', self.target, '/etc/init.d/mdadm', 'stop']
+                    runlog(cmd)
         if fs == 'devpts':
             target = self.target / 'dev' / 'pts'
         #cmd = 'umount %s' % target

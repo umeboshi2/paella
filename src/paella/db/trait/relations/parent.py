@@ -15,7 +15,8 @@ from paella.base.objects import TextFileManager
 
 from base import TraitRelation
 from base import TraitEnvironment
-from paella import deprecated
+from paella import deprecated, PAELLA_TRAIT_NAME_SEP
+
 
 class TraitParent(TraitRelation):
     def __init__(self, conn, suite):
@@ -45,8 +46,10 @@ class TraitParent(TraitRelation):
         return superdict
 
     def Environment(self):
+        # change sep here
+        sep = PAELLA_TRAIT_NAME_SEP
         traits = list(self.get_traitset([self.current_trait]))
-        return self.get_superdict(traits)
+        return self.get_superdict(traits, sep=sep)
 
     def parents(self, trait=None):
         if trait is None:

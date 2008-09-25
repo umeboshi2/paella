@@ -7,6 +7,7 @@ from useless.base import NoExistError
 from useless.db.midlevel import StatementCursor, Environment
 from useless.sqlgen.clause import Eq, In
 
+from paella import PAELLA_TRAIT_NAME_SEP
 from paella.base.util import edit_dbfile
 from paella.base.objects import VariablesConfig
 from paella.db.base import ScriptCursor
@@ -253,6 +254,8 @@ class MachineEnvironment(BaseMachineDbObject, Environment):
         return Environment._make_superdict_(self, clause)
 
     def make_superdict(self, machine=None):
+        # change sep here
+        sep = PAELLA_TRAIT_NAME_SEP
         msg = 'make_superdict is not really ready yet'
         warnings.warn(msg, NotReadyYetWarning, stacklevel=3)
         if machine is None:
@@ -265,7 +268,7 @@ class MachineEnvironment(BaseMachineDbObject, Environment):
         # set it back before returning the superdict
         current_machine = self.current_machine
         self.set_machine(machine)
-        superdict = Environment._make_superdict_(self, clause)
+        superdict = Environment.make_superdict(self, clause, sep=sep)
         self.set_machine(current_machine)
         return  superdict
         

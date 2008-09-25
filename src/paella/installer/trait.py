@@ -127,13 +127,15 @@ class TraitInstallerHelper(object):
         debs = archives.listdir('*.deb')
         pdebs = partial.listdir('*.deb')
         if pdebs:
-            self.log.warn("we found some partial debs, and this shouldn't happen")
+            self.log.error("we found some partial debs, and this shouldn't happen")
             raise RuntimeError , "partial debs found"
         all_debs = debs + pdebs
         for deb in all_debs:
             deb.remove()
             if deb.exists():
-                raise RemoveDebsError, 'Failed to remove %s' % deb
+                msg = 'Failed to remove %s' % deb
+                self.log.error(msg)
+                raise RemoveDebsError, msg
             
     # order of updates is important here
     def _update_templatedata(self):
@@ -193,7 +195,9 @@ class TraitInstallerHelper(object):
             mode = eval(mode)
             target_filename.chmod(mode)
         else:
-            raise InstallError, 'bad mode %s, please use octal prefixed by 0' % mode
+            msg = 'bad mode %s, please use octal prefixed by 0' % mode
+            self.log.error(msg)
+            raise InstallError, msg
         
         own = ':'.join([template.owner, template.grp_owner])
         #command = 'chown %s %s' % (own, path('/') / template.template)
@@ -204,7 +208,7 @@ class TraitInstallerHelper(object):
 
     def _check_debconf_destroyed(self, config_path):
         if isfile(config_path):
-            self.log.warn('%s is not supposed to be there' % config_path)
+            self.log.error('%s is not supposed to be there' % config_path)
             raise InstallDebconfError, '%s is not supposed to be there' % config_path
 
 
@@ -234,6 +238,7 @@ class TraitInstallerHelper(object):
             # first run of debconf-set-selections
             if self.debconf_problem:
                 msg = "We already had a problem with set_debconf_selections"
+                self.log.error(msg)
                 raise RuntimeError , msg
             self.debconf_problem = True
         # we're going to keep these files
@@ -274,14 +279,6 @@ class TraitInstaller(BaseInstaller):
         BaseInstaller.__init__(self, parent.conn)
         self.target = parent.target
         self.suite = parent.suite
-        if False:
-            # setup logfile
-            if hasattr(parent, 'log'):
-                self.log = parent.log
-                self.log.info('trait installer initialized')
-            else:
-                raise RuntimeError , 'No logfile for parent defined'
-            
         if hasattr(parent, 'mainlog'):
             self.mainlog = parent.mainlog
             name = self.__class__.__name__
@@ -339,6 +336,7 @@ class TraitInstaller(BaseInstaller):
     def run_process_preseed(self):
         if self.helper.debconf_problem:
             msg = "self.helper.debconf_problem is True, but shouldn't be."
+            self.log.error(msg)
             raise RuntimeError , msg
         self.log.info("running new preseed process!!!")
         if self.helper.traittemplate.has_template('debconf'):
@@ -383,6 +381,7 @@ class TraitInstaller(BaseInstaller):
             retval = runlog([script])
         if retval:
             msg = "script for process %s exited with error code %d" % (procname, retval)
+            self.log.error(msg)
             raise RunLogError, msg
             
 

@@ -149,7 +149,9 @@ class KernelHelper(BaseHelper):
             msg ='renaming %s to %s.paella-orig' % (k, k)
             self.log.info(msg)
             if kimgconf_old.exists():
-                raise RuntimeError , '%s already exists, aborting install.' % kimgconf_old
+                msg = '%s already exists, aborting install.' % kimgconf_old
+                self.log.error(msg)
+                raise RuntimeError , msg
             os.rename(kimgconf, kimgconf_old)
         kimgconf.write_lines(kimgconflines)
         runlog(cmd)
@@ -190,7 +192,9 @@ class KernelHelper(BaseHelper):
     def _fix_root_in_grub(self, menu, root_partition):
         kopt = [line for line in menu if line.startswith('# kopt=')]
         if len(kopt) != 1:
-            raise RuntimeError , "There's no kopt line in the /boot/grub/menu.lst"
+            msg = "There's no kopt line in the /boot/grub/menu.lst"
+            self.log.error(msg)
+            raise RuntimeError , msg
         index = menu.index(kopt[0])
         kopt_line = menu[index]
         # split the line by spaces
@@ -199,6 +203,7 @@ class KernelHelper(BaseHelper):
         root_pieces = [piece for piece in kopt_line_split if piece.find('root=') > -1]
         if len(root_pieces) != 1:
             msg = "kopt line has wrong amount of root= options: %s" % kopt_line
+            self.log.error(msg)
             raise RuntimeError , msg
         # there should only be one root= option
         root_piece = root_pieces[0]
@@ -226,6 +231,7 @@ class KernelHelper(BaseHelper):
         if not bootdevice.startswith('/dev/md'):
             msg = "This method is only to be used when the "
             msg += "boot device is set to /dev/md*"
+            self.log.error(msg)
             raise RuntimeError , msg
         device_map = self.target / 'boot/grub/device.map'
         if not device_map.isfile():
@@ -234,7 +240,9 @@ class KernelHelper(BaseHelper):
             runlog(cmd)
             self.log.info('device.map should be created now.')
             if not device_map.isfile():
-              raise RuntimeError , 'Failed to make device.map'  
+                msg = 'Failed to make device.map'
+                self.log.error(msg)
+                raise RuntimeError , msg
         else:
             self.log.info('device.map has been found')
         lines = [line for line in file(device_map) if line.startswith('(hd0)')]
@@ -260,7 +268,9 @@ class KernelHelper(BaseHelper):
         if 'device' in groupdict:
             return groupdict['device']
         else:
-            raise RuntimeError , "boot device not found in diskvar"
+            msg = "boot device not found in diskvar"
+            self.log.error(msg)
+            raise RuntimeError , msg
 
     def get_rootpartition_from_diskvar(self):
         diskvar = self._get_diskvar()
@@ -269,11 +279,15 @@ class KernelHelper(BaseHelper):
         if 'root_partition' in groupdict:
             return groupdict['root_partition']
         else:
-            raise RuntimeError , "root partition not found in diskvar"
+            msg = "root partition not found in diskvar"
+            self.log.error(msg)
+            raise RuntimeError , msg
         
     def determine_extra_modules_from_diskconfig(self):
         if self.diskconfig is None:
-            raise RuntimeError , "diskconfig isn't set yet"
+            msg = "diskconfig isn't set yet"
+            self.log.error(msg)
+            raise RuntimeError , msg
         return determine_mods_from_diskconfig(self.diskconfig)
 
     # The packages that are installed are probably not complete
@@ -354,7 +368,9 @@ class MachineInstallerHelper(BaseHelper):
             proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
             retval = proc.wait()
             if retval:
-                raise RuntimeError , 'disk-info returned %d' % retval
+                msg = 'disk-info returned %d' % retval
+                self.log.error(msg)
+                raise RuntimeError , msg
             for line in proc.stdout:
                 disklist.append(line.split()[0])
             print disklist
@@ -368,6 +384,7 @@ class MachineInstallerHelper(BaseHelper):
         fstab_filename = self.disklogpath / 'fstab'
         if not fstab_filename.isfile():
             msg = "couldn't find fstab at %s" % fstab_filename
+            self.log.error(msg)
             raise RuntimeError , msg
         fstab_lines = [line.split() for line in fstab_filename.open() if not line.startswith('#')]
         #print fstab_lines

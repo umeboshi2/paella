@@ -12,6 +12,7 @@ from useless.sqlgen.statement import Statement
 from useless.db.midlevel import StatementCursor, SimpleRelation
 from useless.db.midlevel import Environment, MultiEnvironment
 
+from paella import PAELLA_TRAIT_NAME_SEP
 from paella.base.objects import VariablesConfig
 from paella.base.util import make_deplist
 
@@ -45,13 +46,13 @@ class FamilyEnvironment(MultiEnvironment):
     def set_family(self, family):
         self.__main_values__ = family, self.__main_values__[1]
 
-    def make_tagdict(self, family=None):
+    def make_tagdict(self, family=None, sep='_'):
         if family is not None:
             self.set_family(family)
         fclause = Eq('family', family)
         fields = ['trait', 'name', 'value']
         rows = self.cursor.select(fields=fields, clause=fclause)
-        items = [(r.trait + '_' + r.name, r.value) for r in rows]
+        items = [(r.trait + sep + r.name, r.value) for r in rows]
         return dict(items)
 
     
@@ -135,12 +136,34 @@ class Family(object):
         self.parent.insert('parent', parents)
 
     def FamilyData(self, families=[]):
+        # change sep here
+        sep = PAELLA_TRAIT_NAME_SEP
+        # we don't know what to do here
+        # it is possible to have an empty
+        # list of families, and if that's the
+        # case we don't need to make the
+        # list of [self.current] .  I need to look
+        # for everywhere this method is called.
+        # In the installer, the family is never set,
+        # and we use the list of families provided
+        # by the profile and the machine.  In this
+        # case, the families argument will always
+        # be a list, empty or not.
+        # I can't think of any other circumstance
+        # where this method would be called outside
+        # of the installer, or a script, and the script
+        # should be using either a profile or machine
+        # to get the list of families anyway, make the
+        # point moot.  I will probably remove this part
+        # of the code in the near future, once I'm sure
+        # that there's no reason to pass None to the
+        # families argument.
         if families is None:
             families = [self.current]
         all = self.make_familylist(families)
         superdict = {}
         for f in all:
-            superdict.update(self.env.make_tagdict(f))
+            superdict.update(self.env.make_tagdict(f, sep=sep))
         return superdict
             
         

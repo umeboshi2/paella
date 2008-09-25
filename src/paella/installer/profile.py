@@ -38,13 +38,6 @@ class ProfileInstaller(BaseInstaller):
         self.suite = None
         self.profiletrait = ProfileTrait(self.conn)
         self._profile = Profile(self.conn)
-        if False:
-            # setup logfile
-            if hasattr(parent, 'log'):
-                self.log = parent.log
-                self.log.info('profile installer initialized')
-            else:
-                raise RuntimeError , 'No logfile for parent defined'
         if hasattr(parent, 'mainlog'):
             self.mainlog = parent.mainlog
             name = self.__class__.__name__
@@ -244,7 +237,7 @@ def install_packages_uml(conn, suite, profile, target):
               
 if __name__ == '__main__':
     from useless.db.midlevel import StatementCursor
-    from useless.db.midlevel import Environment, TableDict
+    from useless.db.midlevel import Environment
     from base import PaellaConnection
     c = PaellaConnection()
     cfg = PaellaConfig()

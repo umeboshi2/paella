@@ -12,6 +12,8 @@ from useless.base.template import Template
 from useless.kdebase import get_application_pointer
 from useless.kdebase.dialogs import BaseRecordDialog
 
+from paella import PAELLA_TRAIT_NAME_SEP
+
 from paella.db.trait.main import Trait
 
 #from paella.kde.base.mainwin import BasePaellaWindow
@@ -86,11 +88,13 @@ class TemplateTextEdit(KTextEdit):
         self._dialog = win
 
     def tag_selection(self, trait, name):
+        # change sep here
+        sep = PAELLA_TRAIT_NAME_SEP
         if not self.hasSelectedText():
             raise RuntimeError , 'we need selected text'
         template = Template()
         left, right = template.delimiters
-        tagname = '_'.join([trait, name])
+        tagname = sep.join([trait, name])
         tag = ''.join([left, tagname, right])
         pstart, istart, pend, iend = self.getSelection()
         self.removeSelectedText()
