@@ -1,8 +1,5 @@
 config/scripts/paella-restore-database usr/bin
 config/scripts/paella-management usr/bin
-config/scripts/paella-export-trait usr/bin
-config/scripts/paella-export-profile usr/bin
 config/scripts/paella-import-profile usr/bin
 config/scripts/paella-make-nfsbootcd usr/bin
-
-
+config/scripts/paella-export usr/bin
