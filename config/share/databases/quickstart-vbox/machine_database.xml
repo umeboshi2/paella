@@ -1,24 +1,11 @@
 <machine_database>
 	<machines>
-		<machine kernel="linux-image-2.6-686" machine_type="default" profile="default">
-			default
-		</machine>
-		<machine kernel="linux-image-2.6-486" machine_type="default" profile="default">
-			sidesalad
-		</machine>
-		<machine kernel="linux-image-2.6-686" machine_type="default" profile="desktop">
-			testmachine
-		</machine>
+		<machine name="default"/>
+		<machine name="raidtest"/>
 	</machines>
-	<machine_types>
-		<machine_type name="default"/>
-	</machine_types>
 	<kernels>
 		<kernel>
 			linux-image-2.6-486
-		</kernel>
-		<kernel>
-			linux-image-2.6-686
 		</kernel>
 	</kernels>
 </machine_database>

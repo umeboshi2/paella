@@ -1,7 +1,7 @@
 # prevent startup with default configuration
 # set the following varible to 1 in order to allow Shorewall to start
 
-startup=<--|firewall_startup|-->
+startup=<--|firewall:startup|-->
 
 # if your Shorewall configuration requires detection of the ip address of a ppp
 # interface, you must list such interfaces in "wait_interface" to get Shorewall to
@@ -14,7 +14,7 @@ startup=<--|firewall_startup|-->
 #    wait_interface="ppp0 ppp1"
 # or, if you have defined  in /etc/shorewall/params
 #    wait_interface=
-wait_interface=<--|firewall_wait_interface|-->
+wait_interface=<--|firewall:wait_interface|-->
 
 #
 # Startup options

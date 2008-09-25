@@ -1,7 +1,4 @@
 <trait name="default">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_admin_tools

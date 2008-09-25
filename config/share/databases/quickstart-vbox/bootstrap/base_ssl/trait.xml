@@ -1,7 +1,4 @@
 <trait name="base_ssl">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base

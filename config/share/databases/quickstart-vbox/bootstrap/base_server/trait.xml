@@ -1,7 +1,4 @@
 <trait name="base_server">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_ssl

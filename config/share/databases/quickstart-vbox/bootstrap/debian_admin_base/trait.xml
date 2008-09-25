@@ -1,7 +1,4 @@
 <trait name="debian_admin_base">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			default

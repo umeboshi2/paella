@@ -1,7 +1,4 @@
 <trait name="nfs_client">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			localnet

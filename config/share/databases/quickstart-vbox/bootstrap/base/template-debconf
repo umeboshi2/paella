@@ -1,9 +1,9 @@
 update-inetd update-inetd/ask-disable-entries boolean false
-debconf debconf/priority select <--|base_debconf_priority|-->
+debconf debconf/priority select <--|base:debconf_priority|-->
 update-inetd update-inetd/ask-remove-entries boolean false
-tcpd tcpd/paranoid-mode boolean <--|base_tcpd_paranoid_mode|-->
+tcpd tcpd/paranoid-mode boolean <--|base:tcpd_paranoid_mode|-->
 man-db man-db/install-setuid boolean false
-debconf debconf/frontend select <--|base_debconf_frontend|-->
-tasksel tasksel/first multiselect <--|base_tasksel_first|-->
-locales locales/default_environment_locale select <--|global_default_environment_locale|-->
-locales locales/locales_to_be_generated multiselect <--|global_default_environment_locale|--> <--|global_default_charset|-->
+debconf debconf/frontend select <--|base:debconf_frontend|-->
+tasksel tasksel/first multiselect <--|base:tasksel_first|-->
+locales locales/default_environment_locale select <--|global:default_environment_locale|-->
+locales locales/locales_to_be_generated multiselect <--|global:default_environment_locale|--> <--|global:default_charset|-->

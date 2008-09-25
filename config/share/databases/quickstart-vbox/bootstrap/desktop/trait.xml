@@ -1,7 +1,4 @@
 <trait name="desktop">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			desktop_base

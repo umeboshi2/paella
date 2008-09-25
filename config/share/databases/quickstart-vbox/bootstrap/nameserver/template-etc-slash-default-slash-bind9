@@ -1,5 +1,5 @@
 # run resolvconf?
-RESOLVCONF=<--|nameserver_resolvconf|-->
+RESOLVCONF=<--|nameserver:resolvconf|-->
 
 # startup options for the server
-OPTIONS="<--|nameserver_startup_options|-->"
+OPTIONS="<--|nameserver:startup_options|-->"

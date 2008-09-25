@@ -1,7 +1,4 @@
 <trait name="nfsroot_server">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			nfs_server

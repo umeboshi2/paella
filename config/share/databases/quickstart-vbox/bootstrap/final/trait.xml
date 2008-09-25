@@ -1,7 +1,4 @@
 <trait name="final">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			global

@@ -1,7 +1,4 @@
 <trait name="localnet">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			default
@@ -13,40 +10,40 @@
 	<packages/>
 	<environ>
 		<trait_variable name="boot_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="broadcast" trait="localnet">
 			10.255.255.255
 		</trait_variable>
 		<trait_variable name="db_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="dhcpd_range" trait="localnet">
 			10.0.0.20 10.0.0.253
 		</trait_variable>
 		<trait_variable name="dhcp_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="domain" trait="localnet">
-			&lt;--|global_domain|--&gt;
+			&lt;--|global:domain|--&gt;
 		</trait_variable>
 		<trait_variable name="file_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="gateway" trait="localnet">
 			10.0.0.1
 		</trait_variable>
 		<trait_variable name="ldap_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="mainserver" trait="localnet">
-			&lt;--|global_hostname|--&gt;
+			&lt;--|global:hostname|--&gt;
 		</trait_variable>
 		<trait_variable name="mysql_server" trait="localnet">
-			&lt;--|localnet_db_server|--&gt;
+			&lt;--|localnet:db_server|--&gt;
 		</trait_variable>
 		<trait_variable name="nameserver" trait="localnet">
-			&lt;--|localnet_gateway|--&gt;
+			&lt;--|localnet:gateway|--&gt;
 		</trait_variable>
 		<trait_variable name="netmask" trait="localnet">
 			255.0.0.0
@@ -55,22 +52,22 @@
 			10.0.0.0
 		</trait_variable>
 		<trait_variable name="nfs_server" trait="localnet">
-			&lt;--|localnet_file_server|--&gt;
+			&lt;--|localnet:file_server|--&gt;
 		</trait_variable>
 		<trait_variable name="ntp_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="postgresql_server" trait="localnet">
-			&lt;--|localnet_db_server|--&gt;
+			&lt;--|localnet:db_server|--&gt;
 		</trait_variable>
 		<trait_variable name="samba_server" trait="localnet">
-			&lt;--|localnet_file_server|--&gt;
+			&lt;--|localnet:file_server|--&gt;
 		</trait_variable>
 		<trait_variable name="squid_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 		<trait_variable name="web_server" trait="localnet">
-			&lt;--|localnet_mainserver|--&gt;
+			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
 	</environ>
 	<templates/>

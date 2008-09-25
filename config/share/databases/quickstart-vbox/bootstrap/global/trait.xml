@@ -1,7 +1,4 @@
 <trait name="global">
-	<description>
-		None
-	</description>
 	<parents/>
 	<packages/>
 	<environ>
@@ -9,7 +6,7 @@
 			UTF-8
 		</trait_variable>
 		<trait_variable name="default_environment_locale" trait="global">
-			en_US.&lt;--|global_default_charset|--&gt;
+			en_US.&lt;--|global:default_charset|--&gt;
 		</trait_variable>
 		<trait_variable name="domain" trait="global">
 			localnetwork

@@ -1,7 +1,4 @@
 <trait name="debrepos">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			fileserver_base

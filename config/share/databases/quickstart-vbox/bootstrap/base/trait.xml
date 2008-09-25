@@ -1,7 +1,4 @@
 <trait name="base">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			global

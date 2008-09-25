@@ -1,7 +1,4 @@
 <trait name="development">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			subversion

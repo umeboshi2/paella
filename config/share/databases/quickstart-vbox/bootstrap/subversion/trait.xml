@@ -1,7 +1,4 @@
 <trait name="subversion">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			default

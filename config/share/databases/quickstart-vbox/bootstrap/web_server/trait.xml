@@ -1,7 +1,4 @@
 <trait name="web_server">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_server

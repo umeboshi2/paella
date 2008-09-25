@@ -1,7 +1,4 @@
 <trait name="network_tools">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			default

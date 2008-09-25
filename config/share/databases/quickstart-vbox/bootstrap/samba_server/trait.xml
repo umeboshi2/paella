@@ -1,7 +1,4 @@
 <trait name="samba_server">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			fileserver_base

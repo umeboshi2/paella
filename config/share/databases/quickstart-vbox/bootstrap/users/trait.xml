@@ -1,7 +1,4 @@
 <trait name="users">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base

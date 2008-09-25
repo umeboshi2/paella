@@ -1,0 +1,5 @@
+<machine diskconfig="default" kernel="linux-image-2.6-486" name="default" profile="default">
+	<machine_variable name="hostname" trait="global">
+		default
+	</machine_variable>
+</machine>
