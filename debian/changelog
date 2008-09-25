@@ -1,3 +1,10 @@
+paella (0.7.36) paella; urgency=low
+
+  * new machine design
+  * using ':' to separate trait and variable names in templates
+
+ -- Joseph Rawson <umeboshi3@gmail.com>  Thu, 25 Sep 2008 06:14:27 -0500
+
 paella (0.7.35) paella; urgency=low
 
   * added initial support for adding gpg keys for local  mirrors
