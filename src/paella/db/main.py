@@ -41,6 +41,7 @@ from xmlgen import SuiteElement, SuitesElement, SuiteAptElement
 from xmlparse import PaellaParser
 
 from aptsrc import AptSourceHandler
+from aptkey import AptKeyHandler
 from base import SuiteCursor
 # imports for ClientManager
 from useless.base.config import Configuration
@@ -121,6 +122,7 @@ class PaellaExporter(object):
         self.family = Family(self.conn)
         self.machines = MachineHandler(self.conn)
         self.diskconfig = DiskConfigHandler(self.conn)
+        self.aptkeys = AptKeyHandler(self.conn)
         
     def init_db_element(self):
         self.dbelement = PaellaDatabaseElement()
@@ -169,6 +171,24 @@ class PaellaExporter(object):
         makepaths(suitedir)
         return suitedir
 
+    def export_aptkey(self, name=None, dirname=None, row=None):
+        dirname = path(dirname)
+        makepaths(dirname)
+        if name is None and row is None:
+            raise RuntimeError, "need to set either row or name"
+        if row is None:
+            row = self.aptkeys.get_row(name)
+        basename = '%s.gpg' % row.name
+        filename = dirname / basename
+        filename.write_text(row.data)
+        
+    def export_all_aptkeys(self, dirname=None):
+        if dirname is None:
+            dirname = self.db_export_path / 'aptkeys'
+        rows = self.aptkeys.get_rows()
+        for row in rows:
+            self.export_aptkey(dirname=dirname, row=row)
+            
     def export_profile(self, profile, dirname=None):
         if dirname is None:
             dirname = path('.')

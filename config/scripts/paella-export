@@ -18,7 +18,7 @@ parser.add_option('--profile', action='store_const', const='profile', dest='enti
 parser.add_option('--machine', action='store_const', const='machine',
                   dest='entity')
 parser.add_option('--trait', action='store_const', const='trait', dest='entity')
-
+parser.add_option('--aptkey', action='store_const', const='aptkey', dest='entity')
 
 parser.add_option('--suite', type='string',action='store', dest='suite', default='')
 parser.add_option('--directory', type='string', action='store', dest='export_path',
@@ -79,6 +79,11 @@ elif opts.entity == 'machine':
         exporter.export_machine_database(dirname=export_path)
     else:
         exporter.export_machine(name, dirname=export_path)
+elif opts.entity == 'aptkey':
+    if opts.all:
+        exporter.export_all_aptkeys(dirname=export_path)
+    else:
+        exporter.export_aptkey(name=name, dirname=export_path)
 elif opts.entity == 'trait':
     if not suite and opts.all:
         print "export all traits in all suites"
