@@ -79,7 +79,7 @@ class Family(object):
         else:
             family = self.current
         if family is None:
-            raise Error, 'either pass a family arguement or call set_family on this object'
+            raise Error, 'either pass a family argument or call set_family on this object'
         return family
     
     def add_family(self, family, type='general'):
@@ -178,6 +178,8 @@ class Family(object):
     def export_family(self, family=None):
         if family is None:
             family = self.current
+        # row isn't used, except to determine that the family exists
+        row = self.cursor.select_row(table='families', clause=Eq('family', family))
         element = FamilyElement(family)
         element.append_parents(self.parents(family))
         element.append_variables(self.environment_rows(family))

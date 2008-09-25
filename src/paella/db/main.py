@@ -378,6 +378,8 @@ class PaellaImporter(object):
         self.main_path = None
         self.profile = Profile(self.conn)
         self.family = Family(self.conn)
+        self.diskconfig = DiskConfigHandler(self.conn)
+        self.aptkeys = AptKeyHandler(self.conn)
         
     def set_main_path(self, dirname):
         self.main_path = path(dirname)
@@ -405,16 +407,17 @@ class PaellaImporter(object):
                 self.import_family(familyxml)
             except UnbornError:
                 xmlfiles.append(familyxml)
-                
-            
-        print 'import families from', dirname
+        #print 'import families from', dirname
         
 
     def import_family(self, filename):
         self.family.import_family_xml(filename)
         self.report_family_imported(filename.namebase)
         
-    
+
+    def import_profile(self, filename):
+        self.profile.import_profile(filename)
+        
     def import_all_profiles(self, dirname=None):
         if dirname is None:
             dirname = self.main_path / 'profiles'
@@ -424,7 +427,25 @@ class PaellaImporter(object):
         for xmlfile in xmlfiles:
             self.profile.import_profile(xmlfile)
             self.report_profile_imported(xmlfile.namebase)
-            
+
+    # warning, this is quick and sloppy
+    def import_aptkey(self, filename):
+        filename = path(filename).abspath()
+        basename = filename.basename()
+        name = basename.split('.')[0]
+        data = file(filename).read()
+        self.aptkeys.insert_key(name, data)
+
+    # warning, this is quick and sloppy
+    def import_diskconfig(self, filename):
+        filename = path(filename).abspath()
+        basename = filename.basename()
+        name = basename.split('.')[0]
+        cursor = self.conn.cursor(statement=True)
+        content = file(filename).read()
+        data = dict(name=name, content=content)
+        cursor.insert(table='diskconfig', data=data)
+        
     def import_all_diskconfigs(self, dirname=None):
         if dirname is None:
             dirname = self.main_path / 'diskconfig'
@@ -481,6 +502,9 @@ class PaellaImporter(object):
     def _import_trait(self, suite, dirname):
         traitdb = Trait(self.conn, suite)
         traitdb.insert_trait(dirname, suite)
+
+    def import_trait(self, suite, dirname):
+        self._import_trait(suite, dirname)
         
     def _find_missing_packages(self, suite, traits, dirname):
         missing = dict()
