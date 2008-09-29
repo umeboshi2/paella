@@ -8,6 +8,7 @@ from useless import deprecated
 from useless.base import Log
 from useless.base.config import Configuration
 from useless.base.util import ujoin, makepaths
+from useless.base.util import traceback_to_string
 from useless.base.objects import Parser
 from useless.base.path import path
 
@@ -53,6 +54,15 @@ def makePaellaLogger(name, filename=None, logformat='',
     # we should pass the level, too
     log.setLevel(logging.DEBUG)
     return log
+
+def log_excepthook(type, value, tracebackobj):
+    tbinfo = traceback_to_string(tracebackobj)
+    mainline = '%s: %s' % (type, value)
+    logger = sys.paella_logger
+    logger.error(mainline)
+    logger.error(tbinfo)
+    sys.excepthook_orig(type, value, tracebackobj)
+    
 
 
 # using StandardError temporarily now
@@ -121,6 +131,9 @@ class PaellaLogger(MainLog):
         self._basename = 'paella-installer'
         self.add_logger(self._basename)
         sys.paella_logger = self.loggers[self._basename]
+        if not hasattr(sys, 'excepthook_orig'):
+            sys.excepthook_orig = sys.excepthook
+        sys.excepthook = log_excepthook
         
 
 

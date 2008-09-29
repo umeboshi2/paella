@@ -296,7 +296,10 @@ class MachineHandler(BaseMachineHandler):
         for a machine in the gui"""
         rows = self.cursor.select(fields=['name'], table='diskconfig')
         return [row.name for row in rows]
-    
+
+    def edit_variables(self):
+        self.relation.edit_variables()
+        
 if __name__ == '__main__':
     from os.path import join
     from paella.db import PaellaConnection

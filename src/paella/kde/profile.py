@@ -137,8 +137,11 @@ class ProfileView(ViewBrowser):
                     self.doc.profile.delete_profile(ident)
                     msg = "profile %s deleted" % ident
                     KMessageBox.information(self, msg)
-                    self.parent().parent().refreshListView()
+                    mainwin = self.parent().parent()
+                    mainwin.refreshListView()
+                    mainwin.resetProfileObject()
                     self.setText('')
+                    
             else:
                 KMessageBox.error(self, "Don't know how to delete %s" % context)
                 
@@ -265,5 +268,8 @@ class ProfileMainWindow(BaseSplitWindow, BasePaellaWindow):
 
     def slotExportProfile(self):
         KMessageBox.information(self, 'Export unimplemented')
+
+    def resetProfileObject(self):
+        self.profile = Profile(self.conn)
         
         

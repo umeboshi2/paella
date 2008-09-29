@@ -432,7 +432,15 @@ class MachineRelations(BaseMachineDbObject):
         superdict.update(famdata)
         superdict.update(self.environment.make_superdict(machine=machine))
         return superdict
-    
+
+    def edit_variables(self, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        config = MachineVariablesConfig(self.conn, machine)
+        newconfig = config.edit()
+        config.update(newconfig)
+        
 if __name__ == '__main__':
     from os.path import join
     from paella.db import PaellaConnection

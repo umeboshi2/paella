@@ -14,23 +14,38 @@ class BaseInterface(object):
         self.down = None
         self.pre_down = None
         self.post_down = None
-        self._family_opts = []
-        self._family_optdict = {}
+        self._method_opts = []
+        self._method_optdict = {}
         
     def append_option(self, name, value=None):
-        self._family_opts.append(name)
-        self._family_optdict[name] = value
+        self._method_opts.append(name)
+        self._method_optdict[name] = value
         
     def set_option(self, name, value):
-        if name not in self._family_opts:
+        if name in self._method_opts:
+            self._method_optdict[name] = value
+        elif name in IFACE_OBJECT_ATTRIBUTES:
+            setattr(self, name, value)
+        elif name in IFACEATTRIBUTES:
+            setattr(self, IFACE_ATTRIBUTE_DICT[name], value)
+        else:
             raise RuntimeError , 'Unknown option %s' % name
-        self._family_optdict[name] = value
-        
+
+    def list_command_options(self):
+        return [opt for opt in IFACE_OBJECT_ATTRIBUTES]
+
+    def list_method_options(self):
+        return [opt for opt in self._method_opts]
+    
+    def list_options(self):
+        return self.list_command_options() + self.list_method_options()
+    
+    
     def _stanza(self):
         lines = []
         lines.append(self._iface_line())
-        for opt in self._family_opts:
-            value = self._family_optdict[opt]
+        for opt in self._method_opts:
+            value = self._method_optdict[opt]
             if value is not None:
                 lines.append(self._cline_(opt, value))
         for attribute in IFACEATTRIBUTES:
@@ -92,7 +107,7 @@ class PPPInterface(BaseInterface):
 # options to the other ethernet interfaces
 class BaseBridgedInterface(object):
     def __init__(self, name='br0'):
-        if not hasattr(self, '_family_opts'):
+        if not hasattr(self, '_method_opts'):
             msg = "This init method must be called after the init of a BaseInterface"
             raise RuntimeError , msg
         for opt in ['ports', 'ageing', 'bridgeprio', 'fd', 'gcint',
@@ -139,6 +154,16 @@ class InterfacesOld(object):
         for name, iface in self._interfaces:
             output += str(iface)
         return output
+
+
+# this dictionary helps map methods
+# to the classes
+METHODS = dict(loopback=LoopbackInterface,
+               dhcp=DHCPEthernetInterface,
+               static=StaticEthernetInterface,
+               brstatic=StaticBridgedInterface,
+               brdhcp=DHCPBridgedInterface,
+               ppp=PPPInterface)
 
 
 if __name__ == '__main__':

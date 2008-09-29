@@ -148,6 +148,10 @@ class MachineView(ViewBrowser, HasDialog):
                 handler = self.doc.machine
                 handler.relation.environment.delete_variable(trait, name)
                 self.resetView()
+        elif action == 'edit':
+            handler = self.doc.machine
+            handler.edit_variables()
+            self.resetView()
         else:
             self._unhandled_action(action, 'variables')
 
