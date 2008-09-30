@@ -450,7 +450,7 @@ class PaellaImporter(object):
         if dirname is None:
             dirname = self.main_path / 'diskconfig'
         dirname = path(dirname)
-        files = dirname.listdir()
+        files = [afile for afile in dirname.listdir() if afile.isfile()]
         cursor = self.conn.cursor(statement=True)
         for diskconfig in files:
             name= diskconfig.basename()

@@ -65,7 +65,7 @@ elif arg.isdir():
     # we'll try to figure out what to do with directories later
     raise RuntimeError , 'you need to pass an xml filename as an argument'
 
-print 'entity is', entity
+#print 'entity is', entity
 if entity in ['trait', 'family', 'profile', 'machine']:
     # we're going to get the element, but possible
     # ignore depending on how the db objects do
@@ -88,8 +88,10 @@ if entity in ['trait', 'family', 'profile', 'machine']:
 else:
     if entity == 'aptkey':
         importer.import_aptkey(filename)
+        print "Imported aptkey", filename
     elif entity == 'diskconfig':
         importer.import_diskconfig(filename)
+        print 'Imported diskconfig', filename
     else:
         print "we're not ready to import anything else yet"
         print "you requested that %s be imported as %s" % (filename, entity)
