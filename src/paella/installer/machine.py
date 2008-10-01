@@ -16,21 +16,6 @@ from profile import ProfileInstaller
 from machinehelper import MachineInstallerHelper
 
 from util.base import make_script
-from util.disk import create_mdadm_conf
-from util.filesystem import mount_target
-
-
-from util.base import makedev
-from util.aptsources import make_sources_list
-from util.aptsources import make_official_sources_list
-from util.filesystem import make_fstab
-from util.filesystem import mount_target_proc
-from util.main import setup_modules
-from util.misc import myline, set_root_passwd
-from util.misc import make_interfaces_simple
-from util.misc import extract_tarball
-from util.preinst import ready_base_for_install
-from util.postinst import install_kernel
 
 # an error class to help me remember to finish things
 class NotYetWrittenError(StandardError):

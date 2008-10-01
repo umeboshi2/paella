@@ -20,15 +20,8 @@ from base import InstallError
 
 from util.disk import setup_disk_fai
 from util.disk import setup_storage_fai
-from util.disk import partition_disk
-from util.disk import create_raid_partition
-from util.disk import wait_for_resync
-from util.filesystem import make_filesystems
-from util.filesystem import make_fstab
-from util.misc import extract_tarball
 
 from util.main import setup_modules
-from util.postinst import install_kernel
 
 def determine_mods_from_diskconfig(diskconfig):
     lines = diskconfig.split('\n')

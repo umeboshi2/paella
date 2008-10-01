@@ -13,13 +13,18 @@ from base import BaseInstaller
 from base import runlog
 from base import BaseInstallError, InstallError
 
-from util.base import make_fake_start_stop_daemon
-from util.base import remove_fake_start_stop_daemon
+# The fake start-stop-daemon functions
+# aren't being used until I can determine
+# a good way to add it into the base code.
+# These functions can be used in the pre
+# and post steps of the trait install process
+# to keep unwanted servers from starting.
+
+#from util.base import make_fake_start_stop_daemon
+#from util.base import remove_fake_start_stop_daemon
+
 from util.aptsources import make_sources_list
 from util.aptsources import make_official_sources_list
-from util.filesystem import make_filesystem
-from util.postinst import install_kernel
-from util.preinst import ready_base_for_install
 
 from profile import ProfileInstaller
 
