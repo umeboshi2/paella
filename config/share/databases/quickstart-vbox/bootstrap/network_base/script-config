@@ -1,0 +1,55 @@
+#!/usr/bin/python
+from paella.installer.toolkit import InstallerTools
+from paella.installer.network import METHODS
+
+print "config script for network_base"
+it = InstallerTools()
+env = it.env()
+
+# some helpers to keep from passing the trait
+# name around too much
+
+def has_key(name):
+    key = 'network_base:%s' % name
+    return env.has_key(key)
+
+def get(name):
+    key = 'network_base:%s' % name
+    return env.dereference(key)
+
+
+
+
+interface_names = get('interfaces').split()
+print "interface_names", interface_names
+auto_interfaces = get('auto_interfaces').split()
+print "auto_interfaces", auto_interfaces
+hotplug_interfaces = get('hotplug_interfaces').split()
+print "hotplug_interfaces", hotplug_interfaces
+
+interfaces = {}
+for name in interface_names:
+    method = get('%s_method' % name)
+    interfaces[name] = METHODS[method](name=name)
+
+for name in interface_names:
+    print interfaces[name]
+    method_options = interfaces[name].list_options()
+    print "options for", name, "are", method_options
+    for option in method_options:
+        key = '%s_%s' % (name, option)
+        if has_key(key):
+            value = get(key)
+            interfaces[name].set_option(option, value)
+            print "%s has option %s, set to %s" % (name, option, value)
+
+interfaces_data = ''
+if auto_interfaces:
+    interfaces_data += 'auto %s\n' % ' '.join(auto_interfaces)
+if hotplug_interfaces:
+    interfaces_data += 'allow-hotplug %s\n' % ' '.join(hotplug_interfaces)
+for name in interface_names:
+    interfaces_data += '%s\n' % str(interfaces[name])
+
+filename = it.target / 'etc/network/interfaces'
+filename.write_text(interfaces_data)

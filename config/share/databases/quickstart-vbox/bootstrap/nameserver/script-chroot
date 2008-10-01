@@ -1,0 +1,3 @@
+#!/bin/sh
+echo "Stopping name server"
+/etc/init.d/bind9 stop

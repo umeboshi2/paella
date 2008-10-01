@@ -21,6 +21,9 @@
 			most
 		</package>
 		<package action="install">
+			openssh-client
+		</package>
+		<package action="install">
 			rsync
 		</package>
 		<package action="install">
@@ -38,6 +41,10 @@
 			999
 		</trait_variable>
 	</environ>
-	<templates/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/most.conf
+		</template>
+	</templates>
 	<scripts/>
 </trait>

@@ -1,12 +1,8 @@
-<trait name="nfs_server">
-	<parents>
-		<parent>
-			fileserver_base
-		</parent>
-	</parents>
+<trait name="debianlive">
+	<parents/>
 	<packages>
 		<package action="install">
-			nfs-kernel-server
+			live-helper
 		</package>
 	</packages>
 	<environ/>

@@ -1,0 +1,20 @@
+	<family name="secure_sshd">
+		<parents/>
+		<environ>
+			<family_variable name="sshd_password_authentication" trait="base_server">
+				no
+			</family_variable>
+			<family_variable name="sshd_permit_empty_passwords" trait="base_server">
+				no
+			</family_variable>
+			<family_variable name="sshd_permit_root_login" trait="base_server">
+				no
+			</family_variable>
+			<family_variable name="sshd_pubkey_authentication" trait="base_server">
+				yes
+			</family_variable>
+			<family_variable name="sshd_use_pam" trait="base_server">
+				no
+			</family_variable>
+		</environ>
+	</family>

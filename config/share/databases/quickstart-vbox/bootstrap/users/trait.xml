@@ -4,7 +4,11 @@
 			base
 		</parent>
 	</parents>
-	<packages/>
+	<packages>
+		<package action="install">
+			sudo
+		</package>
+	</packages>
 	<environ>
 		<trait_variable name="admin_groups" trait="users">
 			admin
@@ -43,6 +47,9 @@
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/adduser.conf
+		</template>
+		<template grp_owner="root" mode="0440" owner="root">
+			etc/sudoers
 		</template>
 	</templates>
 	<scripts>

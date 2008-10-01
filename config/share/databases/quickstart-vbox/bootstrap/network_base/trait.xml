@@ -4,16 +4,26 @@
 			base
 		</parent>
 	</parents>
-	<packages>
-		<package action="install">
-			resolvconf
-		</package>
-	</packages>
-	<environ/>
-	<templates>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/network/interfaces
-		</template>
-	</templates>
-	<scripts/>
+	<packages/>
+	<environ>
+		<trait_variable name="auto_interfaces" trait="network_base">
+			lo
+		</trait_variable>
+		<trait_variable name="eth0_method" trait="network_base">
+			dhcp
+		</trait_variable>
+		<trait_variable name="hotplug_interfaces" trait="network_base">
+			eth0
+		</trait_variable>
+		<trait_variable name="interfaces" trait="network_base">
+			lo eth0
+		</trait_variable>
+		<trait_variable name="lo_method" trait="network_base">
+			loopback
+		</trait_variable>
+	</environ>
+	<templates/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
 </trait>

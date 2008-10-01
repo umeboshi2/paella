@@ -1,0 +1,25 @@
+#!/usr/bin/python
+from paella.installer.toolkit import InstallerTools
+from paella.installer.network import METHODS
+
+print "config script for debrepos"
+it = InstallerTools()
+env = it.env()
+
+# some helpers to keep from passing the trait
+# name around too much
+
+def has_key(name):
+    key = 'debrepos:%s' % name
+    return env.has_key(key)
+
+def get(name):
+    key = 'debrepos:%s' % name
+    return env.dereference(key)
+
+
+
+basedir = get('debian_basedir')
+cmd = ['mkdir', '-p', basedir]
+retval = it.chroot(cmd)
+print "%s returned %d" % (' '.join(cmd), retval)

@@ -20,6 +20,7 @@
 			<trait name="clock"/>
 			<trait name="clockserver"/>
 			<trait name="debian_admin_base"/>
+			<trait name="debianlive"/>
 			<trait name="debrepos"/>
 			<trait name="default"/>
 			<trait name="desktop"/>
@@ -37,6 +38,8 @@
 			<trait name="nfs_client"/>
 			<trait name="nfsroot_server"/>
 			<trait name="nfs_server"/>
+			<trait name="paella_server"/>
+			<trait name="pbuilder"/>
 			<trait name="postgresql_server"/>
 			<trait name="samba_server"/>
 			<trait name="subversion"/>

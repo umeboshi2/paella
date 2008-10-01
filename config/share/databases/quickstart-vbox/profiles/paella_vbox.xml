@@ -1,19 +1,28 @@
-	<profile name="default" suite="bootstrap">
+	<profile name="paella_vbox" suite="bootstrap">
 		<traits>
 			<trait ord="0">
 				default
 			</trait>
 			<trait ord="1">
-				network_base
+				paella_server
 			</trait>
 			<trait ord="2">
+				dhcp_server
+			</trait>
+			<trait ord="3">
+				nameserver
+			</trait>
+			<trait ord="4">
+				firewall
+			</trait>
+			<trait ord="5">
 				final
 			</trait>
 		</traits>
 		<families/>
 		<environ>
 			<profile_variable name="hostname" trait="global">
-				skeleton
+				paella
 			</profile_variable>
 		</environ>
 	</profile>

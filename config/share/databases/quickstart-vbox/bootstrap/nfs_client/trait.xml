@@ -4,7 +4,11 @@
 			localnet
 		</parent>
 	</parents>
-	<packages/>
+	<packages>
+		<package action="install">
+			nfs-common
+		</package>
+	</packages>
 	<environ/>
 	<templates/>
 	<scripts/>

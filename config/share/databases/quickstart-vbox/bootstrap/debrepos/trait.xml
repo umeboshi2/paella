@@ -18,5 +18,7 @@
 		</trait_variable>
 	</environ>
 	<templates/>
-	<scripts/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
 </trait>

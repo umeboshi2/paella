@@ -5,8 +5,8 @@ base_log_directory:	/paellalog
 bootstrap_suites:	lenny
 bootstrap_target:	True
 devices_tarball:	/root/devices.tar
-http_mirror:	http://127.0.0.1/debian
 disk_log_directory:	/paellalog/disklog
+http_mirror:	http://paella.lapnet/debian
 keep_installed_packages:	True
 suite_storage:	/paellalog/suites
 use_devices_tarball:	False

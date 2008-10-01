@@ -46,7 +46,7 @@ isdir = False
 entity = None
 if arg.isfile():
     filename = arg
-    print "we have a file"
+    #print "we have a file"
     if opts.entity is None:
         parsed = parse_file(arg)
         tagname = parsed.firstChild.tagName

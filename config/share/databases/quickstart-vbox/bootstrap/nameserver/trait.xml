@@ -34,5 +34,7 @@
 			etc/default/bind9
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
 </trait>

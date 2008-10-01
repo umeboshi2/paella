@@ -20,6 +20,9 @@
 		<package action="reconfig">
 			tasksel
 		</package>
+		<package action="install">
+			ucf
+		</package>
 	</packages>
 	<environ>
 		<trait_variable name="debconf_frontend" trait="base">
@@ -47,6 +50,9 @@
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/hostname
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/hosts
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/nanorc

@@ -74,7 +74,7 @@ client_widget:		False
 manager_type:		listbox_select
 
 # The text editor must make an X window
-text_editor:		kate
+text_editor:		kwrite
 
 # The x_differ must make an X window
 # the command must take these args -> x_differ left_file right_file
