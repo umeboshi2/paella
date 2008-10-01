@@ -4,8 +4,14 @@ Paella Quick Start Guide
 ===========================
 
 This guide is unfinished.  If you are reading this, do not expect the guide to be correct or
-accurate.  This guide will not be ready to read, and the steps outlined should not be 
-attempted until this paragraph is removed.
+accurate.  This guide has been a work in progress, and has been changing with respect to 
+things that have been changing in paella, and its dependencies.  This guide should not be 
+considered to be complete, until this paragraph is removed.  However, much of this guide, 
+and the scripts and configuration that surround it, are almost complete.  This means that 
+this guide can be considered as "beta" instead of "alpha".  While there may be parts of this 
+guide that are incorrect, I believe that most of this guide can be followed without any 
+unexpected surprises.  This guide should not be considered as 100% complete until this 
+paragraph is removed.  This will probably happen soon after lenny is released.
 
 .. contents:: :backlinks: entry
 
@@ -348,6 +354,7 @@ In the editor you want to type something similar to this::
        Components: main contrib non-free
        Description: Paella local repository
        Log: logfile
+       Update: sid-fai
        SignWith: <your gpg key ID>
 
 Be sure to replace <your gpg key ID> with the actual key ID that you obtained above.
@@ -375,6 +382,24 @@ In the editor you want to type  something similar to this::
    Components: main contrib non-free 
    UDebComponents: none
    FilterList: deinstall startup-packages extra-packages local-packages
+
+   Name: sid-fai
+   Method: http://ftp.us.debian.org/debian
+   Fallback: http://ftp.de.debian.org/debian
+   VerifyRelease: 6070D3A1
+   Suite: unstable
+   Architectures: i386
+   Components: main contrib non-free
+   UDebComponents: none
+   FilterList: deinstall sid-fai
+
+
+Note:  The sid-fai update stanza is being used to get the latest fai-client from sid.  At the 
+moment, the fai-client package in lenny won't work properly (and even the package in sid 
+isn't working).  I doubt that the newer fai packages will make their way into lenny, and as 
+a result, it's possible that future updates to fai may break paella.  In the past, it has been 
+practically impossible to get everything that paella depends on from stable, and it seems 
+that this will be the case for lenny also.
 
 
 In order to verify the release files, you'll need to import the debian archive signing key::
@@ -581,10 +606,9 @@ Now type::
     sudo lh_build  #(this will take a while)
 
 If the lh_build ended without raising an error, you can move the result to it's proper
-resting places::
+resting places.  I wrote a script in the DebianLive config to help with this.  Type::
 
-    sudo mv tftpboot/* /var/lib/tftpboot/
-    sudo mv binary/* /freespace/paella/
+    sudo ./config/prepare-netboot
 
 Now you'll be able to boot machines off the local internal VM network, but it won't be 
 useful without a database prepared for paella to use.
@@ -713,24 +737,16 @@ Add the archive key
 -------------------------------------
 
 Now you'll need to add the gpg key you made above to paella, so that paella can install 
-the packages from the new mirror.  This is a rather new part of the gui, so the interface 
-is far from complete.  At the moment you can only add keys, not remove them.  The apt 
-key manager can be reached from the "main paella window" Main menu on the menu 
-bar.
+the packages from the new mirror.  Type::
 
-This will make a child window appear that lists all of the apt keys in the database.  At the 
-moment, there shouldn't be anything there.  Each key needs a unique name that you must 
-create.  This will help you to know which key is which, instead of having to memorize key 
-ID's.  To make a new key, press the "new" icon on the toolbar.  You'll be presented with a 
-dialog window.  Enter the name of the key in the top entry (use paella for the name).  In the 
-space below, you need to enter in the ascii gpg block for your public key.  I'll make a file 
-dialog to select the key from in the future, but for now, you'll have to cut and paste the 
-key.  This operation isn't going to be done very much for the lifetime of the database, so 
-a better interface isn't a high priority for me.  If you've been following the instructions 
-you can open the web browser to http://paella/debian/paella.gpg and cut and paste 
-the key from there.
+    paella-import --aptkey /freespace/debian/paella.gpg
 
-If you did this right, you should see paella and the key id in the left hand column.
+Now check that the key has been imported.  There is a small apt key manager in the gui 
+for this.  This is a rather new part of the gui, so the interface is far from complete.  At 
+the moment you can only add keys, not remove them.  The apt key manager can be reached 
+from the "main paella window" Main menu on the menu bar.  You should see the name 
+and key id of the paella key on the list.  The name is taken from the filename when you 
+imported the key.
 
 
 Edit the Default Environment
