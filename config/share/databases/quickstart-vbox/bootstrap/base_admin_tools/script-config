@@ -1,0 +1,26 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+print "running config script for xemacs trait"
+
+def get(key):
+    if ':' not in key:
+        key = 'base_admin_tools:%s' % key
+    return env.dereference(key)
+
+
+it = InstallerTools()
+env = it.env()
+
+pager = get('pager')
+print "setting %s as the default pager" % pager
+cmd = ['update-alternatives', '--install', '/usr/bin/pager',
+       pager]
+priority = get('pager_priority')
+print "Using priority of", priority
+cmd.append(priority)
+it.chroot(cmd)

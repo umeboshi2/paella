@@ -4,6 +4,9 @@
 			base_admin_tools
 		</parent>
 		<parent>
+			debian_admin_base
+		</parent>
+		<parent>
 			users
 		</parent>
 	</parents>

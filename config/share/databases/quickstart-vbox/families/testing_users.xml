@@ -1,0 +1,26 @@
+	<family name="testing_users">
+		<parents/>
+		<environ>
+			<family_variable name="admin_users" trait="users">
+				umeboshi mradmin
+			</family_variable>
+			<family_variable name="standard_users" trait="users">
+				debian
+			</family_variable>
+			<family_variable name="user_debian_gecos" trait="users">
+				Debian User,,,
+			</family_variable>
+			<family_variable name="user_umeboshi_gecos" trait="users">
+				Joseph Rawson,,,
+			</family_variable>
+			<family_variable name="user_umeboshi_gid" trait="users">
+				1971
+			</family_variable>
+			<family_variable name="user_umeboshi_group" trait="users">
+				umeboshi
+			</family_variable>
+			<family_variable name="user_umeboshi_uid" trait="users">
+				1971
+			</family_variable>
+		</environ>
+	</family>

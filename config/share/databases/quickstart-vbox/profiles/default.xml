@@ -13,7 +13,7 @@
 		<families/>
 		<environ>
 			<profile_variable name="hostname" trait="global">
-				skeleton
+				default
 			</profile_variable>
 		</environ>
 	</profile>

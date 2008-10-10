@@ -1,0 +1,79 @@
+update-inetd	update-inetd/ask-disable-entries	boolean	false
+# Ignore multiple entries and continue without changes?
+update-inetd	update-inetd/ask-several-entries	boolean	true
+# Remove inetd entries?
+update-inetd	update-inetd/ask-remove-entries	boolean	false
+# Leave existing entry and continue without changes?
+update-inetd	update-inetd/ask-entry-present	boolean	true
+# Interface to use:
+# Choices: Dialog, Readline, Gnome, Kde, Editor, Noninteractive
+debconf	debconf/frontend	select	Dialog
+# Ignore questions with a priority less than:
+# Choices: critical, high, medium, low
+debconf	debconf/priority	select	high
+# Choose software to install:
+# Choices: 
+tasksel	tasksel/first	multiselect	standard
+# Default locale for the system environment:
+# Choices: None, en_US.UTF-8
+locales	locales/default_environment_locale	select	en_US.UTF-8
+# Locales to be generated:
+locales	locales/locales_to_be_generated	multiselect	en_US.UTF-8 UTF-8
+# Choose software to install:
+# Choices: 
+tasksel	tasksel/tasks	multiselect	
+
+# selections for tzdata
+# Geographic area:
+# Choices: Africa, America, Antarctica, Australia, Arctic Ocean, Asia, Atlantic Ocean, Europe, Indian Ocean, Pacific Ocean, System V timezones, None of the above
+tzdata	tzdata/Areas	select	Etc
+# Time zone:
+# Choices: GMT, GMT+0, GMT+1, GMT+10, GMT+11, GMT+12, GMT+2, GMT+3, GMT+4, GMT+5, GMT+6, GMT+7, GMT+8, GMT+9, GMT-0, GMT-1, GMT-10, GMT-11, GMT-12, GMT-13, GMT-14, GMT-2, GMT-3, GMT-4, GMT-5, GMT-6, GMT-7, GMT-8, GMT-9, GMT0, Greenwich, UCT, UTC, Universal, Zulu
+tzdata	tzdata/Zones/Etc	select	UTC
+# Time zone:
+# Choices: AST4, AST4ADT, CST6, CST6CDT, EST5, EST5EDT, HST10, MST7, MST7MDT, PST8, PST8PDT, YST9, YST9YDT
+tzdata	tzdata/Zones/SystemV	select	
+tzdata	tzdata/Zones/Australia	select	
+tzdata	tzdata/Zones/Asia	select	
+tzdata	tzdata/Zones/Africa	select	
+tzdata	tzdata/Zones/America	select	
+tzdata	tzdata/Zones/Arctic	select	
+tzdata	tzdata/Zones/Pacific	select	
+tzdata	tzdata/Zones/Antarctica	select	
+tzdata	tzdata/Zones/Atlantic	select	
+tzdata	tzdata/Zones/Europe	select	
+tzdata	tzdata/Zones/Indian	select	
+
+
+# Should portmap be bound to the loopback address?
+portmap	portmap/loopback	boolean	false
+# Use paranoid settings in hosts.allow and hosts.deny?
+tcpd	tcpd/paranoid-mode	boolean	false
+# Should man and mandb be installed 'setuid man'?
+man-db	man-db/install-setuid	boolean	false
+# An invalid debconf value [] has been found
+dictionaries-common	dictionaries-common/invalid_debconf_value	note	
+# Problems rebuilding an  hash file ()
+dictionaries-common	dictionaries-common/ispell-autobuildhash-message	note	
+# Default values for ispell dictionary/wordlist are not set here
+dictionaries-common	dictionaries-common/selecting_ispell_wordlist_default	note	
+# Move non-FHS stuff under /usr/dict to /usr/dict-pre-FHS?
+dictionaries-common	dictionaries-common/move_old_usr_dict	boolean	true
+# Selecting system's default ispell dictionary:
+# Choices: american (American English), british (British English), Manual symlinks setting
+dictionaries-common	dictionaries-common/default-ispell	select	american (American English)
+# Remove obsolete /etc/dictionary link?
+dictionaries-common	dictionaries-common/old_wordlist_link	boolean	true
+# Remove obsolete /usr/dict symlink?
+dictionaries-common	dictionaries-common/remove_old_usr_dict_link	boolean	false
+# Selecting system's default wordlist:
+# Choices: american (American English), Manual symlinks setting
+dictionaries-common	dictionaries-common/default-wordlist	select	american (American English)
+# What would you like to do about ?
+# Choices: install the package maintainer's version, keep the local version currently installed, show the differences between the versions, show a side-by-side difference between the versions, start a new shell to examine the situation
+ucf	ucf/changeprompt	select	keep_current
+# Line by line differences between versions
+ucf	ucf/show_diff	note	
+# What would you like to do about ?
+# Choices: install the package maintainer's version, keep the local version currently installed, show the differences between the versions, show a side-by-side difference between the versions, show a 3-way difference between available versions, do a 3-way merge between available versions (experimental), start a new shell to examine the situation
+ucf	ucf/changeprompt_threeway	select	keep_current

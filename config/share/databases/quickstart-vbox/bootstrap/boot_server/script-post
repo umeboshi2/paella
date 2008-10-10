@@ -1,4 +1,19 @@
 #!/usr/bin/python
+import sys
+
+print "we're not using this post script anymore"
+print "this script is kept as a historical reference, and parts of it"
+print "might be resurrected in the future, in case debian live doesn't"
+print "work well enough"
+
+# it's possible that we might need to use fake start-stop-daemon code in
+# the pre and post scripts for this trait, but otherwise, we won't be doing
+# what we used to do here.
+
+
+sys.exit(0)
+
+
 import os, sys
 import commands
 from os.path import join, isdir, isfile

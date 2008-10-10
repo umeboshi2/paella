@@ -1,1 +1,6 @@
 The global trait is basically a collection of global variables. Most all of the traits should depend on global, even if they don't depend on "default". Otherwise variables can either go into the default environment or current environment.
+<br/>
+The variable "insecure_testing_system" shouldn't be set anywhere but in a family called "insecure".  It's being used to more easily test configurations, and is there to notify certain scripts to behave differently.  At the moment this variable isn't being used at all, and may be removed in the future.
+<br/>
+I've been considering making some templates here for some python modules/packages that can be used by other scripts.  This would cut down on reusing code, and help keep some of the code out of the paella framework, but it will also add more "boilerplate" to the scripts.
+

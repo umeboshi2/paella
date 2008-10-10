@@ -4,7 +4,11 @@
 			base_server
 		</parent>
 	</parents>
-	<packages/>
+	<packages>
+		<package action="install">
+			dhcp3-server
+		</package>
+	</packages>
 	<environ>
 		<trait_variable name="authoritative" trait="dhcp_server">
 			#authoritative

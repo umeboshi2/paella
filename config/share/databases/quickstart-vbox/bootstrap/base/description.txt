@@ -2,6 +2,7 @@ The base trait is the first trait that does anything. It's main responsibility i
 <hr>
 Notes:
 <ul>
-	<li>/etc/timezone determines the timezone set this file and run dpkg-reconfigure -pcritical tzdata</li>
+	<li>/etc/timezone determines the timezone set this file and run dpkg-reconfigure -pcritical tzdata .  The timezone is setup sort of funny, as the configure scripts don't seem to honor the debconf settings.  Most of the configuration for the timezone is done in the pre script, and the reconfig step for tzdata is only a confirmation that the settings are correct.</li>
 	<li>/etc/hosts is minimal, and is necessary for some of the server packages to be configured properly</li>
+	<li>The fake start-stop-daemon is used in trait.  This is because if the standard packages are set to be installed, and the install is performed over an nfsroot, the nfs-common package in the target will conflict with the nfs services on the installer.</li>
 </ul>

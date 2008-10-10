@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+# stop certain services that might be running, and keeping the
+# filesystems busy
+
+DAEMONS="avahi-daemon atd dbus dirmngr fam lisa"
+for daemon in $DAEMONS
+do
+  if [ -e /etc/init.d/$daemon ]; then
+      echo "stopping service: " $daemon
+      /etc/init.d/$daemon stop
+  fi
+done
+

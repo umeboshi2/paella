@@ -1,0 +1,112 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+def marker(line):
+    # the marker is #start foo2bar
+    if line.startswith('#start'):
+        ruletype = line.split()[1]
+        # strip the newline before returning
+        # the ruletype
+        return ruletype.strip()
+    else:
+        return None
+
+def parse_ruletype(ruletype):
+    src, dest = ruletype.split('2')
+    if src == 'fw':
+        src = '$FW'
+    if dest == 'fw':
+        dest = '$FW'
+    return src, dest
+
+def make_rule(ruletype, macro, action="ACCEPT"):
+    src, dest = parse_ruletype(ruletype)
+    line = '%s/%s\t%s\t\t%s\n' % (macro, action, src, dest)
+    return line
+
+def make_trait_rule(ruletype, trait, action="ACCEPT"):
+    macro = TRAITMACROS[trait]
+    return make_rule(ruletype, macro, action=action)
+
+
+def testget(key):
+    if key == 'net2fw':
+        return "HTTP HTTPS"
+    if key == 'loc2fw':
+        return "HTTP HTTPS SMB NTP"
+    if key == 'fw2net':
+        return "#HTTP #HTTPS NTP"
+    if key == 'fw2loc':
+        return "SMB NTP"
+    raise RuntimeError , 'Unknown key %s' % key
+
+    
+def get(key):
+    if ':' not in key:
+        key = 'firewall:%s' % key
+    return env.dereference(key)
+
+print "config script for firewall trait"
+
+#print "skipping execution, not ready yet."
+#sys.exit(0)
+
+it = InstallerTools()
+env = it.env()
+
+RULETYPES = ['fw2net', 'fw2loc', 'net2fw', 'loc2fw']
+
+RULETYPE_MACROS = {}
+for ruletype in RULETYPES:
+    key = '%s_macros' % ruletype
+    macros = get(key).split()
+    RULETYPE_MACROS[ruletype] = macros
+
+rules_filename = it.target / "etc/shorewall/rules"
+#rules_filename = path('shorewall-rules')
+orig_rules_lines = rules_filename.lines()
+
+
+rules_lines = []
+for line in orig_rules_lines:
+    rules_lines.append(line)
+    ruletype = marker(line)
+    if ruletype is not None:
+        macros = RULETYPE_MACROS[ruletype]
+        for macro in macros:
+            print "adding", ruletype, macro, "to rules"
+            rules_lines.append(make_rule(ruletype, macro))
+
+
+#file('foo', 'w').writelines(rules_lines)
+
+file(rules_filename, 'w').writelines(rules_lines)
+
+        
+        
+# here is some code for using traits instead of
+# hardcoded macros
+
+if False:
+    traits = ['samba_server', 'clockserver', 'web_server']
+    TRAITMACROS = dict(samba_server='SMB',
+                       clockserver='NTP', boot_server='TFTP',
+                       web_server='HTTP')
+    fw2net_traits = ['clockserver']
+    fw2loc_traits = ['clockserver', 'samba_server']
+    net2fw_traits = ['web_server']
+    loc2fw_traits = ['clockserver', 'samba_server', 'web_server']
+    ruletype_traits = dict(fw2net=fw2net_traits, fw2loc=fw2loc_traits,
+                           net2fw=net2fw_traits, loc2fw=loc2fw_traits)
+    rule_traits = ruletype_traits[ruletype]
+    print ruletype, rule_traits
+    for trait in traits:
+        if trait in rule_traits:
+            print "making rule for", ruletype, trait
+            print "Rule is:", make_rule(ruletype, trait)
+            rules_lines.append(make_rule(ruletype, trait))
+

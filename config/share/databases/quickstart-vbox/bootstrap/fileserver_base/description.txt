@@ -1,0 +1,1 @@
+This trait will help define network shares that will be used for both samba and nfs (and possibly other methods).  There is no policy being defined here yet, except for the basedir variable which sets the parent directory for most of the network shares.

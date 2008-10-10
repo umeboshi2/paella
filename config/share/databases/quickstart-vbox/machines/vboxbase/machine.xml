@@ -1,0 +1,6 @@
+<machine diskconfig="root_and_swap" name="vboxbase" parent="default">
+	<script name="post"/>
+	<machine_variable name="utc" trait="base">
+		no
+	</machine_variable>
+</machine>

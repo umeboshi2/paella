@@ -25,6 +25,9 @@
 		<trait_variable name="sshd_pubkey_authentication" trait="base_server">
 			yes
 		</trait_variable>
+		<trait_variable name="sshd_replace_host_keys" trait="base_server">
+			False
+		</trait_variable>
 		<trait_variable name="sshd_use_pam" trait="base_server">
 			yes
 		</trait_variable>
@@ -34,5 +37,9 @@
 			etc/ssh/sshd_config
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="config"/>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
 </trait>

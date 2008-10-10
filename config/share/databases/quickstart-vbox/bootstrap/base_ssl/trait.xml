@@ -4,7 +4,11 @@
 			base
 		</parent>
 	</parents>
-	<packages/>
+	<packages>
+		<package action="install">
+			ssl-cert
+		</package>
+	</packages>
 	<environ/>
 	<templates/>
 	<scripts/>

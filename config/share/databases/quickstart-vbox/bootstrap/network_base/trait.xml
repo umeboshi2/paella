@@ -1,7 +1,7 @@
 <trait name="network_base">
 	<parents>
 		<parent>
-			base
+			global
 		</parent>
 	</parents>
 	<packages/>

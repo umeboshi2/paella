@@ -3,6 +3,9 @@
 		<parent>
 			global
 		</parent>
+		<parent>
+			network_base
+		</parent>
 	</parents>
 	<packages>
 		<package action="install">
@@ -20,6 +23,9 @@
 		<package action="reconfig">
 			tasksel
 		</package>
+		<package action="reconfig">
+			tzdata
+		</package>
 		<package action="install">
 			ucf
 		</package>
@@ -32,7 +38,10 @@
 			high
 		</trait_variable>
 		<trait_variable name="install_standard" trait="base">
-			False
+			True
+		</trait_variable>
+		<trait_variable name="pam_auth_unix_opts" trait="base">
+			nullok_secure
 		</trait_variable>
 		<trait_variable name="tasksel_first" trait="base">
 			standard
@@ -40,10 +49,16 @@
 		<trait_variable name="tcpd_paranoid_mode" trait="base">
 			false
 		</trait_variable>
+		<trait_variable name="utc" trait="base">
+			yes
+		</trait_variable>
 	</environ>
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">
 			debconf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/base-debconf-selections
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/default/rcS
@@ -61,15 +76,16 @@
 			etc/pam.d/common-account
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/pam.d/common-session
+			etc/pam.d/common-auth
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/timezone
+			etc/pam.d/common-session
 		</template>
 	</templates>
 	<scripts>
 		<script name="chroot"/>
 		<script name="config"/>
+		<script name="post"/>
 		<script name="pre"/>
 	</scripts>
 </trait>

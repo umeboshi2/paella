@@ -13,6 +13,9 @@
 		<trait_variable name="admin_groups" trait="users">
 			admin
 		</trait_variable>
+		<trait_variable name="admin_users" trait="users">
+			
+		</trait_variable>
 		<trait_variable name="dhome" trait="users">
 			/home
 		</trait_variable>
@@ -37,8 +40,17 @@
 		<trait_variable name="skel" trait="users">
 			/etc/skel
 		</trait_variable>
+		<trait_variable name="standard_users" trait="users">
+			
+		</trait_variable>
+		<trait_variable name="sudo_authenticate" trait="users">
+			authenticate
+		</trait_variable>
 		<trait_variable name="sysadmin_groups" trait="users">
 			sudo staff adm
+		</trait_variable>
+		<trait_variable name="sysadmin_users" trait="users">
+			
 		</trait_variable>
 		<trait_variable name="usergroups" trait="users">
 			yes

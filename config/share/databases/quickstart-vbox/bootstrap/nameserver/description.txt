@@ -1,0 +1,9 @@
+The variable run_resolvconf must be either true or false, since it's a boolean debconf option.  The resolvconf variable must be no to keep resolvconf from running.  So they can both be set to true, but will need to be set to false, no otherwise.
+<br/>
+The run_resolvconf debconf variable will not do anything but set RESOLVCONF in /etc/default/bind9 to yes or no based on whether it's true or false.  Since the trait templates override this behaviour, the debconf variable is less important, but it's good practice to keep both these variables with corresponding values.
+
+<br/>
+<b>Notes</b>
+<ul>
+<li>The fake start-stop daemon is used in this trait</li>
+</ul>

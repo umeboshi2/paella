@@ -1,3 +1,9 @@
 #!/usr/bin/python
+from paella.installer.toolkit import InstallerTools
 
 print "config script for users trait"
+
+it = InstallerTools()
+env = it.env()
+
+print "not doing anything yet"

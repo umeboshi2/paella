@@ -16,6 +16,13 @@
 		</package>
 	</packages>
 	<environ/>
-	<templates/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apache2/apache2.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apache2/envvars
+		</template>
+	</templates>
 	<scripts/>
 </trait>

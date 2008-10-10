@@ -16,6 +16,6 @@
 #
 ###############################################################################
 #ZONE	INTERFACE	BROADCAST	OPTIONS
-net     eth0            detect          dhcp,tcpflags,routefilter,nosmurfs,logmartians
-loc     eth1            detect          tcpflags,nosmurfs
+net     <--|firewall:net_interface|-->            detect          dhcp,tcpflags,routefilter,nosmurfs,logmartians
+loc     <--|firewall:loc_interface|-->            detect          tcpflags,nosmurfs
 #LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

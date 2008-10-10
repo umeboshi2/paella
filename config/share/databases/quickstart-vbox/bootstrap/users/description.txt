@@ -1,0 +1,1 @@
+This trait is here to help setup the users.  Since this trait is close to the beginning of the install process, the users shouldn't be added to the system until the final step, in case some files are added to /etc/skel, or the home directory doesn't yet exist.

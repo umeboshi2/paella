@@ -2,6 +2,7 @@
 	<machines>
 		<machine name="default"/>
 		<machine name="raidtest"/>
+		<machine name="vboxbase"/>
 	</machines>
 	<kernels>
 		<kernel>

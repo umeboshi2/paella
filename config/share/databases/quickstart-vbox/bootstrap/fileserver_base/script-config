@@ -1,0 +1,75 @@
+#!/usr/bin/python
+import sys
+
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+
+print "config script for fileserver_base trait"
+print "-----------------------------------------------------"
+print "WARNING:  This is a real hacky script now."
+print "This script is just being used to quickly test"
+print "file sharing and should be replaced with better code"
+print "once the actual filesharing traits are in better shape."
+print "-----------------------------------------------------"
+it = InstallerTools()
+env = it.env()
+
+def get(key):
+    if ':' not in key:
+        key = 'fileserver_base:%s' % key
+    return env.dereference(key)
+
+print "target directory", it.target
+
+basedir = get('basedir')
+while basedir.startswith('/'):
+    basedir = basedir[1:]
+
+target_basedir = it.target / basedir
+if not target_basedir.isdir():
+    target_basedir.makedirs()
+    
+common_dir = target_basedir / 'common'
+common_dir.mkdir()
+share_dir = target_basedir / 'share'
+share_dir.mkdir()
+
+# copy some files to test shares
+print "copying some sample files to test the shares"
+
+print "copying to common share"
+cmd = ['cp', '-av', '/paellalog', common_dir]
+it.run(cmd)
+
+
+# exit and ignore the mess below here
+sys.exit(0)
+
+print "replacing /etc/apt/sources.list with installer version"
+sources_list_filename = it.target / 'etc/apt/sources.list'
+sources_list_official_filename = path('%s.official' % sources_list_filename)
+sources_list_installer_filename = path('%s.installer' % sources_list_filename)
+official = sources_list_filename.bytes()
+sources_list_official_filename.write_bytes(official)
+sources_list_filename.write_bytes(sources_list_installer_filename.bytes())
+
+print "preparing virtualbox packages"
+print "-486 is hardcoded, should use kernel info to pick correct package"
+
+packages = ['virtualbox-ose-guest-modules-2.6.26-1-486',
+            'virtualbox-ose-guest-utils']
+print "Installing Packages: %s" % ', '.join(packages)
+sys.stdout.flush()
+
+cmd = ['apt-get', '-y', 'install'] + packages
+it.chroot(cmd)
+
+print "we need to find that perl script to modify the xorg.conf for virtualbox"
+
+configure_xorg()
+
+
+

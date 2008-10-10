@@ -1,0 +1,1 @@
+These are basic packages to help administer a debian system.  Only sysadmin packages are here, as well as packages that are specific to debian.  Packages that help with building packages, or doing debian specific development shouldn't go here.

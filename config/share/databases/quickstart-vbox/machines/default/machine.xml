@@ -1,5 +1,8 @@
 <machine diskconfig="default" kernel="linux-image-2.6-486" name="default" profile="default">
-	<machine_variable name="hostname" trait="global">
-		default
+	<machine_variable name="tzdata_area" trait="global">
+		America
+	</machine_variable>
+	<machine_variable name="tzdata_zone" trait="global">
+		Chicago
 	</machine_variable>
 </machine>

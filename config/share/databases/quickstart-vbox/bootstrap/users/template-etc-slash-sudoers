@@ -6,6 +6,7 @@
 #
 
 Defaults	env_reset
+Defaults	<--|users:sudo_authenticate|-->
 
 # Host alias specification
 

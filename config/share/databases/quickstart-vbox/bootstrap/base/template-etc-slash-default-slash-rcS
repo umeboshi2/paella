@@ -10,7 +10,7 @@
 TMPTIME=0
 SULOGIN=no
 DELAYLOGIN=no
-UTC=yes
+UTC=<--|base:utc|-->
 VERBOSE=no
 FSCKFIX=no
 RAMRUN=no

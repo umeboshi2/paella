@@ -3,9 +3,6 @@
 		<parent>
 			default
 		</parent>
-		<parent>
-			network_base
-		</parent>
 	</parents>
 	<packages/>
 	<environ>

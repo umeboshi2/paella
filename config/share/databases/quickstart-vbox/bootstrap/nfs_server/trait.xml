@@ -11,5 +11,8 @@
 	</packages>
 	<environ/>
 	<templates/>
-	<scripts/>
+	<scripts>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
 </trait>

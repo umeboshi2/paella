@@ -13,14 +13,23 @@
 		</package>
 	</packages>
 	<environ>
+		<trait_variable name="bind_user" trait="nameserver">
+			bind
+		</trait_variable>
 		<trait_variable name="resolvconf" trait="nameserver">
 			no
+		</trait_variable>
+		<trait_variable name="run_resolvconf" trait="nameserver">
+			true
 		</trait_variable>
 		<trait_variable name="startup_options" trait="nameserver">
 			-u bind
 		</trait_variable>
 	</environ>
 	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			debconf
+		</template>
 		<template grp_owner="bind" mode="0644" owner="root">
 			etc/bind/named.conf
 		</template>
@@ -36,5 +45,7 @@
 	</templates>
 	<scripts>
 		<script name="chroot"/>
+		<script name="post"/>
+		<script name="pre"/>
 	</scripts>
 </trait>

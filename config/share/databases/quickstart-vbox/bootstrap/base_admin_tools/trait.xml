@@ -3,6 +3,9 @@
 		<parent>
 			base
 		</parent>
+		<parent>
+			xemacs
+		</parent>
 	</parents>
 	<packages>
 		<package action="install">
@@ -46,5 +49,7 @@
 			etc/most.conf
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
 </trait>

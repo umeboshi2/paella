@@ -1,0 +1,12 @@
+#
+# Shorewall version 3.2 - DHCP Macro
+#
+# /usr/share/shorewall/macro.DHCP
+#
+#	This macro handles Dynamic Host Control Protocol (DHCP)
+#
+###############################################################################
+#ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
+#				PORT(S)	PORT(S)	LIMIT	GROUP
+PARAM	-	-	udp	67
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

@@ -10,6 +10,27 @@
 		</package>
 	</packages>
 	<environ>
+		<trait_variable name="fw2loc_macros" trait="firewall">
+			
+		</trait_variable>
+		<trait_variable name="fw2net_macros" trait="firewall">
+			#HTTP #HTTPS
+		</trait_variable>
+		<trait_variable name="ip_forwarding" trait="firewall">
+			Keep
+		</trait_variable>
+		<trait_variable name="loc2fw_macros" trait="firewall">
+			DNS
+		</trait_variable>
+		<trait_variable name="loc_interface" trait="firewall">
+			eth1
+		</trait_variable>
+		<trait_variable name="net2fw_macros" trait="firewall">
+			
+		</trait_variable>
+		<trait_variable name="net_interface" trait="firewall">
+			eth0
+		</trait_variable>
 		<trait_variable name="startup" trait="firewall">
 			0
 		</trait_variable>
@@ -23,6 +44,9 @@
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/shorewall/interfaces
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.DHCP
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/shorewall/Makefile
@@ -46,5 +70,7 @@
 			etc/shorewall/zones
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
 </trait>

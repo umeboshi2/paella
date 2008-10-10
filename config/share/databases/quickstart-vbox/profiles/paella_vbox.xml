@@ -21,6 +21,9 @@
 		</traits>
 		<families/>
 		<environ>
+			<profile_variable name="interfaces" trait="dhcp_server">
+				eth1
+			</profile_variable>
 			<profile_variable name="hostname" trait="global">
 				paella
 			</profile_variable>

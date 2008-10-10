@@ -16,5 +16,5 @@
 #
 ###############################################################################
 #INTERFACE		SOURCE		ADDRESS		PROTO	PORT(S)	IPSEC	MARK
-eth0                    eth1
+<--|firewall:net_interface|-->                    <--|firewall:loc_interface|-->
 #LAST LINE -- ADD YOUR ENTRIES ABOVE THIS LINE -- DO NOT REMOVE

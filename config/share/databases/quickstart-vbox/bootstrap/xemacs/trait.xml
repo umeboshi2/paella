@@ -1,5 +1,9 @@
 <trait name="xemacs">
-	<parents/>
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
 	<packages>
 		<package action="install">
 			xemacs21
@@ -15,6 +19,6 @@
 	</environ>
 	<templates/>
 	<scripts>
-		<script name="post"/>
+		<script name="config"/>
 	</scripts>
 </trait>

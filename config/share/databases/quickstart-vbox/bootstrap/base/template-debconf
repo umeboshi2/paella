@@ -7,3 +7,5 @@ debconf debconf/frontend select <--|base:debconf_frontend|-->
 tasksel tasksel/first multiselect <--|base:tasksel_first|-->
 locales locales/default_environment_locale select <--|global:default_environment_locale|-->
 locales locales/locales_to_be_generated multiselect <--|global:default_environment_locale|--> <--|global:default_charset|-->
+tzdata tzdata/Areas select <--|global:tzdata_area|-->
+tzdata tzdata/Zones/<--|global:tzdata_area|--> select <--|global:tzdata_zone|-->

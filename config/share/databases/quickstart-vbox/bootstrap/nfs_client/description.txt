@@ -1,0 +1,1 @@
+If the standard packages are installed, the nfs-common package is also installed.  This trait isn't just here to install the nfs-common package, but to help configure the machine to be an nfs client.  I don't have a policy or method of doing this yet, so this trait is mostly empty.

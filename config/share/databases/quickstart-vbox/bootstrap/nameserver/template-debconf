@@ -1,0 +1,6 @@
+# Other startup options for named:
+bind9	bind9/different-configuration-file	string	
+# Should resolv.conf settings be overridden?
+bind9	bind9/run-resolvconf	boolean	<--|nameserver:run_resolvconf|-->
+# User account for running the BIND9 daemon:
+bind9	bind9/start-as-user	string	<--|nameserver:bind_user|-->

@@ -1,7 +1,7 @@
 <trait name="debian_admin_base">
 	<parents>
 		<parent>
-			default
+			base_admin_tools
 		</parent>
 	</parents>
 	<packages>
@@ -19,6 +19,10 @@
 		</package>
 	</packages>
 	<environ/>
-	<templates/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/reportbug.conf
+		</template>
+	</templates>
 	<scripts/>
 </trait>
