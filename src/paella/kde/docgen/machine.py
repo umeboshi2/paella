@@ -183,7 +183,7 @@ class MachineDoc(_MachineBaseDocument):
         self._setup_section('Families', ['family'], famrows)
         self._setup_script_section()
         vars_ = cursor.select(table='machine_variables', clause=clause,
-                                   order=['name'])
+                                   order=['trait', 'name'])
         #self._setup_section('Variables', ['trait', 'name', 'value'], vars_)
         self._setup_variables_section(vars_)
         

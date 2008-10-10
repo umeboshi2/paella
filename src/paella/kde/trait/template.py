@@ -23,7 +23,10 @@ from paella.kde.base.dialogs import NewTraitVariableDialog
 
 class TemplateHighlighter(QSyntaxHighlighter):
     def highlightParagraph(self, text, endStateOfLastPara):
-        text = str(text)
+        try:
+            text = str(text)
+        except UnicodeEncodeError:
+            text = unicode(text)
         template = Template()
         template.set_template(text)
         for span in template.spans():
@@ -159,7 +162,12 @@ class TemplateViewWindow(BaseTextEditWindow):
         BaseTextEditWindow.initToolbar(self)
 
     def slotSave(self):
-        text = str(self.mainView.text())
+        try:
+            text = str(self.mainView.text())
+        except UnicodeEncodeError:
+            text = unicode(self.mainView.text())
+            #text = text.encode()
+            text = text.encode('utf')
         oldtext = self.trait.get_template_contents(self.current_template)
         if oldtext != text:
             self.trait.update_template(self.current_template, contents=text)
