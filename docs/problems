@@ -5,35 +5,24 @@ Known Problems with Paella_
 
 + xml import/export
 
-  - the tags for trait variables needs to be redone
+  - the tags for trait variables needs to be redone **fixed**
 
-  - the way templates are exported is sloppy
+  - the way templates are exported is sloppy **fixed** (now they're just ugly, 
+    but not sloppy :) )
 
 + the kde gui needs finishing
 
-  - trait management
+  - trait management **mostly done**
 
-  - family management
+  - family management **mostly done**
 
-  - machine management
+  - machine management **mostly done**
 
 + temporary files should be more vigorously removed
 
-+ debrepos
-
-  - no partial mirror support
-
-  - init script holds up installation
-
-+ python-kde3 not in sarge.
-
-  - maybe I can put my backport on berlios?
-
 + schema problems
 
-  - templates in the traits are tied to packages
-
-  - use of current_environment table needs updating
+  - templates in the traits are tied to packages **fixed**
 
 
 .. _paella: http://paella.berlios.de
