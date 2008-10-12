@@ -29,6 +29,9 @@ The primary tables are:
 
 + current_environment
 
++ archive_keys
+
+
 Other tables are in related sets:
 
 + **suite tables**  -- there is a set for each suite in suites table
@@ -77,13 +80,13 @@ Other tables are in related sets:
     + template tags have the form::
 
 
-       <--|trait_name|-->
+       <--|trait:name|-->
        
      where trait is the name of the trait
      and name is the name of the variable
      for example::
 
-        <--|xwindow_driver|-->
+        <--|xwindow:driver|-->
 
 
     + parent directories created before installing the
@@ -98,7 +101,17 @@ Other tables are in related sets:
 
     + the keys in the dictionary are in the form
       as the template tags mentioned above, without
-      the tag markers.
+      the tag markers.  For example::
+
+	  global:timezone
+
+
+    + the values in the dictionary are in the form of
+      templates, tags and all.  This lets you substitute
+      other variables in parts of the value. For example::
+
+	    global:timezone = <--|global:area|-->/<--|global:zone|-->
+
 
 + **profile tables**
 
@@ -124,56 +137,25 @@ Other tables are in related sets:
 
     + list of machines_
 
-    + relates to machine_types, profiles, filesystems, kernels
+    + has columns for diskconfig, kernel and profile
 
-  - machine_types
+  - diskconfig
 
-    + list of machine_types_
-
-  - machine_disks
-
-    + relates machine_types to disks and device name
-
-  - machine_modules
-
-    + ordered lists of modules
-
-    + relates to machine_types_
-
-  - disks
-
-    + list of disknames
-
-  - filesystem_mounts
-
-    + an ordered list of mounts for a filesystem
-
-    + relates to filesystems_
-
-    + size corresponds to fai diskconfig
-
-    + partition number for hard drive
-
-  - filesystems
-
-    + a list of filesystems_
+    + a list of disk config files to be used with setup-storage
+      for the machine installer.  These should be integrated into
+      the textfiles table in the future.
 
   - kernels
     
-    + a list of kernel package names
+    + a list of kernel package names for the machine installer
 
-  - mounts
+  - machine_parent
 
-    + a list of mounts_ and options 
+  - machine_family
 
-  - partitions
+  - machine_variables
 
-    + a list of partition numbers and sfdisk info
-
-    + relates to disks 
-
-    + use this info to dump with sfdisk
-
+  - machine_script
 
 -----------------------------------
 

@@ -24,6 +24,33 @@ Known Problems with Paella_
 
   - templates in the traits are tied to packages **fixed**
 
++ circular dependencies
+
+  - the traits, families, and machines all have parents, and there is
+    no code to check on whether there is a circular relationship among
+    these entities.  Fixing this problem is a low priority for me.  The 
+    administrator who makes the paella database should be aware of 
+    how the entities relate to each other.  If there are times when the
+    install or parts of the management interface seem to stall, and
+    there's a python process using all the cpu, this is probably the reason.  
+    I'm open to accepting patches from people who wish to have this 
+    problem fixed, especially since it might become more difficult to tell 
+    that a circular dependency exists as the database grows in size and 
+    complexity.  These problems can probably be easily fixed by using 
+    the kjbuckets graph class that's already being used in paella.  I just 
+    haven't gotten around to doing this, and probably won't until I start
+    experiencing problems here.
+
+    
+  - due to the way the variables are substituted, there is also the chance
+    that a circular dependency can occur here.  This problem will be harder 
+    to detect, and therefore, harder to prevent in the code.  Also, as the 
+    database increases in size and complexity, it's more likely that a 
+    circular dependency will happen here, rather than in the objects above.  
+    I'm open to suggestions on how this problem can be both spotted and 
+    fixed.
+
+
 
 .. _paella: http://paella.berlios.de
 .. _project: http://developer.berlios.de/projects/paella
