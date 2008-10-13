@@ -1,0 +1,220 @@
+.. -*- mode: rst -*-
+
+=======================================================
+Guide to using the Paella Management Interface
+=======================================================
+.. contents:: :backlinks: entry
+
+Introduction
+--------------------------------
+
+The management interface was developed to be a convenient way to
+access and manipulate objects in the database.  The interface is not 
+entirely intuitive and diverges from the way most interfaces both look 
+and behave.  This was done, not to confuse the user, but to get something 
+up and running quickly.  Graphical user interfaces can take a long time to 
+develop, as the developer has to write a lot of supporting code to go along 
+with the widgets.  This can be quite time consuming, and keeps the developer 
+from being able to concentrate on some of the more functional aspects of the 
+interface.  This means that the gui is lacking in buttons, icons, tooltips, and 
+standard menu entries.  This does not mean that the gui is unable to be used, 
+but it will take some time to get used to how things work.
+
+It has been my desire to get as much functionality up and running before 
+getting the interface to conform to more conventional standards.  At the 
+moment, most of the necessary functionality is present, and only the less 
+used (or presumably less used) parts are unimplemented.  Notably the 
+import and export routines for the individual components aren't implemented 
+yet.  To compensate, there are command line tools to handle this; paella-import 
+and paella-export.  Importing and exporting a complete database is supported 
+in the gui, although the progress bars on the status dialogs aren't very 
+accurate.
+
+
+Paella Main Menu Window
+---------------------------------------
+
+The main menu window is a small window that is used to access the other widgets in 
+the manager.  The main view is a list view that lists some of the available  widgets.  
+Simply selecting one of the list items will open up one of the widgets, unless the item 
+has child items.  The list items that have children are differs, environ, and suites.  
+The rest of the widgets can be opened with the menubar at the top of the window.
+
+Main Menu
+----------------------------------
+
+I will begin by discussing the widgets that can be accessed from the "Main" menu 
+on the top menu bar.
+
+
+Manage Apt Sources
++++++++++++++++++++++++++++++
+
+This widget will let you add new apt sources to the database, to be used 
+in the suites.  To add a new apt source, select an apt source from the 
+list on the left, and press the "New" button on the toolbar.  The dialog 
+will contain the values of the apt source that you selected.  Modify the 
+text entries as you need for the new apt source.  You will be able to 
+use this new apt source when you make a new suite.
+
+At the moment, there is no ability to update the apt sources, remove 
+apt sources, or to change the apt sources for a suite.  Some of this 
+functionality is planned for the future, but at a moderate to low priority.
+
+
+Open Suite Manager
++++++++++++++++++++++++++++++
+
+This widget will allow you to make new suites.  Use the new button on the 
+toolbar to create a new suite.  A dialog window will appear, where the name 
+of the new suite should be placed.  Once the name is set, another dialog will 
+appear that will let you select the apt sources for that suite.  The apt sources 
+are listed by name in the dialog, and the order of the selected apt sources will 
+be the order that they will appear in the /etc/apt/sources.list file on installed 
+systems.
+
+Manage Apt Keys
++++++++++++++++++++++++++++++
+
+This widget is a new widget to help manage gpg keys that are used to sign the 
+debian archives.  At the moment, the only function is to add a new key to the 
+database, and this must be done by copying, and pasting the gpg public key 
+into a dialog window.  There is no functionality for modifying or removing keys.
+
+It is recommended that you should use the command line programs, paella-import 
+and paella-export to handle the apt keys at this time.
+
+Database Menu
+-------------------------------------------
+
+Connect/Disconnect to/from database
++++++++++++++++++++++++++++++++++++++++++++
+
+Selecting connect to a database will connect you to the paella database.  A 
+dialog will appear where you can fill out the information required to connect.  
+The dialog will be pre-filled with values from the ~/.paellarc file.
+
+**Note**:  If any of these environment variables are set, they will be used 
+instead of the values entered into the dialog box.  You also won't be notified 
+that this has occurred.  The variables are 'PAELLA_DBHOST', 'PAELLA_DBNAME', 
+'PAELLA_DBPORT', and 'PAELLA_DBUSER'.  In the future, if these environment 
+variables are set, the dialog will display those values and refuse to let them 
+be modified.  Normally, you should use the ~/.paellarc file to store the 
+database connection info, and not use the environment variables in the 
+shell that you run paella-management from.
+
+Disconnecting from the database will do that, and it will close all the open widgets 
+that are using the database connection.
+
+Import/Export Database
++++++++++++++++++++++++++++++++++++++++++++
+
+Widgets accessed from the list view
+--------------------------------------------------------
+
+Differs
++++++++++++++++++++++++++++++++
+
+This item has children and doesn't open a widget.  Currently, the 
+only available differs are for families and traits.
+
+The differ program that's used and tested is xxdiff.  It is probably possible 
+to use another graphical differ program.  This can be set in the ~/.paellarc 
+config file.  The database will be updated with both the left and right side, 
+depending on if they've been changed or not.  In order for the graphical 
+differ to work with paella, it must be able to save the left and/or right file 
+under the same filename that it was given as arguments.
+
+In each of the differs, the button that performs the the leftmost button 
+on the toolbar (and it can use a more appropriate icon).
+
+Family Differ
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The family differ will let you "diff" the variables from two different 
+families.  Each family's variables are presented as a text file that's
+similar to a config file used by the python ConfigParser module.  
+Each of the sections in this file correspond to traits.
+
+Trait Differ
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The trait differ will let you diff either scripts or templates from any trait 
+in any suite.  You will be presented two list views with combo boxes right 
+below them.  The update buttons on the bottom will update the corresponding 
+list view with the selections from the combo boxes.  
+
+
+
+Environ
++++++++++++++++++++++++++++++++
+
+This item has children and doesn't open a widget.  There are two 
+environments that can be edited, the current environment, and the 
+default environment.  The widgets simply display the rows in the 
+database table, but when you need to edit the environment, the 
+external editor will present the table in the form of a config file.
+
+The import and export options are functional in both environment 
+editors.  They correspond to the standard open and save actions 
+that are found on most standard guis.  The file format for import 
+and export is that of a config file.
+
+Families
++++++++++++++++++++++++++++++++
+
+The families manager is a simple widget to help manage the 
+families in the database.  You can create a new family by selecting 
+"New" from the menu or toolbar.  To manage a family, you can select 
+one from the list on the left side of the widget.
+
+When a family is selected from the list, an html interface to the family 
+will be presented on the right side.  At the bottom of the page is a 
+"delete" link, which will let you delete the family.  There are two more 
+links on this page, on table headers.  The "Parents" link will let you 
+assign parents to this family.  The "Variables" link will let you edit 
+the variables for the family.
+
+Editing the variables is done in an external editor, and it uses 
+a config file format, where all the sections are traits.
+
+Machines
++++++++++++++++++++++++++++++++
+
+Manage Machines
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Manage Disk Configs
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Manage Kernels
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+Profiles
++++++++++++++++++++++++++++++++
+
+Suites
++++++++++++++++++++++++++++++++
+
+This item has children and doesn't open a widget.
+
+
+
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi3@gmail.com
+.. _problems: problems.html
+

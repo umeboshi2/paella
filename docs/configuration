@@ -9,6 +9,33 @@ Paella Notes
 Reserved Word/Option Reference
 ===================================
 
+Object Names
+------------------------
+
+Generally, there are no capital letters in the names of any of the objects.  It 
+is possibly ok to use capital letters, but has never been tested.  More specifically, 
+all object names **should** be able to be used as python identifiers.  This means 
+that they must not start with a number, or have a dash (-) in them.  This is not 
+strictly enforced, and you may be able to get away with this in most circumstances.  
+Even if you wish to use dashes in the names of traits, and families, you must not 
+use them in variable names.  Also, you must not use colons (:) in the variable names 
+either, as they are used to separate trait names and variable names in the templates 
+and in the environment dictionaries.  As long as you stick to names that would be 
+appropriate as python identifiers, you should be fine.
+
+A suite cannot be named "diskconfig", "families", "machines", or "profiles".  
+These names are used as directories to import and export those objects.  It's 
+recommended that a suite be a one word "codename" with all lowercase letters, like 
+sid, sarge, or woody, but you can also use underscores in the name.  Every suite will 
+have tables in the database prefixed by the name of the suite, so this must be taken 
+into account, if you want to diverge from this naming convention.
+
+
+
+
+
+
+
 Environment Variables used by Paella
 ------------------------------------------------------
 

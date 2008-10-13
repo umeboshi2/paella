@@ -1,16 +1,23 @@
 .. -*- mode: rst -*-
 
+==============================
 Known Problems with Paella_
------------------------------------------
+==============================
 
-+ xml import/export
+.. contents:: :backlinks: entry
+
+-----------------------------------
+xml import/export
+-----------------------------------
 
   - the tags for trait variables needs to be redone **fixed**
 
   - the way templates are exported is sloppy **fixed** (now they're just ugly, 
     but not sloppy :) )
 
-+ the kde gui needs finishing
+-------------------------------------------------------
+the kde gui needs finishing
+-------------------------------------------------------
 
   - trait management **mostly done**
 
@@ -18,13 +25,25 @@ Known Problems with Paella_
 
   - machine management **mostly done**
 
-+ temporary files should be more vigorously removed
+There are a lot of unimplemented features in the gui.  There are also features 
+that don't work appropriately.
 
-+ schema problems
+--------------------------------------------------
+schema problems
+--------------------------------------------------
 
   - templates in the traits are tied to packages **fixed**
 
-+ circular dependencies
+  - current_environment should look more like default_environment
+
+    + changing this will require some changes to the code.  Either the
+      changes will be extensive, or the will be minor, and scattered throughout
+      the code.
+
+
+----------------------------------------------------
+circular dependencies
+----------------------------------------------------
 
   - the traits, families, and machines all have parents, and there is
     no code to check on whether there is a circular relationship among
@@ -50,6 +69,14 @@ Known Problems with Paella_
     I'm open to suggestions on how this problem can be both spotted and 
     fixed.
 
+----------------------------------------
+other problems
+----------------------------------------
+
++ temporary files should be more vigorously removed
+
+  - this has been done for editing scripts and templates, but still 
+    needs to be done for the differ and variables.
 
 
 .. _paella: http://paella.berlios.de
