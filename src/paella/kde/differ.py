@@ -223,6 +223,7 @@ class BaseDifferFrame(QFrame):
             if differ.isdifferent('right', right_data):
                 newdata = differ.get_data('right')
                 self.rightBox.updateData(newdata)
+            differ.remove_tmpfiles()
         elif self.diff_type == 'family':
             # VariablesConfig objects have their own diff method
             left_data.diff(right_data)

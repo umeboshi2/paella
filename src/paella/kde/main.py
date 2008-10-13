@@ -153,7 +153,7 @@ class BasePaellaMainWindow(BasePaellaWindow):
         main_actions = [self.manageAptSourcesAction,
                         self.openSuiteManagerAction,
                         self.manageAptKeysAction,
-                        self.identifyMachinesAction,
+                        #self.identifyMachinesAction,
                         self.quitAction]
         actions = ['connect', 'disconnect', 'import', 'export']
         dbactions = [self.dbactions[action] for action in actions]

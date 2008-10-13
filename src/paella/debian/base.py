@@ -8,7 +8,6 @@ from apt_pkg import ParseTagFile
 
 from useless.base import debug, Error
 from useless.base.util import gunzip, bunzip
-from useless.base.util import readfile
 
 SRCPATH = 'source'
 
@@ -17,6 +16,12 @@ def dotjoin(*args):
 
 def _binpath(arch):
     return 'binary-%s' %arch
+
+def readfile(filename):
+    """a quick hack to replace the old
+    readfile function from useless
+    """
+    return file(filename).read()
 
 
 class _Srcfile(list):

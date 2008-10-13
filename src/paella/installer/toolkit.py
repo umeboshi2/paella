@@ -18,7 +18,6 @@ from paella.db.machine import MachineHandler
 
 
 from base import InstallError, InstallerConnection, Modules
-from base import runlog, RunLogError
 
 
 # Here is a sample of most of the
@@ -93,6 +92,11 @@ class ToolkitDatabase(object):
 
     def set_machine(self, machine):
         self.machine.set_machine(machine)
+        profile = self.machine.get_profile()
+        self.set_profile(profile)
+        if os.environ.has_key('PAELLA_TRAIT'):
+            self.set_trait(os.environ['PAELLA_TRAIT'])
+        
         
     def env(self):
         env = TemplatedEnvironment()
@@ -103,6 +107,13 @@ class ToolkitDatabase(object):
         if self.machine.current_machine is not None:
             env.update(self.machine.get_machine_data())
         return env
+
+# here is an exception that will
+# be raised when commands that
+# are run with subprocess.call
+# return non-zero
+class CmdLineError(RuntimeError):
+    pass
 
 class InstallerTools(object):
     """This is a class that's meant to be called
@@ -124,15 +135,32 @@ class InstallerTools(object):
         self.machine = None
         self.trait = None
         self.suite = get_suite(self.conn, self.profile)
+        # we add this here as a convenience
+        # we need to think about using check_call
+        # instead of call for subprocess (just found
+        # out about it)
+        self.CmdLineError = CmdLineError
 
+        # another convenience for using
+        # pipes in subprocess calls
+        self.PIPE = subprocess.PIPE
+        
         self.db = ToolkitDatabase(self.conn)
         self.db.set_profile(self.profile)
         self.traits = self.db.profile.make_traitlist()
-        profile_families = self.db.profile.get_families()
-        self.families = list(self.db.family.get_related_families(profile_families))
-        self.default = DefaultEnvironment(self.conn)
-        
 
+        # we need better family attributes
+        # for both profile families and machine families
+        profile_families = self.db.profile.get_families()
+        self.profile_families = list(self.db.family.get_related_families(profile_families))
+        self.default = DefaultEnvironment(self.conn)
+
+        # we should really use __getattr__ to raise a
+        # warning when the families attribute is being
+        # accessed so that we can be notified when there
+        # are scripts that use it.
+        self.families = self.profile_families
+        
         if os.environ.has_key('PAELLA_MACHINE'):
             self.machine = os.environ['PAELLA_MACHINE']
             self.db.set_machine(self.machine)
@@ -159,15 +187,35 @@ class InstallerTools(object):
         return env.dereference(key)
 
     def run(self, cmd):
-        return subprocess.call(cmd)
+        retval = subprocess.call(cmd)
+        if retval:
+            shell_cmd = ' '.join(cmd)
+            raise CmdLineError, "Executing: %s , returned %d" % (shell_cmd, retval)
+        return retval
+    
+
+    def proc(self, cmd, stdin=None, stdout=None, stderr=None):
+        proc = subprocess.Popen(cmd, stdin=stdin, stdout=stdout,
+                                stderr=stderr)
+        return proc
+
+    def _chroot_cmd(self, cmd):
+        return ['chroot', str(self.target)] + cmd
+    
+    def chroot_proc(self, cmd, stdin=None, stdout=None, stderr=None):
+        cmd = self._chroot_cmd(cmd)
+        return self.proc(cmd, stdin=stdin, stdout=stdout, stderr=stderr)
+    
     
     def chroot(self, cmd):
-        cmd = ['chroot', str(self.target)] + cmd
+        cmd = self._chroot_cmd(cmd)
         return self.run(cmd)
     
     def set_machine(self, machine):
         self.machine = machine
         self.db.set_machine(machine)
+        self.profile = self.db.profile.current.profile
+        
         
 if __name__ == '__main__':
     from paella.db import PaellaConnection

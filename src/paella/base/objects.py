@@ -12,6 +12,12 @@ from useless.sqlgen.clause import Eq
 
 from util import edit_dbfile
 
+def remove_tmpfile(filename):
+    os.remove(filename)
+    backup_filename = '%s~' % filename
+    if os.path.exists(backup_filename):
+        os.remove(backup_filename)
+        
 class TextFileManager(object):
     def __init__(self, conn):
         self.conn = conn
@@ -98,10 +104,11 @@ class VariablesConfig(Configuration):
         newconfig = Configuration()
         newconfig.readfp(tmp)
         tmp.close()
-        os.remove(path)
-        backupfile = '%s~' % path
-        if os.path.exists(backupfile):
-            os.remove(backupfile)
+        #os.remove(path)
+        #backupfile = '%s~' % path
+        #if os.path.exists(backupfile):
+        #    os.remove(backupfile)
+        remove_tmpfile(path)
         return newconfig
 
     def diff(self, other):
@@ -122,6 +129,9 @@ class VariablesConfig(Configuration):
         rtmp.close()
         self.update(lcfg)
         other.update(rcfg)
+
+        remove_tmpfile(lpath)
+        remove_tmpfile(rpath)
         
     
         
@@ -212,3 +222,7 @@ class Differ(object):
         else:
             raise Error, 'bad name %s' % name
             
+    def remove_tmpfiles(self):
+        remove_tmpfile(self.lpath)
+        remove_tmpfile(self.rpath)
+        

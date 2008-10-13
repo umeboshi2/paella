@@ -12,16 +12,21 @@ from copy import deepcopy as copy
 from apt_pkg import ParseTagFile
 
 from useless.base import debug, Error, NoFileError
-from useless.base.util import readfile, wget, strfile
+from useless.base.util import wget, strfile
 from useless.base.util import md5sum as md5sum_base
-from useless.base.util import makepaths, check_file, get_file, get_url
+from useless.base.util import makepaths
 from useless.base.util import filecopy
+
+# These functions are deprecated, they need to be
+# replaced.
+from useless.base.util import check_file, get_file, get_url
 
 from base import parse_packages, parse_sources
 from base import _Srcfile, full_parse, islocaluri
 from base import parse_sources_list
 from base import Release, RepositorySource
 from base import make_source
+from base import readfile
 
 ARCH='i386'
 DISTS='dists'
