@@ -1,0 +1,4 @@
+disk_config disk1 disklabel:msdos
+
+primary	/	1000-	ext3	rw,errors=remount-ro
+logical	swap	200-1000	swap	rw
