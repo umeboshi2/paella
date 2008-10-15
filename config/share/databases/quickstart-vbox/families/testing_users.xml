@@ -5,7 +5,7 @@
 				umeboshi mradmin
 			</family_variable>
 			<family_variable name="standard_users" trait="users">
-				debian
+				debian tom dick harry sally
 			</family_variable>
 			<family_variable name="user_debian_gecos" trait="users">
 				Debian User,,,

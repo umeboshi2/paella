@@ -7,71 +7,7 @@ from paella.base.template import TemplatedEnvironment
 
 from paella.installer.toolkit import InstallerTools
 
-#################################
-def make_users(toolkit):
-    it = toolkit
-    current_trait = it.trait
-    it.set_trait('users')
-    env = it.env()
-    standard_users = it.get('users:standard_users').split()
-    admin_users = it.get('users:admin_users').split()
-    sysadmin_users = it.get('users:sysadmin_users').split()
-
-    standard_groups = []
-    #it.get('users:standard_groups').split()
-    admin_groups = it.get('users:admin_groups').split()
-    sysadmin_groups = it.get('users:sysadmin_groups').split()
-    
-    # a quick hack to get unique users
-    users = list(set(standard_users + admin_users + sysadmin_users))
-    # admin groups include standard groups
-    admin_groups = list(set(standard_groups + admin_groups))
-    # sysadmin groups include both standard and admin groups
-    sysadmin_groups = list(set(admin_groups + sysadmin_groups))
-    
-    for user in users:
-        print "user", user
-        groups = standard_groups
-        if user in admin_users:
-            print "user", user, "is an admin user"
-            groups = admin_groups
-        if user in sysadmin_users:
-            groups = sysadmin_groups
-
-        opts = ['--disabled-password']
-        uidkey = 'users:user_%s_uid' % user
-        if env.has_key(uidkey):
-            opts += ['--uid', env.get(uidkey)]
-        gecoskey = 'users:user_%s_gecos' % user
-        if env.has_key(gecoskey):
-            opts += ['--gecos', env.get(gecoskey)]
-        else:
-            print "pretending that user", user, "has gecos entry"
-            opts += ['--gecos', '%s,,,' % user]
-        cmd = ['adduser'] + opts + [user]
-        print "adding user with command %s" % ' '.join(cmd)
-        sys.stdout.flush()
-        it.chroot(cmd)
-        cmd = ['passwd', '-d', user]
-        print "making empty password for", user
-        sys.stdout.flush()
-        it.chroot(cmd)
-        for group in groups:
-            cmd = ['adduser', user, group]
-            print "Running: %s" % ' '.join(cmd)
-            sys.stdout.flush()
-            it.chroot(cmd)
-            
-    # down here at the end
-    it.set_trait(current_trait)
-        
-    
 print "config script for final trait"
-it = InstallerTools()
-
-if 'users' in it.traits:
-    make_users(it)
-else:
-    print "skipping users configuration"
-    
-
+#it = InstallerTools()
+print "we need to update the home directories for the users created"
+print "in the users trait."

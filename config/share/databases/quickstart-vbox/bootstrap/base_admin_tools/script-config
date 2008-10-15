@@ -19,7 +19,7 @@ env = it.env()
 pager = get('pager')
 print "setting %s as the default pager" % pager
 cmd = ['update-alternatives', '--install', '/usr/bin/pager',
-       pager]
+       'pager', pager]
 priority = get('pager_priority')
 print "Using priority of", priority
 cmd.append(priority)

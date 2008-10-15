@@ -20,7 +20,7 @@ default = get('default_editor')
 if default in ['True', 'true', 'Yes', 'yes']:
     print "setting xemacs21 to the default editor"
     cmd = ['update-alternatives', '--install', '/usr/bin/editor',
-           '/usr/bin/xemacs21']
+           'editor', '/usr/bin/xemacs21']
     priority = get('alternatives_priority')
     print "Using priority of", priority
     cmd.append(priority)

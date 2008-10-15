@@ -1,9 +1,135 @@
 #!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
 from paella.installer.toolkit import InstallerTools
 
+#################################
+def get_all_defined_groups(toolkit):
+    it = toolkit
+    extra_groups = it.get('users:extra_groups').split()
+    admin_groups = it.get('users:admin_groups').split()
+    sysadmin_groups = it.get('users:sysadmin_groups').split()
+    grouplist = extra_groups + admin_groups + sysadmin_groups
+    groups = list(set(grouplist))
+    return groups
+
+def get_target_groups(toolkit):
+    it = toolkit
+    cmd  = ['getent', 'group']
+    proc = it.chroot_proc(cmd, stdout=it.PIPE)
+    retval = proc.wait()
+    if retval:
+        raise it.CmdLineError, "Command %s returned %d" % (' '.join(cmd), retval)
+    lines = [line.strip() for line in proc.stdout]
+    groups = [line.split(':')[0] for line in lines]
+    return groups
+
+def get_undefined_groups(toolkit):
+    defined = get_all_defined_groups(toolkit)
+    created = get_target_groups(toolkit)
+    to_be_created = [g for g in defined if g not in created]
+    return to_be_created
+
+    
+def make_groups(toolkit):
+    it = toolkit
+    current_trait = it.trait
+    it.set_trait('users')
+    new_groups = get_undefined_groups(it)
+    print "Creating groups: %s" % ', '.join(new_groups)
+    # pretend these are all user groups
+    addgroup = ['addgroup']
+    for group in new_groups:
+        print "creating group %s" % group
+        cmd = addgroup + [group]
+        it.chroot(cmd)
+    # down here at the end
+    it.set_trait(current_trait)
+    
+def make_users(toolkit):
+    it = toolkit
+    current_trait = it.trait
+    it.set_trait('users')
+    env = it.env()
+    standard_users = it.get('users:standard_users').split()
+    admin_users = it.get('users:admin_users').split()
+    sysadmin_users = it.get('users:sysadmin_users').split()
+
+    standard_groups = []
+    #it.get('users:standard_groups').split()
+    admin_groups = it.get('users:admin_groups').split()
+    sysadmin_groups = it.get('users:sysadmin_groups').split()
+    
+    # a quick hack to get unique users
+    users = list(set(standard_users + admin_users + sysadmin_users))
+    # admin groups include standard groups
+    admin_groups = list(set(standard_groups + admin_groups))
+    # sysadmin groups include both standard and admin groups
+    sysadmin_groups = list(set(admin_groups + sysadmin_groups))
+    
+    for user in users:
+        print "user", user
+        groups = standard_groups
+        if user in admin_users:
+            print "user", user, "is an admin user"
+            groups = admin_groups
+        if user in sysadmin_users:
+            groups = sysadmin_groups
+
+        opts = ['--disabled-password']
+        uidkey = 'users:user_%s_uid' % user
+        if env.has_key(uidkey):
+            opts += ['--uid', env.get(uidkey)]
+        gecoskey = 'users:user_%s_gecos' % user
+        if env.has_key(gecoskey):
+            opts += ['--gecos', env.get(gecoskey)]
+        else:
+            print "pretending that user", user, "has gecos entry"
+            opts += ['--gecos', '%s,,,' % user]
+        cmd = ['adduser'] + opts + [user]
+        print "adding user with command %s" % ' '.join(cmd)
+        sys.stdout.flush()
+        it.chroot(cmd)
+        cmd = ['passwd', '-d', user]
+        print "making empty password for", user
+        sys.stdout.flush()
+        it.chroot(cmd)
+        for group in groups:
+            cmd = ['adduser', user, group]
+            print "Running: %s" % ' '.join(cmd)
+            sys.stdout.flush()
+            it.chroot(cmd)
+            
+    # down here at the end
+    it.set_trait(current_trait)
+        
+    
 print "config script for users trait"
 
 it = InstallerTools()
 env = it.env()
 
-print "not doing anything yet"
+#print "not doing anything yet"
+default_home_subdirs = ['bin', 'tmp']
+skel_directory = it.target / 'etc/skel'
+for subdir in default_home_subdirs:
+    directory = skel_directory / subdir
+    if not directory.isdir():
+        print "Creating %s in /etc/skel" % subdir
+        directory.mkdir()
+        
+
+print "We're making the groups and users here, but we'll "
+print "probably need to update the home directories in the"
+print "final trait, since we may add files to /etc/skel after"
+print "this."
+
+if 'users' in it.traits:
+    make_groups(it)
+    make_users(it)
+else:
+    print "skipping users configuration"
+    
+
