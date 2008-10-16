@@ -8,7 +8,7 @@ Database Schema
 
 The database schema is not very complicated.
 
-The primary tables are:
+The **primary tables** are:
 
 + textfiles
 
@@ -20,10 +20,22 @@ The primary tables are:
 
   - a list of names for the scripts
 
-  - right now this defaults to the steps of the trait
-    processes.
-
 + suites
+
+  - just a list of suite names, the other columns are
+    deprecated.
+
++ apt_sources
+
+  - these are similar to the lines in /etc/apt/sources.list
+
++ suite_apt_sources
+
+  - this table links apt sources to suites
+
++ apt_source_packages
+
+  - a list of packages available for an apt-source
 
 + default_environment
 
@@ -128,6 +140,9 @@ Other tables are in related sets:
   - families_
 
   - family_environment
+
+    + this should be renamed to family_variables to match
+      the naming of the other tables
 
   - family_parent
 

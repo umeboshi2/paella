@@ -73,7 +73,7 @@ circular dependencies
 other problems
 ----------------------------------------
 
-+ temporary files should be more vigorously removed
++ temporary files should be more vigorously removed **done**
 
   - this has been done for editing scripts and templates, but still 
     needs to be done for the differ and variables.

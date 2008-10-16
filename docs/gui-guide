@@ -30,6 +30,28 @@ and paella-export.  Importing and exporting a complete database is supported
 in the gui, although the progress bars on the status dialogs aren't very 
 accurate.
 
+Common Ideas
++++++++++++++++++++++
+
+Many of the widgets in the paella-management application are in the form of 
+a split view, with a list on the lefthand side, and an html view on the righthand 
+side.  Selecting an item on the lefthand side will display a view of that item on 
+the righthand side.  Many of the actions that can be performed to the objects 
+being managed by these widgets can be done by clicking on links in the html 
+view.
+
+Also, when you need to edit the variables on many of the objects, an external 
+text editor will be spawned and the variables will be displayed in the form of a 
+config file that is used by the python ConfigParser module.  When this is done, 
+all of the sections of the config file will be traits and the options will be then names 
+of the variables.  The values can have tags in them as if they were miniature 
+templates. For example::
+
+	   [some_trait]
+	   my_url:	http://<--|another_trait:hostname|-->.<--|another_trait:domain|-->/
+
+This allows you to create variables that are composed of other variables.
+
 
 Paella Main Menu Window
 ---------------------------------------
@@ -193,6 +215,39 @@ Manage Kernels
 
 Profiles
 +++++++++++++++++++++++++++++++
+
+The profile manager is a widget to help manage the profiles in the database.  The 
+widget is a split window with a list of profiles on the lefthand side and an html 
+view on the righthand side.  To create a new profile, select the "New" action from 
+the toolbar.  All new profiles will be based on the "skeleton" profile.  The skeleton 
+profile can be configured in the ~/.paellarc file.
+
+When a profile is selected, information about the profile is presented on the right 
+hand side of the window, in an html view.  At the top of the html view, the name of 
+the profile is displayed, along with the suite it belongs to.  Clicking on the suite will 
+display a dialog where you can change the suite that the profile belongs to.  Be 
+careful that all the traits listed in the profile are in the suite that you select, or the 
+profile won't be able to be installed.  At the moment, the application doesn't check 
+to make sure that the traits listed in the profile are in the suite, but this is planned 
+to be fixed in the future.
+
+You can click the "Traits" link to adjust the list of traits to be installed in the profile.  
+It is not necesary to list every trait, since the parents of the traits that are listed will 
+also be installed with the profile.  The installer will attempt to install the traits in the 
+order that they are listed in, unless a parent trait is listed after its child.  In that case 
+the parent will be installed before the child.
+
+You can click on the "Variables" link to add, remove, and alter variables for the profile.  
+Clicking on this will spawn the external text editor, and the form will be as a config 
+file, where all of the sections are traits.
+
+You can click on the "Families" link to add or remove families from the profile.  The 
+families won't be applied in any specific order, but parent families will be applied 
+before the child families.
+
+At the bottom of the html view is a delete link that you can use to delete the profile.
+
+
 
 Suites
 +++++++++++++++++++++++++++++++
