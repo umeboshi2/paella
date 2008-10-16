@@ -266,7 +266,125 @@ At the bottom of the html view is a delete link that you can use to delete the p
 Suites
 +++++++++++++++++++++++++++++++
 
-This item has children and doesn't open a widget.
+This item has children and doesn't open a widget.  The children to this item are 
+the names of suites and selecting one of them will open up a trait manager 
+widget for that suite.
+
+Trait Manager
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The trait manager is one of the widgets that will be used often, as it's the 
+primary place where most of the important configuring will happen.  The widget 
+is a split window with a list of traits on the lefthand side and an html view on the 
+righthand side.  To create a new trait, click the "New" icon on the toolbar and enter 
+the name of the new trait in the dialog that appears.  When you select a trait from 
+the list on the lefthand side, the information for the trait will appear in the view on 
+the righthand side.
+
+Description
+^^^^^^^^^^^^^^^^^^^^
+There are a lot of options in the trait view.  At the top of the view is the name of the 
+trait.  Just below this are a couple of links for the description of the trait.  Selecting 
+the "(description)" link will bring up an internal text editor where you can edit the 
+description of the trait.  Simple html elements are allowed in this description.  
+Selecting the "(show)" link will display the description right below the top section.  
+This will cause the "(show)" link to change to "(hide)", and selecting this link will 
+then hide the description.  Once you select "(show)", the description will be shown 
+for every trait that is selected from the list on the lefthand side, until the "(hide)" 
+link is clicked.
+
+Parents
+^^^^^^^^^^^^^^^^^^^^
+Below the description is the parents section.  There is an "edit" link on the right 
+of the section header.  Selecting the "edit" link will allow you to assign parents 
+to this trait.  Be careful when selecting the parents, as there are no guards against 
+creating circular_ dependencies.  Each parent that's listed in the view is a link.  
+Clicking on one of the parents will bring up a new trait manager widget with that 
+trait selected.
+
+Packages
+^^^^^^^^^^^^^^^^^^^^
+Below the parents section is the packages section.  Here you can add and remove 
+packages, and define actions for them.  On the right side of the packages header 
+is a "(new)" link.  Selecting this will bring up a dialog where you enter the name of 
+the package and the action that's to be associated with it.  The default action is to 
+"install", but the other other options are "remove", and "reconfig".  Any other option 
+that's entered will be ignored by the installer.  Only one action may be entered at a 
+time.  The delete link to the right of a package in the list of package will delete the 
+package, and *all* of it's associated actions.
+
+Templates
+^^^^^^^^^^^^^^^^^^^^
+Below the packages section is the templates section.  The templates section 
+displays a list of templates to be installed on the target system.  Selecting the 
+"Templates" link in the section will allow you to add templates to the trait.  When 
+this link is selected, a file selection dialog will appear.  The file that should be 
+selected is expected to be a tarball.  This is required, and there is no way just 
+to select a single file to use as a template.  I may add this functionality later, but 
+it's a very low priority for me now.  Besides, although it may seem strange, this 
+method is actually quite useful and timesaving once you really start using paella.  
+Ordinarily the tarball should be made as root on some system, usually like::
+
+     tar cv /etc /var/path/to/something/interesting | gzip > myconfig.tar.gz
+
+Actually, the tarball can contain anything, but the path, ownership, and permissions 
+for the template are taken from the tarball, although these can be adjusted later if 
+you can't add templates in this manner.  You don't want to use a tarball from a full 
+system backup, as it will take a long time to extract the files from it.  If you try to 
+select a template that's already on the list, the template in the database won't be 
+replaced.  If you wish to do this you must either delete or rename the template in 
+the database.
+
+Each column in the list of templates is a link.  The first column is the name of the 
+template.  This is the path of the template, relative to / on the target system.  Clicking 
+on this link will bring up the internal template editor.  The internal template editor is 
+useful for making tags for the template.  To make a tag, select some text and right 
+click the selection, then a context menu will appear.  You can then replace the selected 
+text with a previously defined variable in the context menu, or create a new variable.  
+If you decide to create a new variable, the selected text will appear as the value for 
+that variable.  You will need to save the template by clicking the "save" button on the 
+toolbar, in order to save your changes.  The status bar on the bottom of the editor 
+will let you know if the template has changed, or if it's been saved.
+
+The second column in the list of templates displays the owner, group, and permissions 
+for the template.  Clicking on this link will allow you to change these values, as well as 
+change the name of the template.  This is useful if you used a tarball that wasn't made 
+from backing up part of a system, or if you need to replace a template in the database 
+with a newer one.  If you do this, you can use the trait differ to adjust the differences.
+
+The third column in the list of templates are the "(edit)" and "(delete)" links.  Clicking 
+on the "(edit)" link will spawn the external editor, and you can use the editor of your 
+choice to edit the template.  The external editor is set in the ~/.paellarc file as the 
+text_editor option in the management_gui section.  The **EDITOR** environment 
+variable will override this option.  The **VISUAL** variable isn't used.  The "(delete)" 
+link will allow you to delete the template from the database.
+
+Variables
+^^^^^^^^^^^^^^^^^^^^
+Below the templates is the variables section.  Clicking on the "Variables" link in the 
+section header will bring up the variable editor widget.  This is a very simple widget, 
+and not fully functional.  You can only add and edit variables here, and not delete 
+them.  In the future this widget will probably be replaced by using an external editor 
+with the variables displayed in the form of a config file.
+
+Scripts
+^^^^^^^^^^^^^^^^^^^^
+Below the variables section is the scripts section.  There is a "new" link on the right 
+side of the section header.  Clicking this link will allow you to add a new script to the 
+trait.  A dialog will appear, where you can select the name of the script.  The names 
+correspond to steps in the trait's install process.  Selecting a name such as "install" 
+or "templates" will override the default action of the trait.  For example, if there are 
+templates in the trait, and you create a "templates" script, those templates will not 
+be installed unless the script specifically does this.
+
+There are three columns in the list of traits and each column is a link.  The name of 
+the script is in the first column.  Clicking on the name of the trait will display a 
+window showing the contents of the script.  You can't edit the script with this window.  
+The second column is the "(edit)" link, and clicking on this will spawn the external
+editor and allow you to edit the script.  The last column is the "(delete)" link, and 
+clicking on this will delete the script.
+
+
 
 .. image::  images/traits_widget.png
 
@@ -287,4 +405,4 @@ This item has children and doesn't open a widget.
 .. _TOra: http://tora.sourceforge.net/
 .. _Joseph Rawson:  mailto:umeboshi3@gmail.com
 .. _problems: problems.html
-
+.. _circular: problems.html#circular-dependencies
