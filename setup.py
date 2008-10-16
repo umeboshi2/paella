@@ -67,6 +67,14 @@ class builddocs(_build):
             htmlfile = 'html/%s.html' % srcfile
             os.system('rst2html %s %s' % (srcfile, htmlfile))
             data_tuple[1].append('docs/%s' % htmlfile)
+        # add screenshots
+        images_tuple = ('html/images', [])
+        data_files.append(images_tuple)
+        for image in os.listdir('images'):
+            if image.endswith('.png'):
+                print "adding %s to data_files" % image
+                images_tuple[1].append('docs/images/%s' % image)
+                
         os.chdir(here)
         if build_apidoc:
             data_tuple = ('html/api', [])
