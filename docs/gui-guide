@@ -83,6 +83,7 @@ At the moment, there is no ability to update the apt sources, remove
 apt sources, or to change the apt sources for a suite.  Some of this 
 functionality is planned for the future, but at a moderate to low priority.
 
+.. image::  images/apt_sources_widget.png
 
 Open Suite Manager
 +++++++++++++++++++++++++++++
@@ -94,6 +95,8 @@ appear that will let you select the apt sources for that suite.  The apt sources
 are listed by name in the dialog, and the order of the selected apt sources will 
 be the order that they will appear in the /etc/apt/sources.list file on installed 
 systems.
+
+.. image::  images/suite_manager_widget.png
 
 Manage Apt Keys
 +++++++++++++++++++++++++++++
@@ -166,6 +169,7 @@ in any suite.  You will be presented two list views with combo boxes right
 below them.  The update buttons on the bottom will update the corresponding 
 list view with the selections from the combo boxes.  
 
+.. image::  images/trait_differ_widget.png
 
 
 Environ
@@ -181,6 +185,8 @@ The import and export options are functional in both environment
 editors.  They correspond to the standard open and save actions 
 that are found on most standard guis.  The file format for import 
 and export is that of a config file.
+
+.. image::  images/default_environment_widget.png
 
 Families
 +++++++++++++++++++++++++++++++
@@ -200,14 +206,20 @@ the variables for the family.
 Editing the variables is done in an external editor, and it uses 
 a config file format, where all the sections are traits.
 
+.. image::  images/families_widget.png
+
 Machines
 +++++++++++++++++++++++++++++++
 
 Manage Machines
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+.. image::  images/machines_widget.png
+
 Manage Disk Configs
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+.. image::  images/diskconfig_widget.png
 
 Manage Kernels
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -247,6 +259,8 @@ before the child families.
 
 At the bottom of the html view is a delete link that you can use to delete the profile.
 
+.. image::  images/profiles_widget.png
+
 
 
 Suites
@@ -254,6 +268,7 @@ Suites
 
 This item has children and doesn't open a widget.
 
+.. image::  images/traits_widget.png
 
 
 

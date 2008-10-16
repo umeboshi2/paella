@@ -12,6 +12,8 @@ Paella Documentation
 
 - gui_
 
+- guide_ to using the gui
+
 - installer_
 
 - notes_
@@ -35,3 +37,4 @@ Paella Documentation
 .. _problems: problems.html
 .. _quickstart-vbox: quickstart-vbox.html
 .. _schema: schema.html
+.. _guide: gui-guide.html
