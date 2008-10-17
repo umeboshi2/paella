@@ -78,6 +78,11 @@ other problems
   - this has been done for editing scripts and templates, but still 
     needs to be done for the differ and variables.
 
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
 
 .. _paella: http://paella.berlios.de
 .. _project: http://developer.berlios.de/projects/paella

@@ -149,7 +149,9 @@ paella.
     this option is useless for the time being.
 
   - **client_widget**:  This option enables (or disables) the client widget.
-    Default: False
+    Default: False  
+    Don't bother to enable this, as it's not yet implemented.  This is a carryover 
+    from the older gtk interface.
 
   - **manager_type**:  This option is used to determine the type of manager
     widget that will be used for the management gui.  At the moment, only
@@ -160,8 +162,9 @@ paella.
   - **text_editor**:  This is the text editor that's used with the management gui.  
     This command either needs to be in your PATH, or the full path to the file 
     must be used.  This command doesn't handle options, if you need to pass
-    options to the editor, please use a wrapper.  The default is kate, but I really
-    recommend xemacs.
+    options to the editor, please use a wrapper.  The default is kwrite, but I really
+    recommend xemacs.  I personally use gnuclient (xemacs) as my external 
+    editor.
 
   - **x_differ**:  This is the graphical differ that's used with the management gui.
     This command has all the requirements of the **text_editor** option above.
@@ -174,6 +177,15 @@ paella.
 
 User Mode Linux
 ======================
+
+**All of the User Mode Linux functionality has been removed from paella.**
+
+The documentation in this section is being kept for historical purposes, and 
+because there may be a day when the ability to use paella to install a uml machine 
+will be restored.  The code that handled installing uml machines can still be 
+found in the "umlref" branch of the subversion repository.  This code is most 
+likely outdated, but it can provide a reference as to how configuring and installing 
+uml machines used to work and can be used to reimplement it in paella.
 
 User mode linux is a great tool to help test paella, and installing configurations.  
 However, since VT technology has come around and VM's run reasonably fast, 
@@ -240,6 +252,7 @@ The default environment is a ini type configuration file stored in the database 
 default_enviroment table.  A page describing the default enviroment can be found here_ .
 
 
+toc_
 
 ------------------------------------------------
 
@@ -252,3 +265,4 @@ default_enviroment table.  A page describing the default enviroment can be found
 .. _traits: #trait
 .. _machines: #machine
 .. _default-environment:  default-environment.html
+.. _toc: index.html

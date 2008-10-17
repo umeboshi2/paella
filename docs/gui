@@ -17,40 +17,6 @@ testing, troubleshooting problems and improving systems.  As a result, the gui i
 very minimalistic, and will not do all (although it will do most) necessary operations 
 needed to make use of the database.
 
-------------------
-
-Configuration File
--------------------------
-
-The gui uses the paellarc config files ['/etc/paellarc', '~/.paellarc'].  Most options are 
-found in the management_gui section.
-
-management_suites
-	This is comma separated list of suites to manage.  There will be a
-	suite manager toolbar appear for each suite.
-
-template_profile
-	This is the name of the profile to create other profiles from.  New profiles 
-	will be copies of this.
-
-client_path
-	This is the path where the imports and exports of clients reside.  This is
-	not crucial to the operation of paella, and will be explained elsewhere.  
-	When it is explained, I'll provide a link to the explanation.
-
-manager_pos
-	This is the position on the screen of the main management window.  
-	Example:  0, 480
-
-manager_size
-	This is the size of the main management window..
-	Example: 150, 200
-
-${suite}_pos
-	This is the location of the suite management toolbar for that suite.
-	Example: sarge_pos:  400, 0
-
---------------------
 
 Gtk/Qt and Gnome/KDE
 ----------------------------------
@@ -72,93 +38,24 @@ things that attracted me to pykde is the lower level widget subclasses.  I haven
 to much of pygnome because of it's poor widget selection, and the difficutly in using 
 bonobo.  There don't seem to be many lowlevel replacements for gtk widgets that are 
 gnome aware.  To be fair, at the time the pygnome docs weren't fulfilling, so I may have
-missed out on something I didn't know about.  An example that I am thinking of is the 
+missed out on something I didn't know about.  One example that I am thinking of is the 
 KComboBox which is a QComboBox with text completion methods and configurable 
 hotkeys.
 
 Current State of Paella Gui
 --------------------------------------
 
-Currently, the gtk interface is being deprecated, and the kde interface is being actively 
-developed.  I will be happy to help with the gtk interface if somebody else feels 
-like actively maintaining it.  Any reasonable patch sent will be applied.  Some of the 
-operations with this interface are deprecated and should be removed.
+Currently, the gtk interface is completely deprecated, and the kde interface is being 
+actively developed.  Most of the necessary functionality required to manage the 
+paella database is implemented in the gui.  This does not mean that the gui is as 
+functional as desired, but it is functional enough to do most of what is required.  A 
+guide_ has been written explaining how to use the paella-managment gui.
 
-You still need to gtk interface to perform some of the operations.  All operations 
-available on the gtk interface will be available on the kde interface, except for the 
-deprecated/unused operations.
+toc_
 
-Some of the operations are only available on the kde interface.  I am not planning on 
-duplicating this on the gtk interface.
+.. _toc: index.html
 
-Between both interfaces, most of the simple operations, and some more complex ones 
-are supported.  Do not expect the gui's to be completely sufficient anytime soon.  You 
-will probably at some time be forced to use psql or a generic database manager on the 
-database.  A graphical database manager that I highly recommend is TOra_.  TOra is 
-available on sarge.
-
--------------------------
-
-Using the Gui
---------------------
-
-At the command line type in paella-management.  This should at least pull up the main 
-management window.  There are two menus on this window, database and edit.  The
-database menu has options to connect, disconnect, backup and restore a database.  
-Connect and disconnect are not really supported yet.  Backup and restore will backup
-and restore most of the database (with the exception of the main package tables, the 
-default_environment, and current_environment tables).  Using one of these menu 
-options will bring up a file dialog.  Only the directory values for the fileselection are 
-used.  It doesn't matter what file you select, the directory containing the file will be the
-argument that is passed.
-
-The other menu on the main management window is edit.  The options here will open 
-other management windows.
-
-The options are
-
-**profiles**
-	brings up the profile management window
-
-**families**
-	brings up the family management window
-
-**suitemanager**
-	brings up a dialog to select the suite, then brings
-	up a suitemanager toolbar window
-
-**traitmanager**
-	this option is deprecated, see traits below.
-
-**machines**
-	brings up a machine toolbar window
-
-**traits**
-	brings up a traitmanager window.  This object is not
-	actively developed.
-
-**tdiff**
-	brings up the template differ
-
-**sdiff**
-	brings up the script differ
-
-**fdiff**
-	brings up the family differ
-
-**default_environment**
-	brings up the default environment editor.
-
-**clients**
-	brings up the client manager
-
-**browser**
-	brings up the kde management interface
-	this option will do nothing if that interface is
-	not installed.
-
-
----------------------------
+-------------------------------------------------
 
 .. _paella: http://paella.berlios.de
 .. _project: http://developer.berlios.de/projects/paella
@@ -176,3 +73,4 @@ The options are
 .. _Joseph Rawson:  mailto:umeboshi3@gmail.com
 .. _problems: problems.html
 
+.. _guide: guide.html

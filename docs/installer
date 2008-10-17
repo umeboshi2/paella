@@ -504,7 +504,11 @@ attached to the machine to identify it.
 
 
 
-------------------------------------------------
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
 
 .. _mounts: #mount
 .. _families: #family

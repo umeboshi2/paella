@@ -25,22 +25,36 @@ Installer Section
   apt-key during installation in order to authenticate locally generated debian mirrors.  These 
   are the names of the keys that are stored in the apt-key manager in the paella database.
 
+- **base_log_directory**":  This is full path to the directory where the log file for 
+  the installer will be placed.
+
 - **bootstrap_target**:  This option, when set to True, will call debootstrap to bootstrap 
   the target system.  When this option is False, the base system will be extracted from 
   a premade tarball.  If you extract from a premade tarball, you'll have to create a
   /etc/resolv.conf file that will work early in the install process.  The code in paella may do 
   this for you one day, but until then, it's the responsibility of the paella database to run 
   the code required to build the /etc/resolv.conf (probably by copying it from the nfsroot
-  system).
+  system).  **Update**:  Paella now copies the /etc/resolv.conf from the installer system 
+  during the "ready_base_for_install" step.  If any of your machines have a script that 
+  replaces this step, it may need to implement this part.
 
 - **bootstrap_suites**:  This is a comma separated list of suites that will be bootstrapped, 
   and tarred up for later extraction.  This option is used by the paella-setup-nfsinstaller script,
-  and can be ignored if you use your own method to make the tarballs.
+  and can be ignored if you use your own method to make the tarballs.  **Note**:  The 
+  paella-setup-nfsinstaller script may not work and shouldn't be used.
+
+- **default_target**:  This is the target directory where the system will be installed.  If 
+  this isn't set, /tmp/target will be used.
 
 - **devices_tarball**:  This option provides the location of the devices tarball on the installer.  
   This tarball is created with "MAKEDEV generic", and the resulting device nodes are tarred 
   up for extraction later.  This is done as a time saver, since the MAKEDEV script can take 
-  a good bit of time to run.
+  a good bit of time to run.  This option will be kept around in case it needs to be used, but
+  it's not being used anymore, since much of the device creation is done by the udev program.
+
+- **disk_log_directory**:  This is the directory where the files that setup-storage creates 
+  will be placed.  Usually this is a subdirectory of the base_log_directory.  The full path to 
+  the directory needs to be specified.
 
 - **http_mirror**:  This is the url to the debian mirror that will be used to install the target 
   system.
@@ -84,10 +98,17 @@ machines section, it uses the autoinstall section to decide whether to
 install or not.  You can always install the machine manually by typing
 (as root)::
 
-    paella-machine-installer install machinename /tmp/target
+    paella-machine-installer install machinename /tmp/target 
 
 I've historically used /tmp/target as the target directory since the paella 
 installer used to run from a read-only nfs mount.  With debianlive this
 is not necessary anymore.
+
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
 
 

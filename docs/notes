@@ -6,128 +6,36 @@ Paella Notes
 
 .. contents:: :backlinks: entry
 
-What is Paella
---------------------
-
-.. small overview of paella
-
-Paella is a installation/configuration management system centered on 
-being able to easily define, configure, maintain and update systems and 
-networks.
-
-
------------------------------------
-
-Getting started with paella
-=============================
-
-People who will get the most benefit out of paella are IT consultants that manage
-multiple disjoint networks.  You may also benefit from it if your network is large enough,
-and you have mostly debian machines on it.  If you only maintain one network with a few
-machines, e.g. a firewall, a server, and a couple of desktops, the time involved it setting up
-paella and maintaining configurations might probably be more than just using more simple
-backup and restore methods.
-
-There are currently no real releases of paella, because i dislike the file release system at
-berlios, so you will have to check out the code via subversion, or alternately you can grab
-the debian packages from http://gregscomputerservice.com.  The line for the sources.list
-is 'deb http://gregscomputerservice.com/debian/local common/'.
-
-A person who uses paella is expected to understand how to perform basic system 
-administration on a debian system.  They should also be comfortable with building their
-own debian packages from source, and debianizing a generic source application.  Paella 
-makes use of mini-dinstall to maintain a local mini-repository and can install systems that 
-reference that repository.  This provides a fairly simple way to add custom packages to the 
-systems that you will be designing.
-
-If you feel that you may benefit out of paella, here is how to get started.  If you don't want to
-use the apt source above, you can check it out from subversion at berlios.  Paella
-depends on Useless.  Useless is a collection of python modules that I use in other database 
-applications.
-
-to get useless:
-svn checkout svn://svn.berlios.de/useless/trunk useless
-
-to get paella:
-svn checkout svn://svn.berlios.de/paella/trunk paella
-
-You can build the packages with debuild, or fakeroot debian/rules binary.
-
-
---------------------------------------
-
-Hardware Recommendations
-------------------------------------------
-
-Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network 
-to support this.  Paella works best with at least one dedicated server and a management 
-desktop, both running debian.  
-
-Server:
-
-The server will be responsible for running the nfs-server, the boot-server, the postgresql 
-server, and the webserver. It is recommended that you have a local mirror of a debian 
-repository on the server, and have it accessible over http.  You should also install the 
-paella-debrepos package on this machine to create and maintain your custom debian 
-repository.
-
-	Database Setup::
-		
-		apt-get install postgresql
-		su postgres
-		createuser -a -d adminuser
-		createuser -A -D paella
-		createlang plpgsql template1	
-		exit
-		su adminuser createdb paella
-
-You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
-paella from anywhere on the local network, and allow adminuser from your management
-desktop.
-
-The setup of the boot-server and the nfs-server are beyond the scope of this 
-document, but the profiles are defined in the default database provided with paella.  So 
-instead of taking the time to setup the boot-server and nfs-server manually, you can use the 
-paella-chroot-install script to create the machine and tar it up.
-
-Desktop:
-
-The desktop should be about 400MHz Pentium or better with >= 1024x768 resolution, 
-capable of running kde.  It is necessary to have access to your database on the server.  You
-should also have your EDITOR environment variable set to something that will pop-up 
-a window in X.  On this machine you will want to install the paella-admin and the 
-paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
-probably want to copy this to ~/.paellarc and edit it.
-
-
------------------------------------
 
 Local Debian Repository
 ------------------------------------
 
-Paella is built to make use of you local debian repository.  The paella-debrepos package 
-uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review 
-the documentation for it.  Install the paella-debrepos package on the server.  The init script 
-should fail because you are likely not to have a debrepos user.  This will be fixed later.  
-Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The 
-mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a 
-directory for each suite you have in paella, plus one called 'common'.
+In order to get the best use from paella, it is likely that you will need to have 
+your own repository of locally built packages and a mirror of the official 
+debian repository.  The mirror can be a partial mirror.
 
-------------------------------------
+There used to be a package distributed with paella that helped with making 
+a mirror and keeping a repository of locally built packages, but this has been 
+made obsolete by packages like debmirror and reprepro.  If you choose to use 
+debmirror to mirror the debian repository, you will still need another program 
+to help manage packages made locally.  The debarchiver package is a 
+good choice here.  I used to use mini-dinstall for this, but I found that debarchiver 
+does a better job on creating the archive format.
 
-Using Paella-Management
--------------------------------------
-
-The management interface is going through changes.  Paella started with a gtk interface, 
-and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
-gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do 
-very much right now, but bugs will be fixed on it.  A good portion of setting up and 
-configuring the machines is done with the gtk interface, so for the time being, anybody 
-using paella will have to bear through using it until the kde interface is ready.
+I am using reprepro to handle this, since it will both mirror the official repository 
+and you can add packages that you build to it.  It also uses the pool structure, 
+signs the Release files, and can make partial mirrors.  Using reprepro is 
+highly recommended.
 
 
 
-------------------------------------------------
+
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
 
 .. _mounts: #mount
 .. _families: #family
