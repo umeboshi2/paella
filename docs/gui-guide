@@ -55,6 +55,7 @@ This allows you to create variables that are composed of other variables.
 
 Paella Main Menu Window
 ---------------------------------------
+.. image:: images/main_menu_widget.png
 
 The main menu window is a small window that is used to access the other widgets in 
 the manager.  The main view is a list view that lists some of the available  widgets.  
@@ -188,76 +189,6 @@ that are found on most standard guis.  The file format for import
 and export is that of a config file.
 
 
-Families
-+++++++++++++++++++++++++++++++
-.. image::  images/families_widget.png
-
-The families manager is a simple widget to help manage the 
-families in the database.  You can create a new family by selecting 
-"New" from the menu or toolbar.  To manage a family, you can select 
-one from the list on the left side of the widget.
-
-When a family is selected from the list, an html interface to the family 
-will be presented on the right side.  At the bottom of the page is a 
-"delete" link, which will let you delete the family.  There are two more 
-links on this page, on table headers.  The "Parents" link will let you 
-assign parents to this family.  The "Variables" link will let you edit 
-the variables for the family.
-
-Editing the variables is done in an external editor, and it uses 
-a config file format, where all the sections are traits.
-
-
-Machines
-+++++++++++++++++++++++++++++++
-
-Manage Machines
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-.. image::  images/machines_widget.png
-
-Manage Disk Configs
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-.. image::  images/diskconfig_widget.png
-
-Manage Kernels
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
-Profiles
-+++++++++++++++++++++++++++++++
-.. image::  images/profiles_widget.png
-
-The profile manager is a widget to help manage the profiles in the database.  The 
-widget is a split window with a list of profiles on the lefthand side and an html 
-view on the righthand side.  To create a new profile, select the "New" action from 
-the toolbar.  All new profiles will be based on the "skeleton" profile.  The skeleton 
-profile can be configured in the ~/.paellarc file.
-
-When a profile is selected, information about the profile is presented on the right 
-hand side of the window, in an html view.  At the top of the html view, the name of 
-the profile is displayed, along with the suite it belongs to.  Clicking on the suite will 
-display a dialog where you can change the suite that the profile belongs to.  Be 
-careful that all the traits listed in the profile are in the suite that you select, or the 
-profile won't be able to be installed.  At the moment, the application doesn't check 
-to make sure that the traits listed in the profile are in the suite, but this is planned 
-to be fixed in the future.
-
-You can click the "Traits" link to adjust the list of traits to be installed in the profile.  
-It is not necesary to list every trait, since the parents of the traits that are listed will 
-also be installed with the profile.  The installer will attempt to install the traits in the 
-order that they are listed in, unless a parent trait is listed after its child.  In that case 
-the parent will be installed before the child.
-
-You can click on the "Variables" link to add, remove, and alter variables for the profile.  
-Clicking on this will spawn the external text editor, and the form will be as a config 
-file, where all of the sections are traits.
-
-You can click on the "Families" link to add or remove families from the profile.  The 
-families won't be applied in any specific order, but parent families will be applied 
-before the child families.
-
-At the bottom of the html view is a delete link that you can use to delete the profile.
-
 
 
 
@@ -383,6 +314,164 @@ The second column is the "(edit)" link, and clicking on this will spawn the exte
 editor and allow you to edit the script.  The last column is the "(delete)" link, and 
 clicking on this will delete the script.
 
+Profiles
++++++++++++++++++++++++++++++++
+.. image::  images/profiles_widget.png
+
+The profile manager is a widget to help manage the profiles in the database.  The 
+widget is a split window with a list of profiles on the lefthand side and an html 
+view on the righthand side.  To create a new profile, select the "New" action from 
+the toolbar.  All new profiles will be based on the "skeleton" profile.  The skeleton 
+profile can be configured in the ~/.paellarc file.
+
+When a profile is selected, information about the profile is presented on the right 
+hand side of the window, in an html view.  At the top of the html view, the name of 
+the profile is displayed, along with the suite it belongs to.  Clicking on the suite will 
+display a dialog where you can change the suite that the profile belongs to.  Be 
+careful that all the traits listed in the profile are in the suite that you select, or the 
+profile won't be able to be installed.  At the moment, the application doesn't check 
+to make sure that the traits listed in the profile are in the suite, but this is planned 
+to be fixed in the future.
+
+You can click the "Traits" link to adjust the list of traits to be installed in the profile.  
+It is not necesary to list every trait, since the parents of the traits that are listed will 
+also be installed with the profile.  The installer will attempt to install the traits in the 
+order that they are listed in, unless a parent trait is listed after its child.  In that case 
+the parent will be installed before the child.
+
+You can click on the "Variables" link to add, remove, and alter variables for the profile.  
+Clicking on this will spawn the external text editor, and the form will be as a config 
+file, where all of the sections are traits.
+
+You can click on the "Families" link to add or remove families from the profile.  The 
+families won't be applied in any specific order, but parent families will be applied 
+before the child families.
+
+At the bottom of the html view is a delete link that you can use to delete the profile.
+
+
+Families
++++++++++++++++++++++++++++++++
+.. image::  images/families_widget.png
+
+The families manager is a simple widget to help manage the 
+families in the database.  You can create a new family by selecting 
+"New" from the menu or toolbar.  To manage a family, you can select 
+one from the list on the left side of the widget.
+
+When a family is selected from the list, an html interface to the family 
+will be presented on the right side.  At the bottom of the page is a 
+"delete" link, which will let you delete the family.  There are two more 
+links on this page, on table headers.  The "Parents" link will let you 
+assign parents to this family.  The "Variables" link will let you edit 
+the variables for the family.
+
+Editing the variables is done in an external editor, and it uses 
+a config file format, where all the sections are traits.
+
+
+
+
+Machines
++++++++++++++++++++++++++++++++
+
+The machine management widget is actually three different widgets in a single 
+"shell".  The objects that will be managed can be selected by clicking on one of 
+the icons on the toolbar, or by selecting it from the menu.  The "New" icon on the 
+toolbar is used to add a new object, the type of which will depend on the manager 
+that's currently being used.  With this widget, you can manage machines, 
+diskconfigs, and kernels.
+
+Manage Machines
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image::  images/machines_widget.png
+
+The machine manager is a split window with a list of machines on the lefthand 
+side and an html view on the righthand side.  You can create a new machine by 
+clicking on the "New" icon on the toolbar at the top. Selecting a machine from the 
+list will display information about the machine in the view.  There are a lot of options 
+that can be set for the machine.
+
+At the top, just below the name of the machine is where the parent for the machine 
+is set.  Unlike traits and families, a machine can only have one parent.  Here you can 
+either select a parent by clicking on the "select" link, or delete a parent from clicking 
+on the "delete" link.
+
+Right below the table that displays the parent is the table that holds the main 
+attributes of the machine.  These attributes are kernel, profile, and diskconfig.  If any 
+of these attributes aren't set, the corresponding attribute of the parent will be used.  
+If you click on one of the links for the attribute in the leftmost column, a dialog will 
+appear where you can enter in the attribute.  The value column will display the value 
+for the attribute.  If an attribute is not set for the machine, the value will be obtained 
+from the closest parent machine.  The "Inherited From" column will display the name 
+of the machine where the attribute is set.  If the attribute is set for the machine you're 
+manipulating, the column will display "(set here)", and in the "Command" column, a 
+link will be present allowing you to clear the value.  If an attribute is not set in the 
+machine you're managing, or anywhere in its ancestry, you will see a warning displayed 
+in the value and "Inherited From" columns.  This is a warning, as the machine will 
+probably fail to be installed if these attributes aren't set anywhere, but it's possible to 
+install a machine if these are unset by having scripts set for the machine that manage 
+installing the kernel, diskconfig, or profile, instead of relying on the default behaviour 
+of paella.  The machine name links in the "Inherited From" column are meant to open 
+an new machine manager with that machine selected, in a manner similar to selecting 
+parent traits in the trait manager.  This is not implemented yet.
+
+Below the attributes table is the section for families.  You can add a new family to the 
+machine by clicking the "new" link in the "Families" header on the right.  A dialog will 
+appear where you can enter the name of a family to add to the machine.  In the table 
+of familie, each row has an "edit" and "delete" link.  Clicking on the edit link will do 
+nothing but display a dialog that this operation is not supported yet.  Clicking on the 
+delete link will remove the family from the machine.  In the future, the families will be 
+assigned in a manner similar to how they are assigned to the profiles.
+
+Just below the Families section is the Scripts section.  You can add a new script by 
+selecting the "new" link on the right side of the section header.  The names of the 
+scripts correspond to steps in the machine installer process.  The table of scripts 
+will show the scripts that will be run by the machine installer, and the machine that 
+the script is inherited from.  A script that is set for the machine will have "(defined 
+here)" in the inherited column, and there will be "edit" and "delete" links in the 
+command column on the right side of the table.  Clicking on the edit link will spawn an 
+external editor where you can edit the script.  Clicking on the delete link will delete 
+the script from the machine.
+
+Below the Scripts section is the Variables section.  Here you can set variables for the 
+machine.  You can click on the "new" link to add a new variable.  This will display a 
+dialog where you can enter the trait, name and value for the variable.  In the table of 
+variables, in the command column exist "edit" and "delete" links.  You can click on the 
+delete link to remove a variable from a machine.  Clicking on the edit link will spawn 
+an external editor where you can edit the variables.  The form of the file in the editor 
+will be a config file where the sections correspond to traits.
+
+
+Manage Disk Configs
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image::  images/diskconfig_widget.png
+
+The diskconfig manager is a split window with a list of diskconfigs on the lefthand 
+side and an html view on the righthand side.  You can create a new diskconfig by 
+clicking on the "New" icon on the toolbar at the top.  Selecting a diskconfig from the 
+list will display the diskconfig in the view on the right.
+
+There are two links in the diskconfig view, "edit" and "delete".  You can click on the 
+delete link to delete the diskconfig.  Clicking on the edit link will spawn an external 
+editor, where you can edit the diskconfig.
+
+The diskconfig manager is a very new widget.  This functionality was "shoe-horned" 
+into the database, and while it's fully functional, it's still bare and basic.  I have not 
+made too many plans on how to make better use of this yet, but I've decided that 
+just having bare simple text files is insufficient.  It's possible that the templates 
+could be made out of the diskconfigs, but the variables for the template tags won't 
+be coming from the traits.  It's also possible that I may create new tables that can 
+be used to generate a diskconfig.  I'm still up in the air on exactly which direction I 
+want to take with how this will be implemented.  I do plan to always support a basic 
+hardcoded diskconfig, but it would be nice to have a more flexible method of making 
+diskconfigs.
+
+.. make a link to the diskconfig document when it's ready
+
+Manage Kernels
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image:: images/kernels_widget.png
 
 
 
