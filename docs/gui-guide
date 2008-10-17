@@ -392,11 +392,15 @@ clicking on the "New" icon on the toolbar at the top. Selecting a machine from t
 list will display information about the machine in the view.  There are a lot of options 
 that can be set for the machine.
 
+Parent
+^^^^^^^^^^^^^^^^^^^^
 At the top, just below the name of the machine is where the parent for the machine 
 is set.  Unlike traits and families, a machine can only have one parent.  Here you can 
 either select a parent by clicking on the "select" link, or delete a parent from clicking 
 on the "delete" link.
 
+Attributes
+^^^^^^^^^^^^^^^^^^^^
 Right below the table that displays the parent is the table that holds the main 
 attributes of the machine.  These attributes are kernel, profile, and diskconfig.  If any 
 of these attributes aren't set, the corresponding attribute of the parent will be used.  
@@ -416,6 +420,8 @@ of paella.  The machine name links in the "Inherited From" column are meant to o
 an new machine manager with that machine selected, in a manner similar to selecting 
 parent traits in the trait manager.  This is not implemented yet.
 
+Families
+^^^^^^^^^^^^^^^^^^^^
 Below the attributes table is the section for families.  You can add a new family to the 
 machine by clicking the "new" link in the "Families" header on the right.  A dialog will 
 appear where you can enter the name of a family to add to the machine.  In the table 
@@ -424,6 +430,8 @@ nothing but display a dialog that this operation is not supported yet.  Clicking
 delete link will remove the family from the machine.  In the future, the families will be 
 assigned in a manner similar to how they are assigned to the profiles.
 
+Scripts
+^^^^^^^^^^^^^^^^^^^^
 Just below the Families section is the Scripts section.  You can add a new script by 
 selecting the "new" link on the right side of the section header.  The names of the 
 scripts correspond to steps in the machine installer process.  The table of scripts 
@@ -434,6 +442,8 @@ command column on the right side of the table.  Clicking on the edit link will s
 external editor where you can edit the script.  Clicking on the delete link will delete 
 the script from the machine.
 
+Variables
+^^^^^^^^^^^^^^^^^^^^
 Below the Scripts section is the Variables section.  Here you can set variables for the 
 machine.  You can click on the "new" link to add a new variable.  This will display a 
 dialog where you can enter the trait, name and value for the variable.  In the table of 
