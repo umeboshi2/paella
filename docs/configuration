@@ -149,7 +149,9 @@ paella.
     this option is useless for the time being.
 
   - **client_widget**:  This option enables (or disables) the client widget.
+
     Default: False  
+
     Don't bother to enable this, as it's not yet implemented.  This is a carryover 
     from the older gtk interface.
 
