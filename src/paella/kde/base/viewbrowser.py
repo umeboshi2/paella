@@ -15,13 +15,13 @@ class MimeSources(QMimeSourceFactory):
 
 
 class ViewBrowser(KTextBrowser):
-    # docobject is meant to be a forgetHTML document object
-    # the docobject takes the app as the first argument
-    def __init__(self, parent, docobject):
+    # docclass is meant to be a forgetHTML document class
+    # the docclass takes the app as the first argument
+    def __init__(self, parent, docclass):
         KTextBrowser.__init__(self, parent)
         self.setMimeSourceFactory()
         self.app = get_application_pointer()
-        self.doc = docobject(self.app)
+        self.doc = docclass(self.app)
         self.setNotifyClick(True)
 
     # this should be thought about again

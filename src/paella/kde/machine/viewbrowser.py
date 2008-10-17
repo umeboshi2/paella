@@ -11,6 +11,7 @@ from paella.kde.base.viewbrowser import ViewBrowser
 # import document objects
 from paella.kde.docgen.machine import MachineDoc
 from paella.kde.docgen.machine import DiskConfigDoc
+from paella.kde.docgen.machine import KernelDoc
 
 from base import NewMachineDialog
 from base import EditMachineDIalog
@@ -18,6 +19,7 @@ from base import NewMachineScriptDialog
 from base import NewDiskConfigDialog
 from base import BaseMachineAttributeDialog
 from base import MachineParentDialog
+from base import NewKernelDialog
 
 
 def pipesplit(stringvalue):
@@ -44,7 +46,34 @@ class HasDialog(object):
         self._dialog = None
         
     
+class KernelView(ViewBrowser, HasDialog):
+    def __init__(self, parent):
+        ViewBrowser.__init__(self, parent, KernelDoc)
+        HasDialog.__init__(self)
+        self.refresh_view()
+        self.kernels = self.doc.kernels
+        
+    def setSource(self, url):
+        url = str(url)
+        action, context, ident = pipesplit(url)
+        #KMessageBox.information(self, '%s %s %s' % (action, context, ident))
+        if action == 'delete':
+            self.kernels.delete_kernel(ident)
+            self.refresh_view()
+        elif action == 'new':
+            dlg = self.makeGenericDialog(NewKernelDialog, (self.kernels,))
+            dlg.connect(dlg, SIGNAL('okClicked()'), self.new_kernel_selected)
+        else:
+            KMessageBox.information(self, 'unknown action %s' % action)
+            
+    def new_kernel_selected(self):
+        self._destroy_dialog()
+        self.refresh_view()
 
+    def refresh_view(self):
+        self.doc.refresh_page()
+        self.setText(self.doc.output())
+        
 class DiskConfigView(ViewBrowser):
     def __init__(self, parent):
         ViewBrowser.__init__(self, parent, DiskConfigDoc)

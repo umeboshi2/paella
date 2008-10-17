@@ -11,6 +11,8 @@ from paella.kde.base.mainwin import BasePaellaWindow
 
 from viewbrowser import MachineView
 from viewbrowser import DiskConfigView
+from viewbrowser import KernelView
+
 
 from actions import ManageActions, ManageActionsOrder
 
@@ -134,17 +136,11 @@ class MachineMainWindow(BasePaellaWindow):
         self._managing = 'diskconfig'
 
     def slotManagekernels(self):
-        self._setMainView(KListView)
-        table = 'kernels'
-        cursor = self.conn.cursor(statement=True)
-        rows = cursor.select(table=table)
-        self.mainView.setRootIsDecorated(True)
-        self.mainView.addColumn('kernel')
-        for row in rows:
-            KListViewItem(self.mainView, row.kernel)
+        self._setMainView(KernelView)
+        self.mainView.refresh_view()
         self.statusbar.message('Manage kernels')
         self._managing = 'kernel'
-
+        
     def slotNewObject(self):
         if self._managing is None:
             KMessageBox.information(self, 'Select something to manage first.')
@@ -152,6 +148,10 @@ class MachineMainWindow(BasePaellaWindow):
             self.mainView.mainView.setSource('new.machine.foo')
         elif self._managing == 'diskconfig':
             self.mainView.mainView.setSource('new.diskconfig.foo')
+        elif self._managing == 'kernel':
+            # kernel url's use '||' since the package names
+            # have "."'s in them
+            self.mainView.setSource('new||kernel||foo')
         else:
             KMessageBox.information(self, '%s not supported yet' % self._managing)
             

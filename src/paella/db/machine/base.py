@@ -77,7 +77,37 @@ class DiskConfigHandler(object):
         data = edit_dbfile(name, content, 'diskconfig')
         if data is not None:
             self.set(name, data=dict(content=data))
+
+class KernelsHandler(object):
+    def __init__(self, conn):
+        self.conn = conn
+        self.cursor = self.conn.cursor(statement=True)
+        self.cursor.set_table('kernels')
+
+    def _check_kernel_exists(self, kernel):
+            clause = Eq('package', kernel)
+            return self.cursor.select(table='apt_source_packages', clause=clause)
             
+    def get_kernel_rows(self):
+        return self.cursor.select(order=['kernel'])
+
+    def get_kernels(self):
+        return [row.kernel for row in self.get_kernel_rows()]
+
+    def add_kernel(self, kernel):
+        # this check keeps from just any package as
+        # a kernel, but also ties this to linux
+        if not kernel.startswith('linux-image'):
+            raise RuntimeError , "%s doesn't seem to be a kernel package" % kernel
+        if self._check_kernel_exists(kernel):
+            self.cursor.insert(data=dict(kernel=kernel))
+        else:
+            raise NoExistError, "There's no package named %s" % kernel
+        
+    def delete_kernel(self, kernel):
+        clause = Eq('kernel', kernel)
+        self.cursor.delete(clause=clause)
+        
 
 class BaseMachineDbObject(object):
     def __init__(self, conn, table=None):

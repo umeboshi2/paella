@@ -8,7 +8,7 @@ from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
 from paella.db.machine import MachineHandler
-from paella.db.machine.base import DiskConfigHandler
+from paella.db.machine.base import DiskConfigHandler, KernelsHandler
 from paella.db.machine.relations import AttributeUnsetInAncestryError
 
 from base import color_header
@@ -83,7 +83,27 @@ class DiskConfigDoc(BaseDocument):
         deleteanchor = Anchor('delete', href='delete.diskconfig.%s' % row.name)
         self.body.append(deleteanchor)
         
-    
+class KernelDoc(BaseDocument):
+    def __init__(self, app, **atts):
+        BaseDocument.__init__(self, app, **atts)
+        self.kernels = KernelsHandler(self.conn)
+        
+    def refresh_page(self):
+        self.clear_body()
+        title = SectionTitle('Kernels')
+        self.body.append(title)
+        kernels = self.kernels.get_kernels()
+        table = Table()
+        self.body.append(table)
+        for kernel in kernels:
+            tablerow = TableRow()
+            cell = TableCell(kernel)
+            tablerow.append(cell)
+            del_anchor = Anchor('(delete)', href='delete||kernel||%s' % kernel)
+            cell = TableCell(del_anchor)
+            tablerow.append(cell)
+            table.append(tablerow)
+            
         
 class MachineDoc(_MachineBaseDocument):
     def __init__(self, app, **atts):

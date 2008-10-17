@@ -60,6 +60,20 @@ class NewMachineDialog(BaseMachineDialog):
         machine = str(self.machnameEntry.text())
         print "slotOkClicked", machine
         self.handler.make_a_machine(machine)
+
+class NewKernelDialog(BaseMachineDialog):
+    def __init__(self, parent, handler):
+        BaseMachineDialog.__init__(self, parent, handler)
+        self.kernelLbl = QLabel(self.frame)
+        self.kernelLbl.setText('Name of kernel package')
+        self.kernelEntry = KLineEdit(self.frame)
+        self.vbox.addWidget(self.kernelLbl)
+        self.vbox.addWidget(self.kernelEntry)
+        self.dbaction = 'insert'
+
+    def slotOkClicked(self):
+        kernel = str(self.kernelEntry.text())
+        self.handler.add_kernel(kernel)
         
 class BaseMachineAttributeDialog(BaseMachineDialog):
     def __init__(self, parent, handler, attribute):
