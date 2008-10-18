@@ -223,7 +223,9 @@ class BaseMachineHandler(BaseMachineDbObject):
         self._update_row(data)
         # reset this object's attributes
         self.set_machine(self.current_machine)
-        
+
+    def delete_machine(self, machine):
+        self.cursor.execute("select * from delete_machine('%s')" % machine)
 
 if __name__ == '__main__':
     pass

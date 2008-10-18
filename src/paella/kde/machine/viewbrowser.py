@@ -198,12 +198,19 @@ class MachineView(ViewBrowser, HasDialog):
             self._unhandled_action(action, 'families')
         
     def _machine_context(self, action, ident):
+        handler = self.doc.machine
         if action == 'new':
-            handler = self.doc.machine
             dialog = self.makeGenericDialog(NewMachineDialog, (handler,))
+            dialog.connect(dialog, SIGNAL('okClicked()'), self.reset_manager)
         elif action == 'edit':
-            handler = self.doc.machine
             dialog = self.makeGenericDialog(EditMachineDIalog, (handler, ident))
+        elif action == 'delete':
+            msg = "Really delete this machine: %s?" % ident
+            answer = KMessageBox.questionYesNo(self, msg)
+            if answer == KMessageBox.Yes:
+                #KMessageBox.information(self, "I'm supposed to be deleting %s" % ident)
+                handler.delete_machine(ident)
+                self.reset_manager()
         else:
             self._unhandled_action(action, 'machines')
 
@@ -294,3 +301,7 @@ class MachineView(ViewBrowser, HasDialog):
         dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewRecord)
         dialog.frame.setText(message)
 
+
+    def reset_manager(self):
+        mainwindow = self.parent().parent()
+        mainwindow.slotManagemachine()
