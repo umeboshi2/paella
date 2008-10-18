@@ -28,6 +28,162 @@ signs the Release files, and can make partial mirrors.  Using reprepro is
 highly recommended.
 
 
+Database Maintainence
+-------------------------------------------------------
+
+At the moment, there is no code to help maintain the database.  There are two 
+areas in the database that could use some code to help keep the database in 
+good working order.
+
+The first area is the package lists that is generated from the debian mirror.  
+While the code exists to initially fill the table, there is no code to keep the 
+package list updated.  The code required to do this would need to be fairly 
+complex as it would have to update each row with the newer version of a 
+package, add packages that are not already in the table, and remove packages 
+that are no longer available.  Some extra complexity is involved when packages 
+are to be removed, as some of them may be used in the traits.  So the code 
+would need to look for the packages that are to be removed first, and inform 
+the database admin if there are traits that reference any of those packages.
+
+At the moment, the way that I've been updating the package lists is to export 
+the database using the xml format, dropping the database, creating a new 
+database with the same name, then importing the last export.  This is an 
+ugly way to keep the package list updated, and I'd like to keep from having 
+to drop the database, or remove large parts of it just to update the package 
+lists.
+
+The second area is the textfiles table that stores all of the templates and 
+scripts.  When you delete a template or script from a trait, or machine, the 
+actual file remains in the textfiles table.  Since the database uses foreign 
+keys to determine which text file is being used for what purpose, the code 
+to do this would be rather simple.  The code would simply attempt to delete 
+all of the rows in the textfiles table, one by one.  The text files that are being 
+used by traits or machines would not be deleted, since deleting them would 
+violate foreign key constraints.  The text files that are not being referenced 
+would be deleted.  Since this method is rather simple, compared to keeping 
+the package lists up to date, it will probably be added at some point in the 
+future.
+
+
+External Editor/Differ
+---------------------------------
+
+Spawning the external programs in the paella-management application 
+will cause the interface to freeze until the external process has been 
+terminated.  This can be troublesome, because there are times when 
+you would want to read some of your config through the application while 
+writing your scripts, or editing a template.  I have refrained from running 
+the external process in the background to avoid complications that could 
+result from doing this.  One of the workarounds that I use is to save the 
+file that I'm editing to another filename, then closing out the editor.  I then 
+start the editor from the command line and edit the file while being able 
+to access the gui as a reference.  When I'm done, I spawn the external 
+editor from paella-management and replace the contents with the file that 
+I just edited.  Doing this is rather easy if you are using emacs or xemacs 
+as your editor.
+
+
+Memory Usage
+--------------------------------
+
+Paella seems to use more memory than I would like it to use.  I am not 
+very knowledgable on how to handle this.  My focus has been in this order:
+
+1.  Make sure the code works correctly
+2.  Make sure the code is clean and modular
+3.  Avoid unnecessary complexity when possible
+4.  Try to keep from duplicating code and instantiating objects more than necessary
+5.  Make sure the code isn't too slow.
+6.  Try to keep database queries at a minimum
+7.  Make sure paella isn't excessively hogging memory
+
+As you can see, the memory constraint is at the bottom of the list.  Using top 
+to estimate, the paella-management application uses about 75M VIRT, and 
+35M RSS.  The paella-machine-installer seems to use about 11M of memory.  
+Most of the memory seems to come from just loading all of the modules required 
+to run paella.
+
+/root/paella
+------------------------------------------
+
+While paella is not required to be installed on the target system and the target 
+systems don't need any special packages in order for paella to work, the installer 
+does leave some files on the target system.  This behaviour should be optional, but 
+it isn't at the moment.  Paella uses /root/paella on the target system as the place 
+where these files are stored.  Basically what is stored here are a list of the traits 
+that are supposed to be installed, a list of traits that are actually installed, the 
+original files present on the system before they are replaced by templates, and a 
+copy of the logfile from the installer.
+
+The trait lists are there to make it easy to determine whether all the traits were 
+installed properly, and where the installer stopped if it didn't install properly.
+
+The original files that are replaced by templates are useful to determine the 
+changes made to a default system by the templates.  This may help if you 
+need to modify the templates, or if there have been updates to packages that 
+have changed the config files, and your templates are based off of an older 
+version.
+
+In the future, I may make this behaviour optional, but it is a very low priority.  The 
+files usually don't take up too much space, and it's easy just to rm -fr /root/paella 
+after the install is complete.
+
+Other Notes
+--------------------------------
+
+Target Filesystem
+!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+After installation, the target filesystem remains mounted.  It should unmount 
+cleanly on a reboot, but it may be desirable to have the installer unmount it 
+at the end of the install.
+
+Sharing Database Connections
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Connections to the database are shared as much as possible.  The 
+paella-management application only uses a single connection to the database.  
+The installer also only uses a single connection, but any scripts that need to 
+connect to the database will use a separate connection.  This means that 
+each machine that's being installed may require at least two connections to the 
+database.  This can add up when installing a network of machines.  It is probably 
+possible to use pgpool on the installer and connect through it, keeping the number 
+of connections down to one per machine.
+
+Network Requirements
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Paella has not been heavily tested using a live cd to load the installer.  There should 
+be no requirement for an nfs server to be present on the network for the installer to 
+work.  The only requirements for the network should be for the database server and
+web server for the debian mirror.  DNS and DHCP are not really required to be present 
+on the network, but it really helps to have them.  
+
+Automated Installs
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+If you are using automated installs, the identification for the machine is done by the 
+mac addresses of the ethernet devices on the machine, and they are matched in the 
+database.  There is no need to use dhcp or pxe for identifying the machines (but you 
+will probably need dhcp to assign an ip address to the machine).
+
+Paella Database User
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The installer connects to the database as the paella database user.  This account is 
+limited, and has read only access to all of the paella tables, with the exception of the 
+current_environment table and default_environment table.  It has full write access to 
+the current_environment table, and only insert access to the default_environment 
+table.  If you wish to store sensitive data, such as plaintext passwords in the 
+database, you will make sure that the network that you install with is separated from 
+the rest of the network environment.  A good way to do this is have the database on a 
+laptop (or portable machine)  and detach the machines that you will install from the rest 
+of the network, using a separate switch or hub.  You may want to use a firewall so that 
+you can connect to a debian mirror, or the internet, but you will need to be sure that all 
+the machines on the local network that you are using are completely under your control.
+
+
+
 
 
 

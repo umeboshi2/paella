@@ -69,14 +69,8 @@ circular dependencies
     I'm open to suggestions on how this problem can be both spotted and 
     fixed.
 
-----------------------------------------
-other problems
-----------------------------------------
 
-+ temporary files should be more vigorously removed **done**
 
-  - this has been done for editing scripts and templates, but still 
-    needs to be done for the differ and variables.
 
 toc_
 
