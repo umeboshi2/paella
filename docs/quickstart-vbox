@@ -124,7 +124,10 @@ Either download the iso, and enter the filename as the first argument, or just r
 without arguments.  The script will download the debian-LennyBeta2-i386-netinst.iso for you.
 
 The script will give you a chance to review and edit the preseed files before you create the 
-remastered iso image.  When the script is finished, the iso image will be ./paella-netinst.iso .
+remastered iso image.  All the files that will be used in the remastered iso image will be 
+located in the cd/ directory. If you have a local mirror that you want to install from, you should 
+edit the localmirror.cfg file in the cd/ directory.  When the script is finished, the iso image will be 
+./paella-netinst.iso .
 
 **Note**  The preseed configuration files, and the setup scripts assume that the locale 
 is set to en_US.UTF-8 .  If you are using another locale, you really need to modify both the 
