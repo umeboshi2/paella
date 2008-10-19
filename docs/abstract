@@ -6,15 +6,35 @@ Abstract
 
 .. contents:: :backlinks: entry
 
+Introduction 
+----------------------
+
 Paella is system for creating/installing customized debian systems.
 There are no current plans for configuration updates on live systems,
 that's not it's initial purpose, although it may be extended later.
+
+Paella differs from other automated installation system by using a 
+PostgreSQL database to store all of the configuration.  PostgreSQL was 
+chosen primarily because it supports foreign keys and stored procedures.  
+Foreign keys are used to keep the relationships in the configuation tied 
+together, and this can be useful for maintaining a configuation over a long 
+time as it helps to keep it from breaking due to broken relationships between 
+the different parts of the configuration.  This doesn't make it impossible to 
+make a broken configuration, or to break a good configuration, but it does 
+help quite a bit.  It also helps organize the configuration so that it is easier to 
+tell what is going to be installed and configured.
+
+
+
+
+Inspiration
+--------------------
 
 Inspiration for paella comes from many places:
 
 
 FAI
--------
+!!!!!!!!!!!!!!!
 
 FAI (the fully automated installer)
 An excellent installer, with the capability of bootstrapping
@@ -29,7 +49,7 @@ wheel here, as setting up disks can be complex and error
 proned if it's not managed right
 
 debconf
---------------
+!!!!!!!!!!!!!!!!!!!
 
 an important abstract configuration system
 
@@ -42,7 +62,7 @@ the configuration separate from the system it was being
 installed to, to keep the system from depending on paella.
 
 Knoppix 
--------------
+!!!!!!!!!!!!!!!!!!!!!!
 
 ,,, and Morphix, Gnoppix, and other live cd's
 
@@ -56,7 +76,7 @@ images, it's now being used for the paella installer.
 
 
 Demudi, Debian-Lex, ...
-----------------------------
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 I think paella can be very instrumental in helping configure and
 install a custom network on a per network type basis, (i.e. what

@@ -17,7 +17,7 @@ paragraph is removed.  This will probably happen soon after lenny is released.
 .. contents:: :backlinks: entry
 
 Introduction
---------------------
+===============================
 
 .. introductory comment
 
@@ -32,7 +32,6 @@ that the method outlined here can help prepare this by using paella to generate 
 configuration that paella requires.
 
 
--------------------
 
 Requirements
 ==========================
@@ -159,8 +158,8 @@ Network".  You will need to name the network in the field that says "Network Nam
 should do just fine.  I used "lapnet" (no quotes), since I'm on a laptop.  Remember this name, 
 since you'll need this for the other machine(s) that you will use paella to install to.
 
-Boot the paella virtual machine
-================================
+.. Boot the paella virtual machine
+.. ================================
 
 Install the paella virtual machine
 ----------------------------------------
@@ -228,6 +227,10 @@ screen size for VESA is 1280x1024, which is too big for my laptop.  Feel free to
 or restore the original at /etc/X11/xorg.conf.orig .  You may also want to use the virtualbox 
 guest drivers, but the input drivers (mouse and keyboard) stopped working when I tried 
 them.  The vesa driver is known to work, even though it's probably not nearly as efficient.
+
+Create a Partial Debian Archive
+=========================================
+
 
 Make a gpg key
 ------------------------
@@ -556,7 +559,7 @@ the past, but DebianLive is much better.  Now I can leave the management of a go
 system in somebody else's hands, and just concentrate on using that live system as an 
 installer for paella.
 
-Starting with DebianLive
+Starting with Debian Live
 ------------------------------------
 
 To begin making the nfsroot installer, we need to change directories to the place I've setup 
@@ -567,7 +570,7 @@ for you to build the installer::
 You'll need to stay in this directory for the rest of the instructions on building the DebianLive 
 nfsroot installer.
 
-Copy DebianLive config from CD
+Copy Debian Live config from CD
 ----------------------------------------------------------------
 
 If you haven't yet mounted the netinst cdrom image, do so now::
@@ -580,14 +583,26 @@ You need to copy the DebianLive configuration files from the cd::
     chmod +w -R config/
 
 
-Modify the DebianLive Configuration
+Modify the Debian Live Configuration
 ------------------------------------------------------------
 
 **Important** If you had to change the network ip's from the defaults, you'll need to 
 edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.  If the ip 
 of the eth1 interface is 10.0.1.1, you can probably skip this step.  This should be the only file 
-that you have to edit in the DebianLive configuration.  If this variable isn't set properly, the 
-live system will boot, but the root filesystem will never be mounted.
+that is required to be edited in the DebianLive configuration.  If this variable isn't set properly, 
+the live system will boot, but the root filesystem will never be mounted.
+
+In the config/binary file, there are some other variables that you may want to configure.  
+These aren't absolutely necessary, but it may be useful for you to do so.  The 
+LH_BOOTAPPEND_LIVE variable is set to my timezone, and you may wish to change this to 
+have the correct local time on your installer image.  The utc variable should match the UTC 
+variable in /etc/default/rcS on your host system.
+
+Also, at the bottom of the config/binary file, there is a variable, MKSQUASHFS_OPTIONS , 
+which has been commented out.  Uncommenting this will keep mksquashfs from 
+compressing the binary image, otherwise it will be compressed as normal.  This is 
+optional and is there only to help make the binary image quicker than compressing it.
+
 
 
 Copy the Archive Key
