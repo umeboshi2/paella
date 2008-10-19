@@ -15,13 +15,19 @@
 ARCH=i386
 
 
-official_netinst_image=$1
-
+official_netinst_image=debian-LennyBeta2-$ARCH-netinst.iso
+official_netinst_image_url=http://cdimage.debian.org/cdimage/lenny_di_beta2/$ARCH/iso-cd/$official_netinst_image
+official_netinst_image_arg=$1
 # if there's no iso argument, download the iso
-if [ -z $official_netinst_image ]; then
-    wget http://cdimage.debian.org/cdimage/lenny_di_beta2/$ARCH/iso-cd/debian-LennyBeta2-$ARCH-netinst.iso
-    official_netinst_image=debian-LennyBeta2-$ARCH-netinst.iso
+if [ -z $official_netinst_image_arg ]; then
+    if ! [ -e $official_netinst_image ]; then 
+	wget $official_netinst_image_url
+    fi
+else
+    official_netinst_image=$official_netinst_image_arg
 fi
+
+echo "Using $official_netinst_image as netinst iso image"
 
 # this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
 mkdir -p loopdir
