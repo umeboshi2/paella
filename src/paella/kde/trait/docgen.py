@@ -56,13 +56,12 @@ class TemplateTable(Table):
     def set_rows(self, rows):
         for row in rows:
             tablerow = TableRow()
-            fake_template = row.template.replace('.', ',')
-            show_anchor = Anchor(row.template, href='show.template.%s' % fake_template)
+            show_anchor = Anchor(row.template, href='show.template.%s' % row.template)
             tablerow.append(TableCell(show_anchor))
             template_data = '%s:%s (%s)' % (row.owner, row.grp_owner, row.mode)
-            data_anchor = Anchor(template_data, href='edit.templatedata.%s' % fake_template)
-            edit_anchor = Anchor('(edit)', href='edit.template.%s' % fake_template)
-            del_anchor = Anchor('(delete)', href='delete.template.%s' % fake_template)
+            data_anchor = Anchor(template_data, href='edit.templatedata.%s' % row.template)
+            edit_anchor = Anchor('(edit)', href='edit.template.%s' % row.template)
+            del_anchor = Anchor('(delete)', href='delete.template.%s' % row.template)
             tablerow.append(TableCell(data_anchor))
             cmdcell = TableCell()
             cmdcell.set(edit_anchor)

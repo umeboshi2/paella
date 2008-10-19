@@ -81,7 +81,15 @@ class TraitView(ViewBrowser):
     # this method is too long in original TraitView browser
     # this needs to split up into more methods
     def setSource(self, url):
-        action, context, ident = split_url(url)
+        parts = split_url(url)
+        if len(parts) == 3:
+            action, context, ident = split_url(url)
+        elif len(parts) > 3:
+            ident = '.'.join(parts[2:])
+            action = parts[0]
+            context = parts[1]
+        else:
+            raise ValueError , "malformed url: %s" % url
         if action == 'show':
             self._perform_show_action(context, ident)
         elif action == 'edit':
@@ -107,7 +115,7 @@ class TraitView(ViewBrowser):
         elif context == 'template':
             suite = self.doc.suite
             trait = self.doc.trait.current_trait
-            template = self._convert_template_id(ident)
+            template = ident
             win = TemplateViewWindow(self, suite, trait, template)
 
             win.trait.set_trait(self.doc.trait.current_trait)
@@ -150,10 +158,10 @@ class TraitView(ViewBrowser):
             win = TraitVariablesWindow(self, self.doc.suite, ident)
             win.show()
         elif context == 'template':
-            template = self._convert_template_id(ident)
+            template = ident
             self.doc.trait.edit_template(template)
         elif context == 'templatedata':
-            template = self._convert_template_id(ident)
+            template = ident
             row = self.doc.trait.get_template_row(template)
             data = {}
             fields = ['template', 'owner', 'grp_owner', 'mode']
@@ -201,7 +209,7 @@ class TraitView(ViewBrowser):
             ans = KMessageBox.questionYesNo(self,
                                             "%s: really delete this template?" % ident)
             if ans == KMessageBox.Yes:
-                template = self._convert_template_id(ident)
+                template = ident
                 self.doc.trait.delete_template(template)
                 self.resetView()
         elif context == 'script':
@@ -279,8 +287,3 @@ class TraitView(ViewBrowser):
         self.doc.trait.update_template(template, data=data)
         self.resetView()
         
-        
-    def _convert_template_id(self, ident):
-        newid = ident.replace(',', '.')
-        return newid
-    
