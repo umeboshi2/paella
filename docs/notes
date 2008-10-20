@@ -182,6 +182,43 @@ of the network, using a separate switch or hub.  You may want to use a firewall 
 you can connect to a debian mirror, or the internet, but you will need to be sure that all 
 the machines on the local network that you are using are completely under your control.
 
+Packages Interfering with the Install
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+There are some packages that will change the behaviour of apt when they are installed.  
+Some examples are apt-listchanges and apt-listbugs.  These packages will by default 
+stop the installation waiting on input from the user.  The system administrator should 
+be aware of these packages by keeping an eye on the installation logs and noticing 
+which packages are causing these problems.  Often it is necessary to configure these 
+packages in a way that will allow for the installation to proceed automatically, and then 
+reconfigure them at the end of the installation.  In the default database, the final trait is 
+used to perform this type of function.
+
+The paella framework will probably never handle packages like these, as it's difficult 
+to determine how many packages may behave like this, and some packages may need 
+to be treated differently than others.  Similar problems can occur with packages that 
+modify the was libnss does host, user, or group lookups.  This can interfere with the 
+installation process also.  It is also possible that you might install the machine on one 
+network, but it's meant to be run in another network, and it's configuration won't be 
+complete until it's present on that network.
+
+Normally the way I handle these packages is to have two sets of templates in the 
+traits responsible for these packages.  The first set is a configuration that keeps 
+the installer working and lets it finish the install.  The second set is the actual 
+configuration and it is usually stored in a place like "/root/paella/real-templates" on 
+the target system.  The final trait will look for files in this directory and move them 
+to the proper destination.  Also, scripts may need to be made that configure certain 
+services on the first boot of the machine.  These scripts should be set to run on 
+booting the machine, and either be idempotent, or remove themselves from being 
+started after successful execution.  Another way around this is to use a helper 
+configuration system, like cfengine or bcfg2 where you can place some of the 
+configuration there and have the installed machine update from the configuration 
+server.  It may also be possible to do this with paella in the future when paella 
+moves into being able to update the configuration of a running machine.
+
+I have tried to make paella flexible enough be able to do these things, but it also 
+requires some knowledge and creativity from the system administrator who is 
+creating the system in order identify and work around these types of problems.
 
 
 
