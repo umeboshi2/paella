@@ -215,8 +215,8 @@ pre.address {
 pre.literal-block, pre.doctest-block {
   margin-left: 2em ;
   margin-right: 2em ;
-  font-size: x-small ;
-  font-family: monospace ;
+  font-size: small ;
+  font-family: terminal ;
   background-color: #dddddd }
 
 span.classifier {
