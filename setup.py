@@ -53,6 +53,7 @@ class builddocs(_build):
         files = [f for f in files if not f.endswith('~')]
         files = [f for f in files if '#' not in f]
         files = [f for f in files if not f.startswith('.')]
+        files = [f for f in files if not f.endswith('.css')]
         print "source doc files:", ', '.join(files)
         if os.path.exists('html'):
             print "found html directory, removing it"
@@ -62,10 +63,13 @@ class builddocs(_build):
         os.mkdir('html')
         data_tuple = ('html', [])
         data_files.append(data_tuple)
+        # add the stylesheet
+        data_tuple[1].append('docs/default.css')
         for srcfile in files:
             print "building", srcfile
             htmlfile = 'html/%s.html' % srcfile
-            os.system('rst2html %s %s' % (srcfile, htmlfile))
+            cmd = 'rst2html --stylesheet=default.css --link-stylesheet'
+            os.system('%s %s %s' % (cmd, srcfile, htmlfile))
             data_tuple[1].append('docs/%s' % htmlfile)
         # add screenshots
         images_tuple = ('html/images', [])
