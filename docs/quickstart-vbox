@@ -226,10 +226,12 @@ feel like rebooting, restart these services::
 
 
 In the xorg.conf file, the screen resolution is set to 1024x768.  This is because the default 
-screen size for VESA is 1280x1024, which is too big for my laptop.  Feel free to edit this file, 
-or restore the original at /etc/X11/xorg.conf.orig .  You may also want to use the virtualbox 
-guest drivers, but the input drivers (mouse and keyboard) stopped working when I tried 
-them.  The vesa driver is known to work, even though it's probably not nearly as efficient.
+screen size for VESA is 1280x1024, which is too big for my laptop.  This may also be due to 
+the fact that the screen width of the laptop is 1280, I don't really know.  Feel free to edit this 
+file, or restore the original at /etc/X11/xorg.conf.orig .  You may also want to use the 
+virtualbox guest drivers, but the input drivers (mouse and keyboard) stopped working when 
+I tried them.  The vesa driver is known to work, even though it's probably not nearly as 
+efficient.
 
 Create a Partial Debian Archive
 =========================================
@@ -438,7 +440,7 @@ goes wrong, and where it does go wrong.
 Take a break.  Grab some coffee.  This will take a bit, depending on your internet 
 connection.  I've taken care to only include the packages that needed, plus a few 
 extra packages that I use as tools to help me test this quickstart routine.  As of the time 
-this was written, the pool directory was 421MB in size.
+this was written, the pool directory was 451MB in size.
 
 After the update is done, you may need to export the packages lists::
 
