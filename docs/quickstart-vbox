@@ -143,7 +143,7 @@ You need to get the virtualbox frontend up and running.
 
 Make a new machine using the wizard provided by the virtualbox frontend.  Press next 
 and name the machine "paella".  Select "Debian" for the OS type.  Press next.  Set the base 
-memory size to 512MB.  Press next.  Make a new disk image at the default 8GB size (I chose 
+memory size to 256MB.  Press next.  Make a new disk image at the default 8GB size (I chose 
 dynamically expanding size).  Press finish.
 
 Select paella from the list of machines on the frontend, and click the settings button.  In the 
@@ -196,42 +196,37 @@ After the debian installer is finished, the virtual machine should reboot .  You
 this time to disassociate the iso image from the machine in the VirtualBox frontend, else 
 the iso will boot everytime you boot the virtual machine.
 
-When the sytem boots up for the first time, login as paella (password paella).  You may 
-want to load this webpage in a web browser in the virtual machine, so you can more easily 
-cut and paste from this page.  We need to start configuring the server.  There is a script 
-written to help with this.  It's located at /usr/local/bin/setup-paella-server .  If you can't use 
-the default 10.0.1.0 internal network, there is a place at the top of the script to change these 
-values.
+When the system boots up for the first time, you will want to want to login to the console.  
+You can reach the console by pressing the "Host" key and F1 (By default, the "Host" key 
+is the right <ctrl> key).  You will want to login here, instead of to the X session, because 
+the script will reconfigure X and restart the display manager.
 
-Start a terminal and type::
+Once you switch to the local console, you will need to login as paella (password paella).  
+Here you will run a script that will help configure the server and get it ready for the rest 
+of this procedure.  The script is located at /usr/local/bin/setup-paella-server .  You may 
+need to edit the script and set the ip addresses that are set near the top.  The default 
+internal network that is used is 10.0.1.0/24.  You may need to change this if the ip 
+values conflict with your local network setup.  I suggest you try to stick to these values 
+if it's possible, and if it's not possible, to use 10.0.2.0/24, or something similar.  When 
+you are ready you should type::
+
 
      sudo setup-paella-server
 
 
+
 This should set up everything that couldn't be done on the debian installer.  This script 
 will setup the cofiguration of the database, firewall, dhcp server, and the network interface 
-for the internal network.
+for the internal network.  Also, the virtualbox guest modules will be installed, and the 
+xorg.conf configuration will be modified to make use of them.  When the script is finished, 
+you should see a graphical login screen.  You may want to return to the console that you
+are logged into to logout before logging into the X session.
 
-While I've tried to make things work by restarting services, things don't always work right.  
-You may need to reboot the virtual machine after this script, if you notice errors in restarting 
-the servers at the end of the execution of the script.  If you do encounter the errors, and don't 
-feel like rebooting, restart these services::
+Once you have logged into the X session, you may want to load this page on a web 
+browser in the virtual machine and continue this guide.  This will make it easier to 
+cut and paste the commands that are given here.  The rest of the guide will assume that 
+you have done this.
 
-     sudo /etc/init.d/networking restart
-     sudo /etc/init.d/postgresql-8.3 restart
-     sudo /etc/init.d/shorewall restart
-     sudo /etc/init.d/apache2 restart
-
-
-
-
-In the xorg.conf file, the screen resolution is set to 1024x768.  This is because the default 
-screen size for VESA is 1280x1024, which is too big for my laptop.  This may also be due to 
-the fact that the screen width of the laptop is 1280, I don't really know.  Feel free to edit this 
-file, or restore the original at /etc/X11/xorg.conf.orig .  You may also want to use the 
-virtualbox guest drivers, but the input drivers (mouse and keyboard) stopped working when 
-I tried them.  The vesa driver is known to work, even though it's probably not nearly as 
-efficient.
 
 Create a Partial Debian Archive
 =========================================
@@ -323,17 +318,12 @@ and maintain the local debian mirror for here on.
 Create the config files for reprepro
 --------------------------------------------------------------
 
-In the instructions below, you don't have to create these files.  You can copy them from the 
-remastered netinst cdrom that you made. You may need to attach the image in virtualbox using 
-the devices menu.  You can check that the cd image is attached by pulling up the Session 
-Information Dialog from the Machine menu on the far left.  Once you're sure that the image is
-attached in virtualbox, you need to mount it. To do this, type::
+In the instructions below, you don't have to create these files.  The files are present on the 
+remastered netinst cdrom that you made, and they are copied 
+to /usr/local/share/paella/reprepro during the install.  You can copy them to where they 
+belong by typing::
 
-	 mount /media/cdrom
-
-Then copy the files for reprepro::
-
-	 cp /media/cdrom/paella/reprepro/* /freespace/debian/conf
+	 cp /usr/local/share/paella/reprepro/* /freespace/debian/conf
 	 chmod +w /freespace/debian/conf/*
 
 Now type::
@@ -575,16 +565,14 @@ for you to build the installer::
 You'll need to stay in this directory for the rest of the instructions on building the DebianLive 
 nfsroot installer.
 
-Copy Debian Live config from CD
+Copy the Debian Live Config Files
 ----------------------------------------------------------------
 
-If you haven't yet mounted the netinst cdrom image, do so now::
+The configuration for debian live is on the netinst cdrom image, and during the install 
+they are copied to /usr/local/share/paella/live-config .  You will need to copy them 
+to the config directory by typing::
 
-   mount /media/cdrom
-
-You need to copy the DebianLive configuration files from the cd::
-
-    cp -a /media/cdrom/paella/live-config/ config
+    cp -a /usr/local/share/paella/live-config/ config
     chmod +w -R config/
 
 
@@ -749,6 +737,12 @@ unavailable or misspelled packages.  It would also be nice to have a little pack
 to help when creating traits, but that's in the future, and it would need the full record of each 
 package to be stored in the database.
 
+Guide to Paella Management
+-------------------------------------------------
+
+A more complete guide to using paella-management can be found here__.
+
+.. __: gui-guide.html
 
 
 Configure quickstart-vbox database
