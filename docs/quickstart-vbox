@@ -488,7 +488,12 @@ This is optional, as it's only needed to work with the code, and possibly fix bu
 encounter.
 
 **Important:**  You need to cut and paste the apt-get command from the output 
-of the script, to build all of the paella and python-useless-* packages.
+of the script, to build all of the paella and python-useless-* packages.  The command 
+should be ::
+
+       sudo apt-get install build-essential cdbs devscripts python-docutils \
+       python-all-dev live-helper dosfstools memtest86+ parted squashfs-tools \
+       genext2fs mtd-tools syslinux uuid-runtime
 
 
 Build paella packages from source tree
