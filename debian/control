@@ -68,7 +68,7 @@ Package: paella-admin
 Section: admin
 Priority: optional
 Architecture: any
-Depends: python-useless-kdedb, paella-db (= ${binary:Version})
+Depends: python-useless-kdedb, paella-db (= ${binary:Version}), kdebase-kio-plugins
 Recommends: xxdiff
 Suggests: xemacs21
 Description: package for configuration of the paella database
