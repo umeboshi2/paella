@@ -215,7 +215,7 @@ pre.address {
 pre.literal-block, pre.doctest-block {
   margin-left: 2em ;
   margin-right: 2em ;
-  font-size: x-small ;
+  font-size: small ;
   font-family: monospace ;
   background-color: #dddddd }
 

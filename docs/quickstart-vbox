@@ -218,9 +218,11 @@ you are ready you should type::
 This should set up everything that couldn't be done on the debian installer.  This script 
 will setup the cofiguration of the database, firewall, dhcp server, and the network interface 
 for the internal network.  Also, the virtualbox guest modules will be installed, and the 
-xorg.conf configuration will be modified to make use of them.  When the script is finished, 
-you should see a graphical login screen.  You may want to return to the console that you
-are logged into to logout before logging into the X session.
+xorg.conf configuration will be modified to make use of them.  The script will need to 
+download about 11 megabytes worth of packages to build the guest modules with 
+module-assistant.  When the script is finished, you should see a graphical login screen.  
+You may want to return to the console that you are logged into to logout before logging 
+into the X session.
 
 Once you have logged into the X session, you may want to load this page on a web 
 browser in the virtual machine and continue this guide.  This will make it easier to 
@@ -861,7 +863,10 @@ script to install the machine, once it boots.  The admin should be aware about t
 the default environment, since when the autoinstall value is set to 'True', the machine will 
 install each time it's booted from the network.  
 
+Create the Sidesalad Machine
+-------------------------------------------
 
+Now we are ready to create the sidesalad machine in the database.
 
 **If you've made it this far, and the "unfinished" disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.**
 
