@@ -691,13 +691,16 @@ uses the paella database for the rest of his configuration.
 
 Start paella-management
 ------------------------------
-Run the paella-management script to start the management interface.  The little window that 
-pops up is the main menu for paella.  From here on, I'll refer it as the "main paella window".  
-There are two menu systems on the "main paella window".  One of them is the standard 
-menu bar at the top.  The other one is the list right below the menu bar.  This is the list that 
-contains "differs, environ, familes, ...".  This is the part of the interface that has so far 
-defied any conformance to standards that you might be used to.  I'm going to be calling 
-this part of the interface the "list menu".
+Run the paella-management script to start the management interface::
+
+    paella-management
+ 
+The little window that pops up is the main menu for paella.  From here on, I'll refer it as 
+the "main paella window".  There are two menu systems on the "main paella window".  One 
+of them is the standard menu bar at the top.  The other one is the list right below the menu 
+bar.  This is the list that contains "differs, environ, familes, ...".  This is the part of the 
+interface that has so far defied any conformance to standards that you might be used to.  
+I'm going to be calling this part of the interface the "list menu".
 
  
 The first thing that you will want to do is to connect to the database.  There is a connect button 
@@ -717,7 +720,7 @@ Now we are going to import the startup database.  You may need an internet conne
 import the database.  The importer downloads the Packages files from the debian mirror in 
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the 
 database menu, select "import database".  A directory selection dialog will appear.  On the 
-VM I tested, this window was a little bit too skinny, so you'll probably need to make it bigger 
+VM I tested, this window was a little bit too skinny, so you'll probably need to make it wider 
 with your mouse.  The database directory will be at::
 
 	 ~/workspace/paella/config/share/databases/quickstart-vbox/
