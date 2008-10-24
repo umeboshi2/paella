@@ -4,6 +4,7 @@ archive_keys:	paella
 base_log_directory:	/paellalog
 bootstrap_suites:	lenny
 bootstrap_target:	True
+default_target:	/tmp/target
 devices_tarball:	/root/devices.tar
 disk_log_directory:	/paellalog/disklog
 http_mirror:	http://paella.lapnet/debian

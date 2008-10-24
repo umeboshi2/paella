@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # WARNING!!! 
 #This script uses sudo, and shouldn't be run without inspection.
@@ -52,8 +53,10 @@ if [ -z $PAELLA_NETINST_WORKING_COPY ]; then
 else
     echo "exporting from working copy"
     svn export --force $PAELLA_NETINST_WORKING_COPY cd
-    echo "copying myconfig to netinst"
-    cp ~/vpaella/paella-myconfig.tar.gz cd
+    if [ -e ~/vpaella/paella-myconfig.tar.gz ]; then 
+	echo "copying myconfig to netinst"
+	cp ~/vpaella/paella-myconfig.tar.gz cd
+    fi
 fi
 
 echo "Here you may need to examine and modify the preseed files"
