@@ -1,0 +1,61 @@
+# config/chroot - options for live-helper(7), chroot stage
+
+# $LH_CHROOT_FILESYSTEM: set chroot filesystem
+# (Default: squashfs)
+LH_CHROOT_FILESYSTEM="<--|debianlive:lh_chroot_filesystem|-->"
+
+# $LH_UNION_FILESYSTEM: set union filesystem
+# (Default: aufs)
+LH_UNION_FILESYSTEM="<--|debianlive:lh_union_filesystem|-->"
+
+# $LH_EXPOSED_ROOT: expose root as read only
+# (Default: disabled)
+LH_EXPOSED_ROOT="<--|debianlive:lh_exposed_root|-->"
+
+# $LH_HOOKS: set hook commands
+# (Default: empty)
+LH_HOOKS="<--|debianlive:lh_hooks|-->"
+
+# $LH_INTERACTIVE: set interactive build
+# (Default: disabled)
+LH_INTERACTIVE="<--|debianlive:lh_interactive|-->"
+
+# $LH_KEYRING_PACKAGES: set keyring packages
+# (Default: empty)
+LH_KEYRING_PACKAGES="<--|debianlive:lh_keyring_packages|-->"
+
+# $LH_LANGUAGE: set language to use
+# (Default: empty)
+LH_LANGUAGE="<--|debianlive:lh_language|-->"
+
+# $LH_LINUX_FLAVOURS: set kernel flavour to use
+# (Default: autodetected)
+LH_LINUX_FLAVOURS="<--|debianlive:lh_linux_flavours|-->"
+
+# $LH_LINUX_PACKAGES: set kernel packages to use
+# (Default: autodetected)
+LH_LINUX_PACKAGES="<--|debianlive:lh_linux_packages|-->"
+
+# $LH_PACKAGES: set packages to install
+# (Default: empty)
+LH_PACKAGES="<--|debianlive:lh_packages|-->"
+
+# $LH_PACKAGES_LISTS: set package list to install
+# (Default: paella)
+LH_PACKAGES_LISTS="<--|debianlive:lh_packages_lists|-->"
+
+# $LH_TASKS: set tasks to install
+# (Default: empty)
+LH_TASKS="<--|debianlive:lh_tasks|-->"
+
+# $LH_SECURITY: enable security updates
+# (Default: enabled)
+LH_SECURITY="<--|debianlive:lh_security|-->"
+
+# $LH_SYMLINKS: enable symlink convertion
+# (Default: disabled)
+LH_SYMLINKS="<--|debianlive:lh_symlinks|-->"
+
+# $LH_SYSVINIT: enable sysvinit
+# (Default: disabled)
+LH_SYSVINIT="<--|debianlive:lh_sysvinit|-->"

@@ -23,7 +23,30 @@
 		</parent>
 	</parents>
 	<packages/>
-	<environ/>
-	<templates/>
+	<environ>
+		<trait_variable name="signing_key" trait="paella_server">
+			&lt;your gpg key ID&gt;
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/distributions
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/extra-packages
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/local-packages
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/sid-fai
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/startup-packages
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/updates
+		</template>
+	</templates>
 	<scripts/>
 </trait>

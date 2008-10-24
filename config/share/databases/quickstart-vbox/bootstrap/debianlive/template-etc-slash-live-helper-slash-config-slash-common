@@ -1,0 +1,123 @@
+# config/common - common options for live-helper(7)
+
+# $LH_APT: set package manager
+# (Default: apt)
+LH_APT="<--|debianlive:lh_apt|-->"
+
+# $LH_APT_FTP_PROXY: set apt/aptitude ftp proxy
+# (Default: autodetected or empty)
+LH_APT_FTP_PROXY="<--|debianlive:lh_apt_ftp_proxy|-->"
+
+# $LH_APT_HTTP_PROXY: set apt/aptitude http proxy
+# (Default: autodetected or empty)
+LH_APT_HTTP_PROXY="<--|debianlive:lh_apt_http_proxy|-->"
+
+# $LH_APT_PDIFFS: set apt/aptitude pdiff indices
+# (Default: enabled)
+LH_APT_PDIFFS="<--|debianlive:lh_apt_pdiffs|-->"
+
+# $LH_APT_PIPELINE: set apt/aptitude pipeline depth
+# (Default: )
+LH_APT_PIPELINE="<--|debianlive:lh_apt_pipeline|-->"
+
+# $LH_APT_RECOMMENDS: set apt/aptitude recommends
+# (Default: enabled)
+LH_APT_RECOMMENDS="<--|debianlive:lh_apt_recommends|-->"
+
+# $LH_APT_SECURE: set apt/aptitude security
+# (Default: enabled)
+LH_APT_SECURE="<--|debianlive:lh_apt_secure|-->"
+
+# $LH_BOOTSTRAP: set bootstrap program
+# (Default: debootstrap)
+LH_BOOTSTRAP="<--|debianlive:lh_bootstrap|-->"
+
+# $LH_CACHE: control cache
+# (Default: enabled)
+LH_CACHE="<--|debianlive:lh_cache|-->"
+
+# $LH_CACHE_INDICES: control if downloaded package indices should be cached
+# (Default: disabled)
+LH_CACHE_INDICES="<--|debianlive:lh_cache_indices|-->"
+
+# $LH_CACHE_PACKAGES: control if downloaded packages files should be cached
+# (Default: enabled)
+LH_CACHE_PACKAGES="<--|debianlive:lh_cache_packages|-->"
+
+# $LH_CACHE_STAGES: control if completed stages should be cached
+# (Default: bootstrap)
+LH_CACHE_STAGES="<--|debianlive:lh_cache_stages|-->"
+
+# $LH_DEBCONF_FRONTEND: set debconf(1) frontend to use
+# (Default: noninteractive)
+LH_DEBCONF_FRONTEND="<--|debianlive:lh_debconf_frontend|-->"
+
+# $LH_DEBCONF_NOWARNINGS: set debconf(1) warnings
+# (Default: yes)
+LH_DEBCONF_NOWARNINGS="<--|debianlive:lh_debconf_nowarnings|-->"
+
+# $LH_DEBCONF_PRIORITY: set debconf(1) priority to use
+# (Default: critical)
+LH_DEBCONF_PRIORITY="<--|debianlive:lh_debconf_priority|-->"
+
+# $LH_INITRAMFS: set initramfs hook
+# (Default: live-initramfs)
+LH_INITRAMFS="<--|debianlive:lh_initramfs|-->"
+
+# $LH_FDISK: set fdisk program
+# (Default: autodetected)
+LH_FDISK="<--|debianlive:lh_fdisk|-->"
+
+# $LH_LOSETUP: set losetup program
+# (Default: autodetected)
+LH_LOSETUP="<--|debianlive:lh_losetup|-->"
+
+# $LH_MODE: set distribution mode
+# (Default: debian)
+LH_MODE="<--|debianlive:lh_mode|-->"
+
+# $LH_ROOT_COMMAND: use sudo or equivalent
+# (Default: empty)
+#LH_ROOT_COMMAND="<--|debianlive:lh_root_command|-->"
+
+# $LH_USE_FAKEROOT: use fakeroot/fakechroot
+# (Default: disabled)
+LH_USE_FAKEROOT="<--|debianlive:lh_use_fakeroot|-->"
+
+# $LH_TASKSEL: set tasksel program
+# (Default: aptitude)
+LH_TASKSEL="<--|debianlive:lh_tasksel|-->"
+
+# $LH_INCLUDES: set includes
+# (Default: /usr/share/live-helper/includes)
+LH_INCLUDES="<--|debianlive:lh_includes|-->"
+
+# $LH_TEMPLATES: set templates
+# (Default: /usr/share/live-helper/templates)
+LH_TEMPLATES="<--|debianlive:lh_templates|-->"
+
+# Live-helper options
+
+# $LH_BREAKPOINTS: enable breakpoints
+# (Default: disabled)
+#LH_BREAKPOINTS="<--|debianlive:lh_breakpoints|-->"
+
+# $LH_DEBUG: enable debug
+# (Default: disabled)
+#LH_DEBUG="<--|debianlive:lh_debug|-->"
+
+# $LH_FORCE: enable force
+# (Default: disabled)
+#LH_FORCE="<--|debianlive:lh_force|-->"
+
+# $LH_QUIET: enable quiet
+# (Default: disabled)
+LH_QUIET="<--|debianlive:lh_quiet|-->"
+
+# $LH_VERBOSE: enable verbose
+# (Default: disabled)
+#LH_VERBOSE="<--|debianlive:lh_verbose|-->"
+
+# Internal stuff (FIXME)
+APT_OPTIONS="--yes"
+APTITUDE_OPTIONS="--assume-yes"

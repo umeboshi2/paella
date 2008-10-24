@@ -1,0 +1,54 @@
+# config/bootstrap - options for live-helper(7), bootstrap stage
+
+# $LH_ARCHITECTURE: select chroot architecture
+# (Default: autodetected)
+LH_ARCHITECTURE="<--|debianlive:lh_architecture|-->"
+
+# $LH_BOOTSTRAP_CONFIG: set distribution config directory
+# (Default: empty)
+LH_BOOTSTRAP_CONFIG=""
+
+# $LH_BOOTSTRAP_INCLUDE: include packages on base
+# (Default: empty)
+LH_BOOTSTRAP_INCLUDE=""
+
+# $LH_BOOTSTRAP_EXCLUDE: exclude packages on base
+# (Default: empty)
+LH_BOOTSTRAP_EXCLUDE=""
+
+# $LH_BOOTSTRAP_FLAVOUR: select flavour to use
+# (Default: )
+LH_BOOTSTRAP_FLAVOUR=""
+
+# $LH_BOOTSTRAP_KEYRING: set distribution keyring
+# (Default: empty)
+LH_BOOTSTRAP_KEYRING=""
+
+# $LH_DISTRIBUTION: select distribution to use
+# (Default: lenny)
+LH_DISTRIBUTION="<--|debianlive:lh_distribution|-->"
+
+# $LH_MIRROR_BOOTSTRAP: set mirror to bootstrap from
+# (Default: http://10.0.1.1/debian)
+LH_MIRROR_BOOTSTRAP="<--|debianlive:lh_mirror_bootstrap|-->"
+
+# $LH_MIRROR_CHROOT: set mirror to fetch packages from
+# (Default: http://10.0.1.1/debian)
+LH_MIRROR_CHROOT="<--|debianlive:lh_mirror_chroot|-->"
+
+# $LH_MIRROR_CHROOT_SECURITY: set security mirror to fetch packages from
+# (Default: http://security.debian.org/)
+#LH_MIRROR_CHROOT_SECURITY="http://security.debian.org/"
+LH_MIRROR_CHROOT_SECURITY="<--|debianlive:lh_mirror_chroot_security|-->"
+
+# $LH_MIRROR_BINARY: set mirror which ends up in the image
+# (Default: http://ftp.us.debian.org/debian/)
+LH_MIRROR_BINARY="<--|debianlive:lh_mirror_binary|-->"
+
+# $LH_MIRROR_BINARY_SECURITY: set security mirror which ends up in the image
+# (Default: http://security.debian.org/)
+LH_MIRROR_BINARY_SECURITY="<--|debianlive:lh_mirror_binary_security|-->"
+
+# $LH_SECTIONS: select section(s) to use
+# (Default: main contrib non-free)
+LH_SECTIONS="<--|debianlive:lh_sections|-->"
