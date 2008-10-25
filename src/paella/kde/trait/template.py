@@ -49,12 +49,12 @@ class TemplateTextEdit(KTextEdit):
             menu = KTextEdit.createPopupMenu(self)
         else:
             menu = KTextEdit.createPopupMenu(self, pos)
-        ident = menu.insertItem('Hello There', self.slotHelloThere)
-        if self.hasSelectedText():
-            print self.selectedText()
-            print self.getSelection()
-        print 'ident', ident
-        menu.setItemParameter(ident, 777)
+        #ident = menu.insertItem('Hello There', self.slotHelloThere)
+        #if self.hasSelectedText():
+        #    print self.selectedText()
+        #    print self.getSelection()
+        #print 'ident', ident
+        #menu.setItemParameter(ident, 777)
         env = self.trait.get_full_environment()
         # make a magic number to start id's on variables
         varcount = 1234
@@ -66,14 +66,14 @@ class TemplateTextEdit(KTextEdit):
             keys.sort()
             for key in keys:
                 varcount += 1
-                ident = tmenu.insertItem(key, self.slotHelloThere)
+                ident = tmenu.insertItem(key, self.slotPopupMenuItemSelected)
                 tmenu.setItemParameter(ident, varcount)
                 lookup[varcount] = (trait, key)
         self.lookup = lookup
         menu.insertItem('Create New Variable', self.slotCreateNewVariable)
         return menu
 
-    def slotHelloThere(self, arg=None):
+    def slotPopupMenuItemSelected(self, arg=None):
         trait, name = self.lookup[arg]
         self.tag_selection(trait, name)
 
