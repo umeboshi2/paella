@@ -148,7 +148,7 @@ class ChrootInstaller(BaseChrootInstaller):
         return None
 
     def set_logfile(self, logfile):
-        BaseInstaller.set_logfile(self, logfile)
+        BaseInstaller.set_logger(self, filename=logfile)
         self.log.info('-'*30)
         msg = '%s initialized' % self.__class__.__name__
         self.log.info(msg)

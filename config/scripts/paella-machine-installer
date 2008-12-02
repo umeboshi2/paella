@@ -45,7 +45,9 @@ else:
     command, machine, target = args
 
 if target is None:
-    if env.has_option('installer', 'default_target'):
+    if env.has_option('installer', 'target_directory'):
+        target = env.get('installer', 'target_directory')
+    elif env.has_option('installer', 'default_target'):
         target = env.get('installer', 'default_target')
     else:
         print "WARNING: using hardcoded target directory /tmp/target"
