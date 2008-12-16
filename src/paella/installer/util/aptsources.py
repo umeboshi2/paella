@@ -56,9 +56,10 @@ def make_sources_list_lines(apt_rows, uri=None, installer=False):
         source = _make_repsource(full_uri, row.dist, row.sections)
         lines.append(str(source))
         # the installer does not need deb-src entries
-        if not installer:
-            source.type = 'deb-src'
-            lines.append(str(source))
+        #if not installer:
+        # now using deb-src entries at all times
+        source.type = 'deb-src'
+        lines.append(str(source))
     return lines
 
 def make_sources_list_common(conn, target, suite, installer=False):
