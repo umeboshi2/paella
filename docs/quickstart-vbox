@@ -77,21 +77,19 @@ the 10.0.x.0 network.  I have tested the quickstart while changing the network t
 it appears to work without problems.
 
 
-Debian Netinst CD Image (LennyBeta2)
+Debian Netinst CD Image (Lenny)
 -------------------------------------
 
 .. _page: http://www.debian.org/devel/debian-installer/
 
-.. _url: ftp://ftp.nl.debian.org/debian/dists/testing/main/installer-i386/current/images/
 
-The upcoming lenny release is what is currently supported.  You should get the netinst iso, 
+The stable (lenny) release is what is currently supported.  You should get the netinst iso, 
 which available on this page_.  I used the i386_ image.  Hopefully any architecture should work, 
 but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll 
 be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.
 
 
-.. _i386: http://cdimage.debian.org/cdimage/lenny_di_beta2/i386/iso-cd/debian-LennyBeta2-i386-netinst.iso
-
+.. _i386: http://cdimage.debian.org/debian-cd/5.0.0/i386/iso-cd/debian-500-i386-netinst.iso
 
 Remaster the netinst iso
 -------------------------------------------
@@ -506,7 +504,8 @@ useless package.  Pay attention to the lines below, as you won't be able to just
 these lines::
 
 	cd ~/workspace/useless
-	dch -n  # This will create an NMU (Non-maintainer upload)
+	dch --bpo # This will create an backport version that 
+	# won't interfere with newer versions
 	# type something like "testing paella" to the right of the asterisk
 	# save the file in the text editor
 	debuild
@@ -516,7 +515,8 @@ these lines::
 Repeat this process for paella::
 
 	cd ~/workspace/paella
-	dch -n  # This will create an NMU (Non-maintainer upload)
+	dch --bpo # This will create an backport version that 
+	# won't interfere with newer versions
 	# type something like "testing paella" to the right of the asterisk
 	# save the file in the text editor
 	debuild
