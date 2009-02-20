@@ -16,8 +16,8 @@ set -e
 ARCH=i386
 
 
-official_netinst_image=debian-testing-$ARCH-netinst.iso
-official_netinst_image_url=http://cdimage.debian.org/cdimage/lenny_di_rc1/$ARCH/iso-cd/$official_netinst_image
+official_netinst_image=debian-500-$ARCH-netinst.iso
+official_netinst_image_url=http://cdimage.debian.org/debian-cd/5.0.0/$ARCH/iso-cd/$official_netinst_image
 official_netinst_image_arg=$1
 # if there's no iso argument, download the iso
 if [ -z $official_netinst_image_arg ]; then
