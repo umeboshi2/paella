@@ -107,7 +107,7 @@ If you are running debian, remastering the iso is easy::
    
 if you already grabbed the netinst iso image, type::
 
-   ./remaster-netinst-iso /path/to/debian-LennyBeta2-i386-netinst.iso
+   ./remaster-netinst-iso /path/to/debian-500-i386-netinst.iso
 
 if you haven't gotten the netinst iso image yet, type::
 
