@@ -241,39 +241,231 @@ packages being installed on your system.  Full instructions on how to generate a
 properly are beyond the scope of this docuement.  You can find more detailed 
 at http://www.gnupg.org/ .
 
-I have written a script that will help create a key to sign the archives with.  This key will be 
-created without a passphrase and should only be used with this quickstart guide.
+If you just want to get up and running, you can follow these quick and **potentially insecure** instructions.
+Type::
 
-To run the script, type::
+	echo $USER@`cat /etc/mailname`
 
-	generate-gpg-key
+This will be the default email address used to search for the key that signs the packages 
+you build.  We will also use this key to sign the Release file in the locally generated mirror.
+
+Now type::
+
+	getent passwd | grep $USER | cut -f5 -d: | cut -f1 -d,
+
+This will be the "Real Name" that you will use for the key.  Either remember the email and "Real 
+Name", or use another terminal to generate the key.
+
+Now type::
+
+	gpg --gen-key
+
+Answer the questions in the dialog.  It should be ok to answer the defaults, until you get to
+the question asking "Is this correct?".  After this, you'll need to enter the "Real Name" and 
+email address that you obtained from the steps above.  You will probably want to enter 
+"(insecure testing key)" or something similar for the comment.  After you tell gpg that the 
+information is "Okay", you'll be prompted for a passphrase.  You can enter an empty 
+passphrase, but remember that you can't use this key for anything more serious than 
+working with paella in a testing environment.  If you do want a passphrase, you'll also 
+need to know how to use gpg-agent, which is also beyond the scope of this document.  It's 
+recommended that you just use an empty passphrase, and keep the fact that this is a 
+testing key in mind (The comment and bogus email address should remind you, in case you 
+forget later).
 
 If you need more random bytes, try moving the mouse around a lot, and pecking the keyboard 
 randomly in a text editor.  To get the disk moving, type this in another terminal window::
 
      find /usr/share | xargs sha1sum
 
+In an earlier version of this document, I referred to the key ID as the fingerprint, which is 
+inaccurate.  The code for paella may still refer to the key ID as a fingerprint, and might not 
+be corrected by the time you read this.  Please keep this in mind as you use paella.  I hope to 
+have the code corrected after I'm sure that this quickstart routine is fully functional.
+
+You'll need to know the key ID of the gpg key for the steps below. Here, I'm assuming 
+that the "Real Name" you entered above is "Paella User".  To obtain it, type::
+
+	    gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
+
+You should get an eight digit hexadecimal number, which you'll need to remember.  From
+here on, I'll just refer to it as your gpg key ID.
+
+
 
 Setup initial debian mirror
 -------------------------------------------
 
-I have written a script to help setup the partial debian repository that will be used in this
-guide.
 
-To run the script, type::
+type::
 
-      initialize-local-debian-repository
+	sudo apt-move update
+	sudo rm /freespace/debian/.apt-move -fr
+	sudo rm /freespace/debian/dists -fr
+	sudo chown -R paella:staff /freespace/debian/*
 
-The script will call apt-move to install the packages located in /var/cache/apt/archives 
-into the local repository.  It will then setup reprepro and fill the repository with the rest 
-of the packages that will be needed to finish this guide.  It will use the gpg key that you 
-created above to sign the repository, add that key to apt, add the local repository to 
-/etc/apt/sources.list, and run apt-get update.
+This will move all the packages installed on the virtual machine to /freespace/debian .  This will 
+be the last that apt-move will be used, since we just needed it to move the installed packages 
+and setup the initial repository structure.
+
+Now type::
+
+	mkdir /freespace/debian/conf
+	dpkg --get-selections > /freespace/debian/conf/local-packages
+
+This will be the configuration directory for reprepro.  We will be using reprepro to generate
+and maintain the local debian mirror for here on.
+
+Create the config files for reprepro
+--------------------------------------------------------------
+
+In the instructions below, you don't have to create these files.  The files are present on the 
+remastered netinst cdrom that you made, and they are copied 
+to /usr/local/share/paella/reprepro during the install.  You can copy them to where they 
+belong by typing::
+
+	 cp /usr/local/share/paella/reprepro/* /freespace/debian/conf
+	 chmod +w /freespace/debian/conf/*
+
+Now type::
+
+	editor /freespace/debian/conf/distributions
+
+In the editor you want to type something similar to this::
+
+       Origin: Debian
+       Label: Debian
+       Suite: testing
+       Version: 4.0
+       Codename: lenny
+       Architectures: i386
+       Components: main contrib non-free
+       Description: Debian x.y Testing - Not Yet Released
+       Log: logfile
+       Update: lenny security-testing
+       SignWith: <your gpg key ID>
+
+       Origin: Paella
+       Label: Paella
+       Suite: paella
+       Version: 4.0
+       Codename: paella
+       Architectures: i386 source
+       Components: main contrib non-free
+       Description: Paella local repository
+       Log: logfile
+       Update: sid-fai
+       SignWith: <your gpg key ID>
+
+Be sure to replace <your gpg key ID> with the actual key ID that you obtained above.
+
+Now we want to use the editor again::
+
+	   editor /freespace/debian/conf/updates
+
+In the editor you want to type  something similar to this::
+
+   Name: lenny
+   Method: http://ftp.us.debian.org/debian
+   Fallback: http://ftp.de.debian.org/debian
+   VerifyRelease: 6070D3A1
+   Architectures: i386
+   Components: main contrib non-free 
+   UDebComponents: none
+   FilterList: deinstall startup-packages extra-packages local-packages
+
+   Name: security-testing
+   Method: http://security.debian.org/debian-security
+   VerifyRelease: 6070D3A1
+   Suite: testing/updates
+   Architectures: i386
+   Components: main contrib non-free 
+   UDebComponents: none
+   FilterList: deinstall startup-packages extra-packages local-packages
+
+   Name: sid-fai
+   Method: http://ftp.us.debian.org/debian
+   Fallback: http://ftp.de.debian.org/debian
+   VerifyRelease: 6070D3A1
+   Suite: unstable
+   Architectures: i386
+   Components: main contrib non-free
+   UDebComponents: none
+   FilterList: deinstall sid-fai
+
+
+Note:  The sid-fai update stanza is being used to get the latest fai-client from sid.  At the 
+moment, the fai-client package in lenny won't work properly (and even the package in sid 
+isn't working).  I doubt that the newer fai packages will make their way into lenny, and as 
+a result, it's possible that future updates to fai may break paella.  In the past, it has been 
+practically impossible to get everything that paella depends on from stable, and it seems 
+that this will be the case for lenny also.
+
+
+In order to verify the release files, you'll need to import the debian archive signing key::
+
+   gpg --recv-keys 6070D3A1
+
+Now would also be a good time to export the public key you made above::
+
+    gpg --export -a "Paella User" > /freespace/debian/paella.gpg
+
+Let apt on paella know about it too::
+
+    sudo apt-key add /freespace/debian/paella.gpg
+
+To make sure apt got the key::
+
+   sudo apt-key list
+
+Make sure the key is on the list
+
+
+Now we're ready to use reprepro to manage the repository::
+
+    reprepro -b /freespace/debian/  -VV update
+
+The -VV options sets the verbosity of reprepro to 10, which will help determine if anything 
+goes wrong, and where it does go wrong.
 
 Take a break.  Grab some coffee.  This will take a bit, depending on your internet 
 connection.  I've taken care to only include the packages that needed, plus a few 
 extra packages that I use as tools to help me test this quickstart routine.  As of the time 
 this was written, the pool directory was 451MB in size.
+
+After the update is done, you may need to export the packages lists::
+
+    reprepro -b /freespace/debian/  -VV export
+
+
+Since reprepro doesn't make verbatim mirrors, when you update from security.debian.org, 
+the updated packages are added to the main package list for the suite, instead of 
+<suite>/updates .  This is generally a good thing, since when you use a local mirror generated 
+by reprepro, you only need one apt source line.  Paella, however was developed before 
+reprepro existed, and used to mirror the complete debian archive.  Until paella is fixed to work 
+better with this, the workaround is to trick paella into thinking it's looking at <suite>/updates .
+To do this, type::
+
+   pushd /freespace/debian/dists/lenny
+   ln -s . updates
+   popd
+
+
+Hopefully things went well.  You should wind up with just enough of a partial mirror to complete 
+the instructions and get a feel for paella.
+
+Now it's time to add the new mirror to the sources list::
+
+    sudo editor /etc/apt/sources.list
+
+Make sure these lines are at the top::
+
+     deb http://paella/debian lenny main contrib non-free
+     deb http://paella/debian paella main contrib non-free
+     deb-src http://paella/debian paella main contrib non-free
+
+Now update apt with the new sources::
+
+    sudo apt-get update
 
 
 Obtain paella from subversion
@@ -285,10 +477,72 @@ Now you're ready to get the source code from subversion.  To do this, type ::
 	     paella-user-quick-setup
 
 This will setup the directories, and download the source code from the berlios subversion 
-repository.  It will also install build dependencies, plus some extra packages required to 
-create the netboot image that will be made later in this guide.  It will then build the packages
-and install them into your freshly made debian repository.  
+repository.  If you plan on working on the code in the working copy, you'll need to either source 
+the paella_environment file, add the lines of that file to your .bashrc, or source the file from 
+your .bashrc if you plan on working on the code.  Since you're using a virtual machine, it 
+would probably be best to add it to your .bashrc ::
 
+      cat paella_environment >> .bashrc
+
+This is optional, as it's only needed to work with the code, and possibly fix bugs that you 
+encounter.
+
+**Important:**  You need to cut and paste the apt-get command from the output 
+of the script, to build all of the paella and python-useless-* packages.  The command 
+should be ::
+
+       sudo apt-get install build-essential cdbs devscripts python-docutils \
+       python-all-dev live-helper dosfstools memtest86+ parted squashfs-tools \
+       genext2fs mtd-tools syslinux uuid-runtime
+
+
+Build paella packages from source tree
+--------------------------------------------------------------------
+
+Now it's time to build the useless and paella packages.  First we're going to start with the 
+useless package.  Pay attention to the lines below, as you won't be able to just cut-n-paste 
+these lines::
+
+	cd ~/workspace/useless
+	dch --bpo # This will create an backport version that 
+	# won't interfere with newer versions
+	# type something like "testing paella" to the right of the asterisk
+	# save the file in the text editor
+	debuild
+	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../useless_<version>_i386.changes
+
+
+Repeat this process for paella::
+
+	cd ~/workspace/paella
+	dch --bpo # This will create an backport version that 
+	# won't interfere with newer versions
+	# type something like "testing paella" to the right of the asterisk
+	# save the file in the text editor
+	debuild
+	reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../paella_<version>_i386.changes
+
+Normally, you'd export the working copy before building the packages, but we'll just be sloppy 
+here, because we're almost ready to install the packages that were just built.  There's no 
+need to build them correctly until you're sure that paella is the right type of program for your 
+needs.
+
+Let's test our new mirror::
+
+    sudo apt-get update
+
+If you are getting hash mismatches from apt, try this::
+
+   rm /freespace/debian/dists/* -fr
+   reprepro -b /freespace/debian/  -VV export
+   pushd /freespace/debian/dists/lenny
+   ln -s . updates
+   popd
+
+
+I got these mismatches a few times, and don't know what caused the errors.  When I get 
+the time to investigate the problem further, I'll find a better solution, but this solution should 
+work just fine for our purposes here.
 
 Debian Live
 ============
@@ -299,7 +553,7 @@ Now you're ready to make the live nfsroot installer.  In the past, I had done th
 and I had a flaky configuration that worked, albeit just barely.  In the beginning, I had to 
 compile a special kernel to allow me to mount an nfsroot, and have the network drivers 
 compiled right into the kernel image.  Later, the work on the initrd filesystem allowed me to 
-use stock kernels to boot from an nfsroot, but the readonly live nfsroot was flaky and limited 
+use stock kernels to boot from an nfsroot, but the readonly live nfsroot was flaky an limited 
 at best.  These days, there's DebianLive_ to help do much of the dirty work here.  It's even 
 possible to use DebianLive to make a live iso with the paella installer on it, for machines 
 that won't boot off of the network.  I actually had to do this with the older livecd package in 
@@ -307,26 +561,73 @@ the past, but DebianLive is much better.  Now I can leave the management of a go
 system in somebody else's hands, and just concentrate on using that live system as an 
 installer for paella.
 
-I have written a script that will help build the live netboot image for the installer.  To run 
-the script , type::
+Starting with Debian Live
+------------------------------------
 
-    create-debian-live-image
+To begin making the nfsroot installer, we need to change directories to the place I've setup 
+for you to build the installer::
+
+    cd /freespace/live
+
+You'll need to stay in this directory for the rest of the instructions on building the DebianLive 
+nfsroot installer.
+
+Copy the Debian Live Config Files
+----------------------------------------------------------------
+
+The configuration for debian live is on the netinst cdrom image, and during the install 
+they are copied to /usr/local/share/paella/live-config .  You will need to copy them 
+to the config directory by typing::
+
+    cp -a /usr/local/share/paella/live-config/ config
+    chmod +w -R config/
 
 
-This script will copy the live-helper config files to /freespace/live/config and build the 
-image, then install the image and the tftpboot files to the appropriate locations.
+Modify the Debian Live Configuration
+------------------------------------------------------------
 
-**Important**  If you aren't able to use 10.0.1.1 as the ip address of your eth1 interface 
-on the virtual machine, you will have to edit /freespace/live/config/binary and set 
-LH_NET_ROOT_SERVER to the value of the ip that you will be using and then build the image
-again.
+**Important** If you had to change the network ip's from the defaults, you'll need to 
+edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.  If the ip 
+of the eth1 interface is 10.0.1.1, you can probably skip this step.  This should be the only file 
+that is required to be edited in the DebianLive configuration.  If this variable isn't set properly, 
+the live system will boot, but the root filesystem will never be mounted.
 
-Here are some quick instructions on how to do that::
+In the config/binary file, there are some other variables that you may want to configure.  
+These aren't absolutely necessary, but it may be useful for you to do so.  The 
+LH_BOOTAPPEND_LIVE variable is set to my timezone, and you may wish to change this to 
+have the correct local time on your installer image.  The utc variable should match the UTC 
+variable in /etc/default/rcS on your host system.
 
-     cd /freespace/live
-     sudo lh_clean
-     sudo lh_build
-     sudo ./config/prepare-netboot
+Also, at the bottom of the config/binary file, there is a variable, MKSQUASHFS_OPTIONS , 
+which has been commented out.  Uncommenting this will keep mksquashfs from 
+compressing the binary image, otherwise it will be compressed as normal.  This is 
+optional and is there only to help make the binary image quicker than compressing it.
+
+
+
+Copy the Archive Key
+-----------------------------------------------
+
+Now, copy the archive key to the DebianLive config::
+
+     cp /freespace/debian/paella.gpg config/chroot_sources/paella.chroot.gpg
+
+
+Build the DebianLive nfsroot
+-------------------------------------------------------
+
+Now type::
+
+    sudo lh_clean
+    sudo lh_build  #(this will take a while)
+
+If the lh_build ended without raising an error, you can move the result to it's proper
+resting places.  I wrote a script in the DebianLive config to help with this.  Type::
+
+    sudo ./config/prepare-netboot
+
+Now you'll be able to boot machines off the local internal VM network, but it won't be 
+useful without a database prepared for paella to use.
 
 
 Using Paella Management Interface
