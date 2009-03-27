@@ -8,6 +8,7 @@ from useless.sqlgen.clause import Eq, Gt
 
 
 from paella.db.aptkey import AptKeyHandler, NoAptKeyError
+from paella.base.util import get_architecture
 
 from base import BaseInstaller
 from base import runlog
@@ -169,13 +170,14 @@ class ChrootInstaller(BaseChrootInstaller):
     def _bootstrap_with_tarball(self, suite):
         self.check_target_exists()
         suite_path = path(self.defenv.get('installer', 'suite_storage'))
-        filename = '%s.tar.gz' % suite
+        arch = get_architecture()
+        filename = '%s-%s.tar.gz' % (suite, arch)
         basefile = suite_path / filename
         taropts = '-xzf'
         # we normally expect a tar.gz
         # but we'll check for a plain tar also
         if not basefile.exists():
-            filename = '%s.tar' % suite
+            filename = '%s-%s.tar' % (suite, arch)
             basefile = suite_path / filename
             taropts = '-xf'
         if not basefile.exists():
@@ -200,6 +202,7 @@ class ChrootInstaller(BaseChrootInstaller):
     def _bootstrap_with_debootstrap(self, suite):
         self.check_target_exists()
         mirror = self.defenv.get('installer', 'http_mirror')
+        # debug stuff
         cmd = debootstrap(suite, self.target, mirror)
         # if cmd returns nonzero, runlog will raise an error
         runlog(cmd)

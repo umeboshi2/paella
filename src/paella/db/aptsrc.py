@@ -5,6 +5,7 @@ from useless.base.util import wget
 from useless.base.util import makepaths
 from useless.sqlgen.clause import Eq
 
+from paella.base.util import get_architecture
 from paella.debian.base import RepositorySource
 from paella.debian.repos import RemoteRepos
 
@@ -78,7 +79,8 @@ class AptSourceHandler(object):
     def _make_repository(self, apt_id, uri=None):
         rsource = self._make_repository_source(apt_id, uri=uri)
         lsource = self._make_repository_source(apt_id, uri=self.local_mirror)
-        return RemoteRepos(rsource, lsource)
+        arch = get_architecture()
+        return RemoteRepos(rsource, lsource, arch=arch)
     
     def _get_packages_file(self, repos):
         if repos.source.has_release():

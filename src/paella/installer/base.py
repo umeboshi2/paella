@@ -114,6 +114,9 @@ class MainLog(object):
 
     def error(self, name, msg):
         self.loggers[name].error(msg)
+
+    def debug(self, name, msg):
+        self.loggers[name].debug(msg)
         
         
 class PaellaLogger(MainLog):
@@ -151,6 +154,11 @@ class PaellaLogger(MainLog):
         if not name:
             name = self._basename
         MainLog.error(self, name, msg)
+
+    def debug(self, msg, name=''):
+        if not name:
+            name = self._basename
+        MainLog.debug(self, name, msg)
         
 
 # I've added some ugly looking warning code here

@@ -70,6 +70,7 @@ class LocalRepos(object):
         return 'LocalRepos %s' %self.source
         
     def  parse_release (self):
+        print "in parse_release, arch", self.arch
         if self.source.has_release():
             self.release = Release(self.source, arch=self.arch)
             

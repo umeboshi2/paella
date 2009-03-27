@@ -1,5 +1,6 @@
 import os
 import tempfile
+import subprocess
 
 def make_deplist(listed, all, setfun, parfun, log=None):
     deplist = []
@@ -45,3 +46,16 @@ def edit_dbfile(name, data, ftype='script'):
     else:
         return None
         
+
+def get_architecture():
+    proc = subprocess.Popen(['dpkg', '--print-architecture'],
+                            stdout=subprocess.PIPE)
+    arch = proc.stdout.read().strip()
+    retcode = proc.wait()
+    if retcode:
+        raise RuntimeError , "dpkg returned %d" % retcode
+    if os.environ.has_key('PAELLA_ARCH_OVERRIDE'):
+        arch = os.environ['PAELLA_ARCH_OVERRIDE']
+    return arch
+
+    

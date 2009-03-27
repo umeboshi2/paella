@@ -226,7 +226,9 @@ class TraitView(ViewBrowser):
     def slotAddPackage(self):
         win = self._dialog
         data = win.getRecordData()
-        self.doc.trait.add_package(data['package'], data['action'])
+        package = data['package'].strip()
+        action = data['action'].strip()
+        self.doc.trait.add_package(package, action)
         self.resetView()
         
     def selectSystemTarballDialog(self):

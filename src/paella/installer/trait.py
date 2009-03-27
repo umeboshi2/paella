@@ -109,15 +109,31 @@ class TraitInstallerHelper(object):
         
     def install_packages(self, packages, unauthenticated=False):
         if packages:
+            apt_cmd = 'apt-get'
+            apt_opts = ''
+            if self.defenv.has_option('installer', 'apt_command'):
+                apt_cmd = self.defenv.get('installer', 'apt_command')
+            if self.defenv.has_option('installer', 'apt_command_opts'):
+                apt_opts = self.defenv.get('installer', 'apt_command_opts')
             #packages_arg = ' '.join(packages)
-            opts = []
-            if unauthenticated:
-                opts.append('--allow-unauthenticated')
+            self.log.info('apt command is %s' % apt_cmd)
+            opts = apt_opts.split()
+            unauthenticated_optdict = {'apt-get' : '--allow-unauthenticated',
+                                       'aptitude' : '--allow-untrusted'}
+            if unauthenticated and unauthenticated_optdict[apt_cmd] not in opts:
+                opts.append(unauthenticated_optdict[apt_cmd])
+            if '--assume-yes' not in opts:
+                opts.append('--assume-yes')
+            if apt_cmd == 'aptitude':
+                if '--add-user-tag' not in opts:
+                    usertag = 'paella-trait-%s' % self.trait
+                    opts += ['--add-user-tag', usertag]
+            full_command = [apt_cmd] + opts + ['install'] + packages
             #command = 'apt-get -y %s install %s' % (opts, packages_arg)
-            command = ['apt-get', '-y'] + opts + ['install'] + packages
-            stmt = 'install command for trait %s is:  %s' % (self.trait, ' '.join(command))
+            #command = ['apt-get', '-y'] + opts + ['install'] + packages
+            stmt = 'install command for trait %s is:  %s' % (self.trait, ' '.join(full_command))
             self.log.info(stmt)
-            self.chroot(command)
+            self.chroot(full_command)
         else:
             self.log.info('No packages to install')
             
@@ -308,6 +324,8 @@ class TraitInstaller(BaseInstaller):
         self.helper = TraitInstallerHelper(self.conn, self.suite, self.target)
         # pass the log object to the helper
         self.helper.log = self.log
+        # also pass default environment to the helper
+        self.helper.defenv = self.defenv
         # this is really ugly, but works for now
         for attr in ['familydata', 'profiledata', 'machine_data']:
             setattr(self, attr, getattr(parent, attr))
