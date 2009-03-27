@@ -1,3 +1,11 @@
+paella (0.7.37) paella; urgency=low
+
+  * using all instead of any for Architecture fields
+  
+  * use new maintainer line matching gpg info
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Fri, 27 Mar 2009 05:46:39 -0500
+
 paella (0.7.36) paella; urgency=low
 
   * new machine design
