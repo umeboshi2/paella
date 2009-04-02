@@ -58,6 +58,8 @@ if arg.isfile():
             entity = 'trait'
         elif tagname == 'machine':
             entity = 'machine'
+        elif tagname == 'paelladatabase':
+            entity = 'paelladatabase'
     else:
         entity = opts.entity
 elif arg.isdir():
@@ -92,6 +94,9 @@ else:
     elif entity == 'diskconfig':
         importer.import_diskconfig(filename)
         print 'Imported diskconfig', filename
+    elif entity == 'paelladatabase':
+        dirname = os.path.dirname(filename)
+        importer.perform_full_import(dirname)
     else:
         print "we're not ready to import anything else yet"
         print "you requested that %s be imported as %s" % (filename, entity)
