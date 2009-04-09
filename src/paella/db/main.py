@@ -493,7 +493,7 @@ class PaellaImporter(object):
                 trait = traitlist.pop(0)
                 try:
                     self._import_trait(suite, dirname / trait)
-                    self.report_trait_imported(trait)
+                    self.report_trait_imported(trait, len(traitlist))
                 except UnbornError:
                     traitlist.append(trait)
 

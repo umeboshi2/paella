@@ -46,7 +46,8 @@ class ActionLabelProgress(LabeledProgress):
         self._action_obj = obj
         
     def step_progress(self, *args):
-        parts = [self._actiondict[self._action], self._action_obj] + list(args)
+        argparts = [str(arg) for arg in args]
+        parts = [self._actiondict[self._action], self._action_obj] + argparts
         message = ' '.join(parts)
         self.label.setText(message)
         LabeledProgress.step_progress(self)

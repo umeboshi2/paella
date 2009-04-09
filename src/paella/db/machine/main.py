@@ -214,7 +214,7 @@ class MachineHandler(BaseMachineHandler):
             try:
                 self.import_machine(machine_dir)
             except UnbornError:
-                print "machine %s hasn't been imported yet."
+                print "The parent of machine %s hasn't been imported yet." % machine
                 machine_queue.append(machine)
             count +=1
             if count > max_loops:
@@ -253,7 +253,7 @@ class MachineHandler(BaseMachineHandler):
             print "import script", scriptname, script_filename
             self.relation.scripts.insert_script(scriptname, file(script_filename))
         for trait, name, value in machine.variables:
-            print "import machine_variable -> %s", tuple((trait, name, value))
+            print "import machine_variable -> %s" % str(tuple((trait, name, value)))
             self.relation.environment.append_variable(trait, name, value)
         # all done, set machine back to what it was,
         # unless it wasn't set in the first place, then
