@@ -1,3 +1,5 @@
+import os
+
 from useless.base import Error, debug
 from useless.base.util import ujoin
 
@@ -7,9 +9,6 @@ from useless.sqlgen.defaults import PkBigname, Bigname, Name, Num, Oid
 from useless.sqlgen.defaults import PkBignameTable, PkNameTable, PkName
 from useless.sqlgen.defaults import RelationalTable
 from useless.sqlgen.statement import Statement
-
-PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
-SUITES = ['sid', 'woody'] 
 
 # These scripts are only here to fill the scriptnames
 # table with the default values.
@@ -32,6 +31,8 @@ MACHINE_SCRIPTS = ['pre', 'setup_disks', 'mount_target',
 
 
 def getcolumn(name, columns):
+    # helper function to pull a Column object
+    # from a list of Columns by name
     ncols = [column for column in columns if column.name == name]
     if len(ncols) == 1:
         return ncols[0]
@@ -233,7 +234,8 @@ class TraitTable(Table):
 class TraitPackage(_TraitRelation):
     def __init__(self, suite, traits_table, packages_table):
         packs_column = PkBigname('package')
-        packs_column.set_fk(packages_table)
+        if not os.environ.has_key('PAELLA_DB_NOPACKAGETABLES'):
+            packs_column.set_fk(packages_table)
         action_column = PkName('action')
         action_column.constraint.default = 'install'
         columns = [packs_column, action_column]

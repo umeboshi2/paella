@@ -103,6 +103,10 @@ elif opts.entity == 'trait':
         msg = "I don't know how to handle these arguments.\n"
         msg += "Suite: %s, --all=%s, args=%s" % (suite, opts.all, ', '.join(args))
         raise RuntimeError , msg
+elif opts.entity is None and opts.all:
+    print "Exporting the complete database"
+    exporter.perform_full_export(export_path)
+    
 else:
     print "Entity is", opts.entity
     print "I don't know what to do"

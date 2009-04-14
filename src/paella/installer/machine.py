@@ -152,6 +152,17 @@ class MachineInstaller(BaseMachineInstaller):
         self.helper.mount_target()
         self._target_mounted = True
         
+    def log_all_processes_started(self):
+        machine = self.machine.current_machine
+        installer = self.__class__.__name__
+        self.log.info('Starting all processes for %s(%s)' % (installer, machine))
+        
+    def log_all_processes_finished(self):
+        machine = self.machine.current_machine
+        installer = self.__class__.__name__
+        self.log.info('Finished all processes for %s(%s)' % (installer, machine))
+
+            
 if __name__ == '__main__':
     pass
     

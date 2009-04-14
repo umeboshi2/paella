@@ -338,6 +338,8 @@ class PaellaExporter(object):
         self.export_all_diskconfigs()
         self.export_machine_database()
         self.export_default_environment()
+        self.export_all_aptkeys()
+        
         
 
     ###################
@@ -436,6 +438,14 @@ class PaellaImporter(object):
         data = file(filename).read()
         self.aptkeys.insert_key(name, data)
 
+    def import_all_aptkeys(self, dirname=None):
+        if dirname is None:
+            dirname = self.main_path / 'aptkeys'
+        dirname = path(dirname)
+        files = [f for f in dirname.listdir() if f.isfile() and f.endswith('.gpg')]
+        for filename in files:
+            self.import_aptkey(filename)
+
     # warning, this is quick and sloppy
     def import_diskconfig(self, filename):
         filename = path(filename).abspath()
@@ -478,13 +488,17 @@ class PaellaImporter(object):
         self.report_importing_aptsrc(apt.apt_id)
         self.aptsrc.insert_apt_source_row(apt.apt_id, apt.uri, apt.dist,
                                           apt.sections, apt.local_path)
-        self.aptsrc.insert_packages(apt.apt_id)
+        if not os.environ.has_key('PAELLA_DB_NOPACKAGETABLES'):
+            self.aptsrc.insert_packages(apt.apt_id)
         self.report_aptsrc_imported(apt.apt_id)
         
 
     def _import_traits(self, suite, traitlist, dirname):
         self.report_total_traits(len(traitlist))
-        missing = self._find_missing_packages(suite, traitlist, dirname)
+        if not os.environ.has_key('PAELLA_DB_NOPACKAGETABLES'):
+            missing = self._find_missing_packages(suite, traitlist, dirname)
+        else:
+            missing = False
         if missing:
             self.report_missing_packages(suite, missing)
             raise MissingPackagesError, report_missing_packages(suite, missing)
@@ -545,6 +559,8 @@ class PaellaImporter(object):
             newcfg = RawConfigParser()
             newcfg.read(filename)
             defenv.update(newcfg)
+        self.import_all_aptkeys()
+        
         
             
         

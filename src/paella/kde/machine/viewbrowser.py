@@ -281,12 +281,12 @@ class MachineView(ViewBrowser, HasDialog):
         context = dialog.context
         data = dialog.getRecordData()
         if context == 'family':
-            family = data['family']
+            family = data['family'].strip()
             handler.relation.family.append_family(family)
         elif context == 'variable':
-            trait = data['trait']
-            name = data['name']
-            value = data['value']
+            trait = data['trait'].strip()
+            name = data['name'].strip()
+            value = data['value'].strip()
             handler.relation.environment.append_variable(trait, name, value)
         else:
             msg = 'unhandled insertNewRecord, context is %s' % context

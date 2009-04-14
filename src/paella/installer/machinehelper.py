@@ -11,6 +11,8 @@ from useless.base.path import path
 # used in the chroot installer
 from paella import deprecated
 
+from paella.base.util import get_architecture
+
 from base import CurrentEnvironment
 from base import runlog, RunLogError
 
@@ -128,6 +130,10 @@ class KernelHelper(BaseHelper):
             self.log.info('Checking if extra packages are required before kernel install.')
             self.install_packages_for_extra_modules(extra_modules)
         kernel = self.machine.get_kernel()
+        if kernel == 'default':
+            self.log.info("Using default kernel")
+            kernel = self._determine_default_kernel()
+            self.log.info("Default kernel for this machine is %s" % kernel)
         cmd = self.chroot_precommand + self.aptinstall + [kernel]
         self.log.info('install cmd is: %s' % ' '.join(cmd))
         kimgconf = self.target / 'etc' / 'kernel-img.conf'
@@ -303,6 +309,20 @@ class KernelHelper(BaseHelper):
         cmd += packages
         runlog(cmd)
 
+    # when the kernel is "default", we need to determine
+    # the appropriate kernel package to install.  This helps
+    # keep the database architecture independent.
+    # TODO: we need to figure out how to determine whether
+    # we are installing a debian or ubuntu system and return
+    # "linux-image-generic" if we are installing ubuntu.  A
+    # workaround for this is to create an "ubuntubase" machine
+    # that sets the kernel to "linux-image-generic" and have
+    # all ubuntu machines based on that machine.
+    def _determine_default_kernel(self):
+        debian_kernel = 'linux-image-2.6-%s' % get_architecture()
+        return debian_kernel
+    
+    
     ##########################
     # unused methods
     ##########################

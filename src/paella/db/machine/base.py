@@ -1,3 +1,5 @@
+import os
+
 from useless.base import NoExistError
 from useless.sqlgen.clause import Eq
 
@@ -85,6 +87,9 @@ class KernelsHandler(object):
         self.cursor.set_table('kernels')
 
     def _check_kernel_exists(self, kernel):
+        if os.environ.has_key('PAELLA_DB_NOPACKAGETABLES'):
+            return True
+        else:
             clause = Eq('package', kernel)
             return self.cursor.select(table='apt_source_packages', clause=clause)
             
@@ -97,6 +102,9 @@ class KernelsHandler(object):
     def add_kernel(self, kernel):
         # this check keeps from just any package as
         # a kernel, but also ties this to linux
+        if kernel == 'default':
+            self.cursor.insert(data=dict(kernel=kernel))
+            return
         if not kernel.startswith('linux-image'):
             raise RuntimeError , "%s doesn't seem to be a kernel package" % kernel
         if self._check_kernel_exists(kernel):
@@ -184,8 +192,13 @@ class BaseMachineHandler(BaseMachineDbObject):
         self.set_machine(self.current_machine)
 
     def _check_kernel_exists(self, kernel):
-            clause = Eq('package', kernel)
-            return self.cursor.select(table='apt_source_packages', clause=clause)
+        print "WARNING, we need to start using the kernel handler"
+        if os.environ.has_key('PAELLA_DB_NOPACKAGETABLES'):
+            return True
+        if kernel == 'default':
+            return True
+        clause = Eq('package', kernel)
+        return self.cursor.select(table='apt_source_packages', clause=clause)
             
     def set_kernel(self, kernel):
         if kernel is None:
