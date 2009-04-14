@@ -78,6 +78,25 @@ Environment Variables used by Paella
     installer, but it is never read from the environment by paella.
 
 
++ These are used in the management application, mainly for development purposes.
+
+  - **PAELLA_DB_NOPACKAGETABLES** -- This rather long variable is used to
+    determine whether the package tables will be filled from the apt sources.  The 
+    traditional behavior of paella has been to download the package lists from the apt 
+    repository, and fill the package tables from those lists.  This helps keep the things 
+    working, as it makes it more difficult to misspell a package name in one of the traits, 
+    but it has the side effect of making it take much, much longer to import a database, 
+    and also to update the database when the package lists get updated on the apt 
+    repository (updating the lists of packages is still not implemented in paella).  This 
+    variable must be set both when creating the tables, and when importing the database.  
+    **WARNING:**  Setting this may cause problems when installing if a package is 
+    unavailable or misspelled.
+
+  - **PAELLA_DB_AUTOCONNECT** -- If this variable exists, the paella-management 
+    application will automatically connect to the database with the information in ~/.paellarc 
+    instead of presenting a connection dialog.
+
+
 + These are used in scripts and are mostly unimportant:
 
   - **SUITES**
