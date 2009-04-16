@@ -57,13 +57,25 @@ Installer Section
   the directory needs to be specified.
 
 - **http_mirror**:  This is the url to the debian mirror that will be used to install the target 
-  system.
+  system.  This is probably a bad name for the variable, and it is likely to be deprecated in 
+  the future (once I figure out a better name).
 
 - **keep_installed_packages**:  This option, when set to True, will keep the downloaded 
   packages in /var/cache/apt/archives .  When the option is False, the packages will be 
   deleted at the end of each trait process.
 
-- **suite_storage**:  This option provides the location of the debootstrapped suite tarballs.
+- **trait_processes**:  This option determines the processes that will be run for each 
+  trait during the install process.  This can be useful if you only want to install the packages 
+  and skip the installation of templates, packages, or skip the running of scripts during the 
+  install process.  Since this is a default option, any machine being installed will follow this 
+  behaviour, so this is mostly useful for testing and maintainence purposes.  Eventually, 
+  the trait processes may be set on a per machine, profile, or even trait level, allowing more 
+  control over the installation of specific machines.  The default processes are:  pre, preseed, 
+  remove, install, templates, config, chroot, reconfig, and post.
+
+- **suite_storage**:  This option provides the location of the debootstrapped suite tarballs.  
+  The tarballs provide a convenient way of speeding the installation without having to have the 
+  installer run debootstrap for each install.
 
 - **use_devices_tarball**:  This option is meaningless now, but in case it isn't, it should
   be set to False.  The udev package (and kernels) have improved a lot since sarge, and 
