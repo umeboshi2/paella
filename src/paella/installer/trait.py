@@ -304,7 +304,10 @@ class TraitInstaller(BaseInstaller):
         self._processes = DEFAULT_PROCESSES
         if self.defenv.has_option('installer', 'trait_processes'):
             self._processes = self.defenv.get_list('trait_processes', 'installer')
-            
+            # if the trait_processes option is empty,
+            # revert back to the default processes
+            if not self._processes:
+                self._processes = DEFAULT_PROCESSES
         # setup process map
         # pre and post here are not the same as in the BaseProcessor
         # For example, if a script exists for for pre, it works like this:

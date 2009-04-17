@@ -24,6 +24,7 @@ from util.disk import setup_disk_fai
 from util.disk import setup_storage_fai
 
 from util.main import setup_modules
+from util.postinst import install_kernel_package
 
 def determine_mods_from_diskconfig(diskconfig):
     lines = diskconfig.split('\n')
@@ -159,6 +160,21 @@ class KernelHelper(BaseHelper):
             self.log.info('Restoring /etc/kernel-img.conf')
             os.remove(kimgconf)
             os.rename(kimgconf_old, kimgconf)
+
+    def install_kernel_package_new(self):
+        self.log.info('called install_kernel_package')
+        extra_modules = self.determine_extra_modules_from_diskconfig()
+        if extra_modules:
+            self.log.info('Checking if extra packages are required before kernel install.')
+            self.install_packages_for_extra_modules(extra_modules)
+        kernel = self.machine.get_kernel()
+        if kernel == 'default':
+            self.log.info("Using default kernel")
+            kernel = self._determine_default_kernel()
+            self.log.info("Default kernel for this machine is %s" % kernel)
+        install_kernel_package(kernel, target=self.target,
+                               loginfo=self.log.info, logerror=self.log.error)
+            
 
     def install_kernel(self, bootdevice='/dev/hda'):
         self.bind_mount_dev()

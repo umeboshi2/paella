@@ -1,3 +1,12 @@
+paella (0.7.38) paella; urgency=low
+
+  * updated quickstart guide
+  * paella-import can now import complete database
+  * we can now skip loading the package lists from apt repositories into
+    the database
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Fri, 17 Apr 2009 00:41:41 -0500
+
 paella (0.7.37) paella; urgency=low
 
   * using all instead of any for Architecture fields
