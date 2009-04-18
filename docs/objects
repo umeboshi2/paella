@@ -118,13 +118,13 @@ Profile
 
 
 Machine Database
-=================
+--------------------------------
 This section describes the machine database part of paella.  Profile, traits, and families
 should not be machine specific.  The Machine database trying to be design to hold
 information about physical systems to install logical systems from.
 
 Machine
---------
+========
 
 a machine contains 
 
@@ -163,7 +163,7 @@ a machine contains
   variables that override all other variables.
 
 Machine Inheritance
--------------------------------------------
+======================================
 
 Since machines can have parents, it's important to know how a parent affects the
 machine.  There are three main attributes that each machine has.  These are the
@@ -193,7 +193,7 @@ even harder to read.
 
 
 Machine Scripts
--------------------------------
+==============================================
 
 Machine scripts correspond to steps in the install process for machines.  These steps
 will be treated similiar to the trait scripts. The default steps/scripts are:
