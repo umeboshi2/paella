@@ -143,7 +143,7 @@ used to perform this type of function.
 The paella framework will probably never handle packages like these, as it's difficult 
 to determine how many packages may behave like this, and some packages may need 
 to be treated differently than others.  Similar problems can occur with packages that 
-modify the was libnss does host, user, or group lookups.  This can interfere with the 
+modify the way libnss does host, user, or group lookups.  This can interfere with the 
 installation process also.  It is also possible that you might install the machine on one 
 network, but it's meant to be run in another network, and it's configuration won't be 
 complete until it's present on that network.
