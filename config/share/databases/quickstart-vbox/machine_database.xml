@@ -6,7 +6,7 @@
 	</machines>
 	<kernels>
 		<kernel>
-			linux-image-2.6-486
+			default
 		</kernel>
 	</kernels>
 </machine_database>
