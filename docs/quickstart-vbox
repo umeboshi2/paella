@@ -86,8 +86,8 @@ Debian Netinst CD Image (Lenny)
 The stable (lenny) release is what is currently supported.  You should get the netinst iso, 
 which available on this page_.  I used the i386_ image.  Hopefully any architecture should work, 
 but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll 
-be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.  If you 
-are using a virtualbox version less than 2, you will have to use the i386 image, as the guest 
+be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.  
+If you are using a virtualbox version less than 2, you will have to use the i386 image, as the guest 
 machines will only run i386 code.  The virtualbox-ose package that ships with debian lenny is 
 version 1.6.6, which will require using i386 guests.  There are newer virtualbox-ose packages 
 available at http://backports.org that will run amd64 code on the guests, if you wish to use 
@@ -95,7 +95,7 @@ those.  This quickstart should work with any version from 1.6.6 and above.
 
 
 
-.. _i386: http://cdimage.debian.org/debian-cd/5.0.0/i386/iso-cd/debian-500-i386-netinst.iso
+.. _i386: http://cdimage.debian.org/debian-cd/current/i386/iso-cd/debian-500-i386-netinst.iso
 
 Remaster the netinst iso
 -------------------------------------------
@@ -105,10 +105,12 @@ especially if you have an application that can remaster an iso image.  This allo
 preseed the debian installer and make an automated install.  Even though this step is 
 technically optional, it would be a very good idea to get the script below, and the files that 
 are obtained through subversion in the script to get an idea of how to proceed manually 
-without performing this step.  
+without performing this step.
 
 If you are running debian, remastering the iso is easy::
 
+   mkdir remaster-netinst
+   cd remaster-netinst
    svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
    
 if you already grabbed the netinst iso image, type::
@@ -119,13 +121,15 @@ if you haven't gotten the netinst iso image yet, type::
 
    ./remaster-netinst-iso
 
+The script will attempt to download the netinst iso for lenny, but it may be out of date 
+when by the time you read this, so you are recommended to download the iso_ manually.
+
+.. _iso: http://cdimage.debian.org/debian-cd
+
 **WARNING!!!**  This script uses sudo to perform the loopback mounting of the iso 
 image.  Be sure to look over the script really good before you execute it.  You may want to 
 change the ARCH variable near the top of the file (note: only i386 is tested at the moment).  
 Be sure that you have rsync, sudo, and subversion installed.
-
-Either download the iso, and enter the filename as the first argument, or just run the script 
-without arguments.  The script will download the debian-LennyBeta2-i386-netinst.iso for you.
 
 The script will give you a chance to review and edit the preseed files before you create the 
 remastered iso image.  All the files that will be used in the remastered iso image will be 
@@ -145,7 +149,9 @@ Setup the paella virtual machine
 
 You need to get the virtualbox frontend up and running.  The user interface varies between 
 different versions of virtualbox.  These instructions were written using version 1.6.6, which 
-is the default version in debian lenny.
+is the default version in debian lenny.  To start the virtualbox gui type::
+
+   virtualbox
 
 Make a new machine using the wizard provided by the virtualbox frontend.  Press next 
 and name the machine "paella".  Select "Debian" for the OS type.  Press next.  Set the base 
@@ -204,7 +210,8 @@ First boot on the paella virtual machine
 
 After the debian installer is finished, the virtual machine should reboot .  You should take 
 this time to disassociate the iso image from the machine in the VirtualBox frontend, else 
-the iso will boot everytime you boot the virtual machine.
+the iso will boot everytime you boot the virtual machine.  You may also want to save a 
+snapshot of the virtual machine, in case you have problems with the initial setup script.
 
 When the system boots up for the first time, you will want to want to login to the console.  
 You can reach the console by pressing the "Host" key and F1 (By default, the "Host" key 
@@ -217,12 +224,27 @@ of this procedure.  The script is located at /usr/local/bin/setup-paella-server 
 need to edit the script and set the ip addresses that are set near the top.  The default 
 internal network that is used is 10.0.1.0/24.  You may need to change this if the ip 
 values conflict with your local network setup.  I suggest you try to stick to these values 
-if it's possible, and if it's not possible, to use 10.0.2.0/24, or something similar.  When 
-you are ready you should type::
+if it's possible, and if it's not possible, to use 10.0.2.0/24, or something similar.  
 
+Please note that the script will try to install the guest utils and build the guest modules.  
+If you are not running virtualbox-ose version 1.6.6, you may need to may want to set 
+"do_backports" to "yes" in the script.  If the version of virtualbox-ose that you are using 
+doesn't match the version that's available at backports.org, the guest additions are 
+unlikely to work.  The guest additions are not absolutely necessary.  They just help 
+keep the mouse from feeling jerky, and also help configure the size of the screen to 
+more comfortable resolutions.  The attempt to build and install the guest additions 
+happens at the very end of the script, so if you have problems with this and using the 
+backports repository doesn't help, you will have to do without the guest modules.  If 
+you can't use the guest modules, you may need to use a modified xorg.conf to adjust 
+the resolution of the screen on the guest machine.  Regardless of whether the guest 
+additions are installed or not, the script will create an example xorg.conf located at 
+/etc/X11/xorg.conf.unused .  You may copy this to /etc/X11/xorg.conf and modify it 
+as you need.  If you do this, you must use a resolution that the vesa driver supports.
+
+
+When  you are ready you should type::
 
      sudo setup-paella-server
-
 
 
 This should set up everything that couldn't be done on the debian installer.  This script 
@@ -285,7 +307,7 @@ created above to sign the repository, add that key to apt, add the local reposit
 Take a break.  Grab some coffee.  This will take a bit, depending on your internet 
 connection.  I've taken care to only include the packages that needed, plus a few 
 extra packages that I use as tools to help me test this quickstart routine.  As of the time 
-this was written, the pool directory was 451MB in size.
+this was written, the pool directory was 465MB in size.
 
 
 Obtain paella from subversion
@@ -349,6 +371,7 @@ Install the Admin Package
 
 Now we're almost ready to use the management interface.  To install it, type::
 
+    sudo apt-get update
     sudo apt-get install paella-admin
 
 The executable is called **paella-management**.  You can either type it into a 
