@@ -1,4 +1,4 @@
-<machine diskconfig="default" kernel="linux-image-2.6-486" name="default" profile="default">
+<machine diskconfig="default" kernel="default" name="default" profile="default">
 	<machine_variable name="tzdata_area" trait="global">
 		America
 	</machine_variable>
