@@ -20,8 +20,8 @@ if [ -z $ARCH ]; then
 fi
 
 echo "ARCH: $ARCH"
-official_netinst_image=debian-500-$ARCH-netinst.iso
-official_netinst_image_url=http://cdimage.debian.org/debian-cd/5.0.0/$ARCH/iso-cd/$official_netinst_image
+official_netinst_image=debian-501-$ARCH-netinst.iso
+official_netinst_image_url=http://cdimage.debian.org/debian-cd/current/$ARCH/iso-cd/$official_netinst_image
 official_netinst_image_arg=$1
 # if there's no iso argument, download the iso
 if [ -z $official_netinst_image_arg ]; then
@@ -115,3 +115,9 @@ popd
 # this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
 genisoimage -o paella-netinst-$ARCH.iso -r -J -no-emul-boot -boot-load-size 4 \
  -boot-info-table -b isolinux/isolinux.bin -c isolinux/boot.cat ./cd
+
+if [ -d cd ]; then
+    echo "removing cd directory"
+    rm -rf cd
+fi
+
