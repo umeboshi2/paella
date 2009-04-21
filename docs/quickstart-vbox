@@ -86,7 +86,13 @@ Debian Netinst CD Image (Lenny)
 The stable (lenny) release is what is currently supported.  You should get the netinst iso, 
 which available on this page_.  I used the i386_ image.  Hopefully any architecture should work, 
 but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll 
-be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.
+be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.  If you 
+are using a virtualbox version less than 2, you will have to use the i386 image, as the guest 
+machines will only run i386 code.  The virtualbox-ose package that ships with debian lenny is 
+version 1.6.6, which will require using i386 guests.  There are newer virtualbox-ose packages 
+available at http://backports.org that will run amd64 code on the guests, if you wish to use 
+those.  This quickstart should work with any version from 1.6.6 and above.
+
 
 
 .. _i386: http://cdimage.debian.org/debian-cd/5.0.0/i386/iso-cd/debian-500-i386-netinst.iso
@@ -137,7 +143,9 @@ run unless your locale is generated, and referenced in the postgresql.conf file.
 Setup the paella virtual machine
 ===============================================
 
-You need to get the virtualbox frontend up and running.
+You need to get the virtualbox frontend up and running.  The user interface varies between 
+different versions of virtualbox.  These instructions were written using version 1.6.6, which 
+is the default version in debian lenny.
 
 Make a new machine using the wizard provided by the virtualbox frontend.  Press next 
 and name the machine "paella".  Select "Debian" for the OS type.  Press next.  Set the base 
@@ -147,17 +155,21 @@ dynamically expanding size).  Press finish.
 Select paella from the list of machines on the frontend, and click the settings button.  In the 
 configuration dialog, select CD/DVD-ROM on the left hand side.  Click on the Mount CD/DVD 
 Drive button at the top.  Select the ISO Image File.  Press the folder on the right to bring up 
-the Virtual Disk Manager.  Here you want to add the netinst iso that you downloaded.  Close 
-the Virtual Disk Manager, and make sure that the iso is selected as the image file that will 
-be mounted.
+the Virtual Disk Manager.  Here you want to add the netinst iso that you remastered.  It should 
+be called paella-netinst-$arch.iso, where $arch is the architecture that either you are running, 
+or that you selected.  Close the Virtual Disk Manager, and make sure that the iso is selected as 
+the image file that will be mounted.
 
 Now, select the Network part of the list of the left hand side of the settings dialog.  By default, 
 the network adapter should be enabled, and set to NAT.  This is what we want.  We also want 
-to add another network interface to this machine, so select the Adapter 1 tab.  Click the 
+to add another network interface to this machine, so select the Adapter 2 tab.  Click the 
 "Enable Network Adapter" button.  Make sure the "Attached to" selection is set to "Internal 
 Network".  You will need to name the network in the field that says "Network Name".  Any name 
 should do just fine.  I used "lapnet" (no quotes), since I'm on a laptop.  Remember this name, 
 since you'll need this for the other machine(s) that you will use paella to install to.
+
+If you are using an newer 64 bit processor that has hardware virtualization support, you may want 
+to enable this in the general preferences, as the virtual machine will run much faster.
 
 .. Boot the paella virtual machine
 .. ================================
