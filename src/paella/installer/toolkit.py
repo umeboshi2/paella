@@ -6,6 +6,7 @@ from useless.base.path import path
 
 from paella.base import PaellaConfig
 from paella.base.template import TemplatedEnvironment
+from paella.base.util import get_architecture
 
 from paella.db import DefaultEnvironment
 from paella.db.base import get_suite
@@ -183,9 +184,35 @@ class InstallerTools(object):
         self.db.set_trait(trait)
 
     def get(self, key):
+        if ':' not in key:
+            key = '%s:%s' % (self.trait, key)
         env = self.env()
         return env.dereference(key)
 
+    # while we check a list of common values,
+    # we really only want True or False.
+    def getboolean(self, key):
+        "blank values return False"
+        orig_value = self.get(key)
+        upper_value = orig_value.upper()
+        if upper_value in ['TRUE', 'YES', 'T', 'Y', '1']:
+            return True
+        else:
+            return False
+
+    # sometimes the ',' may not be appropriate,
+    # so we use the sep keyword argument.
+    def getcsv(self, key, sep=','):
+        "return comma separated values as a list"
+        value = self.get(key)
+        return [part.strip() for part in value.split(',')]
+
+    # this will fail with ValueError if the value
+    # can't be converted to an int.
+    def getint(self, key):
+        value = self.get(key)
+        return int(value)
+    
     def run(self, cmd):
         retval = subprocess.call(cmd)
         if retval:
@@ -215,7 +242,10 @@ class InstallerTools(object):
         self.machine = machine
         self.db.set_machine(machine)
         self.profile = self.db.profile.current.profile
-        
+
+    def get_architecture(self):
+        return get_architecture()
+    
         
 if __name__ == '__main__':
     from paella.db import PaellaConnection

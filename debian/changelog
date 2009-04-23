@@ -1,3 +1,9 @@
+paella (0.7.39) paella; urgency=low
+
+  * added convenience methods to InstallerTools
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Wed, 22 Apr 2009 21:14:16 -0500
+
 paella (0.7.38) paella; urgency=low
 
   * updated quickstart guide
