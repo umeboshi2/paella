@@ -1,0 +1,37 @@
+.. -*- mode: rst -*-
+
+---------------------------------------------------------------------------
+Instructions for building the packages in this directory
+---------------------------------------------------------------------------
+
+In order to prepare these packages for building, you will need to 
+install the devscripts package.  You will not have to have the 
+build dependencies installed on the system that you prepare these
+source packages on, but you will need the tools to download and 
+prepare the sources to be built.
+
+Instructions for the gkrellm-skins-installer
+-----------------------------------------------------------
+
+If you are in a subversion working copy, you should export 
+the gkrellm-skins-installer directory::
+
+    svn export gkrellm-skins-installer gkrellm-skins-installer-exported
+
+Then change to that directory::
+
+     cd gkrellm-skins-installer(-exported)
+
+Then prepare the source::
+
+     uscan --force-download --rename --verbose
+     dpkg-buildpackage -S
+
+Now you should have the .orig.tar.gz, .diff.gz and .dsc files that are required to build the 
+package.  Now you can run pbuilder, cowbuilder, or cowpoke on the .dsc file, or if you want 
+to build against the system you are running::
+
+   dpkg-source -x gkrellm-skins-installer_0.0-0.dsc
+   cd cd gkrellm-skins-installer-0.0
+   debuild
+

@@ -1,0 +1,3 @@
+version=3
+opts="uversionmangle=s/Skins/0.0/" \
+http://www.muhri.net/gkrellm/GKrellM-(.*)\.tar\.gz

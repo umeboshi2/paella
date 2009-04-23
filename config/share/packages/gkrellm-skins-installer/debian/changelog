@@ -1,0 +1,8 @@
+gkrellm-skins-installer (0.0-0) unstable; urgency=low
+
+  * Initial release.
+  * This package has been modified to make it easier to download
+  the upstream tarball, and make it easier to distribute only what is 
+  required to make a debian package of the themes.
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Thu, 23 Apr 2009 09:41:24 -0500

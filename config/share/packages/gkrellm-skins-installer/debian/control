@@ -1,0 +1,14 @@
+Source: gkrellm-skins-installer
+Section: misc
+Priority: optional
+Maintainer: Joseph Rawson <umeboshi3@gmail.com>
+Build-Depends: debhelper (>= 4.0.0)
+Standards-Version: 3.6.0
+
+Package: gkrellm-skins
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, gkrellm
+Description: some skins for gkrellm
+    These are the themes from muhri.net.
+	
+
