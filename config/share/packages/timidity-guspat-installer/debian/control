@@ -1,0 +1,12 @@
+Source: timidity-guspat-installer
+Section: non-free/sound
+Priority: optional
+Maintainer: Joseph Rawson <umeboshi3@gmail.com>
+Build-Depends: debhelper (>= 4.0.0), cdbs
+Standards-Version: 3.6.2
+
+Package: timidity-guspat
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: GUS patches for timidity
+ I found these sound patches on the internet.

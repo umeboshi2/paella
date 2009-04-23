@@ -8,7 +8,9 @@ In order to prepare these packages for building, you will need to
 install the devscripts package.  You will not have to have the 
 build dependencies installed on the system that you prepare these
 source packages on, but you will need the tools to download and 
-prepare the sources to be built.
+prepare the sources to be built.  These instructions are fast and loose 
+and under the impression or assumption that you are familiar with building 
+debian packages from source.
 
 Instructions for the gkrellm-skins-installer
 -----------------------------------------------------------
@@ -32,6 +34,28 @@ package.  Now you can run pbuilder, cowbuilder, or cowpoke on the .dsc file, or 
 to build against the system you are running::
 
    dpkg-source -x gkrellm-skins-installer_0.0-0.dsc
-   cd cd gkrellm-skins-installer-0.0
+   cd gkrellm-skins-installer-0.0
    debuild
+
+
+Instructions for the timidity-guspat-installer
+-----------------------------------------------------------
+
+Preparing this package to be built is a little bit involved, as it required two upstream tarballs, 
+hence, it's not easy to tell the debian upstream watcher (uscan) about it.  Soon, debian will 
+have more support for multiple upstream tarballs, and when that happens, these instructions 
+will be updated accordingly.  It is not likely that the upstream version number will ever change, 
+as these patches are static, and only a change in the timidity configuration syntax would require 
+a bump in the version number.
+
+To prepare the source to be built, change to the directory (exported, if working from svn)::
+
+   cd timidity-guspat-installer(-exported)
+   ./debian/original-preparation.sh
+
+This should download the upstream tarballs, extract them, create the .orig.tar.gz, and then 
+build the source package for you.  If you are having problems running the script, you may 
+want to read through the script and perform the steps manually.  The urls to download are 
+commented in the debian/watch file.
+
 

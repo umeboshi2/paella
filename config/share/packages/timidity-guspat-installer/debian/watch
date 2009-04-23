@@ -1,0 +1,5 @@
+version=3
+#ftp://ftp.freebsd.org/pub/FreeBSD/ports/local-distfiles/nork/guspat-20000706-required.tar.gz 
+#ftp://ftp.freebsd.org/pub/FreeBSD/ports/local-distfiles/nork/guspat-20000706-optional.tar.gz
+ftp://ftp.freebsd.org/pub/FreeBSD/ports/local-distfiles/nork/guspat-(.*)-required.tar.gz 
+ftp://ftp.freebsd.org/pub/FreeBSD/ports/local-distfiles/nork/guspat-(.*)-optional.tar.gz
