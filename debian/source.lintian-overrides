@@ -1,0 +1,3 @@
+paella source: diff-contains-patch-failure-file config/share/databases/*
+paella-defaultdb: script-not-executable
+paella-defaultdb: shell-script-fails-syntax-check

@@ -10,11 +10,11 @@ Section: admin
 Architecture: all
 Priority: extra
 Depends: paella-management (= ${binary:Version})
-Description: meta-package for default paella packages
+Description: metapackage for default paella packages
  Paella is a installation/configuration management system
  centered on being able to easily define, configure, maintain and
  update systems and networks.  Tries to not reinvent too many
- wheels, and works hand in hand with fai.  It is planned to be
+ wheels, and works hand in hand with FAI.  It is planned to be
  extended to work with buildroots and embedded systems.
 
 Package: paella-base
@@ -32,9 +32,9 @@ Section: admin
 Priority: optional
 Architecture: all
 Depends: paella-base (= ${binary:Version}), python-apt, debconf-utils
-Description: debian specific modules for paella
+Description: Debian specific modules for paella
  This package contains many class and functions for 
- use with debian related activities (dpkg, package repositories, 
+ use with Debian related activities (dpkg, package repositories, 
  debconf, etc.).  This package is becoming obsolete, and the
  python-debian package will soon replace this one.
 
@@ -43,6 +43,7 @@ Section: admin
 Priority: extra
 Architecture: all
 Depends: paella-db (= ${binary:Version}), debootstrap
+Recommends: python-dnspython
 Description: python package for paella installers
  This package contains most of the code for installers to work.
  It also contains the chroot installer.
@@ -105,6 +106,6 @@ Depends: doc-base
 Suggests: dwww
 Description: documentation for paella
  Paella is a system for  installing and managing
- configurations of debian systems.  This package
+ configurations of Debian systems.  This package
  holds the pathetic documentation for it.
 
