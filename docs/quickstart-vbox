@@ -129,7 +129,7 @@ when by the time you read this, so you are recommended to download the iso_ manu
 **WARNING!!!**  This script uses sudo to perform the loopback mounting of the iso 
 image.  Be sure to look over the script really good before you execute it.  You may want to 
 change the ARCH variable near the top of the file (note: only i386 is tested at the moment).  
-Be sure that you have rsync, sudo, and subversion installed.
+Be sure that you have rsync, sudo, genisoimage, and subversion installed.
 
 The script will give you a chance to review and edit the preseed files before you create the 
 remastered iso image.  All the files that will be used in the remastered iso image will be 
