@@ -1,0 +1,27 @@
+.. -*- mode: rst -*-
+
+===========================
+Paella Default Database
+===========================
+
+.. contents:: :backlinks: entry
+
+
+Introduction
+------------------------------------
+
+Paella comes with an example database to help get started.
+
+
+.. _toc: index.html
+
+-------------------------------------------------
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+.. _machines: #machine
