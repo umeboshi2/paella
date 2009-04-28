@@ -11,14 +11,15 @@ Table of Contents
 1. abstract_: A brief outline of what paella is and why it was created
 2. `quickstart-vbox`_:  Getting started quickly with paella using virtualbox-ose
 3. guide_:  Guide to using paella-managment application
-4. objects_: Definitions of objects in the database
-5. installer_: Structure and operation of the paella installer
-6. configuration_:  Environment variables and configuration options used by paella
-7. `default-environment`_: Configuration options in the paella database
-8. problems_: Known problems with paella
-9. schema_: A brief layout of the tables in the database
-10. gui_: Some notes on the gui
-11. notes_: Some more notes about using paella
+4. defaultdb_: The example database that ships with paella
+5. objects_: Definitions of objects in the database
+6. installer_: Structure and operation of the paella installer
+7. configuration_:  Environment variables and configuration options used by paella
+8. `default-environment`_: Configuration options in the paella database
+9. problems_: Known problems with paella
+10. schema_: A brief layout of the tables in the database
+11. gui_: Some notes on the gui
+12. notes_: Some more notes about using paella
 
 
 
