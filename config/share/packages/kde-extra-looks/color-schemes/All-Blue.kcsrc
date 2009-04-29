@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=All Blue
+activeBackground=98,169,254
+activeBlend=84,150,231
+activeForeground=0,0,0
+activeTitleBtnBg=238,238,230
+alternateBackground=235,244,255
+background=235,244,255
+buttonBackground=177,211,253
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+inactiveBackground=207,232,255
+inactiveBlend=207,231,254
+inactiveForeground=100,100,100
+inactiveTitleBtnBg=238,238,230
+linkColor=0,0,192
+selectBackground=49,142,255
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=250,252,255
+windowForeground=0,0,0

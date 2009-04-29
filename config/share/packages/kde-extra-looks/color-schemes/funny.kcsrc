@@ -1,0 +1,27 @@
+[Color Scheme]
+Name=funny
+activeBackground=0,134,83
+activeBlend=0,206,127
+activeForeground=255,255,255
+activeTitleBtnBg=194,186,113
+alternateBackground=210,135,110
+background=0,213,131
+buttonBackground=173,255,47
+buttonForeground=0,0,0
+contrast=10
+foreground=0,0,0
+frame=205,198,115
+handle=205,198,115
+inactiveBackground=0,250,154
+inactiveBlend=0,255,157
+inactiveForeground=105,139,105
+inactiveFrame=139,134,78
+inactiveHandle=175,180,159
+inactiveTitleBtnBg=175,180,159
+linkColor=0,0,139
+selectBackground=100,149,237
+selectForeground=255,250,240
+shadeSortColumn=true
+visitedLinkColor=0,139,139
+windowBackground=233,150,122
+windowForeground=0,0,0

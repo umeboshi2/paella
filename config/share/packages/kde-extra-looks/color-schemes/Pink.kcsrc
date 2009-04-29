@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=Pink
+activeBackground=172,134,147
+activeBlend=180,140,154
+activeForeground=255,255,255
+activeTitleBtnBg=220,220,220
+alternateBackground=240,240,240
+background=238,223,229
+buttonBackground=238,223,229
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+frame=238,238,230
+handle=238,238,230
+inactiveBackground=220,220,220
+inactiveBlend=216,176,193
+inactiveForeground=0,0,0
+inactiveFrame=238,238,230
+inactiveHandle=238,238,230
+inactiveTitleBtnBg=220,220,220
+linkColor=186,152,166
+selectBackground=180,140,154
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=255,255,255
+windowForeground=0,0,0

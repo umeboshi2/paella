@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=dim0grey-green
+activeBackground=205,175,149
+activeBlend=139,125,123
+activeForeground=255,255,255
+activeTitleBtnBg=238,216,174
+alternateBackground=122,139,139
+background=105,105,105
+buttonBackground=105,105,105
+buttonForeground=0,0,0
+contrast=3
+foreground=0,0,0
+inactiveBackground=160,160,160
+inactiveBlend=214,214,214
+inactiveForeground=238,238,209
+inactiveTitleBtnBg=238,216,174
+linkColor=0,0,192
+selectBackground=32,178,170
+selectForeground=255,228,196
+visitedLinkColor=128,0,128
+windowBackground=46,139,87
+windowForeground=0,0,0

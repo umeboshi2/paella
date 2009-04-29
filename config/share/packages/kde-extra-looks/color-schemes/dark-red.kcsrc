@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=dark-red
+activeBackground=51,2,10
+activeBlend=255,255,255
+activeForeground=255,255,255
+activeTitleBtnBg=0,0,0
+alternateBackground=167,74,76
+background=95,4,18
+buttonBackground=95,4,18
+buttonForeground=0,0,0
+contrast=10
+foreground=255,255,255
+inactiveBackground=143,56,58
+inactiveBlend=0,0,0
+inactiveForeground=255,255,255
+inactiveTitleBtnBg=0,0,0
+linkColor=192,2,5
+selectBackground=192,2,5
+selectForeground=255,255,255
+visitedLinkColor=128,1,49
+windowBackground=159,80,82
+windowForeground=255,255,255

@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=seansand
+activeBackground=91,116,128
+activeBlend=218,254,255
+activeForeground=255,255,255
+activeTitleBtnBg=214,205,187
+alternateBackground=255,246,230
+background=215,200,179
+buttonBackground=214,205,187
+buttonForeground=0,0,0
+contrast=3
+foreground=0,0,0
+inactiveBackground=0,0,0
+inactiveBlend=214,205,187
+inactiveForeground=214,214,214
+inactiveTitleBtnBg=214,205,187
+linkColor=0,0,192
+selectBackground=91,116,128
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=239,255,251
+windowForeground=0,0,0

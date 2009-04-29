@@ -1,0 +1,119 @@
+kde-extra-looks (0.3.0) paella; urgency=low
+
+  * added wallpapers and 4-s konsole schema
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Mon, 23 Mar 2009 07:48:12 -0500
+
+kde-extra-looks (0.2-5.1) paella; urgency=low
+
+  * Non-maintainer upload.
+  * fix black color in khaki konsole schema (now matches background)
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Mon, 23 Mar 2009 06:16:52 -0500
+
+kde-extra-looks (0.2-5) paella; urgency=low
+
+  * moving to paella
+
+ -- Joseph Rawson <umeboshi3@gmail.com>  Fri, 15 Aug 2008 13:22:42 -0500
+
+kde-extra-looks (0.2-4) etch; urgency=low
+
+  * added fish-splash wallpaper
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Sun, 20 May 2007 19:24:48 -0500
+
+kde-extra-looks (0.2-3) common; urgency=low
+
+  * one size fits all archs now
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Sat, 29 Apr 2006 17:51:24 -0500
+
+kde-extra-looks (0.2-2) common; urgency=low
+
+  * added more color schemes
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon, 10 Apr 2006 16:36:04 -0500
+
+kde-extra-looks (0.2-1) common; urgency=low
+
+  * added khaki color-scheme
+  
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Tue, 28 Mar 2006 16:07:05 -0600
+
+kde-extra-looks (0.1-11) common; urgency=low
+
+  * added some wallpapers
+  * added some konsole schemes
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon, 20 Mar 2006 15:50:59 -0600
+
+kde-extra-looks (0.1-10) common; urgency=low
+
+  * added DebianEvolved ksplash theme
+  
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Fri, 30 Dec 2005 14:08:31 -0600
+
+kde-extra-looks (0.1-9) common; urgency=low
+
+  * added office wallpaper
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon,  8 Aug 2005 18:38:22 -0500
+
+kde-extra-looks (0.1-8) common; urgency=low
+
+  * added some Theme.rc files to fix a couple of ksplash themes
+
+ -- Joseph Rawson <umeboshi@bard>  Tue,  5 Jul 2005 18:28:31 -0500
+
+kde-extra-looks (0.1-7) common; urgency=low
+
+  * moving to cdbs and Makefile system
+  
+
+ -- Joseph Rawson <umeboshi@bard>  Wed, 15 Jun 2005 22:26:52 -0500
+
+kde-extra-looks (0.1-6) common; urgency=low
+
+  * added many more splash screens, and some colors
+  
+
+ -- Joseph Rawson <umeboshi@bard>  Sun,  1 May 2005 20:11:52 -0500
+
+kde-extra-looks (0.1-5) common; urgency=low
+
+  * added 5-s and IndianRed color schemes
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Wed,  1 Sep 2004 23:57:43 -0500
+
+kde-extra-looks (0.1-4) common; urgency=low
+
+  * added pukey color scheme
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Sun, 11 Jul 2004 13:52:26 -0500
+
+kde-extra-looks (0.1-3) common; urgency=low
+
+  * added some more color-schemes and some splash screens
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Mon, 28 Jun 2004 04:59:08 -0500
+
+kde-extra-looks (0.1-2) common; urgency=low
+
+  * fixing install location
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Sun, 27 Jun 2004 19:58:48 -0500
+
+kde-extra-looks (0.1-1) common; urgency=low
+
+  * Initial Release.
+  * moving to common
+
+
+ -- Joseph Rawson <umeboshi@gregscomputerservice.com>  Sun, 27 Jun 2004 19:54:45 -0500
+

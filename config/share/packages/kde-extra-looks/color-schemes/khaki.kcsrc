@@ -1,0 +1,27 @@
+[Color Scheme]
+Name=khaki
+activeBackground=139,134,78
+activeBlend=240,230,140
+activeForeground=253,242,148
+activeTitleBtnBg=194,186,113
+alternateBackground=151,145,85
+background=198,191,111
+buttonBackground=177,171,99
+buttonForeground=0,0,0
+contrast=5
+foreground=0,0,0
+frame=205,198,115
+handle=205,198,115
+inactiveBackground=74,71,43
+inactiveBlend=167,161,93
+inactiveForeground=149,142,81
+inactiveFrame=139,134,78
+inactiveHandle=175,180,159
+inactiveTitleBtnBg=175,180,159
+linkColor=0,0,192
+selectBackground=139,134,78
+selectForeground=255,255,255
+shadeSortColumn=true
+visitedLinkColor=128,0,128
+windowBackground=187,180,105
+windowForeground=0,0,0

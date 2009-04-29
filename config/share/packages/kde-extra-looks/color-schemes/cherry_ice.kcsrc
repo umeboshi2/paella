@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=cherry_ice
+activeBackground=189,8,49
+activeBlend=152,7,40
+activeForeground=255,246,238
+activeTitleBtnBg=226,228,230
+alternateBackground=255,213,224
+background=255,255,255
+buttonBackground=255,255,255
+buttonForeground=189,8,49
+contrast=0
+foreground=0,0,0
+frame=255,255,255
+handle=255,255,255
+inactiveBackground=213,72,106
+inactiveBlend=147,50,72
+inactiveForeground=192,192,192
+inactiveFrame=255,255,255
+inactiveHandle=255,255,255
+inactiveTitleBtnBg=244,244,244
+linkColor=189,8,49
+selectBackground=189,8,49
+selectForeground=255,230,242
+visitedLinkColor=174,174,174
+windowBackground=255,255,255
+windowForeground=0,0,0

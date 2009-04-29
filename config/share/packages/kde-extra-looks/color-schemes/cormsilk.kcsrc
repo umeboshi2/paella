@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=cormsilk
+activeBackground=205,175,149
+activeBlend=139,125,123
+activeForeground=255,255,255
+activeTitleBtnBg=238,216,174
+alternateBackground=255,245,235
+background=205,200,177
+buttonBackground=205,200,177
+buttonForeground=0,0,0
+contrast=3
+foreground=0,0,0
+frame=255,228,196
+handle=255,228,196
+inactiveBackground=170,166,147
+inactiveBlend=170,166,147
+inactiveForeground=238,238,209
+inactiveFrame=255,228,196
+inactiveHandle=255,228,196
+inactiveTitleBtnBg=238,216,174
+linkColor=0,0,192
+selectBackground=205,200,177
+selectForeground=69,139,116
+visitedLinkColor=128,0,128
+windowBackground=139,136,120
+windowForeground=0,0,0

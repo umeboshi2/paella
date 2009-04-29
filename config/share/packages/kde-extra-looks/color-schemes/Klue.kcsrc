@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=Klue
+activeBackground=23,102,181
+activeBlend=100,178,255
+activeForeground=255,215,0
+activeTitleBtnBg=230,222,220
+alternateBackground=86,86,216
+background=99,114,192
+buttonBackground=50,50,128
+buttonForeground=255,215,0
+contrast=10
+foreground=255,255,255
+inactiveBackground=139,182,222
+inactiveBlend=246,246,255
+inactiveForeground=255,255,255
+inactiveTitleBtnBg=230,222,220
+linkColor=0,255,255
+selectBackground=0,0,127
+selectForeground=255,215,0
+visitedLinkColor=0,205,205
+windowBackground=34,51,208
+windowForeground=255,255,255

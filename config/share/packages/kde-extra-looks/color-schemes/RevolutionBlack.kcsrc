@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=Revolution Black
+activeBackground=114,3,3
+activeBlend=100,100,100
+activeForeground=255,255,255
+activeTitleBtnBg=0,0,0
+alternateBackground=100,100,100
+background=50,50,50
+buttonBackground=100,100,100
+buttonForeground=250,249,248
+contrast=10
+foreground=255,255,255
+inactiveBackground=50,50,50
+inactiveBlend=50,50,50
+inactiveForeground=250,249,248
+inactiveTitleBtnBg=0,31,106
+linkColor=0,0,192
+selectBackground=114,3,3
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=75,75,75
+windowForeground=0,0,0

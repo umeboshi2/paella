@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=light rose
+activeBackground=62,145,235
+activeBlend=164,195,235
+activeForeground=255,255,255
+activeTitleBtnBg=238,238,230
+alternateBackground=238,246,255
+background=255,217,204
+buttonBackground=255,205,193
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+frame=238,238,230
+handle=238,238,230
+inactiveBackground=255,233,218
+inactiveBlend=255,234,201
+inactiveForeground=129,118,118
+inactiveFrame=238,238,230
+inactiveHandle=238,238,230
+inactiveTitleBtnBg=238,238,230
+linkColor=0,0,192
+selectBackground=140,184,255
+selectForeground=0,0,0
+visitedLinkColor=128,0,128
+windowBackground=255,255,255
+windowForeground=0,0,0

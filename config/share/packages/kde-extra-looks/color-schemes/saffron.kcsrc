@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=saffron
+activeBackground=173,93,7
+activeBlend=212,137,39
+activeForeground=255,255,255
+activeTitleBtnBg=214,205,187
+alternateBackground=255,246,230
+background=143,108,56
+buttonBackground=184,119,34
+buttonForeground=0,0,0
+contrast=3
+foreground=0,0,0
+inactiveBackground=0,0,0
+inactiveBlend=214,184,153
+inactiveForeground=214,214,214
+inactiveTitleBtnBg=214,205,187
+linkColor=0,0,192
+selectBackground=187,103,13
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=248,226,174
+windowForeground=0,0,0

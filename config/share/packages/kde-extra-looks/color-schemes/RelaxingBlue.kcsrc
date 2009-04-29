@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=Relaxing Blue
+activeBackground=49,115,186
+activeBlend=52,122,197
+activeForeground=255,255,255
+activeTitleBtnBg=238,238,230
+alternateBackground=210,218,221
+background=199,222,242
+buttonBackground=178,217,242
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+frame=238,238,230
+handle=238,238,230
+inactiveBackground=168,201,217
+inactiveBlend=143,159,180
+inactiveForeground=255,255,255
+inactiveFrame=238,238,230
+inactiveHandle=238,238,230
+inactiveTitleBtnBg=238,238,230
+linkColor=0,0,228
+selectBackground=111,161,255
+selectForeground=0,0,0
+visitedLinkColor=220,35,35
+windowBackground=223,232,235
+windowForeground=0,0,0

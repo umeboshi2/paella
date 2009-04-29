@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=red-brown
+activeBackground=146,2,4
+activeBlend=255,255,255
+activeForeground=255,255,255
+activeTitleBtnBg=174,178,195
+alternateBackground=186,168,148
+background=198,179,158
+buttonBackground=198,179,158
+buttonForeground=0,0,0
+contrast=3
+foreground=0,0,0
+inactiveBackground=219,204,185
+inactiveBlend=255,255,255
+inactiveForeground=0,0,0
+inactiveTitleBtnBg=174,178,195
+linkColor=0,0,255
+selectBackground=146,2,4
+selectForeground=255,255,255
+visitedLinkColor=192,255,255
+windowBackground=198,179,158
+windowForeground=0,0,0

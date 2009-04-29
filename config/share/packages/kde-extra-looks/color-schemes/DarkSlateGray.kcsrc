@@ -1,0 +1,27 @@
+[Color Scheme]
+Name=DarkSlateGray
+activeBackground=141,238,238
+activeBlend=151,255,255
+activeForeground=47,79,79
+activeTitleBtnBg=194,186,113
+alternateBackground=75,127,127
+background=121,205,205
+buttonBackground=121,205,205
+buttonForeground=0,0,0
+contrast=5
+foreground=0,0,0
+frame=205,198,115
+handle=205,198,115
+inactiveBackground=82,139,139
+inactiveBlend=121,205,205
+inactiveForeground=141,238,238
+inactiveFrame=139,134,78
+inactiveHandle=175,180,159
+inactiveTitleBtnBg=175,180,159
+linkColor=0,0,192
+selectBackground=66,113,113
+selectForeground=151,255,255
+shadeSortColumn=true
+visitedLinkColor=128,0,128
+windowBackground=82,139,139
+windowForeground=0,0,0

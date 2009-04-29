@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=beige
+activeBackground=156,149,122
+activeBlend=33,68,156
+activeForeground=255,255,255
+activeTitleBtnBg=238,238,230
+alternateBackground=238,246,255
+background=226,220,195
+buttonBackground=226,220,195
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+frame=230,231,230
+handle=230,231,230
+inactiveBackground=237,237,237
+inactiveBlend=237,237,237
+inactiveForeground=255,255,255
+inactiveFrame=230,231,230
+inactiveHandle=230,231,230
+inactiveTitleBtnBg=238,238,230
+linkColor=0,0,192
+selectBackground=33,68,156
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=255,255,255
+windowForeground=0,0,0

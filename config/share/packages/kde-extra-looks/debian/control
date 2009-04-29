@@ -1,0 +1,13 @@
+Source: kde-extra-looks
+Section: kde
+Priority: optional
+Maintainer: Joseph Rawson <umeboshi3@gmail.com>
+Build-Depends: cdbs, debhelper (>= 4.0.0)
+Standards-Version: 3.6.0
+
+Package: kde-extra-looks
+Architecture: all
+Depends: kde-core, konsole
+Description: colors for kde
+ colors for kde
+

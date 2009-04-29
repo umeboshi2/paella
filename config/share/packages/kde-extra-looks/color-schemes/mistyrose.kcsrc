@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=mistyrose
+activeBackground=205,133,63
+activeBlend=139,125,123
+activeForeground=255,255,255
+activeTitleBtnBg=238,216,174
+alternateBackground=255,245,235
+background=205,183,181
+buttonBackground=238,162,173
+buttonForeground=0,0,0
+contrast=3
+foreground=0,0,0
+inactiveBackground=160,160,160
+inactiveBlend=214,214,214
+inactiveForeground=238,238,209
+inactiveTitleBtnBg=238,216,174
+linkColor=0,0,192
+selectBackground=255,228,225
+selectForeground=139,102,139
+visitedLinkColor=128,0,128
+windowBackground=238,213,210
+windowForeground=0,0,0

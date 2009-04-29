@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=Desert
+activeBackground=205,0,0
+activeBlend=255,215,0
+activeForeground=255,255,255
+activeTitleBtnBg=238,216,174
+alternateBackground=255,245,235
+background=244,229,189
+buttonBackground=237,197,104
+buttonForeground=58,72,74
+contrast=3
+foreground=79,55,24
+frame=238,216,174
+handle=238,216,174
+inactiveBackground=174,168,133
+inactiveBlend=227,223,182
+inactiveForeground=255,255,255
+inactiveFrame=238,216,174
+inactiveHandle=238,216,174
+inactiveTitleBtnBg=238,216,174
+linkColor=102,180,53
+selectBackground=205,133,63
+selectForeground=255,255,255
+visitedLinkColor=205,205,6
+windowBackground=255,255,255
+windowForeground=93,86,10

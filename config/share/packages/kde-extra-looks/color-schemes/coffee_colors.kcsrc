@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=Coffee
+activeBackground=152,167,180
+activeBlend=181,198,214
+activeForeground=255,255,255
+activeTitleBtnBg=220,220,220
+alternateBackground=240,240,240
+background=223,221,215
+buttonBackground=238,234,222
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+inactiveBackground=193,197,171
+inactiveBlend=226,230,199
+inactiveForeground=255,255,255
+inactiveTitleBtnBg=220,220,220
+linkColor=0,0,192
+selectBackground=181,198,214
+selectForeground=0,0,0
+visitedLinkColor=128,0,128
+windowBackground=238,237,233
+windowForeground=31,74,96

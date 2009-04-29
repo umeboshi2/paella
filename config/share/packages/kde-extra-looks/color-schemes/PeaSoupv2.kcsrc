@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=Pea Soup v.2
+activeBackground=96,105,41
+activeBlend=76,83,32
+activeForeground=234,255,98
+activeTitleBtnBg=162,176,69
+alternateBackground=226,234,226
+background=134,146,57
+buttonBackground=115,125,49
+buttonForeground=30,59,35
+contrast=5
+foreground=37,40,15
+inactiveBackground=121,132,51
+inactiveBlend=59,64,25
+inactiveForeground=180,196,75
+inactiveTitleBtnBg=114,136,14
+linkColor=79,3,49
+selectBackground=78,85,33
+selectForeground=234,255,98
+visitedLinkColor=76,6,67
+windowBackground=184,200,78
+windowForeground=44,36,17

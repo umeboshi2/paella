@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=Lila
+activeBackground=70,53,124
+activeBlend=221,218,236
+activeForeground=160,160,208
+activeTitleBtnBg=220,220,220
+alternateBackground=221,221,255
+background=236,230,238
+buttonBackground=209,205,221
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+frame=236,230,238
+handle=236,230,238
+inactiveBackground=160,160,208
+inactiveBlend=70,53,124
+inactiveForeground=184,184,184
+inactiveFrame=236,230,238
+inactiveHandle=236,230,238
+inactiveTitleBtnBg=220,220,220
+linkColor=0,0,192
+selectBackground=122,90,218
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=255,255,255
+windowForeground=0,0,0

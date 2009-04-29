@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=In_Green
+activeBackground=82,158,136
+activeBlend=154,214,213
+activeForeground=255,255,255
+activeTitleBtnBg=220,220,220
+alternateBackground=251,224,221
+background=216,232,231
+buttonBackground=201,228,216
+buttonForeground=0,0,0
+contrast=1
+foreground=0,0,0
+inactiveBackground=213,241,229
+inactiveBlend=213,241,229
+inactiveForeground=0,0,0
+inactiveTitleBtnBg=220,220,220
+linkColor=0,0,192
+selectBackground=130,176,163
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=250,250,250
+windowForeground=0,0,0

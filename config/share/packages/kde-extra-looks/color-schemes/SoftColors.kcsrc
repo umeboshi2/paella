@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=SoftColors
+activeBackground=175,180,159
+activeBlend=247,230,226
+activeForeground=255,253,244
+activeTitleBtnBg=197,209,171
+alternateBackground=247,239,237
+background=255,255,246
+buttonBackground=175,180,159
+buttonForeground=83,85,75
+contrast=3
+foreground=83,85,75
+frame=255,251,232
+handle=175,180,159
+inactiveBackground=186,191,169
+inactiveBlend=232,216,212
+inactiveForeground=138,136,125
+inactiveFrame=255,251,232
+inactiveHandle=175,180,159
+inactiveTitleBtnBg=175,180,159
+linkColor=150,165,132
+selectBackground=247,230,226
+selectForeground=83,85,75
+visitedLinkColor=116,116,116
+windowBackground=255,255,246
+windowForeground=0,0,0

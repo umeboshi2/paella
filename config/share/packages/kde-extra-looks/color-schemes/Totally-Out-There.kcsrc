@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=Totally Out-There
+activeBackground=132,0,2
+activeBlend=81,0,97
+activeForeground=255,255,255
+activeTitleBtnBg=78,189,197
+alternateBackground=0,0,72
+background=20,10,20
+buttonBackground=55,19,85
+buttonForeground=255,255,255
+contrast=10
+foreground=255,255,255
+inactiveBackground=45,45,45
+inactiveBlend=150,0,200
+inactiveForeground=146,146,146
+inactiveTitleBtnBg=0,0,0
+linkColor=0,0,255
+selectBackground=143,45,0
+selectForeground=0,0,0
+visitedLinkColor=0,0,173
+windowBackground=0,0,66
+windowForeground=255,255,255

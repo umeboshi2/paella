@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=4-s
+activeBackground=115,130,168
+activeBlend=115,130,168
+activeForeground=255,255,255
+activeTitleBtnBg=220,220,220
+alternateBackground=240,240,240
+background=145,157,190
+buttonBackground=193,201,229
+buttonForeground=0,0,0
+contrast=10
+foreground=0,0,0
+frame=238,238,230
+handle=238,238,230
+inactiveBackground=184,193,220
+inactiveBlend=192,201,228
+inactiveForeground=0,0,0
+inactiveFrame=238,238,230
+inactiveHandle=238,238,230
+inactiveTitleBtnBg=220,220,220
+linkColor=0,0,255
+selectBackground=145,157,190
+selectForeground=0,0,0
+visitedLinkColor=128,0,128
+windowBackground=192,201,228
+windowForeground=0,0,0

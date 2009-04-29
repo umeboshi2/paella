@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=IndianRed
+activeBackground=205,92,92
+activeBlend=255,106,106
+activeForeground=255,231,186
+activeTitleBtnBg=153,153,153
+alternateBackground=146,146,146
+background=205,85,85
+buttonBackground=238,99,99
+buttonForeground=255,231,186
+contrast=7
+foreground=255,231,186
+frame=153,153,153
+handle=153,153,153
+inactiveBackground=139,58,58
+inactiveBlend=205,85,85
+inactiveForeground=205,186,150
+inactiveFrame=153,153,153
+inactiveHandle=153,153,153
+inactiveTitleBtnBg=153,153,153
+linkColor=255,255,192
+selectBackground=255,106,106
+selectForeground=255,255,255
+visitedLinkColor=192,255,192
+windowBackground=174,72,72
+windowForeground=255,231,186

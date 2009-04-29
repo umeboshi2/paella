@@ -1,0 +1,22 @@
+[Color Scheme]
+Name=Green And Cream
+activeBackground=185,209,183
+activeBlend=140,162,140
+activeForeground=0,0,0
+activeTitleBtnBg=220,220,220
+alternateBackground=241,233,223
+background=228,217,206
+buttonBackground=246,234,222
+buttonForeground=0,0,0
+contrast=5
+foreground=0,0,0
+inactiveBackground=230,218,205
+inactiveBlend=230,218,205
+inactiveForeground=136,136,136
+inactiveTitleBtnBg=220,220,220
+linkColor=0,0,192
+selectBackground=135,157,124
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=249,245,233
+windowForeground=0,0,0

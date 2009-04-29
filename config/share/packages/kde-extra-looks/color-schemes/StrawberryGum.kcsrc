@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=Strawberry Gum
+activeBackground=251,156,162
+activeBlend=229,142,148
+activeForeground=255,255,255
+activeTitleBtnBg=224,164,164
+alternateBackground=237,244,249
+background=241,241,241
+buttonBackground=255,255,255
+buttonForeground=0,0,0
+contrast=7
+foreground=0,0,0
+frame=239,239,239
+handle=239,239,239
+inactiveBackground=249,214,213
+inactiveBlend=240,149,155
+inactiveForeground=179,179,179
+inactiveFrame=239,239,239
+inactiveHandle=239,239,239
+inactiveTitleBtnBg=163,101,105
+linkColor=0,0,238
+selectBackground=251,156,162
+selectForeground=255,255,255
+visitedLinkColor=82,24,139
+windowBackground=255,255,255
+windowForeground=0,0,0

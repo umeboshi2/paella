@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=Mine Green
+activeBackground=111,122,99
+activeBlend=0,0,0
+activeForeground=255,255,255
+activeTitleBtnBg=175,180,159
+alternateBackground=157,175,161
+background=175,180,159
+buttonBackground=175,180,159
+buttonForeground=0,0,0
+contrast=5
+foreground=0,0,0
+frame=175,180,159
+handle=175,180,159
+inactiveBackground=0,0,0
+inactiveBlend=175,180,159
+inactiveForeground=175,180,159
+inactiveFrame=175,180,159
+inactiveHandle=175,180,159
+inactiveTitleBtnBg=175,180,159
+linkColor=0,0,192
+selectBackground=111,122,99
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=174,195,178
+windowForeground=0,0,0

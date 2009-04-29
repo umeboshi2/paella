@@ -1,0 +1,26 @@
+[Color Scheme]
+Name=My Purple Scheme v3
+activeBackground=99,101,156
+activeBlend=121,124,191
+activeForeground=255,255,255
+activeTitleBtnBg=238,238,230
+alternateBackground=225,225,250
+background=185,182,223
+buttonBackground=132,134,174
+buttonForeground=38,38,38
+contrast=7
+foreground=30,30,30
+frame=185,182,223
+handle=65,64,79
+inactiveBackground=185,182,223
+inactiveBlend=197,194,238
+inactiveForeground=255,255,255
+inactiveFrame=196,193,237
+inactiveHandle=246,245,232
+inactiveTitleBtnBg=237,236,223
+linkColor=0,0,192
+selectBackground=123,125,173
+selectForeground=255,255,255
+visitedLinkColor=128,0,128
+windowBackground=238,238,255
+windowForeground=0,0,0
