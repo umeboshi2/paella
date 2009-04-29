@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# be sure that hostfs is mounted in /mnt
-if ! [ `cat /proc/mounts | grep /mnt | wc -l` -gt 0 ] ; then
-    mount -t hostfs none /mnt
-fi
-
-tar cv /etc/ /root /var/cache/debconf | gzip > <--|uml_common_systarball_bkup_path|-->/$1

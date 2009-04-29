@@ -1,5 +1,0 @@
-[installer]
-allow_unauthenticated_packages:	False
-http_mirror:	http://ftp.us.debian.org/debian
-keep_installed_packages:	True
-

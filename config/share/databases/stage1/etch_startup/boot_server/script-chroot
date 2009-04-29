@@ -1,7 +1,0 @@
-#!/bin/bash
-# setup inetd, tftpd
-
-#echo "not using update-inetd anymore"
-echo "adding tftpd to inetd"
-update-inetd --remove ^tftp
-update-inetd --add "tftp\tdgram\tudp\twait\troot\t/usr/sbin/in.tftpd\tin.tftpd -s /boot/paella -r blksize"

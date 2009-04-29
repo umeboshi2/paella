@@ -1,4 +1,0 @@
-The global trait is basically a collection of global variables.
-Most all of the traits should depend on global.
-Otherwise variables can either go into the default environment or current environment
-

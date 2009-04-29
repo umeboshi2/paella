@@ -1,2 +1,0 @@
-This trait hold the basic admin tools that are frequently used and 
-considered indispensible all but embedded systems.

@@ -1,1 +1,0 @@
-The base trait for all file servers.  Helps to coordinate shares/exports between samba and nfs.
