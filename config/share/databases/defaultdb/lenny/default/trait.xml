@@ -1,24 +1,61 @@
 <trait name="default">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_admin_tools
 		</parent>
+		<parent>
+			debian_admin_base
+		</parent>
+		<parent>
+			users
+		</parent>
 	</parents>
 	<packages>
 		<package action="install">
-			ca-certificates
+			acpid
 		</package>
 		<package action="install">
-			dc
+			acpi-support-base
 		</package>
 		<package action="install">
-			file
+			bible-kjv
+		</package>
+		<package action="install">
+			bible-kjv-text
+		</package>
+		<package action="install">
+			fortunes
 		</package>
 	</packages>
 	<environ/>
-	<templates/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			boot/grub/menu.lst
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/bash.bashrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/login.defs
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/profile
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/skel/.bashrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/skel/.dircolors
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/skel/.profile
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			root/.bashrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			root/.profile
+		</template>
+	</templates>
 	<scripts/>
 </trait>

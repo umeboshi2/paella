@@ -1,0 +1,2 @@
+This trait enables dynamic dns.  This only works when the namserver and dhcp server are on the same machine. <b>This trait does nothing at the moment.</b>
+

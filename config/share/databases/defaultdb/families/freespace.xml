@@ -1,0 +1,11 @@
+	<family name="freespace">
+		<parents/>
+		<environ>
+			<family_variable name="basedir" trait="fileserver_base">
+				/freespace/shared
+			</family_variable>
+			<family_variable name="dhome" trait="users">
+				/freespace/home
+			</family_variable>
+		</environ>
+	</family>

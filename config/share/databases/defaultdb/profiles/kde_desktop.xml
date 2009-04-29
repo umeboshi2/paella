@@ -1,0 +1,32 @@
+	<profile name="kde_desktop" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				base_server
+			</trait>
+			<trait ord="2">
+				timidity
+			</trait>
+			<trait ord="3">
+				subversion
+			</trait>
+			<trait ord="4">
+				kde_desktop
+			</trait>
+			<trait ord="5">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				kde_appearance_khaki
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				skeleton
+			</profile_variable>
+		</environ>
+	</profile>

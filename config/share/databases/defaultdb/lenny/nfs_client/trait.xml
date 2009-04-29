@@ -1,0 +1,11 @@
+<trait name="nfs_client">
+	<parents>
+		<parent>
+			nfs_common
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

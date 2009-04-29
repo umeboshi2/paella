@@ -1,0 +1,30 @@
+	<profile name="paella_standalone" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				xfce_desktop
+			</trait>
+			<trait ord="2">
+				paella_standalone
+			</trait>
+			<trait ord="3">
+				gdm
+			</trait>
+			<trait ord="4">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				freespace
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="description" trait="global">
+				a profile for the creation
+of a standalone paella installer
+			</profile_variable>
+		</environ>
+	</profile>

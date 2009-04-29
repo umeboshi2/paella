@@ -1,0 +1,1 @@
+This trait combines the kde trait and the desktop trait.

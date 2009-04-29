@@ -1,0 +1,24 @@
+<trait name="xemacs">
+	<parents>
+		<parent>
+			base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			xemacs21
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="alternatives_priority" trait="xemacs">
+			999
+		</trait_variable>
+		<trait_variable name="default_editor" trait="xemacs">
+			True
+		</trait_variable>
+	</environ>
+	<templates/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

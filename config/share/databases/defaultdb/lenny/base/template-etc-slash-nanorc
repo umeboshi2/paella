@@ -45,7 +45,7 @@
 # set const
 
 ## Use cut to end of line by default.
-set cut
+# set cut
 
 ## Set the line length for wrapping text and justifying paragraphs.
 ## If fill is 0 or less, the line length will be the screen width less
@@ -91,7 +91,7 @@ set historylog
 # set nonewlines
 
 ## Don't wrap text at all.
-set nowrap
+# set nowrap
 
 ## Set operating directory.  nano will not read or write files outside
 ## this directory and its subdirectories.  Also, the current directory
@@ -101,7 +101,7 @@ set nowrap
 # set operatingdir ""
 
 ## Preserve the XON and XOFF keys (^Q and ^S).
-unset preserve
+# set preserve
 
 ## The characters treated as closing punctuation when justifying
 ## paragraphs.  They cannot contain blank characters.  Only closing

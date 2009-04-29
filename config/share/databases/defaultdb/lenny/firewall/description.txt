@@ -1,0 +1,4 @@
+This trait is for a simple two interface firewall.
+<br/>
+The new shorewall macros help configuring the rules file much easier, making a lot of the old code in paella obsolete.  There still needs to be some code to make the rules file appropriate to the services provided by the local network to the internet.
+

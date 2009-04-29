@@ -1,3 +1,13 @@
-This trait should be the very last trait that is processed.  This trait is used to install 
-configuration files that can't be installed during installation.  This trait can also be used
-for many other things that need to be done at the end of an install.
+This should be the last trait to be processed.  This trait will be responsible for shutting down services that interfere with the filesystems being unmounted.
+<ul>
+<li>Here, we update the users' home directories from /etc/skel</li>
+<li>We also restore files that were moved to keep them from interfering with the install.  Note that this may cause problems when installing the kernel or bootloader after the profile has been installed.</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>

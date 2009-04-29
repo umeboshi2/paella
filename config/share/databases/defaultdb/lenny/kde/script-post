@@ -1,0 +1,10 @@
+#!/usr/bin/python
+from paella.installer.toolkit import InstallerTools
+from paella.installer.util.base import remove_fake_start_stop_daemon
+
+it = InstallerTools()
+
+#print "Removing fake start-stop-daemon"
+
+#remove_fake_start_stop_daemon(it.target)
+

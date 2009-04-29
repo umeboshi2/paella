@@ -1,0 +1,16 @@
+#!/bin/sh
+
+cd /root
+
+echo "Creating postgresql database users"
+su postgres -c "createuser -SDR paella"
+su postgres -c "createuser -sdr dbadmin"
+
+echo "Creating plpgsql language in template1"
+su postgres -c "createlang plpgsql template1"
+echo "Creating empty paella database"
+su postgres -c "createdb paella"
+
+svn co http://10.1.0.1/svn/traits/main/faber
+
+paella-import faber/database.xml

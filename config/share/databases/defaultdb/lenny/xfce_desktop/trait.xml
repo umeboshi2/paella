@@ -1,0 +1,20 @@
+<trait name="xfce_desktop">
+	<parents>
+		<parent>
+			desktop
+		</parent>
+		<parent>
+			xfce
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="default_session_manager" trait="xfce_desktop">
+			True
+		</trait_variable>
+	</environ>
+	<templates/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

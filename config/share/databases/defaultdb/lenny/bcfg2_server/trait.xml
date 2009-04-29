@@ -1,0 +1,15 @@
+<trait name="bcfg2_server">
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			bcfg2-server
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

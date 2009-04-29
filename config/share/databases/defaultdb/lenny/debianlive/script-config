@@ -1,0 +1,38 @@
+#!/usr/bin/python
+import sys
+from paella.installer.toolkit import InstallerTools
+from useless.base.path import path
+
+it = InstallerTools()
+
+directories = [
+    'binary_debian-installer-includes',
+    'binary_local-includes',
+    'chroot_local-includes',
+    'binary_rootfs',
+    'binary_syslinux',
+    'chroot_local-hooks',
+    'chroot_apt',
+    'chroot_local-packageslists',
+    'chroot_local-packages',
+    'binary_local-packageslists',
+    'chroot_local-patches',
+    'binary_local-debs',
+    'binary_debian-installer',
+    'chroot_local-preseed',
+    'binary_local-hooks',
+    'binary_local-udebs',
+    'includes',
+    'chroot_sources',
+    'binary_grub',
+    'templates'
+    ]
+
+prefix = 'etc/live-helper/config'
+
+for directory in directories:
+    fullpath = it.target / prefix / directory
+    print "creating", directory
+    fullpath.mkdir()
+    sys.stdout.flush()
+    

@@ -1,0 +1,22 @@
+	<profile name="fileserver" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				samba_server
+			</trait>
+			<trait ord="2">
+				nfs_server
+			</trait>
+			<trait ord="3">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				fileserver
+			</profile_variable>
+		</environ>
+	</profile>

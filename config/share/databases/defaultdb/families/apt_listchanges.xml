@@ -1,0 +1,14 @@
+	<family name="apt_listchanges">
+		<parents/>
+		<environ>
+			<family_variable name="listchanges_confirm" trait="debian_admin_base">
+				false
+			</family_variable>
+			<family_variable name="listchanges_frontend" trait="debian_admin_base">
+				pager
+			</family_variable>
+			<family_variable name="listchanges_which" trait="debian_admin_base">
+				both
+			</family_variable>
+		</environ>
+	</family>

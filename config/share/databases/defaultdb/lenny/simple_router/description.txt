@@ -1,0 +1,7 @@
+This is a trait for a simple router for small offices.
+<br/>
+<b>Notes</b>
+<ul>
+<li>This would be a good place to setup dynamic dns updates, since both bind and dhcp should be installed, and we know they're on the same machine.  This would ease the trouble of trying to do it in the traits where we aren't sure if they're on the same machine or not.</li>
+<li>This is also a good place to make shorewall turn squid into an transparent proxy, since we know that both traits are installed already.</li>
+</ul>

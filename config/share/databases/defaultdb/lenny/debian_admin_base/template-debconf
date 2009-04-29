@@ -1,0 +1,12 @@
+# E-mail address(es) which will receive changes:
+apt-listchanges	apt-listchanges/email-address	string	<--|debian_admin_base:listchanges_email_address|-->
+# Method to be used to display changes:
+# Choices: pager, browser, xterm-pager, xterm-browser, gtk, text, mail, none
+apt-listchanges	apt-listchanges/frontend	select	<--|debian_admin_base:listchanges_frontend|-->
+# Should apt-listchanges skip changes that have already been seen?
+apt-listchanges	apt-listchanges/save-seen	boolean	<--|debian_admin_base:listchanges_save_seen|-->
+# Prompt for confirmation after displaying changes?
+apt-listchanges	apt-listchanges/confirm	boolean	<--|debian_admin_base:listchanges_confirm|-->
+# Changes displayed with APT:
+# Choices: news, changelogs, both
+apt-listchanges	apt-listchanges/which	select	<--|debian_admin_base:listchanges_which|-->

@@ -1,0 +1,11 @@
+<trait name="vncserver">
+	<parents/>
+	<packages>
+		<package action="install">
+			vnc4server
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,3 @@
+A trait to help configure timidity
+ftp://ftp.freebsd.org/pub/FreeBSD/ports/local-distfiles/nork/guspat-20000706-required.tar.gz
+ftp://ftp.freebsd.org/pub/FreeBSD/ports/local-distfiles/nork/guspat-20000706-optional.tar.gz

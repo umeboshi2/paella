@@ -1,0 +1,8 @@
+<machine name="sidesalad" parent="vboxbase" profile="desktop">
+	<family>
+		insecure
+	</family>
+	<machine_variable name="hostname" trait="global">
+		sidesalad
+	</machine_variable>
+</machine>

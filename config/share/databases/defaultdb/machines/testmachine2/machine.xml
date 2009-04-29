@@ -1,0 +1,5 @@
+<machine name="testmachine2" parent="testmachine">
+	<machine_variable name="hostname" trait="global">
+		testmachine2
+	</machine_variable>
+</machine>

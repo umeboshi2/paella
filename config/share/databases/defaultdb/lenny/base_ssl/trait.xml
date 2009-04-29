@@ -1,7 +1,4 @@
 <trait name="base_ssl">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base
@@ -9,39 +6,19 @@
 	</parents>
 	<packages>
 		<package action="install">
-			openssl
-		</package>
-		<package action="reconfig">
-			openssl
+			ssl-cert
 		</package>
 	</packages>
-	<environ>
-		<trait_variable name="commonName" trait="base_ssl">
-			Common Name
-		</trait_variable>
-		<trait_variable name="countryName" trait="base_ssl">
-			US
-		</trait_variable>
-		<trait_variable name="emailAddress" trait="base_ssl">
-			Email Address
-		</trait_variable>
-		<trait_variable name="localityName" trait="base_ssl">
-			SomeCity
-		</trait_variable>
-		<trait_variable name="orgName" trait="base_ssl">
-			Some Organization Name
-		</trait_variable>
-		<trait_variable name="orgUnitName" trait="base_ssl">
-			Organizational Unit Name
-		</trait_variable>
-		<trait_variable name="stateName" trait="base_ssl">
-			Some-State
-		</trait_variable>
-	</environ>
+	<environ/>
 	<templates>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/ssl/openssl.cnf
+		<template grp_owner="root" mode="0700" owner="root">
+			etc/ssl/make-paella-snakeoil
+		</template>
+		<template grp_owner="root" mode="0600" owner="root">
+			etc/ssl/paella-snakeoil.cnf
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
 </trait>

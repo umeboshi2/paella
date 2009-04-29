@@ -1,6 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 # setup inetd, tftpd
 
-#echo "not using update-inetd anymore"
-update-inetd --remove ^tftp
-update-inetd --add "tftp\tdgram\tudp\twait\troot\t/usr/sbin/in.tftpd\tin.tftpd -s /boot/paella -r blksize"
+echo "not using update-inetd anymore"
+# these lines are kept here to remember how it used to be done
+# when /boot/paella contained the pxelinux.0 file
+# Now, we will be using the /var/lib/tftpboot directory, and the
+# inetd should be set automatically for us when the package is
+# installed (unlike previously).
+
+#echo "adding tftpd to inetd"
+#update-inetd --remove ^tftp
+#update-inetd --add "tftp\tdgram\tudp\twait\troot\t/usr/sbin/in.tftpd\tin.tftpd -s /boot/paella -r blksize"
+
+echo "This script is kept as a reference to older times"

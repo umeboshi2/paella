@@ -1,0 +1,14 @@
+	<family name="samba_default_shares">
+		<parents>
+			<parent>
+				samba_share_homes
+			</parent>
+			<parent>
+				samba_share_printers
+			</parent>
+			<parent>
+				samba_share_printing
+			</parent>
+		</parents>
+		<environ/>
+	</family>

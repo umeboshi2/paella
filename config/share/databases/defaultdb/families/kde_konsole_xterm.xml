@@ -1,0 +1,20 @@
+	<family name="kde_konsole_xterm">
+		<parents/>
+		<environ>
+			<family_variable name="konsole_default_font" trait="kde">
+				DejaVu Sans Mono,8,-1,5,50,0,0,0,0,0
+			</family_variable>
+			<family_variable name="konsole_menubar" trait="kde">
+				Disabled
+			</family_variable>
+			<family_variable name="konsole_schema" trait="kde">
+				Linux.schema
+			</family_variable>
+			<family_variable name="konsole_scrollbar" trait="kde">
+				0
+			</family_variable>
+			<family_variable name="konsole_tabbar" trait="kde">
+				0
+			</family_variable>
+		</environ>
+	</family>

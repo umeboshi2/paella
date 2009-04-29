@@ -1,0 +1,137 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+    
+print "config script for nameserver"
+
+it = InstallerTools()
+
+bind_cachedir = 'var/cache/bind'
+######################################    
+reverse_zone_file_template = """;
+; BIND reverse data file for local network interface
+;
+$TTL    604800
+@       IN      SOA     %(hostname)s. root.%(hostname)s. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      %(hostname)s.
+%(reverse_ipaddr)s   IN      PTR     %(hostname)s.
+"""
+######################################    
+localnet_zone_file_template = """;
+; BIND data file for local network interface
+;
+$TTL    604800
+%(domain)s. IN      SOA     %(hostname)s. root.%(hostname)s. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+%(domain)s. IN      NS      %(hostname)s.
+%(hostname)s.%(domain)s.  IN      A       %(ipaddr)s
+"""
+######################################    
+
+
+def zone_filename(cachedir, domain, target=None):
+    if target is None:
+        target = path('/')
+    filename = '%s/db.%s' % (cachedir, domain)
+    return target / filename
+
+def make_zone_rule(cachedir, domain, reverse=False):
+    text = ''
+    label = domain
+    if reverse:
+        label = '%s.in-addr.arpa' % domain
+    text += 'zone "%s" {\n' % label
+    text += '\ttype master;\n'
+    text += '\tfile "/%s";\n' % zone_filename(cachedir, domain)
+    text += '};\n'
+    return text
+
+# we really need to review this function
+# and determine if it's correct.
+def reverse_address(ipaddr, prefix_length):
+    prefix_length = int(prefix_length)
+    if prefix_length not in [8, 16, 24]:
+        msg = "prefix length is %d, but must be 8, 16, or 24" % prefix_length
+        raise RuntimeError , msg
+    ip_split = ipaddr.split('.')
+    ip_split.reverse()
+    index = - prefix_length / 8
+    reverse_address = ip_split[:index]
+    reverse_address = '.'.join(reverse_address)
+    reverse_domain = ip_split[index:]
+    reverse_domain = '.'.join(reverse_domain)
+    return reverse_address, reverse_domain
+
+def make_zone_contents(data, reverse=False):
+    template = localnet_zone_file_template
+    if reverse:
+        template = reverse_zone_file_template
+        if 'reverse_ipaddr' not in data:
+            revip, revdomain = reverse_address(data['ipaddr'], data['prefix_length'])
+            data['reverse_ipaddr'] = revip
+    return template % data
+
+def make_template_data(toolkit):
+    it = toolkit
+    ipaddr = it.get('localnet:nameserver')
+    prefix_length = it.get('localnet:prefix_length')
+    hostname = it.get('global:hostname')
+    domain = it.get('global:domain')
+    reverse_ipaddr, reverse_domain = reverse_address(ipaddr, prefix_length)
+    template_data = dict(hostname=hostname, domain=domain,
+                         ipaddr=ipaddr, prefix_length=prefix_length,
+                         reverse_ipaddr=reverse_ipaddr,
+                         reverse_domain=reverse_domain)
+    return template_data
+
+def make_zone_files(toolkit, cachedir=bind_cachedir):
+    it = toolkit
+    target = it.target
+    template_data = make_template_data(toolkit)
+    domain = template_data['domain']
+    reverse_domain = template_data['reverse_domain']
+    zone_contents = make_zone_contents(template_data, reverse=False)
+    zone_file = zone_filename(cachedir, domain, target=target)
+    zone_file.write_text(zone_contents)
+    print "created %s" % zone_file
+    rzone_contents = make_zone_contents(template_data, reverse=True)
+    rzone_file = zone_filename(cachedir, reverse_domain,
+                               target=target)
+    rzone_file.write_text(rzone_contents)
+    print "created %s" % rzone_file
+    zone_file = zone_filename(cachedir, domain)
+    rzone_file = zone_filename(cachedir, reverse_domain)
+    it.chroot(['chown', 'bind:bind', str(zone_file)])
+    print "changed ownership of %s" % zone_file
+    it.chroot(['chown', 'bind:bind', str(rzone_file)])
+    print "changed ownership of %s" % rzone_file
+    print 'making zone rules'
+    localconf = it.target / 'etc/bind/named.conf.local'
+    rule = make_zone_rule(cachedir, domain, reverse=False)
+    localconf.write_text(rule, append=True)
+    print "wrote zone rule for %s" % domain
+    rrule = make_zone_rule(cachedir, reverse_domain, reverse=True)
+    localconf.write_text(rrule, append=True)
+    print "wrote zone rule for %s" % reverse_domain
+    
+    
+
+if __name__ == "__main__":
+    make_zone_files(it, cachedir=bind_cachedir)
+    
+    

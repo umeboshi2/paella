@@ -1,0 +1,19 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+print "running config script for desktop_base trait"
+
+it = InstallerTools()
+
+theme = it.get('desktop_base:x_cursor_theme')
+filename = '/etc/X11/cursors/%s.theme' % theme
+
+print "using %s cursor theme" % theme
+
+cmd = ['update-alternatives', '--set',
+       'x-cursor-theme', filename]
+it.chroot(cmd)

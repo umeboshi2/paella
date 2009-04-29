@@ -1,0 +1,231 @@
+<trait name="kde">
+	<parents>
+		<parent>
+			desktop_base
+		</parent>
+		<parent>
+			gkrellm
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			basket
+		</package>
+		<package action="install">
+			basket-kontact-integration
+		</package>
+		<package action="install">
+			kde
+		</package>
+		<package action="install">
+			kde-extra-looks
+		</package>
+		<package action="install">
+			kde-style-serenity
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="import_paella_hotkeys" trait="kde">
+			False
+		</trait_variable>
+		<trait_variable name="kcminput_cursor_theme" trait="kde">
+			&lt;--|desktop_base:x_cursor_theme|--&gt;
+		</trait_variable>
+		<trait_variable name="kcminput_keyboard_click_volume" trait="kde">
+			0
+		</trait_variable>
+		<trait_variable name="kdeglobal_color_scheme" trait="kde">
+			&lt;default&gt;
+		</trait_variable>
+		<trait_variable name="kdeglobal_icon_theme" trait="kde">
+			crystalsvg
+		</trait_variable>
+		<trait_variable name="kdeglobal_mac_style" trait="kde">
+			false
+		</trait_variable>
+		<trait_variable name="kdeglobal_mouse_single_click" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="kdeglobal_widget_style" trait="kde">
+			serenity
+		</trait_variable>
+		<trait_variable name="kdesktop_wallpaper" trait="kde">
+			KDE34.png
+		</trait_variable>
+		<trait_variable name="kdesktop_wallpaper_mode" trait="kde">
+			Scaled
+		</trait_variable>
+		<trait_variable name="kdesu_super_user_command" trait="kde">
+			sudo
+		</trait_variable>
+		<trait_variable name="kicker_alignment" trait="kde">
+			0
+		</trait_variable>
+		<trait_variable name="kicker_background_theme" trait="kde">
+			/usr/share/apps/kicker/wallpapers/default.png
+		</trait_variable>
+		<trait_variable name="kicker_buttons_enable_icon_zoom" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="kicker_colorize_background" trait="kde">
+			false
+		</trait_variable>
+		<trait_variable name="kicker_menus_extensions" trait="kde">
+			prefmenu.desktop,systemmenu.desktop,konsolemenu.desktop
+		</trait_variable>
+		<trait_variable name="kicker_position" trait="kde">
+			3
+		</trait_variable>
+		<trait_variable name="kicker_size" trait="kde">
+			2
+		</trait_variable>
+		<trait_variable name="kicker_size_percentage" trait="kde">
+			100
+		</trait_variable>
+		<trait_variable name="kicker_use_background_theme" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="konsole_auto_resize_tabs" trait="kde">
+			false
+		</trait_variable>
+		<trait_variable name="konsole_bellmode" trait="kde">
+			0
+		</trait_variable>
+		<trait_variable name="konsole_default_font" trait="kde">
+			Monospace,10,-1,2,50,0,0,0,0,0
+		</trait_variable>
+		<trait_variable name="konsole_default_session" trait="kde">
+			shell.desktop
+		</trait_variable>
+		<trait_variable name="konsole_dynamic_tab_hide" trait="kde">
+			false
+		</trait_variable>
+		<trait_variable name="konsole_encoding_name" trait="kde">
+			Default
+		</trait_variable>
+		<trait_variable name="konsole_fullscreen" trait="kde">
+			false
+		</trait_variable>
+		<trait_variable name="konsole_history_enabled" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="konsole_history_lines" trait="kde">
+			1000
+		</trait_variable>
+		<trait_variable name="konsole_keytab" trait="kde">
+			default
+		</trait_variable>
+		<trait_variable name="konsole_menubar" trait="kde">
+			Enabled
+		</trait_variable>
+		<trait_variable name="konsole_schema" trait="kde">
+			
+		</trait_variable>
+		<trait_variable name="konsole_scrollbar" trait="kde">
+			2
+		</trait_variable>
+		<trait_variable name="konsole_tabbar" trait="kde">
+			2
+		</trait_variable>
+		<trait_variable name="ksplash_theme" trait="kde">
+			
+		</trait_variable>
+		<trait_variable name="kwin_alt_tab_style" trait="kde">
+			KDE
+		</trait_variable>
+		<trait_variable name="kwin_animate_minimize" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="kwin_animate_shade" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="kwin_auto_raise" trait="kde">
+			off
+		</trait_variable>
+		<trait_variable name="kwin_auto_raise_interval" trait="kde">
+			500
+		</trait_variable>
+		<trait_variable name="kwin_focus_policy" trait="kde">
+			ClickToFocus
+		</trait_variable>
+		<trait_variable name="kwin_move_mode" trait="kde">
+			Opaque
+		</trait_variable>
+		<trait_variable name="kwin_resize_mode" trait="kde">
+			Opaque
+		</trait_variable>
+		<trait_variable name="kwin_shade_hover" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="kwin_style_border_size" trait="kde">
+			1
+		</trait_variable>
+		<trait_variable name="kwin_style_custom_button_positions" trait="kde">
+			false
+		</trait_variable>
+		<trait_variable name="kwin_style_left_buttons" trait="kde">
+			MSF
+		</trait_variable>
+		<trait_variable name="kwin_style_pluginlib" trait="kde">
+			kwin3_plastik
+		</trait_variable>
+		<trait_variable name="kwin_style_right_buttons" trait="kde">
+			HIAX
+		</trait_variable>
+		<trait_variable name="kwin_style_show_tooltips" trait="kde">
+			true
+		</trait_variable>
+		<trait_variable name="kwin_titlebar_double_click_command" trait="kde">
+			Shade
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kcminputrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kdeglobals
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kdeglobals.mine
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kdesktoprc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kdesurc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kickerrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/konsolerc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kpersonalizerrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/ksplashrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/kwinrc
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/paelladefaults.khotkeys
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/kde3/share/apps/khotkeys/paelladefaults.khotkeys
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			usr/share/autostart/gkrellm.desktop
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			usr/share/autostart/khotkeys-update-paelladefaults.desktop
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
+</trait>

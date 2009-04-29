@@ -1,0 +1,14 @@
+<trait name="gnome_desktop">
+	<parents>
+		<parent>
+			desktop
+		</parent>
+		<parent>
+			gnome
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,17 @@
+	<family name="kde_kicker_paella">
+		<parents/>
+		<environ>
+			<family_variable name="kicker_alignment" trait="kde">
+				1
+			</family_variable>
+			<family_variable name="kicker_position" trait="kde">
+				3
+			</family_variable>
+			<family_variable name="kicker_size" trait="kde">
+				2
+			</family_variable>
+			<family_variable name="kicker_size_percentage" trait="kde">
+				80
+			</family_variable>
+		</environ>
+	</family>

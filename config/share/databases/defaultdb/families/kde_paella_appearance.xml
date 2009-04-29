@@ -1,0 +1,33 @@
+	<family name="kde_paella_appearance">
+		<parents>
+			<parent>
+				kde_paella_defaults
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="x_cursor_theme" trait="desktop_base">
+				ComixCursors-Green-Small
+			</family_variable>
+			<family_variable name="kdeglobal_color_scheme" trait="kde">
+				4-s.kcsrc
+			</family_variable>
+			<family_variable name="kdeglobal_icon_theme" trait="kde">
+				crystalsvg
+			</family_variable>
+			<family_variable name="kdeglobal_widget_style" trait="kde">
+				serenity
+			</family_variable>
+			<family_variable name="kdesktop_wallpaper" trait="kde">
+				english_peas_1.jpg
+			</family_variable>
+			<family_variable name="kicker_use_background_theme" trait="kde">
+				false
+			</family_variable>
+			<family_variable name="konsole_schema" trait="kde">
+				4-s.schema
+			</family_variable>
+			<family_variable name="ksplash_theme" trait="kde">
+				DebianMoment
+			</family_variable>
+		</environ>
+	</family>

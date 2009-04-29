@@ -1,14 +1,157 @@
 <trait name="firewall">
-	<description>
-		None
-	</description>
-	<parents/>
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
 	<packages>
 		<package action="install">
 			shorewall
 		</package>
 	</packages>
-	<environ/>
-	<templates/>
-	<scripts/>
+	<environ>
+		<trait_variable name="fw2loc_macros" trait="firewall">
+			
+		</trait_variable>
+		<trait_variable name="fw2net_macros" trait="firewall">
+			#HTTP #HTTPS
+		</trait_variable>
+		<trait_variable name="ip_forwarding" trait="firewall">
+			Keep
+		</trait_variable>
+		<trait_variable name="loc2fw_macros" trait="firewall">
+			DNS
+		</trait_variable>
+		<trait_variable name="loc_interface" trait="firewall">
+			eth1
+		</trait_variable>
+		<trait_variable name="net2fw_macros" trait="firewall">
+			
+		</trait_variable>
+		<trait_variable name="net_interface" trait="firewall">
+			eth0
+		</trait_variable>
+		<trait_variable name="policy_all2all" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_all2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_fw2all" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_fw2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_fw2loc" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_fw2loc_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_fw2net" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_fw2net_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_loc2all" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_loc2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_loc2fw" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_loc2fw_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_loc2net" trait="firewall">
+			ACCEPT
+		</trait_variable>
+		<trait_variable name="policy_loc2net_loglevel" trait="firewall">
+			
+		</trait_variable>
+		<trait_variable name="policy_net2all" trait="firewall">
+			DROP
+		</trait_variable>
+		<trait_variable name="policy_net2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_net2fw" trait="firewall">
+			DROP
+		</trait_variable>
+		<trait_variable name="policy_net2fw_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_net2loc" trait="firewall">
+			DROP
+		</trait_variable>
+		<trait_variable name="policy_net2loc_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="startup" trait="firewall">
+			0
+		</trait_variable>
+		<trait_variable name="wait_interface" trait="firewall">
+			&quot;&quot;
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/shorewall
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/samba
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/interfaces
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.BootpC
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.BootpS
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.DHCP
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.MountD
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.NFS
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.Portmap
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.StatD
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/Makefile
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/masq
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/policy
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/routestopped
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/rules
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/shorewall.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/zones
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+	</scripts>
 </trait>

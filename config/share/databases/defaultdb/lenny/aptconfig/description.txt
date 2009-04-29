@@ -1,0 +1,1 @@
+This trait is used to configure apt.  This trait is meant to be processed before any packages are installed.

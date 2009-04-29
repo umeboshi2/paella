@@ -1,0 +1,337 @@
+<trait name="debianlive">
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			dosfstools
+		</package>
+		<package action="install">
+			genext2fs
+		</package>
+		<package action="install">
+			live-helper
+		</package>
+		<package action="install">
+			memtest86+
+		</package>
+		<package action="install">
+			mtd-tools
+		</package>
+		<package action="install">
+			parted
+		</package>
+		<package action="install">
+			squashfs-tools
+		</package>
+		<package action="install">
+			uuid-runtime
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="lh_apt" trait="debianlive">
+			apt
+		</trait_variable>
+		<trait_variable name="lh_apt_ftp_proxy" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_apt_http_proxy" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_apt_pdiffs" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_apt_pipeline" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_apt_recommends" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_apt_secure" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_architecture" trait="debianlive">
+			i386
+		</trait_variable>
+		<trait_variable name="lh_binary_filesystem" trait="debianlive">
+			fat16
+		</trait_variable>
+		<trait_variable name="lh_binary_images" trait="debianlive">
+			iso
+		</trait_variable>
+		<trait_variable name="lh_binary_indices" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_bootappend_install" trait="debianlive">
+			-- ${LH_BOOTAPPEND_LIVE}
+		</trait_variable>
+		<trait_variable name="lh_bootappend_live" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_bootloader" trait="debianlive">
+			syslinux
+		</trait_variable>
+		<trait_variable name="lh_bootstrap" trait="debianlive">
+			debootstrap
+		</trait_variable>
+		<trait_variable name="lh_breakpoints" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_cache" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_cache_indices" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_cache_packages" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_cache_stages" trait="debianlive">
+			bootstrap
+		</trait_variable>
+		<trait_variable name="lh_categories" trait="debianlive">
+			main
+		</trait_variable>
+		<trait_variable name="lh_checksums" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_chroot_filesystem" trait="debianlive">
+			squashfs
+		</trait_variable>
+		<trait_variable name="lh_debconf_frontend" trait="debianlive">
+			noninteractive
+		</trait_variable>
+		<trait_variable name="lh_debconf_nowarnings" trait="debianlive">
+			yes
+		</trait_variable>
+		<trait_variable name="lh_debconf_priority" trait="debianlive">
+			critical
+		</trait_variable>
+		<trait_variable name="lh_debian_installer" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_debian_installer_distribution" trait="debianlive">
+			lenny
+		</trait_variable>
+		<trait_variable name="lh_debian_installer_preseedfile" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_debug" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_distribution" trait="debianlive">
+			lenny
+		</trait_variable>
+		<trait_variable name="lh_encryption" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_exposed_root" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_fdisk" trait="debianlive">
+			fdisk
+		</trait_variable>
+		<trait_variable name="lh_force" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_hooks" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_hostname" trait="debianlive">
+			debian
+		</trait_variable>
+		<trait_variable name="lh_includes" trait="debianlive">
+			/usr/share/live-helper/includes
+		</trait_variable>
+		<trait_variable name="lh_initramfs" trait="debianlive">
+			auto
+		</trait_variable>
+		<trait_variable name="lh_interactive" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_iso_application" trait="debianlive">
+			Debian Live
+		</trait_variable>
+		<trait_variable name="lh_iso_preparer" trait="debianlive">
+			live-helper $VERSION; http://packages.qa.debian.org/live-helper
+		</trait_variable>
+		<trait_variable name="lh_iso_publisher" trait="debianlive">
+			Debian Live project; http://debian-live.alioth.debian.org/; debian-live@lists.debian.org
+		</trait_variable>
+		<trait_variable name="lh_iso_volume" trait="debianlive">
+			Debian Live &lt;--|global:suite|--&gt; $(date +%Y%m%d-%H:%M)
+		</trait_variable>
+		<trait_variable name="lh_jffs2_eraseblock" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_keyring_packages" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_language" trait="debianlive">
+			en
+		</trait_variable>
+		<trait_variable name="lh_linux_flavours" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_linux_packages" trait="debianlive">
+			linux-image-2.6 ${LH_UNION_FILESYSTEM}-modules-2.6 squashfs-modules-2.6
+		</trait_variable>
+		<trait_variable name="lh_losetup" trait="debianlive">
+			losetup
+		</trait_variable>
+		<trait_variable name="lh_memtest" trait="debianlive">
+			memtest86+
+		</trait_variable>
+		<trait_variable name="lh_mirror_binary" trait="debianlive">
+			$LH_MIRROR_BOOTSTRAP
+		</trait_variable>
+		<trait_variable name="lh_mirror_binary_security" trait="debianlive">
+			$LH_MIRROR_CHROOT_SECURITY
+		</trait_variable>
+		<trait_variable name="lh_mirror_bootstrap" trait="debianlive">
+			http://ftp.us.debian.org/debian
+		</trait_variable>
+		<trait_variable name="lh_mirror_chroot" trait="debianlive">
+			$LH_MIRROR_BOOTSTRAP
+		</trait_variable>
+		<trait_variable name="lh_mirror_chroot_security" trait="debianlive">
+			http://security.debian.org
+		</trait_variable>
+		<trait_variable name="lh_mode" trait="debianlive">
+			debian
+		</trait_variable>
+		<trait_variable name="lh_net_cow_filesystem" trait="debianlive">
+			nfs
+		</trait_variable>
+		<trait_variable name="lh_net_cow_mountoptions" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_net_cow_path" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_net_cow_server" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_net_root_filesystem" trait="debianlive">
+			nfs
+		</trait_variable>
+		<trait_variable name="lh_net_root_mountoptions" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_net_root_path" trait="debianlive">
+			/srv/debian-live
+		</trait_variable>
+		<trait_variable name="lh_net_root_server" trait="debianlive">
+			192.168.1.1
+		</trait_variable>
+		<trait_variable name="lh_net_tarball" trait="debianlive">
+			gzip
+		</trait_variable>
+		<trait_variable name="lh_packages" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_packages_lists" trait="debianlive">
+			standard
+		</trait_variable>
+		<trait_variable name="lh_quiet" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_root_command" trait="debianlive">
+			sudo
+		</trait_variable>
+		<trait_variable name="lh_sections" trait="debianlive">
+			$LH_CATEGORIES
+		</trait_variable>
+		<trait_variable name="lh_security" trait="debianlive">
+			enabled
+		</trait_variable>
+		<trait_variable name="lh_source" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_source_images" trait="debianlive">
+			tar
+		</trait_variable>
+		<trait_variable name="lh_symlinks" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_syslinux_cfg" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_syslinux_menu" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_syslinux_menu_live_entry" trait="debianlive">
+			Start Debian Live
+		</trait_variable>
+		<trait_variable name="lh_syslinux_menu_live_failsafe_entry" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_syslinux_menu_memtest_entry" trait="debianlive">
+			Memory test
+		</trait_variable>
+		<trait_variable name="lh_syslinux_splash" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_syslinux_timeout" trait="debianlive">
+			0
+		</trait_variable>
+		<trait_variable name="lh_sysvinit" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_tasks" trait="debianlive">
+			
+		</trait_variable>
+		<trait_variable name="lh_tasksel" trait="debianlive">
+			tasksel
+		</trait_variable>
+		<trait_variable name="lh_templates" trait="debianlive">
+			/usr/share/live-helper/templates
+		</trait_variable>
+		<trait_variable name="lh_union_filesystem" trait="debianlive">
+			aufs
+		</trait_variable>
+		<trait_variable name="lh_use_fakeroot" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_username" trait="debianlive">
+			user
+		</trait_variable>
+		<trait_variable name="lh_verbose" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="lh_win32_loader" trait="debianlive">
+			disabled
+		</trait_variable>
+		<trait_variable name="live_config_owner" trait="debianlive">
+			root
+		</trait_variable>
+		<trait_variable name="mksquashfs_options" trait="debianlive">
+			
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/live-helper/config/binary
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/live-helper/config/bootstrap
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/live-helper/config/chroot
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/live-helper/config/common
+		</template>
+		<template grp_owner="root" mode="0755" owner="root">
+			etc/live-helper/config/prepare-netboot
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/live-helper/config/source
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

@@ -1,0 +1,11 @@
+These are basic packages to help administer a debian system.  Only sysadmin packages are here, as well as packages that are specific to debian.  Packages that help with building packages, or doing debian specific development shouldn't go here.
+<ul>
+<li>We're installing apt-listbugs.  This can easily cause problems with the installation.  The configuration for apt is treated as an intefering file, and will be out of the way, until the final trait is run.  Even so, it's very possible that installing the kernel and bootloader (which takes place after the profile is installed) could interrupt the installation.  There is a variable where we can ignore the bugs that will be encountered that will help.  This variable must contain a comma separated list of package name and/or bug numbers.  <b>Be warned</b> that the installer will need a connection to the internet, which may not be desired.</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>

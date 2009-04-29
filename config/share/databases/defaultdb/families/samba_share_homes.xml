@@ -1,0 +1,23 @@
+	<family name="samba_share_homes">
+		<parents/>
+		<environ>
+			<family_variable name="share_homes_browseable" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_homes_comment" trait="samba_server">
+				Home Directories
+			</family_variable>
+			<family_variable name="share_homes_create_mask" trait="samba_server">
+				0700
+			</family_variable>
+			<family_variable name="share_homes_directory_mask" trait="samba_server">
+				0700
+			</family_variable>
+			<family_variable name="share_homes_read_only" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_homes_valid_users" trait="samba_server">
+				%S
+			</family_variable>
+		</environ>
+	</family>

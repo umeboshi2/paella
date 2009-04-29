@@ -1,0 +1,1 @@
+I have been considering using bcfg2 to help keep the machines that are installed with paella updated and configured.  I have been trying to figure out a way to export the configuration of a machine from the postgresql database int a form that bcfg2 can use, but I have been unsuccessful so far.  This trait is here to help, but there hasn't been much work done on it.

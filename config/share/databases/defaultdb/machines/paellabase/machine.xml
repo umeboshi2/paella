@@ -1,0 +1,12 @@
+<machine name="paellabase" parent="vboxbase">
+	<script name="post_install"/>
+	<family>
+		paella_vbox_server
+	</family>
+	<machine_variable name="install_standard" trait="base">
+		True
+	</machine_variable>
+	<machine_variable name="subnet_filename" trait="dhcp_server">
+		pxelinux.0
+	</machine_variable>
+</machine>

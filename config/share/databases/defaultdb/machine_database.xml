@@ -1,8 +1,22 @@
 <machine_database>
-	<machines/>
-	<machine_types/>
-	<disks/>
-	<mounts/>
-	<filesystems/>
-	<kernels/>
+	<machines>
+		<machine name="bcfg2server"/>
+		<machine name="builder"/>
+		<machine name="chroot"/>
+		<machine name="default"/>
+		<machine name="paella"/>
+		<machine name="paellabase"/>
+		<machine name="raidtest"/>
+		<machine name="sidesalad"/>
+		<machine name="standalone"/>
+		<machine name="stdinstall"/>
+		<machine name="testmachine"/>
+		<machine name="testmachine2"/>
+		<machine name="vboxbase"/>
+	</machines>
+	<kernels>
+		<kernel>
+			default
+		</kernel>
+	</kernels>
 </machine_database>

@@ -1,0 +1,22 @@
+	<profile name="builder" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				base_server
+			</trait>
+			<trait ord="2">
+				pbuilder
+			</trait>
+			<trait ord="3">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				builder
+			</profile_variable>
+		</environ>
+	</profile>

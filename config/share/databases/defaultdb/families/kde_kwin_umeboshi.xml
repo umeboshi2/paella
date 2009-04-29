@@ -1,0 +1,17 @@
+	<family name="kde_kwin_umeboshi">
+		<parents/>
+		<environ>
+			<family_variable name="kwin_auto_raise" trait="kde">
+				on
+			</family_variable>
+			<family_variable name="kwin_focus_policy" trait="kde">
+				FocusFollowsMouse
+			</family_variable>
+			<family_variable name="kwin_shade_hover" trait="kde">
+				off
+			</family_variable>
+			<family_variable name="kwin_style_custom_button_positions" trait="kde">
+				true
+			</family_variable>
+		</environ>
+	</family>

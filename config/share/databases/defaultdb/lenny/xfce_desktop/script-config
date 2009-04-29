@@ -1,0 +1,26 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+print "running config script for xemacs trait"
+
+def get(key):
+    if ':' not in key:
+        key = 'xfce_desktop:%s' % key
+    return env.dereference(key)
+
+
+it = InstallerTools()
+env = it.env()
+
+default_session = get('default_session_manager')
+if default_session in ['True', 'true', 'Yes', 'yes']:
+    print "Using xfce4 as default session manager"
+    sys.stdout.flush()
+    cmd = ['update-alternatives', '--install', '/usr/bin/x-session-manager', 
+           'x-session-manager', '/usr/bin/xfce4-session', '999']
+    it.chroot(cmd)
+

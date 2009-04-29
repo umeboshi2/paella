@@ -1,0 +1,140 @@
+<trait name="gkrellm">
+	<parents>
+		<parent>
+			desktop_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			gkrellm
+		</package>
+		<package action="install">
+			gkrellm-bfm
+		</package>
+		<package action="install">
+			gkrellmd
+		</package>
+		<package action="install">
+			gkrellmitime
+		</package>
+		<package action="install">
+			gkrellm-skins
+		</package>
+		<package action="install">
+			gkrellweather
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="above" trait="gkrellm">
+			0
+		</trait_variable>
+		<trait_variable name="below" trait="gkrellm">
+			0
+		</trait_variable>
+		<trait_variable name="bfm_launch" trait="gkrellm">
+			x-terminal-emulator  -e bash -c &quot;ps aufx | pager&quot;
+		</trait_variable>
+		<trait_variable name="bigfont" trait="gkrellm">
+			Sans 11
+		</trait_variable>
+		<trait_variable name="chart_width" trait="gkrellm">
+			60
+		</trait_variable>
+		<trait_variable name="cpu_comment" trait="gkrellm">
+			cat /proc/cpuinfo
+		</trait_variable>
+		<trait_variable name="cpu_launch" trait="gkrellm">
+			x-terminal-emulator -e bash -c &quot;cat /proc/cpuinfo | pager&quot;
+		</trait_variable>
+		<trait_variable name="decorated" trait="gkrellm">
+			0
+		</trait_variable>
+		<trait_variable name="disk_comment" trait="gkrellm">
+			Disk watch the disk space in a terminal
+		</trait_variable>
+		<trait_variable name="disk_launch" trait="gkrellm">
+			x-terminal-emulator -e bash -c &quot;watch -n1 df -h&quot;
+		</trait_variable>
+		<trait_variable name="dock_type" trait="gkrellm">
+			0
+		</trait_variable>
+		<trait_variable name="enable_hostname" trait="gkrellm">
+			1
+		</trait_variable>
+		<trait_variable name="enable_sysname" trait="gkrellm">
+			0
+		</trait_variable>
+		<trait_variable name="hostname_short" trait="gkrellm">
+			0
+		</trait_variable>
+		<trait_variable name="lgfont" trait="gkrellm">
+			Sans 9
+		</trait_variable>
+		<trait_variable name="medfont" trait="gkrellm">
+			Sans 10
+		</trait_variable>
+		<trait_variable name="mem_comment" trait="gkrellm">
+			Watch /proc/meminfo
+		</trait_variable>
+		<trait_variable name="mem_launch" trait="gkrellm">
+			x-terminal-emulator -e bash -c &quot;watch -n1 cat /proc/meminfo&quot;
+		</trait_variable>
+		<trait_variable name="proc_comment" trait="gkrellm">
+			Run top
+		</trait_variable>
+		<trait_variable name="proc_launch" trait="gkrellm">
+			x-terminal-emulator -e top
+		</trait_variable>
+		<trait_variable name="save_position" trait="gkrellm">
+			1
+		</trait_variable>
+		<trait_variable name="skip_pager" trait="gkrellm">
+			1
+		</trait_variable>
+		<trait_variable name="skip_taskbar" trait="gkrellm">
+			1
+		</trait_variable>
+		<trait_variable name="smfont" trait="gkrellm">
+			Sans 9
+		</trait_variable>
+		<trait_variable name="startup_pos" trait="gkrellm">
+			0 0
+		</trait_variable>
+		<trait_variable name="sticky_state" trait="gkrellm">
+			1
+		</trait_variable>
+		<trait_variable name="theme" trait="gkrellm">
+			Jewel_gkrellm
+		</trait_variable>
+		<trait_variable name="update_hz" trait="gkrellm">
+			10
+		</trait_variable>
+		<trait_variable name="uptime_comment" trait="gkrellm">
+			just an x-term
+		</trait_variable>
+		<trait_variable name="uptime_launch" trait="gkrellm">
+			x-terminal-emulator
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0640" owner="root">
+			etc/skel/.gkrellm2/data/startup_position
+		</template>
+		<template grp_owner="root" mode="0640" owner="root">
+			etc/skel/.gkrellm2/plugin_enable
+		</template>
+		<template grp_owner="root" mode="0640" owner="root">
+			etc/skel/.gkrellm2/plugin_placement
+		</template>
+		<template grp_owner="root" mode="0640" owner="root">
+			etc/skel/.gkrellm2/theme_config
+		</template>
+		<template grp_owner="root" mode="0600" owner="root">
+			etc/skel/.gkrellm2/user-config
+		</template>
+	</templates>
+	<scripts>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
+</trait>

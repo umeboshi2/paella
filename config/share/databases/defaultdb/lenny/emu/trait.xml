@@ -1,0 +1,63 @@
+<trait name="emu">
+	<parents>
+		<parent>
+			desktop_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			atari800
+		</package>
+		<package action="install">
+			dosbox
+		</package>
+		<package action="install">
+			e-uae
+		</package>
+		<package action="install">
+			gnuboy-sdl
+		</package>
+		<package action="install">
+			gnuboy-x
+		</package>
+		<package action="install">
+			hatari
+		</package>
+		<package action="install">
+			openmsx
+		</package>
+		<package action="install">
+			pcsx-df
+		</package>
+		<package action="install">
+			scummvm
+		</package>
+		<package action="install">
+			snes9x-x
+		</package>
+		<package action="install">
+			spectemu-x11
+		</package>
+		<package action="install">
+			stella
+		</package>
+		<package action="install">
+			tiemu
+		</package>
+		<package action="install">
+			vice
+		</package>
+		<package action="install">
+			xmame-gl
+		</package>
+		<package action="install">
+			xmame-sdl
+		</package>
+		<package action="install">
+			xtrs
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

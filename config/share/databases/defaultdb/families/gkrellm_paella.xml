@@ -1,0 +1,23 @@
+	<family name="gkrellm_paella">
+		<parents/>
+		<environ>
+			<family_variable name="bigfont" trait="gkrellm">
+				Sans 10
+			</family_variable>
+			<family_variable name="dock_type" trait="gkrellm">
+				1
+			</family_variable>
+			<family_variable name="lgfont" trait="gkrellm">
+				Sans 9
+			</family_variable>
+			<family_variable name="medfont" trait="gkrellm">
+				Sans 8
+			</family_variable>
+			<family_variable name="smfont" trait="gkrellm">
+				Sans 7
+			</family_variable>
+			<family_variable name="theme" trait="gkrellm">
+				Jewel_gkrellm
+			</family_variable>
+		</environ>
+	</family>

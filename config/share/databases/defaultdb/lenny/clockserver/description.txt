@@ -1,2 +1,11 @@
-This trait creates a reference clock for your local network.  This helps minimize traffic 
-and keep the network in better sync.
+This is an ntp server for the local network.
+<br/>
+<b>Notes</b>
+<ul>
+<li>The fake start-stop daemon is used in this trait</li>
+</ul><br/>
+<b>TODO</b>
+<ul>
+<li>figure out how to get windows clients to use this clock</li>
+<li>figure out how to pass this server along dhcp</li>
+</ul>

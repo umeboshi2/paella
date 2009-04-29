@@ -1,0 +1,20 @@
+	<family name="samba_share_netlogon">
+		<parents/>
+		<environ>
+			<family_variable name="share_netlogon_comment" trait="samba_server">
+				Network Logon Service
+			</family_variable>
+			<family_variable name="share_netlogon_guest_ok" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_netlogon_path" trait="samba_server">
+				&lt;--|fileserver_base:basedir|--&gt;/samba/netlogon
+			</family_variable>
+			<family_variable name="share_netlogon_read_only" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_netlogon_share_modes" trait="samba_server">
+				no
+			</family_variable>
+		</environ>
+	</family>

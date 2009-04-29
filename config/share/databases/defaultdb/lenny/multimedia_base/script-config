@@ -1,0 +1,31 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.base.util import get_architecture
+from paella.installer.toolkit import InstallerTools
+
+
+
+print "config script for multimedia_base trait"
+
+it = InstallerTools()
+
+paella_site = it.target / 'root/site'
+
+sys.path.append(str(paella_site))
+
+from PaellaInstall.General import install_packages
+
+#print "doing nothing right now"
+wincodecs_map = dict(amd64='w64codecs', i386='w32codecs')
+install_wincodecs = it.get('multimedia_base:install_wincodecs')
+if install_wincodecs in ['True', 'true', 'Yes', 'yes']:
+    print "Installing windows codecs"
+    arch = get_architecture()
+    package = wincodecs_map[arch]
+    print "package is", package
+    sys.stdout.flush()
+    install_packages(it, [package])
+    

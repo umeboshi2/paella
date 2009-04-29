@@ -1,0 +1,41 @@
+	<profile name="paella_server" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				paella_server
+			</trait>
+			<trait ord="2">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				apt_listchanges
+			</family>
+			<family>
+				freespace
+			</family>
+			<family>
+				ignored_bugs_lenny
+			</family>
+			<family>
+				nfs_export_live_installer
+			</family>
+			<family>
+				nfs_export_paellalog
+			</family>
+			<family>
+				paella_debianlive
+			</family>
+			<family>
+				standard_firewall
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				skeleton
+			</profile_variable>
+		</environ>
+	</profile>

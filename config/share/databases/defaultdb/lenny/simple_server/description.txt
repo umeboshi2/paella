@@ -1,0 +1,11 @@
+Remember, if this is on a separate profile than the simple_router trait, be sure to add the clock trait to this profile.
+<br/>
+<b>Notes</b>
+<ul>
+<li>ldap_server trait is new, and may not be here in the future.  There may be an advanced_server trait that has that one.</li>
+</ul><br/>
+<b>TODO</b>
+<ul>
+<li>figure out how to get ldap and samba working together</li>
+<li>figure out how to get user accounts to work well with ldap, and how to  handle logging in with sysadmin accounts when ldap isn't working.</li>
+</ul>

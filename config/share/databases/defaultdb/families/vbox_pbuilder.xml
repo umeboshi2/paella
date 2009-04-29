@@ -1,0 +1,14 @@
+	<family name="vbox_pbuilder">
+		<parents/>
+		<environ>
+			<family_variable name="mirrorsite" trait="pbuilder">
+				&lt;--|pbuilder:my_debrepos|--&gt;/debian
+			</family_variable>
+			<family_variable name="my_debrepos" trait="pbuilder">
+				http://10.1.0.1/debrepos
+			</family_variable>
+			<family_variable name="othermirror" trait="pbuilder">
+				deb &lt;--|pbuilder:my_debrepos|--&gt;/paella paella main contrib non-free | deb &lt;--|pbuilder:my_debrepos|--&gt;/paella lenny-backports main contrib non-free
+			</family_variable>
+		</environ>
+	</family>

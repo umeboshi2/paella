@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "no need to install kernel for chroot install"

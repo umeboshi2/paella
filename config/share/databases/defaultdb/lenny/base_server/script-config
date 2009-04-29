@@ -1,0 +1,73 @@
+#!/usr/bin/python
+from paella.installer.toolkit import InstallerTools
+
+print "config script for base_server"
+it = InstallerTools()
+env = it.env()
+
+# some helpers to keep from passing the trait
+# name around too much
+TRAIT = 'base_server'
+
+def has_key(name):
+    key = '%s:%s' % (TRAIT, name)
+    return env.has_key(key)
+
+def get(name):
+    key = '%s:%s' % (TRAIT, name)
+    return env.dereference(key)
+
+def keyline(keytype, place):
+    return '-----%s %s PRIVATE KEY-----\n' % (place, keytype)
+
+def private_key(keytype, data):
+    content = ''
+    content += keyline(keytype, 'BEGIN')
+    content += data + '\n'
+    content += keyline(keytype, 'END')
+    return content
+
+
+FILENAMES = dict(sshd_host_dsa_key='ssh_host_dsa_key',
+                 sshd_host_dsa_pub='ssh_host_dsa_key.pub',
+                 sshd_host_rsa_key='ssh_host_rsa_key',
+                 sshd_host_rsa_pub='ssh_host_rsa_key.pub')
+
+# here keyname is the keyname
+# from the env variable, not the
+# ssh keys
+def file_content(keyname):
+    keytype = None
+    if 'rsa' in keyname:
+        keytype = 'RSA'
+    if 'dsa' in keyname:
+        keytype = 'DSA'
+    if keytype is None:
+        raise RuntimeError , "couldn't determine keytype from %s" % keyname
+    if keyname.endswith('pub'):
+        return '%s\n' % get(keyname)
+    else:
+        return private_key(keytype, get(keyname))
+
+def make_file(keyname):
+    content = file_content(keyname)
+    filename = it.target / 'etc/ssh' / FILENAMES[keyname]
+    print "Installing", filename
+    keyfile = file(filename, 'w')
+    keyfile.write(content)
+    keyfile.close()
+    if filename.endswith('.pub'):
+        filename.chmod(0644)
+    else:
+        filename.chmod(0600)
+        
+        
+    
+
+
+if get('sshd_replace_host_keys') in ['True', 'true', 'yes']:
+    print "we need to replace ssh host keys for", env['global:hostname']
+    for keyname in FILENAMES:
+        make_file(keyname)
+        
+    

@@ -1,0 +1,36 @@
+	<family name="insecure">
+		<parents>
+			<parent>
+				sshd_testing_keys
+			</parent>
+			<parent>
+				testing_users
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="pam_auth_unix_opts" trait="base">
+				nullok
+			</family_variable>
+			<family_variable name="sshd_password_authentication" trait="base_server">
+				yes
+			</family_variable>
+			<family_variable name="sshd_permit_empty_passwords" trait="base_server">
+				yes
+			</family_variable>
+			<family_variable name="sshd_permit_root_login" trait="base_server">
+				yes
+			</family_variable>
+			<family_variable name="sshd_pubkey_authentication" trait="base_server">
+				yes
+			</family_variable>
+			<family_variable name="sshd_replace_host_keys" trait="base_server">
+				True
+			</family_variable>
+			<family_variable name="sshd_use_pam" trait="base_server">
+				no
+			</family_variable>
+			<family_variable name="sudo_authenticate" trait="users">
+				!authenticate
+			</family_variable>
+		</environ>
+	</family>

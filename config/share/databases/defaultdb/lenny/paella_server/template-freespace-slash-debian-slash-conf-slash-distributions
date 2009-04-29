@@ -1,0 +1,25 @@
+Origin: Debian
+Label: Debian
+Suite: testing
+Version: 4.0
+Codename: lenny
+Architectures: i386
+Components: main contrib non-free
+Description: Debian x.y Testing - Not Yet Released
+Log: logfile
+Update: lenny security-testing
+SignWith: <--|paella_server:signing_key|-->
+
+Origin: Paella
+Label: Paella
+Suite: paella
+Version: 4.0
+Codename: paella
+Architectures: i386 source
+Components: main contrib non-free
+Description: Paella local repository
+Log: logfile
+Update: sid-fai
+SignWith: <--|paella_server:signing_key|-->
+
+

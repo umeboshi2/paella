@@ -1,0 +1,21 @@
+	<family name="testing_users">
+		<parents>
+			<parent>
+				user_umeboshi
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="admin_users" trait="users">
+				umeboshi mradmin
+			</family_variable>
+			<family_variable name="standard_users" trait="users">
+				debian tom dick harry sally
+			</family_variable>
+			<family_variable name="sysadmin_users" trait="users">
+				umeboshi
+			</family_variable>
+			<family_variable name="user_debian_gecos" trait="users">
+				Debian User,,,
+			</family_variable>
+		</environ>
+	</family>

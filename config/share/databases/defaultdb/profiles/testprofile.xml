@@ -1,0 +1,25 @@
+	<profile name="testprofile" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="install_standard" trait="base">
+				false
+			</profile_variable>
+			<profile_variable name="hostname" trait="global">
+				testhost
+			</profile_variable>
+			<profile_variable name="install_opencd" trait="global">
+				false
+			</profile_variable>
+			<profile_variable name="regdomain" trait="global">
+				somedomain.gue
+			</profile_variable>
+		</environ>
+	</profile>

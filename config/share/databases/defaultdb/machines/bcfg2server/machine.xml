@@ -1,0 +1,14 @@
+<machine name="bcfg2server" parent="vboxbase" profile="bcfg2server">
+	<family>
+		sshd_testing_keys
+	</family>
+	<family>
+		testing_users
+	</family>
+	<machine_variable name="hostname" trait="global">
+		bcfg2server
+	</machine_variable>
+	<machine_variable name="user_umeboshi_plaintext_password" trait="users">
+		&lt;--|users:default_plaintext_password|--&gt;
+	</machine_variable>
+</machine>

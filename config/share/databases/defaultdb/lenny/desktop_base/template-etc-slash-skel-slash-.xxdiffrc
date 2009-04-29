@@ -1,0 +1,7 @@
+Accel.EditLeft: "<--|desktop_base:xxdiff_edit_left|-->"
+Accel.EditRight: "<--|desktop_base:xxdiff_edit_right|-->"
+FontText: "<--|desktop_base:xxdiff_font|-->"
+DirDiffRecursive: <--|desktop_base:xxdiff_dir_diff_recursive|-->
+Show.Toolbar: <--|desktop_base:xxdiff_show_toolbar|-->
+Command.DiffDirectoriesRec: "<--|desktop_base:xxdiff_dir_diff_recursive_command|-->"
+Command.Edit: "<--|desktop_base:xxdiff_editor|-->"

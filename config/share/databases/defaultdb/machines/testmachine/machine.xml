@@ -1,0 +1,41 @@
+<machine name="testmachine" parent="vboxbase" profile="skeleton">
+	<family>
+		apt_recommends
+	</family>
+	<family>
+		lapnet2
+	</family>
+	<family>
+		vbox_testing
+	</family>
+	<machine_variable name="eth1_address" trait="network_base">
+		&lt;--|localnet:gateway|--&gt;
+	</machine_variable>
+	<machine_variable name="eth1_method" trait="network_base">
+		static
+	</machine_variable>
+	<machine_variable name="eth1_netmask" trait="network_base">
+		&lt;--|localnet:netmask|--&gt;
+	</machine_variable>
+	<machine_variable name="hostname" trait="global">
+		testmachine
+	</machine_variable>
+	<machine_variable name="hotplug_interfaces" trait="network_base">
+		eth0 eth1
+	</machine_variable>
+	<machine_variable name="install_standard" trait="base">
+		True
+	</machine_variable>
+	<machine_variable name="interfaces" trait="dhcp_server">
+		eth1
+	</machine_variable>
+	<machine_variable name="interfaces" trait="network_base">
+		lo eth0 eth1
+	</machine_variable>
+	<machine_variable name="startup" trait="firewall">
+		1
+	</machine_variable>
+	<machine_variable name="user_umeboshi_plaintext_password" trait="users">
+		&lt;--|users:default_plaintext_password|--&gt;
+	</machine_variable>
+</machine>

@@ -1,0 +1,30 @@
+	<family name="standard_firewall">
+		<parents>
+			<parent>
+				standard_firewall_netif
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="fw2loc_macros" trait="firewall">
+				NTP SMB
+			</family_variable>
+			<family_variable name="fw2net_macros" trait="firewall">
+				#HTTP #HTTPS NTP
+			</family_variable>
+			<family_variable name="ip_forwarding" trait="firewall">
+				Yes
+			</family_variable>
+			<family_variable name="loc2fw_macros" trait="firewall">
+				HTTP HTTPS NTP SMB DNS DHCP TFTP
+			</family_variable>
+			<family_variable name="net2fw_macros" trait="firewall">
+				SSH
+			</family_variable>
+			<family_variable name="policy_fw2net" trait="firewall">
+				ACCEPT
+			</family_variable>
+			<family_variable name="startup" trait="firewall">
+				1
+			</family_variable>
+		</environ>
+	</family>

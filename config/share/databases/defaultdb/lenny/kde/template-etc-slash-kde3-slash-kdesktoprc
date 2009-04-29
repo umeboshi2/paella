@@ -1,0 +1,8 @@
+[Desktop0]
+Wallpaper[$e]=<--|kde:kdesktop_wallpaper|-->
+WallpaperMode=<--|kde:kdesktop_wallpaper_mode|-->
+
+[Version]
+KDEVersionMajor=3
+KDEVersionMinor=5
+KDEVersionRelease=10

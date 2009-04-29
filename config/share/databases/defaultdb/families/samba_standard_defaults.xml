@@ -1,0 +1,14 @@
+	<family name="samba_standard_defaults">
+		<parents/>
+		<environ>
+			<family_variable name="guest_account" trait="samba_server">
+				nobody
+			</family_variable>
+			<family_variable name="map_to_guest" trait="samba_server">
+				Bad User
+			</family_variable>
+			<family_variable name="unix_extensions" trait="samba_server">
+				no
+			</family_variable>
+		</environ>
+	</family>

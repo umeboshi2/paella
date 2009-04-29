@@ -1,0 +1,33 @@
+<trait name="paella_standalone">
+	<parents>
+		<parent>
+			paella_admin
+		</parent>
+		<parent>
+			paella_installer
+		</parent>
+		<parent>
+			paella_server
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="paella_dbhost" trait="paella_standalone">
+			127.0.0.1
+		</trait_variable>
+		<trait_variable name="paella_dbname" trait="paella_standalone">
+			paella
+		</trait_variable>
+		<trait_variable name="paella_dbusername" trait="paella_standalone">
+			paella
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/paellarc
+		</template>
+	</templates>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

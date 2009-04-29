@@ -1,0 +1,9 @@
+<machine diskconfig="root_and_swap" name="builder" parent="vboxbase" profile="builder">
+	<script name="post_install"/>
+	<family>
+		insecure
+	</family>
+	<family>
+		vbox_pbuilder
+	</family>
+</machine>

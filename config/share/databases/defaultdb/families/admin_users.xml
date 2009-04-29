@@ -1,0 +1,8 @@
+	<family name="admin_users">
+		<parents/>
+		<environ>
+			<family_variable name="admin_users" trait="users">
+				mradmin
+			</family_variable>
+		</environ>
+	</family>

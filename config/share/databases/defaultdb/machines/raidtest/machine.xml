@@ -1,0 +1,5 @@
+<machine diskconfig="simpleraid" name="raidtest" parent="default">
+	<machine_variable name="hostname" trait="global">
+		raidtest
+	</machine_variable>
+</machine>

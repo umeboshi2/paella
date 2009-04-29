@@ -1,0 +1,13 @@
+[Keyboard]
+ClickVolume=<--|kde:kcminput_keyboard_click_volume|-->
+KeyboardRepeating=true
+Numlock=2
+RepeatDelay=660
+RepeatRate=25
+
+[Mouse]
+Acceleration=2
+MouseButtonMapping=RightHanded
+ReverseScrollPolarity=false
+Threshold=4
+cursorTheme=<--|kde:kcminput_cursor_theme|-->

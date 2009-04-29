@@ -1,0 +1,14 @@
+<trait name="dynamic_dns">
+	<parents>
+		<parent>
+			dhcp_server
+		</parent>
+		<parent>
+			nameserver
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+# stop certain services that might be running, and keeping the
+# filesystems busy
+
+DAEMONS="apache2 avahi-daemon atd dbus \
+dirmngr fam lisa acpid yiff-server hal"
+for daemon in $DAEMONS
+do
+  echo "looking for " $daemon
+  if [ -e /etc/init.d/$daemon ]; then
+      echo "stopping service: " $daemon
+      /etc/init.d/$daemon stop
+  fi
+done
+

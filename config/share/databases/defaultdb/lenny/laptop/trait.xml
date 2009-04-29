@@ -1,0 +1,51 @@
+<trait name="laptop">
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			acpi
+		</package>
+		<package action="install">
+			acpi-support
+		</package>
+		<package action="install">
+			anacron
+		</package>
+		<package action="install">
+			avahi-autoipd
+		</package>
+		<package action="install">
+			bluetooth
+		</package>
+		<package action="install">
+			cpufrequtils
+		</package>
+		<package action="install">
+			hibernate
+		</package>
+		<package action="install">
+			laptop-mode-tools
+		</package>
+		<package action="install">
+			pcmciautils
+		</package>
+		<package action="install">
+			powertop
+		</package>
+		<package action="install">
+			vbetool
+		</package>
+		<package action="install">
+			wireless-tools
+		</package>
+		<package action="install">
+			wpasupplicant
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,27 @@
+<trait name="gimp">
+	<parents>
+		<parent>
+			graphics_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			gimp
+		</package>
+		<package action="install">
+			gimp-data
+		</package>
+		<package action="install">
+			gimp-data-extras
+		</package>
+		<package action="install">
+			gimp-help-en
+		</package>
+		<package action="install">
+			gimp-python
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

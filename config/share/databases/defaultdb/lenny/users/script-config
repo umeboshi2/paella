@@ -1,0 +1,70 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+
+
+print "config script for users trait"
+
+it = InstallerTools()
+
+paella_site = it.target / 'root/site'
+
+sys.path.append(str(paella_site))
+
+#import PaellaInstall
+#from PaellaInstall import Users
+from PaellaInstall.Users import create_dhome
+from PaellaInstall.Users import make_groups, make_users
+from PaellaInstall.Users import set_plaintext_password
+
+
+
+################
+
+
+
+#print "not doing anything yet"
+default_home_subdirs = ['bin', 'tmp']
+skel_directory = it.target / 'etc/skel'
+for subdir in default_home_subdirs:
+    directory = skel_directory / subdir
+    if not directory.isdir():
+        print "Creating %s in /etc/skel" % subdir
+        directory.mkdir()
+        
+
+print "We're making the groups and users here, but we'll "
+print "probably need to update the home directories in the"
+print "final trait, since we may add files to /etc/skel after"
+print "this."
+sys.stdout.flush()
+
+dhome = it.get('users:dhome')
+print "Creating parent home directory, %s" % dhome
+
+create_dhome(it, dhome)
+
+if 'users' in it.traits:
+    make_groups(it)
+    make_users(it)
+else:
+    print "skipping users configuration"
+    
+# set root password
+root_password = it.get('users:root_plaintext_password')
+if root_password:
+    set_plaintext_password(it, 'root', root_password)
+else:
+    # use empty password
+    it.chroot(['passwd', '-d', 'root'])
+
+disable_root_password = it.get('users:disable_root_password')
+if disable_root_password in ['True', 'true', 'Yes', 'yes']:
+    it.chroot(['passwd', '-l', 'root'])
+    print "Disabled root password"
+    sys.stdout.flush()
+    

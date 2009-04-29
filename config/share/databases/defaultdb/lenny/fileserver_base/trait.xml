@@ -1,14 +1,17 @@
 <trait name="fileserver_base">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_server
 		</parent>
 	</parents>
 	<packages/>
-	<environ/>
+	<environ>
+		<trait_variable name="basedir" trait="fileserver_base">
+			/shared
+		</trait_variable>
+	</environ>
 	<templates/>
-	<scripts/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
 </trait>

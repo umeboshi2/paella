@@ -1,7 +1,4 @@
 <trait name="base_server">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_ssl
@@ -10,8 +7,39 @@
 			localnet
 		</parent>
 	</parents>
-	<packages/>
-	<environ/>
-	<templates/>
-	<scripts/>
+	<packages>
+		<package action="install">
+			openssh-server
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="sshd_password_authentication" trait="base_server">
+			yes
+		</trait_variable>
+		<trait_variable name="sshd_permit_empty_passwords" trait="base_server">
+			no
+		</trait_variable>
+		<trait_variable name="sshd_permit_root_login" trait="base_server">
+			yes
+		</trait_variable>
+		<trait_variable name="sshd_pubkey_authentication" trait="base_server">
+			yes
+		</trait_variable>
+		<trait_variable name="sshd_replace_host_keys" trait="base_server">
+			False
+		</trait_variable>
+		<trait_variable name="sshd_use_pam" trait="base_server">
+			yes
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/ssh/sshd_config
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
 </trait>

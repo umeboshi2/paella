@@ -1,0 +1,15 @@
+<machine name="stdinstall" parent="paellabase" profile="stdinstall">
+	<script name="post_install"/>
+	<family>
+		lapnet2
+	</family>
+	<machine_variable name="hostname" trait="global">
+		stdinstall
+	</machine_variable>
+	<machine_variable name="install_standard" trait="base">
+		True
+	</machine_variable>
+	<machine_variable name="subnet_filename" trait="dhcp_server">
+		pxelinux.0
+	</machine_variable>
+</machine>

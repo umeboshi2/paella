@@ -1,0 +1,14 @@
+<trait name="webdav_server">
+	<parents>
+		<parent>
+			fileserver_base
+		</parent>
+		<parent>
+			web_server
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

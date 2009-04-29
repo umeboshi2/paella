@@ -1,0 +1,8 @@
+	<family name="kde_doubleclick_icons">
+		<parents/>
+		<environ>
+			<family_variable name="kdeglobal_mouse_single_click" trait="kde">
+				false
+			</family_variable>
+		</environ>
+	</family>

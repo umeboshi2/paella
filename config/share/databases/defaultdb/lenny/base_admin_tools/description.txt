@@ -1,2 +1,2 @@
-This trait hold the basic admin tools that are frequently used and 
-considered indispensible all but embedded systems.
+This trait hold the basic admin tools that are frequently used and considered indispensible all but embedded systems.  These tools are considered to to be important enough to place on every system that's installed.
+

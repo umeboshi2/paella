@@ -1,0 +1,19 @@
+	<profile name="default" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				network_base
+			</trait>
+			<trait ord="2">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				default
+			</profile_variable>
+		</environ>
+	</profile>

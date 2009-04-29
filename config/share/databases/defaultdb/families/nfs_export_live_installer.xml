@@ -1,0 +1,15 @@
+	<family name="nfs_export_live_installer">
+		<parents>
+			<parent>
+				fileshare_live_installer
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="export_live_installer_options" trait="nfs_server">
+				*(ro,sync,no_subtree_check,no_root_squash)
+			</family_variable>
+			<family_variable name="export_live_installer_path" trait="nfs_server">
+				/freespace/paella
+			</family_variable>
+		</environ>
+	</family>

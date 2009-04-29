@@ -1,142 +1,97 @@
 <trait name="base">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
+			aptconfig
+		</parent>
+		<parent>
 			global
+		</parent>
+		<parent>
+			network_base
 		</parent>
 	</parents>
 	<packages>
 		<package action="install">
-			bzip2
+			debconf-utils
 		</package>
 		<package action="install">
-			console-common
+			locales
 		</package>
 		<package action="reconfig">
-			console-common
-		</package>
-		<package action="install">
-			console-data
-		</package>
-		<package action="reconfig">
-			console-data
-		</package>
-		<package action="reconfig">
-			debconf
-		</package>
-		<package action="install">
-			expect
-		</package>
-		<package action="install">
-			gawk
-		</package>
-		<package action="reconfig">
-			netbase
-		</package>
-		<package action="reconfig">
-			passwd
+			locales
 		</package>
 		<package action="install">
 			sudo
 		</package>
+		<package action="reconfig">
+			tasksel
+		</package>
+		<package action="reconfig">
+			tzdata
+		</package>
 		<package action="install">
-			udev
+			ucf
 		</package>
 	</packages>
 	<environ>
-		<trait_variable name="adduser_add_extra_groups" trait="base">
-			0
+		<trait_variable name="debconf_frontend" trait="base">
+			Dialog
 		</trait_variable>
-		<trait_variable name="adduser_dhome" trait="base">
-			/home
+		<trait_variable name="debconf_priority" trait="base">
+			high
 		</trait_variable>
-		<trait_variable name="adduser_dirmode" trait="base">
-			0755
+		<trait_variable name="install_standard" trait="base">
+			True
 		</trait_variable>
-		<trait_variable name="adduser_dshell" trait="base">
-			/bin/bash
+		<trait_variable name="pam_auth_unix_opts" trait="base">
+			nullok_secure
 		</trait_variable>
-		<trait_variable name="adduser_extra_groups" trait="base">
-			dialout cdrom floppy audio src video lp src users
+		<trait_variable name="tasksel_first" trait="base">
+			standard
 		</trait_variable>
-		<trait_variable name="adduser_skel" trait="base">
-			/etc/skel
+		<trait_variable name="tcpd_paranoid_mode" trait="base">
+			false
 		</trait_variable>
-		<trait_variable name="adduser_usergroups" trait="base">
+		<trait_variable name="utc" trait="base">
 			yes
-		</trait_variable>
-		<trait_variable name="adduser_users_gid" trait="base">
-			100
-		</trait_variable>
-		<trait_variable name="distribution" trait="base">
-			Paella/Debian
-		</trait_variable>
-		<trait_variable name="do_dselect_upgrade" trait="base">
-			False
-		</trait_variable>
-		<trait_variable name="issueOS" trait="base">
-			GNU/Linux
-		</trait_variable>
-		<trait_variable name="issue_version" trait="base">
-			4.0
-		</trait_variable>
-		<trait_variable name="user_umask" trait="base">
-			022
 		</trait_variable>
 	</environ>
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/adduser.conf
+			debconf
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/bash.bashrc
+			etc/default/locale
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/crontab
-		</template>
-		<template grp_owner="root" mode="0755" owner="root">
-			etc/default/klogd
-		</template>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/group
+			etc/default/rcS
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/hostname
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/issue
+			etc/hosts
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/issue.net
-		</template>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/login.defs
-		</template>
-		<template grp_owner="root" mode="0644" owner="root">
-			etc/mailname
+			etc/locale.gen
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/nanorc
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/passwd
+			etc/pam.d/common-account
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/profile
-		</template>
-		<template grp_owner="root" mode="0440" owner="root">
-			etc/sudoers
+			etc/pam.d/common-auth
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			root/base-debconf-unconfigured
-		</template>
-		<template grp_owner="root" mode="0644" owner="root">
-			root/paella/trashcan/z26_persistent-net.rules
+			etc/pam.d/common-session
 		</template>
 	</templates>
 	<scripts>
+		<script name="chroot"/>
+		<script name="config"/>
+		<script name="post"/>
 		<script name="pre"/>
 	</scripts>
 </trait>

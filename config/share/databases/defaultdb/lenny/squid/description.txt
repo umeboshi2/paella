@@ -1,0 +1,5 @@
+<br/>
+<b>Notes</b>
+<ul>
+<li>The fake start-stop daemon is used in this trait</li>
+</ul>

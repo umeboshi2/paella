@@ -1,0 +1,26 @@
+	<family name="samba_share_printers">
+		<parents/>
+		<environ>
+			<family_variable name="share_printer_browseable" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_printer_comment" trait="samba_server">
+				All Printers
+			</family_variable>
+			<family_variable name="share_printer_create_mask" trait="samba_server">
+				0700
+			</family_variable>
+			<family_variable name="share_printer_guest_ok" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_printer_path" trait="samba_server">
+				/var/spool/samba
+			</family_variable>
+			<family_variable name="share_printer_printable" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_printer_read_only" trait="samba_server">
+				yes
+			</family_variable>
+		</environ>
+	</family>

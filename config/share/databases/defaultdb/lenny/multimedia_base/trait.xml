@@ -1,0 +1,17 @@
+<trait name="multimedia_base">
+	<parents>
+		<parent>
+			desktop_base
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="install_wincodecs" trait="multimedia_base">
+			True
+		</trait_variable>
+	</environ>
+	<templates/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

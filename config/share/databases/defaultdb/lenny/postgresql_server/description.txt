@@ -1,0 +1,4 @@
+This trait will configure a postgresql server.
+<ul type="disc"><li>This trait depends heavily on the 8.3 version of postgresql.  It will have to be modified to work with later versions.  The post script and the names of the templates will have to be modified.</li>
+<li>Instead of using the fake-start-stop-daemon, we need the daemon to run during the configure process, so we just stop the daemon in the post script.</li></ul>
+

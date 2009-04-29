@@ -1,0 +1,25 @@
+<trait name="ldap_common">
+	<parents>
+		<parent>
+			localnet
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			ldap-utils
+		</package>
+		<package action="install">
+			libnss-ldap
+		</package>
+		<package action="install">
+			libpam-ldap
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/ldap-common-debconf
+		</template>
+	</templates>
+	<scripts/>
+</trait>

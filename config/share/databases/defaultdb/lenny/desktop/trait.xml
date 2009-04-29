@@ -1,0 +1,58 @@
+<trait name="desktop">
+	<parents>
+		<parent>
+			desktop_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			alsa-base
+		</package>
+		<package action="install">
+			alsa-utils
+		</package>
+		<package action="install">
+			dbus-x11
+		</package>
+		<package action="install">
+			x11-xserver-utils
+		</package>
+		<package action="install">
+			xfonts-100dpi
+		</package>
+		<package action="install">
+			xfonts-75dpi
+		</package>
+		<package action="install">
+			xfonts-base
+		</package>
+		<package action="install">
+			xfonts-scalable
+		</package>
+		<package action="install">
+			xserver-xorg-input-all
+		</package>
+		<package action="install">
+			xserver-xorg-video-all
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="display_manager" trait="desktop">
+			
+		</trait_variable>
+		<trait_variable name="xwrapper_allowed_users" trait="desktop">
+			console
+		</trait_variable>
+		<trait_variable name="xwrapper_nice_value" trait="desktop">
+			0
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0600" owner="root">
+			etc/X11/Xwrapper.config
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

@@ -1,0 +1,15 @@
+This trait is for sharing files with windows hosts.  It can do much more than that, too.
+<br/>
+<b>Notes</b>
+<ul>
+<li>The fake start-stop daemon is used in this trait</li>
+</ul>
+<br/>
+<b>TODO</b>
+<ul>
+<li>Use fragmented configuration with includes</li>
+<li>Setup login and possibly profiles</li>
+<li>Figure out what to do about the passwords</li>
+<li>See if we can make use out of new sambashare group</li>
+<li>Figure out what we can use winbind for</li>
+</ul>

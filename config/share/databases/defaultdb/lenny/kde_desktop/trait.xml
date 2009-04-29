@@ -1,0 +1,14 @@
+<trait name="kde_desktop">
+	<parents>
+		<parent>
+			desktop
+		</parent>
+		<parent>
+			kde
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

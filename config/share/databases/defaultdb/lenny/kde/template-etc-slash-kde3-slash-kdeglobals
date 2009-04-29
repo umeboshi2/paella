@@ -1,0 +1,29 @@
+[Directories]
+dir_config=/usr/share/desktop-base/profiles/kde-profile/share/config/
+
+[General]
+XftHintStyle=hintfull
+widgetStyle=<--|kde:kdeglobal_widget_style|-->
+
+## start color scheme
+## end color scheme
+
+[Global Shortcuts]
+Desktop Screenshot=default(Win+Print)
+Run Command=default(Win+R)
+Switch One Desktop Down=default(Win+Down)
+Switch One Desktop Up=default(Win+Up)
+Switch One Desktop to the Left=default(Win+Left)
+Switch One Desktop to the Right=default(Win+Right)
+Switch User=default(Alt+Win+Insert)
+Toggle Showing Desktop=default(Win+D)
+Window Maximize=default(Win+PageUp)
+Window Minimize=default(Win+PageDown)
+
+[Icons]
+Theme=<--|kde:kdeglobal_icon_theme|-->
+
+[KDE]
+SingleClick=<--|kde:kdeglobal_mouse_single_click|-->
+colorScheme=<--|kde:kdeglobal_color_scheme|-->
+macStyle=<--|kde:kdeglobal_mac_style|-->

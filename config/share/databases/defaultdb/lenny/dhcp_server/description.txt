@@ -1,1 +1,7 @@
-A dhcp server for the local network.
+The configuration in the dhcpd.conf file is very simple (so far), and is the minimum required to get a network running.
+<br/>
+<b>TODO</b>
+<ul>
+<li>get dynamic dns working</li>
+<li>pass ntp info</li>
+</ul>

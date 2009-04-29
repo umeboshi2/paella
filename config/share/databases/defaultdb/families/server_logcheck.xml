@@ -1,0 +1,8 @@
+	<family name="server_logcheck">
+		<parents/>
+		<environ>
+			<family_variable name="logcheck_reportlevel" trait="base_admin_tools">
+				server
+			</family_variable>
+		</environ>
+	</family>

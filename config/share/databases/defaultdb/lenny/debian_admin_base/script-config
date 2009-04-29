@@ -1,0 +1,42 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.base.template import TemplatedEnvironment
+
+from paella.installer.toolkit import InstallerTools
+
+print "config script for debian_admin_base trait"
+it = InstallerTools()
+
+paella_site = it.target / 'root/site'
+sys.path.append(str(paella_site))
+
+sys.stdout.flush()
+
+from PaellaInstall.General import relocate_interfering_files
+from PaellaInstall.General import install_packages
+
+install_listbugs = it.getboolean('debian_admin_base:install_apt_listbugs')
+if install_listbugs:
+    install_packages(toolkit, ['apt-listbugs'])
+
+
+filenames = ['etc/apt/apt.conf.d/20listchanges']
+
+if install_listbugs:
+             filenames.append('etc/apt/apt.conf.d/10apt-listbugs')
+             
+relocate_interfering_files(it, filenames)
+
+ignored_bugs = it.getcsv('debian_admin_base:ignored_bugs')
+if ignored_bugs:
+    print "We have bugs that we are ignoring"
+    print "%s" % ignored_bugs
+    sys.stdout.flush()
+    ignore_bugs_filename = it.target / 'etc/apt/listbugs/ignore_bugs'
+    ignore_bugs_filename.write_lines(ignored_bugs, append=True)
+    print "DEBUG: contents of /etc/apt/listbugs/ignore_bugs"
+    print ignore_bugs_filename.text()
+    

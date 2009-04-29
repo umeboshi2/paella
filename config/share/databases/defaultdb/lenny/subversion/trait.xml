@@ -1,7 +1,4 @@
 <trait name="subversion">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			default
@@ -10,6 +7,9 @@
 	<packages>
 		<package action="install">
 			subversion
+		</package>
+		<package action="install">
+			subversion-tools
 		</package>
 	</packages>
 	<environ/>

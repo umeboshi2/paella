@@ -1,0 +1,11 @@
+# How do you want to run Samba?
+# Choices: daemons, inetd
+samba	samba/run_mode	select	<--|samba_server:run_mode|-->
+# Modify smb.conf to use WINS settings from DHCP?
+samba-common	samba-common/dhcp	boolean	false
+# Create samba password database, /var/lib/samba/passdb.tdb?
+samba	samba/generate_smbpasswd	boolean	<--|samba_server:generate_smbpasswd|-->
+# Workgroup/Domain Name:
+samba-common	samba-common/workgroup	string	<--|samba_server:workgroup|-->
+# Configure smb.conf automatically?
+samba-common	samba-common/do_debconf	boolean	true

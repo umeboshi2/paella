@@ -1,0 +1,90 @@
+<trait name="samba_server">
+	<parents>
+		<parent>
+			fileserver_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			libpam-smbpass
+		</package>
+		<package action="install">
+			samba
+		</package>
+		<package action="install">
+			winbind
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="add_users_to_samba" trait="samba_server">
+			False
+		</trait_variable>
+		<trait_variable name="domain_logons" trait="samba_server">
+			no
+		</trait_variable>
+		<trait_variable name="generate_smbpasswd" trait="samba_server">
+			true
+		</trait_variable>
+		<trait_variable name="guest_account" trait="samba_server">
+			nobody
+		</trait_variable>
+		<trait_variable name="logon_drive" trait="samba_server">
+			H:
+		</trait_variable>
+		<trait_variable name="logon_path" trait="samba_server">
+			\\%N\profiles\%U
+		</trait_variable>
+		<trait_variable name="logon_script" trait="samba_server">
+			logon.cmd
+		</trait_variable>
+		<trait_variable name="map_to_guest" trait="samba_server">
+			Never
+		</trait_variable>
+		<trait_variable name="pam_password_change" trait="samba_server">
+			yes
+		</trait_variable>
+		<trait_variable name="passdb_backend" trait="samba_server">
+			tdbsam
+		</trait_variable>
+		<trait_variable name="run_mode" trait="samba_server">
+			daemons
+		</trait_variable>
+		<trait_variable name="security" trait="samba_server">
+			user
+		</trait_variable>
+		<trait_variable name="server_string" trait="samba_server">
+			%h server
+		</trait_variable>
+		<trait_variable name="unix_extensions" trait="samba_server">
+			yes
+		</trait_variable>
+		<trait_variable name="unix_password_sync" trait="samba_server">
+			yes
+		</trait_variable>
+		<trait_variable name="workgroup" trait="samba_server">
+			WORKGROUP
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			debconf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/samba
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/winbind
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/samba
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/samba/smb.conf
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
+</trait>

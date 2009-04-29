@@ -1,0 +1,109 @@
+# configuration file for paella
+[DEFAULT]
+# these options are only referenced in this config file
+__myhome:		~
+__paelladir:		%(__myhome)s/workspace/paella
+
+[database]
+# regular database info
+dbhost:			<--|paella_standalone:paella_dbhost|-->
+dbname:			<--|paella_standalone:paella_dbname|-->
+#dbusername:		dbadmin
+dbusername:		<--|paella_standalone:paella_dbusername|-->
+dbpassword:		apassword
+
+# this path is used to import and export information
+# in the database.  These paths are used as hints in the
+# gui and aren't needed for the command line.
+default_path:		%(__paelladir)s/config/share/databases
+
+# the installer section is only needed on the installer system
+# it is not needed for paella-management.  This whole section
+# can probably be removed, and you should only rely on the information
+# in the comments for this section to pertain to the corresponding options
+# in the installer section of the default environment in the paella database.
+[installer]
+
+# this option is only referenced in the config file
+_paella_cache:		/var/cache/paella
+
+# the directory that will hold tarfiles of clean bootstrapped suites
+suite_storage:		%(_paella_cache)s/suites
+
+# this is a list of suites that will be bootstrapped and tarred
+bootstrap_suites:		sarge, etch
+
+# the default is not to have the installer bootstrap,
+# but extract tar files in suite_storage (quicker)
+bootstrap_target:		True
+
+# this is the location of the devices tarball that can be used
+# in place of MAKEDEV.  This option is probably obsolete.
+devices_tarball:		%(_paella_cache)s/devices.tar
+
+# we default to using the devices tarball because it is quicker
+# than running MAKEDEV.  This option is probably obsolete, but
+# may be useful for those who experience problems.
+use_devices_tarball:	False
+
+# the management_gui section is only needed for paella-management,
+# it is not needed for the paella installer
+[management_gui]
+
+# this is the template that profiles will be created from
+template_profile:		skeleton
+
+# this is the path used to import and export client
+# information and the paella database
+# client information should be kept on a separate device
+# for general security reasons
+# the client information should be able to sit nicely
+# on top of the base paella database
+client_path:		%(__myhome)s/clients
+
+# this option either enables or disables access
+# to the clients widget.  This is currently broken
+# in pykde, and hasn't been used since the gtk
+# gui was running.  This option should be left
+# as False.  This option will remain here, regardless
+# of whether the widget actually works or not, 
+# since it's an optional feature of paella.
+client_widget:		False
+
+# only listbox_select is supported now
+manager_type:		listbox_select
+
+# The text editor must make an X window
+text_editor:		kwrite
+
+# The x_differ must make an X window
+# the command must take these args -> x_differ left_file right_file
+x_differ:			xxdiff
+#x_differ:			kompare
+
+
+
+# document colors
+# these are the old hardcoded defaults that
+# I used before I made these options configurable.
+# Try them out, and be happy these colors aren't
+# hardcoded anymore. ;)
+# btw, I left the machine document colors hardcoded
+# to some bright gaudy colors to remind me to eventually
+# make them configurable.  If you're a developer with extra
+# time on your hands, you may want to help out here.
+#traitdoc_bgcolor:			LightSkyBlue4
+#traitdoc_section_title_color:		IndianRed
+#traitdoc_package_table_color:	SkyBlue3
+#traitdoc_template_table_color:	DarkSeaGreen3
+#traitdoc_variables_table_color:	MistyRose3
+
+# These colors need to be understood by the
+# qt html engine, so any colors can be used here.
+_basecolor:			SkyBlue
+traitdoc_bgcolor:			%(_basecolor)s
+traitdoc_section_title_color:		%(_basecolor)s4
+traitdoc_section_title_font_color:	%(_basecolor)s1
+traitdoc_package_table_color:	%(_basecolor)s3
+traitdoc_template_table_color:	%(_basecolor)s3
+traitdoc_variables_table_color:	%(_basecolor)s3

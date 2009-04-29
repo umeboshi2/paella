@@ -1,0 +1,31 @@
+	<profile name="paella_vbox" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				paella_server
+			</trait>
+			<trait ord="2">
+				dhcp_server
+			</trait>
+			<trait ord="3">
+				nameserver
+			</trait>
+			<trait ord="4">
+				firewall
+			</trait>
+			<trait ord="5">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="interfaces" trait="dhcp_server">
+				eth1
+			</profile_variable>
+			<profile_variable name="hostname" trait="global">
+				paella
+			</profile_variable>
+		</environ>
+	</profile>

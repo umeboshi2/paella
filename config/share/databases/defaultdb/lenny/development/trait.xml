@@ -1,0 +1,66 @@
+<trait name="development">
+	<parents>
+		<parent>
+			subversion
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			build-essential
+		</package>
+		<package action="install">
+			cdbs
+		</package>
+		<package action="install">
+			debhelper
+		</package>
+		<package action="install">
+			debian-keyring
+		</package>
+		<package action="install">
+			debian-maintainers
+		</package>
+		<package action="install">
+			devscripts
+		</package>
+		<package action="install">
+			dh-make
+		</package>
+		<package action="install">
+			dput
+		</package>
+		<package action="install">
+			equivs
+		</package>
+		<package action="install">
+			fakeroot
+		</package>
+		<package action="install">
+			lintian
+		</package>
+		<package action="install">
+			lsb-release
+		</package>
+		<package action="install">
+			patch
+		</package>
+		<package action="install">
+			patchutils
+		</package>
+		<package action="install">
+			strace
+		</package>
+		<package action="install">
+			svn-buildpackage
+		</package>
+		<package action="install">
+			unzip
+		</package>
+		<package action="install">
+			wdiff
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

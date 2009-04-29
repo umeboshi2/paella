@@ -1,0 +1,34 @@
+<trait name="aptconfig">
+	<parents>
+		<parent>
+			global
+		</parent>
+	</parents>
+	<packages/>
+	<environ>
+		<trait_variable name="aptitude_get_root_command" trait="aptconfig">
+			sudo
+		</trait_variable>
+		<trait_variable name="install_recommends" trait="aptconfig">
+			false
+		</trait_variable>
+		<trait_variable name="install_suggests" trait="aptconfig">
+			false
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apt/apt.conf.d/01autoremove
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apt/apt.conf.d/06softdepends
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apt/apt.conf.d/20aptitude
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apt/apt.conf.d/70debconf
+		</template>
+	</templates>
+	<scripts/>
+</trait>

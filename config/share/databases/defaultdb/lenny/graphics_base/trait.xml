@@ -1,0 +1,24 @@
+<trait name="graphics_base">
+	<parents>
+		<parent>
+			desktop_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			gqview
+		</package>
+		<package action="install">
+			imagemagick
+		</package>
+		<package action="install">
+			libjpeg-progs
+		</package>
+		<package action="install">
+			qiv
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

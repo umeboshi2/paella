@@ -1,0 +1,8 @@
+MIRRORSITE=<--|pbuilder:mirrorsite|-->
+DISTRIBUTION=<--|pbuilder:distribution|-->
+DEBOOTSTRAP=<--|pbuilder:debootstrap|-->
+DEBOOTSTRAPOPTS="<--|pbuilder:debootstrapopts|-->"
+APTCACHE=""
+DEBBUILDOPTS="<--|pbuilder:debbuildopts|-->"
+PBUILDERSATISFYDEPENDSCMD=<--|pbuilder:satisfydependscmd|-->
+OTHERMIRROR="<--|pbuilder:othermirror|-->"

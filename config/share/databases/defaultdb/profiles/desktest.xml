@@ -1,0 +1,26 @@
+	<profile name="desktest" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				kde_desktop
+			</trait>
+			<trait ord="2">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				apt_recommends
+			</family>
+			<family>
+				kde_paella_appearance
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				desktest
+			</profile_variable>
+		</environ>
+	</profile>

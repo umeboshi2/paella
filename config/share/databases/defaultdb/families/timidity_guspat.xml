@@ -1,0 +1,14 @@
+	<family name="timidity_guspat">
+		<parents/>
+		<environ>
+			<family_variable name="sourced_cfg" trait="timidity">
+				guspat
+			</family_variable>
+			<family_variable name="tim_alsaseq" trait="timidity">
+				true
+			</family_variable>
+			<family_variable name="tim_alsaseqparams" trait="timidity">
+				-iA -B2,8 -Os
+			</family_variable>
+		</environ>
+	</family>

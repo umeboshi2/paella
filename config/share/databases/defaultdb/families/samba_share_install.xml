@@ -1,0 +1,20 @@
+	<family name="samba_share_install">
+		<parents/>
+		<environ>
+			<family_variable name="share_install_comment" trait="samba_server">
+				%h Unattended Install Share
+			</family_variable>
+			<family_variable name="share_install_guest_ok" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_install_locking" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_install_path" trait="samba_server">
+				&lt;--|fileserver_base:basedir|--&gt;/unattended/install
+			</family_variable>
+			<family_variable name="share_install_read_only" trait="samba_server">
+				yes
+			</family_variable>
+		</environ>
+	</family>

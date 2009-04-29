@@ -1,0 +1,36 @@
+<trait name="office">
+	<parents>
+		<parent>
+			graphics_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			libpg-java
+		</package>
+		<package action="install">
+			mdbtools
+		</package>
+		<package action="install">
+			openclipart-openoffice.org
+		</package>
+		<package action="install">
+			openoffice.org
+		</package>
+		<package action="install">
+			openoffice.org-filter-binfilter
+		</package>
+		<package action="install">
+			openoffice.org-help-en-us
+		</package>
+		<package action="install">
+			openoffice.org-style-crystal
+		</package>
+		<package action="install">
+			openoffice.org-style-tango
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

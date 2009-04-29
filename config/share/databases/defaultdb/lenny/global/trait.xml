@@ -1,26 +1,53 @@
 <trait name="global">
-	<description>
-		None
-	</description>
 	<parents/>
 	<packages/>
 	<environ>
+		<trait_variable name="default_charset" trait="global">
+			UTF-8
+		</trait_variable>
+		<trait_variable name="default_environment_locale" trait="global">
+			en_US.&lt;--|global:default_charset|--&gt;
+		</trait_variable>
 		<trait_variable name="domain" trait="global">
 			localnetwork
 		</trait_variable>
 		<trait_variable name="hostname" trait="global">
 			debian
 		</trait_variable>
+		<trait_variable name="insecure_testing_system" trait="global">
+			False
+		</trait_variable>
 		<trait_variable name="mailname" trait="global">
 			(none)
+		</trait_variable>
+		<trait_variable name="suite" trait="global">
+			lenny
 		</trait_variable>
 		<trait_variable name="timezone" trait="global">
 			US/Central
 		</trait_variable>
+		<trait_variable name="tzdata_area" trait="global">
+			Etc
+		</trait_variable>
+		<trait_variable name="tzdata_zone" trait="global">
+			UTC
+		</trait_variable>
+		<trait_variable name="umask" trait="global">
+			0022
+		</trait_variable>
 	</environ>
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">
-			root/scratchpad
+			root/site/PaellaInstall/General.py
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			root/site/PaellaInstall/__init__.py
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			root/site/PaellaInstall/Shorewall.py
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			root/site/PaellaInstall/Users.py
 		</template>
 	</templates>
 	<scripts/>

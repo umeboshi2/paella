@@ -1,0 +1,15 @@
+#hello there
+disk_config disk1
+
+primary  -    256         -    -  
+primary  swap 256        swap       sw
+primary  -              0-                               -    -
+
+disk_config disk2
+primary  -    256         -    -  
+primary  swap 256        swap       sw
+primary  -              0-                               - -
+
+disk_config raid
+raid1	/	hda1,hdb1	ext3	defaults
+raid1	/usr	hda3,hdb3	ext3	defaults

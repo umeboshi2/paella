@@ -1,3 +1,16 @@
 [installer]
-http_mirror:	http://10.0.1.1/debian
+allow_unauthenticated_packages:	False
+apt_command:	aptitude
+apt_command_opts:	
+archive_keys:	paella,jrawson
+base_log_directory:	/paellalog
+bootstrap_suites:	lenny
+bootstrap_target:	False
+default_target:	/tmp/target
+devices_tarball:	/root/devices.tar
+disk_log_directory:	/paellalog/disklog
+http_mirror:	http://10.1.0.1/debrepos/debian
+keep_installed_packages:	True
+suite_storage:	/paellalog/suites
+use_devices_tarball:	False
 

@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "no need to mount target on chroot install"

@@ -1,0 +1,36 @@
+	<family name="vbox_testing">
+		<parents>
+			<parent>
+				apt_listchanges
+			</parent>
+			<parent>
+				ignored_bugs_lenny
+			</parent>
+			<parent>
+				sshd_testing_keys
+			</parent>
+			<parent>
+				testing_users
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="family_description" trait="global">
+				This family is used to test configurations with virtualbox-ose.  Here, we install the ssh testing keys and the default testing users.  The apt_listchanges family is included to help determine what has changed when updating.
+			</family_variable>
+			<family_variable name="user_dick_plaintext_password" trait="users">
+				&lt;--|users:default_plaintext_password|--&gt;
+			</family_variable>
+			<family_variable name="user_harry_plaintext_password" trait="users">
+				&lt;--|users:default_plaintext_password|--&gt;
+			</family_variable>
+			<family_variable name="user_sally_plaintext_password" trait="users">
+				&lt;--|users:default_plaintext_password|--&gt;
+			</family_variable>
+			<family_variable name="user_tom_plaintext_password" trait="users">
+				&lt;--|users:default_plaintext_password|--&gt;
+			</family_variable>
+			<family_variable name="user_umeboshi_plaintext_password" trait="users">
+				&lt;--|users:default_plaintext_password|--&gt;
+			</family_variable>
+		</environ>
+	</family>

@@ -1,0 +1,50 @@
+#!/usr/bin/python
+import os, sys
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+    
+color_scheme_dir = it.target / 'usr/share/apps/kdisplay/color-schemes'
+kdeglobals_filename = it.target / 'etc/kde3/kdeglobals'
+key = 'kdeglobal_color_scheme'
+color_scheme = it.get('kde:kdeglobal_color_scheme')
+start_color_line = '## start color scheme'
+end_color_line = '## end color scheme'
+
+color_scheme_filename = color_scheme_dir / color_scheme
+if color_scheme_filename.isfile():
+    print "we have a color scheme ->", color_scheme
+    kdeglobal_lines = file(kdeglobals_filename).readlines()
+    color_scheme_lines = file(color_scheme_filename).readlines()
+    # filter unwanted lines from kcsrc file
+    color_scheme_lines = [line for line in color_scheme_lines if not line.startswith('Name=')]
+    color_scheme_lines = [line for line in color_scheme_lines if not line.startswith('[Color')]
+    color_scheme_lines = [line for line in color_scheme_lines if line]
+    new_kdeglobal_lines = []
+    for line in kdeglobal_lines:
+        new_kdeglobal_lines.append(line)
+        if line.startswith(start_color_line):
+            new_kdeglobal_lines += color_scheme_lines
+    kdeglobal_file = file(kdeglobals_filename, 'w')
+    kdeglobal_file.writelines(new_kdeglobal_lines)
+    kdeglobal_file.close()
+
+# we import the hotkeys by default by using the autostart desktop
+# file, but the default for importing the hotkeys is False, so unless
+# kde:import_paella_hotkeys is True, we will delete that desktop file,
+# so that they won't be imported.
+import_hotkeys = False
+if it.get('kde:import_paella_hotkeys') in ['True', 'true', 'Yes', 'yes']:
+    import_hotkeys = True
+
+if not import_hotkeys:
+    print "Not importing paella hotkeys"
+    hotkeys_filename = it.target / 'usr/share/autostart/khotkeys-update-paelladefaults.desktop'
+    os.remove(hotkeys_filename)
+    print "Removed", hotkeys_filename
+    
+    
+    
+sys.exit(0)
+
+

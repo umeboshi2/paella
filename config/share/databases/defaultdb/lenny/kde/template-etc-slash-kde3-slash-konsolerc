@@ -1,0 +1,19 @@
+[Desktop Entry]
+ActiveSession=0
+AutoResizeTabs=<--|kde:konsole_auto_resize_tabs|-->
+DefaultSession=<--|kde:konsole_default_session|-->
+DynamicTabHide=<--|kde:konsole_dynamic_tab_hide|-->
+EncodingName=<--|kde:konsole_encoding_name|-->
+Fullscreen=<--|kde:konsole_fullscreen|-->
+MenuBar=<--|kde:konsole_menubar|-->
+TabColor=0,0,0
+TabViewMode=0
+bellmode=<--|kde:konsole_bellmode|-->
+class=konsole-mainwindow#1
+defaultfont=<--|kde:konsole_default_font|-->
+history=<--|kde:konsole_history_lines|-->
+historyenabled=<--|kde:konsole_history_enabled|-->
+keytab=<--|kde:konsole_keytab|-->
+schema=<--|kde:konsole_schema|-->
+scrollbar=<--|kde:konsole_scrollbar|-->
+tabbar=<--|kde:konsole_tabbar|-->

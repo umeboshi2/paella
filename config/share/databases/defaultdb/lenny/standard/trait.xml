@@ -1,0 +1,17 @@
+<trait name="standard">
+	<parents>
+		<parent>
+			boot_server
+		</parent>
+		<parent>
+			simple_router
+		</parent>
+		<parent>
+			simple_server
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "no need to make an fstab for a chroot system"

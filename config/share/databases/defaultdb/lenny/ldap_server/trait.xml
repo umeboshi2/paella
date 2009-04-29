@@ -1,0 +1,27 @@
+<trait name="ldap_server">
+	<parents>
+		<parent>
+			base_server
+		</parent>
+		<parent>
+			ldap_common
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			slapd
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/ldap-server-debconf
+		</template>
+		<template grp_owner="openldap" mode="0640" owner="root">
+			etc/ldap/slapd.conf
+		</template>
+	</templates>
+	<scripts>
+		<script name="post"/>
+	</scripts>
+</trait>

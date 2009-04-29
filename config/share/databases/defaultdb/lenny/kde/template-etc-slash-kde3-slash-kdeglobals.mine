@@ -1,0 +1,57 @@
+[Directories]
+dir_config=/usr/share/desktop-base/profiles/kde-profile/share/config/
+[General]
+XftHintStyle=hintfull
+widgetStyle=serenity
+
+# fonts
+fixed=Monospace,10,-1,5,50,0,0,0,0,0
+font=Sans Serif,10,-1,5,50,0,0,0,0,0
+menuFont=Sans Serif,10,-1,5,50,0,0,0,0,0
+taskbarFont=Sans Serif,10,-1,5,50,0,0,0,0,0
+toolBarFont=Sans Serif,10,-1,5,50,0,0,0,0,0
+
+# start color scheme
+alternateBackground=151,145,85
+background=198,191,111
+buttonBackground=177,171,99
+buttonForeground=0,0,0
+foreground=0,0,0
+linkColor=0,0,192
+selectBackground=139,134,78
+selectForeground=255,255,255
+shadeSortColumn=true
+visitedLinkColor=128,0,128
+windowBackground=187,180,105
+windowForeground=0,0,0
+# end color scheme
+
+
+[Global Shortcuts]
+Desktop Screenshot=default(Win+Print)
+Run Command=default(Win+R)
+Switch One Desktop Down=default(Win+Down)
+Switch One Desktop Up=default(Win+Up)
+Switch One Desktop to the Left=default(Win+Left)
+Switch One Desktop to the Right=default(Win+Right)
+Switch User=default(Alt+Win+Insert)
+Toggle Showing Desktop=default(Win+D)
+Window Maximize=default(Win+PageUp)
+Window Minimize=default(Win+PageDown)
+
+[Icons]
+Theme=crystalsvg
+
+[KDE]
+AutoSelectDelay=-1
+ChangeCursor=true
+DoubleClickInterval=400
+SingleClick=false
+StartDragDist=4
+StartDragTime=500
+VisualActivate=1
+WheelScrollLines=3
+colorScheme=khaki.kcsrc
+
+[WM]
+activeFont=Sans Serif,10,-1,5,75,0,0,0,0,0

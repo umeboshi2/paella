@@ -1,0 +1,20 @@
+<trait name="simple_server">
+	<parents>
+		<parent>
+			ldap_server
+		</parent>
+		<parent>
+			nfs_server
+		</parent>
+		<parent>
+			samba_server
+		</parent>
+		<parent>
+			web_server
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

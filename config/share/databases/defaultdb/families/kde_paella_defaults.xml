@@ -1,0 +1,24 @@
+	<family name="kde_paella_defaults">
+		<parents>
+			<parent>
+				gkrellm_paella
+			</parent>
+			<parent>
+				kde_doubleclick_icons
+			</parent>
+			<parent>
+				kde_kicker_paella
+			</parent>
+			<parent>
+				kde_konsole_xterm
+			</parent>
+			<parent>
+				kde_kwin_umeboshi
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="import_paella_hotkeys" trait="kde">
+				True
+			</family_variable>
+		</environ>
+	</family>

@@ -1,0 +1,19 @@
+	<profile name="desktop" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				kde_desktop
+			</trait>
+			<trait ord="2">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				skeleton
+			</profile_variable>
+		</environ>
+	</profile>

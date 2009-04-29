@@ -1,0 +1,77 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+    
+print "post-install script for builder machine"
+
+it = InstallerTools()
+it.set_trait('pbuilder')
+env = it.env()
+
+archive_key = 'jrawson.gpg'
+
+archive_url = it.get('pbuilder:mirrorsite')
+while archive_url.endswith('/'):
+    archive_url = archive_url[:-1]
+
+archive_key_url = archive_url + '/' + archive_key
+
+print "Getting key from %s" % archive_key_url
+sys.stdout.flush()
+
+
+script_lines = ['#!/bin/bash',
+                'pushd /root',
+                'wget %s' % archive_key_url,
+                'popd'
+                ]
+script_filename = it.target / 'root/getkey.sh'
+script_filename.write_lines(script_lines)
+script_filename.chmod(0755)
+
+
+cmd = ['/root/getkey.sh']
+it.chroot(cmd)
+sys.stdout.flush()
+
+
+print "show environment"
+cmd = ['env']
+it.chroot(cmd)
+sys.stdout.flush()
+
+print "Importing %s to root's keyring" % archive_key
+sys.stdout.flush()
+
+script_lines = ['#!/bin/bash',
+                'pushd /root',
+                'env HOME=/root gpg --import %s' % archive_key,
+                'popd'
+                ]
+script_filename = it.target / 'root/importkey.sh'
+script_filename.write_lines(script_lines)
+script_filename.chmod(0755)
+
+
+cmd = ['/root/importkey.sh']
+it.chroot(cmd)
+sys.stdout.flush()
+
+#print "Building base"
+#cmd = ['cowbuilder', '--create']
+#it.chroot(cmd)
+print "skip debootstrapping of base.cow"
+
+# this part is hacky
+pbuilder_user = 'umeboshi'
+pbuilder_user_home = path('/home/umeboshi')
+incoming = pbuilder_user_home / 'cowbuilder-incoming'
+
+print "Making incoming at", incoming
+it.chroot(['mkdir', incoming])
+print "Changing ownership of %s to %s" % (incoming, pbuilder_user)
+it.chroot(['chown', '%s:%s' % (pbuilder_user, pbuilder_user), incoming])

@@ -1,0 +1,17 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+    
+print "post script for postgresql_server"
+
+it = InstallerTools()
+
+print "stopping the postgresql daemon"
+sys.stdout.flush()
+it.chroot(['/etc/init.d/postgresql-8.3', 'stop'])
+
+

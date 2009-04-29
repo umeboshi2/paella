@@ -1,0 +1,46 @@
+<trait name="timidity">
+	<parents>
+		<parent>
+			default
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			timidity
+		</package>
+		<package action="install">
+			timidity-guspat
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="freepats_cfg" trait="timidity">
+			/etc/timidity/freepats.cfg
+		</trait_variable>
+		<trait_variable name="guspat_cfg" trait="timidity">
+			/etc/timidity/timidity-guspat.cfg
+		</trait_variable>
+		<trait_variable name="sourced_cfg" trait="timidity">
+			freepats
+		</trait_variable>
+		<trait_variable name="tim_alsaseq" trait="timidity">
+			
+		</trait_variable>
+		<trait_variable name="tim_alsaseqparams" trait="timidity">
+			-Os
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/timidity
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/timidity/timidity.cfg
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/timidity/timidity-guspat.cfg
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

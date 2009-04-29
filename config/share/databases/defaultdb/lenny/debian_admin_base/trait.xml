@@ -1,0 +1,76 @@
+<trait name="debian_admin_base">
+	<parents>
+		<parent>
+			base_admin_tools
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apt-listchanges
+		</package>
+		<package action="reconfig">
+			apt-listchanges
+		</package>
+		<package action="install">
+			dctrl-tools
+		</package>
+		<package action="install">
+			debconf-utils
+		</package>
+		<package action="install">
+			dselect
+		</package>
+		<package action="install">
+			rcconf
+		</package>
+		<package action="install">
+			reportbug
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="ignored_bugs" trait="debian_admin_base">
+			
+		</trait_variable>
+		<trait_variable name="install_apt_listbugs" trait="debian_admin_base">
+			False
+		</trait_variable>
+		<trait_variable name="listchanges_confirm" trait="debian_admin_base">
+			false
+		</trait_variable>
+		<trait_variable name="listchanges_email_address" trait="debian_admin_base">
+			root
+		</trait_variable>
+		<trait_variable name="listchanges_frontend" trait="debian_admin_base">
+			pager
+		</trait_variable>
+		<trait_variable name="listchanges_save_seen" trait="debian_admin_base">
+			true
+		</trait_variable>
+		<trait_variable name="listchanges_which" trait="debian_admin_base">
+			news
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			debconf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apt/listbugs/ignore_bugs
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/apt
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/aptitude
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/dpkg
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/reportbug.conf
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

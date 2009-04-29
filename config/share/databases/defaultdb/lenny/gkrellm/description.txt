@@ -1,0 +1,7 @@
+At the moment, this is practically just a copy of the old gkrellm trait from previous suites in paella.  This trait probably hasn't been changed since sarge, excepting the template tags updated to the new style.
+<br/>
+<b>Notes</b>
+<ul>
+<li>The fake start-stop daemon is used in this trait</li>
+<li>We need to install gkrellm-x86info on i386</li>
+</ul>

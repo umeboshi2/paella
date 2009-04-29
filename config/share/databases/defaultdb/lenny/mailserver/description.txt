@@ -1,0 +1,17 @@
+Packages for a mail server.  Currently the list of packages corresponds to the "mail server" task, and differs from previous incarnations of the mailserver trait in paella.
+
+<b>Notes:</b>
+
+<ul>
+<li>exim4: should already be included in base.</li>
+<li>exim4-config: should already be included in base.</li>
+<li>exim4-daemon-light: This is a good default, should possibly use a variable to determine this, an use a script to install the appropriate daemon package.</li>
+<li>mailagent:  I don't know what this is.</li>
+<li>mailx:  I've never used this.</li>
+<li>mutt:  should already be included in base.</li>
+<li>procmail:  This may be handy to help filter mail.</li>
+<li>qpopper:  POP3 daemon.  I suppose this will work better than the UW-POP package.</li>
+<li>sa-exim:  A tool to use spamassassin with exim.</li>
+<li>spamassassin: Probably the best spam filter around.</li>
+<li>uw-imapd:  IMAP server.</li>
+</ul>

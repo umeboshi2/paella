@@ -1,0 +1,48 @@
+#!/usr/bin/python
+import os, sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+from paella.db.aptkey import AptKeyHandler
+
+print "post-install script for stdinstall machine"
+
+
+
+it = InstallerTools()
+
+paella_site = it.target / 'root/site'
+sys.path.append(str(paella_site))
+
+from PaellaInstall.General import run_machine_script
+
+# here we run the post_install script from paellabase
+# before running this script.  Since this script is also
+# a post_install script, it would normally be run in
+# place of the parent's post_install script, which we
+# don't want.
+run_machine_script(it, 'post_install', 'paellabase')
+
+
+
+script = """#!/bin/bash
+mkdir ~/workspace
+pushd ~/workspace
+svn co http://bard/svn/paella/trunk/unattended
+popd
+
+"""
+
+scriptfile = it.target / 'usr/local/bin/setup-workspace'
+scriptfile.write_text(script)
+scriptfile.chmod(0755)
+
+print "created setup-workspace script"
+sys.stdout.flush()
+
+it.chroot(['/freespace/live/make-installer-image'])
+print "Paella neboot image created and prepared."
+
+
+

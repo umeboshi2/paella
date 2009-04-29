@@ -1,0 +1,50 @@
+<trait name="pbuilder">
+	<parents>
+		<parent>
+			development
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			cdebootstrap
+		</package>
+		<package action="install">
+			cowdancer
+		</package>
+		<package action="install">
+			module-assistant
+		</package>
+		<package action="install">
+			pbuilder
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="debbuildopts" trait="pbuilder">
+			-sa
+		</trait_variable>
+		<trait_variable name="debootstrap" trait="pbuilder">
+			cdebootstrap
+		</trait_variable>
+		<trait_variable name="debootstrapopts" trait="pbuilder">
+			--keyring=/root/.gnupg/pubring.gpg
+		</trait_variable>
+		<trait_variable name="distribution" trait="pbuilder">
+			lenny
+		</trait_variable>
+		<trait_variable name="mirrorsite" trait="pbuilder">
+			http://192.168.0.1/debian
+		</trait_variable>
+		<trait_variable name="othermirror" trait="pbuilder">
+			
+		</trait_variable>
+		<trait_variable name="satisfydependscmd" trait="pbuilder">
+			/usr/lib/pbuilder/pbuilder-satisfydepends
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/pbuilderrc
+		</template>
+	</templates>
+	<scripts/>
+</trait>

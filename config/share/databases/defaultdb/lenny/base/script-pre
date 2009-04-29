@@ -1,98 +1,45 @@
 #!/usr/bin/python
-import os, sys
-from os.path import join
-from useless.base.util import makepaths
+import os
 from paella.installer.toolkit import InstallerTools
 
-# setup InstallerTools
 it = InstallerTools()
-if it.trait != 'base':
-    print 'PROBLEM have to set trait to base'
-    it.set_trait('base')
 
-# debug - show sources list
-print file(os.path.join(it.target, 'etc/apt/sources.list')).read()
+# here we configure the timezone and localtime
+# It's odd that tzdata doesn't respect previously
+# made debconf selections, and will remake them
+# according to the data that's already present in
+# /etc/timezone and /etc/localtime .  Also, if these
+# files aren't present, instead of honoring the
+# debconf database, it sets the debconf database
+# to default values.
 
-# update package lists
-cmd = it.chroot_command('apt-get -y update')
-# do two updates to catch errors
-for update in ['first', 'second']:
-    print update, 'update'
-    retval = os.system(cmd)
-    if retval:
-        print 'something bad happened', retval
-        sys.exit(retval)
-
-dselect_upgrade_packages = """
-at
-bind9-host
-dc
-dictionaries-common
-dnsutils
-doc-debian
-doc-linux-text
-exim4
-exim4-base
-exim4-daemon-light
-file
-finger
-ftp
-gettext-base
-gnu-efi
-iamerican
-ibritish
-ispell
-lsof
-m4
-mailx
-make
-mime-support
-mpack
-mtools
-mtr-tiny
-mutt
-ncurses-term
-nfs-common
-openssh-client
-patch
-pciutils
-perl
-perl-modules
-pidentd
-policycoreutils
-portmap
-procmail
-python
-python-central
-python-minimal
-python-newt
-python-selinux
-python-semanage
-python-support
-python2.4
-python2.4-minimal
-reportbug
-selinux-policy-refpolicy-targeted
-sharutils
-strace
-tcsh
-telnet
-texinfo
-time
-ucf
-w3m
-wamerican
-whois
-"""
-dselect_list = dselect_upgrade_packages.split('\n')
-dselect_list = [line.strip() for line in dselect_list if line.strip()]
-
-if it.lget('do_dselect_upgrade') in ['true', 'True']:
-    print 'doing dselect-upgrade'
-    packages = ' '.join(dselect_list)
-    cmd = 'apt-get -y --force-yes install %s' % packages
-    os.system(it.chroot_command(cmd))
+# The code below shouldn't have to be performed,
+# except to maybe remove the timezone and/or localtime
+# files.  After that we're doing the same thing that the
+# postinst script does.
+timezone_filename = it.target / 'etc/timezone'
+localtime_filename = it.target / 'etc/localtime'
+if timezone_filename.isfile():
+    print "removing /etc/timezone"
+    os.remove(timezone_filename)
 else:
-    print 'dselect-upgrade not requested'
-    
+    print "/etc/timezone wasn't there, skipping."
 
+if localtime_filename.isfile():
+    print "removing /etc/localtime"
+    os.remove(localtime_filename)
+else:
+    print "/etc/localtime wasn't there, skipping."
+
+area = it.get('global:tzdata_area')
+zone = it.get('global:tzdata_zone')
+
+print "tzdata area and zone are", area, zone
+
+print "writing /etc/timezone"
+timezone_filename.write_bytes('%s/%s\n' % (area, zone))
+
+zoneinfo_filename = it.target / 'usr/share/zoneinfo' / area / zone
+zoneinfo = file(zoneinfo_filename).read()
+print "writing /etc/localtime"
+localtime_filename.write_bytes(zoneinfo)

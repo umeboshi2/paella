@@ -1,0 +1,35 @@
+	<profile name="test2" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				base_server
+			</trait>
+			<trait ord="2">
+				timidity
+			</trait>
+			<trait ord="3">
+				subversion
+			</trait>
+			<trait ord="4">
+				web_server
+			</trait>
+			<trait ord="5">
+				kde_desktop
+			</trait>
+			<trait ord="9">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				kde_appearance_khaki
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				test2
+			</profile_variable>
+		</environ>
+	</profile>

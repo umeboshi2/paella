@@ -1,0 +1,8 @@
+I'm slowly merging the old configuration from previous suites into this one, in order to keep the configuration cleaner and more dynamic.  Previously, I just copied from ~/.kde and kept many options that should have been dropped.
+<br/>
+<b>Notes</b>
+<ul>
+<li>The fake start-stop daemon is used in this trait</li>
+<li>Updating the hotkeys is tricky, and requires placing the khotkeys file in a directory that can be used for KDEDIRS in /etc/kde3/share (and we may have to change this later).</li>
+<li>Also, the autostart routine in KDE3 won't look anywhere in /etc for the startup .desktop files, so we have to place them in /usr/share/autostart until we upgrade to KDE4.</li>
+</ul>

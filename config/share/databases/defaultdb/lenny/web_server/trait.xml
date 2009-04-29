@@ -1,0 +1,31 @@
+<trait name="web_server">
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			apache2
+		</package>
+		<package action="install">
+			apache2-mpm-prefork
+		</package>
+		<package action="install">
+			apache2-utils
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apache2/apache2.conf
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/apache2/envvars
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/apache2
+		</template>
+	</templates>
+	<scripts/>
+</trait>

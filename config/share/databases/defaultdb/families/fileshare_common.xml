@@ -1,0 +1,17 @@
+	<family name="fileshare_common">
+		<parents/>
+		<environ>
+			<family_variable name="fileshare_common_chmod" trait="fileserver_base">
+				775
+			</family_variable>
+			<family_variable name="fileshare_common_chown" trait="fileserver_base">
+				root:staff
+			</family_variable>
+			<family_variable name="fileshare_common_create" trait="fileserver_base">
+				True
+			</family_variable>
+			<family_variable name="fileshare_common_path" trait="fileserver_base">
+				common
+			</family_variable>
+		</environ>
+	</family>

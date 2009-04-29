@@ -1,7 +1,4 @@
 <trait name="clockserver">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_server
@@ -11,11 +8,18 @@
 		<package action="install">
 			ntp
 		</package>
-		<package action="install">
-			ntp-refclock
-		</package>
 	</packages>
 	<environ/>
-	<templates/>
-	<scripts/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/default/ntp
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/ntp.conf
+		</template>
+	</templates>
+	<scripts>
+		<script name="post"/>
+		<script name="pre"/>
+	</scripts>
 </trait>

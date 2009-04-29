@@ -1,0 +1,12 @@
+#
+# Shorewall version 3.2 - NFS Macro
+#
+# /etc/shorewall/macro.NFS
+#
+#	This macro handles sun NFS
+#
+###############################################################################
+#ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
+#				PORT(S)	PORT(S)	LIMIT	GROUP
+PARAM	-	-	tcp	2049
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

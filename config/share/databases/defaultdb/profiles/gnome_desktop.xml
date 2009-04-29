@@ -1,0 +1,25 @@
+	<profile name="gnome_desktop" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				subversion
+			</trait>
+			<trait ord="2">
+				gnome_desktop
+			</trait>
+			<trait ord="3">
+				gdm
+			</trait>
+			<trait ord="4">
+				final
+			</trait>
+		</traits>
+		<families/>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				skeleton
+			</profile_variable>
+		</environ>
+	</profile>

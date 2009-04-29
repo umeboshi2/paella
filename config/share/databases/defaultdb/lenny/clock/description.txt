@@ -1,0 +1,1 @@
+This is an ntp client for talking to an ntp server on the local network.  The ntp.conf file should reference the ntp server on the local network.

@@ -1,0 +1,17 @@
+	<family name="samba_stdinstall_shares">
+		<parents>
+			<parent>
+				samba_default_shares
+			</parent>
+			<parent>
+				samba_share_common
+			</parent>
+			<parent>
+				samba_share_netlogon
+			</parent>
+			<parent>
+				samba_share_profiles
+			</parent>
+		</parents>
+		<environ/>
+	</family>

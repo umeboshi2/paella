@@ -1,0 +1,87 @@
+# Confirm password:
+slapd	slapd/password2	password	
+# Password for database login account:
+libnss-ldap	libnss-ldap/bindpw	password	
+# LDAP root account password:
+libpam-ldap	libpam-ldap/rootbindpw	password	
+# LDAP root account password:
+libnss-ldap	libnss-ldap/rootbindpw	password	
+# Encrypted admin password:
+slapd	slapd/internal/adminpw	password	
+# Administrator password:
+slapd	slapd/password1	password	
+# Password for database login account:
+libpam-ldap	libpam-ldap/bindpw	password	
+# Allow LDAPv2 protocol?
+slapd	slapd/allow_ldap_v2	boolean	false
+# Does the LDAP database require login?
+libnss-ldap	libnss-ldap/dblogin	boolean	false
+# TLSCipherSuite values have changed
+slapd	slapd/tlsciphersuite	error	
+# Password mismatch
+slapd	slapd/password_mismatch	note	
+# Retry configuration?
+slapd	slapd/invalid_config	boolean	true
+# Organization name:
+slapd	shared/organization	string	nodomain
+# Automatically update libnss-ldap's configuration file?
+libnss-ldap	libnss-ldap/override	boolean	true
+# slapcat failure during upgrade
+slapd	slapd/upgrade_slapcat_failure	error	
+# slurpd is obsolete; replicas must be reconfigured by hand
+slapd	slapd/slurpd_obsolete	error	
+# Distinguished name of the search base:
+libnss-ldap	shared/ldapns/base-dn	string	dc=example,dc=net
+libpam-ldap	shared/ldapns/base-dn	string	dc=example,dc=net
+# Make debconf change your config?
+libpam-ldap	libpam-ldap/override	boolean	true
+# LDAP account for root:
+libnss-ldap	libnss-ldap/rootbinddn	string	cn=manager,dc=example,dc=net
+# IP multicast-enabled kernel needed to reduce traffic
+libslp1	libslp1/multicast	error	
+# Omit OpenLDAP server configuration?
+slapd	slapd/no_configuration	boolean	false
+# LDAP version to use:
+# Choices: 3, 2
+libnss-ldap	shared/ldapns/ldap_version	select	3
+libpam-ldap	shared/ldapns/ldap_version	select	3
+# Does the LDAP database require login?
+libpam-ldap	libpam-ldap/dblogin	boolean	false
+# Move old database?
+slapd	slapd/move_old_database	boolean	true
+# Unprivileged database user:
+libnss-ldap	libnss-ldap/binddn	string	cn=proxyuser,dc=example,dc=net
+# LDAP server Uniform Resource Identifier:
+libnss-ldap	shared/ldapns/ldap-server	string	ldap://127.0.0.1/
+libpam-ldap	shared/ldapns/ldap-server	string	ldap://127.0.0.1/
+# Local crypt to use when changing passwords.
+# Choices: clear, crypt, nds, ad, exop, md5
+libpam-ldap	libpam-ldap/pam_password	select	crypt
+# Back up current database and create a new one?
+slapd	slapd/suffix_change	boolean	false
+# Unprivileged database user:
+libpam-ldap	libpam-ldap/binddn	string	cn=proxyuser,dc=example,dc=net
+# nsswitch.conf not managed automatically
+libnss-ldap	libnss-ldap/nsswitch	note	
+# Make the configuration file readable/writeable by its owner only?
+libnss-ldap	libnss-ldap/confperm	boolean	false
+# Special LDAP privileges for root?
+libnss-ldap	libnss-ldap/dbrootlogin	boolean	true
+# Directory to use for dumped databases:
+slapd	slapd/dump_database_destdir	string	/var/backups/slapd-VERSION
+# Multicast route needed in /etc/network/interfaces
+libslp1	libslp1/multicast-route	error	
+# Do you want the database to be removed when slapd is purged?
+slapd	slapd/purge_database	boolean	false
+# DNS domain name:
+slapd	slapd/domain	string	nodomain
+# LDAP account for root:
+libpam-ldap	libpam-ldap/rootbinddn	string	cn=manager,dc=example,dc=net
+# Make local root Database admin.
+libpam-ldap	libpam-ldap/dbrootlogin	boolean	true
+# Database backend to use:
+# Choices: BDB, HDB
+slapd	slapd/backend	select	HDB
+# Dump databases to file on upgrade:
+# Choices: always, when needed, never
+slapd	slapd/dump_database	select	when needed

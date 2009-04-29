@@ -1,0 +1,24 @@
+	<family name="samba_share_common">
+		<parents>
+			<parent>
+				fileshare_common
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="share_common_comment" trait="samba_server">
+				%h common share
+			</family_variable>
+			<family_variable name="share_common_guest_ok" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_common_locking" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_common_path" trait="samba_server">
+				&lt;--|fileserver_base:basedir|--&gt;/common
+			</family_variable>
+			<family_variable name="share_common_read_only" trait="samba_server">
+				yes
+			</family_variable>
+		</environ>
+	</family>

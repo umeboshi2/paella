@@ -1,1 +1,12 @@
 Here is where the network interfaces for the host are defined and configured.
+<ul>
+<li>The udev_interfaces variable isn't configured yet.  It will allow you to name the ethernet interfaces according to their mac addresses.  The default in the trait will remain blank.  The trait variables will default to a traditional "eth0" interface that gets its configuration by dhcp.  Any variables that change this behavior belong in either a family, profile, or machine.  The mac addresses should be placed in the machine variables.</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>

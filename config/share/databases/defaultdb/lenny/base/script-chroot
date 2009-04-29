@@ -1,0 +1,14 @@
+#!/bin/sh
+# this was a bad hack to get locales to work
+# we don't need it anymore since we have the preseed process
+# in the trait installer
+
+#rm /etc/locale.gen
+
+echo "running chroot script, but there's nothing to do!"
+
+echo "debugging tzdata debconf selections"
+debconf-get-selections | grep tzdata
+
+echo "debugging locale debconf selections"
+debconf-get-selections | grep locale

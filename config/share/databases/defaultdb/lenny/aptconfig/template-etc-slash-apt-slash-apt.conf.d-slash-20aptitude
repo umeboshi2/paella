@@ -1,0 +1,4 @@
+Aptitude "";
+Aptitude::Get-Root-Command "<--|aptconfig:aptitude_get_root_command|-->";
+Aptitude::Keep-Unused-Pattern "";
+Aptitude::Delete-Unused-Pattern "";

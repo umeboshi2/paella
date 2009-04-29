@@ -1,2 +1,14 @@
-This is the base trait for all server traits.  It depends on localnet, because
-services are primarily oriented for the local network.
+This is the base trait for all server traits. It depends on localnet, because services are primarily oriented for the local network.
+<br/>
+The ssh server is configured here.  Every server machine should have ssh installed for remote administration.  All of the variables in this trait are debian defaults, and probably should be changed.  In my configurations I generally don't allow root logins, use pam or passwords, and make authentication exclusive to allowed users with public keys.
+<br/>
+<b>Notes</b>
+<ul>
+<li>The fake start-stop daemon is used in this trait</li>
+</ul>
+<br/>
+<b>TODO</b>
+<ul>
+<li>add allowed users to sshd configuration</li>
+<li>maybe use allowed groups instead of allowed users</li>
+</ul>

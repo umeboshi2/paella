@@ -1,0 +1,17 @@
+<machine name="standalone" parent="vboxbase" profile="paella_standalone">
+	<family>
+		insecure
+	</family>
+	<machine_variable name="admin_users" trait="users">
+		paella umeboshi
+	</machine_variable>
+	<machine_variable name="hostname" trait="global">
+		standalone
+	</machine_variable>
+	<machine_variable name="sysadmin_users" trait="users">
+		paella umeboshi
+	</machine_variable>
+	<machine_variable name="user_paella_plaintext_password" trait="users">
+		paella
+	</machine_variable>
+</machine>

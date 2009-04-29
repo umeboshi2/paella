@@ -1,0 +1,38 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.base.template import TemplatedEnvironment
+
+from paella.installer.toolkit import InstallerTools
+
+print "config script for final trait"
+it = InstallerTools()
+
+paella_site = it.target / 'root/site'
+sys.path.append(str(paella_site))
+
+print "we need to update the home directories for the users created"
+print "in the users trait."
+
+#print "this is just a test now"
+sys.stdout.flush()
+
+from PaellaInstall.Users import update_homes_from_skel
+from PaellaInstall.General import restore_intefering_files
+
+# we need to set the trait to users, since
+# the final trait only depends on global
+current_trait = it.trait
+print "current trait is", current_trait
+it.set_trait('users')
+update_homes_from_skel(it)
+
+# after messing with users code we set
+# the trait back to where it was
+it.set_trait(current_trait)
+
+# now we try to restore files that were possibly interfering with
+# the installation
+restore_intefering_files(it)

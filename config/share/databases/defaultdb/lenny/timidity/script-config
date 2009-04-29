@@ -1,0 +1,21 @@
+#!/usr/bin/python
+import sys
+from paella.installer.toolkit import InstallerTools
+
+it = InstallerTools()
+    
+timidity_cfg = it.target / 'etc/timidity/timidity.cfg'
+
+timidity_lines = timidity_cfg.lines()
+
+cfgdict = dict(guspat='guspat_cfg', freepats='freepats_cfg')
+
+slist = [c.strip() for c in it.get('timidity:sourced_cfg').split(',')]
+
+for src in slist:
+    cfgfile = it.get('timidity:%s' % cfgdict[src])
+    print "Sourcing %s in timidity.cfg" % cfgfile
+    
+    timidity_lines.append('source %s\n' % cfgfile)
+
+timidity_cfg.write_lines(timidity_lines)

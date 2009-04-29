@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=KConf update for paelladefault hotkeys
+Comment=KConf update for paelladefault hotkeys
+Exec=KDEDIRS=`kde-config --path data`:/etc/kde3 /usr/lib/kconf_update_bin/khotkeys_update --id paelladefaults
+Terminal=false
+Type=Application
+Categories=System;
+StartupNotify=false
+X-KDE-autostart-after=panel

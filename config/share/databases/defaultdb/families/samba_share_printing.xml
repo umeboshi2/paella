@@ -1,0 +1,26 @@
+	<family name="samba_share_printing">
+		<parents/>
+		<environ>
+			<family_variable name="share_printing_browseable" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_printing_comment" trait="samba_server">
+				Printer Drivers
+			</family_variable>
+			<family_variable name="share_printing_guest_ok" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_printing_path" trait="samba_server">
+				/var/lib/samba/printers
+			</family_variable>
+			<family_variable name="share_printing_read_only" trait="samba_server">
+				yes
+			</family_variable>
+			<family_variable name="share_printing_sharename" trait="samba_server">
+				print$
+			</family_variable>
+			<family_variable name="share_printing_write_list" trait="samba_server">
+				root, @ntadmin
+			</family_variable>
+		</environ>
+	</family>

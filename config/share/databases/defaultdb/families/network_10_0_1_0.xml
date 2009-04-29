@@ -1,0 +1,23 @@
+	<family name="network_10_0_1_0">
+		<parents/>
+		<environ>
+			<family_variable name="broadcast" trait="localnet">
+				10.0.1.255
+			</family_variable>
+			<family_variable name="dhcpd_range" trait="localnet">
+				10.0.1.20	10.0.1.253
+			</family_variable>
+			<family_variable name="gateway" trait="localnet">
+				10.0.1.1
+			</family_variable>
+			<family_variable name="netmask" trait="localnet">
+				255.255.255.0
+			</family_variable>
+			<family_variable name="network" trait="localnet">
+				10.0.1.0
+			</family_variable>
+			<family_variable name="prefix_length" trait="localnet">
+				24
+			</family_variable>
+		</environ>
+	</family>

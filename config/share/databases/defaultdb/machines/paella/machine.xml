@@ -1,0 +1,8 @@
+<machine name="paella" parent="paellabase" profile="paella_server">
+	<family>
+		lapnet
+	</family>
+	<machine_variable name="hostname" trait="global">
+		paella
+	</machine_variable>
+</machine>

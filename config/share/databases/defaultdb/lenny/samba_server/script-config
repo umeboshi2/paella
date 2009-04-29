@@ -1,0 +1,234 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+def get(key):
+    if ':' not in key:
+        key = 'samba_server:%s' % key
+    return env.dereference(key)
+
+def _share_prefix(share):
+    return 'samba_server:share_%s_' % share
+
+def share_options(share):
+    keys = env.keys()
+    prefix = _share_prefix(share)
+    options = [opt for opt in keys if opt.startswith(prefix)]
+    # now we strip the prefix from the options
+    options = [opt.split(prefix)[1] for opt in options]
+    return options
+
+def share_values(share, options):
+    prefix = _share_prefix(share)
+    values = []
+    for option in options:
+        key = prefix + option
+        value = get(key)
+        values.append(value)
+    return values
+
+def get_share_options(share):
+    options = share_options(share)
+    values = share_values(share, options)
+    return dict(zip(options, values))
+
+def make_share_option_line(option, value):
+    # replace the underscores
+    spaced = option.replace('_', ' ')
+    return '\t%s = %s\n' % (spaced, value)
+
+def make_share_lines(share):
+    optdict = get_share_options(share)
+    stanza = []
+    if "sharename" in optdict:
+        sharename = optdict['sharename']
+        print "Share name set by option override"
+        print "Share name is", sharename
+        stanza.append('[%s]\n' % sharename)
+    else:
+        stanza.append('[%s]\n' % share)
+    used_opts = []
+    for option in SHAREOPTIONS:
+        if option in optdict:
+            line = make_share_option_line(option, optdict[option])
+            stanza.append(line)
+            used_opts.append(option)
+    leftover_opts = [opt for opt in optdict if opt not in used_opts]
+    for option in leftover_opts:
+        line = make_share_option_line(option, optdict[option])
+        stanza.append(line)
+    return stanza
+
+
+    
+
+# In order for a share to be picked up here, it needs a
+# comment "samba_server:share_name_comment"
+# The reason I'm not using "path" is because the [homes]
+# section doesn't need a path, and because every share
+# should have some sort of comment.
+
+def get_share_names():
+    env = it.env()
+    keys = env.keys()
+    share_keys = [key for key in keys if key.startswith('samba_server:share_')]
+    share_comment_keys = [key for key in share_keys if key.endswith('_comment')]
+    len_prefix = len('samba_server:share_')
+    len_suffix = len('_comment') * -1
+    names = [key[len_prefix:len_suffix] for key in share_comment_keys]
+    return names
+
+
+
+def all_share_lines():
+    share_lines = []
+    share_lines.append('\n')
+    shares = get_share_names()
+    print "Shares defined: %s" % ", ".join(shares)
+    sys.stdout.flush()
+    for share in shares:
+        print "Configuring share:", share
+        sys.stdout.flush()
+        share_lines += make_share_lines(share)
+        share_lines.append('\n')
+    return share_lines
+
+
+def is_marker(line):
+    if line.startswith('#start paella shares'):
+        return True
+    else:
+        return False
+
+def make_new_lines(orig_lines):
+    new_lines = []
+    for line in orig_lines:
+        new_lines.append(line)
+        marker = is_marker(line)
+        if marker:
+            new_lines += all_share_lines()
+    return new_lines
+
+def configure_smb_conf():
+    smb_conf_filename = it.target / 'etc/samba/smb.conf'
+    orig_lines = smb_conf_filename.lines()
+    new_lines = make_new_lines(orig_lines)
+    if len(orig_lines) != len(new_lines):
+        print "smb.conf changed"
+        file(smb_conf_filename, 'w').writelines(new_lines)
+    
+
+####################
+# From users trait
+####################
+def get_all_users(toolkit):
+    it = toolkit
+    current_trait = it.trait
+    it.set_trait('users')
+    env = it.env()
+    standard_users = it.get('users:standard_users').split()
+    admin_users = it.get('users:admin_users').split()
+    sysadmin_users = it.get('users:sysadmin_users').split()
+    # a quick hack to get unique users
+    users = list(set(standard_users + admin_users + sysadmin_users))
+    username_data = dict(standard=standard_users, admin=admin_users,
+                         sysadmin=sysadmin_users, all=users)
+    it.set_trait(current_trait)
+    return username_data
+
+def set_plaintext_password(toolkit, username, password):
+    it = toolkit
+    yes_proc = it.proc(['yes', password], stdout=it.PIPE)
+    pass_proc = it.chroot_proc(['smbpasswd', '-a', '-s', username], stdin=yes_proc.stdout)
+    pass_proc.wait()
+    print "Set (plaintext) samba password for", username
+    sys.stdout.flush()
+    
+
+
+##################################
+# start executing here
+##################################
+
+print "config script for samba_server trait"
+
+
+it = InstallerTools()
+env = it.env()
+
+print "testing netlogon stuff"
+print "creating initial samba directories"
+basedir = it.get('fileserver_base:basedir')
+while basedir.startswith('/'):
+    basedir = basedir[1:]
+
+target_basedir = it.target  / basedir
+if not target_basedir.isdir():
+    print "creating directory", target_basedir
+    target_basedir.makedirs()
+
+samba_specific_share_directory = target_basedir / 'samba'
+if not samba_specific_share_directory.isdir():
+    print "creating directory", samba_specific_share_directory
+    samba_specific_share_directory.makedirs()
+
+netlogon_dir = samba_specific_share_directory / 'netlogon'
+profiles_dir = samba_specific_share_directory / 'profiles'
+if not netlogon_dir.isdir():
+    print "creating directory", netlogon_dir
+    netlogon_dir.makedirs()
+if not profiles_dir.isdir():
+    print "creating directory", profiles_dir
+    profiles_dir.makedirs()
+    
+# variables will look like this:
+# shares:  netlogon profiles common share office admin
+# share_<sharename>_<option>
+# do we use an option list? or do we look for all the keys in the
+# env dictionary prefixed with share_<sharename>?
+# It's possible that there are too many options to a share to make
+# a list of options, so when we need to add new options, we have
+# to update the list of options in this script.  Searching through the
+# env dictionary may be better, except the options won't be ordered
+# and the resulting file will look uglier, and also be more confusing
+# when it needs to be edited later.
+# A compromise can be made by making a list of the most common
+# options, then searching the env dictionary after exhausting the list.
+# This would make most of the shares look well ordered.
+
+# The underscores are used to match options in the paella variables
+# and need to be replaced with spaces before insertion into smb.conf
+# These are the share options from the default smb.conf provided with
+# debian.
+SHAREOPTIONS = ['comment', 'path', 'browseable', 'printable', 'guest_ok',
+                'read_only', 'create_mask', 'directory_mask', 'valid_users',
+                'write_list', 'locking', 'preexec', 'postexec']
+
+# These are extra share options that may be useful
+SHAREOPTIONS += ['force_create_mode', 'force_directory_mode']
+
+
+configure_smb_conf()
+add_samba_users = False
+add_samba_users_opt = get('add_users_to_samba')
+if add_samba_users_opt in ['True', 'true', 'Yes', 'yes']:
+    add_samba_users = True
+
+if add_samba_users:
+    print "Adding samba users to smbpasswd database."
+    username_data = get_all_users(it)
+    users = username_data['all']
+    for user in users:
+        sys.stdout.flush()
+        key = 'users:user_%s_plaintext_password' % user
+        if env.has_key(key):
+            print "User %s has plaintext password" % user
+            password = it.get(key)
+            set_plaintext_password(it, user, password)
+        else:
+            print "Skipping samba password for user", user
+            
+            

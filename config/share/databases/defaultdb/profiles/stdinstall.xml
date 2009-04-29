@@ -1,0 +1,53 @@
+	<profile name="stdinstall" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				standard
+			</trait>
+			<trait ord="2">
+				development
+			</trait>
+			<trait ord="3">
+				debianlive
+			</trait>
+			<trait ord="4">
+				paella_server
+			</trait>
+			<trait ord="5">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				apt_listchanges
+			</family>
+			<family>
+				freespace
+			</family>
+			<family>
+				ignored_bugs_lenny
+			</family>
+			<family>
+				samba_standard_defaults
+			</family>
+			<family>
+				samba_stdinstall_shares
+			</family>
+			<family>
+				secure_sshd
+			</family>
+			<family>
+				server_logcheck
+			</family>
+			<family>
+				standard_firewall
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				stdinstall
+			</profile_variable>
+		</environ>
+	</profile>

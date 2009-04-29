@@ -1,7 +1,4 @@
 <trait name="boot_server">
-	<description>
-		None
-	</description>
 	<parents>
 		<parent>
 			base_server
@@ -9,28 +6,20 @@
 	</parents>
 	<packages>
 		<package action="install">
-			syslinux
+			syslinux-common
 		</package>
 		<package action="install">
 			tftpd-hpa
 		</package>
 	</packages>
-	<environ>
-		<trait_variable name="default_kernel" trait="boot_server">
-			linux-image-2.6.18-4-486
-		</trait_variable>
-	</environ>
+	<environ/>
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/default/tftpd-hpa
-		</template>
-		<template grp_owner="root" mode="0755" owner="root">
-			root/boot_server_post_script
 		</template>
 	</templates>
 	<scripts>
 		<script name="chroot"/>
 		<script name="post"/>
-		<script name="pre"/>
 	</scripts>
 </trait>

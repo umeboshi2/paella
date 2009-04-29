@@ -1,3 +1,5 @@
-OPTIONS="-u bind"
-# Set RESOLVCONF=no to not run resolvconf
-RESOLVCONF=yes
+# run resolvconf?
+RESOLVCONF=<--|nameserver:resolvconf|-->
+
+# startup options for the server
+OPTIONS="<--|nameserver:startup_options|-->"

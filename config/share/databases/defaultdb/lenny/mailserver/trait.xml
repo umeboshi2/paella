@@ -1,0 +1,49 @@
+<trait name="mailserver">
+	<parents>
+		<parent>
+			base_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			exim4
+		</package>
+		<package action="install">
+			exim4-config
+		</package>
+		<package action="install">
+			exim4-daemon-light
+		</package>
+		<package action="install">
+			mailagent
+		</package>
+		<package action="install">
+			mutt
+		</package>
+		<package action="install">
+			procmail
+		</package>
+		<package action="install">
+			qpopper
+		</package>
+		<package action="install">
+			sa-exim
+		</package>
+		<package action="install">
+			spamassassin
+		</package>
+		<package action="install">
+			uw-imapd
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/exim4-base
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/exim4-paniclog
+		</template>
+	</templates>
+	<scripts/>
+</trait>

@@ -1,0 +1,8 @@
+	<family name="ignored_bugs_lenny">
+		<parents/>
+		<environ>
+			<family_variable name="ignored_bugs" trait="debian_admin_base">
+				516670
+			</family_variable>
+		</environ>
+	</family>

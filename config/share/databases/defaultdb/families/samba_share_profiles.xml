@@ -1,0 +1,23 @@
+	<family name="samba_share_profiles">
+		<parents/>
+		<environ>
+			<family_variable name="share_profiles_browseable" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_profiles_comment" trait="samba_server">
+				Users profiles
+			</family_variable>
+			<family_variable name="share_profiles_create_mask" trait="samba_server">
+				0600
+			</family_variable>
+			<family_variable name="share_profiles_directory_mask" trait="samba_server">
+				0700
+			</family_variable>
+			<family_variable name="share_profiles_guest_ok" trait="samba_server">
+				no
+			</family_variable>
+			<family_variable name="share_profiles_path" trait="samba_server">
+				&lt;--|fileserver_base:basedir|--&gt;/samba/profiles
+			</family_variable>
+		</environ>
+	</family>
