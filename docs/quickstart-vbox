@@ -292,7 +292,8 @@ Setup initial debian mirror
 -------------------------------------------
 
 I have written a script to help setup the partial debian repository that will be used in this
-guide.
+guide.  **Note:**  If you used a local mirror with the netinst iso, the script may fail during 
+the final part.
 
 To run the script, type::
 
@@ -308,6 +309,18 @@ Take a break.  Grab some coffee.  This will take a bit, depending on your intern
 connection.  I've taken care to only include the packages that needed, plus a few 
 extra packages that I use as tools to help me test this quickstart routine.  As of the time 
 this was written, the pool directory was 465MB in size.
+
+**Note:**  If the script failed, and you installed from a local mirror, you will need to 
+edit the /freespace/debian/conf/updates file and adjust the VerifyRelease fields in 
+the update stanzas.  You may have to import a key using gpg --import, or you may 
+just remove the VerifyRelease fields from the stanzas.  Once you are sure the 
+stanzas are correct, you can type::
+
+	reprepro -b /freespace/debian -VV --noskipold update
+	sudo apt-get update
+
+This will finish preparing the initial debian repository, and use that repository 
+in your apt sources.
 
 
 Obtain paella from subversion
