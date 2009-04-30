@@ -6,6 +6,7 @@ from useless.base.path import path
 it = InstallerTools()
 
 directories = [
+    'binary_debian-installer-includes',
     'binary_local-includes',
     'chroot_local-includes',
     'binary_rootfs',

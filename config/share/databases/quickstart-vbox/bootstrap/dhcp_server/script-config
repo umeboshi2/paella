@@ -1,0 +1,70 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+    
+print "config script for dhcp_server"
+
+it = InstallerTools()
+env = it.env()
+
+
+def get(key):
+    if ':' not in key:
+        key = 'dhcp_server:%s' % key
+    return env.dereference(key)
+
+def is_marker(line):
+    if line.startswith('# define subnet here'):
+        return True
+    else:
+        return False
+
+def write_file(filename, lines):
+    file(filename, 'w').writelines(lines)
+
+
+def make_new_lines(orig_lines):
+    new_lines = []
+    for line in orig_lines:
+        new_lines.append(line)
+        marker = is_marker(line)
+        if marker:
+            new_lines += subnet_lines()
+    return new_lines
+
+def configure_dhcpd_conf():
+    dhcpd_conf_filename = it.target / 'etc/dhcp3/dhcpd.conf'
+    orig_dhcpd_conf_lines = dhcpd_conf_filename.lines()
+    new_lines = make_new_lines(orig_dhcpd_conf_lines)
+    write_file(dhcpd_conf_filename, new_lines)
+    
+    
+def subnet_lines():
+    env = it.env()
+    lines = []
+    network = it.get('localnet:network')
+    netmask = it.get('localnet:netmask')
+    dhcpd_range = it.get('localnet:dhcpd_range')
+    nameserver = it.get('localnet:nameserver')
+    domain = it.get('localnet:domain')
+    gateway = it.get('localnet:gateway')
+    lines.append('subnet %s netmask %s {\n' % (network, netmask))
+    lines.append('\trange %s;\n' % dhcpd_range)
+    lines.append('\toption domain-name-servers %s;\n' % nameserver)
+    lines.append('\toption domain-name "%s";\n' % domain)
+    lines.append('\toption routers %s;\n' % gateway)
+    # add the extra options here
+    filename = it.get('dhcp_server:subnet_filename')
+    filename = filename.strip()
+    if filename:
+        lines.append('\tfilename "%s";\n' % filename)
+    # finished adding extra options
+    lines.append('}\n')
+    return lines
+
+
+configure_dhcpd_conf()

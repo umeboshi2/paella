@@ -3,4 +3,5 @@ The configuration in the dhcpd.conf file is very simple (so far), and is the min
 <b>TODO</b>
 <ul>
 <li>get dynamic dns working</li>
+<li>pass ntp info</li>
 </ul>

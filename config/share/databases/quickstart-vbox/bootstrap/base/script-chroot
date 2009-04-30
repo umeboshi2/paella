@@ -9,3 +9,6 @@ echo "running chroot script, but there's nothing to do!"
 
 echo "debugging tzdata debconf selections"
 debconf-get-selections | grep tzdata
+
+echo "debugging locale debconf selections"
+debconf-get-selections | grep locale

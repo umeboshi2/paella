@@ -12,6 +12,9 @@
 		<trait_variable name="broadcast" trait="localnet">
 			10.255.255.255
 		</trait_variable>
+		<trait_variable name="cidr" trait="localnet">
+			&lt;--|localnet:network|--&gt;/&lt;--|localnet:prefix_length|--&gt;
+		</trait_variable>
 		<trait_variable name="db_server" trait="localnet">
 			&lt;--|localnet:mainserver|--&gt;
 		</trait_variable>
@@ -36,6 +39,9 @@
 		<trait_variable name="mainserver" trait="localnet">
 			&lt;--|global:hostname|--&gt;
 		</trait_variable>
+		<trait_variable name="mountd_port" trait="localnet">
+			50919
+		</trait_variable>
 		<trait_variable name="mysql_server" trait="localnet">
 			&lt;--|localnet:db_server|--&gt;
 		</trait_variable>
@@ -57,11 +63,20 @@
 		<trait_variable name="postgresql_server" trait="localnet">
 			&lt;--|localnet:db_server|--&gt;
 		</trait_variable>
+		<trait_variable name="prefix_length" trait="localnet">
+			8
+		</trait_variable>
+		<trait_variable name="reverse" trait="localnet">
+			10
+		</trait_variable>
 		<trait_variable name="samba_server" trait="localnet">
 			&lt;--|localnet:file_server|--&gt;
 		</trait_variable>
 		<trait_variable name="squid_server" trait="localnet">
 			&lt;--|localnet:mainserver|--&gt;
+		</trait_variable>
+		<trait_variable name="statd_port" trait="localnet">
+			50920
 		</trait_variable>
 		<trait_variable name="web_server" trait="localnet">
 			&lt;--|localnet:mainserver|--&gt;

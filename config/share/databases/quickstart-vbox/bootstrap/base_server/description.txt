@@ -9,6 +9,6 @@ The ssh server is configured here.  Every server machine should have ssh install
 <br/>
 <b>TODO</b>
 <ul>
-<li>add allowed users to configuration</li>
+<li>add allowed users to sshd configuration</li>
 <li>maybe use allowed groups instead of allowed users</li>
 </ul>

@@ -41,7 +41,7 @@ LH_LINUX_PACKAGES="<--|debianlive:lh_linux_packages|-->"
 LH_PACKAGES="<--|debianlive:lh_packages|-->"
 
 # $LH_PACKAGES_LISTS: set package list to install
-# (Default: paella)
+# (Default: standard)
 LH_PACKAGES_LISTS="<--|debianlive:lh_packages_lists|-->"
 
 # $LH_TASKS: set tasks to install

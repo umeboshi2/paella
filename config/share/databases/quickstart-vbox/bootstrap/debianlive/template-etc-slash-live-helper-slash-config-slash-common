@@ -61,7 +61,7 @@ LH_DEBCONF_NOWARNINGS="<--|debianlive:lh_debconf_nowarnings|-->"
 LH_DEBCONF_PRIORITY="<--|debianlive:lh_debconf_priority|-->"
 
 # $LH_INITRAMFS: set initramfs hook
-# (Default: live-initramfs)
+# (Default: auto)
 LH_INITRAMFS="<--|debianlive:lh_initramfs|-->"
 
 # $LH_FDISK: set fdisk program
@@ -85,7 +85,7 @@ LH_MODE="<--|debianlive:lh_mode|-->"
 LH_USE_FAKEROOT="<--|debianlive:lh_use_fakeroot|-->"
 
 # $LH_TASKSEL: set tasksel program
-# (Default: aptitude)
+# (Default: tasksel)
 LH_TASKSEL="<--|debianlive:lh_tasksel|-->"
 
 # $LH_INCLUDES: set includes
@@ -98,25 +98,25 @@ LH_TEMPLATES="<--|debianlive:lh_templates|-->"
 
 # Live-helper options
 
-# $LH_BREAKPOINTS: enable breakpoints
+# $_BREAKPOINTS: enable breakpoints
 # (Default: disabled)
-#LH_BREAKPOINTS="<--|debianlive:lh_breakpoints|-->"
+#_BREAKPOINTS="<--|debianlive:lh_breakpoints|-->"
 
-# $LH_DEBUG: enable debug
+# $_DEBUG: enable debug
 # (Default: disabled)
-#LH_DEBUG="<--|debianlive:lh_debug|-->"
+#_DEBUG="<--|debianlive:lh_debug|-->"
 
-# $LH_FORCE: enable force
+# $_FORCE: enable force
 # (Default: disabled)
-#LH_FORCE="<--|debianlive:lh_force|-->"
+#_FORCE="<--|debianlive:lh_force|-->"
 
-# $LH_QUIET: enable quiet
+# $_QUIET: enable quiet
 # (Default: disabled)
-LH_QUIET="<--|debianlive:lh_quiet|-->"
+_QUIET="<--|debianlive:lh_quiet|-->"
 
-# $LH_VERBOSE: enable verbose
+# $_VERBOSE: enable verbose
 # (Default: disabled)
-#LH_VERBOSE="<--|debianlive:lh_verbose|-->"
+#_VERBOSE="<--|debianlive:lh_verbose|-->"
 
 # Internal stuff (FIXME)
 APT_OPTIONS="--yes"

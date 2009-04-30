@@ -17,7 +17,7 @@ LH_BOOTSTRAP_INCLUDE=""
 LH_BOOTSTRAP_EXCLUDE=""
 
 # $LH_BOOTSTRAP_FLAVOUR: select flavour to use
-# (Default: )
+# (Default: empty)
 LH_BOOTSTRAP_FLAVOUR=""
 
 # $LH_BOOTSTRAP_KEYRING: set distribution keyring
@@ -29,11 +29,11 @@ LH_BOOTSTRAP_KEYRING=""
 LH_DISTRIBUTION="<--|debianlive:lh_distribution|-->"
 
 # $LH_MIRROR_BOOTSTRAP: set mirror to bootstrap from
-# (Default: http://10.0.1.1/debian)
+# (Default: http://ftp.us.debian.org/debian/)
 LH_MIRROR_BOOTSTRAP="<--|debianlive:lh_mirror_bootstrap|-->"
 
 # $LH_MIRROR_CHROOT: set mirror to fetch packages from
-# (Default: http://10.0.1.1/debian)
+# (Default: http://ftp.us.debian.org/debian/)
 LH_MIRROR_CHROOT="<--|debianlive:lh_mirror_chroot|-->"
 
 # $LH_MIRROR_CHROOT_SECURITY: set security mirror to fetch packages from
@@ -49,6 +49,6 @@ LH_MIRROR_BINARY="<--|debianlive:lh_mirror_binary|-->"
 # (Default: http://security.debian.org/)
 LH_MIRROR_BINARY_SECURITY="<--|debianlive:lh_mirror_binary_security|-->"
 
-# $LH_SECTIONS: select section(s) to use
-# (Default: main contrib non-free)
-LH_SECTIONS="<--|debianlive:lh_sections|-->"
+# $LH_CATEGORIES: select categories to use
+# (Default: main)
+LH_CATEGORIES="<--|debianlive:lh_categories|-->"

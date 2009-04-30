@@ -1,0 +1,13 @@
+#
+# Shorewall version 3.2 - bootp client Macro
+#
+# /etc/shorewall/macro.BootpC
+#
+#	This macro handles bootp clients
+#
+###############################################################################
+#ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
+#				PORT(S)	PORT(S)	LIMIT	GROUP
+PARAM	-	-	udp	68
+PARAM	-	-	tcp	68
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

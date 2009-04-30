@@ -5,7 +5,7 @@
 LH_BINARY_FILESYSTEM="<--|debianlive:lh_binary_filesystem|-->"
 
 # $LH_BINARY_IMAGES: set image type
-# (Default: net)
+# (Default: iso)
 LH_BINARY_IMAGES="<--|debianlive:lh_binary_images|-->"
 
 # $LH_BINARY_INDICES: set apt/aptitude generic indices
@@ -18,7 +18,7 @@ LH_BOOTAPPEND_LIVE="<--|debianlive:lh_bootappend_live|-->"
 
 # $LH_BOOTAPPEND_INSTALL: set boot parameters
 # (Default: empty)
-LH_BOOTAPPEND_INSTALL="<--|debianlive:lh_bootappend_install|-->"
+LH_BOOTAPPEND_INSTALL=" <--|debianlive:lh_bootappend_install|-->"
 
 # $LH_BOOTLOADER: set bootloader
 # (Default: syslinux)
@@ -54,7 +54,7 @@ LH_ENCRYPTION="<--|debianlive:lh_encryption|-->"
 LH_GRUB_SPLASH=""
 
 # $LH_HOSTNAME: set hostname
-# (Default: installer)
+# (Default: debian)
 LH_HOSTNAME="<--|debianlive:lh_hostname|-->"
 
 # $LH_ISO_APPLICATION: set iso author
@@ -66,11 +66,11 @@ LH_ISO_APPLICATION="<--|debianlive:lh_iso_application|-->"
 LH_ISO_PREPARER="<--|debianlive:lh_iso_preparer|-->"
 
 # $LH_ISO_PUBLISHER: set iso publisher
-# (Default: Debian Live project; http://debian-live.alioth.debian.org/; debian-live-devel@lists.alioth.debian.org)
+# (Default: Debian Live project; http://debian-live.alioth.debian.org/; debian-live@lists.debian.org)
 LH_ISO_PUBLISHER="<--|debianlive:lh_iso_publisher|-->"
 
 # $LH_ISO_VOLUME: set iso volume (max 32 chars)
-# (Default: Debian Live $(date +%Y%m%d-%H:%M))
+# (Default: Debian Live lenny $(date +%Y%m%d-%H:%M))
 LH_ISO_VOLUME="<--|debianlive:lh_iso_volume|-->"
 
 # $LH_JFFS2_ERASEBLOCK: set jffs2 eraseblock size
@@ -82,7 +82,7 @@ LH_JFFS2_ERASEBLOCK="<--|debianlive:lh_jffs2_eraseblock|-->"
 LH_MEMTEST="<--|debianlive:lh_memtest|-->"
 
 # $LH_WIN32_LOADER: set win32-loader
-# (Default: enabled)
+# (Default: disabled)
 LH_WIN32_LOADER="<--|debianlive:lh_win32_loader|-->"
 
 # $LH_NET_ROOT_FILESYSTEM: set netboot filesystem
@@ -94,11 +94,11 @@ LH_NET_ROOT_FILESYSTEM="<--|debianlive:lh_net_root_filesystem|-->"
 LH_NET_ROOT_MOUNTOPTIONS="<--|debianlive:lh_net_root_mountoptions|-->"
 
 # $LH_NET_ROOT_PATH: set netboot server directory
-# (Default: /freespace/paella)
+# (Default: /srv/debian-live)
 LH_NET_ROOT_PATH="<--|debianlive:lh_net_root_path|-->"
 
 # $LH_NET_ROOT_SERVER: set netboot server address
-# (Default: 10.0.1.1)
+# (Default: 192.168.1.1)
 LH_NET_ROOT_SERVER="<--|debianlive:lh_net_root_server|-->"
 
 # $LH_NET_COW_FILESYSTEM: set net client cow filesystem
@@ -150,9 +150,9 @@ LH_SYSLINUX_MENU_LIVE_FAILSAFE_ENTRY="<--|debianlive:lh_syslinux_menu_live_fails
 LH_SYSLINUX_MENU_MEMTEST_ENTRY="<--|debianlive:lh_syslinux_menu_memtest_entry|-->"
 
 # $LH_USERNAME: set username
-# (Default: installer)
+# (Default: user)
 LH_USERNAME="<--|debianlive:lh_username|-->"
 
 
 # to help make images quicker
-#MKSQUASHFS_OPTIONS="-noI -noD -noF"
+MKSQUASHFS_OPTIONS="<--|debianlive:mksquashfs_options|-->"

@@ -6,7 +6,7 @@
 	</parents>
 	<packages>
 		<package action="install">
-			syslinux
+			syslinux-common
 		</package>
 		<package action="install">
 			tftpd-hpa

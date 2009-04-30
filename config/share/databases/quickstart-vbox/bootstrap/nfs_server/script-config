@@ -1,0 +1,100 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+def get(key):
+    if ':' not in key:
+        key = 'nfs_server:%s' % key
+    return env.dereference(key)
+
+def _export_prefix(name):
+    return 'nfs_server:export_%s_' % name
+
+def export_options(name):
+    keys = env.keys()
+    prefix = _export_prefix(name)
+    options = [opt for opt in keys if opt.startswith(prefix)]
+    options = [opt.split(prefix)[1] for opt in options]
+    return options
+
+def export_values(name, options):
+    prefix = _export_prefix(name)
+    values = []
+    for option in options:
+        key = prefix + option
+        value = get(key)
+        values.append(value)
+    return values
+
+def get_export_options(name):
+    options = export_options(name)
+    values = export_values(name)
+    return dict(zip(options, values))
+
+def make_export_line(name):
+    options = get_export_options(name)
+    return "%s\t%s" % (thepath, theoptions)
+
+
+def get_export_names():
+    keys = env.keys()
+    names = []
+    for key in keys:
+        if key.startswith('nfs_server:export_') and key.endswith('_path'):
+            len_prefix = len('nfs_server:export_')
+            len_suffix = len('_path') * -1
+            name = key[len_prefix:len_suffix]
+            names.append(name)
+    return names
+
+
+def make_export_line(name):
+    pathkey = 'nfs_server:export_%s_path' % name
+    optionkey = 'nfs_server:export_%s_options' % name
+    fspath = it.get(pathkey)
+    if not fspath.startswith('/'):
+        fspath = abs_basedir / fspath
+    option = it.get(optionkey)
+    return "%s\t%s\n" % (fspath, option)
+
+def make_exports():
+    exports_filename = it.target / 'etc/exports'
+    exports_lines = exports_filename.lines()
+    names = get_export_names()
+    print "exports - %s" % names
+    for name in names:
+        line = make_export_line(name)
+        print "adding to exports: %s" % line
+        exports_lines.append(line)
+    if names:
+        file(exports_filename, 'w').writelines(exports_lines)
+        print "wrote exports file"
+        sys.stdout.flush()
+        
+    
+    
+print "config script for nfs_server trait"
+
+
+it = InstallerTools()
+env = it.env()
+
+basedir = it.get('fileserver_base:basedir')
+while basedir.startswith('/'):
+    basedir = basedir[1:]
+
+target_basedir = it.target  / basedir
+if not target_basedir.isdir():
+    print "creating directory", target_basedir
+    target_basedir.makedirs()
+
+abs_basedir = path('/') / basedir
+
+sys.stdout.flush()
+
+make_exports()
+
+

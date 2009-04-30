@@ -1,14 +1,10 @@
 <trait name="nfs_client">
 	<parents>
 		<parent>
-			localnet
+			nfs_common
 		</parent>
 	</parents>
-	<packages>
-		<package action="install">
-			nfs-common
-		</package>
-	</packages>
+	<packages/>
 	<environ/>
 	<templates/>
 	<scripts/>

@@ -1,7 +1,7 @@
 #
 # Shorewall version 3.2 - DHCP Macro
 #
-# /usr/share/shorewall/macro.DHCP
+# /etc/shorewall/macro.DHCP
 #
 #	This macro handles Dynamic Host Control Protocol (DHCP)
 #

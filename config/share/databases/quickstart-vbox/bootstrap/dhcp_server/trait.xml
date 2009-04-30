@@ -13,6 +13,9 @@
 		<trait_variable name="authoritative" trait="dhcp_server">
 			#authoritative
 		</trait_variable>
+		<trait_variable name="ddns_update_style" trait="dhcp_server">
+			none
+		</trait_variable>
 		<trait_variable name="default_lease_time" trait="dhcp_server">
 			600
 		</trait_variable>
@@ -21,6 +24,9 @@
 		</trait_variable>
 		<trait_variable name="max_lease_time" trait="dhcp_server">
 			7200
+		</trait_variable>
+		<trait_variable name="subnet_filename" trait="dhcp_server">
+			
 		</trait_variable>
 	</environ>
 	<templates>
@@ -31,5 +37,7 @@
 			etc/dhcp3/dhcpd.conf
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="config"/>
+	</scripts>
 </trait>

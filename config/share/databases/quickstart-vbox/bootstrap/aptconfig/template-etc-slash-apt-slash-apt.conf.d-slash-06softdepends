@@ -1,0 +1,5 @@
+APT
+{
+        Install-Recommends "<--|aptconfig:install_recommends|-->";
+        Install-Suggests "<--|aptconfig:install_suggests|-->";
+};

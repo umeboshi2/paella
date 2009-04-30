@@ -3,6 +3,6 @@ In the future this trait will make use of debian's solution to this problem.
 <br/>
 <b>TODO</b>
 <ul>
-<li>Default snakeoil generation won't work without FQDN.</li>
+<li>Default snakeoil generation won't work without FQDN. <b>Fixed:</b>  We now use the hostname and domain from paella to configure the snakeoil certificate.  The make-ssl-cert script leaves a dangling symlink when forcing an overwrite of the snakeoil certificate.</li>
 <li>Make a template for a self-signed certificate</li>
 </ul>

@@ -6,14 +6,20 @@ from useless.base.path import path
 
 from paella.installer.toolkit import InstallerTools
 
+# the name of the fileshares are taken from the path option
+# e.g.  fileshare_somename_path , so all fileshares must have
+# a path option to be recognized
+# here's what's going to work
+#
+# fileshare_somename_path - if this doesn't start with "/", it will be relative
+# to basedir
+#
+# fileshare_somename_create - bool - create the directory?
+# fileshare_somename_chown - root:root  user:group owner of fileshare
+# fileshare_somename_chmod - 755 permissions on fileshare
 
 print "config script for fileserver_base trait"
-print "-----------------------------------------------------"
-print "WARNING:  This is a real hacky script now."
-print "This script is just being used to quickly test"
-print "file sharing and should be replaced with better code"
-print "once the actual filesharing traits are in better shape."
-print "-----------------------------------------------------"
+
 it = InstallerTools()
 env = it.env()
 
@@ -22,54 +28,87 @@ def get(key):
         key = 'fileserver_base:%s' % key
     return env.dereference(key)
 
+def _fileshare_prefix(name):
+    return 'fileshare_%s_' % name
+
+def _fileshare_option(name, opt):
+    return _fileshare_prefix(name) + opt
+
+def fileshare_key(name, opt):
+    return 'fileserver_base:%s' % _fileshare_option(name, opt)
+
+def get_fileshare_names():
+    keys = env.keys()
+    print "in get_fileshare_names(): keys - ", keys
+    fileshare_keys = [key for key in keys if key.startswith('fileserver_base:fileshare_')]
+    fileshare_keys = [key.split(':')[1] for key in fileshare_keys]
+    print "fileshare_keys", fileshare_keys
+    fileshare_keys = [key for key in fileshare_keys if key.endswith('_path')]
+    print "fileshare path keys", fileshare_keys
+    len_prefix = len('fileshare_')
+    len_suffix = len('_path') * -1
+    names = [key[len_prefix:len_suffix] for key in fileshare_keys]
+    return names
+
+def get_fileshare_options(name):
+    opts = dict()
+    for opt in ['path', 'create', 'chown', 'chmod']:
+        key = fileshare_key(name, opt)
+        if key in env.keys():
+            opts[opt] = env.get(key)
+    return opts
+
+def manage_fileshare(name):
+    # these should already be defined
+    # - abs_basedir
+    # - target_basedir
+    # - it
+    opts = get_fileshare_options(name)
+    if not opts.has_key('create'):
+        print "No create option, skipping fileshare", name
+        return
+    if not opts['create'] in ['True', 'true', 'Yes', 'yes']:
+        print "Create is false, skipping fileshare", name
+        return
+    # manage path
+    fspath = opts['path']
+    if fspath.startswith('/'):
+        print "fileshare %s has absolute path %s" % (name, fspath)
+    else:
+        fspath = abs_basedir / fspath
+    print "Creating path at", fspath
+    it.chroot(['mkdir', '-p', fspath])
+    if opts.has_key('chown'):
+        own = opts['chown']
+        print "Setting ownership of %s to %s" % (fspath, own)
+        it.chroot(['chown', own, fspath])
+    if opts.has_key('chmod'):
+        mod = opts['chmod']
+        print "Setting permissions of %s to %s" % (fspath, mod)
+        it.chroot(['chmod', mod, fspath])
+        
 print "target directory", it.target
 
 basedir = get('basedir')
 while basedir.startswith('/'):
     basedir = basedir[1:]
 
+abs_basedir = path('/') / basedir
+
 target_basedir = it.target / basedir
 if not target_basedir.isdir():
     target_basedir.makedirs()
+
+
+names = get_fileshare_names()
+print "Fileshare names", names
+
+for name in names:
+    print "Managing Fileshare", name
+    manage_fileshare(name)
     
-common_dir = target_basedir / 'common'
-common_dir.mkdir()
-share_dir = target_basedir / 'share'
-share_dir.mkdir()
 
-# copy some files to test shares
-print "copying some sample files to test the shares"
-
-print "copying to common share"
-cmd = ['cp', '-av', '/paellalog', common_dir]
-it.run(cmd)
 
 
 # exit and ignore the mess below here
 sys.exit(0)
-
-print "replacing /etc/apt/sources.list with installer version"
-sources_list_filename = it.target / 'etc/apt/sources.list'
-sources_list_official_filename = path('%s.official' % sources_list_filename)
-sources_list_installer_filename = path('%s.installer' % sources_list_filename)
-official = sources_list_filename.bytes()
-sources_list_official_filename.write_bytes(official)
-sources_list_filename.write_bytes(sources_list_installer_filename.bytes())
-
-print "preparing virtualbox packages"
-print "-486 is hardcoded, should use kernel info to pick correct package"
-
-packages = ['virtualbox-ose-guest-modules-2.6.26-1-486',
-            'virtualbox-ose-guest-utils']
-print "Installing Packages: %s" % ', '.join(packages)
-sys.stdout.flush()
-
-cmd = ['apt-get', '-y', 'install'] + packages
-it.chroot(cmd)
-
-print "we need to find that perl script to modify the xorg.conf for virtualbox"
-
-configure_xorg()
-
-
-

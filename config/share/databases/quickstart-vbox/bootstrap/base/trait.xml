@@ -1,6 +1,9 @@
 <trait name="base">
 	<parents>
 		<parent>
+			aptconfig
+		</parent>
+		<parent>
 			global
 		</parent>
 		<parent>
@@ -58,7 +61,7 @@
 			debconf
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
-			etc/default/base-debconf-selections
+			etc/default/locale
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/default/rcS
@@ -68,6 +71,9 @@
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/hosts
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/locale.gen
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/nanorc

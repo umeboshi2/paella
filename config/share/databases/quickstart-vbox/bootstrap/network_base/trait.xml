@@ -21,6 +21,9 @@
 		<trait_variable name="lo_method" trait="network_base">
 			loopback
 		</trait_variable>
+		<trait_variable name="udev_interfaces" trait="network_base">
+			
+		</trait_variable>
 	</environ>
 	<templates/>
 	<scripts>

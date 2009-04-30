@@ -5,6 +5,22 @@ from useless.base.path import path
 
 from paella.installer.toolkit import InstallerTools
 
+
+it = InstallerTools()
+paella_site = it.target / 'root/site'
+sys.path.append(str(paella_site))
+
+from PaellaInstall.Shorewall import ShorewallRules
+
+shorewall_rules = ShorewallRules(it)
+shorewall_rules.write_rules_file()
+
+
+
+
+if True:
+    sys.exit(0)
+    
 def marker(line):
     # the marker is #start foo2bar
     if line.startswith('#start'):

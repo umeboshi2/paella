@@ -34,6 +34,12 @@
 		<trait_variable name="mirrorsite" trait="pbuilder">
 			http://192.168.0.1/debian
 		</trait_variable>
+		<trait_variable name="othermirror" trait="pbuilder">
+			
+		</trait_variable>
+		<trait_variable name="satisfydependscmd" trait="pbuilder">
+			/usr/lib/pbuilder/pbuilder-satisfydepends
+		</trait_variable>
 	</environ>
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">

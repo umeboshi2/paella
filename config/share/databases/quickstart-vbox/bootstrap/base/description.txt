@@ -2,7 +2,10 @@ The base trait is the first trait that does anything. It's main responsibility i
 <hr>
 Notes:
 <ul>
+	<li>This is the first trait where packages are installed, other than the ones installed during the boostrap step.</li>
 	<li>/etc/timezone determines the timezone set this file and run dpkg-reconfigure -pcritical tzdata .  The timezone is setup sort of funny, as the configure scripts don't seem to honor the debconf settings.  Most of the configuration for the timezone is done in the pre script, and the reconfig step for tzdata is only a confirmation that the settings are correct.</li>
 	<li>/etc/hosts is minimal, and is necessary for some of the server packages to be configured properly</li>
 	<li>The fake start-stop-daemon is used in trait.  This is because if the standard packages are set to be installed, and the install is performed over an nfsroot, the nfs-common package in the target will conflict with the nfs services on the installer.</li>
+	<li>The templates /etc/default/locale and /etc/locale.gen are here temporarily until locales is fixed to honor debconf selections.  This should be fixed soon, and these templates then removed after that.</li>
+	<li>The install_standard variable, if set to True, will install the standard packages with a command similar to the one used in tasksel.</li>
 </ul>

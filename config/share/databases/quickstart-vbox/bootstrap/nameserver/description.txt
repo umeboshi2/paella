@@ -6,4 +6,9 @@ The run_resolvconf debconf variable will not do anything but set RESOLVCONF in /
 <b>Notes</b>
 <ul>
 <li>The fake start-stop daemon is used in this trait</li>
+<li>The local network must be a.b.c.d/prefix, where prefix is 8, 16, or 24.  The configure script is too stupid to figure out any other prefix lengths.</li>
+<li>The config script will depend on python-dnspython being installed on the installer.  This should hopefully make the configuration more robust and handle the inadequacies of my own handrolled limited solution.</li>
+<li></li>
+<li></li>
+<li></li>
 </ul>

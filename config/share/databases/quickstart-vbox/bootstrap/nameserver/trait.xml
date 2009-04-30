@@ -45,6 +45,7 @@
 	</templates>
 	<scripts>
 		<script name="chroot"/>
+		<script name="config"/>
 		<script name="post"/>
 		<script name="pre"/>
 	</scripts>

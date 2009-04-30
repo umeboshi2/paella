@@ -23,6 +23,7 @@
 DNS/ACCEPT	$FW		net
 #start fw2net
 #end fw2net
+#################
 #start fw2loc
 #end fw2loc
 #
@@ -31,6 +32,7 @@ DNS/ACCEPT	$FW		net
 SSH/ACCEPT	loc		$FW
 #start loc2fw
 #end loc2fw
+#################
 #start net2fw
 #end net2fw
 

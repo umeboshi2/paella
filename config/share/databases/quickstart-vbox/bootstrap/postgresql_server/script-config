@@ -1,0 +1,104 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+    
+print "config script for postgresql_server"
+
+it = InstallerTools()
+env = it.env()
+
+    
+# TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
+
+# "local" is for Unix domain socket connections only
+# paella local connections
+# IPv4 local connections:
+# paella ipv4 connections
+# IPv6 local connections:
+# paella ipv6 connections
+
+def is_marker(line):
+    if line.startswith('# paella local connections'):
+        return 'local'
+    elif line.startswith('# paella ipv4 connections'):
+        return 'ipv4'
+    elif line.startswith('# paella ipv6 connections'):
+        return 'ipv6'
+    else:
+        return ''
+    
+def get_connections(conntype):
+    key = 'postgresql_server:%s_connections' % conntype
+    number_of_connections = int(it.get(key))
+    connections = []
+    # we start counting at 1 instead of 0
+    for index in range(1, number_of_connections + 1):
+        key = 'postgresql_server:%s_connection_%d' % (conntype, index)
+        line = it.get(key)
+        connections.append(line)
+    return connections
+
+def configure_pghba_conf(toolkit):
+    it = toolkit
+    pghba_filename = it.target / 'etc/postgresql/8.3/main/pg_hba.conf'
+    orig_lines = pghba_filename.lines()
+    new_lines = []
+    for line in orig_lines:
+        new_lines.append(line)
+        conntype = is_marker(line)
+        if conntype:
+            connections = get_connections(conntype)
+            new_lines += connections
+    pghba_filename.write_lines(new_lines)
+
+# here the cmd must be a space separated
+# shell type command, a list won't work
+def su_postgres_cmd(toolkit, cmd):
+    su_cmd = ['su', 'postgres', '-c', cmd]
+    toolkit.chroot(su_cmd)
+    
+
+
+def create_pg_users(toolkit):
+    it = toolkit
+    users = it.getcsv('postgresql_server:postgresql_users')
+    for user in users:
+        opt = it.get('postgresql_server:createuser_opts_%s' % user)
+        cmd = 'createuser %s %s' % (opt, user)
+        print "Creating postgresql user", user
+        su_postgres_cmd(it, cmd)
+
+def create_language(toolkit, language, database):
+    cmd = 'createlang %s %s' % (language, database)
+    print "Creating language, %s in database %s" % (language, database)
+    su_postgres_cmd(toolkit, cmd)
+    
+# all initial databases are copies of
+# the template1 database.  If you want
+# a language that is specific to a database,
+# it will have to be done by other means.
+def create_template1_languages(toolkit):
+    it = toolkit
+    languages = it.getcsv('postgresql_server:template1_languages')
+    for language in languages:
+        create_language(toolkit, language, 'template1')
+        
+
+def create_initial_databases(toolkit):
+    it = toolkit
+    databases = it.getcsv('postgresql_server:initial_databases')
+    for database in databases:
+        cmd = 'createdb %s' % database
+        print "Creating database", database
+        su_postgres_cmd(toolkit, cmd)
+        
+
+configure_pghba_conf(it)
+create_pg_users(it)
+create_template1_languages(it)
+create_initial_databases(it)
+

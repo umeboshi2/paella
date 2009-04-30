@@ -31,6 +31,66 @@
 		<trait_variable name="net_interface" trait="firewall">
 			eth0
 		</trait_variable>
+		<trait_variable name="policy_all2all" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_all2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_fw2all" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_fw2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_fw2loc" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_fw2loc_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_fw2net" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_fw2net_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_loc2all" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_loc2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_loc2fw" trait="firewall">
+			REJECT
+		</trait_variable>
+		<trait_variable name="policy_loc2fw_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_loc2net" trait="firewall">
+			ACCEPT
+		</trait_variable>
+		<trait_variable name="policy_loc2net_loglevel" trait="firewall">
+			
+		</trait_variable>
+		<trait_variable name="policy_net2all" trait="firewall">
+			DROP
+		</trait_variable>
+		<trait_variable name="policy_net2all_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_net2fw" trait="firewall">
+			DROP
+		</trait_variable>
+		<trait_variable name="policy_net2fw_loglevel" trait="firewall">
+			info
+		</trait_variable>
+		<trait_variable name="policy_net2loc" trait="firewall">
+			DROP
+		</trait_variable>
+		<trait_variable name="policy_net2loc_loglevel" trait="firewall">
+			info
+		</trait_variable>
 		<trait_variable name="startup" trait="firewall">
 			0
 		</trait_variable>
@@ -43,10 +103,31 @@
 			etc/default/shorewall
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/samba
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
 			etc/shorewall/interfaces
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.BootpC
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.BootpS
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
 			etc/shorewall/macro.DHCP
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.MountD
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.NFS
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.Portmap
+		</template>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/shorewall/macro.StatD
 		</template>
 		<template grp_owner="root" mode="0644" owner="root">
 			etc/shorewall/Makefile

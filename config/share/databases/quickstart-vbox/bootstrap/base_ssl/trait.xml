@@ -10,6 +10,15 @@
 		</package>
 	</packages>
 	<environ/>
-	<templates/>
-	<scripts/>
+	<templates>
+		<template grp_owner="root" mode="0700" owner="root">
+			etc/ssl/make-paella-snakeoil
+		</template>
+		<template grp_owner="root" mode="0600" owner="root">
+			etc/ssl/paella-snakeoil.cnf
+		</template>
+	</templates>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
 </trait>

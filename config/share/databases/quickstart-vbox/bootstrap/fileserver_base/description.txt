@@ -1,1 +1,15 @@
 This trait will help define network shares that will be used for both samba and nfs (and possibly other methods).  There is no policy being defined here yet, except for the basedir variable which sets the parent directory for most of the network shares.
+<br/>
+<bold>fileshare</bold> options:
+<br/>
+<table bgcolor="grey">
+<tr><th>option</th><th>value</th></tr>
+<tr><td>fileshare_sharename_path:</td><td>	/path/to/share</td></tr>
+<br/>
+<tr><td>fileshare_sharename_create:</td><td>  True or False</td></tr>
+<br/>
+<tr><td>fileshare_sharename_chown:</td><td> root:root</td></tr>
+<br/>
+<tr><td>fileshare_sharename_chmod:</td><td> 755</td></tr>
+<br/>
+</table>

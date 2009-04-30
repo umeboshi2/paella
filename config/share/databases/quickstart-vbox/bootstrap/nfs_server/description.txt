@@ -2,4 +2,12 @@
 <b>Notes</b>
 <ul>
 <li>The fake start-stop daemon is used in this trait</li>
+<li>The exports should be defined in the fileserver_base trait.</li>
+<li>The variables for the exports are in the form: export_{name}_options and export_{name}_path</li>
+<li>We don't do this yet, but we need to use the path for the named export from fileserver_base if the export_{name}_path is either empty or doesn't exist.  This will help avoid duplication.</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
 </ul>

@@ -27,9 +27,6 @@
 			squashfs-tools
 		</package>
 		<package action="install">
-			syslinux
-		</package>
-		<package action="install">
 			uuid-runtime
 		</package>
 	</packages>
@@ -62,7 +59,7 @@
 			fat16
 		</trait_variable>
 		<trait_variable name="lh_binary_images" trait="debianlive">
-			net
+			iso
 		</trait_variable>
 		<trait_variable name="lh_binary_indices" trait="debianlive">
 			enabled
@@ -71,7 +68,7 @@
 			-- ${LH_BOOTAPPEND_LIVE}
 		</trait_variable>
 		<trait_variable name="lh_bootappend_live" trait="debianlive">
-			timezone=&lt;--|global:tzdata_area|--&gt;/&lt;--|global:tzdata_zone|--&gt; utc=&lt;--|base:utc|--&gt;
+			
 		</trait_variable>
 		<trait_variable name="lh_bootloader" trait="debianlive">
 			syslinux
@@ -93,6 +90,9 @@
 		</trait_variable>
 		<trait_variable name="lh_cache_stages" trait="debianlive">
 			bootstrap
+		</trait_variable>
+		<trait_variable name="lh_categories" trait="debianlive">
+			main
 		</trait_variable>
 		<trait_variable name="lh_checksums" trait="debianlive">
 			enabled
@@ -140,13 +140,13 @@
 			
 		</trait_variable>
 		<trait_variable name="lh_hostname" trait="debianlive">
-			installer
+			debian
 		</trait_variable>
 		<trait_variable name="lh_includes" trait="debianlive">
 			/usr/share/live-helper/includes
 		</trait_variable>
 		<trait_variable name="lh_initramfs" trait="debianlive">
-			live-initramfs
+			auto
 		</trait_variable>
 		<trait_variable name="lh_interactive" trait="debianlive">
 			disabled
@@ -158,10 +158,10 @@
 			live-helper $VERSION; http://packages.qa.debian.org/live-helper
 		</trait_variable>
 		<trait_variable name="lh_iso_publisher" trait="debianlive">
-			Debian Live project; http://debian-live.alioth.debian.org/; debian-live-devel@lists.alioth.debian.org
+			Debian Live project; http://debian-live.alioth.debian.org/; debian-live@lists.debian.org
 		</trait_variable>
 		<trait_variable name="lh_iso_volume" trait="debianlive">
-			Debian Live $(date +%Y%m%d-%H:%M)
+			Debian Live &lt;--|global:suite|--&gt; $(date +%Y%m%d-%H:%M)
 		</trait_variable>
 		<trait_variable name="lh_jffs2_eraseblock" trait="debianlive">
 			
@@ -173,7 +173,7 @@
 			en
 		</trait_variable>
 		<trait_variable name="lh_linux_flavours" trait="debianlive">
-			686
+			
 		</trait_variable>
 		<trait_variable name="lh_linux_packages" trait="debianlive">
 			linux-image-2.6 ${LH_UNION_FILESYSTEM}-modules-2.6 squashfs-modules-2.6
@@ -188,16 +188,16 @@
 			$LH_MIRROR_BOOTSTRAP
 		</trait_variable>
 		<trait_variable name="lh_mirror_binary_security" trait="debianlive">
-			$LH_MIRROR_BOOTSTRAP
+			$LH_MIRROR_CHROOT_SECURITY
 		</trait_variable>
 		<trait_variable name="lh_mirror_bootstrap" trait="debianlive">
-			http://paella.lapnet/debian
+			http://ftp.us.debian.org/debian
 		</trait_variable>
 		<trait_variable name="lh_mirror_chroot" trait="debianlive">
 			$LH_MIRROR_BOOTSTRAP
 		</trait_variable>
 		<trait_variable name="lh_mirror_chroot_security" trait="debianlive">
-			$LH_MIRROR_BOOTSTRAP
+			http://security.debian.org
 		</trait_variable>
 		<trait_variable name="lh_mode" trait="debianlive">
 			debian
@@ -221,16 +221,16 @@
 			
 		</trait_variable>
 		<trait_variable name="lh_net_root_path" trait="debianlive">
-			/freespace/paella
+			/srv/debian-live
 		</trait_variable>
 		<trait_variable name="lh_net_root_server" trait="debianlive">
-			10.0.1.1
+			192.168.1.1
 		</trait_variable>
 		<trait_variable name="lh_net_tarball" trait="debianlive">
 			gzip
 		</trait_variable>
 		<trait_variable name="lh_packages" trait="debianlive">
-			loop-aes-utils
+			
 		</trait_variable>
 		<trait_variable name="lh_packages_lists" trait="debianlive">
 			standard
@@ -242,7 +242,7 @@
 			sudo
 		</trait_variable>
 		<trait_variable name="lh_sections" trait="debianlive">
-			main contrib non-free
+			$LH_CATEGORIES
 		</trait_variable>
 		<trait_variable name="lh_security" trait="debianlive">
 			enabled
@@ -275,7 +275,7 @@
 			
 		</trait_variable>
 		<trait_variable name="lh_syslinux_timeout" trait="debianlive">
-			10
+			0
 		</trait_variable>
 		<trait_variable name="lh_sysvinit" trait="debianlive">
 			disabled
@@ -284,7 +284,7 @@
 			
 		</trait_variable>
 		<trait_variable name="lh_tasksel" trait="debianlive">
-			aptitude
+			tasksel
 		</trait_variable>
 		<trait_variable name="lh_templates" trait="debianlive">
 			/usr/share/live-helper/templates
@@ -296,13 +296,19 @@
 			disabled
 		</trait_variable>
 		<trait_variable name="lh_username" trait="debianlive">
-			installer
+			user
 		</trait_variable>
 		<trait_variable name="lh_verbose" trait="debianlive">
 			disabled
 		</trait_variable>
 		<trait_variable name="lh_win32_loader" trait="debianlive">
-			enabled
+			disabled
+		</trait_variable>
+		<trait_variable name="live_config_owner" trait="debianlive">
+			root
+		</trait_variable>
+		<trait_variable name="mksquashfs_options" trait="debianlive">
+			
 		</trait_variable>
 	</environ>
 	<templates>

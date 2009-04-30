@@ -3,13 +3,23 @@ import sys
 from paella.installer.toolkit import InstallerTools
 
 it = InstallerTools()
-    
 
-cmd = ['aptitude', '-q', '--without-recommends',
+# reconfigure locales here
+cmd = ['dpkg-reconfigure', 'locales']
+print "Reconfiguring locales"
+sys.stdout.flush()
+it.chroot(cmd)
+print "locales reconfigured"
+sys.stdout.flush()
+
+
+cmd = ['aptitude', '-q', '--add-user-tag',
+       'paella-standard-package',
+       '--without-recommends',
        '-o','APT::Install-Recommends=no', '-y', 'install',
        '~pstandard', '~prequired', '~pimportant']
 
-if it.get('base:install_standard') in ["True", "true", 'yes', "Yes"]:
+if it.getboolean('base:install_standard'):
     from paella.installer.util.base import make_fake_start_stop_daemon
     from paella.installer.util.base import remove_fake_start_stop_daemon
     print "Installing fake start-stop-daemon"

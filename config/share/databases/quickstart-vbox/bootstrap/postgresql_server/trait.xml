@@ -15,7 +15,57 @@
 			postgresql-contrib
 		</package>
 	</packages>
-	<environ/>
-	<templates/>
-	<scripts/>
+	<environ>
+		<trait_variable name="initial_databases" trait="postgresql_server">
+			
+		</trait_variable>
+		<trait_variable name="ipv4_connection_1" trait="postgresql_server">
+			host    all         all         127.0.0.1/32          md5
+		</trait_variable>
+		<trait_variable name="ipv4_connections" trait="postgresql_server">
+			1
+		</trait_variable>
+		<trait_variable name="ipv6_connection_1" trait="postgresql_server">
+			host    all         all         ::1/128               md5
+		</trait_variable>
+		<trait_variable name="ipv6_connections" trait="postgresql_server">
+			1
+		</trait_variable>
+		<trait_variable name="listen_addresses" trait="postgresql_server">
+			'localhost'
+		</trait_variable>
+		<trait_variable name="local_connection_1" trait="postgresql_server">
+			local   all         all                               ident sameuser
+		</trait_variable>
+		<trait_variable name="local_connections" trait="postgresql_server">
+			1
+		</trait_variable>
+		<trait_variable name="max_connections" trait="postgresql_server">
+			100
+		</trait_variable>
+		<trait_variable name="port" trait="postgresql_server">
+			5432
+		</trait_variable>
+		<trait_variable name="postgresql_users" trait="postgresql_server">
+			
+		</trait_variable>
+		<trait_variable name="template1_languages" trait="postgresql_server">
+			
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/logrotate.d/postgresql-common
+		</template>
+		<template grp_owner="postgres" mode="0640" owner="postgres">
+			etc/postgresql/8.3/main/pg_hba.conf
+		</template>
+		<template grp_owner="postgres" mode="0644" owner="postgres">
+			etc/postgresql/8.3/main/postgresql.conf
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+		<script name="post"/>
+	</scripts>
 </trait>

@@ -37,6 +37,21 @@
 		</package>
 	</packages>
 	<environ>
+		<trait_variable name="logcheck_reportlevel" trait="base_admin_tools">
+			workstation
+		</trait_variable>
+		<trait_variable name="most_color_normal" trait="base_admin_tools">
+			lightgray black
+		</trait_variable>
+		<trait_variable name="most_color_overstrike" trait="base_admin_tools">
+			brightred black
+		</trait_variable>
+		<trait_variable name="most_color_status" trait="base_admin_tools">
+			yellow magenta
+		</trait_variable>
+		<trait_variable name="most_color_underline" trait="base_admin_tools">
+			brightgreen black
+		</trait_variable>
 		<trait_variable name="pager" trait="base_admin_tools">
 			/usr/bin/most
 		</trait_variable>

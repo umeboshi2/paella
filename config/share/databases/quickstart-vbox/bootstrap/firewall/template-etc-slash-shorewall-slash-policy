@@ -39,9 +39,9 @@
 #
 # If you want to force clients to access the Internet via a proxy server
 # on your firewall, change the loc to net policy to REJECT info.
-loc		net		ACCEPT
-loc		$FW		REJECT		info
-loc		all		REJECT		info
+loc		net		<--|firewall:policy_loc2net|-->		<--|firewall:policy_loc2net_loglevel|-->
+loc		$FW		<--|firewall:policy_loc2fw|-->		<--|firewall:policy_loc2fw_loglevel|-->
+loc		all		<--|firewall:policy_loc2all|-->		<--|firewall:policy_loc2all_loglevel|-->
 
 #
 # Policies for traffic originating from the firewall ($FW)
@@ -49,18 +49,18 @@ loc		all		REJECT		info
 # If you want open access to the Internet from your firewall, change the
 # $FW to net policy to ACCEPT and remove the 'info' LOG LEVEL.
 # This may be useful if you run a proxy server on the firewall.
-$FW		net		REJECT		info
-$FW		loc		REJECT		info
-$FW		all		REJECT		info
+$FW		net		<--|firewall:policy_fw2net|-->		<--|firewall:policy_fw2net_loglevel|-->
+$FW		loc		<--|firewall:policy_fw2loc|-->		<--|firewall:policy_fw2loc_loglevel|-->
+$FW		all		<--|firewall:policy_fw2all|-->		<--|firewall:policy_fw2all_loglevel|-->
 
 #
 # Policies for traffic originating from the Internet zone (net)
 #
-net		$FW		DROP		info
-net		loc		DROP		info
-net		all		DROP		info
+net		$FW		<--|firewall:policy_net2fw|-->		<--|firewall:policy_net2fw_loglevel|-->
+net		loc		<--|firewall:policy_net2loc|-->		<--|firewall:policy_net2loc_loglevel|-->
+net		all		<--|firewall:policy_net2all|-->		<--|firewall:policy_net2all_loglevel|-->
 
 # THE FOLLOWING POLICY MUST BE LAST
-all		all		REJECT		info
+all		all		<--|firewall:policy_all2all|-->		<--|firewall:policy_all2all_loglevel|-->
 
 #LAST LINE -- ADD YOUR ENTRIES ABOVE THIS LINE -- DO NOT REMOVE

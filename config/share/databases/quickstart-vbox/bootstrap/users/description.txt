@@ -1,1 +1,17 @@
 This trait is here to help setup the users.  Since this trait is close to the beginning of the install process, the users shouldn't be added to the system until the final step, in case some files are added to /etc/skel, or the home directory doesn't yet exist.
+<p/>
+Here are the meanings to some of the variables:
+<ul>
+<li>disable_root_password: (True/False) - If True, root will be unable to login to the machine.  Also su, and anything else requiring a root password will not work.  You must get root through either sudo or ssh (or something else).</li>
+<li>default_plaintext_password:  This option is a placeholder for passwords for users.  It won't be set for any user.  In order to set a password for a user, you need a variable such as user_{username}_plaintext_password to set the password.</li>
+<li>root_plaintext_password:  This defaults to being empty.  You can keep this empty and set "disable_root_password" to True to keep root logins disabled.</li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+<li></li>
+</ul>

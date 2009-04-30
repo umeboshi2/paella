@@ -16,11 +16,17 @@
 		<trait_variable name="admin_users" trait="users">
 			
 		</trait_variable>
+		<trait_variable name="default_plaintext_password" trait="users">
+			password
+		</trait_variable>
 		<trait_variable name="dhome" trait="users">
 			/home
 		</trait_variable>
 		<trait_variable name="dir_mode" trait="users">
 			0755
+		</trait_variable>
+		<trait_variable name="disable_root_password" trait="users">
+			False
 		</trait_variable>
 		<trait_variable name="dshell" trait="users">
 			/bin/bash
@@ -33,6 +39,9 @@
 		</trait_variable>
 		<trait_variable name="letterhomes" trait="users">
 			no
+		</trait_variable>
+		<trait_variable name="root_plaintext_password" trait="users">
+			
 		</trait_variable>
 		<trait_variable name="setgid_home" trait="users">
 			no

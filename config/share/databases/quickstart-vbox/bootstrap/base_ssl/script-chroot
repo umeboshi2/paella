@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "make paella snakeoil"
+/etc/ssl/make-paella-snakeoil generate-default-snakeoil --force-overwrite
+

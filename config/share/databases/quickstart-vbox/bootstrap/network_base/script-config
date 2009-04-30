@@ -6,6 +6,26 @@ print "config script for network_base"
 it = InstallerTools()
 env = it.env()
 
+# example from testmachine
+# PCI device 0x1022:0x2000 (pcnet32)
+#SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="08:00:27:16:c9:83", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
+
+
+udev_net_rules_filename = it.target / "etc/udev/rules.d/70-persistent-net.rules"
+
+def udev_line(name, macaddr, subsystem = "net",
+              action = "add", drivers = "?*", attr_type = "1", kernel='eth*'):
+    parts = ['SUBSYSTEM=="%s"' % subsystem,
+             'ACTION=="%s"' % action,
+             'DRIVERS=="%s"' % drivers,
+             'ATTR{address}=="%s"' % macaddr,
+             'ATTR{type}=="%s"' % attr_type,
+             'KERNEL=="%s"' % kernel,
+             'NAME=="%s"' % name
+             ]
+    return ', '.join(parts)
+
+    
 # some helpers to keep from passing the trait
 # name around too much
 

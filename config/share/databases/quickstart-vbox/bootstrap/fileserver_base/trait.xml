@@ -7,7 +7,7 @@
 	<packages/>
 	<environ>
 		<trait_variable name="basedir" trait="fileserver_base">
-			/freespace/shared
+			/shared
 		</trait_variable>
 	</environ>
 	<templates/>
