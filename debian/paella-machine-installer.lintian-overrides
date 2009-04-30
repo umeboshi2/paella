@@ -1,8 +1,9 @@
 # package depends on another package which requires python
-paella-machine-installer: python-script-but-no-python-dep ./usr/bin/paella-submit-machine
-paella-machine-installer: python-script-but-no-python-dep ./usr/sbin/paella-machine-installer
+paella-machine-installer: python-script-but-no-python-dep ./usr/sbin/paella-setup-installer
 paella-machine-installer: python-script-but-no-python-dep ./usr/sbin/paella-init-installer
+paella-machine-installer: python-script-but-no-python-dep ./usr/bin/paella-submit-machine
 
 # ignore missing manpages
-#paella-machine-installer: binary-without-manpage usr/sbin/paella-machine-installer
+#paella-machine-installer: binary-without-manpage usr/sbin/paella-setup-installer
+#paella-machine-installer: binary-without-manpage usr/sbin/paella-init-installer
 #paella-machine-installer: binary-without-manpage usr/bin/paella-submit-machine
