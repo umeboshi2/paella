@@ -1,0 +1,9 @@
+# package depends on another package which requires python
+paella-live-installer: python-script-but-no-python-dep ./usr/sbin/paella-setup-installer
+paella-live-installer: python-script-but-no-python-dep ./usr/sbin/paella-init-installer
+paella-live-installer: python-script-but-no-python-dep ./usr/bin/paella-submit-machine
+
+# ignore missing manpages
+#paella-live-installer: binary-without-manpage usr/sbin/paella-setup-installer
+#paella-live-installer: binary-without-manpage usr/sbin/paella-init-installer
+#paella-live-installer: binary-without-manpage usr/bin/paella-submit-machine
