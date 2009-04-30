@@ -11,8 +11,10 @@ paella (0.7.40) paella; urgency=low
   * removed paella metapackage
   * decided just to suggest python-dnspython in paella-installer
   * rename paella-machine-installer package to paella-live-installer
+  * remove old, outdated INSTALL and README files, and *.docs files that
+    installed them from debian/
 
- -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Thu, 30 Apr 2009 17:01:23 -0500
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Thu, 30 Apr 2009 17:26:33 -0500
 
 paella (0.7.39) paella; urgency=low
 
