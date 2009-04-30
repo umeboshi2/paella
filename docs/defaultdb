@@ -10,9 +10,91 @@ Paella Default Database
 Introduction
 ------------------------------------
 
-Paella comes with an example database to help get started.
+Paella comes with an example database to help get started.  The example database 
+helps to give a good idea of how paella is designed to be used.  Unlike the bootstrap 
+database, used in the quickstart_ document, this database will need a larger debian 
+repository to work.  I currently keep a full mirror, and I recommend using one.  At one 
+time, I toyed with the idea of using germinate_ to make a list of the packages that 
+would be required, then convert that list to a form that reprepro_ could use to make 
+a partial mirror.  I finally just bought a larger hard drive and forgot about that idea.  If 
+anybody feels like using germinate and reprepro, please send me the code, and I will 
+try to integrate it into the paella-management application (or a separate application) 
+so that people can more easily make partial mirrors.
+
+On top of having a larger debian repository, the example database refers to packages 
+that I have on my own repository, and are not available (AFAIK) anywhere else.
+
+Default Environment
+------------------------------------------
+
+There are things that need to be configured in the installer section:
+      - archive_keys
+      - http_mirror
 
 
+Traits 
+---------------
+
+- debrepos: uses /freespace
+- gkrellm: uses local package (gkrellm-skins)
+- global:  adjust default timezone, localization
+- kde: uses local package (kde-extra-looks)
+- timidity: uses local package (timidity-guspat)
+
+
+Families
+----------------
+
+families that depend on /freespace:
+	 - fileshare_live_installer
+	 - fileshare_paellalog
+	 - freespace
+	 - nfs_export_live_installer
+	 - nfs_export_paellalog
+
+families the depend on local packages:
+	 - gkrellm_paella
+	 - kde_appearance_khaki
+	 - kde_paella_appearance	 
+	 - timidity_guspat
+
+families that need to be adjusted:
+	 - ignored_bugs_lenny
+	 - paella_debianlive
+	 - paella_vbox_server
+	 - sshd_testing_keys (may want to use different keys)
+	 - testing_users (uses user_umeboshi)
+	 - user_umeboshi (make one similar, make testing_users depend on it)
+	 - vbox_pbuilder (debrepos)
+	 - vbox_testing (users plaintext passwords)
+
+
+
+
+
+
+Machines
+-------------------
+
+- bcfg2server:  Uses user umeboshi
+- default:	adjust tzdata variables
+- paellabase:
+
+  - post_install script depends on /freespace
+  - post_install script uses aptkey in database to help setup debian live config
+
+- standalone (maybe remove this?)
+- testmachine: Uses user umeboshi
+- vboxbase: 
+
+  - adjust screen size
+  - post script depends on virtualbox guest modules package being available
+
+
+
+.. _germinate: http://packages.debian.org/lenny/germinate
+.. _reprepro: http://packages.debian.org/lenny/reprepro
+.. _quickstart: quickstart-vbox.html
 .. _toc: index.html
 
 -------------------------------------------------

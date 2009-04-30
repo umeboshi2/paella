@@ -1,4 +1,3 @@
-config/scripts/paella-chroot-install usr/sbin
-config/scripts/paella-setup-installer usr/sbin
+config/scripts/paella-machine-installer usr/sbin
 
 

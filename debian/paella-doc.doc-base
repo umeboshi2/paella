@@ -2,9 +2,9 @@ Document: paella
 Title: Paella Documentation
 Author: Joseph Rawson
 Abstract: This manual describes what paella is
-	and how to use it to install specially configured
-	debian systems.
-Section: Debian/Installation
+ and how to use it to install specially configured
+ Debian systems.
+Section: Debian
 
 Format: HTML
 Index: /usr/share/doc/paella-doc/html/index.html

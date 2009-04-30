@@ -1,0 +1,11 @@
+# package depends on another package which requires python
+paella-admin: python-script-but-no-python-dep ./usr/bin/paella-export
+paella-admin: python-script-but-no-python-dep ./usr/bin/paella-import
+paella-admin: python-script-but-no-python-dep ./usr/bin/paella-management
+
+
+# ignore missing manpages
+#paella-admin: binary-without-manpage usr/bin/paella-export
+#paella-admin: binary-without-manpage usr/bin/paella-import
+#paella-admin: binary-without-manpage usr/bin/paella-management
+

@@ -134,7 +134,7 @@ fi
 
 # finally, run the paella nfs installer in the background
 
-paella-init-nfsinstaller  &
+paella-init-installer  &
 
 exit 0
 '''
@@ -163,7 +163,6 @@ squashfs-tools
 python-dnspython
 
 paella-machine-installer
-paella-nfs-installer
 
 """
 ###############################################

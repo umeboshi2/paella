@@ -5,18 +5,6 @@ Maintainer: Joseph Rawson (new email) <umeboshi3@gmail.com>
 Build-Depends: debhelper (>> 4.2.0), python, python-dev, python-docutils, cdbs, python-all-dev, python-support, python-dev
 Standards-Version: 3.8.0
 
-Package: paella
-Section: admin
-Architecture: all
-Priority: extra
-Depends: paella-management (= ${binary:Version})
-Description: metapackage for default paella packages
- Paella is a installation/configuration management system
- centered on being able to easily define, configure, maintain and
- update systems and networks.  Tries to not reinvent too many
- wheels, and works hand in hand with FAI.  It is planned to be
- extended to work with buildroots and embedded systems.
-
 Package: paella-base
 Section: admin
 Priority: optional
@@ -43,27 +31,20 @@ Section: admin
 Priority: extra
 Architecture: all
 Depends: paella-db (= ${binary:Version}), debootstrap
-Recommends: python-dnspython
-Description: python package for paella installers
+Suggests: python-dnspython
+Description: Python package for paella installers
  This package contains most of the code for installers to work.
- It also contains the chroot installer.
+
 
 Package: paella-machine-installer
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-installer (= ${binary:Version}), grub, fai-client (>= 3.2.10), parted
+Depends: paella-installer (= ${binary:Version}), grub, fai-client (>= 3.2.17), parted
 Recommends: mdadm, xfsprogs, reiserfsprogs, hdparm, dmsetup, cryptsetup
+Suggests: fai-client (>= 3.2.18)
 Description: package for machine installer
  This package should be installed on a live system.
-
-Package: paella-nfs-installer
-Section: admin
-Priority: extra
-Architecture: all
-Depends: paella-machine-installer (= ${binary:Version})
-Description: package for nfsroot installer
- This package should be installed on the nfsroot installer.
 
 Package: paella-admin
 Section: admin
@@ -77,7 +58,7 @@ Description: package for configuration of the paella database
  package holds the gui management tool for paella.
 
 Package: paella-db
-Section: optional
+Section: misc
 Priority: optional
 Architecture: all
 Depends: paella-debian (= ${binary:Version}), python-kjbuckets, python-useless-db, python-cheetah

@@ -1,0 +1,10 @@
+# Ignore scripts in the example databases
+# These scripts are to be imported into the paella database
+# and should only be run from the paella installer.
+paella-defaultdb: script-not-executable
+
+# ignore empty directories
+paella-defaultdb: package-contains-empty-directory
+
+# ignore problems with /usr/share/paella/packages
+paella-defaultdb: missing-dep-for-interpreter

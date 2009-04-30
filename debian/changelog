@@ -1,3 +1,18 @@
+paella (0.7.40) paella; urgency=low
+
+  * fix spelling in debian/control to make lintian happy
+  * now recommending python-dnspython for paella-installer package
+  * added debian/source.lintian-overrides to make lintian ignore paella-
+    defaultdb files
+  * added packages directory to paella-defaultdb, to help build packages
+    used in default example database
+  * removed unused example databases
+  * removed paella-nfs-installer package
+  * removed paella metapackage
+  * decided just to suggest python-dnspython in paella-installer
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Thu, 30 Apr 2009 15:16:53 -0500
+
 paella (0.7.39) paella; urgency=low
 
   * added convenience methods to InstallerTools

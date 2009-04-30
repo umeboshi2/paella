@@ -2,49 +2,77 @@
 import os, sys
 from os.path import join, dirname
 from optparse import OptionParser
+from tempfile import mkdtemp
 
-from useless.base import Error
-from useless.base.util import makepaths
+from useless.base.path import path
+
 
 from paella.base import PaellaConfig
-from paella.debian.base import debootstrap
+from paella.base.util import get_architecture
+
 from paella.installer.base import InstallerConnection
 from paella.db import DefaultEnvironment
 
-parser = OptionParser()
-parser.add_option('--mirror', action='store', type='string', dest='remote',
-                  default='http://paella/debian')
+def get_base_suite(conn, suite):
+    return conn.suitecursor.get_base_suite(suite)
 
-opts, args = parser.parse_args(sys.argv[1:])
+def debootstrap_command(suite, rootpath, mirror='', script='', arch=None):
+    if arch is None:
+        arch = get_architecture()
+    command = ['debootstrap', suite, rootpath]
+    if arch:
+        command = ['debootstrap', '--arch=%s' % arch, suite, rootpath]
+    if mirror:
+        command.append(mirror)
+    if script:
+        command.append(script)
+    return command
 
-#config = PaellaConfig()
-conn = InstallerConnection()
-config = DefaultEnvironment(conn)
-
-http_mirror = config.get('installer', 'http_mirror')
-devices_tarball = config.get('installer', 'devices_tarball')
-
-def setup_bootstrap_tarball(suite):
-    here = os.getcwd()
-    spath = config.get('installer', 'suite_storage')
-    os.chdir(spath)
-    command = debootstrap(suite, suite, mirror=http_mirror)
-    print 'bootstrapping %s with command %s' % (suite, command)
-    os.system(command)
-    os.system('rm %s'  % join(suite, 'var/cache/apt/archives/*.deb'))
-    os.chdir(suite)
-    print 'making tarball of %s' % suite
-    os.system('tar cf ../%s.tar .' % suite)
-    os.chdir(spath)
-    print 'removing bootstrap directory'
-    os.system('rm %s -fr' % suite)
+        
+def make_bootstrap_tarball(conn, suite):
+    here = path.getcwd()
+    config = DefaultEnvironment(conn)
+    base_suite = get_base_suite(conn, suite)
+    arch = get_architecture()
+    tarball_basename = '%s-%s.tar.gz' % (base_suite, arch)
+    suite_storage = path(config.get('installer', 'suite_storage'))
+    tarball_filename = suite_storage / tarball_basename
+    # if the tarball already exists, we're done
+    if tarball_filename.exists():
+        print "Tarball already exists for %s, %s" % (base_suite, arch)
+        return
+    print "Creating tarball for", suite
+    directory = path(mkdtemp('debootstrap', base_suite))
+    mirror = config.get('installer', 'http_mirror')
+    command = debootstrap_command(base_suite, str(directory),
+                                  mirror=mirror, arch=arch)
+    subprocess.check_call(cmd)
+    # remove debs
+    aptcache = directory / 'var/cache/apt/archives'
+    for filename in aptcache.walkfiles():
+        if filename.endswith('.deb'):
+            filename.remove()
+        else:
+            print "%s exists in the cache of downloaded debs"
+    os.chdir(directory)
+    tarcmd = ['tar', '--create', '--gzip', '--file', tarball_filename, '.']
+    subprocess.check_call(tarcmd)
+    print "%s created." % tarball_filename
     os.chdir(here)
+    print "removing bootstrap directory"
+    subprocess.check_call('rm', '-fr', directory)
     
+    
+def make_devices_tarball(suite_storage):
+    raise RuntimeError , "don't call me, I'll call you later"
+
 def setup_devices_tarball():
+    msg = "This is just a reference, for when I make this function again"
+    raise RuntimeError , msg
     here = os.getcwd()
     mydev = '/tmp/mydev'
     if os.path.exists(mydev):
-        raise Error, 'mydev is not supposed to be here'
+        raise AlreadyExistsError, 'mydev is not supposed to be here'
     os.makedirs(mydev)
     os.chdir(mydev)
     print 'making generic devices'
@@ -55,17 +83,28 @@ def setup_devices_tarball():
     print 'removing %s' % mydev
     os.system('rm -fr %s' % mydev)
 
-if __name__ == '__main__':
-    if not os.path.isfile(devices_tarball):
-        makepaths(dirname(devices_tarball))
-        setup_devices_tarball()
-    suite_path = config.get('installer', 'suite_storage')
-    makepaths(suite_path)
-    suites = config.get_list('bootstrap_suites', section='installer')
+def main(opts, args):
+    conn = InstallerConnection()
+    config = DefaultEnvironment(conn)
+    if not opts.remote:
+        http_mirror = config.get('installer', 'http_mirror')
+    else:
+        http_mirror = opts.remote
+    suites = conn.suitecursor.get_suites()
     for suite in suites:
-        if not os.path.isfile(join(suite_path, '%s.tar' % suite)):
-            print 'need to bootstrap %s' % suite
-            setup_bootstrap_tarball(suite)
-        else:
-            print 'suite %s is already bootstrapped' % suite
-            
+        make_bootstrap_tarball(conn, suite)
+        
+        
+
+parser = OptionParser()
+parser.add_option('--mirror', action='store', type='string', dest='remote',
+                  default='', help='mirror to debootstrap from')
+parser.add_option('--make-devices_tarball', action='store_true',
+                  dest='devtarball', default=False,
+                  help="This option is ignored for now")
+
+    
+if __name__ == '__main__':
+    opts, args = parser.parse_args(sys.argv[1:])
+    main(opts, args)
+    
