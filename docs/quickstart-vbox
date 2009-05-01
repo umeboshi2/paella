@@ -60,7 +60,7 @@ VirtualBox OSE
 -----------------------
 
 This quickstart will use VirtualBox OSE to setup the machine that will act as the main 
-paella server, and also to test to make machines to test the installs.  The procedure outlined 
+paella server, and also to make machines to test those installs.  The procedure outlined 
 below is assuming that you are using a GNU/Linux system as a host for VirtualBox OSE, but 
 there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.
 
