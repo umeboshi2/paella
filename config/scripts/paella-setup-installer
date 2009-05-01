@@ -3,6 +3,7 @@ import os, sys
 from os.path import join, dirname
 from optparse import OptionParser
 from tempfile import mkdtemp
+import subprocess
 
 from useless.base.path import path
 
@@ -29,7 +30,7 @@ def debootstrap_command(suite, rootpath, mirror='', script='', arch=None):
     return command
 
         
-def make_bootstrap_tarball(conn, suite):
+def make_bootstrap_tarball(conn, suite, basedir):
     here = path.getcwd()
     config = DefaultEnvironment(conn)
     base_suite = get_base_suite(conn, suite)
@@ -42,11 +43,11 @@ def make_bootstrap_tarball(conn, suite):
         print "Tarball already exists for %s, %s" % (base_suite, arch)
         return
     print "Creating tarball for", suite
-    directory = path(mkdtemp('debootstrap', base_suite))
+    directory = path(mkdtemp('debootstrap', base_suite, basedir))
     mirror = config.get('installer', 'http_mirror')
     command = debootstrap_command(base_suite, str(directory),
                                   mirror=mirror, arch=arch)
-    subprocess.check_call(cmd)
+    subprocess.check_call(command)
     # remove debs
     aptcache = directory / 'var/cache/apt/archives'
     for filename in aptcache.walkfiles():
@@ -86,13 +87,22 @@ def setup_devices_tarball():
 def main(opts, args):
     conn = InstallerConnection()
     config = DefaultEnvironment(conn)
+    basedir_created = False
     if not opts.remote:
         http_mirror = config.get('installer', 'http_mirror')
     else:
         http_mirror = opts.remote
+    if not opts.basedir:
+        suite_storage = path(config.get('installer', 'suite_storage'))
+        basedir = suite_storage / 'tmp'
+    if not basedir.isdir():
+        basedir.mkdir()
+        basedir_created = True
     suites = conn.suitecursor.get_suites()
     for suite in suites:
-        make_bootstrap_tarball(conn, suite)
+        make_bootstrap_tarball(conn, suite, basedir)
+    if basedir_created:
+        subprocess.check_call(['rm', '-fr', basedir])
         
         
 
@@ -102,6 +112,9 @@ parser.add_option('--mirror', action='store', type='string', dest='remote',
 parser.add_option('--make-devices_tarball', action='store_true',
                   dest='devtarball', default=False,
                   help="This option is ignored for now")
+parser.add_option('--base-directory', action='store', dest='basedir',
+                  default='',
+                  help="base directory for debootstrap (need to choose a directory that allows device entries and executable files")
 
     
 if __name__ == '__main__':
