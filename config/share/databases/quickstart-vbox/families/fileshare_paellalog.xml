@@ -1,0 +1,17 @@
+	<family name="fileshare_paellalog">
+		<parents/>
+		<environ>
+			<family_variable name="fileshare_paellalog_chmod" trait="fileserver_base">
+				775
+			</family_variable>
+			<family_variable name="fileshare_paellalog_chown" trait="fileserver_base">
+				root:staff
+			</family_variable>
+			<family_variable name="fileshare_paellalog_create" trait="fileserver_base">
+				True
+			</family_variable>
+			<family_variable name="fileshare_paellalog_path" trait="fileserver_base">
+				/freespace/paellalog
+			</family_variable>
+		</environ>
+	</family>

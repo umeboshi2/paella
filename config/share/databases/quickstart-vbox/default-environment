@@ -1,5 +1,7 @@
 [installer]
 allow_unauthenticated_packages:	False
+apt_command:	aptitude
+apt_command_opts:	
 archive_keys:	paella
 base_log_directory:	/paellalog
 bootstrap_suites:	lenny

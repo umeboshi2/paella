@@ -1,0 +1,17 @@
+	<family name="fileshare_live_installer">
+		<parents/>
+		<environ>
+			<family_variable name="fileshare_live_installer_chmod" trait="fileserver_base">
+				775
+			</family_variable>
+			<family_variable name="fileshare_live_installer_chown" trait="fileserver_base">
+				root:staff
+			</family_variable>
+			<family_variable name="fileshare_live_installer_create" trait="fileserver_base">
+				True
+			</family_variable>
+			<family_variable name="fileshare_live_installer_path" trait="fileserver_base">
+				/freespace/paella
+			</family_variable>
+		</environ>
+	</family>

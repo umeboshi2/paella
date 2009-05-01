@@ -1,6 +1,12 @@
 <machine diskconfig="root_and_swap" name="vboxbase" parent="default">
 	<script name="post"/>
+	<machine_variable name="install_vbox_guest_modules" trait="global">
+		True
+	</machine_variable>
 	<machine_variable name="utc" trait="base">
 		no
+	</machine_variable>
+	<machine_variable name="x11_screen_size" trait="global">
+		1024x768
 	</machine_variable>
 </machine>

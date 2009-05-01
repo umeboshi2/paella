@@ -1,0 +1,12 @@
+	<family name="lapnet2">
+		<parents>
+			<parent>
+				network_10_0_2_0
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="domain" trait="global">
+				lapnet2
+			</family_variable>
+		</environ>
+	</family>

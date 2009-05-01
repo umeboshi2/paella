@@ -1,0 +1,21 @@
+	<family name="user_umeboshi">
+		<parents/>
+		<environ>
+			<family_variable name="user_umeboshi_gecos" trait="users">
+				Joseph Rawson,,,
+			</family_variable>
+			<family_variable name="user_umeboshi_gid" trait="users">
+				1971
+			</family_variable>
+			<family_variable name="user_umeboshi_group" trait="users">
+				umeboshi
+			</family_variable>
+			<family_variable name="user_umeboshi_sshkeys" trait="users">
+				ssh-dss AAAAB3NzaC1kc3MAAACBAKSA7RKQg+o1rsnnFfpLY4xagx5ip/k/Fo3K/qFrpeY1lpgw6mzkHTvyDf6HC+7WwpkSnEwaC5h5Hc6V7O/zY5lyws9wvZvRVi5JyujlQXy+EBLR6EqWVx0lqnKknGKiiWEPkOn12wDj0awqcI2NZibAgv2RTN9X1KQcag/y67cTAAAAFQCO4O0XWyF1iuqCP4ePtcEmicl+EQAAAIBBmiJRMErhADMeXVtyt9g/gsTlwQFn4qCZqc/Kf8/2YhdVcpWi6jYicvUy3JQH20Itw+FLcog7CUihmX+N7qaR5QEbeE12t+LIwdoCs3egtmeKjGv65lWBJO8Y+/Fa2MjLcm9sAsfYJlpv4XYXW4BUHkmpVNh4E8EbRUTNX1E9cQAAAIAm8FYgEG1Cg+LkpTqPkBqF6L+aSvys+d0KERJrPt2xmHyzcXY2tnYAnQi+aQm8GrlvfcPwllAZzXRjC05ipyT1un7MCdChvAAY/7xaplN33zpKtdf9M0Bso7guWJd882ry8RCY8yk95WKq8iuWV+JyW0f6S8Y/kPMWpYSlTaAncQ== umeboshi@roujin
+ssh-dss AAAAB3NzaC1kc3MAAACBALcKFYiEgwB3NR7LLyXCfnfikWZAdzgs8OPEYYEZDD5BcFBdCI+TX+UBXbG9TV7fjifeD7Kv/gdk7SxY3GgXZLtCYeg7DEy1bRPv1zMBh43TiK1K39SAdAtb7EjxJOX9OPiB8anibX8ckGjk4F0v2dUlkOxcunx137Zug5GeSR8rAAAAFQCYdH5sSNHJOoxjwiSDG8zlJ5PKQwAAAIBxLobhVz0WVtuYWlw17V0sUOivBVZ+v3HOlhmi+i3vAtdggd7m1Lx97xfVuefP1tKhLviBhnzI5Iuzm1e4TYIDi90DmlheLs6a//2MuEsgwdH87LY7qGlz7up3j77Be0Xi6Jl1c0yWehXOFVTM2+80A7cs+xQbmtis5LGt4uFQ8AAAAIEAtQjNqktX/hil/MpfuE3PEa6JGdz8vcN5XqyPXyEJHUudU8BGRATqxOFjRqpaFkAMBgFi+jJ9AndS9uZjKrilFExH5WwaTm4N+IX6moRNBx29qmU0KtEZ5Sx718PNTaLQUVH24CZVmaHZ5XdenLY9zPF688hqh0a3uFCsEGO8+Dc= umeboshi@bard
+			</family_variable>
+			<family_variable name="user_umeboshi_uid" trait="users">
+				1971
+			</family_variable>
+		</environ>
+	</family>

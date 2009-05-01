@@ -12,6 +12,7 @@
 			</suite>
 		</suites>
 		<traits suite="bootstrap">
+			<trait name="aptconfig"/>
 			<trait name="base"/>
 			<trait name="base_admin_tools"/>
 			<trait name="base_server"/>
@@ -36,6 +37,7 @@
 			<trait name="network_base"/>
 			<trait name="network_tools"/>
 			<trait name="nfs_client"/>
+			<trait name="nfs_common"/>
 			<trait name="nfsroot_server"/>
 			<trait name="nfs_server"/>
 			<trait name="paella_server"/>

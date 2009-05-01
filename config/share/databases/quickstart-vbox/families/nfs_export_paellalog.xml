@@ -1,0 +1,15 @@
+	<family name="nfs_export_paellalog">
+		<parents>
+			<parent>
+				fileshare_paellalog
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="export_paellalog_options" trait="nfs_server">
+				*(rw,sync,no_subtree_check,no_root_squash)
+			</family_variable>
+			<family_variable name="export_paellalog_path" trait="nfs_server">
+				/freespace/paellalog
+			</family_variable>
+		</environ>
+	</family>

@@ -1,0 +1,11 @@
+	<family name="apt_recommends">
+		<parents/>
+		<environ>
+			<family_variable name="install_recommends" trait="aptconfig">
+				true
+			</family_variable>
+			<family_variable name="family_description" trait="global">
+				This family sets apt to run according to the debian policy of treating recommends as depends.  The default behaviour of apt with paella is to not install recommends.  Add this family to any profile/machine that needs to install recommends as well as depends.
+			</family_variable>
+		</environ>
+	</family>

@@ -16,5 +16,8 @@
 			<family_variable name="network" trait="localnet">
 				192.168.0.0
 			</family_variable>
+			<family_variable name="prefix_length" trait="localnet">
+				24
+			</family_variable>
 		</environ>
 	</family>
