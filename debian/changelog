@@ -13,8 +13,9 @@ paella (0.7.40) paella; urgency=low
   * rename paella-machine-installer package to paella-live-installer
   * remove old, outdated INSTALL and README files, and *.docs files that
     installed them from debian/
+  * update paella-setup-installer script
 
- -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Thu, 30 Apr 2009 17:26:33 -0500
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Sat, 02 May 2009 12:43:52 -0500
 
 paella (0.7.39) paella; urgency=low
 

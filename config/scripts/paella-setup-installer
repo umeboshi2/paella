@@ -94,6 +94,8 @@ def main(opts, args):
         http_mirror = opts.remote
     if not opts.basedir:
         suite_storage = path(config.get('installer', 'suite_storage'))
+        if not suite_storage.isdir():
+            suite_storage.makedirs()
         basedir = suite_storage / 'tmp'
     if not basedir.isdir():
         basedir.mkdir()
