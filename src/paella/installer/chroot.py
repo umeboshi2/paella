@@ -197,7 +197,9 @@ class ChrootInstaller(BaseChrootInstaller):
             # like copy /etc/resolv.conf to the target.
             # these things should be done in the
             # ready_base_for_install process
-            self._bootstrapped = True
+            
+            # this is now done in post_process
+            #self._bootstrapped = True
             
     def _bootstrap_with_debootstrap(self, suite):
         self.check_target_exists()
@@ -206,7 +208,8 @@ class ChrootInstaller(BaseChrootInstaller):
         cmd = debootstrap(suite, self.target, mirror)
         # if cmd returns nonzero, runlog will raise an error
         runlog(cmd)
-        self._bootstrapped = True
+        # this is now done in post_process
+        #self._bootstrapped = True
 
     def bootstrap_target(self):
         self.check_suite_set()
@@ -365,7 +368,8 @@ class ChrootInstaller(BaseChrootInstaller):
         self.check_target_sys_mounted()
         self.check_installer_set()
         self.installer.run_all_processes()
-        self._install_finished = True
+        # this is now done in post_process
+        #self._install_finished = True
 
     def log_all_processes_finished(self):
         self.log.info('-'*30)
@@ -375,6 +379,21 @@ class ChrootInstaller(BaseChrootInstaller):
     def save_logfile_in_target(self):
         install_log = self.target / 'root/paella/install.log'
         self.mainlog.filename.copyfile(install_log)
+
+    # if scripts are hooked into certain processes, we
+    # need to mark those processes as being completed
+    # in order for other processes to be run.
+    def post_process(self, procname):
+        name = self.__class__.__name__
+        self.log.info('%s(%s) post_process' % (name, procname))
+        if procname == 'bootstrap':
+            self.log.info('%s marking %s finished' % (name, procname))
+            self._bootstrapped = True
+        elif procname == 'install':
+            self.log.info('%s marking %s finished' % (name, procname))
+            self._install_finished = True
+            
+        
         
         
         

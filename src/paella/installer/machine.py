@@ -150,7 +150,8 @@ class MachineInstaller(BaseMachineInstaller):
         self.check_target_exists()
         self.check_disks_setup()
         self.helper.mount_target()
-        self._target_mounted = True
+        # this is now done in post_process
+        #self._target_mounted = True
         
     def log_all_processes_started(self):
         machine = self.machine.current_machine
@@ -162,6 +163,18 @@ class MachineInstaller(BaseMachineInstaller):
         installer = self.__class__.__name__
         self.log.info('Finished all processes for %s(%s)' % (installer, machine))
 
+    def post_process(self, procname):
+        # be sure to run parent's post_process first
+        BaseMachineInstaller.post_process(self, procname)
+        # now check for processes specific to the machine installer
+        if procname == 'mount_target':
+            self.log.info('%s marking %s finished' % (name, procname))
+            self._target_mounted = True
+        elif procname == 'setup_disks':
+            self.log.info('%s marking %s finished' % (name, procname))
+            self._disks_setup = True
+            
+            
             
 if __name__ == '__main__':
     pass

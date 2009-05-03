@@ -1,3 +1,11 @@
+paella (0.7.41) paella; urgency=low
+
+  * adjust version of fai-client in debian/control
+  * fix installers so that hooked scripts will presume those actions are
+    taken, so later actions can be processed
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Sat, 02 May 2009 21:50:49 -0500
+
 paella (0.7.40) paella; urgency=low
 
   * fix spelling in debian/control to make lintian happy
