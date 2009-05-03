@@ -1,0 +1,32 @@
+	<profile name="live_installer" suite="lenny">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				paella_installer
+			</trait>
+			<trait ord="2">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				apt_recommends
+			</family>
+			<family>
+				user_paella
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="hostname" trait="global">
+				installer
+			</profile_variable>
+			<profile_variable name="update_rc_local" trait="paella_installer">
+				True
+			</profile_variable>
+			<profile_variable name="sysadmin_users" trait="users">
+				paella
+			</profile_variable>
+		</environ>
+	</profile>

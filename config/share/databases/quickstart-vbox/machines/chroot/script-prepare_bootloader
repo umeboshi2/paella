@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "no need to prepare bootloader for chroot install"

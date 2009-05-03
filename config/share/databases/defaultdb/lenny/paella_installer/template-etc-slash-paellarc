@@ -1,0 +1,9 @@
+# configuration file for paella
+
+[database]
+# regular database info
+dbhost:			<--|paella_installer:dbhost|-->
+dbname:			<--|paella_installer:dbname|-->
+#dbusername:		dbadmin
+dbusername:		<--|paella_installer:dbusername|-->
+dbpassword:		apassword

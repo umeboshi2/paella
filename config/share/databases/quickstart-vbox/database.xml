@@ -40,6 +40,7 @@
 			<trait name="nfs_common"/>
 			<trait name="nfsroot_server"/>
 			<trait name="nfs_server"/>
+			<trait name="paella_installer"/>
 			<trait name="paella_server"/>
 			<trait name="pbuilder"/>
 			<trait name="postgresql_server"/>

@@ -1,0 +1,11 @@
+	<family name="user_paella">
+		<parents/>
+		<environ>
+			<family_variable name="user_paella_gecos" trait="users">
+				Paella User,,,
+			</family_variable>
+			<family_variable name="user_paella_plaintext_password" trait="users">
+				paella
+			</family_variable>
+		</environ>
+	</family>

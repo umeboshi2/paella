@@ -1,0 +1,2 @@
+#!/bin/sh
+echo "no disks to setup on chroot install"

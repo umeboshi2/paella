@@ -1,0 +1,7 @@
+<machine name="chroot">
+	<script name="install_fstab"/>
+	<script name="install_kernel"/>
+	<script name="mount_target"/>
+	<script name="prepare_bootloader"/>
+	<script name="setup_disks"/>
+</machine>

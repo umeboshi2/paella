@@ -1,0 +1,112 @@
+#!/usr/bin/python
+import os, sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+from paella.db.aptkey import AptKeyHandler
+
+print "config script for paella_installer"
+
+
+###############################################
+###############################################
+
+rc_local_contents = '''#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+if ! [ -d /paellalog ]; then
+    echo "creating /paellalog"
+    mkdir /paellalog
+fi
+
+# run the dhclient to get an appropriate /etc/resolv.conf
+dhclient
+
+
+if [ -z `cat /proc/mounts | grep /paellalog` ]; then
+    echo "mounting /paellalog"
+    mount -t nfs %(hostname)s:/freespace/paellalog /paellalog
+fi
+
+# finally, run the paella nfs installer in the background
+
+paella-init-installer  &
+
+exit 0
+'''
+###############################################
+###############################################
+
+def mkdir_paellalog_lines(toolkit):
+    it = toolkit
+    paellalog = it.get('paella_installer:paellalog')
+    lines = ['if ! [ -d %s ]; then' % paellalog,
+             '\techo "creating %s"' % paellalog,
+             '\tmkdir -p %s' % paellalog,
+             'fi'
+             ]
+    return lines
+
+def dhclient_lines(toolkit):
+    lines = ['# run the dhclient to get an appropriate /etc/resolv.conf',
+             'dhclient'
+             ]
+    return lines
+
+    
+def mount_paellalog_lines(toolkit):
+    it = toolkit
+    paellalog = it.get('paella_installer:paellalog')
+    paellalog_export = it.get('paella_installer:paellalog_export')
+    nfs_host = it.get('paella_installer:nfs_host')
+    lines = ['if [ -z `cat /proc/mounts | grep %s` ]; then' % paellalog,
+             '\techo "mounting /paellalog"',
+             '\tmount -t nfs %s:%s %s' % (nfs_host, paellalog_export, paellalog),
+             'fi'
+             ]
+    return lines
+
+def init_installer_lines(toolkit):
+    lines = ['# finally, run the paella nfs installer in the background',
+             'paella-init-installer  &'
+             ]
+    return lines
+
+
+
+def update_rc_local(toolkit):
+    it = toolkit
+    rclocal = it.target / 'etc/rc.local'
+    rclocal_lines = rclocal.lines()
+    last_line = rclocal_lines[-1].strip()
+    if last_line != 'exit 0':
+        print "WARNING: /etc/rc.local doesn't end with exit statement"
+        print "Not updating /etc/rc.local"
+        return
+    rclocal_lines = rclocal_lines[:-1]
+    rclocal_lines += mkdir_paellalog_lines(it)
+    rclocal_lines += dhclient_lines(it)
+    rclocal_lines += mount_paellalog_lines(it)
+    rclocal_lines += init_installer_lines(it)
+    rclocal_lines.append('exit 0')
+    print "writing /etc/rc.local"
+    rclocal.write_lines(rclocal_lines)
+    
+it = InstallerTools()
+
+if it.getboolean('paella_installer:update_rc_local'):
+    print "updating /etc/rc.local"
+    sys.stdout.flush()
+    update_rc_local(it)
+    
