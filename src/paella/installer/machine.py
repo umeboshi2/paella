@@ -166,6 +166,7 @@ class MachineInstaller(BaseMachineInstaller):
     def post_process(self, procname):
         # be sure to run parent's post_process first
         BaseMachineInstaller.post_process(self, procname)
+        name = self.__class__.__name__
         # now check for processes specific to the machine installer
         if procname == 'mount_target':
             self.log.info('%s marking %s finished' % (name, procname))
