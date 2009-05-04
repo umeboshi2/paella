@@ -175,7 +175,6 @@ class InstallerTools(object):
             
             
 
-    # this needs updating for machine type data
     def env(self):
         return self.db.env()
 
