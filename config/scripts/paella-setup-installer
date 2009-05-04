@@ -61,7 +61,7 @@ def make_bootstrap_tarball(conn, suite, basedir):
     print "%s created." % tarball_filename
     os.chdir(here)
     print "removing bootstrap directory"
-    subprocess.check_call('rm', '-fr', directory)
+    subprocess.check_call(['rm', '-fr', directory])
     
     
 def make_devices_tarball(suite_storage):
@@ -97,6 +97,8 @@ def main(opts, args):
         if not suite_storage.isdir():
             suite_storage.makedirs()
         basedir = suite_storage / 'tmp'
+    else:
+        basedir = path(opts.basedir)
     if not basedir.isdir():
         basedir.mkdir()
         basedir_created = True
