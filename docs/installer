@@ -502,6 +502,13 @@ it a machine name argument, and the machine will be recognized by the
 paella database.  It will use the mac addresses of each ethernet interface 
 attached to the machine to identify it.
 
+The script responsible for starting the automatic install is /usr/sbin/paella-init-installer, 
+and it is located in the paella-live-installer package.  Currently, this script is being called 
+from /etc/rc.local , and from there it forks into the background so the boot process can 
+continue and provide a login.  Installing this package will not modify your /etc/rc.local file, 
+nor will it add any initscripts to run the paella-init-installer script.  The modification of the 
+rc.local file is done by the paella installer, so you can modify how and when this script is 
+called to suit your tastes.
 
 
 toc_

@@ -308,7 +308,7 @@ created above to sign the repository, add that key to apt, add the local reposit
 Take a break.  Grab some coffee.  This will take a bit, depending on your internet 
 connection.  I've taken care to only include the packages that needed, plus a few 
 extra packages that I use as tools to help me test this quickstart routine.  As of the time 
-this was written, the pool directory was 465MB in size.
+this was written, the pool directory was 468MB in size.
 
 **Note:**  If the script failed, and you installed from a local mirror, you will need to 
 edit the /freespace/debian/conf/updates file and adjust the VerifyRelease fields in 
@@ -334,7 +334,11 @@ Now you're ready to get the source code from subversion.  To do this, type ::
 This will setup the directories, and download the source code from the berlios subversion 
 repository.  It will also install build dependencies, plus some extra packages required to 
 create the netboot image that will be made later in this guide.  It will then build the packages
-and install them into your freshly made debian repository.  
+and install them into your freshly made debian repository.  After that, it will update apt, then 
+install the paella-admin, paella-installer, and paella-defaultdb packages.  Then it will import 
+the quickstart database from the paella-defaultdb package into the postgresql database.  It 
+will also import the archive key that you created earlier.
+
 
 
 Debian Live
@@ -371,9 +375,23 @@ again.
 Here are some quick instructions on how to do that::
 
      cd /freespace/live
-     sudo lh_clean
+     sudo lh_clean --purge
+     rm -fr .stage 
+     mkdir .stage
+     touch .stage/bootstrap
+     sudo paella-machine-installer install live_chroot chroot
      sudo lh_build
      sudo ./config/prepare-netboot
+
+While the paella installer is installing the chroot machine, you can watch the progress in 
+the logfile, /freespace/paellalog/paella-install-live_chroot.log .  You can do this with the 
+most program.  Bring up another terminal, and make it bigger, if you want to.  In the 
+terminal, type::
+
+	  most /freespace/paellalog/paella-install-live_chroot.log
+
+Then press 'b', followed by <Shift>-F.  Now you'll be able to watch the progress of the 
+live_chroot machine as it's being installed.
 
 
 Using Paella Management Interface

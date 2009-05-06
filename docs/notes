@@ -89,13 +89,13 @@ Memory Usage
 Paella seems to use more memory than I would like it to use.  I am not 
 very knowledgable on how to handle this.  My focus has been in this order:
 
-1.  Make sure the code works correctly
-2.  Make sure the code is clean and modular
-3.  Avoid unnecessary complexity when possible
-4.  Try to keep from duplicating code and instantiating objects more than necessary
+1.  Make sure the code works correctly.
+2.  Make sure the code is clean and modular.
+3.  Avoid unnecessary complexity when possible.
+4.  Try to keep from duplicating code and instantiating objects more than necessary.
 5.  Make sure the code isn't too slow.
-6.  Try to keep database queries at a minimum
-7.  Make sure paella isn't excessively hogging memory
+6.  Try to keep database queries at a minimum.
+7.  Make sure paella isn't excessively hogging memory.
 
 As you can see, the memory constraint is at the bottom of the list.  Using top 
 to estimate, the paella-management application uses about 75M VIRT, and 
@@ -229,6 +229,14 @@ The way apt sources are handled by the installer is not the very flexible.  Only
 http method is handled by paella, and for the install, all of the packages must come 
 from a single host.  It is probably possible to overcome this by using the hook scripts 
 to create the apt sources yourself, but this is still not tested.
+
+Also, for every apt source listed in a suite, the installer will place both deb and 
+deb-src entries into the sources.list file.  In some cases this is not desirable 
+and you may need to make your own scripts to handle the apt sources.  You 
+can do this by making machine scripts for **apt_sources_installer** and 
+**apt_sources_final** in a machine and have all machines that need this 
+to depend on that machine.
+
 
 
 
