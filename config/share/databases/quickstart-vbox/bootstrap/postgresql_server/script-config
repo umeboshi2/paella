@@ -11,6 +11,17 @@ print "config script for postgresql_server"
 it = InstallerTools()
 env = it.env()
 
+recreate_template1_instructions="""UPDATE pg_database SET datallowconn = TRUE where datname = 'template0';
+\c template0
+UPDATE pg_database SET datistemplate = FALSE where datname = 'template1';
+drop database template1;
+create database template1 with template = template0 encoding = '%s';
+UPDATE pg_database SET datistemplate = TRUE where datname = 'template1';
+\c template1
+UPDATE pg_database SET datallowconn = FALSE where datname = 'template0';
+"""
+
+ 
     
 # TYPE  DATABASE    USER        CIDR-ADDRESS          METHOD
 
@@ -62,6 +73,20 @@ def su_postgres_cmd(toolkit, cmd):
     toolkit.chroot(su_cmd)
     
 
+def recreate_template1(toolkit):
+    it = toolkit
+    encoding = it.get('postgresql_server:default_encoding')
+    print "creating new template1 with encoding:", encoding
+    cmd = ['su', 'postgres', '-c', 'psql template1']
+    proc = it.chroot_proc(cmd, stdin=it.PIPE)
+    instructions = recreate_template1_instructions % encoding
+    proc.stdin.write(instructions)
+    proc.stdin.flush()
+    proc.stdin.close()
+    retval = proc.wait()
+    if retval:
+        raise RuntimeError , "Problem with dropping template1"
+    
 
 def create_pg_users(toolkit):
     it = toolkit
@@ -98,7 +123,20 @@ def create_initial_databases(toolkit):
         
 
 configure_pghba_conf(it)
+recreate_template1(it)
 create_pg_users(it)
 create_template1_languages(it)
 create_initial_databases(it)
 
+#-- Connect as the postgres superuser, e.g.:                                                                                      
+# -- psql -U postgres template1                                                                                                    
+# -- Then run:                                                                                                                     
+# UPDATE pg_database SET datallowconn = TRUE where datname = 'template0';
+# \c template0
+# UPDATE pg_database SET datistemplate = FALSE where datname = 'template1';
+# drop database template1;
+# create database template1 with template = template0 encoding = 'UNICODE';
+# UPDATE pg_database SET datistemplate = TRUE where datname = 'template1';
+# \c template1
+# UPDATE pg_database SET datallowconn = FALSE where datname = 'template0';
+ 

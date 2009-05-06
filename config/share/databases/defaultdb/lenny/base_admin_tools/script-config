@@ -24,3 +24,4 @@ priority = get('pager_priority')
 print "Using priority of", priority
 cmd.append(priority)
 it.chroot(cmd)
+

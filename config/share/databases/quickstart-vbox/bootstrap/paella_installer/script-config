@@ -78,8 +78,16 @@ def mount_paellalog_lines(toolkit):
     return lines
 
 def init_installer_lines(toolkit):
+    it = toolkit
+    #locale = it.get('global:default_environment_locale')
+    locale = it.get('paella_installer:installer_locale')
     lines = ['# finally, run the paella nfs installer in the background',
-             'paella-init-installer  &'
+             '# use bash to see if we start with an environment',
+             '#bash --login -c "paella-init-installer"  &',
+             "# that didn't work, so we'll do this:",
+             'LANG=%s paella-init-installer &' % locale,
+             '# that should fix the "posix" locale problem, ',
+             '# but we may need to add other environment variables later.'
              ]
     return lines
 

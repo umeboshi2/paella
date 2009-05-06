@@ -11,13 +11,16 @@
 	</packages>
 	<environ>
 		<trait_variable name="dbhost" trait="paella_installer">
-			paella.lapnet
+			paella.&lt;--|global:domain|--&gt;
 		</trait_variable>
 		<trait_variable name="dbname" trait="paella_installer">
 			paella
 		</trait_variable>
 		<trait_variable name="dbusername" trait="paella_installer">
 			paella
+		</trait_variable>
+		<trait_variable name="installer_locale" trait="paella_installer">
+			&lt;--|global:default_environment_locale|--&gt;
 		</trait_variable>
 		<trait_variable name="nfs_host" trait="paella_installer">
 			&lt;--|paella_installer:dbhost|--&gt;

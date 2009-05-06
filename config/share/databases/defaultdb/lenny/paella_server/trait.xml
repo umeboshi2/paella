@@ -31,7 +31,11 @@
 			web_server
 		</parent>
 	</parents>
-	<packages/>
+	<packages>
+		<package action="install">
+			paella-installer
+		</package>
+	</packages>
 	<environ>
 		<trait_variable name="signing_key" trait="paella_server">
 			&lt;your gpg key ID&gt;

@@ -41,6 +41,8 @@ scriptfile.chmod(0755)
 print "created setup-workspace script"
 sys.stdout.flush()
 
+print "Creating Paella netboot image"
+sys.stdout.flush()
 it.chroot(['/freespace/live/make-installer-image'])
 print "Paella neboot image created and prepared."
 

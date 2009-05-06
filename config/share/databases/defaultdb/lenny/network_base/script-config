@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import sys
 from paella.installer.toolkit import InstallerTools
 from paella.installer.network import METHODS
 
@@ -6,12 +7,18 @@ print "config script for network_base"
 it = InstallerTools()
 env = it.env()
 
+paella_site = it.target / 'root/site'
+
+sys.path.append(str(paella_site))
+
+from PaellaInstall.General import install_packages
+
 # example from testmachine
 # PCI device 0x1022:0x2000 (pcnet32)
 #SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="08:00:27:16:c9:83", ATTR{type}=="1", KERNEL=="eth*", NAME="eth0"
 
 
-udev_net_rules_filename = it.target / "etc/udev/rules.d/70-persistent-net.rules"
+
 
 def udev_line(name, macaddr, subsystem = "net",
               action = "add", drivers = "?*", attr_type = "1", kernel='eth*'):
@@ -25,6 +32,30 @@ def udev_line(name, macaddr, subsystem = "net",
              ]
     return ', '.join(parts)
 
+def configure_udev_net_rules(toolkit):
+    it = toolkit
+    udev_net_rules_filename = it.target / "etc/udev/rules.d/70-persistent-net.rules"
+    orig_rules_lines = udev_net_rules_filename.lines()
+    commented_lines = []
+    # comment orig_rules_lines
+    for line in orig_rules_lines:
+        if not line.startswith('#'):
+            line = '# %s' % line
+        commented_lines.append(line)
+    new_lines = [line for line in commented_lines]
+    interfaces = it.getcsv('network_base:udev_interfaces', sep=' ')
+    for interface in interfaces:
+        print "Checking for mac address of", interface
+        key = 'network_base:interface_%s_macaddr' % interface
+        if key in it.env():
+            print "Adding %s to udev net rules"
+            macaddr = it.get(key)
+            line = udev_line(interface, macaddr)
+            new_lines.append(line)
+    print "Creating new net rules file"
+    udev_net_rules_filename.write_lines(new_lines)
+    
+    
     
 # some helpers to keep from passing the trait
 # name around too much
@@ -73,3 +104,7 @@ for name in interface_names:
 
 filename = it.target / 'etc/network/interfaces'
 filename.write_text(interfaces_data)
+
+if it.getboolean('network_base:install_udev'):
+    install_packages(it, ['udev'])
+    configure_udev_net_rules(it)

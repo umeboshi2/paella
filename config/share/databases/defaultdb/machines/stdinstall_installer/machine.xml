@@ -1,0 +1,8 @@
+<machine name="stdinstall_installer" parent="chroot" profile="live_installer">
+	<family>
+		lapnet2
+	</family>
+	<machine_variable name="dbhost" trait="paella_installer">
+		stdinstall.&lt;--|global:domain|--&gt;
+	</machine_variable>
+</machine>

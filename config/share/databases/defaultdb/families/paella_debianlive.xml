@@ -10,6 +10,15 @@
 			<family_variable name="lh_bootappend_live" trait="debianlive">
 				timezone=&lt;--|global:tzdata_area|--&gt;/&lt;--|global:tzdata_zone|--&gt; utc=&lt;--|base:utc|--&gt;
 			</family_variable>
+			<family_variable name="lh_cache" trait="debianlive">
+				disabled
+			</family_variable>
+			<family_variable name="lh_cache_packages" trait="debianlive">
+				disabled
+			</family_variable>
+			<family_variable name="lh_cache_stages" trait="debianlive">
+				none
+			</family_variable>
 			<family_variable name="lh_categories" trait="debianlive">
 				main contrib non-free
 			</family_variable>
@@ -41,7 +50,7 @@
 				aptitude
 			</family_variable>
 			<family_variable name="lh_username" trait="debianlive">
-				installer
+				paella
 			</family_variable>
 			<family_variable name="live_chroot_aptkey_name" trait="debianlive">
 				jrawson

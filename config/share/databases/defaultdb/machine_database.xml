@@ -11,6 +11,7 @@
 		<machine name="sidesalad"/>
 		<machine name="standalone"/>
 		<machine name="stdinstall"/>
+		<machine name="stdinstall_installer"/>
 		<machine name="testmachine"/>
 		<machine name="testmachine2"/>
 		<machine name="vboxbase"/>

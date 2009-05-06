@@ -9,160 +9,11 @@ from paella.db.aptkey import AptKeyHandler
 print "post-install script for paellabase machine"
 
 ###############################################
-paellarc_contents = """# configuration file for paella
-[DEFAULT]
-# these options are only referenced in this config file
-__myhome:		~
-__paelladir:		%%(__myhome)s/workspace/paella
-
-[database]
-# regular database info
-dbhost:			%(hostname)s
-dbname:			paella
-#dbusername:		dbadmin
-dbusername:		paella
-dbpassword:		apassword
-
-# this path is used to import and export information
-# in the database.  These paths are used as hints in the
-# gui and aren't needed for the command line.
-default_path:		%%(__paelladir)s/config/share/databases
-
-# the installer section is only needed on the installer system
-# it is not needed for paella-management
-[installer]
-
-# this is to enable ugly stuff in the paella installers
-enable_bad_hacks:	false
-
-# a directory for storing generated files that would be needed later
-# I put this in usr because it's mainly used on the nfsinstaller, and
-# /var on the nfsinstaller uses tmpfs instead of nfs
-paella_storage:		/usr/share/paella/storage
-
-# use this one for machines other than the nfsinstaller
-#paella_storage:		/var/cache/paella
-
-# the directory that will hold tarfiles of clean bootstrapped suites
-suite_storage:		%%(paella_storage)s/suites
-
-# this is a list of suites that will be bootstrapped and tarred
-bootstrap_suites:		sarge, etch
-
-# the default is not to have the installer bootstrap,
-# but extract tar files in suite_storage (quicker)
-bootstrap_target:		false
-
-# this is the location of the devices tarball that can be used
-# in place of makedev
-devices_tarball:		%%(paella_storage)s/devices.tar
-
-# we default to using the devices tarball because it is quicker
-# than running MAKEDEV
-use_devices_tarball:	true
-
-# the management_gui section is only needed for paella-management,
-# it is not needed for the paella installer
-[management_gui]
-
-# this is the template that profiles will be created from
-template_profile:		skeleton
-
-# this is the path used to import and export client
-# information and the paella database
-# client information should be kept on a separate device
-# for general security reasons
-# the client information should be able to sit nicely
-# on top of the base paella database
-client_path:		%%(__myhome)s/clients
-
-# only listbox_select is supported now
-manager_type:		listbox_select
-
-# The text editor must make an X window
-text_editor:		kate
-
-# The x_differ must make an X window
-# the command must take these args -> x_differ left_file right_file
-x_differ:			xxdiff
-#x_differ:			kompare
-
-
-# document colors
-#traitdoc_bgcolor:			LightSkyBlue4
-#traitdoc_section_title_color:		IndianRed
-#traitdoc_package_table_color:	SkyBlue3
-#traitdoc_template_table_color:	DarkSeaGreen3
-#traitdoc_variables_table_color:	MistyRose3
-
-_basecolor:			SkyBlue
-traitdoc_bgcolor:			%%(_basecolor)s
-traitdoc_section_title_color:		%%(_basecolor)s4
-traitdoc_section_title_font_color:	%%(_basecolor)s1
-traitdoc_package_table_color:	%%(_basecolor)s3
-traitdoc_template_table_color:	%%(_basecolor)s3
-traitdoc_variables_table_color:	%%(_basecolor)s3
-"""
 ###############################################
-
-rc_local_contents = '''#!/bin/sh -e
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the execution
-# bits.
-#
-# By default this script does nothing.
-
-if ! [ -d /paellalog ]; then
-    echo "creating /paellalog"
-    mkdir /paellalog
-fi
-
-# run the dhclient to get an appropriate /etc/resolv.conf
-dhclient
-
-
-if [ -z `cat /proc/mounts | grep /paellalog` ]; then
-    echo "mounting /paellalog"
-    mount -t nfs %(hostname)s:/freespace/paellalog /paellalog
-fi
-
-# finally, run the paella nfs installer in the background
-
-paella-init-installer  &
-
-exit 0
-'''
 ###############################################
-
-skel_bashrc_lines = [
-'sudo update-alternatives --install /usr/bin/editor editor /usr/bin/xemacs21 999',
-'sudo update-alternatives --install /usr/bin/pager pager /usr/bin/most 999'
-]
-
 ###############################################
-paella_packages_contents = """bash-completion
-eject file sudo vim-tiny
-
-console-common locales
-
-postgresql-client 
-xemacs21
-most
-nfs-common
-grub
-syslinux
-memtest86+
-squashfs-tools
-
-python-dnspython
-
-paella-live-installer
+paella_packages_contents = """# we don't need this anymore
+dpkg
 
 """
 ###############################################
@@ -194,33 +45,6 @@ it.chroot(['su', live_config_owner, '-c', cmd])
 live_config_dir = livedir / 'config'
 if not live_config_dir.isdir():
     raise RuntimeError , "%s isn't there." % live_config_dir
-
-# create the directories that contain the
-# include files
-local_includes_dir = live_config_dir / 'chroot_local-includes'
-local_includes_etc = local_includes_dir / 'etc'
-print "creating %s" % local_includes_etc
-local_includes_etc.makedirs()
-local_includes_skel = local_includes_etc / 'skel'
-print "creating %s" % local_includes_skel
-local_includes_skel.makedirs()
-sys.stdout.flush()
-
-# create the include files
-paellarc = local_includes_etc / 'paellarc'
-paellarc.write_text(paellarc_contents % template_data)
-print "%s created." % paellarc
-
-rclocal = local_includes_etc / 'rc.local'
-rclocal.write_text(rc_local_contents % template_data)
-rclocal.chmod(0755)
-print "%s created." % rclocal
-
-bashrc = local_includes_skel / '.bashrc'
-sysbashrc = it.target / 'etc/skel/.bashrc'
-bashrc.write_text(sysbashrc.text())
-bashrc.write_lines(skel_bashrc_lines, append=True)
-print "%s created." % bashrc
 
 # create the packageslists file
 packages_lists_dir = live_config_dir / 'chroot_local-packageslists'
@@ -267,10 +91,30 @@ hosts_filename.write_text(line, append=True)
 print "updated /etc/hosts"
 sys.stdout.flush()
 
+# install chroot installer machine
+key = 'paella_server:installer_machine'
+if key in it.env():
+    print "Determining installer machine name"
+    installer_machine = it.get('paella_server:installer_machine')
+    live_chroot_directory = livedir / 'chroot'
+    cmd = ['paella-machine-installer', 'install',
+           installer_machine, live_chroot_directory]
+    it.run(cmd)
+    stagedir = livedir / '.stage'
+    stagedir.mkdir()
+    bootstrap_stage = stagedir / 'bootstrap'
+    file(bootstrap_stage, 'w')
 
 script = """#!/bin/bash
 pushd /freespace/live
-lh_clean --purge
+if ! [ -d .stage ]; then
+\tmkdir .stage
+fi
+touch .stage/bootstrap
+if ! [ -d chroot ]; then
+\techo No chroot directory present, unable to build live image
+\texit 1
+fi
 lh_build
 ./config/prepare-netboot
 popd

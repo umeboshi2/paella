@@ -4,6 +4,12 @@
 			<family_variable name="interfaces" trait="dhcp_server">
 				eth1
 			</family_variable>
+			<family_variable name="loc_interface" trait="firewall">
+				eth1
+			</family_variable>
+			<family_variable name="net_interface" trait="firewall">
+				eth0
+			</family_variable>
 			<family_variable name="policy_fw2net" trait="firewall">
 				ACCEPT
 			</family_variable>

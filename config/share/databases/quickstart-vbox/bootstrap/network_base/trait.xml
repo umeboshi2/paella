@@ -15,6 +15,9 @@
 		<trait_variable name="hotplug_interfaces" trait="network_base">
 			eth0
 		</trait_variable>
+		<trait_variable name="install_udev" trait="network_base">
+			False
+		</trait_variable>
 		<trait_variable name="interfaces" trait="network_base">
 			lo eth0
 		</trait_variable>

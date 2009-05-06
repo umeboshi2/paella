@@ -6,10 +6,22 @@
 	<machine_variable name="hostname" trait="global">
 		stdinstall
 	</machine_variable>
+	<machine_variable name="installer_machine" trait="paella_server">
+		stdinstall_installer
+	</machine_variable>
 	<machine_variable name="install_standard" trait="base">
 		True
 	</machine_variable>
+	<machine_variable name="interface_ethloc_macaddr" trait="network_base">
+		08:00:27:7e:69:ae
+	</machine_variable>
+	<machine_variable name="interface_ethnet_macaddr" trait="network_base">
+		08:00:27:5a:c7:22
+	</machine_variable>
 	<machine_variable name="subnet_filename" trait="dhcp_server">
 		pxelinux.0
+	</machine_variable>
+	<machine_variable name="udev_interfaces" trait="network_base">
+		ethnet ethloc
 	</machine_variable>
 </machine>

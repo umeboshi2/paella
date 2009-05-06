@@ -32,6 +32,9 @@
 			<family_variable name="startup" trait="firewall">
 				1
 			</family_variable>
+			<family_variable name="installer_machine" trait="paella_server">
+				live_chroot
+			</family_variable>
 			<family_variable name="createuser_opts_dbadmin" trait="postgresql_server">
 				-sdr
 			</family_variable>

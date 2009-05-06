@@ -16,6 +16,9 @@
 		</package>
 	</packages>
 	<environ>
+		<trait_variable name="default_encoding" trait="postgresql_server">
+			&lt;--|global:default_charset|--&gt;
+		</trait_variable>
 		<trait_variable name="initial_databases" trait="postgresql_server">
 			
 		</trait_variable>
