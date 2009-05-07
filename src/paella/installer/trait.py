@@ -18,6 +18,8 @@ from base import runlog, RunLogError
 
 from util.misc import remove_debs
 from util.base import make_script
+from util.base import install_packages_command
+
 
 INGDICT = {
     'install' : 'installing',
@@ -106,8 +108,18 @@ class TraitInstallerHelper(object):
             self.chroot(command)
         else:
             self.log.info('No packages to remove')
-        
+
     def install_packages(self, packages, unauthenticated=False):
+        if packages:
+            command = install_packages_command(packages, self.defenv,
+                                               action='install', loginfo=self.log.info,
+                                               trait=self.trait)
+            self.chroot(command)
+        else:
+            self.log.info('No packages to install')
+            
+        
+    def install_packagesOrig(self, packages, unauthenticated=False):
         if packages:
             apt_cmd = 'apt-get'
             apt_opts = ''

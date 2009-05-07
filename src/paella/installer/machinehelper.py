@@ -19,6 +19,7 @@ from base import runlog, RunLogError
 # this import should probably be removed
 from base import InstallError
 
+from util.base import install_packages_command
 
 from util.disk import setup_disk_fai
 from util.disk import setup_storage_fai
@@ -103,7 +104,11 @@ class KernelHelper(BaseHelper):
             runlog(umount_cmd)
     # pass a keyword arg, since there's a grub2 now
     def install_grub_package(self, grub='grub'):
-        cmd = self.chroot_precommand + self.aptinstall + [grub]
+        #cmd = self.chroot_precommand + self.aptinstall + [grub]
+        apt_command = install_packages_command([grub], self.defenv,
+                                               loginfo=self.log.info, logerror=self.log.error,
+                                               usertag='paella-bootloader')
+        cmd = self.chroot_precommand + apt_command
         runlog(cmd)
         
     # It's really bad form to specify /dev/hda here
@@ -130,12 +135,19 @@ class KernelHelper(BaseHelper):
         if extra_modules:
             self.log.info('Checking if extra packages are required before kernel install.')
             self.install_packages_for_extra_modules(extra_modules)
+        else:
+            msg = "There doesn't seem to be a need for extra modules on this machine."
+            self.log.info(msg)
         kernel = self.machine.get_kernel()
         if kernel == 'default':
             self.log.info("Using default kernel")
             kernel = self._determine_default_kernel()
             self.log.info("Default kernel for this machine is %s" % kernel)
-        cmd = self.chroot_precommand + self.aptinstall + [kernel]
+        #cmd = self.chroot_precommand + self.aptinstall + [kernel]
+        apt_command = install_packages_command([kernel], self.defenv,
+                                               loginfo=self.log.info, logerror=self.log.error,
+                                               usertag='paella-kernel')
+        cmd = self.chroot_precommand + apt_command
         self.log.info('install cmd is: %s' % ' '.join(cmd))
         kimgconf = self.target / 'etc' / 'kernel-img.conf'
         kimgconf_old = path('%s.paella-orig' % kimgconf)
@@ -312,7 +324,7 @@ class KernelHelper(BaseHelper):
     # installed.
     def install_packages_for_extra_modules(self, modules):
         """Install the packages required to handle these modules."""
-        cmd = self.chroot_precommand + self.aptinstall
+        #cmd = self.chroot_precommand + self.aptinstall
         packages = []
         for module in modules:
             if module == 'dm-mod':
@@ -320,11 +332,19 @@ class KernelHelper(BaseHelper):
                 append_unique('dmsetup', packages)
             if module.startswith('raid'):
                 append_unique('mdadm', packages)
-        msg = "Installing these extra packages: %s" % ', '.join(packages)
-        self.log.info(msg)
-        cmd += packages
-        runlog(cmd)
-
+        #cmd += packages
+        if packages:
+            msg = "Installing these extra packages: %s" % ', '.join(packages)
+            self.log.info(msg)
+            apt_command = install_packages_command(packages, self.defenv,
+                                                   loginfo=self.log.info, logerror=self.log.error,
+                                                   usertag='paella-kernel-extras')
+            cmd = self.chroot_precommand + apt_command
+            runlog(cmd)
+        else:
+            msg = 'No extra packages required for the kernel'
+            self.log.info(msg)
+            
     # when the kernel is "default", we need to determine
     # the appropriate kernel package to install.  This helps
     # keep the database architecture independent.
