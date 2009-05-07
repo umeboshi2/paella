@@ -10,7 +10,14 @@
 			users
 		</parent>
 	</parents>
-	<packages/>
+	<packages>
+		<package action="install">
+			acpid
+		</package>
+		<package action="install">
+			acpi-support-base
+		</package>
+	</packages>
 	<environ/>
 	<templates>
 		<template grp_owner="root" mode="0644" owner="root">

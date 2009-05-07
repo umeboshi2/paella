@@ -16,15 +16,40 @@
 				firewall
 			</trait>
 			<trait ord="5">
+				xfce_desktop
+			</trait>
+			<trait ord="6">
+				gdm
+			</trait>
+			<trait ord="7">
 				final
 			</trait>
 		</traits>
-		<families/>
+		<families>
+			<family>
+				lapnet
+			</family>
+			<family>
+				nfs_export_live_installer
+			</family>
+			<family>
+				nfs_export_paellalog
+			</family>
+			<family>
+				standard_firewall
+			</family>
+			<family>
+				user_paella
+			</family>
+		</families>
 		<environ>
 			<profile_variable name="interfaces" trait="dhcp_server">
 				eth1
 			</profile_variable>
 			<profile_variable name="hostname" trait="global">
+				paella
+			</profile_variable>
+			<profile_variable name="sysadmin_users" trait="users">
 				paella
 			</profile_variable>
 		</environ>

@@ -1,0 +1,35 @@
+	<family name="standard_firewall_netif">
+		<parents/>
+		<environ>
+			<family_variable name="interfaces" trait="dhcp_server">
+				eth1
+			</family_variable>
+			<family_variable name="loc_interface" trait="firewall">
+				eth1
+			</family_variable>
+			<family_variable name="net_interface" trait="firewall">
+				eth0
+			</family_variable>
+			<family_variable name="policy_fw2net" trait="firewall">
+				ACCEPT
+			</family_variable>
+			<family_variable name="startup" trait="firewall">
+				1
+			</family_variable>
+			<family_variable name="eth1_address" trait="network_base">
+				&lt;--|localnet:gateway|--&gt;
+			</family_variable>
+			<family_variable name="eth1_method" trait="network_base">
+				static
+			</family_variable>
+			<family_variable name="eth1_netmask" trait="network_base">
+				&lt;--|localnet:netmask|--&gt;
+			</family_variable>
+			<family_variable name="hotplug_interfaces" trait="network_base">
+				eth0 eth1
+			</family_variable>
+			<family_variable name="interfaces" trait="network_base">
+				lo eth0 eth1
+			</family_variable>
+		</environ>
+	</family>

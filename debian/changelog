@@ -1,10 +1,20 @@
+paella (0.7.42) paella; urgency=low
+
+  * make sure suite storage directory exists before making a bootstrap
+    tarball
+  * using a new function to install packages, to help make sure that the
+    same apt command/options are used consistently
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Thu, 07 May 2009 18:23:47 -0500
+
 paella (0.7.41) paella; urgency=low
 
   * adjust version of fai-client in debian/control
   * fix installers so that hooked scripts will presume those actions are
     taken, so later actions can be processed
+  * fixed some problems with paella-setup-installer
 
- -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Sat, 02 May 2009 21:50:49 -0500
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Tue, 05 May 2009 20:54:56 -0500
 
 paella (0.7.40) paella; urgency=low
 

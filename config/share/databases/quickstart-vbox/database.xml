@@ -31,6 +31,7 @@
 			<trait name="fileserver_base"/>
 			<trait name="final"/>
 			<trait name="firewall"/>
+			<trait name="gdm"/>
 			<trait name="global"/>
 			<trait name="localnet"/>
 			<trait name="nameserver"/>
@@ -50,5 +51,7 @@
 			<trait name="webdav_server"/>
 			<trait name="web_server"/>
 			<trait name="xemacs"/>
+			<trait name="xfce"/>
+			<trait name="xfce_desktop"/>
 		</traits>
 	</paelladatabase>

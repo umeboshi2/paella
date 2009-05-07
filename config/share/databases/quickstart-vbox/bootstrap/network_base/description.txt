@@ -1,7 +1,7 @@
 Here is where the network interfaces for the host are defined and configured.
 <ul>
 <li>The udev_interfaces variable isn't configured yet.  It will allow you to name the ethernet interfaces according to their mac addresses.  The default in the trait will remain blank.  The trait variables will default to a traditional "eth0" interface that gets its configuration by dhcp.  Any variables that change this behavior belong in either a family, profile, or machine.  The mac addresses should be placed in the machine variables.</li>
-<li></li>
+<li>You may need to make a configuration that depends on values defined in the localnet trait.  If this is so, you need to have a family attached to either a profile or machine or have the variables in the profile or machine that defines the variables to be used for the localnet trait.  This is because this trait doesn't depend on localnet and localnet depends on default, which is processed after this trait.  For example, look at the family, standard_firewall_netif.  This family has network_base variables that configure eth1 based on the values in the localnet trait.  If you were to only attach this family to a profile, or machine, and not attach one of the network_* families, you will get a lookup error when processing the network_base trait.</li>
 <li></li>
 <li></li>
 <li></li>

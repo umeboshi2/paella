@@ -1,10 +1,9 @@
 [installer]
 allow_unauthenticated_packages:	False
-apt_command:	aptitude
+apt_command:	apt-get
 apt_command_opts:	
 archive_keys:	paella,jrawson
 base_log_directory:	/paellalog
-bootstrap_suites:	lenny
 bootstrap_target:	False
 default_target:	/tmp/target
 devices_tarball:	/root/devices.tar

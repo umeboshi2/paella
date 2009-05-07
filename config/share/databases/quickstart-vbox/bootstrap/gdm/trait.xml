@@ -1,0 +1,119 @@
+<trait name="gdm">
+	<parents>
+		<parent>
+			desktop
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			gdm
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="allow_remote_auto_login" trait="gdm">
+			false
+		</trait_variable>
+		<trait_variable name="allow_remote_root_login" trait="gdm">
+			false
+		</trait_variable>
+		<trait_variable name="allow_root_login" trait="gdm">
+			false
+		</trait_variable>
+		<trait_variable name="automatic_login" trait="gdm">
+			
+		</trait_variable>
+		<trait_variable name="automatic_login_enable" trait="gdm">
+			false
+		</trait_variable>
+		<trait_variable name="base_xsession" trait="gdm">
+			/etc/gdm/Xsession
+		</trait_variable>
+		<trait_variable name="check_dir_owner" trait="gdm">
+			true
+		</trait_variable>
+		<trait_variable name="console_notify" trait="gdm">
+			true
+		</trait_variable>
+		<trait_variable name="default_session" trait="gdm">
+			default.desktop
+		</trait_variable>
+		<trait_variable name="disallow_tcp" trait="gdm">
+			true
+		</trait_variable>
+		<trait_variable name="display_init_dir" trait="gdm">
+			/etc/gdm/Init
+		</trait_variable>
+		<trait_variable name="display_last_login" trait="gdm">
+			false
+		</trait_variable>
+		<trait_variable name="first_vt" trait="gdm">
+			7
+		</trait_variable>
+		<trait_variable name="gdm_xserver_timeout" trait="gdm">
+			10
+		</trait_variable>
+		<trait_variable name="greeter" trait="gdm">
+			/usr/lib/gdm/gdmgreeter
+		</trait_variable>
+		<trait_variable name="group" trait="gdm">
+			gdm
+		</trait_variable>
+		<trait_variable name="gtk_theme" trait="gdm">
+			Clearlooks
+		</trait_variable>
+		<trait_variable name="halt_command" trait="gdm">
+			/sbin/shutdown -h now &quot;Shut Down via gdm.&quot;
+		</trait_variable>
+		<trait_variable name="logdir" trait="gdm">
+			/var/log/gdm
+		</trait_variable>
+		<trait_variable name="pam_stack" trait="gdm">
+			gdm
+		</trait_variable>
+		<trait_variable name="post_login_script_dir" trait="gdm">
+			/etc/gdm/PostLogin/
+		</trait_variable>
+		<trait_variable name="post_session_script_dir" trait="gdm">
+			/etc/gdm/PostSession/
+		</trait_variable>
+		<trait_variable name="pre_session_script_dir" trait="gdm">
+			/etc/gdm/PreSession/
+		</trait_variable>
+		<trait_variable name="reboot_command" trait="gdm">
+			/sbin/shutdown -r now &quot;Rebooted via gdm.&quot;
+		</trait_variable>
+		<trait_variable name="session_desktop_dir" trait="gdm">
+			/usr/share/gdm/BuiltInSessions/:/usr/share/xsessions/:/etc/dm/Sessions/
+		</trait_variable>
+		<trait_variable name="support_automount" trait="gdm">
+			false
+		</trait_variable>
+		<trait_variable name="suspend_command" trait="gdm">
+			/usr/sbin/pm-suspend
+		</trait_variable>
+		<trait_variable name="timed_login" trait="gdm">
+			
+		</trait_variable>
+		<trait_variable name="timed_login_delay" trait="gdm">
+			30
+		</trait_variable>
+		<trait_variable name="timed_login_enable" trait="gdm">
+			false
+		</trait_variable>
+		<trait_variable name="user" trait="gdm">
+			gdm
+		</trait_variable>
+		<trait_variable name="vt_allocation" trait="gdm">
+			true
+		</trait_variable>
+		<trait_variable name="x_keeps_crashing_script" trait="gdm">
+			/etc/gdm/XKeepsCrashing
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/gdm/gdm.conf
+		</template>
+	</templates>
+	<scripts/>
+</trait>

@@ -3,6 +3,8 @@ import os, sys
 
 from useless.base.path import path
 
+from paella.installer.util.base import install_packages_command
+
 class BaseExistsError(Exception):
     pass
 
@@ -25,8 +27,9 @@ def install_packages(toolkit, packages, trait=None, usertag=None):
         trait = it.trait
     if usertag is None:
         usertag = 'paella-trait-%s' % trait
-    cmd = ['aptitude', '--assume-yes', '--add-user-tag', usertag,
-           'install'] + packages
+    #cmd = ['aptitude', '--assume-yes', '--add-user-tag', usertag,
+    #       'install'] + packages
+    cmd = install_packages_command(packages, trait=trait, usertag=usertag)
     print "Install command is %s" % ' '.join(cmd)
     sys.stdout.flush()
     it.chroot(cmd)

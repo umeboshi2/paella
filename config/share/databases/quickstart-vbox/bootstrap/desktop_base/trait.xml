@@ -9,16 +9,10 @@
 			desktop-base
 		</package>
 		<package action="install">
-			hotkey-setup
-		</package>
-		<package action="install">
 			iceweasel
 		</package>
 		<package action="install">
 			menu
-		</package>
-		<package action="install">
-			xdg-utils
 		</package>
 	</packages>
 	<environ/>

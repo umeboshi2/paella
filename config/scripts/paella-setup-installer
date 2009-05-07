@@ -37,6 +37,8 @@ def make_bootstrap_tarball(conn, suite, basedir):
     arch = get_architecture()
     tarball_basename = '%s-%s.tar.gz' % (base_suite, arch)
     suite_storage = path(config.get('installer', 'suite_storage'))
+    if not suite_storage.exists():
+        suite_storage.makedirs()
     tarball_filename = suite_storage / tarball_basename
     # if the tarball already exists, we're done
     if tarball_filename.exists():

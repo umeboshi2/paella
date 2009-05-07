@@ -1,4 +1,4 @@
-<trait name="desktop">
+<trait name="xfce">
 	<parents>
 		<parent>
 			desktop_base
@@ -6,13 +6,7 @@
 	</parents>
 	<packages>
 		<package action="install">
-			xorg
-		</package>
-		<package action="install">
-			xserver-xorg-input-all
-		</package>
-		<package action="install">
-			xserver-xorg-video-all
+			xfce4
 		</package>
 	</packages>
 	<environ/>
