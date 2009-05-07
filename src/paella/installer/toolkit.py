@@ -204,7 +204,11 @@ class InstallerTools(object):
     def getcsv(self, key, sep=','):
         "return comma separated values as a list"
         value = self.get(key)
-        return [part.strip() for part in value.split(',')]
+        values = [part.strip() for part in value.split(',')]
+        # remove empty strings
+        values = [part for part in values if part]
+        return values
+    
 
     # this will fail with ValueError if the value
     # can't be converted to an int.
