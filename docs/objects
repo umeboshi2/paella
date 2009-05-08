@@ -48,40 +48,38 @@ and a set of variables.
 
   + templates can have simple tags for variable substitution 
   + templates store user/group and chmod permissions 
-  + a template must currently be attached to a package 
-    
-    - this feature should be removed, because traits that only need 
-      traits get vestigial packages assigned to them like base-files, 
-      initscripts, or bash 
   + currently the var/cache/debconf/config.dat template is reserved 
-    for debconf 
+    for debconf (This approach is now deprecated, but not removed
+    from the code, if you really need a such a template, name it something 
+    else, and rename it in the config script.)
+  + if a template exists, called "debconf", it will be processed with
+    debconf-set-selections during the preseed step in the trait installer.  
+    This method is now used instead of the method using the debconf 
+    config.dat template listed above.
+
 
 - **environment** 
 
   + a collection of name, value pairs for use in the templates and scripts 
   + a trait's environment contains its parents' environment 
   + a big python dictionary is made of the environment where the keys
-      are formed as "trait_name" where trait is the trait and name is the 
+      are formed as "trait:name" where trait is the trait and name is the 
       name of the variable.
 
 - **scripts** 
 
   + a trait is not required to have a script 
-  + only three types of scripts are currently supported, pre, post, and chroot 
+  + the scripts that are currently supported are; pre, preseed, remove, 
+    install, templates, config, chroot, reconfig, and post.
 
     - chroot is a special script that is run in a chrooted environment in the target area. 
       This script should be aware of what's on the target system and only depend on 
       those things. The script shouldn't connect to paella or depend on other installation 
       tools not present in the target system. 
-    - pre is executed before anything else is processed in the trait. 
+    - the preseed, remove, install, templates, and reconfig scripts will override
+      the default process for the trait.
 
-      + The pre script is executed with an os.system. 
-
-    - post is the very last action to perform in the trait 
-
-      + post should be able to talk to database and environment 
-
-  + other scripts
+  + other notes
     
     - you can define a script for any
       step in the trait install process.
@@ -94,6 +92,10 @@ and a set of variables.
 
     - in order for a script to be executed its name must match
       a step in the trait processes.
+
+    - A script can be made in any language.  You only have to have the 
+      interpreter for the script available on the installer system.  When using 
+      a chroot script, the interpreter must be available on the target system.
 
 Family
 --------
@@ -196,81 +198,126 @@ Machine Scripts
 ==============================================
 
 Machine scripts correspond to steps in the install process for machines.  These steps
-will be treated similiar to the trait scripts. The default steps/scripts are:
+will be treated similiar to the trait scripts. You may want to look at the installer_ page to 
+see how these step are arranged in the installers.  The default steps/scripts are:
 
 - pre
 
-  + this step normally does nothing.
+  + This step normally does nothing.
 
 - setup_disks
 
-  + this step is responsible for partitioning the disks and
-    for creating the filesystems
+  + This step is responsible for partitioning the disks and
+    for creating the filesystems.
+
+- ready_target
+
+  + This step makes sure the target directory exists before trying 
+    to use it as a mount point.
 
 - mount_target
 
-  + this step is responsible for mounting the filesystems
-    created in the previous step to the target directory
+  + This step is responsible for mounting the filesystems
+    created in the previous step to the target directory.
 
-  + the script will need to make the subdirectories in target
+  + The script will need to make the subdirectories in target
     for filesystems under the target root, and mount the
     appropriate ones.
 
 - bootstrap
 
-  + this step is responsible for bootstrapping the base
+  + This step is responsible for bootstrapping the base
     system into the target directory.
+
+- mount_target_proc
+
+  + This step is responsible for mounting /proc in the target.
+
+- mount_target_sys
+
+  + This step is responsible for mounting /sys in the target.
+
+- make_device_entries
+
+  + This step normally does nothing.  Before the arrival of udev, 
+    this step used to run "MAKEDEV generic" (or extract a devices.tar 
+    tarball) and add nodes for the target hard drive.  It is not needed 
+    anymore, but remains in case udev can't do something that you 
+    need to have done.
+
+- mount_target_devpts
+
+  + This step is responsible for mounting /dev/pts in the target.
 
 - apt_sources_installer
 
-  + this step should create a sources.list file that is appropriate
+  + This step should create a sources.list file that is appropriate
     for the installer environment.  It should place the file in 
-    $target/etc/apt/sources.list
+    $target/etc/apt/sources.list .
 
-- ready_base
+- ready_base_for_install
 
-  + this is a legacy step in the installer that would setup a root
-    password, a simple /etc/network/interfaces file, and a fstab.
+  + This step copies the /etc/resolv.conf file from the installer system,
+    and runs "apt-get -y update".
 
 - pre_install
 
-  + this step normally does nothing.
+  + This step normally does nothing.
 
 - install
 
-  + this step performs the install process
+  + This step performs the install process.  Replacing this step with a script 
+    will bypass the profile installer and the traits.  This may be useful in certain 
+    circumstances.
 
 - post_install
 
-  + this step normally does nothing.
+  + This step normally does nothing.
+
+- install_fstab
+
+  + This step is reponsible for installing the fstab on the target system.
 
 - install_modules
 
-  + this step should create a $target/etc/modules file appropriate for
+  + This step should create a $target/etc/modules file appropriate for
     the machine type.  This step isn't implemented anymore.  I'm leaving
     the step here as a step that does nothing now, in case a script is 
     needed to perform this function.
 
 - install_kernel
 
-  + this step is reponsible for installing a kernel in the target and
+  + This step is reponsible for installing a kernel in the target and
     preparing the bootloader for booting.
 
-  +  the machine should be ready to reboot after this step
+  +  The machine should be ready to reboot after this step
+
+- prepare_bootloader
+
+  + This step is responsible for installing the bootloader (grub) to the
+    target system, and configuring it to boot the system.
 
 - apt_sources_final
 
-  + this step is reponsible for making a sources.list that will
+  + This step is reponsible for making a sources.list that will
     be used when the machine is on the target site.  This step can be
     skipped for on-site installations.
 
-- install_fstab
+- umount_target_proc
 
-  + this step is reponsible for installing the fstab on the target system.
+  + This step is responsible for unmounting /proc in the target.
+
+- umount_target_sys
+
+  + This step is responsible for unmounting /sys in the target.
+
+- umount_target_devpts
+
+  + This step is responsible for unmounting /dev/pts in the target.
 
 - post
 
-  + this step normally does nothing.
+  + This step normally does nothing.
 
 
 toc_
@@ -289,3 +336,5 @@ toc_
 .. _traits: #trait
 
 .. _machines: #machine
+.. _installer: installer.html
+

@@ -7,6 +7,20 @@ Known Problems with Paella_
 .. contents:: :backlinks: entry
 
 -----------------------------------
+Introduction
+-----------------------------------
+
+This page details problems with paella that are planned to be fixed at some 
+point in the future.  Be sure to also read the notes_ page, as the problem you 
+are experiencing may be listed there.  Generally, the items on the notes_ page 
+are not so much problems or bugs as they are an explanation of the behavior 
+of paella, what to expect, and what's required when using it.  There may be a 
+couple of items on the notes_ page that could be considered problems, but I'm 
+not listing them here, until I can determine a good course of action to resolve 
+them.  I welcome input on what should be done about both the items here and on 
+the notes_ page.
+
+-----------------------------------
 xml import/export
 -----------------------------------
 
@@ -37,7 +51,7 @@ schema problems
   - current_environment should look more like default_environment
 
     + changing this will require some changes to the code.  Either the
-      changes will be extensive, or the will be minor, and scattered throughout
+      changes will be extensive, or they will be minor, and scattered throughout
       the code.
 
 

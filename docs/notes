@@ -28,7 +28,7 @@ signs the Release files, and can make partial mirrors.  Using reprepro is
 highly recommended.
 
 
-Database Maintainence
+Database Maintenance
 -------------------------------------------------------
 
 At the moment, there is no code to help maintain the database.  There are two 
@@ -50,7 +50,12 @@ the database using the xml format, dropping the database, creating a new
 database with the same name, then importing the last export.  This is an 
 ugly way to keep the package list updated, and I'd like to keep from having 
 to drop the database, or remove large parts of it just to update the package 
-lists.
+lists.  This method also hurts if you use extra tables in the database to keep 
+parts of the configuration, as paella is designed to allow the administrator 
+to be able to use the database to store the configuration.  Even if the schema 
+that paella uses isn't appropriate to hold the configuration for a server, group 
+of users, or whatever, the administrator is free to make a set of tables that 
+can hold the configuration and use them from the paella scripts.
 
 The second area is the textfiles table that stores all of the templates and 
 scripts.  When you delete a template or script from a trait, or machine, the 
