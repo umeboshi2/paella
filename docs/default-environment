@@ -19,7 +19,27 @@ Installer Section
 
 - **allow_unauthenticated_packages**:  This option tells apt to refrain from authenticating
   the Release file from the debian mirror.  It's highly recommended that you leave this option 
-  set to False and sign your mirrors with a key.  This option is here just in case all else fails.
+  set to False and sign your mirrors with a key.  This option is likely to be removed at some 
+  point in the future, in favor of setting the option in **apt_command_opts**.
+
+- **apt_command**:  This is the command that will be used to install and remove packages.  
+  If this is set to "aptitude", the packages that are installed will be marked with user-tags that
+  correspond to the trait that installed those packages.  **Warning**:  Currently there is a 
+  bug in aptitude that impedes the ability to install packages automatically.  Aptitude will always 
+  return a 0 whether the command was successful or not.  This is an insidious bug that could 
+  possibly insnare you when you least expect it.  Using aptitude, and not paying close attention 
+  to the install log can leave your newly installed system in an undesirable state, as you may be 
+  missing a few packages that you really need.   It is recommended, when you are 
+  testing new configurations and installs, that you set this variable to "apt-get".  This will help
+  spot errors in the install.  Once you are sure that the configuration is correct, you can then 
+  switch it back to "aptitude".  If you use aptitude, be sure to keep an eye on the installer's log 
+  file, as you will be able to spot an error more easily.  **Note**:  If in doubt, leaving this option 
+  blank will cause the code to default to apt-get.
+
+- **apt_command_opts**:  These are options that will be passed to the apt_command 
+  listed above.  By default, this variable is empty.  Adding "--allow-unauthenticated"(apt-get) or 
+  "--allow-untrusted"(aptitude)  here will override the "allow_unauthenticated_packages" 
+  setting described above.
 
 - **archive_keys**:  This is a comma separated list of key names that paella will feed to
   apt-key during installation in order to authenticate locally generated debian mirrors.  These 
@@ -38,10 +58,12 @@ Installer Section
   during the "ready_base_for_install" step.  If any of your machines have a script that 
   replaces this step, it may need to implement this part.
 
-- **bootstrap_suites**:  This is a comma separated list of suites that will be bootstrapped, 
-  and tarred up for later extraction.  This option is used by the paella-setup-nfsinstaller script,
-  and can be ignored if you use your own method to make the tarballs.  **Note**:  The 
-  paella-setup-nfsinstaller script may not work and shouldn't be used.
+- **bootstrap_suites**:  **DEPRECATED** This is a comma separated list of suites that 
+  will be bootstrapped, and tarred up for later extraction.  This option is used by the 
+  paella-setup-nfsinstaller script, and can be ignored if you use your own method to make 
+  the tarballs.  **Note**:  The paella-setup-nfsinstaller script may not work and shouldn't 
+  be used.  **NEW**:  There is now a new script called paella-setup-installer that will make 
+  tarballs for every suite in the database, and doesn't need to read this variable.
 
 - **default_target**:  This is the target directory where the system will be installed.  If 
   this isn't set, /tmp/target will be used.
