@@ -63,8 +63,8 @@ and a set of variables.
   + a collection of name, value pairs for use in the templates and scripts 
   + a trait's environment contains its parents' environment 
   + a big python dictionary is made of the environment where the keys
-      are formed as "trait:name" where trait is the trait and name is the 
-      name of the variable.
+    are formed as "trait:name" where trait is the trait and name is the 
+    name of the variable.
 
 - **scripts** 
 
@@ -115,15 +115,18 @@ Profile
   + Traits - the traits listed in the profile are ordered 
   + Families - an unordered list of families 
   + Environment
-	- the profile environment overrides the trait environments 
-	  and the family environment 
+    
+    - the profile environment overrides the trait environments 
+      and the family environment 
 
 
 Machine Database
 --------------------------------
-This section describes the machine database part of paella.  Profile, traits, and families
-should not be machine specific.  The Machine database trying to be design to hold
-information about physical systems to install logical systems from.
+This section describes the machine database part of paella.  Profiles and traits should 
+not be machine specific.  Families should be either machine specific, or not machine 
+specific.  It may help for a machine specific family to depend on one that's not machine 
+specific.  The Machine database trying to be design to hold information about physical 
+systems to install logical systems from.
 
 Machine
 ========
