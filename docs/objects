@@ -18,106 +18,115 @@ A suite is a similiar to debian suites like woody or sarge.  A suite
 can be used to make different versions of configurations, or different
 styles of design and configurations.  Traits are held in suites.
 
-Basically a suite is an ordered list of apt sources, and a set of traits.
+Basically a suite is an ordered list of apt sources, and a set of traits.  The first 
+apt source that is listed will be the repository that debootstrap will be run against.
 
 
 Trait 
 ------
-A trait is the atomic unit that signifies a feature. 
+A trait is an atomic unit that signifies a feature. 
 A trait belongs to a suite.  The table in the database that holds the list of traits
 is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
 and a set of variables.
 
-- **parents**
+Parents
+++++++++++++++++
 
-  + no trait can be processed during the installation before all
-    of its parents are processed.	     
-  + parents are not required, but most traits should depend on a default
-    trait.
-  + no trait can be processed during the installation before all of its
-    parents are processed. 
++ no trait can be processed during the installation before all
+  of its parents are processed.	     
++ parents are not required, but most traits should depend on a default
+  trait.
++ no trait can be processed during the installation before all of its
+  parents are processed. 
     
+
+Packages
+++++++++++++++++
   
-- **packages**
++ this is a list of packages to install or remove 
+  - although other options are available, only install and remove are supported now 
++ packages are not required 
 
-  + this is a list of packages to install or remove 
-    - although other options are available, only install and remove are supported now 
-  + packages are not required 
+Templates
+++++++++++++++++
  
-- **templates** 
-
-  + templates can have simple tags for variable substitution 
-  + templates store user/group and chmod permissions 
-  + currently the var/cache/debconf/config.dat template is reserved 
-    for debconf (This approach is now deprecated, but not removed
-    from the code, if you really need a such a template, name it something 
-    else, and rename it in the config script.)
-  + if a template exists, called "debconf", it will be processed with
-    debconf-set-selections during the preseed step in the trait installer.  
-    This method is now used instead of the method using the debconf 
-    config.dat template listed above.
++ templates can have simple tags for variable substitution 
++ templates store user/group and chmod permissions 
++ currently the var/cache/debconf/config.dat template is reserved 
+  for debconf (This approach is now deprecated, but not removed
+  from the code, if you really need a such a template, name it something 
+  else, and rename it in the config script.)
++ if a template exists, called "debconf", it will be processed with
+  debconf-set-selections during the preseed step in the trait installer.  
+  This method is now used instead of the method using the debconf 
+  config.dat template listed above.
 
 
-- **environment** 
+Environment
+++++++++++++++++
 
-  + a collection of name, value pairs for use in the templates and scripts 
-  + a trait's environment contains its parents' environment 
-  + a big python dictionary is made of the environment where the keys
-    are formed as "trait:name" where trait is the trait and name is the 
-    name of the variable.
++ a collection of name, value pairs for use in the templates and scripts 
++ a trait's environment contains its parents' environment 
++ a big python dictionary is made of the environment where the keys
+  are formed as "trait:name" where trait is the trait and name is the 
+  name of the variable.
 
-- **scripts** 
+Scripts
+++++++++++++++++
 
-  + a trait is not required to have a script 
-  + the scripts that are currently supported are; pre, preseed, remove, 
-    install, templates, config, chroot, reconfig, and post.
++ a trait is not required to have a script 
++ the scripts that are currently supported are; pre, preseed, remove, 
+  install, templates, config, chroot, reconfig, and post.
 
-    - chroot is a special script that is run in a chrooted environment in the target area. 
-      This script should be aware of what's on the target system and only depend on 
-      those things. The script shouldn't connect to paella or depend on other installation 
-      tools not present in the target system. 
-    - the preseed, remove, install, templates, and reconfig scripts will override
-      the default process for the trait.
+  - chroot is a special script that is run in a chrooted environment in the target area. 
+    This script should be aware of what's on the target system and only depend on 
+    those things. The script shouldn't connect to paella or depend on other installation 
+    tools not present in the target system. 
+  - the preseed, remove, install, templates, and reconfig scripts will override
+    the default process for the trait.
 
-  + other notes
+Other Notes
+++++++++++++++++
     
-    - you can define a script for any
-      step in the trait install process.
+- you can define a script for any
+  step in the trait install process.
 
-    - if you make a script named install, remove, config,
-      or reconfig, that step in the trait process is ignored,
-      and the script run instead.  The script doesn't have
-      to do anything, so it's a good way to skip a step in the 
-      trait installation
+- if you make a script named install, remove, config,
+  or reconfig, that step in the trait process is ignored,
+  and the script run instead.  The script doesn't have
+  to do anything, so it's a good way to skip a step in the 
+  trait installation
 
-    - in order for a script to be executed its name must match
-      a step in the trait processes.
+- in order for a script to be executed its name must match
+  a step in the trait processes.
 
-    - A script can be made in any language.  You only have to have the 
-      interpreter for the script available on the installer system.  When using 
-      a chroot script, the interpreter must be available on the target system.
+- A script can be made in any language.  You only have to have the 
+  interpreter for the script available on the installer system.  When using 
+  a chroot script, the interpreter must be available on the target system.
 
 Family
 --------
 
-- A family is a collection of variables from different traits 
+A family is a collection of variables from different traits 
 
-  + a family can have parents
-  + a family is not tied to a suite
-  + a variable in a family doesn't have to exist in a trait,
-    but it has to be tied to a trait.
++ a family can have parents
++ a family is not tied to a suite
++ a variable in a family doesn't have to exist in a trait,
+  but it has to be tied to a trait.
 
 Profile
 -------
 
-- A profile is a collection of traits, and an environment
+A profile is a collection of traits, families, and variables.
 
-  + Traits - the traits listed in the profile are ordered 
-  + Families - an unordered list of families 
-  + Environment
-    
-    - the profile environment overrides the trait environments 
-      and the family environment 
++ Traits - the traits listed in the profile are ordered 
++ Families - an unordered list of families 
++ Variables
+
+  - the profile variables override the trait and family variables
+    attached to the profile.
+
+
 
 
 Machine Database
@@ -129,7 +138,7 @@ specific.  The Machine database trying to be design to hold information about ph
 systems to install logical systems from.
 
 Machine
-========
+++++++++++
 
 a machine contains 
 
@@ -168,7 +177,8 @@ a machine contains
   variables that override all other variables.
 
 Machine Inheritance
-======================================
++++++++++++++++++++++++++++++
+
 
 Since machines can have parents, it's important to know how a parent affects the
 machine.  There are three main attributes that each machine has.  These are the
@@ -198,7 +208,7 @@ even harder to read.
 
 
 Machine Scripts
-==============================================
++++++++++++++++++++++++++++++
 
 Machine scripts correspond to steps in the install process for machines.  These steps
 will be treated similiar to the trait scripts. You may want to look at the installer_ page to 

@@ -20,30 +20,15 @@ not listing them here, until I can determine a good course of action to resolve
 them.  I welcome input on what should be done about both the items here and on 
 the notes_ page.
 
------------------------------------
-xml import/export
------------------------------------
-
-  - the tags for trait variables needs to be redone **fixed**
-
-  - the way templates are exported is sloppy **fixed** (now they're just ugly, 
-    but not sloppy :) )
-
 -------------------------------------------------------
-the kde gui needs finishing
+The gui needs more work
 -------------------------------------------------------
-
-  - trait management **mostly done**
-
-  - family management **mostly done**
-
-  - machine management **mostly done**
 
 There are a lot of unimplemented features in the gui.  There are also features 
 that don't work appropriately.
 
 --------------------------------------------------
-schema problems
+Schema Problems
 --------------------------------------------------
 
   - templates in the traits are tied to packages **fixed**
@@ -56,7 +41,7 @@ schema problems
 
 
 ----------------------------------------------------
-circular dependencies
+Circular Dependencies
 ----------------------------------------------------
 
   - the traits, families, and machines all have parents, and there is
@@ -82,6 +67,24 @@ circular dependencies
     circular dependency will happen here, rather than in the objects above.  
     I'm open to suggestions on how this problem can be both spotted and 
     fixed.
+
+
+----------------------------------------------------
+Apt Sources
+----------------------------------------------------
+
+The way apt sources are handled by the installer is not the very flexible.  Only the 
+http method is handled by paella, and for the install, all of the packages must come 
+from a single host.  It is probably possible to overcome this by using the hook scripts 
+to create the apt sources yourself, but this is still not tested.
+
+Also, for every apt source listed in a suite, the installer will place both deb and 
+deb-src entries into the sources.list file.  In some cases this is not desirable 
+and you may need to make your own scripts to handle the apt sources.  You 
+can do this by making machine scripts for **apt_sources_installer** and 
+**apt_sources_final** in a machine and have all machines that need this 
+to depend on that machine.
+
 
 
 

@@ -92,6 +92,8 @@ Machines
 
 
 
+toc_
+
 .. _germinate: http://packages.debian.org/lenny/germinate
 .. _reprepro: http://packages.debian.org/lenny/reprepro
 .. _quickstart: quickstart-vbox.html

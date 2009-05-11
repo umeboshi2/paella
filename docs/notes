@@ -227,23 +227,6 @@ of the network, using a separate switch or hub.  You may want to use a firewall 
 you can connect to a debian mirror, or the internet, but you will need to be sure that all 
 the machines on the local network that you are using are completely under your control.
 
-Apt Sources
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-The way apt sources are handled by the installer is not the very flexible.  Only the 
-http method is handled by paella, and for the install, all of the packages must come 
-from a single host.  It is probably possible to overcome this by using the hook scripts 
-to create the apt sources yourself, but this is still not tested.
-
-Also, for every apt source listed in a suite, the installer will place both deb and 
-deb-src entries into the sources.list file.  In some cases this is not desirable 
-and you may need to make your own scripts to handle the apt sources.  You 
-can do this by making machine scripts for **apt_sources_installer** and 
-**apt_sources_final** in a machine and have all machines that need this 
-to depend on that machine.
-
-
-
 
 
 
