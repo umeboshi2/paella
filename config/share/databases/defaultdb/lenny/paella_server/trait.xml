@@ -37,11 +37,23 @@
 		</package>
 	</packages>
 	<environ>
+		<trait_variable name="dbhost" trait="paella_server">
+			127.0.1.1
+		</trait_variable>
+		<trait_variable name="dbname" trait="paella_server">
+			paella
+		</trait_variable>
+		<trait_variable name="dbusername" trait="paella_server">
+			paella
+		</trait_variable>
 		<trait_variable name="signing_key" trait="paella_server">
 			&lt;your gpg key ID&gt;
 		</trait_variable>
 	</environ>
 	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/paellarc
+		</template>
 		<template grp_owner="staff" mode="0644" owner="paella">
 			freespace/debian/conf/distributions
 		</template>

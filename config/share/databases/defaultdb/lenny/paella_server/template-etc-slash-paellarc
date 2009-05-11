@@ -1,0 +1,19 @@
+# configuration file for paella
+[DEFAULT]
+# these options are only referenced in this config file
+__myhome:		~
+__paelladir:		%(__myhome)s/workspace/paella
+
+[database]
+# regular database info
+dbhost:			<--|paella_server:dbhost|-->
+dbname:			<--|paella_server:dbname|-->
+#dbusername:		dbadmin
+dbusername:		<--|paella_server:dbusername|-->
+dbpassword:		apassword
+
+# this path is used to import and export information
+# in the database.  These paths are used as hints in the
+# gui and aren't needed for the command line.
+default_path:		%(__paelladir)s/config/share/databases
+

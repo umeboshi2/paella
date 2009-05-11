@@ -45,16 +45,19 @@
 				paella, mulberry
 			</family_variable>
 			<family_variable name="ipv4_connection_2" trait="postgresql_server">
-				host paella paella &lt;--|localnet:cidr|--&gt; trust
+				host paella paella 127.0.0.0/8 trust
 			</family_variable>
 			<family_variable name="ipv4_connection_3" trait="postgresql_server">
-				host all dbadmin 0.0.0.0/0 trust
+				host paella paella &lt;--|localnet:cidr|--&gt; trust
 			</family_variable>
 			<family_variable name="ipv4_connection_4" trait="postgresql_server">
+				host all dbadmin 0.0.0.0/0 trust
+			</family_variable>
+			<family_variable name="ipv4_connection_5" trait="postgresql_server">
 				host all all &lt;--|localnet:cidr|--&gt; md5
 			</family_variable>
 			<family_variable name="ipv4_connections" trait="postgresql_server">
-				4
+				5
 			</family_variable>
 			<family_variable name="listen_addresses" trait="postgresql_server">
 				'*'
