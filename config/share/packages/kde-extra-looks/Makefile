@@ -33,6 +33,11 @@
 
 
 
+# THE MINIMUM THAT'S REQUIRED IS LISTED HERE
+# DebianMoment
+# http://www.kde-look.org/content/download.php?content=12558&id=1&tan=57573139
+# http://www.kde-look.org/content/show.php/honeysuckle?content=103648
+# http://www.kde-look.org/content/show.php/English+Peas?content=103656
 
 DEFAULT_BACKGROUND=desktop-background
 
@@ -41,7 +46,8 @@ COLORSCHEMES=$(wildcard color-schemes/*.kcsrc)
 WALLPAPERS=$(wildcard wallpaper/*.jpg wallpaper/*.png)
 APPDIR=usr/share/apps
 
-SPLASHES=DebianEvolution DebianMoment FreeBSD_KDE Squirrel GNU_CooL 
+#SPLASHES=DebianEvolution DebianMoment FreeBSD_KDE Squirrel GNU_CooL 
+SPLASHES=DebianMoment
 COLORSCHEMES=$(wildcard color-schemes/*.kcsrc)
 COLORSCHEMES_DIR=$(APPDIR)/kdisplay/color-schemes
 WALLPAPERS=$(wildcard wallpaper/*.jpg wallpaper/*.png)
