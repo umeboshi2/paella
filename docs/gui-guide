@@ -135,6 +135,11 @@ that are using the database connection.
 Import/Export Database
 +++++++++++++++++++++++++++++++++++++++++++
 
+These two menu entries will allow you to import and export the database that you 
+are working on.  Selecting either of these will create a directory selection dialog 
+window, where you can choose the directory that you want to import from or export 
+to.
+
 Widgets accessed from the list view
 --------------------------------------------------------
 

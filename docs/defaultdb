@@ -35,9 +35,19 @@ There are things that need to be configured in the installer section:
 Traits 
 ---------------
 
+If you don't want to build the three packages that are referenced in the default 
+database, then the traits that use those local packages will have to be modified 
+before they are imported into the database.  You can do this by editing the trait.xml 
+file for each trait and removing those packages from the list of packages.
+
+Traits that have default configurations that should be adjusted:
+
 - debrepos: uses /freespace
-- gkrellm: uses local package (gkrellm-skins)
 - global:  adjust default timezone, localization
+
+Traits that depend on locally built packages:
+
+- gkrellm: uses local package (gkrellm-skins)
 - kde: uses local package (kde-extra-looks)
 - timidity: uses local package (timidity-guspat)
 
@@ -89,6 +99,121 @@ Machines
 
   - adjust screen size
   - post script depends on virtualbox guest modules package being available
+
+
+
+
+Extra Packages
+---------------------------------------------------------------------------
+
+Using the default database will probably require that you build some extra 
+packages that the database uses when installing systems.  It is not absolutely 
+necessary to build these packages, but building them and uploading them into 
+your local debian repository may be quicker than modifying the default database 
+to not refer to these packages.
+
+If you install the paella-defaultdb package, the location of the skeletons to build 
+these packages is at::
+
+      /usr/share/paella/packages
+
+You can copy this directory to somewhere in your home directory, and build the 
+packages from there.  During the rest of these instructions, I will be assuming 
+that you've copied this directory to ~/packages .
+
+
+These instructions are fast and loose and under the impression or assumption 
+that you are familiar with building debian packages from source.  Each of the 
+packages below are arch independent, so you can build them on any machine.
+
+
+
+Instructions for the gkrellm-skins-installer
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+Then change to the gkrellm-skins-installer directory::
+
+     cd ~/packages/gkrellm-skins-installer
+
+Then prepare the source::
+
+     uscan --force-download --rename --verbose
+     dpkg-buildpackage -S
+
+Now you should have the .orig.tar.gz, .diff.gz and .dsc files that are required to build the 
+package.  Now you can run pbuilder, cowbuilder, or cowpoke on the .dsc file, or if you want 
+to build against the system you are running::
+
+   dpkg-source -x gkrellm-skins-installer_0.0-0.dsc
+   cd gkrellm-skins-installer-0.0
+   debuild
+
+
+Instructions for the timidity-guspat-installer
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Preparing this package to be built is a little bit involved, as it required two upstream tarballs, 
+hence, it's not easy to tell the debian upstream watcher (uscan) about it.  Soon, debian will 
+have more support for multiple upstream tarballs, and when that happens, these instructions 
+will be updated accordingly.  It is not likely that the upstream version number will ever change, 
+as these patches are static, and only a change in the timidity configuration syntax would require 
+a bump in the version number.
+
+To prepare the source to be built, change to the directory::
+
+   cd ~/packages/timidity-guspat-installer
+   ./debian/original-preparation.sh
+
+This should download the upstream tarballs, extract them, create the .orig.tar.gz, and then 
+build the source package for you.  If you are having problems running the script, you may 
+want to read through the script and perform the steps manually.  The urls to download are 
+commented in the debian/watch file.
+
+
+Instructions for the kde-extra-looks package
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The kde-extra-looks package is a collection of color-schemes, wallpapers, and splash 
+screens that are used with kde 3.x .  Over time, I have collected many colors, splashes 
+and wallpapers from the internet, and added them to this package.  It wouldn't be 
+appropriate to include all of them in the subversion repository, especially since this is 
+a large package of artwork that's not really necessary for using paella.  The color-schemes 
+have been included in the subversion repository, since they are pretty small, but you will 
+need to get the rest of the packages yourself.
+
+To prepare this package, first change to the directory::
+
+   cd ~/packages/kde-extra-looks
+
+At this point, you should look at the top level Makefile::
+
+   pager Makefile
+
+In the comments at the top of this file are urls where some of the contents of this 
+package are located.  Just below those comments are three urls that are recommended 
+to use, as these are the only things that are referenced in the default database.  You 
+will have to download the two wallpapers and the ksplash theme from 
+http://www.kde-look.org manually.  You will then have to remove the leading numbers 
+from the files that have been downloaded.
+
+The ksplash theme will need to be extracted from the tarball, in the ksplash directory::
+
+    cd ksplash
+    gzip -cd /path/to/downloads/DebianMoment-1.0.tar.gz | tar xv
+    cd ..
+
+The wallpapers need to be copied (or moved) to the wallpaper directory::
+
+    cp /path/to/downloads/honeysuckle.jpg wallpaper
+    cp /path/to/downloads/english_peas_1.jpg  wallpaper
+
+This would be a good moment to include the wallpapers that you would want in the 
+package in the wallpaper directory.  Every file that ends with either .png or .jpg will 
+be installed into the resulting deb.
+
+Now you should be ready to build the package.
+
 
 
 

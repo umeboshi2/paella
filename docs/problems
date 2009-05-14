@@ -27,6 +27,30 @@ The gui needs more work
 There are a lot of unimplemented features in the gui.  There are also features 
 that don't work appropriately.
 
+Template Editor
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The simple template editor may have problems in some desktop environments.  When 
+some text is selected, and you right-click the mouse, the selection may disappear.  I 
+have not seen this happen in a gnome or kde desktop environment, but I have experienced 
+this in xfce and lxde environments.  I have not yet figured out what to do about this problem.
+
+Templates with "%" in the filename
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+There seem to be problems when accessing templates that have a "%" character 
+present in the path of the template.  This problem has been noticed while trying to 
+modify gconf xml files.  Presumably, this problem can be easily fixed by proper 
+escaping of the "%" character, but I don't know how to do this yet, at least without an 
+ugly hack.
+
+Delete Trait Variables
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+There is currently no way to delete variables from a trait with the gui.  You will have to 
+use either plain sql or another database gui (like TOra_) to delete trait variables.  This 
+is not a problem with 
+
 --------------------------------------------------
 Schema Problems
 --------------------------------------------------

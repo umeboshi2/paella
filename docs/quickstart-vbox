@@ -115,7 +115,7 @@ If you are running debian, remastering the iso is easy::
    
 if you already grabbed the netinst iso image, type::
 
-   ./remaster-netinst-iso /path/to/debian-500-i386-netinst.iso
+   ./remaster-netinst-iso /path/to/debian-501-i386-netinst.iso
 
 if you haven't gotten the netinst iso image yet, type::
 
@@ -400,7 +400,9 @@ Using Paella Management Interface
 Install the Admin Package
 ---------------------------------
 
-Now we're almost ready to use the management interface.  To install it, type::
+Now we're almost ready to use the management interface.  The package containing 
+this application should've been installed earlier when you ran the "paella-user-quick-setup" 
+script earlier.  In case you still need to install it, type::
 
     sudo apt-get update
     sudo apt-get install paella-admin
@@ -475,14 +477,24 @@ on the toolbar for you to press.  The connection dialog entries are taken from y
 file.  The settings for postgresql in this quickstart don't require a password for dbadmin, but 
 you'll want to use one if you use paella in a production environment.
 
-Once you connect to the database, you should get a dialog asking to create the primary 
-tables.  You should click yes here to setup an empty database structure.  If you don't do 
-this, the database import procedure will create these tables for you, but you won't be able to
-use the paella-management interface until you do this.
+If you didn't run the "paella-user-quick-setup" script above, or if there were problems 
+encountered when running the script , then once you connect to the database, you 
+should get a dialog asking to create the primary tables.  You should click yes here 
+to setup an empty database structure.  If you don't do this, the database import procedure 
+will create these tables for you, but you won't be able to use the paella-management interface 
+until you do this.
+
+If the "paella-user-quick-setup" script ran without problems, the quickstart database 
+should already imported, and you can skip the next section that describes how to import 
+the database.
 
 
 Import the database
 --------------------------
+You may need to install the paella-defaultdb package::
+
+    sudo apt-get install paella-defaultdb
+
 Now we are going to import the startup database.  You may need an internet connection to 
 import the database.  The importer downloads the Packages files from the debian mirror in 
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the 
@@ -490,15 +502,16 @@ database menu, select "import database".  A directory selection dialog will appe
 VM I tested, this window was a little bit too skinny, so you'll probably need to make it wider 
 with your mouse.  The database directory will be at::
 
-	 ~/workspace/paella/config/share/databases/quickstart-vbox/
+	 /usr/share/paella/databases/quickstart-vbox/
 
 Note that the default debian mirror is  http://ftp.us.debian.org/debian .  If you need to 
-change this, edit the database.xml file in the quickstart-vbox  directory, and alter the uri 
-attribute to the aptsource xml element at the top of the file.  You can change this to a local 
-mirror if you already have one.  I recommend against using the local mirror that you just 
-created in this quickstart routine, as you would likely want to make new traits with packages 
-that aren't available in that mirror.  Paella has only been tested with http apt sources, it's 
-behaviour on other methods is unknown.
+change this, copy the quickstart-vbox directory, then edit the database.xml file 
+in the new quickstart-vbox  directory, and alter the uri attribute to the aptsource xml 
+element at the top of the file.  You can change this to a local mirror if you already have 
+one.  I recommend against using the local mirror that you just created in this quickstart 
+routine, as you would likely want to make new traits with packages that aren't available 
+in that mirror.  Paella has only been tested with http apt sources, it's behaviour on other 
+methods is unknown.
 
 
 If everything is working, you should be seeing an ugly little progress dialog displaying 
@@ -525,6 +538,12 @@ Configure quickstart-vbox database
 
 Add the archive key
 -------------------------------------
+
+If you ran the paella-user-quick-setup script above, the archive key that you made 
+earlier should already be imported into the paella database.  If this didn't occur, or 
+you need to import another key, the instructions to do this lie below.  If you do import 
+more archive keys, see the section below on editing the default environment so you 
+can learn how to get paella to use those keys in an install.
 
 Now you'll need to add the gpg key you made above to paella, so that paella can install 
 the packages from the new mirror.  Type::
@@ -554,7 +573,7 @@ There are only two options that you will probably want to change.  The "archive_
 option is a comma separated list of key names that will be used for the installer.  The key, 
 "paella", should already be here.  If you named your key something else, or have other keys 
 that you want to use, you need to list them here.  The other option is "http_mirror", and you 
-will want to either set this to "http://paella.lapnet/debian" .  You must save the file and 
+will want to set this to "http://paella.lapnet/debian" .  You must save the file and 
 exit the text editor for paella to save the information to the database.
 
 
