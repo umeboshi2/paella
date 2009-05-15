@@ -10,7 +10,16 @@ Default Environment
 Introduction
 ----------------------
 
-This document will explain the sections and options in the default environment.
+This document will explain the sections and options in the default environment.  There are, 
+at the moment, only three sections reserved for use with paella.  They are named; installer, 
+machines, and autoinstall.  The default environment can be treated as if it were a 
+global configuration file for your installation system.  You can feel free to make your own 
+sections and use them in your installs.  For example, you may wish to make a section that 
+defines the machines, locations and methods for restoring data that has been previously 
+backed up.  This could be helpful if you have had a hardware failure, and you are replacing 
+a machine, with a newer machine, and you need the new machine to be preloaded with 
+dumps or backups from the previous machine, or a machine that stores those.
+
 
 Installer Section
 -------------------

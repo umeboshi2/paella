@@ -30,7 +30,12 @@ tell what is going to be installed and configured.
 Inspiration
 --------------------
 
-Inspiration for paella comes from many places.
+Inspiration for paella comes from many places.  Since inspiration is 
+what it is, please note that the following sections were written quite a few 
+years ago.  While the inspiration hasn't really changed much, the focus of 
+development has changed to match and make use of the improvements 
+and additions that have occured in the software community since paella 
+was started.
 
 
 FAI
@@ -42,16 +47,15 @@ an entire network!  paella was going to just complement fai,
 but I'm starting to prefer the configuration layout i'm planning,
 so paella will probably completely replace fai.  
 
-Much of this has been 
-done, and now only the setup-storage command is being used 
-from the fai-client package.  There is no need to reinvent the 
-wheel here, as setting up disks can be complex and error 
-proned if it's not managed right
+Much of this has been done, and now only the setup-storage 
+command is being used from the fai-client package.  There is 
+no need to reinvent the wheel here, as setting up disks can 
+be complex and error proned if it's not managed right.
 
-debconf
+Debconf
 !!!!!!!!!!!!!!!!!!!
 
-an important abstract configuration system
+Debconf is an important abstract configuration system.
 
 Much of the inspiration for paella comes straight from both 
 debconf and FAI.  I wanted to make a system that held the 
@@ -91,6 +95,8 @@ I think that paella could still be useful here, but I have not really
 looked at the cdd package very much.  Much of the reason for 
 paella's existence is to make it easier to make machines that 
 are configured to perform special sets of tasks.
+
+
 
 toc_
 

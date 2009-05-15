@@ -1,0 +1,213 @@
+.. -*- mode: rst -*-
+
+==============================
+Plans for the Future of Paella
+==============================
+
+.. contents:: :backlinks: entry
+
+-----------------------------------
+Introduction
+-----------------------------------
+
+Paella is still not complete, and there is a lot of work that is intended before a
+1.0 version is ready.
+
+
+-------------------------------------------------------
+Paella Management
+-------------------------------------------------------
+
+Creating a good gui is time consuming work.  At the moment, the gui is just 
+barely functional in most cases, and there are still some requirements that 
+aren't yet implemented.
+
+
+Large Databases
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The gui and database schema are not really useful when the number of 
+traits, families, profiles, and machines grow very large.  I would like to be 
+able to create tags for families and machines (and maybe traits and profiles), 
+and code the management application to be able to filter the view based on the 
+tags.
+
+I would also like to create an optional hierarchal view for traits, families, and 
+machines that uses a "tree" type of list view in the gui.  For example, if a trait/family 
+has a child, then the child won't be displayed on the list until the parent is "expanded".  
+This view would look similar to a directory/subdirectory list view present in many common 
+file manager applications, though there will likely be repetition, as a child could have 
+multiple parents (excepting machines), so expanding each parent would cause the same 
+child to appear under each parent.  While this may look confusing, it's still only optional.  The 
+longer flat listing views should always be supported.
+
+Visual Displays of Inheritance
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+It would be nice to be able to see the configuration and how it's to be applied in a 
+more graphically oriented manner.
+
+-------------------------------------------------------
+Updating Systems
+-------------------------------------------------------
+
+
+So far, paella has only concentrated on installing a system from scratch.  It can do a 
+pretty good job of installing a fully preconfigured machine.  With a careful use of the 
+scripts, the installer can even be used to restore a machine from backups (the model 
+here is to install a server application, then restore the data from a previous dump).
+
+Since the focus has been primarily on installing a system, and also since the machines 
+that I have been administring have not been adversely affected by short periods of 
+downtime, I have not been bothered by the details of updating and reconfiguring a live, 
+running system using paella.
+
+I have been toying with the idea of using a separate, more widely used configuration 
+manager to handle this, such as cfengine or bcfg2.  I have stayed away from cfengine 
+as I'm a little more partial to python, than perl (which is a large reason why I first decided 
+to create paella on top of FAI).  Trying to get bcfg2 configured has proven to be difficult.  The 
+goal of being able to use another configuration  manager with paella, is to be able to export 
+the configuration of a machine from the paella database, and transform it to a format that 
+the configuration manager is able to use.  I have only recently come into contact with 
+puppet_, and I've been wondering if that's a better solution.  I'm still up in the air about using 
+a separate configuration manager.
+
+The alternative to using a separate configuration manager is to use paella to manage the 
+configuration directly.  I have shyed away from this for primarily two reasons.  First, I think 
+that it would be better if a more widely tested and used manager was used to update the 
+machines, as it would probably be more secure, and there would be no need to duplicate 
+the functionality that is available in the configuration manager.  Second, since I have focused 
+paella primarily on installation, the scripts in the database presume that the machine is 
+in a certain state, and there aren't any checks to see what state it's in before deciding what 
+to do.  This method of operation works just fine in a fresh install, but could easily break a 
+running machine.
+
+
+-------------------------------------------------------
+Use a Paella Server
+-------------------------------------------------------
+
+I have been thinking about decoupling the database interface from the installer, and the 
+management application, and using an xml-rpc server as the primary interface to the 
+database.  This would allow paella to become more flexible in it's abilities.
+
+First, it could allow for another database backend to be used.  This feature could be 
+important for many users, as paella would just be tied to the server interface and not 
+the way that the server handles the data.
+
+Second, it would help to configure things on the server that currently can't be done, such 
+as update the dhcp server with mac addresses, and the path to the appropriate pxelinux.0 
+file for network booting.  This is one of the major roadblocks in getting paella to support 
+a network of different architectures.
+
+Third, it would allow paella to be useful over the internet, or another untrusted network.  I 
+have always kept from exposing the sql database ports to an untrusted network, even though 
+there is ssl support, as I don't feel to comfortable with that idea.  Using an xml-rpc server 
+would allow me to run it behind apache, and add an extra security layer using a more known 
+and tested method.
+
+-------------------------------------------------------
+Support for Other Operating Systems
+-------------------------------------------------------
+
+One of the complaints that I hear often from my friends, while I've been working on paella, 
+has been that it is only good for installing debian systems.  In the past, I haven't concerned 
+myself too much with this, primarily because there was a lot of work involved in just getting 
+paella to install debian systems in the manner that I desired.  A lot of time has been spent 
+thinking about how to divide the configuration and scripting between traits, profiles, families, 
+and machines.
+
+Windows
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Now that I have most of this defined and working, it's become time to more seriously consider 
+how to adjust paella to be a bit more OS agnostic.  In my spare time, I have been working on 
+integrating unattended_ into paella.  While is this very likely more difficult than just getting paella 
+to install another linux distribution, I will have a need for this in the future, and I think that 
+getting paella geared to install a radically different operating system, using the same (or 
+similar) database schema would be an accomplishment well worth the effort.  
+
+My progress in this has been somewhat slow, but productive.  I have already replaced the 
+use of the unattended linuxboot.iso with a debian-live system that does the same thing.  
+I have been working on creating a system to handle an "apt-like" repository of software, 
+updates, service packs, and other "packages" needed for a windows system.  I have used 
+paella to create the configuration of a server that's able to host the unattended install 
+server.  The latest release of unattended has postgresql support, so I can start putting 
+tables in the paella database that unattended can read.  On the downside, much of 
+unattended is written in perl, but I have configured my windows machines to install both 
+perl and python in the first steps, which makes it easier to use a python script to fill the 
+todo list that the todo.pl script uses.  So far, my success with integrating paella and 
+unattended has been limited, but promising.
+
+Linux
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Using paella to install a linux system is much easier than installing windows.  The flexibility 
+of paella allows for this to be a possibility now.  A careful use of hooking the steps of the 
+install process with scripts and having the necessary packages and base tarball on the 
+network would be all that's needed to install another linux system.  In theory, I think that 
+just reimplementing the bootstrap procedure, the install procedure of each trait, and the 
+steps that install the kernel and bootloader, and skip the steps that require a debian system 
+would be all that's required.  This hasn't been tested yet, but if the scripts are written in 
+python, much of this could be merged into the paella code, and support for other distributions 
+would then be a reality, instead of a hack.
+
+
+-------------------------------------------------------
+Refactor the Code
+-------------------------------------------------------
+
+I have tried, from the beginning, to make all the code as modular as possible.  One of my 
+general rules of thumb is that a function or method should be contained within one page 
+of a text editor (although I allow for excessive comments to exceed this limit).  This means 
+that a long function is usually broken up into meaningful components.  While this makes it 
+easier to keep each function or method accurate and correct, it also can make things 
+confusing if you don't keep a consistent naming policy.  For example, in the code, I have 
+been using the terms "variables" and "environment" almost interchangeably.  This creates 
+a good bit of confusion in determining what's going on with the code.  I know this generates 
+confusion, because I wrote the code and I frequently get confused when I have to dig deep 
+into it.
+
+The code for paella (and useless) has been written from a time when I was just beginning to 
+learn python, to the present, where I'm still have only an intermediate understanding of the 
+language.  As a result, some of the code is semantically better than other parts.  In order to 
+keep from introducing new bugs, I have refrained from dramatically reworking some parts 
+of the code.  I have also written some vestigial methods and functions that are never called, 
+thinking that I may need to use them one day, but never needing them.  Sometimes, there's 
+a duplication of code or functionality when I forget that I've written some code that takes care 
+of something, and write something mostly equivalent in another place.
+
+I am thinking about scrapping the db and sqlgen packages from useless, and moving to 
+sqlalchemy_ for the database code.  SQLAlchemy didn't exist when I started paella, and 
+it's ancestor, SQLObject, was still in its infancy.  As a result, I had to create my own 
+database code, but I couldn't concentrate entirely on that area, as I've had other things to 
+do.  Since there is somebody else concentrating on this entirely, I think that it's time to 
+move the code in that direction.
+
+
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi3@gmail.com
+.. _problems: problems.html
+.. _puppet: http://reductivelabs.com/products/puppet/
+.. _sqlalchemy: http://www.sqlalchemy.org/
+.. _unattended: http://unattended.sourceforge.net/
+

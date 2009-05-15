@@ -20,7 +20,7 @@ Table of Contents
 #. defaultdb_: The example database that ships with paella
 #. gui_: Some notes on the gui
 #. notes_: Some more notes about using paella
-
+#. plans_: Plans for the future of paella
 
 
 
@@ -40,3 +40,4 @@ Table of Contents
 .. _quickstart-vbox: quickstart-vbox.html
 .. _schema: schema.html
 .. _guide: gui-guide.html
+.. _plans: plans.html
