@@ -52,5 +52,7 @@
 			freespace/debian/conf/updates
 		</template>
 	</templates>
-	<scripts/>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
 </trait>

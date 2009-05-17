@@ -7,25 +7,34 @@
 				paella_server
 			</trait>
 			<trait ord="2">
-				dhcp_server
+				boot_server
 			</trait>
 			<trait ord="3">
-				nameserver
+				dhcp_server
 			</trait>
 			<trait ord="4">
-				firewall
+				nameserver
 			</trait>
 			<trait ord="5">
-				xfce_desktop
+				firewall
 			</trait>
 			<trait ord="6">
-				gdm
+				xfce_desktop
 			</trait>
 			<trait ord="7">
+				paella_admin
+			</trait>
+			<trait ord="8">
+				gdm
+			</trait>
+			<trait ord="9">
 				final
 			</trait>
 		</traits>
 		<families>
+			<family>
+				fileshare_debian
+			</family>
 			<family>
 				lapnet
 			</family>
@@ -45,9 +54,6 @@
 		<environ>
 			<profile_variable name="interfaces" trait="dhcp_server">
 				eth1
-			</profile_variable>
-			<profile_variable name="hostname" trait="global">
-				paella
 			</profile_variable>
 			<profile_variable name="sysadmin_users" trait="users">
 				paella

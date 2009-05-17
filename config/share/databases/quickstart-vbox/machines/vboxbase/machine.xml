@@ -1,7 +1,7 @@
 <machine diskconfig="root_and_swap" name="vboxbase" parent="default">
 	<script name="post"/>
 	<machine_variable name="install_vbox_guest_modules" trait="global">
-		True
+		False
 	</machine_variable>
 	<machine_variable name="utc" trait="base">
 		no

@@ -1,3 +1,11 @@
+paella (0.7.43) paella; urgency=low
+
+  * force paella to depend on newest version of useless (>= 0.2.0)
+  * update quickstart database to make it easier to use with quickstart
+    guide
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Sun, 17 May 2009 00:53:43 -0500
+
 paella (0.7.42) paella; urgency=low
 
   * make sure suite storage directory exists before making a bootstrap

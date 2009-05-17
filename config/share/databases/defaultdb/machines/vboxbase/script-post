@@ -120,8 +120,7 @@ if False:
 
 arch_flavor = dict(amd64='amd64', i386='606')
 
-install_guest_modules = it.get('global:install_vbox_guest_modules')
-do_install = install_guest_modules in ['True', 'true', 'Yes', 'yes']
+do_install = it.getboolean('global:install_vbox_guest_modules')
 if xorg_filename.isfile() and do_install:
     print "preparing virtualbox packages"
     #print "-686 is hardcoded, should use kernel info to pick correct package"
