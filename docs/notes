@@ -227,6 +227,27 @@ of the network, using a separate switch or hub.  You may want to use a firewall 
 you can connect to a debian mirror, or the internet, but you will need to be sure that all 
 the machines on the local network that you are using are completely under your control.
 
+Template Tags
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+While the template tags are ugly and difficult to type, they were chosen for visibility and 
+uniqueness.  When the template style was first developed, there were not any templating 
+engines available for python.  Cheetah had just begun, and the other alternative was to 
+use the python dictionary expansion (and these tags are more difficult to spot, and easier 
+to make errors).  I had thought about using a tag style that was more familiar, but decided 
+against it later, as it would likely make editing templates that already have similar tags 
+confusing.
+
+I have made a key binding for emacs/xemacs to help create the tags.  Just add this line to 
+your custom.el::
+
+     (global-set-key "\C-x\\" "<--||-->\C-b\C-b\C-b\C-b")
+
+This will create an empty tag, and place the cursor in the center of the tag.
+
+If you are running KDE, you can also use khotkeys to make a similar shortcut combo 
+that does the same thing.
+
 
 
 

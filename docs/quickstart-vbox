@@ -31,6 +31,26 @@ actually installing machines, still requires the same type of network configurat
 that the method outlined here can help prepare this by using paella to generate the 
 configuration that paella requires.
 
+When I began writing this quickstart, I tried to give detailed instructions on how to perform 
+each step in this guide.  During the process of getting this quickstart guide prepared for 
+people to start using it, I wrote some scripts, and expanded some scripts, so that the 
+amount of work needed to complete the quickstart has been minimized.  While I hope 
+writing the scripts to do more of the work will help readers move through the guide more 
+easily, those scripts also impede the reader from learning about how things are done.  As 
+a compromise, I've left many of the more important steps included in this guide, even though 
+the actions are now being done by the scripts.  Doing this may have made this guide a bit 
+more difficult to read, although I have tried to explain the sections that are optional.
+
+While I have tried to make use of an optional local debian mirror, and optional installation 
+of virtualbox guest additions, these are mainly to help me test this procedure.  I strongly 
+recommend to use an official debian mirror, and to not worry about installing the guest 
+additions, as you may experience problems with this quickstart.  I am convinced that you 
+will have an easier time going through this quickstart if you try your best to follow it step 
+by step, and ignore the parts where you are being told that you can edit a script before 
+running it.  After you go through the quickstart once, you can then look back and determine 
+how to configure a local mirror, or other options and shape them closer to your desire.  This 
+guide is meant to provide a way to see what paella is, and how it works, without you having 
+to worry about extensive changes to your host system.
 
 
 Requirements
@@ -74,7 +94,7 @@ on paella.lapnet.  It is desirable to keep these defaults if at all possible.  I
 conflict with your setup, I have tried to make it as easy as possible to use another block of
 ip's.  If you can't use the 10.0.1.0 network, I recommend that you still use some block inside 
 the 10.0.x.0 network.  I have tested the quickstart while changing the network to 10.0.x.0, and 
-it appears to work without problems.
+it appears to work without problems (when x is either 1, 2, or 3).
 
 
 Debian Netinst CD Image (Lenny)
@@ -130,6 +150,9 @@ when by the time you read this, so you are recommended to download the iso_ manu
 image.  Be sure to look over the script really good before you execute it.  You may want to 
 change the ARCH variable near the top of the file (note: only i386 is tested at the moment).  
 Be sure that you have rsync, sudo, genisoimage, and subversion installed.
+
+This script is the only place where you will need to be root on the host system.  Every other 
+script that requires root permissions, will be run on a virtual machine.
 
 The script will give you a chance to review and edit the preseed files before you create the 
 remastered iso image.  All the files that will be used in the remastered iso image will be 
@@ -491,6 +514,11 @@ the database.
 
 Import the database
 --------------------------
+If the "paella-user-quick-setup" script ran without problems, you should already have the 
+quickstart database imported.  If there were problems running the script, you'll have to 
+follow the instructions in this section to import the quickstart database.  Otherwise, you 
+can skip this section.
+
 You may need to install the paella-defaultdb package::
 
     sudo apt-get install paella-defaultdb
@@ -539,7 +567,7 @@ Configure quickstart-vbox database
 Add the archive key
 -------------------------------------
 
-If you ran the paella-user-quick-setup script above, the archive key that you made 
+If you ran the "paella-user-quick-setup" script above, the archive key that you made 
 earlier should already be imported into the paella database.  If this didn't occur, or 
 you need to import another key, the instructions to do this lie below.  If you do import 
 more archive keys, see the section below on editing the default environment so you 
@@ -573,9 +601,8 @@ There are only two options that you will probably want to change.  The "archive_
 option is a comma separated list of key names that will be used for the installer.  The key, 
 "paella", should already be here.  If you named your key something else, or have other keys 
 that you want to use, you need to list them here.  The other option is "http_mirror", and you 
-will want to set this to "http://paella.lapnet/debian" .  You must save the file and 
+will want make sure this is set to "http://paella.lapnet/debian" .  You must save the file and 
 exit the text editor for paella to save the information to the database.
-
 
 
 Create A Machine to Install
@@ -595,25 +622,47 @@ starved for memory).  Make sure that you create the 8GB virtual hard drive, else
 a device on which to install.  
 
 Now with "sidesalad" selected in the VirtualBox frontend, press the Settings button on the 
-toolbar.  On this machine, you'll need to configure the network interface to use the internal 
-network, just as you configured the secondary network adapter on the paella VM.  Be sure to 
-use the name "lapnet" for the network name.  Also, in the General settings, click the Advanced 
-tab.  You need to check the box to the left of Network in the "Boot Order" window, and move 
-Network all the way to the top.  This will let it boot from the network first.  These should be the 
-only configuration changes you'll need to make.
+toolbar.  On this machine, you'll need to configure the first network interface to use the 
+internal network, just as you configured the secondary network adapter on the paella VM.  
+Be sure to use the name "lapnet" for the network name.  The secondary network adapter 
+will also need to be set to use an internal network, and the network name should be 
+"lapnet2"
+
+These should be the only configuration changes you'll need to make for the sidesalad 
+machine.
+
 
 Boot the new machine
 ----------------------------------
-Now we're ready to boot the machine.  The machine should boot straight from the network 
-without any problems.  If this doesn't happen, it's a sign that something went wrong.  If I have 
-time later, I might write a short troubleshooting section to help figure out what went wrong.  If 
-you haven't strayed from the defaults, and have been following this document closely, the 
-machine should boot.  I've done everything I can think of to make this process as easy as 
-possible, so that when you get to this step, you'll have a VM booting from the internal network, 
-but it's possible that I forgot something somewhere.  If you are absolutely sure that you have 
-followed this quickstart step by step and haven't got the new machine to boot from the network, 
+Now we're ready to boot the machine.  In order to boot from the network, press "F12" 
+when the boot screen appears, then select "l".
+
+The machine should boot straight from the network without any problems.  If this doesn't 
+happen, it's a sign that something went wrong.  If I have time later, I might write a short 
+troubleshooting section to help figure out what went wrong.  If you haven't strayed from 
+the defaults, and have been following this document closely, the machine should boot.  
+I've done everything I can think of to make this process as easy as possible, so that when 
+you get to this step, you'll have a VM booting from the internal network, but it's possible 
+that I forgot something somewhere.  If you are absolutely sure that you have followed 
+this quickstart step by step and haven't got the new machine to boot from the network, 
 I'd really like to know about it, so we can figure out what went wrong, and how to adjust this 
 document to be prepared for that possibility.
+
+**Important**  From time to time, the network boot seems to stall when the live-initramfs 
+scripts try to configure the ip of the machine.  You will see a message like::
+
+	IP-Config: eth0 hardware address xx:xx:xx... mtu 1500 DHCP RARP
+
+If the machine stalls at this point for more than a minute, then it will stay there forever, and 
+you will need to reboot the sidesalad machine and try again.  There seems to be a problem 
+with the manner that the dhcp client for busybox is used, and I'm not  sure whether the 
+problem lies in the busybox dhcp client, the live-initramfs script that uses it, or the 
+virtualbox internal networking.  Other dhcp methods seem to work fine, and I think that the 
+debian installer also uses the busybox dhcp client, so I think that the problem is in the 
+live-initramfs script.  Hopefully, you won't encounter this bug, as it doesn't occur often, but 
+it does seem to occur about 5-10% of the time.  If this happens to you, just press the "Host" 
+key (right <ctrl>) and "r" to reset the machine.
+
 
 Tell Paella about the new machine
 ----------------------------------------------------------
@@ -650,7 +699,123 @@ install each time it's booted from the network.
 Create the Sidesalad Machine
 -------------------------------------------
 
-Now we are ready to create the sidesalad machine in the database.
+Now we are ready to create the sidesalad machine in the database.  You will need to 
+start an instance of the machine manager, which you can do by selecting "machines" from 
+the list in main paella window.  When the machine manager shows up on the desktop, you 
+will then select "manage machines" from the Main menu.  This will set the machine manager 
+to manage machines.  The machine manager is built to manage machines, diskconfigs, and 
+kernels.
+
+When the machine manager is set to manage machines, you should see a short list of machines 
+on the left hand side of the manager.  Selecting a machine from the list will display the machine 
+on the right hand side of the manager.  Now you will want to create a new machine.  You can 
+select "New" from the main menu, or press the "New" icon on the toolbar.  Doing this will 
+cause a dialog box to be displayed asking for the name of the new machine.  You will want to 
+enter "sidesalad" into the text entry in the dialog.
+
+Configure the Sidesalad Machine
+-----------------------------------------------------------------------
+
+Now it's time to configure the sidesalad machine.  You will want to select "sidesalad" from the 
+list of machines on the left hand side of the manager.  The first thing that you will wan to do is 
+select a parent for the machine.  In the quickstart database, all of the machines are set to be 
+children of the "default" machine.  Since, sidesalad is going to be another paella server, 
+similar to the paella machine, we want its parent to be "paellabase".
+
+Next, we want to select the profile that will be installed on the sidesalad machine.  The profile 
+should already be set by the "paellabase" machine to "paella_vbox".  Make sure that the 
+profile is set to this.
+
+Next we want to add a family.  Click on the "new" link next to the "Families" section title.  This 
+will bring up a dialog box.  We want to type "lapnet2" into the box and press "Ok".  The lapnet2 
+family will override the lapnet family in the "paella_vbox" profile (more accurately, the variables 
+in the lapnet2 family will override the variables in the lapnet family).  The lapnet2 family is used 
+to distinguish sidesalad from paella.  It uses the 10.0.2.0/24 network, with the domain named 
+"lapnet2".
+
+Now we want to set the hostname for sidesalad.  Click on the "new" link next to the "Variables" 
+section title.  This will bring up a dialog box, requesting you to fill out the trait, name and value 
+of the new variable.  You'll need to enter "global" for the trait, "hostname" for the name, and 
+"sidesalad" for the value.
+
+Now we need to set the installer machine that sidesalad will host.  Click on the "new" link next 
+to the "Variables" section title, as in the paragraph above.  In this dialog box, you will need to 
+set the entry for trait to "paella_server", the entry for name to "installer_machine", and the 
+value to "live_chroot2".  The live_chroot2 machine should already be present in the database, 
+and it's configured to talk to sidesalad to get the install information.
+
+
+
+
+Boot Sidesalad Again
+----------------------------------------------------------
+
+Boot the sidesalad machine from the network again.  This time the sidesalad machine 
+should automatically install.
+
+While the paella installer is installing the sidesalad machine, you can watch the progress in 
+the logfile, /freespace/paellalog/paella-install-sidesalad.log on the paella machine.  You can 
+do this with the most program.  Bring up another terminal, and make it bigger, if you want 
+to.  In the terminal, type::
+
+	  most /freespace/paellalog/paella-install-sidesalad.log
+
+Then press 'b', followed by <Shift>-F.  Now you'll be able to watch the progress of the 
+sidesalad machine as it's being installed.
+
+While the live installer that sidesalad will host is being installed, you can follow the progress 
+by looking at /freespace/paellalog/paella-install-live_chroot2.log .
+
+
+Reboot Sidesalad Machine
+------------------------------------
+
+Once the installer finishes, we can reboot into the new system.  On the sidesalad machine, 
+type::
+
+	sudo reboot
+
+Now the machine should boot from the hard drive.  When the machine finishes booting, there 
+are only a few commands left to make sidesalad a paella server.  The login should be the 
+same as the paella machine (user: paella, password: paella).
+
+First, we need to copy the debian repository over to sidesalad::
+
+       rsync -av paella.lapnet:/freespace/debian/ /freespace/debian
+
+You will probably get an error about setting time on /freespace/debian, but otherwise this 
+command should work.
+
+Next, we need to copy the archive key (the private one)::
+
+      rsync -av paella.lapnet:~/.gnupg ~/
+
+After that we will import the database that was exported from paella.lapnet while sidesalad 
+was being installed::
+
+    PAELLA_DBUSER=dbadmin PAELLA_DBHOST=127.0.1.1 paella-import /var/cache/paella/export/database.xml
+
+Finally, we need to create the debian live image (The chroot installer was installed by the paella 
+installer).  A simple script was created by the installer to help with this.  You can type::
+
+	     sudo /freespace/live/make-installer-image
+
+This step will take quite a while, so it may be a good time to pull up another terminal.  In the new 
+terminal, we need to copy /etc/paellarc and edit it::
+
+	  cp /etc/paellarc ~/.paellarc
+	  kwrite ~/.paellarc
+
+Set dbhost to "sidesalad" and dbusername to "dbadmin".  Save the file and exit the editor, 
+then run the paella-management application::
+
+     paella-management
+
+
+Edit the default environment and set "http_mirror" to "http://sidesalad.lapnet2/debian".
+
+
+
 
 **If you've made it this far, and the "unfinished" disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.**
 

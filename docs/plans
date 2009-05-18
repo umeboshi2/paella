@@ -184,6 +184,16 @@ database code, but I couldn't concentrate entirely on that area, as I've had oth
 do.  Since there is somebody else concentrating on this entirely, I think that it's time to 
 move the code in that direction.
 
+------------------------------------------------------------------
+Filesystem Access to Paella Database
+------------------------------------------------------------------
+
+I have, in my spare time, been working on a python FUSE_ module to the paella 
+database.  Hopefully this will allow people to use their choice of tools on the 
+scripts and templates in the database.  There is a prototype in the subversion 
+trunk that allows read only access to the trait scripts.  The progress has been 
+somewhat slow, but think that the having the ability to access the scripts and 
+templates through a filesystem interface to be very valuable.
 
 
 toc_
@@ -210,4 +220,5 @@ toc_
 .. _puppet: http://reductivelabs.com/products/puppet/
 .. _sqlalchemy: http://www.sqlalchemy.org/
 .. _unattended: http://unattended.sourceforge.net/
+.. _FUSE: http://fuse.sourceforge.net/
 
