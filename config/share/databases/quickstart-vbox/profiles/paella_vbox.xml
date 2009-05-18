@@ -45,6 +45,9 @@
 				nfs_export_paellalog
 			</family>
 			<family>
+				paella_vbox_server
+			</family>
+			<family>
 				standard_firewall
 			</family>
 			<family>

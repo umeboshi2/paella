@@ -16,6 +16,9 @@
 		<trait_variable name="debian_basedir" trait="debrepos">
 			/freespace/debian
 		</trait_variable>
+		<trait_variable name="debian_httproot" trait="debrepos">
+			/debian
+		</trait_variable>
 	</environ>
 	<templates/>
 	<scripts>

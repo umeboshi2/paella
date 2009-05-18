@@ -1,0 +1,3 @@
+<machine name="paellabase" parent="vboxbase" profile="paella_vbox">
+	<script name="post_install"/>
+</machine>

@@ -1,0 +1,77 @@
+	<family name="paella_debianlive">
+		<parents/>
+		<environ>
+			<family_variable name="lh_architecture" trait="debianlive">
+				
+			</family_variable>
+			<family_variable name="lh_binary_images" trait="debianlive">
+				net
+			</family_variable>
+			<family_variable name="lh_bootappend_live" trait="debianlive">
+				timezone=&lt;--|global:tzdata_area|--&gt;/&lt;--|global:tzdata_zone|--&gt; utc=&lt;--|base:utc|--&gt;
+			</family_variable>
+			<family_variable name="lh_cache" trait="debianlive">
+				disabled
+			</family_variable>
+			<family_variable name="lh_cache_packages" trait="debianlive">
+				disabled
+			</family_variable>
+			<family_variable name="lh_cache_stages" trait="debianlive">
+				none
+			</family_variable>
+			<family_variable name="lh_categories" trait="debianlive">
+				main contrib non-free
+			</family_variable>
+			<family_variable name="lh_hostname" trait="debianlive">
+				installer
+			</family_variable>
+			<family_variable name="lh_keyring_packages" trait="debianlive">
+				debian-archive-keyring
+			</family_variable>
+			<family_variable name="lh_mirror_bootstrap" trait="debianlive">
+				http://&lt;--|debianlive:live_chroot_debhost_ip|--&gt;/debian
+			</family_variable>
+			<family_variable name="lh_mirror_chroot_security" trait="debianlive">
+				&lt;--|debianlive:lh_mirror_bootstrap|--&gt;
+			</family_variable>
+			<family_variable name="lh_net_root_path" trait="debianlive">
+				/freespace/paella
+			</family_variable>
+			<family_variable name="lh_net_root_server" trait="debianlive">
+				&lt;--|network_base:eth1_address|--&gt;
+			</family_variable>
+			<family_variable name="lh_packages_lists" trait="debianlive">
+				paella
+			</family_variable>
+			<family_variable name="lh_syslinux_timeout" trait="debianlive">
+				10
+			</family_variable>
+			<family_variable name="lh_tasksel" trait="debianlive">
+				aptitude
+			</family_variable>
+			<family_variable name="lh_username" trait="debianlive">
+				paella
+			</family_variable>
+			<family_variable name="live_chroot_aptkey_name" trait="debianlive">
+				paella
+			</family_variable>
+			<family_variable name="live_chroot_debhost" trait="debianlive">
+				paella
+			</family_variable>
+			<family_variable name="live_chroot_debhost_ip" trait="debianlive">
+				127.0.1.1
+			</family_variable>
+			<family_variable name="live_chroot_debline" trait="debianlive">
+				deb http://&lt;--|debianlive:live_chroot_debhost_ip|--&gt;/debian paella main contrib non-free
+			</family_variable>
+			<family_variable name="live_chroot_source_name" trait="debianlive">
+				paella
+			</family_variable>
+			<family_variable name="live_config_owner" trait="debianlive">
+				&lt;--|debianlive:lh_username|--&gt;
+			</family_variable>
+			<family_variable name="mksquashfs_options" trait="debianlive">
+				-noI -noD -noF
+			</family_variable>
+		</environ>
+	</family>

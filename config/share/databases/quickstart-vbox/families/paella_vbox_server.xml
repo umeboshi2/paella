@@ -1,0 +1,78 @@
+	<family name="paella_vbox_server">
+		<parents>
+			<parent>
+				nfs_export_live_installer
+			</parent>
+			<parent>
+				nfs_export_paellalog
+			</parent>
+			<parent>
+				paella_debianlive
+			</parent>
+		</parents>
+		<environ>
+			<family_variable name="loc2fw_macros" trait="firewall">
+				HTTP HTTPS NTP SMB DNS DHCP TFTP Portmap MountD NFS StatD PostgreSQL
+			</family_variable>
+			<family_variable name="net2fw_macros" trait="firewall">
+				SSH HTTP HTTPS PostgreSQL
+			</family_variable>
+			<family_variable name="policy_fw2loc" trait="firewall">
+				ACCEPT
+			</family_variable>
+			<family_variable name="policy_fw2net" trait="firewall">
+				ACCEPT
+			</family_variable>
+			<family_variable name="startup" trait="firewall">
+				1
+			</family_variable>
+			<family_variable name="installer_machine" trait="paella_server">
+				live_chroot
+			</family_variable>
+			<family_variable name="createuser_opts_dbadmin" trait="postgresql_server">
+				-sdr
+			</family_variable>
+			<family_variable name="createuser_opts_paella" trait="postgresql_server">
+				-SDR
+			</family_variable>
+			<family_variable name="initial_databases" trait="postgresql_server">
+				paella
+			</family_variable>
+			<family_variable name="ipv4_connection_2" trait="postgresql_server">
+				host paella paella 127.0.0.0/8 trust
+			</family_variable>
+			<family_variable name="ipv4_connection_3" trait="postgresql_server">
+				host paella paella &lt;--|localnet:cidr|--&gt; trust
+			</family_variable>
+			<family_variable name="ipv4_connection_4" trait="postgresql_server">
+				host all dbadmin 0.0.0.0/0 trust
+			</family_variable>
+			<family_variable name="ipv4_connection_5" trait="postgresql_server">
+				host all all &lt;--|localnet:cidr|--&gt; md5
+			</family_variable>
+			<family_variable name="ipv4_connections" trait="postgresql_server">
+				5
+			</family_variable>
+			<family_variable name="listen_addresses" trait="postgresql_server">
+				'*'
+			</family_variable>
+			<family_variable name="postgresql_users" trait="postgresql_server">
+				paella, dbadmin
+			</family_variable>
+			<family_variable name="template1_languages" trait="postgresql_server">
+				plpgsql
+			</family_variable>
+			<family_variable name="admin_users" trait="users">
+				paella
+			</family_variable>
+			<family_variable name="standard_users" trait="users">
+				debian
+			</family_variable>
+			<family_variable name="sysadmin_users" trait="users">
+				paella
+			</family_variable>
+			<family_variable name="user_debian_gecos" trait="users">
+				Debian User,,,
+			</family_variable>
+		</environ>
+	</family>

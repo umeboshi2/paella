@@ -1,0 +1,135 @@
+#!/usr/bin/python
+import sys
+
+from useless.base.path import path
+
+from paella.installer.toolkit import InstallerTools
+
+from paella.db.main import PaellaExporter
+from paella.db.aptkey import AptKeyHandler
+
+print "post_install script for paellabase machine"
+
+###############################################
+###############################################
+###############################################
+###############################################
+paella_packages_contents = """# we don't need this anymore
+dpkg
+
+"""
+###############################################
+it = InstallerTools()
+
+# create live-helper directory
+livedir = it.target / 'freespace/live'
+if not livedir.isdir():
+    print 'Creating', livedir
+    livedir.makedirs()
+    it.chroot(['chown', 'root:staff', '/freespace/live'])
+    it.chroot(['chmod', 'g+w', '/freespace/live'])
+
+# copy live-helper config
+print "copying config from /etc/live-helper"
+cmd = 'cp -a /etc/live-helper/config /freespace/live'
+live_config_owner = it.get('debianlive:live_config_owner')
+it.chroot(['su', live_config_owner, '-c', cmd])
+
+# doublecheck live-helper config exists
+live_config_dir = livedir / 'config'
+if not live_config_dir.isdir():
+    raise RuntimeError , "%s isn't there." % live_config_dir
+
+# create the packageslists file
+packages_lists_dir = live_config_dir / 'chroot_local-packageslists'
+paella_list = packages_lists_dir / 'paella'
+paella_list.write_text(paella_packages_contents)
+print "%s created." % paella_list
+
+sys.stdout.flush()
+
+# add the chroot source
+# these variables are not defined in the trait
+# and need to be defined in either a family, profile or machine
+# this is a sign that this part is pretty hacky, and needs to be
+# straightened out sometime in the future
+debline = it.get('debianlive:live_chroot_debline')
+source_name = it.get('debianlive:live_chroot_source_name')
+aptkey_name = it.get('debianlive:live_chroot_aptkey_name')
+debhost = it.get('debianlive:live_chroot_debhost')
+debhost_ip = it.get('debianlive:live_chroot_debhost_ip')
+
+# define the filenames and directories for the chroot_source
+chroot_source_basename = '%s.chroot' % source_name
+chroot_source_gpg_basename = '%s.gpg' % chroot_source_basename
+chroot_sources_dirname = live_config_dir / 'chroot_sources'
+chroot_source_filename = chroot_sources_dirname / chroot_source_basename
+chroot_source_gpg_filename = chroot_sources_dirname / chroot_source_gpg_basename
+
+# create and fill the files
+chroot_source_filename.write_text(debline)
+print "created %s" % chroot_source_filename
+handler = AptKeyHandler(it.conn)
+key_data = handler.get_key(aptkey_name)
+chroot_source_gpg_filename.write_text(key_data)
+print "created %s" % chroot_source_gpg_filename
+
+
+sys.stdout.flush()
+
+# add debhost and debhost_ip to /etc/hosts
+hosts_filename = it.target / 'etc/hosts'
+line = '%s\t%s\n' % (debhost_ip, debhost)
+hosts_filename.write_text(line, append=True)
+
+print "updated /etc/hosts"
+sys.stdout.flush()
+
+# install chroot installer machine
+key = 'paella_server:installer_machine'
+if key in it.env():
+    print "Determining installer machine name"
+    installer_machine = it.get('paella_server:installer_machine')
+    live_chroot_directory = livedir / 'chroot'
+    cmd = ['paella-machine-installer', 'install',
+           installer_machine, live_chroot_directory]
+    it.run(cmd)
+    stagedir = livedir / '.stage'
+    stagedir.mkdir()
+    bootstrap_stage = stagedir / 'bootstrap'
+    file(bootstrap_stage, 'w')
+
+script = """#!/bin/bash
+pushd /freespace/live
+if ! [ -d .stage ]; then
+\tmkdir .stage
+fi
+touch .stage/bootstrap
+if ! [ -d chroot ]; then
+\techo No chroot directory present, unable to build live image
+\texit 1
+fi
+lh_build
+./config/prepare-netboot
+popd
+"""
+
+
+scriptfile = it.target / 'freespace/live/make-installer-image'
+scriptfile.write_text(script)
+scriptfile.chmod(0755)
+
+#print "created %s" % scriptfile
+#
+#it.chroot(['/freespace/live/make-installer-image'])
+#print "Paella neboot image created and prepared."
+
+
+# this part is for quickstart/bootstrap
+exporter = PaellaExporter(it.conn)
+export_path = it.target / 'var/cache/paella/export'
+export_path.makedirs()
+print "Created %s" % export_path
+print "Exporting paella database"
+exporter.perform_full_export(export_path)
+print "Paella Database exported to %s" % export_path

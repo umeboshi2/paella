@@ -19,7 +19,28 @@ def get(name):
 
 
 
-basedir = get('debian_basedir')
+apache_reprepro_conf = it.target / 'etc/apache2/conf.d/reprepro.conf'
+
+conf_template = """Alias %(httproot)s %(basedir)s
+<Directory %(basedir)s>
+\tOptions +Indexes +FollowSymLinks
+\tAllowOverride None
+\torder allow,deny
+\tallow from all
+</Directory>
+"""
+
+basedir = it.get('debrepos:debian_basedir')
+httproot = it.get('debrepos:debian_httproot')
+
+print "creating %s" % basedir
 cmd = ['mkdir', '-p', basedir]
 retval = it.chroot(cmd)
 print "%s returned %d" % (' '.join(cmd), retval)
+
+
+template_contents = dict(basedir=basedir, httproot=httproot)
+
+contents = conf_template % template_contents
+apache_reprepro_conf.write_bytes(contents)
+print "%s created" % apache_reprepro_conf
