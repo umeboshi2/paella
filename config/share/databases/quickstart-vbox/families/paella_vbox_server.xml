@@ -11,6 +11,9 @@
 			</parent>
 		</parents>
 		<environ>
+			<family_variable name="subnet_filename" trait="dhcp_server">
+				pxelinux.0
+			</family_variable>
 			<family_variable name="loc2fw_macros" trait="firewall">
 				HTTP HTTPS NTP SMB DNS DHCP TFTP Portmap MountD NFS StatD PostgreSQL
 			</family_variable>
