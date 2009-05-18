@@ -32,13 +32,13 @@ EndSection
 
 Section "InputDevice"
 	Identifier	"Configured Mouse"
-    Driver      "vboxmouse"
+    Driver      "%(mouse)s"
     Option      "CorePointer"
 EndSection
 
 Section "Device"
 	Identifier	"Configured Video Device"
-	Driver		"vboxvideo"
+	Driver		"%(video)s"
 EndSection
 
 Section "Monitor"
@@ -52,7 +52,7 @@ EndSection
 
 '''
 
-def configure_xorg(size='1024x768'):
+def configure_xorg(size='1024x768', mouse='vboxmouse', video='vboxvideo'):
     xorg_output = []
     xorg_filename = it.target / 'etc/X11/xorg.conf'
     if not xorg_filename.isfile():
@@ -62,7 +62,8 @@ def configure_xorg(size='1024x768'):
     print "Saving original xorg.conf to", str(xorg_backup)
     os.rename(xorg_filename, xorg_backup)
     print "Making new xorg.conf"
-    xorg_filename.write_bytes(VBOX_XORG_CONF)
+    template_data = dict(mouse=mouse, video=video)
+    xorg_filename.write_bytes(VBOX_XORG_CONF % template_data)
     if size is None:
         print "Not setting the default screen size in xorg.conf"
         return
@@ -136,18 +137,28 @@ if xorg_filename.isfile() and do_install:
     it.chroot(['mount', '/proc'])
     install_packages(it, packages, usertag='paella-machine-vboxbase')
     it.chroot(['umount', '/proc'])
+else:
+    print "no need for guest modules"
 
+if xorg_filename.isfile():
+    print "Configuring /etc/X11/xorg.conf"
+    mouse = 'mouse'
+    video = 'vesa'
+    # if we installed vbox guest modules, use them
+    if do_install:
+        print "Using virtualbox guest drivers in xorg.conf"
+        mouse = 'vboxmouse'
+        video = 'vboxvideo'
     #print "Using that perl script to modify the xorg.conf for virtualbox"
     #it.chroot(['/usr/share/virtualbox/x11config.pl'])
     #print env.keys()
     if 'global:x11_screen_size' in env.keys():
         size = it.get('global:x11_screen_size')
         print "adjusting x11 screen size to", size
-        configure_xorg(size=size)
+        configure_xorg(size=size, mouse=mouse, video=video)
     else:
-        configure_xorg(size=None)
-else:
-    print "no need for guest modules"
+        configure_xorg(size=None, mouse=mouse, video=video)
+        
     
 
 

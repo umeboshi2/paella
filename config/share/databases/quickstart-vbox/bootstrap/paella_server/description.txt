@@ -1,0 +1,1 @@
+This trait needs a lot of work.  I don't want to put too many traits as parents, but I also don't want to depend on traits which have parents that won't be needed.  I would just get rid of the trait, and place all of this in a profile, except that I would also like to use templates to help configure a paella server.

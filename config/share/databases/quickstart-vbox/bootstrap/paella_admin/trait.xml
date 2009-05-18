@@ -9,7 +9,13 @@
 	</parents>
 	<packages>
 		<package action="install">
+			kate
+		</package>
+		<package action="install">
 			paella-admin
+		</package>
+		<package action="install">
+			xxdiff
 		</package>
 	</packages>
 	<environ/>
