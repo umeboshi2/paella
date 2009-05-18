@@ -42,6 +42,9 @@ conn = PaellaConnection()
 exporter = PaellaExporter(conn)
 
 export_path = path(opts.export_path)
+if not export_path.isdir():
+    print "Creating %s", export_path
+    export_path.makedirs()
 exporter.set_db_export_path(export_path)
 
 if not args and not opts.all:

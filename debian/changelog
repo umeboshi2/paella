@@ -3,8 +3,9 @@ paella (0.7.43) paella; urgency=low
   * force paella to depend on newest version of useless (>= 0.2.0)
   * update quickstart database to make it easier to use with quickstart
     guide
+  * fix paella-export to create export directory if needed
 
- -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Sun, 17 May 2009 00:53:43 -0500
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Mon, 18 May 2009 04:40:53 -0500
 
 paella (0.7.42) paella; urgency=low
 
