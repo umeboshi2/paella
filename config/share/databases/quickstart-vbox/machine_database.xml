@@ -3,6 +3,7 @@
 		<machine name="chroot"/>
 		<machine name="default"/>
 		<machine name="live_chroot"/>
+		<machine name="live_chroot2"/>
 		<machine name="paellabase"/>
 		<machine name="raidtest"/>
 		<machine name="vboxbase"/>

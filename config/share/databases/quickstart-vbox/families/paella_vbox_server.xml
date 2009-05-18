@@ -9,6 +9,9 @@
 			<parent>
 				paella_debianlive
 			</parent>
+			<parent>
+				standard_firewall
+			</parent>
 		</parents>
 		<environ>
 			<family_variable name="subnet_filename" trait="dhcp_server">

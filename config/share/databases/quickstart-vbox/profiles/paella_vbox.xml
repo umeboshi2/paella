@@ -39,16 +39,7 @@
 				lapnet
 			</family>
 			<family>
-				nfs_export_live_installer
-			</family>
-			<family>
-				nfs_export_paellalog
-			</family>
-			<family>
 				paella_vbox_server
-			</family>
-			<family>
-				standard_firewall
 			</family>
 			<family>
 				user_paella

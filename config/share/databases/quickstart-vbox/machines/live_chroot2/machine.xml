@@ -1,0 +1,8 @@
+<machine name="live_chroot2" parent="chroot" profile="live_installer">
+	<family>
+		lapnet2
+	</family>
+	<machine_variable name="dbhost" trait="paella_installer">
+		sidesalad.&lt;--|global:domain|--&gt;
+	</machine_variable>
+</machine>
