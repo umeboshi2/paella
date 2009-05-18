@@ -54,7 +54,7 @@ done before checking the process_map to see if it's mapped to a method or
 function.  This enables a script to run in place of a process that would normally 
 be skipped.
 
-There are also two special method that can be implemented in a subclass.  
+There are also two special methods that can be implemented in a subclass.  
 These are named "pre_process" and "post_process".  They take the name 
 of the process as an argument, and can be used to do things before and/or 
 after the process in processed.
@@ -69,8 +69,8 @@ but to be subclassed.  This class holds attributes and methods that are in
 common with all the installer objects.  These are described briefly below.  Not 
 all of them are described, but only the more important ones.
 
-Important Attributes
-+++++++++++++++++++++++++++++++
+Important Attributes and Methods
+++++++++++++++++++++++++++++++++++++++++++
 
 + conn
 
@@ -84,24 +84,30 @@ Important Attributes
 + defenv
 
   - This attribute is the object that accesses the "default_environment" 
-    table in the database.
+    table in the database.  This object is used as though it were a ConfigParser 
+    object.
 
 + installer
 
   - This attribute is the instance of a child installer, if the installer has a 
     child installer.  This is how the installers are stacked onto one another.  
     Generally, there is an "install" process in the parent installer that will
-    be used to run all the processes in the child installer.
+    be used to run all the processes in the child installer.  The default is 
+    None.
 
 + set_logger
 
   - This method is responsible for creating the logger object that will be
-    used to inform us on what the installer is doing.
+    used to inform us on what the installer is doing.  The python logging 
+    facility is used for this, and theoretically, any handler that's defined in 
+    that facility should work, although only the FileHandler method is being 
+    used.
 
 + chroot
 
   - This method is used to execute a command in the target directory 
-    in a chroot environment.
+    in a chroot environment.  The stdout and stderr of each command is 
+    redirected to the logger.
 
 
 Trait Installer
@@ -126,7 +132,7 @@ Processes
 
 - pre
 
-  + this process normally does nothing.  It can be hooked with a script
+  + This process normally does nothing.  It can be hooked with a script.
 
 - preseed
 
@@ -149,23 +155,23 @@ Processes
 
 - config
 
-  + this process normally does nothing.  It can be hooked with a script
+  + This process normally does nothing.  It can be hooked with a script.
 
 - chroot
 
-  + this process normally does nothing.  It can be hooked with a script
+  + This process normally does nothing.  It can be hooked with a script.
 
-  + if a script exists for this process, it will be run in a chroot environment 
+  + If a script exists for this process, it will be run in a chroot environment 
     in the target directory.
 
 - reconfig
 
   + This process will run "dpkg-reconfigure -plow" on all the packages
-    marked "reconfig" in thr trait's package list.
+    marked "reconfig" in the trait's package list.
 
 - post
 
-  + this process normally does nothing.  It can be hooked with a script
+  + This process normally does nothing.  It can be hooked with a script.
 
 Important Attributes
 +++++++++++++++++++++++++++++++
@@ -182,25 +188,25 @@ Important Attributes
 
     - familydata
 
-      - variables from the families defined in the profile
+      - This attribute contains variables from the families defined in the profile.
 
-      - this should probably be merged with profiledata in the future
+      - This should probably be merged with profiledata in the future.
 
     - profiledata
 
-      - variables defined in the profile
+      - This attribute contains variables defined in the profile.
 
     - machine_data
 
-      - variables defined in the machine, and it's families
+      - This attribute contains variables defined in the machine, and it's families.
 
-      - this is how the profiledata should look in the future.
+      - This is how the profiledata should probably look in the future.
 
 Profile Installer
 ----------------------------------
 
-The profile installer isn't used alone, but is and attribute of either 
-the chroot installer or the machine installer.
+The profile installer isn't used alone, but exists as an attribute of the 
+machine installer.
 
 The profile installer is responsible for getting the traits processed.  The 
 list of traits contained in the profile is expanded to make an ordered list 
@@ -212,7 +218,8 @@ calls the trait installer to process each trait in the expanded list.
 The profile installer also creates a directory in target called /root/paella , 
 and uses this directory to store information about the install.  The list of 
 traits to be installed, and a list of currently installed traits are placed in 
-this directory.
+this directory.  In the future, I plan to make this part more configurable, in 
+case the administrator wants to keep the target system cleaner.
 
 Processes
 +++++++++++++++++
@@ -228,7 +235,7 @@ Important Attributes
 
 - installer
 
-  + This is the trait installer object
+  + This is the trait installer object.
 
 - familydata
 
@@ -265,10 +272,20 @@ machine.  Currently, the processes can't be overridden when just
 the chroot installer is being used.  These processes are inherited 
 by the machine installer, and hook scripts can be made there.
 
-If you really need to hook a process in the chroot installer, you 
-should make a "chroot machine" that skips the formatting of 
-the disks and installing the kernel, and use the machine installer 
-to install the profile in a target directory.
+**NOTE**:  I have just recently removed the script that ran the 
+chroot installer, deciding that it was better just to run the machine 
+installer.  Once paella gained the flexibility to have parents for machines, 
+the chroot installer seemed out of place, since there was no place 
+existing in the database to be able to hook a process for just a 
+chroot install.  This seems to be an overall better solution than trying 
+to keep track two different installers.
+
+In order to make a "chroot install", you should make a "chroot machine" 
+that skips the formatting of the disks and installing the kernel, and use 
+the machine installer to install the profile in a target directory.  The paella 
+installer is created this way, and you can see the examples in the default 
+database that ships with paella.
+
 
 Processes
 +++++++++++++++++
@@ -288,11 +305,11 @@ Processes
 
 - mount_target_proc
 
-  + mounts /proc in the target directory
+  + This process mounts /proc in the target directory.
 
 - mount_target_sys
 
-  + mounts /sys in the target directory
+  + This process mounts /sys in the target directory.
 
 - make_device_entries
 
@@ -300,9 +317,13 @@ Processes
     has made this step obsolete.  It is kept here as a process so it can be 
     hooked with a script, if needed.
 
+  + This process is also the main reason why there's no mount_virtfs step 
+    being used to mount /proc, /sys, and /dev/pts in one step.  That behavior 
+    may change in the future.
+
 - mount_target_devpts
 
-  + mounts /dev/pts in the target directory
+  + This process mounts /dev/pts in the target directory.
 
 - apt_sources_installer
 
@@ -312,7 +333,7 @@ Processes
 - ready_base_for_install
 
   + This process copies /etc/resolv.conf from the installer system, and
-    runs "apt-get update"
+    runs "apt-get -y update".
 
 - pre_install
 
@@ -334,15 +355,15 @@ Processes
 
 - umount_target_sys
 
-  + Unmounts /sys from the target directory.
+  + This process unmounts /sys from the target directory.
 
 - umount_target_proc
 
-  + Unmounts /proc from the target directory.
+  + This process unmounts /proc from the target directory.
 
 - umount_target_devpts
 
-  + Unmounts /dev/pts from the target directory.
+  + This process unmounts /dev/pts from the target directory.
 
 
 Important Attributes
@@ -350,7 +371,7 @@ Important Attributes
 
 - installer
 
-  + This is the profile installer object
+  + This is the profile installer object.
 
 Machine Installer
 ---------------------------------
@@ -476,7 +497,7 @@ Important Attributes
 
 - installer
 
-  + This is the profile installer object
+  + This is the profile installer object.
 
 - machine_data
 

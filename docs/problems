@@ -51,7 +51,15 @@ Delete Trait Variables
 
 There is currently no way to delete variables from a trait with the gui.  You will have to 
 use either plain sql or another database gui (like TOra_) to delete trait variables.  This 
-is not a problem with 
+is not a problem when managing variables in profiles, families, or machines.
+
+Machine Manager
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The machine manager is still somewhat new.  Most of the dialogs are just simple 
+text entry dialogs, instead of having a list to select the entry from.  More appropriate 
+dialogs should be added in the future.
+
 
 --------------------------------------------------
 Schema Problems
@@ -70,7 +78,7 @@ Schema Problems
 Circular Dependencies
 ----------------------------------------------------
 
-  - the traits, families, and machines all have parents, and there is
+  - The traits, families, and machines all have parents, and there is
     no code to check on whether there is a circular relationship among
     these entities.  Fixing this problem is a low priority for me.  The 
     administrator who makes the paella database should be aware of 
@@ -86,7 +94,7 @@ Circular Dependencies
     experiencing problems here.
 
     
-  - due to the way the variables are substituted, there is also the chance
+  - Due to the way the variables are substituted, there is also the chance
     that a circular dependency can occur here.  This problem will be harder 
     to detect, and therefore, harder to prevent in the code.  Also, as the 
     database increases in size and complexity, it's more likely that a 

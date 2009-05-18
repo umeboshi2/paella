@@ -151,8 +151,8 @@ image.  Be sure to look over the script really good before you execute it.  You 
 change the ARCH variable near the top of the file (note: only i386 is tested at the moment).  
 Be sure that you have rsync, sudo, genisoimage, and subversion installed.
 
-This script is the only place where you will need to be root on the host system.  Every other 
-script that requires root permissions, will be run on a virtual machine.
+This script is the only place where you will need to have root access on the host 
+system.  Every other script that requires root permissions, will be run on a virtual machine.
 
 The script will give you a chance to review and edit the preseed files before you create the 
 remastered iso image.  All the files that will be used in the remastered iso image will be 
@@ -346,21 +346,22 @@ This will finish preparing the initial debian repository, and use that repositor
 in your apt sources.
 
 
-Obtain paella from subversion
+Obtain Paella from Berlios
 ------------------------------------
 
-Now you're ready to get the source code from subversion.  To do this, type ::
+Now you're ready to get the source code from berlios.de.  To do this, type ::
 
     	     cd
 	     paella-user-quick-setup
 
-This will setup the directories, and download the source code from the berlios subversion 
-repository.  It will also install build dependencies, plus some extra packages required to 
-create the netboot image that will be made later in this guide.  It will then build the packages
-and install them into your freshly made debian repository.  After that, it will update apt, then 
-install the paella-admin, paella-installer, and paella-defaultdb packages.  Then it will import 
-the quickstart database from the paella-defaultdb package into the postgresql database.  It 
-will also import the archive key that you created earlier.
+This will setup the directories, and download the source code from either the berlios 
+subversion repository, or the berlios ftp site.  It will also install build dependencies, 
+plus some extra packages required to create the netboot image that will be made later 
+in this guide.  It will then build the packages and install them into your freshly made 
+debian repository.  After that, it will update apt, then install the paella-admin, 
+paella-installer, and paella-defaultdb packages.  Then it will import the quickstart 
+database from the paella-defaultdb package into the postgresql database.  It will also 
+import the archive key that you created earlier.
 
 
 

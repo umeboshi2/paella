@@ -129,16 +129,16 @@ be modified.  Normally, you should use the ~/.paellarc file to store the
 database connection info, and not use the environment variables in the 
 shell that you run paella-management from.
 
-Disconnecting from the database will do that, and it will close all the open widgets 
-that are using the database connection.
+Disconnecting from the database will do just that, and it will also close all the 
+open widgets that are using the database connection.
 
 Import/Export Database
 +++++++++++++++++++++++++++++++++++++++++++
 
-These two menu entries will allow you to import and export the database that you 
-are working on.  Selecting either of these will create a directory selection dialog 
-window, where you can choose the directory that you want to import from or export 
-to.
+These two menu entries will allow you to import or export the entire database 
+that you are working on.  Selecting either of these will create a directory selection 
+dialog window, where you can choose the directory that you want to import from 
+or export to.
 
 Widgets accessed from the list view
 --------------------------------------------------------
@@ -472,15 +472,15 @@ delete link to delete the diskconfig.  Clicking on the edit link will spawn an e
 editor, where you can edit the diskconfig.
 
 The diskconfig manager is a very new widget.  This functionality was "shoe-horned" 
-into the database, and while it's fully functional, it's still bare and basic.  I have not 
-made too many plans on how to make better use of this yet, but I've decided that 
-just having bare simple text files is insufficient.  It's possible that the templates 
-could be made out of the diskconfigs, but the variables for the template tags won't 
-be coming from the traits.  It's also possible that I may create new tables that can 
-be used to generate a diskconfig.  I'm still up in the air on exactly which direction I 
-want to take with how this will be implemented.  I do plan to always support a basic 
-hardcoded diskconfig, but it would be nice to have a more flexible method of making 
-diskconfigs.
+into the database, and while it's fully functional (at least as far as setup-storage from 
+the fai-client package is), it's still bare and basic.  I have not made too many plans on 
+how to make better use of this yet, but I've decided that just having bare simple text 
+files is insufficient.  It's possible that the templates could be made out of the 
+diskconfigs, but the variables for the template tags won't be coming from the traits.  
+It's also possible that I may create new tables that can be used to generate a 
+diskconfig.  I'm still up in the air on exactly which direction I want to take with how this 
+will be implemented.  I do plan to always support a basic hardcoded diskconfig, but 
+it would be nice to have a more flexible method of making diskconfigs.
 
 .. make a link to the diskconfig document when it's ready
 

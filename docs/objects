@@ -9,7 +9,9 @@ Objects and Definitions
 
 Apt Source
 ------------------
-An apt source is similar to a line in an /etc/apt/sources.list file.
+An apt source is similar to a line in an /etc/apt/sources.list file.  The main 
+difference is that it has a name (or label) and a local_path, which is the 
+path to the source on the local mirror that you are using.
 
 
 Suite
@@ -21,10 +23,17 @@ styles of design and configurations.  Traits are held in suites.
 Basically a suite is an ordered list of apt sources, and a set of traits.  The first 
 apt source that is listed will be the repository that debootstrap will be run against.
 
+When I started writing paella, a suite was just the "codename" for a debian 
+distribution, like woody, sarge, or sid, and  I appended the local mirror to each 
+suite.  This isn't being done anymore, but I've kept the term suite.
 
 Trait 
 ------
-A trait is an atomic unit that signifies a feature. 
+A trait is an atomic unit that signifies a feature.  It may be effective to think of 
+a trait like a task in tasksel, although a trait doesn't have to install packages.  
+For instance, a trait can be used as a namespace to hold variables, or a 
+container to hold a set of templates (or files).
+ 
 A trait belongs to a suite.  The table in the database that holds the list of traits
 is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
 and a set of variables.
@@ -32,31 +41,35 @@ and a set of variables.
 Parents
 ++++++++++++++++
 
-+ no trait can be processed during the installation before all
++ No trait can be processed during the installation before all
   of its parents are processed.	     
-+ parents are not required, but most traits should depend on a default
++ Parents are not required, but most traits should depend on a default
   trait.
-+ no trait can be processed during the installation before all of its
-  parents are processed. 
     
 
 Packages
 ++++++++++++++++
   
-+ this is a list of packages to install or remove 
-  - although other options are available, only install and remove are supported now 
-+ packages are not required 
++ This is a list of packages to install, remove or reconfigure.
+
+  - Although other options are available, only install, remove, 
+    and reconfig are supported now.
+
++ Packages are not required in a trait.
 
 Templates
 ++++++++++++++++
  
-+ templates can have simple tags for variable substitution 
-+ templates store user/group and chmod permissions 
-+ currently the var/cache/debconf/config.dat template is reserved 
++ Templates can have simple tags for variable substitution, but this is not 
+  required.  They can be regular text files.
++ Templates must contain text, binary blobs are not supported. (Use base64 
+  if you really need blobs)
++ Templates store user/group and chmod permissions.
++ Currently, the var/cache/debconf/config.dat template is reserved 
   for debconf (This approach is now deprecated, but not removed
   from the code, if you really need a such a template, name it something 
   else, and rename it in the config script.)
-+ if a template exists, called "debconf", it will be processed with
++ If a template exists, called "debconf", it will be processed with
   debconf-set-selections during the preseed step in the trait installer.  
   This method is now used instead of the method using the debconf 
   config.dat template listed above.
@@ -65,53 +78,58 @@ Templates
 Environment
 ++++++++++++++++
 
-+ a collection of name, value pairs for use in the templates and scripts 
-+ a trait's environment contains its parents' environment 
-+ a big python dictionary is made of the environment where the keys
++ This should more accurately be called "Variables", but I started with 
+  calling it "Environment" and got stuck with it.
++ It is a collection of name, value pairs for use in the templates and scripts.
++ A trait's environment contains its parents' environment.
++ A big python dictionary is made of the environment where the keys
   are formed as "trait:name" where trait is the trait and name is the 
   name of the variable.
 
 Scripts
 ++++++++++++++++
 
-+ a trait is not required to have a script 
-+ the scripts that are currently supported are; pre, preseed, remove, 
-  install, templates, config, chroot, reconfig, and post.
++ A trait is not required to have a script.
++ The scripts that are currently supported are; pre, preseed, remove, 
+  install, templates, config, chroot, reconfig, and post.  They correspond to 
+  the steps in the trait installer.
 
-  - chroot is a special script that is run in a chrooted environment in the target area. 
-    This script should be aware of what's on the target system and only depend on 
-    those things. The script shouldn't connect to paella or depend on other installation 
-    tools not present in the target system. 
-  - the preseed, remove, install, templates, and reconfig scripts will override
+  - The chroot script is a special script that is run in a chrooted environment in the 
+    target area.  This script should be aware of what's on the target system and only 
+    depend on those things. The script shouldn't connect to paella or depend on other 
+    installation tools not present in the target system. 
+  - The preseed, remove, install, templates, and reconfig scripts will override
     the default process for the trait.
+
++ You should be able to use any scripting language that has an interpreter on the 
+  installer system.  It's up to the administrator to put the interpreter on the installer 
+  system.  
+
+  - When using a chroot script, the interpreter must be available on the target system.
 
 Other Notes
 ++++++++++++++++
     
-- you can define a script for any
+- You can define a script for any
   step in the trait install process.
 
-- if you make a script named install, remove, config,
+- If you make a script named install, remove, config,
   or reconfig, that step in the trait process is ignored,
   and the script run instead.  The script doesn't have
   to do anything, so it's a good way to skip a step in the 
-  trait installation
+  trait installation.
 
-- in order for a script to be executed its name must match
+- In order for a script to be executed, its name must match
   a step in the trait processes.
-
-- A script can be made in any language.  You only have to have the 
-  interpreter for the script available on the installer system.  When using 
-  a chroot script, the interpreter must be available on the target system.
 
 Family
 --------
 
-A family is a collection of variables from different traits 
+A family is a collection of variables, possibly from different traits.
 
-+ a family can have parents
-+ a family is not tied to a suite
-+ a variable in a family doesn't have to exist in a trait,
++ A family can have parents.
++ A family is not tied to a suite.
++ A variable in a family doesn't have to exist in a trait,
   but it has to be tied to a trait.
 
 Profile
@@ -119,11 +137,11 @@ Profile
 
 A profile is a collection of traits, families, and variables.
 
-+ Traits - the traits listed in the profile are ordered 
-+ Families - an unordered list of families 
++ Traits - The traits listed in the profile are ordered.
++ Families - The list of families is not ordered.
 + Variables
 
-  - the profile variables override the trait and family variables
+  - The profile variables override the trait and family variables
     attached to the profile.
 
 
@@ -140,30 +158,34 @@ systems to install logical systems from.
 Machine
 ++++++++++
 
-a machine contains 
+A machine contains:
 
-- a **name**
+- A **name**
 
-- a **parent** - This is a parent machine that current machine is based from.
+- A **parent** - This is a parent machine that current machine is based from.
 
   + Unlike traits and families, a machine can only have one parent.
 
   + This is an optional field.
 
-- a **kernel** 
+- A **kernel** 
   
   + A kernel is simply the name of a kernel image package (for example, 
     linux-image-2.6-686).
   + The package must be install-able by apt, in a chroot environment, on the target system. 
   + This attribute must be set somewhere in the machine's ancestry.
+  + A kernel named "default" will try to install "linux-image-2.6-$arch" corresponding to 
+    the arch that you are installing.  Kernel names, as well as the names of some other 
+    packages impede the attempt to make a single paella database support multiple 
+    architectures.
 
-- a **diskconfig** 
+- A **diskconfig** 
   
-  + a diskconfig is the name of a diskconfig file that will be used by setup-storage when
+  + A diskconfig is the name of a diskconfig file that will be used by setup-storage when
     during the setup_disks part of the install.
   + This attribute must be set somewhere in the machine's ancestry.
 
-- a **profile** - This is the profile that will be installed on the machine.
+- A **profile** - This is the profile that will be installed on the machine.
 
   + This attribute must be set somewhere in the machine's ancestry.
 
@@ -173,8 +195,8 @@ a machine contains
 - **scripts** - These are "hook" scripts to override steps in the install process.
 
 - **variables** - These are variables that will override the variables defined in the 
-  traits, families, profile, and families for the machine.  In other words, these are the
-  variables that override all other variables.
+  traits, families, profile, and families for the machine.  In other words, **these are the
+  variables that override all other variables**.
 
 Machine Inheritance
 +++++++++++++++++++++++++++++
@@ -212,7 +234,9 @@ Machine Scripts
 
 Machine scripts correspond to steps in the install process for machines.  These steps
 will be treated similiar to the trait scripts. You may want to look at the installer_ page to 
-see how these step are arranged in the installers.  The default steps/scripts are:
+see how these step are arranged in the installers.  Any step that "normally does nothing" 
+is a place for you to add something to be done, without overriding the default steps in the 
+installation process.  The default steps/scripts are:
 
 - pre
 
@@ -254,7 +278,7 @@ see how these step are arranged in the installers.  The default steps/scripts ar
 
   + This step normally does nothing.  Before the arrival of udev, 
     this step used to run "MAKEDEV generic" (or extract a devices.tar 
-    tarball) and add nodes for the target hard drive.  It is not needed 
+    tarball) and add nodes for the target hard drive(s).  It is not needed 
     anymore, but remains in case udev can't do something that you 
     need to have done.
 

@@ -96,8 +96,12 @@ Environment Variables used by Paella
     application will automatically connect to the database with the information in ~/.paellarc 
     instead of presenting a connection dialog.
 
+  - **DEBUG** -- This is used mainly to test the paella-management application.  If this 
+    variable exists, extra information will be displayed in the terminal that launched the 
+    paella-management application.  If an exception is raised in the application, a python
+    debugger will be launched in the terminal that launched paella-management.
 
-+ These are used in scripts and are mostly unimportant:
++ These were used in scripts and are mostly unimportant:
 
   - **SUITES**
 
