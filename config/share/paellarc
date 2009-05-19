@@ -6,10 +6,10 @@ __paelladir:		%(__myhome)s/workspace/paella
 
 [database]
 # regular database info
-dbhost:			10.0.1.1
+dbhost:			paella
 dbname:			paella
-#dbusername:		dbadmin
 dbusername:		paella
+#dbusername:		dbadmin
 dbpassword:		apassword
 
 # this path is used to import and export information

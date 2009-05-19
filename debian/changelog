@@ -4,8 +4,10 @@ paella (0.7.43) paella; urgency=low
   * update quickstart database to make it easier to use with quickstart
     guide
   * fix paella-export to create export directory if needed
+  * don't be lazy, remove the hardcoded ip address in the default
+    paellarc file, and use a hostname instead
 
- -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Mon, 18 May 2009 04:40:53 -0500
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Mon, 18 May 2009 21:45:11 -0500
 
 paella (0.7.42) paella; urgency=low
 
