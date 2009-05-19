@@ -119,7 +119,16 @@ can do this by making machine scripts for **apt_sources_installer** and
 **apt_sources_final** in a machine and have all machines that need this 
 to depend on that machine.
 
+----------------------------------------------------
+Man Pages
+----------------------------------------------------
 
+There are no man pages for the scripts that are invoked in the shell.  In the past, 
+I've not been interested in learning yet another document format, so I haven't 
+bothered with man pages.
+
+Recently, it's come to my attention that rst2man has been uploaded to unstable, so 
+there will likely be manpages created when I start building paella against squeeze.
 
 
 

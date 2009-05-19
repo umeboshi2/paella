@@ -4,15 +4,15 @@
 Paella Quick Start Guide
 ===========================
 
-This guide is unfinished.  If you are reading this, do not expect the guide to be correct or
+This guide almost finished.  If you are reading this, do not expect the guide to be correct or
 accurate.  This guide has been a work in progress, and has been changing with respect to 
 things that have been changing in paella, and its dependencies.  This guide should not be 
 considered to be complete, until this paragraph is removed.  However, much of this guide, 
 and the scripts and configuration that surround it, are almost complete.  This means that 
-this guide can be considered as "beta" instead of "alpha".  While there may be parts of this 
-guide that are incorrect, I believe that most of this guide can be followed without any 
-unexpected surprises.  This guide should not be considered as 100% complete until this 
-paragraph is removed.  This will probably happen soon after lenny is released.
+this guide can be considered as "release candidate" instead of "beta".  While there may be 
+parts of this guide that are incorrect, I believe that most of this guide can be followed without 
+any unexpected surprises.  This guide should not be considered as 100% complete until this 
+paragraph is removed.  This will probably happen before the end of May, 2009.
 
 .. contents:: :backlinks: entry
 
@@ -752,7 +752,7 @@ Boot Sidesalad Again
 ----------------------------------------------------------
 
 Boot the sidesalad machine from the network again.  This time the sidesalad machine 
-should automatically install.
+should start installing automatically.
 
 While the paella installer is installing the sidesalad machine, you can watch the progress in 
 the logfile, /freespace/paellalog/paella-install-sidesalad.log on the paella machine.  You can 
@@ -775,6 +775,8 @@ Once the installer finishes, we can reboot into the new system.  On the sidesala
 type::
 
 	sudo reboot
+
+(load this page on sidesalad, so you can cut and paste the commands below)
 
 Now the machine should boot from the hard drive.  When the machine finishes booting, there 
 are only a few commands left to make sidesalad a paella server.  The login should be the 
@@ -815,14 +817,43 @@ then run the paella-management application::
 
 Edit the default environment and set "http_mirror" to "http://sidesalad.lapnet2/debian".
 
+Now, the sidesalad machine should work as a paella server.
+
+Mission Accomplished!!!
+===================================
+
+If you made it this far, then this quickstart guide is complete!  
+Congratulations on installing your first test machine with paella!
 
 
+What do I do now?
+------------------------------------------------
 
-**If you've made it this far, and the "unfinished" disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.**
+If you wish, you could reinstall the paella machine, using sidesalad as the server.  The 
+steps to do this would be very similar to how you made the sidesalad machine, so I'm 
+not going to bother with the details.  This guide is long enough as it is (and it's called 
+a "quickstart" guide).  Even so, it shouldn't be difficult to figure out how to install the 
+paella machine  from sidesalad.
+
+Browse the Quickstart Database
+------------------------------------------------
+
+You could spend some time browsing the quickstart database with the paella-management 
+application.  This would help to see how paella is structured, and may give you some ideas 
+of how to use it for your machines and network(s).  Take note, the quickstart database was 
+forked from the default database that ships with paella in order to make it easier to 
+bootstrap paella, and make it through this guide.
 
 
+Start Using the Default Database
+------------------------------------------------
 
-
+The default database_ is probably a better database to work with, although it has some 
+parts that are still incomplete.  Using it will require a more complete debian mirror, plus 
+a local mirror of the debian repository at http://www.debian-multimedia.org/ .  You 
+may also want to build a few extra packages to use with it.  The default database makes 
+a better use of the framework that paella provides which can help teach you how to use 
+paella in creating your own database.
 
 
 
@@ -844,3 +875,4 @@ toc_
 .. _traits: #trait
 .. _machines: #machine
 .. _DebianLive: http://wiki.debian.org/DebianLive
+.. _database: defaultdb.html
