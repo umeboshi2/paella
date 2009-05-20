@@ -17,32 +17,32 @@ The **primary tables** are:
 
 + textfiles
 
-  - a table containing an id, md5sum, size, and
+  - This is a table containing an id, md5sum, size, and
     text of every template and script used in the
     database.
 
 + scriptnames
 
-  - a list of names for the scripts, and a column for the type of script, 
+  - This table contains a list of names for the scripts, and a column for the type of script, 
     which is either trait, machine, or both.
 
 + suites
 
-  - just a list of suite names, the other columns are
+  - This is just a list of suite names, the other columns are
     deprecated.
 
 + apt_sources
 
-  - these are similar to the lines in /etc/apt/sources.list .  The local_path column 
+  - These are similar to the lines in /etc/apt/sources.list .  The local_path column 
     is the path to this apt repository on the local mirror defined in the default environment.
 
 + suite_apt_sources
 
-  - this table links apt sources to suites
+  - This table links apt sources to suites.
 
 + apt_source_packages
 
-  - a list of packages available for an apt-source
+  - This is a list of packages available for an apt-source.
 
 + default_environment
 
@@ -54,7 +54,8 @@ The **primary tables** are:
 Suite Tables
 +++++++++++++++++++++++++++
 
-+ **suite tables**  -- there is a set for each suite in suites table
++ **suite tables**  -- there is a set for each suite in suites table.  Here, we are using 
+  "sarge" as the name for the suite.
 
   - sarge_packages
 
