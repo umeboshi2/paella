@@ -4,16 +4,6 @@
 Paella Quick Start Guide
 ===========================
 
-This guide almost finished.  If you are reading this, do not expect the guide to be correct or
-accurate.  This guide has been a work in progress, and has been changing with respect to 
-things that have been changing in paella, and its dependencies.  This guide should not be 
-considered to be complete, until this paragraph is removed.  However, much of this guide, 
-and the scripts and configuration that surround it, are almost complete.  This means that 
-this guide can be considered as "release candidate" instead of "beta".  While there may be 
-parts of this guide that are incorrect, I believe that most of this guide can be followed without 
-any unexpected surprises.  This guide should not be considered as 100% complete until this 
-paragraph is removed.  This will probably happen before the end of May, 2009.
-
 .. contents:: :backlinks: entry
 
 Introduction
@@ -55,6 +45,24 @@ to worry about extensive changes to your host system.
 
 Requirements
 ==========================
+
+Time
+------------------
+
+Stepping through this quickstart guide will take some time.  Most of the time will be spent 
+in waiting for the system to be installed, and for packages to be downloaded from the 
+internet.  The effort required to type the commands necessary to complete this guide has 
+been minimized, and should only require a simple cut and paste in most circumstances.  The 
+time required to complete this guide will still take a few hours.  I will try to give time estimates 
+for the longest tasks in this guide.  These estimates will be taken from a test run, using a 
+local debian mirror.  I am going to approximate the size of the downloads at these steps, so you 
+will be better able to calculate the time required with your internet connection.
+
+I'm hoping that this guide can be completed in about 3 to 4 hours, although it may take a lot 
+less, depending on your machines, network connection, and your knowledge of debian.  Much 
+of this time should come from reading this document.  If you already know the guide step by 
+step, then the time required should be less than 2 hours.
+
 
 Debian
 ----------
@@ -117,6 +125,10 @@ those.  This quickstart should work with any version from 1.6.6 and above.
 
 .. _i386: http://cdimage.debian.org/debian-cd/current/i386/iso-cd/debian-500-i386-netinst.iso
 
+
+Setup the paella virtual machine
+===============================================
+
 Remaster the netinst iso
 -------------------------------------------
 
@@ -165,10 +177,8 @@ is set to en_US.UTF-8 .  If you are using another locale, you really need to mod
 preseed.cfg file, and the setup-paella-server script.  The postgresql database server will not 
 run unless your locale is generated, and referenced in the postgresql.conf file.
 
-
-
-Setup the paella virtual machine
-===============================================
+Start VirtualBox
+------------------------------
 
 You need to get the virtualbox frontend up and running.  The user interface varies between 
 different versions of virtualbox.  These instructions were written using version 1.6.6, which 
@@ -228,6 +238,9 @@ an absolute necessity.  Set the dhcp3-server to listen to eth1 on the debconf qu
 
 The rest of the instructions will assume that you installed from a remastered iso.
 
+**Time:**  This step took me around 20 minutes to complete, and required ~280 megabytes of 
+packages to installed (~80 megabytes were already present on the netinst iso).
+
 First boot on the paella virtual machine
 --------------------------------------------------
 
@@ -285,6 +298,10 @@ cut and paste the commands that are given here.  The rest of the guide will assu
 you have done this.
 
 
+**Time:**  This step took me around 5 minutes to complete.  I chose to build guest 
+additions from backports.org, which required about ~15 megabytes of extra packages 
+to be installed.
+
 Create a Partial Debian Archive
 =========================================
 
@@ -311,6 +328,8 @@ randomly in a text editor.  To get the disk moving, type this in another termina
      find /usr/share | xargs sha1sum
 
 
+**Time:**  This step took me around 2 minutes to complete.  Time here will vary randomly.
+
 Setup initial debian mirror
 -------------------------------------------
 
@@ -330,8 +349,8 @@ created above to sign the repository, add that key to apt, add the local reposit
 
 Take a break.  Grab some coffee.  This will take a bit, depending on your internet 
 connection.  I've taken care to only include the packages that needed, plus a few 
-extra packages that I use as tools to help me test this quickstart routine.  As of the time 
-this was written, the pool directory was 468MB in size.
+extra packages that I use as tools to help me test this quickstart routine.  I estimate 
+about 180 megabytes of packages will need to be downloaded during this step.
 
 **Note:**  If the script failed, and you installed from a local mirror, you will need to 
 edit the /freespace/debian/conf/updates file and adjust the VerifyRelease fields in 
@@ -344,6 +363,11 @@ stanzas are correct, you can type::
 
 This will finish preparing the initial debian repository, and use that repository 
 in your apt sources.
+
+**Time:**  Using a local mirror, this step took about 5 minutes.  You should adjust this 
+time by the time it takes to download about 180M from your internet connection.  From this 
+point on, there should be no need to download anything more packages from a debian 
+mirror.  The rest of the times will depend entirely on the speed of your system.
 
 
 Obtain Paella from Berlios
@@ -363,6 +387,10 @@ paella-installer, and paella-defaultdb packages.  Then it will import the quicks
 database from the paella-defaultdb package into the postgresql database.  It will also 
 import the archive key that you created earlier.
 
+**Time:**  This step is a bit more involved than the other steps, so far, and it will take 
+some time to complete.  During the import of the database, package lists will be downloaded 
+from official debian mirrors, totalling just over 8 megabytes.  This step took me about 
+8 minutes to complete.
 
 
 Debian Live
@@ -389,7 +417,9 @@ the script , type::
 
 
 This script will copy the live-helper config files to /freespace/live/config and build the 
-image, then install the image and the tftpboot files to the appropriate locations.
+image, then install the image and the tftpboot files to the appropriate locations.  This 
+step will take quite a while, so this is a good place to take a break and let the machine 
+do its work.
 
 **Important**  If you aren't able to use 10.0.1.1 as the ip address of your eth1 interface 
 on the virtual machine, you will have to edit /freespace/live/config/binary and set 
@@ -417,6 +447,10 @@ terminal, type::
 Then press 'b', followed by <Shift>-F.  Now you'll be able to watch the progress of the 
 live_chroot machine as it's being installed.
 
+**Time:**  This step, takes a long time to complete, and it's probably the longest step 
+in this guide.  The installation of the chroot will take about 10 minutes.  After that the 
+live-helper scripts will take the chroot and make a squashfs image from it.  All in all, it 
+seems to take about 20 minutes to fully complete this step.
 
 Using Paella Management Interface
 =======================================================
@@ -767,6 +801,12 @@ sidesalad machine as it's being installed.
 While the live installer that sidesalad will host is being installed, you can follow the progress 
 by looking at /freespace/paellalog/paella-install-live_chroot2.log .
 
+**Time:**  This step can take a while.  In many ways, this step is a composition of the steps 
+that have already been performed.  The sidesalad machine should be extremely similar to the 
+paella machine.  The main difference is that you don't need to download packages from the 
+internet, but from the paella machine, which should be faster.  In total, this step should take 
+about 30 minutes.
+
 
 Reboot Sidesalad Machine
 ------------------------------------
@@ -818,6 +858,10 @@ then run the paella-management application::
 Edit the default environment and set "http_mirror" to "http://sidesalad.lapnet2/debian".
 
 Now, the sidesalad machine should work as a paella server.
+
+**Time:**  This step can also take a while.  I have tried to make the live-helper step a bit 
+shorter by not compressing the squashfs image.  Still, this step should take about 30 
+minutes.
 
 Mission Accomplished!!!
 ===================================
