@@ -55,9 +55,9 @@ def get_fileshare_options(name):
     for opt in ['path', 'create', 'chown', 'chmod']:
         key = fileshare_key(name, opt)
         if key in env.keys():
-            opts[opt] = env.get(key)
+            opts[opt] = env.dereference(key)
     return opts
-
+            
 def manage_fileshare(name):
     # these should already be defined
     # - abs_basedir

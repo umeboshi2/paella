@@ -1,5 +1,6 @@
 # -*- mode: python -*-
 import os, sys
+import base64
 
 from useless.base.path import path
 
@@ -29,7 +30,7 @@ def install_packages(toolkit, packages, trait=None, usertag=None):
         usertag = 'paella-trait-%s' % trait
     #cmd = ['aptitude', '--assume-yes', '--add-user-tag', usertag,
     #       'install'] + packages
-    cmd = install_packages_command(packages, trait=trait, usertag=usertag)
+    cmd = install_packages_command(packages, it.default, trait=trait, usertag=usertag)
     print "Install command is %s" % ' '.join(cmd)
     sys.stdout.flush()
     it.chroot(cmd)
@@ -133,3 +134,33 @@ def restore_intefering_files(toolkit, backup_dir=None):
 
 
     
+def decode_base64_templates(toolkit, trait=None, suffix='.b64',
+                            removefiles=True, verbose=False):
+    it = toolkit
+    current_trait = it.trait
+    if trait is not None:
+        if verbose:
+            print "Setting trait to %s" % trait
+        it.set_trait(trait)
+    templates = it.db.trait.templates()
+    b64_templates = [t for t in templates if t.endswith(suffix)]
+    if verbose:
+        print "base64 templates: %s" % b64_templates
+    for template in b64_templates:
+        if verbose:
+            print "decoding %s" % template
+        filename = it.target / template
+        encoded_data = filename.bytes()
+        decoded_data = base64.b64decode(encoded_data)
+        truncate_position = - len(suffix)
+        new_filename = path(filename[:truncate_position])
+        new_filename.write_bytes(decoded_data)
+        if verbose:
+            print "Created %s" % new_filename
+        if removefiles:
+            if verbose:
+                print "Removing %s" % filename
+            filename.remove()
+    # set the trait back
+    it.set_trait(current_trait)
+        

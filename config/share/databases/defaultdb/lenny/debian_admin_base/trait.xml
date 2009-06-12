@@ -18,6 +18,9 @@
 			debconf-utils
 		</package>
 		<package action="install">
+			debian-goodies
+		</package>
+		<package action="install">
 			dselect
 		</package>
 		<package action="install">

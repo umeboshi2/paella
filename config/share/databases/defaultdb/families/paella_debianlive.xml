@@ -71,7 +71,7 @@
 				umeboshi
 			</family_variable>
 			<family_variable name="mksquashfs_options" trait="debianlive">
-				-noI -noD -noF
+				-no-progress -noI -noD -noF
 			</family_variable>
 		</environ>
 	</family>
