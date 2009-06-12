@@ -9,6 +9,9 @@ from paella.db import PaellaConnection
 from paella.db.main import PaellaImporter
 
 
+# set PAELLA_DB_NOPACKAGETABLES by default now
+os.environ['PAELLA_DB_NOPACKAGETABLES'] = 'true'
+
 # setup option parser
 parser = OptionParser()
 # entity options
