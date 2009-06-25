@@ -74,6 +74,8 @@ class SuitesTable(Table):
     def __init__(self):
         columns = [
             PkName('suite'),
+            Name('os'),
+            # the columns below aren't being used anymore
             Bool('nonUS'),
             Bool('updates'),
             Bool('local'),

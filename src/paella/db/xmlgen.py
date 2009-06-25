@@ -34,6 +34,8 @@ class SuiteElement(Element):
         Element.__init__(self, 'suite')
         self.setAttribute('name', suite)
 
+    def set_os(self, os):
+        self.setAttribute('os', os)
         
 # generate xml        
 class SuitesElement(Element):

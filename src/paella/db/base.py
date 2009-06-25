@@ -41,10 +41,9 @@ class SuiteCursor(StatementCursor):
         return self.select(table=table, order=['apt_id'])
     
     def get_apt_rows(self, suite=None):
-        if suite is None:
-            suite = self.current
+        suite, clause = self._mod_suite(suite)
         table = 'suite_apt_sources natural join apt_sources'
-        return self.select(table=table, clause=Eq('suite', suite), order='ord')
+        return self.select(table=table, clause=clause, order='ord')
 
     def make_suite(self, suite, apt_ids):
         if not len(apt_ids):
@@ -65,8 +64,7 @@ class SuiteCursor(StatementCursor):
         
 
     def make_suite_tables(self, suite=None):
-        if suite is None:
-            suite = self.current
+        suite, ignore = self._mod_suite(suite)
         tables = suite_tables(suite)
         for table in tables:
             self.create_table(table)
@@ -80,6 +78,22 @@ class SuiteCursor(StatementCursor):
         row = self.get_apt_rows(suite=suite)[0]
         return row.dist
 
+    def _mod_suite(self, suite):
+        if suite is None:
+            suite = self.current
+        clause = Eq('suite', suite)
+        return suite, clause
+    
+    def get_os(self, suite=None):
+        suite, clause = self._mod_suite(suite)
+        row = self.select_row(table='suites', clause=clause)
+        return row.os
+
+    def set_os(self, os, suite=None):
+        suite, clause = self._mod_suite(suite)
+        data = dict(os=os)
+        self.update(table='suites', data=data, clause=clause)
+    
 class AllTraits(StatementCursor):
     def __init__(self, conn):
         StatementCursor.__init__(self, conn, name='AllTraits')

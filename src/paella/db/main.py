@@ -143,6 +143,11 @@ class PaellaExporter(object):
             
     def _append_suite_to_db_element(self, suite):
         self.dbelement.append_suite(suite)
+        element = self.dbelement.suites[suite]
+        os = self.suitecursor.get_os(suite=suite)
+        if os is None:
+            os = ''
+        element.set_os(os)
         rows = self.cursor.select(table='suite_apt_sources', order=['ord'],
                                   clause=Eq('suite', suite))
         for row in rows:
@@ -474,6 +479,10 @@ class PaellaImporter(object):
         if suite.name not in current_suites:
             apt_ids = [e.apt_id for e in suite.aptsources]
             self.suitecursor.make_suite(suite.name, apt_ids)
+            os = suite['os']
+            if not os:
+                os = None
+            self.suitecursor.set_os(os, suite=suite.name)
         else:
             raise RuntimeError , 'suite %s already exists' % suite
 

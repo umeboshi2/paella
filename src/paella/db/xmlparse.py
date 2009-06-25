@@ -32,7 +32,7 @@ class SuiteAptParser(ParserHelper):
 class SuiteParser(ParserHelper):
     def __init__(self, element):
         ParserHelper.__init__(self)
-        self.__desc__ = ['suite', 'nonus', 'updates', 'local', 'common']
+        self.__desc__ = ['suite', 'nonus', 'updates', 'local', 'common', 'os']
         name = element.tagName.encode()
         if name != 'suite':
             raise Error, 'bad tag for SuiteParser'
