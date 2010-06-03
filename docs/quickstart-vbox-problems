@@ -1,0 +1,799 @@
+.. -*- mode: rst -*-
+
+======================================================
+Paella Quick Start Troubleshooting Guide
+======================================================
+
+.. contents:: :backlinks: entry
+
+Introduction
+===============================
+
+.. introductory comment
+
+
+Paella depends on a particular type of setup to operate.  This document details how to 
+bootstrap that setup, starting from the bare minimum requirements.  This guide is written 
+with the goal of minimizing the requirement for the root account to setup the system.  The 
+former method of working with paella, required (possibly) extensive configuring of a local 
+network.  In order to effectively use paella in a "production" environment, where you are 
+actually installing machines, still requires the same type of network configuration.  It is hoped 
+that the method outlined here can help prepare this by using paella to generate the 
+configuration that paella requires.
+
+When I began writing this quickstart, I tried to give detailed instructions on how to perform 
+each step in this guide.  During the process of getting this quickstart guide prepared for 
+people to start using it, I wrote some scripts, and expanded some scripts, so that the 
+amount of work needed to complete the quickstart has been minimized.  While I hope 
+writing the scripts to do more of the work will help readers move through the guide more 
+easily, those scripts also impede the reader from learning about how things are done.  As 
+a compromise, I've left many of the more important steps included in this guide, even though 
+the actions are now being done by the scripts.  Doing this may have made this guide a bit 
+more difficult to read, although I have tried to explain the sections that are optional.
+
+While I have tried to make use of an optional local debian mirror, and optional installation 
+of virtualbox guest additions, these are mainly to help me test this procedure.  I strongly 
+recommend to use an official debian mirror, and to not worry about installing the guest 
+additions, as you may experience problems with this quickstart.  I am convinced that you 
+will have an easier time going through this quickstart if you try your best to follow it step 
+by step, and ignore the parts where you are being told that you can edit a script before 
+running it.  After you go through the quickstart once, you can then look back and determine 
+how to configure a local mirror, or other options and shape them closer to your desire.  This 
+guide is meant to provide a way to see what paella is, and how it works, without you having 
+to worry about extensive changes to your host system.
+
+
+Requirements
+==========================
+
+Time
+------------------
+
+Stepping through this quickstart guide will take some time.  Most of the time will be spent 
+in waiting for the system to be installed, and for packages to be downloaded from the 
+internet.  The effort required to type the commands necessary to complete this guide has 
+been minimized, and should only require a simple cut and paste in most circumstances.  The 
+time required to complete this guide will still take a few hours.  I will try to give time estimates 
+for the longest tasks in this guide.  These estimates will be taken from a test run, using a 
+local debian mirror.  I am going to approximate the size of the downloads at these steps, so you 
+will be better able to calculate the time required with your internet connection.
+
+I'm hoping that this guide can be completed in about 3 to 4 hours, although it may take a lot 
+less, depending on your machines, network connection, and your knowledge of debian.  Much 
+of this time should come from reading this document.  If you already know the guide step by 
+step, then the time required should be less than 2 hours.
+
+
+Debian
+----------
+
+You should be running debian to follow this quickstart procedure.  It's technically not 
+required, but this document will assume that your running either lenny, sid, or etch 
+with VirtualBox running (from backports.org or similar).  This procedure has been tested 
+while running sid, although lenny should work just fine.  There also shouldn't really be 
+any problem with using etch, save for having to have VirtualBox installed.
+
+Hardware
+-----------------
+This quickstart routine was developed and tested using a laptop with 3GB of memory.
+You could probably get by with less which I will try to estimate later.  Most of the memory 
+is required to run the virtual machines.  I estimate that only 2GB of ram will be required.  
+Please note that this is only the hardware requirements for following this quickstart 
+procedure, and doesn't reflect the actual requirements to run paella in a regular 
+environment with a network of machines.
+
+You will need to run an operating system that can host VirtualBox OSE.
+
+VirtualBox OSE
+-----------------------
+
+This quickstart will use VirtualBox OSE to setup the machine that will act as the main 
+paella server, and also to make machines to test those installs.  The procedure outlined 
+below is assuming that you are using a GNU/Linux system as a host for VirtualBox OSE, but 
+there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.
+
+Networking
+------------------
+
+This quickstart has been written to use 10.0.1.0 for the internal network that the virtual 
+machines will be using.  The main virtual machine (paella.lapnet) will be using the 10.0.1.1 
+ip, while the other virtual machines will be obtaining their ip's from the dhcp server running 
+on paella.lapnet.  It is desirable to keep these defaults if at all possible.  If these ip numbers 
+conflict with your setup, I have tried to make it as easy as possible to use another block of
+ip's.  If you can't use the 10.0.1.0 network, I recommend that you still use some block inside 
+the 10.0.x.0 network.  I have tested the quickstart while changing the network to 10.0.x.0, and 
+it appears to work without problems (when x is either 1, 2, or 3).
+
+
+Debian Netinst CD Image (Lenny)
+-------------------------------------
+
+.. _page: http://www.debian.org/devel/debian-installer/
+
+
+The stable (lenny) release is what is currently supported.  You should get the netinst iso, 
+which available on this page_.  I used the i386_ image.  Hopefully any architecture should work, 
+but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll 
+be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.  
+If you are using a virtualbox version less than 2, you will have to use the i386 image, as the guest 
+machines will only run i386 code.  The virtualbox-ose package that ships with debian lenny is 
+version 1.6.6, which will require using i386 guests.  There are newer virtualbox-ose packages 
+available at http://backports.org that will run amd64 code on the guests, if you wish to use 
+those.  This quickstart should work with any version from 1.6.6 and above.
+
+
+
+.. _i386: http://cdimage.debian.org/debian-cd/current/i386/iso-cd/debian-500-i386-netinst.iso
+
+
+Setup the paella virtual machine
+===============================================
+
+Remaster the netinst iso
+-------------------------------------------
+
+This step is highly recommended.  This step is technically optional, but it may be handy, 
+especially if you have an application that can remaster an iso image.  This allows you to 
+preseed the debian installer and make an automated install.  Even though this step is 
+technically optional, it would be a very good idea to get the script below, and the files that 
+are obtained through subversion in the script to get an idea of how to proceed manually 
+without performing this step.
+
+If you are running debian, remastering the iso is easy::
+
+   mkdir remaster-netinst
+   cd remaster-netinst
+   svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
+   
+if you already grabbed the netinst iso image, type::
+
+   ./remaster-netinst-iso /path/to/debian-501-i386-netinst.iso
+
+if you haven't gotten the netinst iso image yet, type::
+
+   ./remaster-netinst-iso
+
+The script will attempt to download the netinst iso for lenny, but it may be out of date 
+when by the time you read this, so you are recommended to download the iso_ manually.
+
+.. _iso: http://cdimage.debian.org/debian-cd
+
+**WARNING!!!**  This script uses sudo to perform the loopback mounting of the iso 
+image.  Be sure to look over the script really good before you execute it.  You may want to 
+change the ARCH variable near the top of the file (note: only i386 is tested at the moment).  
+Be sure that you have rsync, sudo, genisoimage, and subversion installed.
+
+This script is the only place where you will need to have root access on the host 
+system.  Every other script that requires root permissions, will be run on a virtual machine.
+
+The script will give you a chance to review and edit the preseed files before you create the 
+remastered iso image.  All the files that will be used in the remastered iso image will be 
+located in the cd/ directory. If you have a local mirror that you want to install from, you should 
+edit the localmirror.cfg file in the cd/ directory.  When the script is finished, the iso image will be 
+./paella-netinst.iso .
+
+**Note**  The preseed configuration files, and the setup scripts assume that the locale 
+is set to en_US.UTF-8 .  If you are using another locale, you really need to modify both the 
+preseed.cfg file, and the setup-paella-server script.  The postgresql database server will not 
+run unless your locale is generated, and referenced in the postgresql.conf file.
+
+Start VirtualBox
+------------------------------
+
+You need to get the virtualbox frontend up and running.  The user interface varies between 
+different versions of virtualbox.  These instructions were written using version 1.6.6, which 
+is the default version in debian lenny.  To start the virtualbox gui type::
+
+   virtualbox
+
+Make a new machine using the wizard provided by the virtualbox frontend.  Press next 
+and name the machine "paella".  Select "Debian" for the OS type.  Press next.  Set the base 
+memory size to 256MB.  Press next.  Make a new disk image at the default 8GB size (I chose 
+dynamically expanding size).  Press finish.
+
+Select paella from the list of machines on the frontend, and click the settings button.  In the 
+configuration dialog, select CD/DVD-ROM on the left hand side.  Click on the Mount CD/DVD 
+Drive button at the top.  Select the ISO Image File.  Press the folder on the right to bring up 
+the Virtual Disk Manager.  Here you want to add the netinst iso that you remastered.  It should 
+be called paella-netinst-$arch.iso, where $arch is the architecture that either you are running, 
+or that you selected.  Close the Virtual Disk Manager, and make sure that the iso is selected as 
+the image file that will be mounted.
+
+Now, select the Network part of the list of the left hand side of the settings dialog.  By default, 
+the network adapter should be enabled, and set to NAT.  This is what we want.  We also want 
+to add another network interface to this machine, so select the Adapter 2 tab.  Click the 
+"Enable Network Adapter" button.  Make sure the "Attached to" selection is set to "Internal 
+Network".  You will need to name the network in the field that says "Network Name".  Any name 
+should do just fine.  I used "lapnet" (no quotes), since I'm on a laptop.  Remember this name, 
+since you'll need this for the other machine(s) that you will use paella to install to.
+
+If you are using an newer 64 bit processor that has hardware virtualization support, you may want 
+to enable this in the general preferences, as the virtual machine will run much faster.
+
+.. Boot the paella virtual machine
+.. ================================
+
+Using Unmodified Official Debian Netinst Iso
+---------------------------------------------------
+
+If you didn't remaster the netinst file, you can find the preseed files, and the setup scripts 
+in the netinst_ directory on the paella website.  You can just install debian in the normal 
+manner.  You'll need to select the standard, desktop, and database-server tasks.  Look at 
+the preseed file to see how the default setup is configured.  The hostname, main user, and 
+the main user's password are all set to "paella" to make it easy to remember.  The paella 
+user should be added to the src, staff, adm, and sudo groups, but this probably isn't 
+an absolute necessity.  Set the dhcp3-server to listen to eth1 on the debconf question.
+
+Modify the Initial Setup Script
+--------------------------------------------------
+
+Once you switch to the local console, you will need to login as paella (password paella).  
+Here you will run a script that will help configure the server and get it ready for the rest 
+of this procedure.  The script is located at /usr/local/bin/setup-paella-server .  You may 
+need to edit the script and set the ip addresses that are set near the top.  The default 
+internal network that is used is 10.0.1.0/24.  You may need to change this if the ip 
+values conflict with your local network setup.  I suggest you try to stick to these values 
+if it's possible, and if it's not possible, to use 10.0.2.0/24, or something similar.  
+
+Please note that the script will try to install the guest utils and build the guest modules.  
+If you are not running virtualbox-ose version 1.6.6, you may need to may want to set 
+"do_backports" to "yes" in the script.  If the version of virtualbox-ose that you are using 
+doesn't match the version that's available at backports.org, the guest additions are 
+unlikely to work.  The guest additions are not absolutely necessary.  They just help 
+keep the mouse from feeling jerky, and also help configure the size of the screen to 
+more comfortable resolutions.  The attempt to build and install the guest additions 
+happens at the very end of the script, so if you have problems with this and using the 
+backports repository doesn't help, you will have to do without the guest modules.  If 
+you can't use the guest modules, you may need to use a modified xorg.conf to adjust 
+the resolution of the screen on the guest machine.  Regardless of whether the guest 
+additions are installed or not, the script will create an example xorg.conf located at 
+/etc/X11/xorg.conf.unused .  You may copy this to /etc/X11/xorg.conf and modify it 
+as you need.  If you do this, you must use a resolution that the vesa driver supports.
+
+
+Create a Partial Debian Archive
+=========================================
+
+
+Problems with setup of the initial debian mirror
+-------------------------------------------
+
+**Note:**  If the script failed, and you installed from a local mirror, you will need to 
+edit the /freespace/debian/conf/updates file and adjust the VerifyRelease fields in 
+the update stanzas.  You may have to import a key using gpg --import, or you may 
+just remove the VerifyRelease fields from the stanzas.  Once you are sure the 
+stanzas are correct, you can type::
+
+	reprepro -b /freespace/debian -VV --noskipold update
+	sudo apt-get update
+
+This will finish preparing the initial debian repository, and use that repository 
+in your apt sources.
+
+Debian Live
+============
+
+Why Debian Live?
+----------------------------------------
+Now you're ready to make the live nfsroot installer.  In the past, I had done this with paella, 
+and I had a flaky configuration that worked, albeit just barely.  In the beginning, I had to 
+compile a special kernel to allow me to mount an nfsroot, and have the network drivers 
+compiled right into the kernel image.  Later, the work on the initrd filesystem allowed me to 
+use stock kernels to boot from an nfsroot, but the readonly live nfsroot was flaky and limited 
+at best.  These days, there's DebianLive_ to help do much of the dirty work here.  It's even 
+possible to use DebianLive to make a live iso with the paella installer on it, for machines 
+that won't boot off of the network.  I actually had to do this with the older livecd package in 
+the past, but DebianLive is much better.  Now I can leave the management of a good live 
+system in somebody else's hands, and just concentrate on using that live system as an 
+installer for paella.
+
+I have written a script that will help build the live netboot image for the installer.  To run 
+the script , type::
+
+    create-debian-live-image
+
+
+This script will copy the live-helper config files to /freespace/live/config and build the 
+image, then install the image and the tftpboot files to the appropriate locations.  This 
+step will take quite a while, so this is a good place to take a break and let the machine 
+do its work.
+
+**Important**  If you aren't able to use 10.0.1.1 as the ip address of your eth1 interface 
+on the virtual machine, you will have to edit /freespace/live/config/binary and set 
+LH_NET_ROOT_SERVER to the value of the ip that you will be using and then build the image
+again.
+
+Here are some quick instructions on how to do that::
+
+     cd /freespace/live
+     sudo lh_clean --purge
+     rm -fr .stage 
+     mkdir .stage
+     touch .stage/bootstrap
+     sudo paella-machine-installer install live_chroot chroot
+     sudo lh_build
+     sudo ./config/prepare-netboot
+
+While the paella installer is installing the chroot machine, you can watch the progress in 
+the logfile, /freespace/paellalog/paella-install-live_chroot.log .  You can do this with the 
+most program.  Bring up another terminal, and make it bigger, if you want to.  In the 
+terminal, type::
+
+	  most /freespace/paellalog/paella-install-live_chroot.log
+
+Then press 'b', followed by <Shift>-F.  Now you'll be able to watch the progress of the 
+live_chroot machine as it's being installed.
+
+**Time:**  This step, takes a long time to complete, and it's probably the longest step 
+in this guide.  The installation of the chroot will take about 10 minutes.  After that the 
+live-helper scripts will take the chroot and make a squashfs image from it.  All in all, it 
+seems to take about 20 minutes to fully complete this step.
+
+Using Paella Management Interface
+=======================================================
+
+Install the Admin Package
+---------------------------------
+
+Now we're almost ready to use the management interface.  The package containing 
+this application should've been installed earlier when you ran the "paella-user-quick-setup" 
+script earlier.  In case you still need to install it, type::
+
+    sudo apt-get update
+    sudo apt-get install paella-admin
+
+The executable is called **paella-management**.  You can either type it into a 
+terminal, or find it in the debian menu (but not in the kde menu, yet).  Don't run it yet, you 
+should set up the configuration file first.
+
+
+Setup ~/.paellarc
+-------------------
+
+.. __: http://docs.python.org/lib/module-ConfigParser.html
+
+The master config file will be found at /etc/paellarc .  The master config file is the one that 
+the installer will use.  You can copy this file to ~/.paellarc and edit it.  The paella-management 
+program will read the master config file, then the local one at ~/.paellarc .  The local file will 
+override options in the master file.  If you are not familiar with the file format, you can read 
+about it here__ .  Options that are prefixed by an underscore are not referenced in the code.  
+You can make your own underscored options, if you wish, to make it easier to edit.
+
+Type::
+
+	cd
+	cp /etc/paellarc .paellarc
+
+
+
+In the database section, the dbhost option should be the ip address of the eth1 interface, 
+which should be 10.0.1.1 .  You will also need to change the dbusername option to the database 
+admin user (dbadmin).  The dbusername in the master config file should  always be "paella".
+
+The management_gui section has options for the paella-management application.  The options 
+that you may want to change here are "text_editor", and "x_differ".  Both of these commands 
+should display an X window.  For the x_differ, I highly recommend xxdiff.  I have a config file that 
+makes it easier to use xxdiff, located at /usr/share/doc/paella-admin/xxdiffrc .  You'll want to 
+copy this file to ~/.xxdiffrc .  The x_differ command line in the paellarc file conforms 
+to this::
+
+     x_differ LeftFile RightFile
+
+If your differ needs options on the command line, please write a wrapper for it, and use that.
+
+There are only two text editors that I included with this quickstart routine.  They are 
+kate (the default) and xemacs.  If you wish to use another one, go ahead and install it and 
+put the command in the ~/.paellarc file.
+
+You should not need to change any other options.
+
+The paellarc configuration file is used by two distinct users, the database admin, and the 
+paella installer.  Much of the configuration in the paellarc file is used for the database admin.  
+The paella installer user only needs the database section of the paellarc file, as this user 
+uses the paella database for the rest of his configuration.
+
+
+Start paella-management
+------------------------------
+Run the paella-management script to start the management interface::
+
+    paella-management
+ 
+The little window that pops up is the main menu for paella.  From here on, I'll refer it as 
+the "main paella window".  There are two menu systems on the "main paella window".  One 
+of them is the standard menu bar at the top.  The other one is the list right below the menu 
+bar.  This is the list that contains "differs, environ, familes, ...".  This is the part of the 
+interface that has so far defied any conformance to standards that you might be used to.  
+I'm going to be calling this part of the interface the "list menu".
+
+ 
+The first thing that you will want to do is to connect to the database.  There is a connect button 
+on the toolbar for you to press.  The connection dialog entries are taken from your ~/.paellarc 
+file.  The settings for postgresql in this quickstart don't require a password for dbadmin, but 
+you'll want to use one if you use paella in a production environment.
+
+If you didn't run the "paella-user-quick-setup" script above, or if there were problems 
+encountered when running the script , then once you connect to the database, you 
+should get a dialog asking to create the primary tables.  You should click yes here 
+to setup an empty database structure.  If you don't do this, the database import procedure 
+will create these tables for you, but you won't be able to use the paella-management interface 
+until you do this.
+
+If the "paella-user-quick-setup" script ran without problems, the quickstart database 
+should already imported, and you can skip the next section that describes how to import 
+the database.
+
+
+Import the database
+--------------------------
+If the "paella-user-quick-setup" script ran without problems, you should already have the 
+quickstart database imported.  If there were problems running the script, you'll have to 
+follow the instructions in this section to import the quickstart database.  Otherwise, you 
+can skip this section.
+
+You may need to install the paella-defaultdb package::
+
+    sudo apt-get install paella-defaultdb
+
+Now we are going to import the startup database.  You may need an internet connection to 
+import the database.  The importer downloads the Packages files from the debian mirror in 
+the database.xml file, and inserts them into the database.  Go to the menubar, and in the 
+database menu, select "import database".  A directory selection dialog will appear.  On the 
+VM I tested, this window was a little bit too skinny, so you'll probably need to make it wider 
+with your mouse.  The database directory will be at::
+
+	 /usr/share/paella/databases/quickstart-vbox/
+
+Note that the default debian mirror is  http://ftp.us.debian.org/debian .  If you need to 
+change this, copy the quickstart-vbox directory, then edit the database.xml file 
+in the new quickstart-vbox  directory, and alter the uri attribute to the aptsource xml 
+element at the top of the file.  You can change this to a local mirror if you already have 
+one.  I recommend against using the local mirror that you just created in this quickstart 
+routine, as you would likely want to make new traits with packages that aren't available 
+in that mirror.  Paella has only been tested with http apt sources, it's behaviour on other 
+methods is unknown.
+
+
+If everything is working, you should be seeing an ugly little progress dialog displaying 
+something resembling what it should be doing.  I need to fix this dialog to make it more 
+accurate, but at least you'll see it working while it inserts the information into the 
+database.  The packages will probably take a little while to insert.  The apt_source_packages 
+table can take a lot of space that could be better saved.  In the future, it will probably default 
+to only holding package names rather than the other attributes in the Packages file.  The 
+reason they are there is to help keep the automated installations from bombing due to 
+unavailable or misspelled packages.  It would also be nice to have a little package browser 
+to help when creating traits, but that's in the future, and it would need the full record of each 
+package to be stored in the database.
+
+Guide to Paella Management
+-------------------------------------------------
+
+A more complete guide to using paella-management can be found here__.
+
+.. __: gui-guide.html
+
+
+Configure quickstart-vbox database
+======================================================
+
+Add the archive key
+-------------------------------------
+
+If you ran the "paella-user-quick-setup" script above, the archive key that you made 
+earlier should already be imported into the paella database.  If this didn't occur, or 
+you need to import another key, the instructions to do this lie below.  If you do import 
+more archive keys, see the section below on editing the default environment so you 
+can learn how to get paella to use those keys in an install.
+
+Now you'll need to add the gpg key you made above to paella, so that paella can install 
+the packages from the new mirror.  Type::
+
+    paella-import --aptkey /freespace/debian/paella.gpg
+
+Now check that the key has been imported.  There is a small apt key manager in the gui 
+for this.  This is a rather new part of the gui, so the interface is far from complete.  At 
+the moment you can only add keys, not remove them.  The apt key manager can be reached 
+from the "main paella window" Main menu on the menu bar.  You should see the name 
+and key id of the paella key on the list.  The name is taken from the filename when you 
+imported the key.
+
+
+Edit the Default Environment
+--------------------------------------------
+
+Access to the default environment is provided on the "list menu" in the "main paella 
+window", under the "environ" item in the list.  Click on the "+" to the left of the "environ" 
+list item, and two list items will be displayed below the environ item, named "current" and 
+"default".  You will want to click on "default".  This will bring up the "Default Environment" 
+manager.  To edit the default environment, press the "edit" button in the toolbar.  This will 
+bring up a text editor (if you're using kate, you'll have to select the session first).  The file 
+format is the same as the paellarc config file.  
+
+There are only two options that you will probably want to change.  The "archive_keys" 
+option is a comma separated list of key names that will be used for the installer.  The key, 
+"paella", should already be here.  If you named your key something else, or have other keys 
+that you want to use, you need to list them here.  The other option is "http_mirror", and you 
+will want make sure this is set to "http://paella.lapnet/debian" .  You must save the file and 
+exit the text editor for paella to save the information to the database.
+
+
+Create A Machine to Install
+===================================
+
+We're done with the paella VM for a little bit.  Now it's time to create a new VM which will be 
+used to install a system.  You don't want to poweroff or reboot the paella VM, since we'll be 
+using again shortly.
+
+Side Salad to a Paella
+----------------------------------
+Creating the next machine will be almost just like creating the paella VM.  This new machine 
+should be named "sidesalad", as that's what I'm going to be calling for the remainder of this 
+quickstart document.  Follow the instructions for making the paella VM, except keep the 
+memory at its default setting (or you can probably go down to 128M without problems if you're 
+starved for memory).  Make sure that you create the 8GB virtual hard drive, else we won't have 
+a device on which to install.  
+
+Now with "sidesalad" selected in the VirtualBox frontend, press the Settings button on the 
+toolbar.  On this machine, you'll need to configure the first network interface to use the 
+internal network, just as you configured the secondary network adapter on the paella VM.  
+Be sure to use the name "lapnet" for the network name.  The secondary network adapter 
+will also need to be set to use an internal network, and the network name should be 
+"lapnet2"
+
+These should be the only configuration changes you'll need to make for the sidesalad 
+machine.
+
+
+Boot the new machine
+----------------------------------
+Now we're ready to boot the machine.  In order to boot from the network, press "F12" 
+when the boot screen appears, then select "l".
+
+The machine should boot straight from the network without any problems.  If this doesn't 
+happen, it's a sign that something went wrong.  If I have time later, I might write a short 
+troubleshooting section to help figure out what went wrong.  If you haven't strayed from 
+the defaults, and have been following this document closely, the machine should boot.  
+I've done everything I can think of to make this process as easy as possible, so that when 
+you get to this step, you'll have a VM booting from the internal network, but it's possible 
+that I forgot something somewhere.  If you are absolutely sure that you have followed 
+this quickstart step by step and haven't got the new machine to boot from the network, 
+I'd really like to know about it, so we can figure out what went wrong, and how to adjust this 
+document to be prepared for that possibility.
+
+**Important**  From time to time, the network boot seems to stall when the live-initramfs 
+scripts try to configure the ip of the machine.  You will see a message like::
+
+	IP-Config: eth0 hardware address xx:xx:xx... mtu 1500 DHCP RARP
+
+If the machine stalls at this point for more than a minute, then it will stay there forever, and 
+you will need to reboot the sidesalad machine and try again.  There seems to be a problem 
+with the manner that the dhcp client for busybox is used, and I'm not  sure whether the 
+problem lies in the busybox dhcp client, the live-initramfs script that uses it, or the 
+virtualbox internal networking.  Other dhcp methods seem to work fine, and I think that the 
+debian installer also uses the busybox dhcp client, so I think that the problem is in the 
+live-initramfs script.  Hopefully, you won't encounter this bug, as it doesn't occur often, but 
+it does seem to occur about 5-10% of the time.  If this happens to you, just press the "Host" 
+key (right <ctrl>) and "r" to reset the machine.
+
+
+Tell Paella about the new machine
+----------------------------------------------------------
+If sidesalad booted from the network correctly, at the end of the boot process, there should 
+be a message explaining that this is an unknown machine, and to use paella-submit-machine 
+to tell paella about it.  This is what we're going to do now.  Type::
+
+   paella-submit-machine sidesalad
+
+This will insert the mac addresses of all the ethernet interfaces into the database, tied to the 
+name "sidesalad".  These addresses are inserted into the default_environment table.  The 
+paella database user only has INSERT and SELECT access to the default_environment table.  
+If there are matching addresses already present in the table, the inserts will not take place.  
+This could mean that the addresses have already been matched to another machine (this 
+shouldn't happen in this quickstart, but it's something that the admin needs to be aware of).  
+The only table that the paella database user has full write access to is the current_environment 
+table.  All other tables are read-only to the paella database user.
+
+There's nothing else to be done with the sidesalad machine at this moment, so go ahead and 
+shut it down::
+
+     sudo poweroff
+
+
+Manage the database again
+-----------------------------------------------------
+
+Now we need to go back to the paella VM.  Edit the default environment, and set the 
+sidesalad option to 'True' in the autoinstall section.  This will tell the paella-init-nfsinstaller 
+script to install the machine, once it boots.  The admin should be aware about this part of 
+the default environment, since when the autoinstall value is set to 'True', the machine will 
+install each time it's booted from the network.  
+
+Create the Sidesalad Machine
+-------------------------------------------
+
+Now we are ready to create the sidesalad machine in the database.  You will need to 
+start an instance of the machine manager, which you can do by selecting "machines" from 
+the list in main paella window.  When the machine manager shows up on the desktop, you 
+will then select "manage machines" from the Main menu.  This will set the machine manager 
+to manage machines.  The machine manager is built to manage machines, diskconfigs, and 
+kernels.
+
+When the machine manager is set to manage machines, you should see a short list of machines 
+on the left hand side of the manager.  Selecting a machine from the list will display the machine 
+on the right hand side of the manager.  Now you will want to create a new machine.  You can 
+select "New" from the main menu, or press the "New" icon on the toolbar.  Doing this will 
+cause a dialog box to be displayed asking for the name of the new machine.  You will want to 
+enter "sidesalad" into the text entry in the dialog.
+
+Configure the Sidesalad Machine
+-----------------------------------------------------------------------
+
+Now it's time to configure the sidesalad machine.  You will want to select "sidesalad" from the 
+list of machines on the left hand side of the manager.  The first thing that you will wan to do is 
+select a parent for the machine.  In the quickstart database, all of the machines are set to be 
+children of the "default" machine.  Since, sidesalad is going to be another paella server, 
+similar to the paella machine, we want its parent to be "paellabase".
+
+Next, we want to select the profile that will be installed on the sidesalad machine.  The profile 
+should already be set by the "paellabase" machine to "paella_vbox".  Make sure that the 
+profile is set to this.
+
+Next we want to add a family.  Click on the "new" link next to the "Families" section title.  This 
+will bring up a dialog box.  We want to type "lapnet2" into the box and press "Ok".  The lapnet2 
+family will override the lapnet family in the "paella_vbox" profile (more accurately, the variables 
+in the lapnet2 family will override the variables in the lapnet family).  The lapnet2 family is used 
+to distinguish sidesalad from paella.  It uses the 10.0.2.0/24 network, with the domain named 
+"lapnet2".
+
+Now we want to set the hostname for sidesalad.  Click on the "new" link next to the "Variables" 
+section title.  This will bring up a dialog box, requesting you to fill out the trait, name and value 
+of the new variable.  You'll need to enter "global" for the trait, "hostname" for the name, and 
+"sidesalad" for the value.
+
+Now we need to set the installer machine that sidesalad will host.  Click on the "new" link next 
+to the "Variables" section title, as in the paragraph above.  In this dialog box, you will need to 
+set the entry for trait to "paella_server", the entry for name to "installer_machine", and the 
+value to "live_chroot2".  The live_chroot2 machine should already be present in the database, 
+and it's configured to talk to sidesalad to get the install information.
+
+
+
+
+Boot Sidesalad Again
+----------------------------------------------------------
+
+Boot the sidesalad machine from the network again.  This time the sidesalad machine 
+should start installing automatically.
+
+While the paella installer is installing the sidesalad machine, you can watch the progress in 
+the logfile, /freespace/paellalog/paella-install-sidesalad.log on the paella machine.  You can 
+do this with the most program.  Bring up another terminal, and make it bigger, if you want 
+to.  In the terminal, type::
+
+	  most /freespace/paellalog/paella-install-sidesalad.log
+
+Then press 'b', followed by <Shift>-F.  Now you'll be able to watch the progress of the 
+sidesalad machine as it's being installed.
+
+While the live installer that sidesalad will host is being installed, you can follow the progress 
+by looking at /freespace/paellalog/paella-install-live_chroot2.log .
+
+**Time:**  This step can take a while.  In many ways, this step is a composition of the steps 
+that have already been performed.  The sidesalad machine should be extremely similar to the 
+paella machine.  The main difference is that you don't need to download packages from the 
+internet, but from the paella machine, which should be faster.  In total, this step should take 
+about 30 minutes.
+
+
+Reboot Sidesalad Machine
+------------------------------------
+
+Once the installer finishes, we can reboot into the new system.  On the sidesalad machine, 
+type::
+
+	sudo reboot
+
+(load this page on sidesalad, so you can cut and paste the commands below)
+
+Now the machine should boot from the hard drive.  When the machine finishes booting, there 
+are only a few commands left to make sidesalad a paella server.  The login should be the 
+same as the paella machine (user: paella, password: paella).
+
+First, we need to copy the debian repository over to sidesalad::
+
+       rsync -av paella.lapnet:/freespace/debian/ /freespace/debian
+
+You will probably get an error about setting time on /freespace/debian, but otherwise this 
+command should work.
+
+Next, we need to copy the archive key (the private one)::
+
+      rsync -av paella.lapnet:~/.gnupg ~/
+
+After that we will import the database that was exported from paella.lapnet while sidesalad 
+was being installed::
+
+    PAELLA_DBUSER=dbadmin PAELLA_DBHOST=127.0.1.1 paella-import /var/cache/paella/export/database.xml
+
+Finally, we need to create the debian live image (The chroot installer was installed by the paella 
+installer).  A simple script was created by the installer to help with this.  You can type::
+
+	     sudo /freespace/live/make-installer-image
+
+This step will take quite a while, so it may be a good time to pull up another terminal.  In the new 
+terminal, we need to copy /etc/paellarc and edit it::
+
+	  cp /etc/paellarc ~/.paellarc
+	  kwrite ~/.paellarc
+
+Set dbhost to "sidesalad" and dbusername to "dbadmin".  Save the file and exit the editor, 
+then run the paella-management application::
+
+     paella-management
+
+
+Edit the default environment and set "http_mirror" to "http://sidesalad.lapnet2/debian".
+
+Now, the sidesalad machine should work as a paella server.
+
+**Time:**  This step can also take a while.  I have tried to make the live-helper step a bit 
+shorter by not compressing the squashfs image.  Still, this step should take about 30 
+minutes.
+
+Mission Accomplished!!!
+===================================
+
+If you made it this far, then this quickstart guide is complete!  
+Congratulations on installing your first test machine with paella!
+
+
+What do I do now?
+------------------------------------------------
+
+If you wish, you could reinstall the paella machine, using sidesalad as the server.  The 
+steps to do this would be very similar to how you made the sidesalad machine, so I'm 
+not going to bother with the details.  This guide is long enough as it is (and it's called 
+a "quickstart" guide).  Even so, it shouldn't be difficult to figure out how to install the 
+paella machine  from sidesalad.
+
+Browse the Quickstart Database
+------------------------------------------------
+
+You could spend some time browsing the quickstart database with the paella-management 
+application.  This would help to see how paella is structured, and may give you some ideas 
+of how to use it for your machines and network(s).  Take note, the quickstart database was 
+forked from the default database that ships with paella in order to make it easier to 
+bootstrap paella, and make it through this guide.
+
+
+Start Using the Default Database
+------------------------------------------------
+
+The default database_ is probably a better database to work with, although it has some 
+parts that are still incomplete.  Using it will require a more complete debian mirror, plus 
+a local mirror of the debian repository at http://www.debian-multimedia.org/ .  You 
+may also want to build a few extra packages to use with it.  The default database makes 
+a better use of the framework that paella provides which can help teach you how to use 
+paella in creating your own database.
+
+
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
+
+.. _useless:  http://useless.berlios.de/
+
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+.. _machines: #machine
+.. _DebianLive: http://wiki.debian.org/DebianLive
+.. _database: defaultdb.html
