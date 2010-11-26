@@ -355,7 +355,12 @@ class KernelHelper(BaseHelper):
     # that sets the kernel to "linux-image-generic" and have
     # all ubuntu machines based on that machine.
     def _determine_default_kernel(self):
-        debian_kernel = 'linux-image-2.6-%s' % get_architecture()
+        arch = get_architecture()
+        # reset arch when arch is i386
+        # using 686 by default.
+        if arch == 'i386':
+            arch = '686'
+        debian_kernel = 'linux-image-2.6-%s' % arch
         return debian_kernel
     
     

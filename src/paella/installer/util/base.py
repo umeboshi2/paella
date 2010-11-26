@@ -91,7 +91,7 @@ def install_packages_command(packages, defenv, action='install',
     if apt_cmd == 'aptitude':
         if '--add-user-tag' not in opts:
             if trait is not None and usertag is None:
-                usertag = 'paella-trait-%s' % self.trait
+                usertag = 'paella-trait-%s' % trait
             opts += ['--add-user-tag', usertag]
     full_command = [apt_cmd] + opts + [action] + packages
     shell_cmd = ' '.join(full_command)

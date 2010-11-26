@@ -39,7 +39,10 @@ def setup_storage_fai(disklist, disk_config, logdir,
     disk_config_file.write(disk_config)
     disk_config_file.close()
     options = ['-X', '-f', disk_config_path]
+    path = os.environ['PATH']
+    path += ':/usr/lib/fai'
     env = ['env', 'LOGDIR=%s' % logdir,
+           'PATH=%s' % path,
            'disklist=%s' % '\n'.join(disklist)
            ]
     if 'DEBUG' in os.environ:
