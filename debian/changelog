@@ -1,3 +1,15 @@
+paella (0.8.1) paella; urgency=low
+
+  * set PAELLA_NOPACKAGETABLES to true in paella-import script
+  * set PAELLA_NOPACKAGETABLES to true in paella-management
+  * attaching os attribute to suite, but not using this yet
+  * fix some problems when choosing default kernel based on arch
+  * add /usr/lib/fai to PATH when using setup-storage
+  * update berlios svn url (and make variable for it) in remaster-
+    netinst-iso script (this should also be updated for squeeze)
+
+ -- Joseph Rawson (new email) <umeboshi3@gmail.com>  Sun, 28 Nov 2010 17:16:15 -0600
+
 paella (0.8.0) paella; urgency=low
 
   * New Release

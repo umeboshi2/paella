@@ -15,6 +15,12 @@ set -e
 
 # you may need to set these variables
 #ARCH=i386
+
+# berlios.de seems to have shut down svn server, so use http instead
+#    svn export --force svn://svn.berlios.de/paella/website/netinst cd
+#svnurl=svn://svn.berlios.de/paella/website/netinst
+svnurl=http://svn.berlios.de/svnroot/repos/paella/website/netinst
+
 if [ -z $ARCH ]; then
     ARCH=`dpkg --print-architecture`
 fi
@@ -53,7 +59,7 @@ rmdir loopdir
 chmod +w -R cd/
 
 if [ -z $PAELLA_NETINST_WORKING_COPY ]; then
-    svn export --force svn://svn.berlios.de/paella/website/netinst cd
+    svn export --force $svnurl cd
 else
     echo "exporting from working copy"
     svn export --force $PAELLA_NETINST_WORKING_COPY cd
