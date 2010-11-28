@@ -42,7 +42,8 @@ Package: paella-live-installer
 Section: admin
 Priority: extra
 Architecture: all
-Depends: paella-installer (= ${binary:Version}), grub, fai-client (>= 3.2.16), parted
+Depends: paella-installer (= ${binary:Version}), grub, 
+ fai-setup-storage | fai-client (>= 3.2.16), parted
 Recommends: mdadm, xfsprogs, reiserfsprogs, hdparm, dmsetup, cryptsetup
 Suggests: fai-client (>= 3.2.18)
 Description: package for machine installer
