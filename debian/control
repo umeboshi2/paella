@@ -31,7 +31,7 @@ Section: admin
 Priority: extra
 Architecture: all
 Depends: paella-db (= ${binary:Version}), debootstrap
-Suggests: python-dnspython, fai-client (>= 3.2.16)
+Suggests: python-dnspython, fai-setup-storage
 Description: Python package for paella installers
  This package contains most of the code for the paella installer to 
  work.  The paella-machine-installer script is located in this package,
@@ -43,9 +43,8 @@ Section: admin
 Priority: extra
 Architecture: all
 Depends: paella-installer (= ${binary:Version}), grub, 
- fai-setup-storage | fai-client (>= 3.2.16), parted
+ fai-setup-storage, parted
 Recommends: mdadm, xfsprogs, reiserfsprogs, hdparm, dmsetup, cryptsetup
-Suggests: fai-client (>= 3.2.18)
 Description: package for machine installer
  This package should be installed on a live system.  This package contains 
  helper scripts that are useful for the live installer.  It also recommends 
