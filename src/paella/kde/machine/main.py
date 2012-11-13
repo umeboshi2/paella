@@ -16,6 +16,9 @@ from viewbrowser import KernelView
 
 from actions import ManageActions, ManageActionsOrder
 
+from actions import ManageMachinesAction, ManageDiskConfigAction
+from actions import ManageKernelsAction
+
 
 class MachineManager(PaellaManagerWidget):
     def __init__(self, parent):
@@ -100,11 +103,15 @@ class MachineMainWindow(BasePaellaWindow):
         self.newAction = KStdAction.openNew(self.slotNewObject, collection)
         self.quitAction = KStdAction.quit(self.close, collection)
         self._manage_action_objects = {}
-        for action_name in ManageActionsOrder:
-            slotname = 'slotManage%s' % action_name
-            slot = getattr(self, slotname)
-            action_object = ManageActions[action_name](slot, collection)
-            self._manage_action_objects[action_name] = action_object
+        ao = self._manage_action_objects
+        ao['machine'] = ManageMachinesAction(self.slotManagemachine, collection)
+        ao['diskconfig'] = ManageDiskConfigAction(self.slotManagediskconfig, collection)
+        ao['kernels'] = ManageKernelsAction(self.slotManagekernels, collection)
+        #for action_name in ManageActionsOrder:
+        #    slotname = 'slotManage%s' % action_name
+        #    slot = getattr(self, slotname)
+        #    action_object = ManageActions[action_name](slot, collection)
+        #    self._manage_action_objects[action_name] = action_object
             
     def initMenus(self):
         mainmenu = KPopupMenu(self)

@@ -23,6 +23,10 @@ from paella.kde.base.actions import ManageAptSourcesAction
 from paella.kde.base.actions import OpenSuiteManagerAction
 from paella.kde.base.actions import ManageAptKeysAction
 from paella.kde.base.actions import IdentifyMachinesAction
+# db actions
+from paella.kde.base.actions import ConnectDatabaseAction, DisconnectDatabaseAction
+from paella.kde.base.actions import ImportDatabaseAction, ExportDatabaseAction
+
 
 from paella.kde.base.mainwin import BasePaellaWindow
 
@@ -137,8 +141,19 @@ class BasePaellaMainWindow(BasePaellaWindow):
         # don't collide with python keyword
         self._dbactionslots['import'] = self.slotImportDatabase
         self.dbactions = dict()
-        for action in dbactions.keys():
-            self.dbactions[action] = dbactions[action](self._dbactionslots[action], collection)
+
+        self.dbactions['connect'] = ConnectDatabaseAction(self.slotConnectDatabase,
+                                                          collection)
+        self.dbactions['disconnect'] = DisconnectDatabaseAction(self.slotDisconnectDatabase,
+                                                                collection)
+        self.dbactions['import'] = ImportDatabaseAction(self.slotImportDatabase,
+                                                        collection)
+        self.dbactions['export'] = ExportDatabaseAction(self.slotExportDatabase,
+                                                        collection)
+        
+        
+        #for action in dbactions.keys():
+        #    self.dbactions[action] = dbactions[action](self._dbactionslots[action], collection)
         # these will be similar to suiteActions
         # where the key is the context
         self.environActions = {}

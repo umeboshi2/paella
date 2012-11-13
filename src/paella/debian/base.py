@@ -3,7 +3,7 @@ from gzip import GzipFile
 import tempfile
 import email
 
-from apt_pkg import ParseTagFile
+from apt_pkg import TagFile
 
 
 from useless.base import debug, Error
@@ -161,7 +161,7 @@ def _parse_tagfile(filename, function):
         tagfile = bunzip(filename)
     else:
         tagfile = file(filename)
-    parser = ParseTagFile(tagfile)
+    parser = TagFile(tagfile)
     while parser.Step():
         k,v = function(parser.Section)
         pdict[k] = v

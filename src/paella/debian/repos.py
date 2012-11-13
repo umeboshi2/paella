@@ -9,8 +9,6 @@ import tempfile
 from copy import deepcopy as copy
 
 
-from apt_pkg import ParseTagFile
-
 from useless.base import debug, Error, NoFileError
 from useless.base.util import wget, strfile
 from useless.base.util import md5sum as md5sum_base
