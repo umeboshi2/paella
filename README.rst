@@ -22,7 +22,48 @@ History
 ---------------
 
 Paella was written over eight years ago, yet much of the core components 
-have changed little since the project started approaching stability.
+have changed little since the project started approaching stability.  Some 
+of the core code was removed into the useless project for use in other 
+projects unrelated to paella.  The latest major change the the code was 
+made in 2009, and I have been using paella to install systems consistently 
+since then.  The code has proven itself to be a reliable framework, where 
+the changes that are necessary to update the manner in which the installer 
+operates can be handled through the hooks that the installer objects 
+provide.
+
+The other edge of this sword is that, in the attempt to design a flexible 
+framework that can be directed almost entirely through the configuration, 
+the code that actually executes the framework has remained sessile.  While 
+this provides stability and predictability, it comes at a price.  At this 
+point in time, many of the upstreams sources that paella depends upon have 
+all been deprecated by world developers at large, in favor of sources that 
+are being actively developed and maintained.  This effectively puts the 
+future of paella in jeopardy if the framework isn't eventually modified 
+to take advantages of the state of our shared codebase that have happened 
+over the last eight years.
+
+In the beginning, this code was written at a time where I was pressed to 
+have a system to install the servers that I was responsible for installing 
+and configuring to perform the function request by the client.  I needed a 
+system that could install preconfigured systems in a reliable and predictable 
+manner.  I had become familiar with FAI, and I started using this to meet 
+my needs.  During this time, I felt that using a SQL database to hold 
+the smaller particulars of the installation data would come in handy, due 
+to the relational nature of the database.  While inheritance and 
+hierarchies can become more involved with a relational database, the format 
+is handy for performing many management activities with the configuration 
+can become more difficult when the configuration is stored in a filesystem.
+
+I also wanted to exceed some of the limitations that constrained me when 
+using FAI.  The manner in which FAI operates depends on an nfs mount on 
+a local network.  Paella, however, only needs access to the configuration 
+database.  The live system that contains the installer can be run from 
+nfs, cdrom, or usb.  This allows installation on machines that are don't 
+have PXE capability, as well as allowing installation of servers where the 
+configuration database is not located on the local network.  Furthermore, 
+I desired to develop a gui to manipulate the configuration, and the sql 
+database lent itself to quicker gui development.
+
 
 
 
