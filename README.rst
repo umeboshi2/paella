@@ -1,7 +1,7 @@
 .. -*- mode: rst -*-
 
 ===========
-Abstract
+Paella
 ===========
 
 .. contents:: :backlinks: entry
@@ -9,22 +9,25 @@ Abstract
 Introduction 
 ----------------------
 
-Paella is system for creating/installing customized debian systems.
-There are no current plans for configuration updates on live systems,
-that's not it's initial purpose, although it may be extended later.
+Paella is a system for that has been used to install preconfigured 
+debian systems over a local network in a manner similar to FAI_.  The 
+project started in 2004 as a set of scripts within the FAI installer than 
+communicated with a PostgreSQL database to retrieve the configuration for 
+the target machine.
 
-Paella differs from other automated installation system by using a 
-PostgreSQL database to store all of the configuration.  PostgreSQL was 
-chosen primarily because it supports foreign keys and stored procedures.  
-Foreign keys are used to keep the relationships in the configuation tied 
-together, and this can be useful for maintaining a configuation over a long 
-time as it helps to keep it from breaking due to broken relationships between 
-the different parts of the configuration.  This doesn't make it impossible to 
-make a broken configuration, or to break a good configuration, but it does 
-help quite a bit.  It also helps organize the configuration so that it is easier to 
-tell what is going to be installed and configured.
+The old website for this project is at http://paella.berlios.de
 
 
+History
+---------------
+
+Paella was written over eight years ago, yet much of the core components 
+have changed little since the project started approaching stability.
+
+
+
+Fragments of the old abstract are left below to guide me in helping to 
+complete this README.rst in the near future.
 
 
 Inspiration
