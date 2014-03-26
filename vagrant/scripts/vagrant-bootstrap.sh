@@ -13,6 +13,9 @@ if ! [ -f /etc/apt/sources.list.d/salt.list ]; then
 	> /etc/apt/sources.list.d/salt.list
 fi
 
+apt-get -y update
+apt-get -y install salt-minion
+
 if [ -d /etc/salt ]; then
     if [ -d /etc/salt.orig ]; then
 	echo "removing /etc/salt"
