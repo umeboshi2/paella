@@ -1,0 +1,3 @@
+tftpd-hpa:
+  pkg:
+    - latest

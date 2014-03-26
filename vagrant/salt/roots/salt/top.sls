@@ -1,0 +1,4 @@
+base:
+  'paella':
+    - apache
+    - tftpd
