@@ -1,21 +1,17 @@
 #!/bin/bash
 
-if ! apt-key --keyring /etc/apt/trusted.gpg finger | grep "5474 5E6F 55BB BD92 6373  0B26 45CE 3377 14BB F15F"; then
-    wget -O - http://debrepos.littledebian.org/littledebian.key | apt-key add -
+key_url=http://debian.saltstack.com/debian-salt-team-joehealy.gpg.key
+key_fingerprint="102E 2FE7 D514 1DBD 12B2  60FC B09E 40B0 F2AE 6AB9"
+
+if ! apt-key --keyring /etc/apt/trusted.gpg finger | grep "$key_fingerprint"; then
+    wget -O - $key_url | apt-key add -
 fi
 
 if ! [ -f /etc/apt/sources.list.d/salt.list ]; then
     echo "adding sources list for salt"
-    echo "deb http://debrepos.littledebian.org/salt wheezy-saltstack main" \
+    echo "deb http://debian.saltstack.com/debian wheezy-saltstack main" \
 	> /etc/apt/sources.list.d/salt.list
 fi
-
-# update package list and upgrade system
-#apt-get -y update
-#apt-get -y upgrade
-
-# install salt-minion
-#apt-get -y install salt-minion
 
 if [ -d /etc/salt ]; then
     if [ -d /etc/salt.orig ]; then
