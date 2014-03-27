@@ -1,0 +1,13 @@
+#
+# Shorewall version 3.2 - bootp client Macro
+#
+# /etc/shorewall/macro.BootpC
+#
+#	This macro handles bootp clients
+# <% dest = pillar['default-ports']['bootpc'] %> destination port is ${dest}
+###############################################################################
+#ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
+#				PORT(S)	PORT(S)	LIMIT	GROUP
+PARAM	-	-	udp	${dest}
+PARAM	-	-	tcp	${dest}
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

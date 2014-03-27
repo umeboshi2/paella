@@ -13,5 +13,7 @@
     - mode: 755
     - require: 
         - file: /var/cache/netboot/netboot.tar.gz
+        - file: /var/lib/tftpboot
+
   cmd.run:
     - name: /usr/local/bin/install-netboot

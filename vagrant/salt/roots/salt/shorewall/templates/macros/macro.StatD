@@ -1,0 +1,12 @@
+#
+# Shorewall version 3.2 - StatD Macro
+#
+# /etc/shorewall/macro.StatD
+#
+#	This macro handles rpc.statd for nfs
+# <% dest = pillar['default-ports']['statd'] %> destination port is ${dest}
+###############################################################################
+#ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
+#				PORT(S)	PORT(S)	LIMIT	GROUP
+PARAM	-	-	tcp	${dest}
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

@@ -1,0 +1,4 @@
+base:
+  '*':
+    - base
+    - default-ports

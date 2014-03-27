@@ -1,0 +1,12 @@
+#
+# Shorewall version 3.2 - ManageSieve Macro
+#
+# /etc/shorewall/macro.ManageSieve
+#
+#	This macro handles ManageSieve for Citadel
+# <% dest = pillar['default-ports']['manage_sieve'] %> destination port is ${dest}
+###############################################################################
+#ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
+#				PORT(S)	PORT(S)	LIMIT	GROUP
+PARAM	-	-	tcp	${dest}
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

@@ -4,4 +4,5 @@ base:
     - tftpd
     - bind
     - dhcpd
+    - shorewall
     - files

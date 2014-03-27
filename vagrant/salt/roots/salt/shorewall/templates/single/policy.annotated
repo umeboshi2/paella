@@ -1,0 +1,174 @@
+#
+# Shorewall version 4.0 - Sample Policy File for one-interface configuration.
+# Copyright (C) 2006 by the Shorewall Team
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# See the file README.txt for further details.
+#-----------------------------------------------------------------------------
+# For information about entries in this file, type "man shorewall-policy"
+###############################################################################
+# 
+# This file defines the high-level policy for connections between zones defined
+# in shorewall-zones(5).
+# 
+# Important
+# 
+# The order of entries in this file is important
+# 
+# This file determines what to do with a new connection request if we don't get a
+# match from the /etc/shorewall/rules file . For each source/destination pair,
+# the file is processed in order until a match is found ("all" will match any
+# client or server).
+# 
+# Important
+# 
+# Intra-zone policies are pre-defined
+# 
+# For $FW and for all of the zones defined in /etc/shorewall/zones, the POLICY
+# for connections from the zone to itself is ACCEPT (with no logging or TCP
+# connection rate limiting) but may be overridden by an entry in this file. The
+# overriding entry must be explicit (cannot use "all" in the SOURCE or DEST).
+# 
+# Similarly, if you have IMPLICIT_CONTINUE=Yes in shorewall.conf, then the
+# implicit policy to/from any sub-zone is CONTINUE. These implicit CONTINUE
+# policies may also be overridden by an explicit entry in this file.
+# 
+# The columns in the file are as follows (where the column name is followed by a
+# different name in parentheses, the different name is used in the alternate
+# specification syntax).
+# 
+# SOURCE - zone|$FW|all
+# 
+#     Source zone. Must be the name of a zone defined in shorewall-zones(5), $FW
+#     or "all".
+# 
+# DEST - zone|$FW|all
+# 
+#     Destination zone. Must be the name of a zone defined in shorewall-zones(5),
+#     $FW or "all". If the DEST is a bport zone, then the SOURCE must be "all",
+#     another bport zone associated with the same bridge, or it must be an ipv4
+#     zone that is associated with only the same bridge.
+# 
+# POLICY - {ACCEPT|DROP|REJECT|CONTINUE|QUEUE|NFQUEUE[(queuenumber)]|NONE}[:{
+#     default-action-or-macro|None}]
+# 
+#     Policy if no match from the rules file is found.
+# 
+#     If the policy is neither CONTINUE nor NONE then the policy may be followed
+#     by ":" and one of the following:
+# 
+#      a. The word "None" or "none". This causes any default action defined in
+#         shorewall.conf(5) to be omitted for this policy.
+# 
+#      b. The name of an action (requires that USE_ACTIONS=Yes in shorewall.conf
+#         (5)). That action will be invoked before the policy is enforced.
+# 
+#      c. The name of a macro. The rules in that macro will be applied before the
+#         policy is enforced. This does not require USE_ACTIONS=Yes.
+# 
+#         Possible policies are:
+# 
+#     ACCEPT
+# 
+#         Accept the connection.
+# 
+#     DROP
+# 
+#         Ignore the connection request.
+# 
+#     REJECT
+# 
+#         For TCP, send RST. For all other, send an "unreachable" ICMP.
+# 
+#     QUEUE
+# 
+#         Queue the request for a user-space application such as Snort-inline.
+# 
+#     NFQUEUE
+# 
+#         Queue the request for a user-space application using the
+#         nfnetlink_queue mechanism. If a queuenumber is not given, queue zero
+#         (0) is assumed.
+# 
+#     CONTINUE
+# 
+#         Pass the connection request past any other rules that it might also
+#         match (where the source or destination zone in those rules is a
+#         superset of the SOURCE or DEST in this policy). See shorewall-nesting
+#         (5) for additional information.
+# 
+#     NONE
+# 
+#         Assume that there will never be any packets from this SOURCE to this
+#         DEST. Shorewall will not create any infrastructure to handle such
+#         packets and you may not have any rules with this SOURCE and DEST in the
+#         /etc/shorewall/rules file. If such a packet is received, the result is
+#         undefined. NONE may not be used if the SOURCE or DEST columns contain
+#         the firewall zone ($FW) or "all".
+# 
+# LOG LEVEL (loglevel) - [log-level|ULOG|NFLOG]
+# 
+#     Optional - if supplied, each connection handled under the default POLICY is
+#     logged at that level. If not supplied, no log message is generated. See
+#     syslog.conf(5) for a description of log levels.
+# 
+#     You may also specify ULOG or NFLOG (must be in upper case). This will log
+#     to the ULOG or NFLOG target and will send to a separate log through use of
+#     ulogd (http://www.netfilter.org/projects/ulogd/index.html).
+# 
+#     If you don't want to log but need to specify the following column, place
+#     "-" here.
+# 
+# BURST:LIMIT (limit) - [{s|d}:[[name]:]]]rate/{second|minute}[:burst]
+# 
+#     If passed, specifies the maximum TCP connection rate and the size of an
+#     acceptable burst. If not specified, TCP connections are not limited. If the
+#     burst parameter is omitted, a value of 5 is assumed.
+# 
+#     When s: or d: is specified, the rate applies per source IP address or per
+#     destination IP address respectively. The name may be chosen by the user and
+#     specifies a hash table to be used to count matching connections. If not
+#     give, the name shorewall is assumed. Where more than one POLICY specifies
+#     the same name, the connections counts for the policies are aggregated and
+#     the individual rates apply to the aggregated count.
+# 
+# CONNLIMIT - limit[:mask]
+# 
+#     May be used to limit the number of simultaneous connections from each
+#     individual host to limit connections. While the limit is only checked on
+#     connections to which this policy could apply, the number of current
+#     connections is calculated over all current connections from the SOURCE
+#     host. By default, the limit is applied to each host individually but can be
+#     made to apply to networks of hosts by specifying a mask. The mask specifies
+#     the width of a VLSM mask to be applied to the source address; the number of
+#     current connections is then taken over all hosts in the subnet
+#     source-address/mask.
+# 
+# Example
+# 
+#  a. All connections from the local network to the internet are allowed
+# 
+#  b. All connections from the internet are ignored but logged at syslog level
+#     KERNEL.INFO.
+# 
+#  c. All other connection requests are rejected and logged at level KERNEL.INFO.
+# 
+#         #SOURCE         DEST            POLICY          LOG           BURST:LIMIT
+#         #                                               LEVEL
+#         loc             net             ACCEPT
+#         net             all             DROP            info
+#         #
+#         # THE FOLLOWING POLICY MUST BE LAST
+#         #
+#         all             all             REJECT          info
+# 
+###############################################################################
+#SOURCE		DEST		POLICY		LOG LEVEL	LIMIT:BURST
+$FW		net		ACCEPT
+net		all		DROP		info
+# The FOLLOWING POLICY MUST BE LAST
+all		all		REJECT		info

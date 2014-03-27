@@ -1,0 +1,12 @@
+#
+# Shorewall version 3.2 - DHCP Macro
+#
+# /etc/shorewall/macro.DHCP
+#
+#	This macro handles Dynamic Host Control Protocol (DHCP)
+# <% dest = pillar['default-ports']['dhcp'] %> destination port is ${dest}
+###############################################################################
+#ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
+#				PORT(S)	PORT(S)	LIMIT	GROUP
+PARAM	-	-	udp	${dest}
+#LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE
