@@ -1,6 +1,12 @@
+# -*- mode: yaml -*-
+
 tftpd-hpa:
   pkg:
     - latest
+  service:
+    - running
+    - require:
+        - file: /var/lib/tftpboot
 
 syslinux:
   pkg:

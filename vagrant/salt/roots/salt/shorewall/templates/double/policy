@@ -1,0 +1,67 @@
+#
+# Shorewall version 4.0 - Sample Policy File for two-interface configuration.
+# Copyright (C) 2006 by the Shorewall Team
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# See the file README.txt for further details.
+#------------------------------------------------------------------------------
+# For information about entries in this file, type "man shorewall-policy"
+#
+# The manpage is also online at 
+# http://shorewall.net/manpages/shorewall-policy.html
+#
+###############################################################################
+#SOURCE		DEST		POLICY		LOG LEVEL	LIMIT:BURST
+
+#
+# Note about policies and logging:
+#	This file contains an explicit policy for every combination of
+#	zones defined in this sample.  This is solely for the purpose of
+#	providing more specific messages in the logs.  This is not
+#	necessary for correct operation of the firewall, but greatly
+#	assists in diagnosing problems. The policies below are logically
+#	equivalent to:
+#
+#	loc	net		ACCEPT
+#	net	all		DROP		info
+#	all	all		REJECT		info
+#
+#	The Shorewall-perl compiler will generate the individual policies
+#	below from the above general policies if you set 
+#	EXPAND_POLICIES=Yes in shorewall.conf. 
+#
+
+# Policies for traffic originating from the local LAN (loc)
+#
+# If you want to force clients to access the Internet via a proxy server
+# on your firewall, change the loc to net policy to REJECT info.
+loc		net		ACCEPT		
+#loc		$FW		REJECT		
+loc		$FW		ACCEPT
+loc		all		REJECT		info
+
+#
+# Policies for traffic originating from the firewall ($FW)
+#
+# If you want open access to the Internet from your firewall, change the
+# $FW to net policy to ACCEPT and remove the 'info' LOG LEVEL.
+# This may be useful if you run a proxy server on the firewall.
+$FW		net		ACCEPT		info
+$FW		loc		ACCEPT		info
+$FW		all		REJECT		info
+
+#
+# Policies for traffic originating from the Internet zone (net)
+#
+net		$FW		DROP		info
+net		loc		DROP		info
+net		all		DROP		info
+
+# THE FOLLOWING POLICY MUST BE LAST
+all		all		REJECT		info
+
+#LAST LINE -- ADD YOUR ENTRIES ABOVE THIS LINE -- DO NOT REMOVE
