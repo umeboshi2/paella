@@ -63,3 +63,10 @@ include:
     - group: root
     - mode: 644
 
+/etc/default/shorewall:
+  file.managed:
+    - source: salt://shorewall/templates/default
+    - user: root
+    - group: root
+    - mode: 644
+

@@ -8,6 +8,7 @@ isc-dhcp-server:
     - require:
         - file: /etc/dhcp/dhcpd.conf
         - file: /etc/default/isc-dhcp-server
+        - file: /etc/network/interfaces
 
 /etc/dhcp/dhcpd.conf:
   file.managed:
