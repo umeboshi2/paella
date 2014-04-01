@@ -1,6 +1,6 @@
 import subprocess
 
-from unipath import Path as path
+from livebuild.path import path
 
 def rmdir(dirname):
     return subprocess.call(['rm', '-fr', dirname])

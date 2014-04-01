@@ -1,7 +1,7 @@
 import os, sys
 import subprocess
 
-from unipath import Path as path
+from livebuild.path import path
 
 from livebuild.usb.base import USB_PARENT
 from livebuild.usb.base import copyfile

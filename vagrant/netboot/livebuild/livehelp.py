@@ -2,7 +2,7 @@
 import os, sys
 import subprocess
 
-from unipath import Path as path
+from livebuild.path import path
 from livebuild import md5sum
 
 from livebuild.cachedir import setup_cachedirs, create_cachedirs_tarball

@@ -1,6 +1,6 @@
 import subprocess
 
-from unipath import Path as path
+from livebuild.path import path
 
 from livebuild.tftpboot import base_pxelinux_menu_filename 
 

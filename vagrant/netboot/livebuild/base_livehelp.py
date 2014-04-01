@@ -2,7 +2,7 @@
 import os, sys
 import subprocess
 
-from unipath import Path as path
+from livebuild.path import path
 from livebuild import md5sum
 
 # You must be root to run this

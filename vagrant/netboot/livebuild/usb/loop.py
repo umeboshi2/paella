@@ -2,7 +2,7 @@
 import os, sys
 import subprocess
 
-from unipath import Path as path
+from livebuild.path import path
 
 
 def is_loop_loaded():

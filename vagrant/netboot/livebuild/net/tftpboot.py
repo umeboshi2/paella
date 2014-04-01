@@ -1,7 +1,7 @@
 import os, sys
 import subprocess
 
-from unipath import Path as path
+from livebuild.path import path
 
 
 syslinux_libdir = path('/usr/lib/syslinux')
