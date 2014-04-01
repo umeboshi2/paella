@@ -1,3 +1,5 @@
+# -*- mode: yaml -*-
+
 /etc/network/interfaces:
   file.managed:
     - source: salt://files/network-interfaces
@@ -5,15 +7,17 @@
     - group: root
     - mode: 644
 
-/usr/local/bin/install-netboot:
-  file.managed:
+install-netboot:
+  cmd.script:
+    - require: 
+      - file: /var/cache/netboot/netboot-i386.tar.gz
+      - file: /var/cache/netboot/netboot-amd64.tar.gz
+      - file: /var/lib/tftpboot
     - source: salt://files/install-netboot.sh
     - user: root
     - group: root
-    - mode: 755
-    - require: 
-        - file: /var/cache/netboot/netboot.tar.gz
-        - file: /var/lib/tftpboot
+    - shell: /bin/bash
 
-  cmd.run:
-    - name: /usr/local/bin/install-netboot
+
+/usr/local/bin/install-netboot:
+  file.absent

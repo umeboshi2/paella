@@ -10,7 +10,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "trumpet-i386"
+  config.vm.box = "umeboshi/trumpet-i386"
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -51,6 +51,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     # Use VBoxManage to customize the VM. For example to change memory:
     vb.customize ["modifyvm", :id, "--memory", "512"]
+    # a secondary internal network is used for the paella installer
     vb.customize ["modifyvm", :id, "--nic2", "intnet"]
     vb.customize ["modifyvm", :id, "--intnet2", "intloc"]
   end

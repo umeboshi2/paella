@@ -5,4 +5,5 @@ base:
     - bind
     - dhcpd
     - shorewall
+    - debianlive
     - files
