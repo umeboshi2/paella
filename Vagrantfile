@@ -44,6 +44,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   config.vm.synced_folder 'vagrant/salt/roots/salt/', '/srv/salt/'
   config.vm.synced_folder 'vagrant/salt/roots/pillar/', '/srv/pillar/'
+  config.vm.synced_folder 'vagrant/netboot', '/srv/netboot/', owner: 'root', \
+  group: 'root'
 
   config.vm.provider "virtualbox" do |vb|
     # Don't boot with headless mode

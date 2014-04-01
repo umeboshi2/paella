@@ -18,6 +18,8 @@ net_root_server = 10.0.2.1
 
 current_arch = NOarch
 
+bootappend_live = 
+
 
 [snoopy-kde]
 architectures = i386

@@ -44,3 +44,6 @@ nosetests.xml
 demo.sqlite
 .vagrant
 
+vagrant/netboot/config/binary
+vagrant/netboot/config/bootstrap
+vagrant/netboot/config/chroot
