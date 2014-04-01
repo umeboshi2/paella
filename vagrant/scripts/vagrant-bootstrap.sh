@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ -x /usr/bin/salt-minion ]; then
+    echo "Salt Minion already installed, skipping....."
+    exit 0
+fi
+
+
 key_url=http://debian.saltstack.com/debian-salt-team-joehealy.gpg.key
 key_fingerprint="102E 2FE7 D514 1DBD 12B2  60FC B09E 40B0 F2AE 6AB9"
 
