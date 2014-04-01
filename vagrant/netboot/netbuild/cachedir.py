@@ -1,7 +1,6 @@
 import subprocess
 
-from useless.base.path import path
-
+from unipath import Path as path
 
 def rmdir(dirname):
     return subprocess.call(['rm', '-fr', dirname])
@@ -51,6 +50,4 @@ def create_cachedirs_tarball():
     
 
 if __name__ == "__main__":
-    print "hello there!"
-    
-    
+    pass

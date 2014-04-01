@@ -1,6 +1,6 @@
 import subprocess
 
-from useless.base.path import path
+from unipath import Path as path
 
 from netbuild.tftpboot import base_pxelinux_menu_filename 
 

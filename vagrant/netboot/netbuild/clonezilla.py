@@ -7,10 +7,9 @@ from useless.base.util import md5sum
 
 # You must be root to run this
 # Packages required:  live-helper, paella-installer, wget
-#http://sourceforge.net/projects/clonezilla/files/
+
 CLONEZILLA_URL = "http://sourceforge.net/projects/clonezilla/files/"
 CLONEZILLA_URL += "clonezilla_live_stable/OldFiles/1.2.6-40/clonezilla-live-1.2.6-40-i686.zip/download"
-#CLONEZILLA_URL += "clonezilla_live_stable/1.2.6-40/clonezilla-live-1.2.6-40-i686.zip/download"
 CLONEZILLA_MDSUM = 'cbb3e78fc2bb7dbee2f2e5260413bceb'
 
 DOWNLOAD_DIR = path('downloads')
