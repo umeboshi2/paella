@@ -3,3 +3,4 @@
 live-build:
   pkg:
     - latest
+

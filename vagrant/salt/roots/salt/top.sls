@@ -1,3 +1,5 @@
+# -*- mode: yaml -*-
+
 base:
   'paella':
     - apache
@@ -6,4 +8,5 @@ base:
     - dhcpd
     - shorewall
     - debianlive
+    - netboot
     - files
