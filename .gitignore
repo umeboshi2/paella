@@ -47,3 +47,5 @@ demo.sqlite
 vagrant/netboot/config/binary
 vagrant/netboot/config/bootstrap
 vagrant/netboot/config/chroot
+vagrant/netboot/chroot
+vagrant/netboot/.lock
