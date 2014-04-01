@@ -1,7 +1,7 @@
 import os, sys
 import subprocess
 
-from useless.base.path import path
+from unipath import Path as path
 
 
 syslinux_libdir = path('/usr/lib/syslinux')

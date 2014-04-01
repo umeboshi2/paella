@@ -2,8 +2,8 @@ import os
 import subprocess
 from zipfile import ZipFile
 
-from useless.base.path import path
-from useless.base.util import md5sum
+from unipath import Path as path
+from livebuild import md5sum
 
 # You must be root to run this
 # Packages required:  live-helper, paella-installer, wget

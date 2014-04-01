@@ -1,12 +1,12 @@
 import subprocess
 
-from useless.base.path import path
+from unipath import Path as path
 
-from netbuild.tftpboot import base_pxelinux_menu_filename 
+from livebuild.tftpboot import base_pxelinux_menu_filename 
 
-from netbuild.usb.base import ORIG_BOOT_DIR, ORIG_ROOT_DIR
-from netbuild.usb.base import USB_BOOT_DIR, USB_ROOT_DIR
-from netbuild.usb.base import rmdir, make_prefix, hardlink_dirs
+from livebuild.usb.base import ORIG_BOOT_DIR, ORIG_ROOT_DIR
+from livebuild.usb.base import USB_BOOT_DIR, USB_ROOT_DIR
+from livebuild.usb.base import rmdir, make_prefix, hardlink_dirs
 
 
 ##############

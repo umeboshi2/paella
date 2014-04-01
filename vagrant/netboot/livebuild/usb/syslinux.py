@@ -1,10 +1,10 @@
 import os, sys
 import subprocess
 
-from useless.base.path import path
+from unipath import Path as path
 
-from netbuild.usb.base import USB_PARENT
-from netbuild.usb.base import copyfile
+from livebuild.usb.base import USB_PARENT
+from livebuild.usb.base import copyfile
 
 syslinux_libdir = path('/usr/lib/syslinux')
 
@@ -133,6 +133,6 @@ def splash_filename(tftpbootdir, machine, arch):
 
 
 if __name__ == "__main__":
-    from netbuild.TemplateConfig import template_config
+    from livebuild.TemplateConfig import template_config
     cfg = template_config
     

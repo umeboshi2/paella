@@ -2,16 +2,16 @@
 import os, sys
 import subprocess
 
-from useless.base.path import path
-from useless.base.util import md5sum
+from unipath import Path as path
+from livebuild import md5sum
 
-from netbuild.TemplateConfig import template_config
+from livebuild.TemplateConfig import template_config
 
-from netbuild.usb.loop import attach_loop, enable_loop_module
+from livebuild.usb.loop import attach_loop, enable_loop_module
 
-from netbuild.usb import paella, clonezilla
-from netbuild.usb import caine
-from netbuild.usb import syslinux
+from livebuild.usb import paella, clonezilla
+from livebuild.usb import caine
+from livebuild.usb import syslinux
 
 
 

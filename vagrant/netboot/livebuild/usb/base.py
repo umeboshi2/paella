@@ -1,8 +1,8 @@
 import subprocess
 
-from useless.base.path import path
+from unipath import Path as path
 
-from netbuild.tftpboot import base_pxelinux_menu_filename 
+from livebuild.tftpboot import base_pxelinux_menu_filename 
 
 ORIG_BOOT_DIR = 'done/tftpboot'
 ORIG_ROOT_DIR = 'done/nfsroot'

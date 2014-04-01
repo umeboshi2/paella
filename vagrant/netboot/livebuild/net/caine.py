@@ -3,8 +3,8 @@ import subprocess
 import tempfile
 
 
-from useless.base.path import path
-from useless.base.util import md5sum
+from unipath import Path as path
+from livebuild import md5sum
 
 from mbr_parser import MBRParser
 

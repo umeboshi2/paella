@@ -2,7 +2,7 @@
 import os, sys
 import subprocess
 
-from useless.base.path import path
+from unipath import Path as path
 
 
 def is_loop_loaded():

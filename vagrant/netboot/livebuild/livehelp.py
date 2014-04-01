@@ -2,14 +2,14 @@
 import os, sys
 import subprocess
 
-from useless.base.path import path
-from useless.base.util import md5sum
+from unipath import Path as path
+from livebuild import md5sum
 
-from netbuild.cachedir import setup_cachedirs, create_cachedirs_tarball
+from livebuild.cachedir import setup_cachedirs, create_cachedirs_tarball
 
-from netbuild.base_livehelp import install_chroot, prepare_stagedir
-from netbuild.base_livehelp import call_live_build, clean_area
-from netbuild.base_livehelp import remove_chroot
+from livebuild.base_livehelp import install_chroot, prepare_stagedir
+from livebuild.base_livehelp import call_live_build, clean_area
+from livebuild.base_livehelp import remove_chroot
 
 # You must be root to run this
 # Packages required:  live-build, paella-installer, syslinux, wget

@@ -2,8 +2,8 @@
 import os, sys
 import subprocess
 
-from useless.base.path import path
-from useless.base.util import md5sum
+from unipath import Path as path
+from livebuild import md5sum
 
 # You must be root to run this
 # Packages required:  live-build, paella-installer, syslinux, wget
@@ -28,17 +28,7 @@ def install_chroot(arch, machine):
     msg = "Using paella to install %s for arch %s into chroot/"
     msg = msg % (machine, arch)
     print msg
-
-    os.environ['PAELLA_ARCH_OVERRIDE'] = arch
-    cmd = ['paella-machine-installer', 'install',
-           machine, 'chroot']
-    #subprocess.call(['env'])
-    retval = subprocess.call(cmd)
-    if retval:
-        msg = "Something bad happened when running %s, returned %d"
-        msg = msg % (' '.join(cmd), retval)
-        raise RuntimeError , msg
-    del os.environ['PAELLA_ARCH_OVERRIDE']
+    raise RuntimeError, "Not using paella to install chroot"
     
 def prepare_stagedir():
     stagedir = path('.stage')
