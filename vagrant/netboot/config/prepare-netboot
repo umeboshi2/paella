@@ -1,0 +1,56 @@
+#!/bin/bash
+if ! [ "$(id -u)" = "0" ]; then
+    echo "need to be root"
+    exit 1
+fi
+
+
+if ! [ -d tftpboot ]; then
+    echo "no tftpboot directory"
+    exit 1
+fi
+
+if ! [ -d binary ]; then
+    echo "no binary directory"
+    exit 1
+fi
+
+# get arch from paella database
+arch=i386
+echo "LH_ARCHITECTURE is $arch"
+# if this is empty, try to guess with
+# dpkg --print-architecture
+if [ -z $arch ]; then
+    arch=`dpkg --print-architecture`
+fi
+
+tftpbootpath=/var/lib/tftpboot
+archdir=$tftpbootpath/$arch
+net_root_path=/freespace/paella
+
+if ! [ -d $archdir ]; then
+    echo "Creating $archdir"
+    mkdir -p $archdir
+fi
+
+# remove unecessary stuff first (should we?)
+echo "Removing files from $archdir"
+rm $archdir/* -fr
+echo "Removing files from $net_root_path"
+rm $net_root_path/* -fr
+
+
+
+#rm /var/lib/tftpboot/* /freespace/paella/* -fr
+
+echo "Moving binary files to $net_root_path"
+mv binary/* $net_root_path
+echo "Moving boot files to $archdir"
+mv tftpboot/* $archdir
+
+
+#mv binary/* /freespace/paella/
+#mv tftpboot/* /var/lib/tftpboot/
+echo "Removing empty directories"
+rmdir tftpboot
+rmdir binary

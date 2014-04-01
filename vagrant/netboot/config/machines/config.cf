@@ -1,0 +1,27 @@
+[DEFAULT]
+dist = squeeze
+architectures = amd64
+mirror = http://cypress/debrepos/debian
+mirror_security = http://cypress/debrepos/security
+hostname = debian
+username = debian
+utc = yes
+timezone = America/Chicago
+
+binary_images = net
+bootloader = syslinux
+chroot_filesystem = squashfs
+bootappend_live = timezone=%(timezone)s utc=%(utc)s
+
+net_root_server = 10.0.2.1
+
+
+current_arch = NOarch
+
+
+[snoopy-kde]
+architectures = i386
+machine = snoopy
+hostname = snoopy
+net_root_path = /freespace/netboot/snoopy-kde/%(current_arch)s
+syslinux_menu_entry = Snoopy KDE System %(current_arch)s
