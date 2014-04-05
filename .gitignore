@@ -40,12 +40,13 @@ nosetests.xml
 .#*
 
 # my development cruft
-.sass-cache
-demo.sqlite
+
+# compiled sls files
+*.slsc
+
+# vagrant stuff
 .vagrant
 
-vagrant/netboot/config/binary
-vagrant/netboot/config/bootstrap
-vagrant/netboot/config/chroot
-vagrant/netboot/chroot
-vagrant/netboot/.lock
+/cache
+/cache-bootstrap.tar.gz
+
