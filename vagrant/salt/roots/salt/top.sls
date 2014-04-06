@@ -4,6 +4,7 @@ base:
   'paella':
     - default
     - apache
+    - squid
     - tftpd
     - bind
     - dhcpd
