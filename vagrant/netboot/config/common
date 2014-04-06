@@ -29,7 +29,9 @@ LB_APT_SECURE="true"
 
 # $LB_APT_SOURCE_ARCHIVES: set apt/aptitude source entries in sources.list
 # (Default: true)
-LB_APT_SOURCE_ARCHIVES="true"
+#LB_APT_SOURCE_ARCHIVES="true"
+# set to false for quicker testing
+LB_APT_SOURCE_ARCHIVES="false"
 
 # $LB_BOOTSTRAP: set bootstrap program
 # (Default: debootstrap)
@@ -138,3 +140,9 @@ DEBOOTSTRAP_OPTIONS=""
 CDEBOOTSTRAP_OPTIONS=""
 GZIP_OPTIONS="-6 --rsyncable"
 ISOHYBRID_OPTIONS=""
+# no compression for testing
+MKSQUASHFS_OPTIONS="-noI -noD -noF -noX"
+
+# try using squid
+http_proxy=127.0.0.1:3128
+

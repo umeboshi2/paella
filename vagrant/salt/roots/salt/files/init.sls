@@ -14,6 +14,21 @@
     - group: root
     - mode: 755
 
+/usr/local/bin/generate-gpg-key:
+  file.managed:
+    - source: salt://files/generate-gpg-key
+    - user: root
+    - group: root
+    - mode: 755
+
+/usr/local/bin/setup-local-debrepos:
+  file.managed:
+    - source: salt://files/setup-local-debrepos
+    - user: root
+    - group: root
+    - mode: 755
+  
+
 /etc/network/interfaces:
   file.managed:
     - source: salt://files/network-interfaces

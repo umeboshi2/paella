@@ -49,4 +49,5 @@ nosetests.xml
 
 /cache
 /cache-bootstrap.tar.gz
+/vagrant/debrepos
 

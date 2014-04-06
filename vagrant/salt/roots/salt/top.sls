@@ -5,6 +5,7 @@ base:
     - default
     - apache
     - squid
+    - debrepos
     - tftpd
     - bind
     - dhcpd

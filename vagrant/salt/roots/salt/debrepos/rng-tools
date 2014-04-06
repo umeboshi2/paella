@@ -1,0 +1,8 @@
+# Configuration for the rng-tools initscript
+
+# WARNING!
+# This is not a good random source and being used to
+# automatically generate gpg keys that can be used to 
+# quickly create a working environment.
+HRNGDEVICE=/dev/urandom
+

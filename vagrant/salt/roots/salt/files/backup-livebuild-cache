@@ -26,6 +26,12 @@ for stage in binary bootstrap chroot; do
     fi
 done
 
+if [ -d contents.chroot ]; then
+    echo "Syncing contents.chroot"
+    rsync -aHX contents.chroot /vagrant/cache/
+fi
+
+
 if ! [ -f /vagrant/cache-bootstrap.tar.gz ]; then
     if [ -d bootstrap ]; then 
 	echo "Tarring bootstrap"

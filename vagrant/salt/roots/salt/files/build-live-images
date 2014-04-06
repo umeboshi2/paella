@@ -18,7 +18,7 @@ if ! [ -d $livebuild ]; then
 fi
 
 echo "Syncing work tree with $livebuild/config"
-rsync -avHX /srv/netboot/config/ $livebuild/config/
+rsync -avHX /srv/livebuild/config/ $livebuild/config/
 
 pushd $livebuild
 
@@ -35,7 +35,6 @@ if [ -d /vagrant/cache ]; then
     fi
 fi
 
-lb config
 
 echo "Building live image......"
 lb build
