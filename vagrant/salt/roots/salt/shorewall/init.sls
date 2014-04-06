@@ -1,11 +1,27 @@
 # -*- mode: yaml -*-
 
+    
+include:
+  - shorewall.macros
+
 shorewall:
   pkg:
     - latest
 
-include:
-  - shorewall.macros
+restart-shorewall:
+  cmd.run:
+    - name: /etc/init.d/shorewall restart
+    - unless: shorewall status
+    - requires:
+      - pkg: shorewall
+      - file: /etc/shorewall/interfaces
+      - file: /etc/shorewall/Makefile
+      - file: /etc/shorewall/masq
+      - file: /etc/shorewall/policy
+      - file: /etc/shorewall/routestopped
+      - file: /etc/shorewall/rules
+      - file: /etc/shorewall/zones
+      - file: /etc/default/shorewall
 
 /etc/shorewall/interfaces:
   file.managed:
@@ -69,4 +85,8 @@ include:
     - user: root
     - group: root
     - mode: 644
+
+
+
+
 

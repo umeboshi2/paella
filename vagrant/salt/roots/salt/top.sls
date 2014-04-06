@@ -3,6 +3,7 @@
 base:
   'paella':
     - default
+    - network
     - apache
     - squid
     - debrepos

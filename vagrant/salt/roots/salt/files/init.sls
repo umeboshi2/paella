@@ -29,13 +29,5 @@
     - mode: 755
   
 
-/etc/network/interfaces:
-  file.managed:
-    - source: salt://files/network-interfaces
-    - user: root
-    - group: root
-    - mode: 644
-
-
 /usr/local/bin/install-netboot:
   file.absent

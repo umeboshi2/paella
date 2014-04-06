@@ -9,6 +9,10 @@ isc-dhcp-server:
         - file: /etc/dhcp/dhcpd.conf
         - file: /etc/default/isc-dhcp-server
         - file: /etc/network/interfaces
+        - cmd: enable-eth1
+
+        
+
 
 /etc/dhcp/dhcpd.conf:
   file.managed:

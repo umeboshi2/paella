@@ -10,15 +10,66 @@ reprepro:
 # The keys made with this should 
 # not be used outside the vagrant 
 # environment.
-fake-random-source:
-  pkg.latest:
-    - name: rng-tools
-  service:
-    - running
-    - name: rng-tools
+
+# There is no more fake-random-source state.
+# Instead, a pregenerated set of keys will 
+# be used in the vagrant environment.
+
+#fake-random-source:
+#  pkg.latest:
+#    - name: rng-tools
+#  service:
+#    - running
+#    - name: rng-tools
+#  file.managed:
+#    - name: /etc/default/rng-tools
+#    - source: salt://debrepos/rng-tools
+
+/srv/debrepos/paella.gpg:
   file.managed:
-    - name: /etc/default/rng-tools
-    - source: salt://debrepos/rng-tools
+    - source: salt://debrepos/paella-insecure-pub.gpg
+
+/home/vagrant/paella-insecure-sec.gpg:
+  file.managed:
+    - source: salt://debrepos/paella-insecure-sec.gpg
+    - user: vagrant
+    - group: vagrant
+    - mode: 400
+
+import-insecure-gpg-key:
+  cmd.run:
+    - name: gpg --import paella-insecure-sec.gpg
+    - unless: gpg --list-key 62804AE5
+    - user: vagrant
+    - group: vagrant
+    - cwd: /home/vagrant
+    - requires:
+      - file: /home/vagrant/paella-insecure-sec.gpg
+
+import-wheezy-automatic-key:
+  cmd.run:
+    - name: gpg --recv-keys 46925553
+    - unless: gpg --list-key 46925553
+    - user: vagrant
+    - group: vagrant
+    - cwd: /home/vagrant
+    - requires:
+      - file: /home/vagrant/paella-insecure-sec.gpg
+
+
+import-wheezy-stable-key:
+  cmd.run:
+    - name: gpg --recv-keys 65FFB764
+    - unless: gpg --list-key 65FFB764
+    - user: vagrant
+    - group: vagrant
+    - cwd: /home/vagrant
+    - requires:
+      - file: /home/vagrant/paella-insecure-sec.gpg
+
+
+
+
 
 
 /srv/debrepos/debian/conf:
@@ -43,6 +94,10 @@ cat /srv/debrepos/debian/conf/i386-udeb-list-upstream | awk '{print $1 "\tinstal
 /srv/debrepos/debian/conf/updates:
   file.managed:
     - source: salt://debrepos/updates
+
+/srv/debrepos/debian/conf/distributions:
+  file.managed:
+    - source: salt://debrepos/distributions
 
 local-packages:
   cmd.run:

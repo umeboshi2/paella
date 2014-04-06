@@ -4,11 +4,10 @@ iface lo inet loopback
 allow-hotplug eth0
 iface eth0 inet dhcp
 
-allow-hotplug eth1
+auto eth1
 iface eth1 inet static
       address 10.0.4.1
       netmask 255.255.255.128
-      up /etc/init.d/isc-dhcp-server restart
-      
+
 pre-up sleep 2
 
