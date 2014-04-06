@@ -38,7 +38,7 @@ LB_PARENT_MIRROR_CHROOT_BACKPORTS="http://ftp.us.debian.org/debian/"
 
 # $LB_PARENT_MIRROR_BINARY: set parent mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
-LB_PARENT_MIRROR_BINARY="http://http.debian.net/debian/"
+LB_PARENT_MIRROR_BINARY="http://ftp.us.debian.org/debian/"
 
 # $LB_PARENT_MIRROR_BINARY_SECURITY: set security parent mirror which ends up in the image
 # (Default: http://security.debian.org/)
@@ -46,7 +46,7 @@ LB_PARENT_MIRROR_BINARY_SECURITY="http://security.debian.org/"
 
 # $LB_PARENT_MIRROR_BINARY_UPDATES: set updates parent mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
-LB_PARENT_MIRROR_BINARY_UPDATES="http://http.debian.net/debian/"
+LB_PARENT_MIRROR_BINARY_UPDATES="http://ftp.us.debian.org/debian/"
 
 # $LB_PARENT_MIRROR_BINARY_BACKPORTS: set backports parent mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
@@ -86,11 +86,11 @@ LB_MIRROR_BINARY_SECURITY="http://security.debian.org/"
 
 # $LB_MIRROR_BINARY_UPDATES: set updates mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
-LB_MIRROR_BINARY_UPDATES="http://http.debian.net/debian/"
+LB_MIRROR_BINARY_UPDATES="http://ftp.us.debian.org/debian/"
 
 # $LB_MIRROR_BINARY_BACKPORTS: set backports mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
-LB_MIRROR_BINARY_BACKPORTS="http://http.debian.net/debian/"
+LB_MIRROR_BINARY_BACKPORTS="http://ftp.us.debian.org/debian/"
 
 # $LB_MIRROR_DEBIAN_INSTALLER: set debian-installer mirror
 # (Default: http://ftp.debian.org/debian/)

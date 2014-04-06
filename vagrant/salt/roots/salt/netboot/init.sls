@@ -9,13 +9,6 @@ nfs-kernel-server:
     - latest
 
 
-/var/cache/netboot/livebuild:
-  file.directory:
-    - user: root
-    - group: root
-
-
-
 /var/cache/netboot/netboot-i386.tar.gz:
   file.managed:
     - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/netboot.tar.gz
@@ -26,6 +19,13 @@ nfs-kernel-server:
     - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/netboot.tar.gz
     - source_hash: sha256=453df75cfc1b81f88bd2f2796c25ed94c45510272d034a77327ebfba1161497c
 
+/var/cache/netboot/livebuild:
+  file.directory:
+    - user: root
+    - group: root
+    - require: 
+      - file: /var/cache/netboot/netboot-i386.tar.gz
+      - file: /var/cache/netboot/netboot-amd64.tar.gz
 
 install-netboot:
   cmd.script:
