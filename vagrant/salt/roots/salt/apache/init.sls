@@ -5,3 +5,8 @@ apache2:
     - latest
   service:
     - running
+
+/etc/apache2/conf.d/debrepos:
+  file.managed:
+    - source: salt://apache/debrepos.conf
+

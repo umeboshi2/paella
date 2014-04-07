@@ -91,6 +91,10 @@ cat /srv/debrepos/debian/conf/i386-udeb-list-upstream | awk '{print $1 "\tinstal
     - creates: /srv/debrepos/debian/conf/i386-udeb-list
 
 
+/srv/debrepos/debian/conf/live-packages:
+  file.managed:
+    - source: salt://debrepos/live-packages
+
 /srv/debrepos/debian/conf/updates:
   file.managed:
     - source: salt://debrepos/updates
