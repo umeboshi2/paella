@@ -89,10 +89,17 @@ import-wheezy-stable-key:
     - requires:
       - file: /home/vagrant/wheezy-stable.gpg
 
-
-
-
-
+keyring-ready:
+  cmd.run:
+    - name: echo "Keyring Ready"
+    - unless: gpg --list-key 65FFB764
+    - user: vagrant
+    - group: vagrant
+    - cwd: /home/vagrant
+    - requires:
+      - cmd: import-wheezy-stable-key
+      - cmd: import-wheezy-automatic-key
+      - cmd: import-insecure-gpg-key
 
 /srv/debrepos/debian/conf:
   file.directory:
@@ -104,12 +111,14 @@ i386-udeb-list-upstream:
     - name: /srv/debrepos/debian/conf/i386-udeb-list-upstream
     - source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-i386/current/images/udeb.list
     - source_hash: sha256=15ce82c5c843a4d752932e05596a3ae22d7575e4b713a27a4367a7d2697a5777
-
-
-cat /srv/debrepos/debian/conf/i386-udeb-list-upstream | awk '{print $1 "\tinstall"}' > /srv/debrepos/debian/conf/i386-udeb-list:
-  cmd.run:
     - requires:
-        - file: i386-udeb-list-upstream
+      - file: /srv/debrepos/debian/conf
+
+create-udeb-list:
+  cmd.run:
+    - name: cat /srv/debrepos/debian/conf/i386-udeb-list-upstream | awk '{print $1 "\tinstall"}' > /srv/debrepos/debian/conf/i386-udeb-list
+    - requires:
+      - file: i386-udeb-list-upstream
     - creates: /srv/debrepos/debian/conf/i386-udeb-list
 
 
@@ -125,6 +134,19 @@ cat /srv/debrepos/debian/conf/i386-udeb-list-upstream | awk '{print $1 "\tinstal
   file.managed:
     - source: salt://debrepos/distributions
 
+repos-ready:
+  cmd.run:
+    - name: echo "repos-ready"
+    - user: vagrant
+    - group: vagrant
+    - cwd: /srv/debrepos/debian
+    - requires:
+      - cmd: create-udeb-list
+      - cmd: keyring-ready
+      - file: /srv/debrepos/debian/conf/live-packages
+      - file: /srv/debrepos/debian/conf/updates
+      - file: /srv/debrepos/debian/conf/distributions
+
 include:
   - apache
   - tftpd
@@ -133,7 +155,7 @@ include:
   - shorewall
   - squid
   - debianlive
-  - netboot
+  - netboot-base
 
 
 
@@ -148,15 +170,34 @@ local-packages:
       - sls: dhcpd
       - sls: shorewall
       - sls: debianlive
-      - sls: netboot
+      - sls: netboot-base
       - pkg: squid
-
+      - cmd: repos-ready
 
 /usr/local/bin/make-master-pkglist:
   file.managed:
     - source: salt://scripts/make-master-pkglist.py
     - mode: 755
     - requires: local-packages
+
+apache-ready:
+  cmd.run:
+    - name: /etc/init.d/apache2 restart
+    - unless: wget http://localhost/debrepos/
+    - requires:
+      - cmd: local-packages
+
+
+update-debrepos:
+  cmd.run:
+    - name: reprepro -VV --noskipold update
+    - user: vagrant
+    - group: vagrant
+    - cwd: /srv/debrepos/debian
+    - requires:
+      - cmd: apache-ready
+
+
 
 
 

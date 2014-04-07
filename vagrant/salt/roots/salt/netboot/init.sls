@@ -1,30 +1,9 @@
 # -*- mode: yaml -*-
 
-syslinux:
-  pkg:
-    - latest
-
-nfs-kernel-server:
-  pkg:
-    - latest
-  service:
-    - running
-    - watch:
-        - file: nfs-exports
-
-
-nfs-exports:
-  file.managed:
-    - name: /etc/exports
-    - source: salt://netboot/nfs-exports
-    - user: root
-    - group: root
-    - mode: 644
 
 /var/lib/tftpboot/installer:
   file.directory:
     - makedirs: True
-
 
 /var/lib/tftpboot/installer/i386/initrd.gz:
   file.managed:
@@ -43,10 +22,14 @@ nfs-exports:
     - group: root
     - makedirs: True
 
+include:
+  - debrepos
+
 install-netboot:
   cmd.script:
     - require:
       - file: /var/lib/tftpboot
+      - sls: debrepos
     - source: salt://scripts/install-netboot.sh
     - user: root
     - group: root

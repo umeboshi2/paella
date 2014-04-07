@@ -2,6 +2,7 @@
 
     
 include:
+  - network
   - shorewall.macros
 
 shorewall:
@@ -22,6 +23,7 @@ restart-shorewall:
       - file: /etc/shorewall/rules
       - file: /etc/shorewall/zones
       - file: /etc/default/shorewall
+      - sls: network
 
 /etc/shorewall/interfaces:
   file.managed:
