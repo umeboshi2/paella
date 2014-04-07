@@ -43,15 +43,15 @@ LB_CACHE="true"
 
 # $LB_CACHE_INDICES: control if downloaded package indices should be cached
 # (Default: false)
-LB_CACHE_INDICES="false"
+LB_CACHE_INDICES="true"
 
 # $LB_CACHE_PACKAGES: control if downloaded packages files should be cached
 # (Default: true)
-LB_CACHE_PACKAGES="true"
+LB_CACHE_PACKAGES="false"
 
 # $LB_CACHE_STAGES: control if completed stages should be cached
 # (Default: bootstrap)
-LB_CACHE_STAGES="bootstrap"
+LB_CACHE_STAGES="none"
 
 # $LB_DEBCONF_FRONTEND: set debconf(1) frontend to use
 # (Default: noninteractive)
@@ -136,7 +136,7 @@ _VERBOSE="true"
 # Internal stuff (FIXME)
 APT_OPTIONS="--yes"
 APTITUDE_OPTIONS="--assume-yes"
-DEBOOTSTRAP_OPTIONS=""
+DEBOOTSTRAP_OPTIONS="--keyring=/home/vagrant/.gnupg/pubring.gpg"
 CDEBOOTSTRAP_OPTIONS=""
 GZIP_OPTIONS="-6 --rsyncable"
 ISOHYBRID_OPTIONS=""
