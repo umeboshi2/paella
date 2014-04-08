@@ -183,7 +183,7 @@ local-packages:
 apache-ready:
   cmd.run:
     - name: /etc/init.d/apache2 restart
-    - unless: wget http://localhost/debrepos/
+    - unless: wget -O /dev/null http://localhost/debrepos/
     - requires:
       - cmd: local-packages
 
@@ -191,6 +191,7 @@ apache-ready:
 update-debrepos:
   cmd.run:
     - name: reprepro -VV --noskipold update
+    - unless: test -d /srv/debrepos/debian/db
     - user: vagrant
     - group: vagrant
     - cwd: /srv/debrepos/debian

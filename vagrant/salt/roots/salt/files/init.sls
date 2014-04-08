@@ -2,7 +2,7 @@
 
 /usr/local/bin/build-live-images:
   file.managed:
-    - source: salt://files/build-live-images
+    - source: salt://scripts/make-live-image.sh
     - user: root
     - group: root
     - mode: 755
