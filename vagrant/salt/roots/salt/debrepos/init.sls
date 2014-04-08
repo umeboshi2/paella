@@ -101,6 +101,14 @@ keyring-ready:
       - cmd: import-wheezy-automatic-key
       - cmd: import-insecure-gpg-key
 
+
+create-binary-pubkey:
+  cmd.run:
+    - name: gpg --export 62804AE5 > /srv/debrepos/paella.bin.gpg
+    - unless: test -r /srv/debrepos/paella.bin.gpg
+    - requires:
+      - cmd: keyring-ready
+
 /srv/debrepos/debian/conf:
   file.directory:
     - makedirs: True
@@ -116,10 +124,11 @@ i386-udeb-list-upstream:
 
 create-udeb-list:
   cmd.run:
+    - unless: test -r /srv/debrepos/debian/conf/i386-udeb-list
     - name: cat /srv/debrepos/debian/conf/i386-udeb-list-upstream | awk '{print $1 "\tinstall"}' > /srv/debrepos/debian/conf/i386-udeb-list
     - requires:
       - file: i386-udeb-list-upstream
-    - creates: /srv/debrepos/debian/conf/i386-udeb-list
+    - creates: 
 
 
 /srv/debrepos/debian/conf/live-packages:
@@ -160,9 +169,9 @@ include:
 
 
 local-packages:
-  cmd.run:
+  cmd.script:
     - creates: /srv/debrepos/debian/conf/local-packages
-    - name: dpkg --get-selections > /srv/debrepos/debian/conf/local-packages
+    - source: salt://scripts/create-local-packages-list.sh
     - require:
       - sls: apache
       - sls: tftpd

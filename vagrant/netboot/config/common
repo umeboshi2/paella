@@ -114,7 +114,7 @@ LB_TEMPLATES="/usr/share/live/build/templates"
 # $_DEBUG: enable debug
 # (Default: false)
 #_DEBUG="false"
-_DEBUG="true"
+_DEBUG="false"
 
 # $_COLOR: enable color
 # (Default: false)
@@ -131,7 +131,7 @@ _QUIET="false"
 # $_VERBOSE: enable verbose
 # (Default: false)
 #_VERBOSE="false"
-_VERBOSE="true"
+_VERBOSE="false"
 
 # Internal stuff (FIXME)
 APT_OPTIONS="--yes"

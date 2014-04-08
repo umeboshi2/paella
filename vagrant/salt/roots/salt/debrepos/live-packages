@@ -66,6 +66,7 @@ libavahi-common-data install
 libavahi-common3 install
 libblkid1 install
 libboost-iostreams1.49.0 install
+libbsd0 install
 libbz2-1.0 install
 libc-bin install
 libc6 install
@@ -88,6 +89,7 @@ libexpat1 install
 libffi5 install
 libfontconfig1 install
 libfreetype6 install
+libfuse2 install
 libgcc1 install
 libgcrypt11 install
 libgdbm3 install
@@ -112,8 +114,10 @@ libkrb5support0 install
 liblcms2-2 install
 libldap-2.4-2 install
 liblocale-gettext-perl install
+liblockfile1 install
 liblzma5 install
 liblzo2-2 install
+libmagic1 install
 libmount1 install
 libncurses5 install
 libncursesw5 install

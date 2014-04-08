@@ -16,6 +16,24 @@
     - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u1+b2/images/netboot/debian-installer/i386/linux
     - source_hash: sha256=b60550692a0528b856f2dac883e79ec8388d392413a0954873c31f89172e0a59
 
+/var/lib/tftpboot/installer/i386/installer.cfg:
+  file.managed:
+    - source: salt://netboot/installer.cfg
+
+/var/lib/tftpboot/pxelinux.cfg/default:
+  file.managed:
+    - source: salt://netboot/pxelinux-cfg
+
+/var/lib/tftpboot/splash.png:
+  file.managed:
+    - source: salt://netboot/splash.png
+
+preseed-example:
+  file.managed:
+    - name: /var/www/preseeds/preseed-example
+    - source: salt://netboot/preseed-example
+    - makedirs: True
+
 #####################################
 
 # debian live
@@ -39,6 +57,20 @@ build-live-images:
       - file: /var/cache/netboot/livebuild
     - unless: test -r /var/cache/netboot/livebuild/binary.netboot.tar
     - source: salt://scripts/make-live-image.sh
+
+install-binary-filesystem:
+  cmd.script:
+    - require:
+      - cmd: build-live-images
+    - unless: test -r /srv/debian-live/live/filesystem.squashfs
+    - source: salt://scripts/install-netboot-filesystem.sh
+
+install-tftpboot-files:
+  cmd.script:
+    - require:
+      - cmd: install-binary-filesystem
+    - unless: test -r /var/lib/tftpboot/.ready
+    - source: salt://scripts/install-tftpboot-files.sh
 
 install-netboot:
   cmd.script:
