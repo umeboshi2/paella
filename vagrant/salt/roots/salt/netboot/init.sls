@@ -1,5 +1,6 @@
 # -*- mode: yaml -*-
 
+# debian installer files for tftpboot
 
 /var/lib/tftpboot/installer:
   file.directory:
@@ -15,6 +16,15 @@
     - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u1+b2/images/netboot/debian-installer/i386/linux
     - source_hash: sha256=b60550692a0528b856f2dac883e79ec8388d392413a0954873c31f89172e0a59
 
+#####################################
+
+# debian live
+
+# the local debian repository must be ready
+
+include:
+  - debrepos
+
 
 /var/cache/netboot/livebuild:
   file.directory:
@@ -22,8 +32,13 @@
     - group: root
     - makedirs: True
 
-include:
-  - debrepos
+build-live-images:
+  cmd.script:
+    - require:
+      - sls: debrepos
+      - file: /var/cache/netboot/livebuild
+    - unless: test -r /var/cache/netboot/livebuild/binary.netboot.tar
+    - source: salt://scripts/make-live-image.sh
 
 install-netboot:
   cmd.script:

@@ -8,7 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "umeboshi/trumpet-i386"
 
-  config.vm.network "forwarded_port", guest: 80, host: 8080
+  #config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # salt 
   config.vm.synced_folder 'vagrant/salt/roots/salt/', '/srv/salt/'

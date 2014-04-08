@@ -7,5 +7,5 @@ Components: main contrib non-free
 UDebComponents: main contrib non-free
 Description: Debian 7.4 Released 08 February 2014
 Log: logfile
-Update: main
+Update: main di
 SignWith: 62804AE5
