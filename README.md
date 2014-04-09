@@ -1,4 +1,4 @@
-.. -*- mode: rst -*-
+.. -*- mode: markdown -*-
 
 ===========
 Paella
