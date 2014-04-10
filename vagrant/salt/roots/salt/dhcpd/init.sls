@@ -2,7 +2,7 @@
 
 isc-dhcp-server:
   pkg:
-    - latest
+    - installed
   service:
     - running
     - require:

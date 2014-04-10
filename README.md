@@ -1,10 +1,6 @@
-.. -*- mode: markdown -*-
-
 ===========
 Paella
 ===========
-
-.. contents:: :backlinks: entry
 
 Introduction 
 ----------------------

@@ -2,6 +2,6 @@
 
 bind9:
   pkg:
-    - latest
+    - installed
   service:
     - running

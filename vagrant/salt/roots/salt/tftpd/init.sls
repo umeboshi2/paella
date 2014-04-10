@@ -2,7 +2,7 @@
 
 tftpd-hpa:
   pkg:
-    - latest
+    - installed
   service:
     - running
     - require:

@@ -2,7 +2,7 @@
 
 live-build:
   pkg:
-    - latest
+    - installed
 
 
 /srv/livebuild:

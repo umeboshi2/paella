@@ -27,6 +27,13 @@
     - user: root
     - group: root
     - mode: 755
+
+/usr/local/bin/build-keyring-package:
+  file.managed:
+    - source: salt://scripts/build-keyring-package.sh
+    - user: root
+    - group: root
+    - mode: 755
   
 
 /usr/local/bin/install-netboot:

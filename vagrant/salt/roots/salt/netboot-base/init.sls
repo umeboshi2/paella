@@ -2,11 +2,11 @@
 
 syslinux:
   pkg:
-    - latest
+    - installed
 
 nfs-kernel-server:
   pkg:
-    - latest
+    - installed
   service:
     - running
     - watch:

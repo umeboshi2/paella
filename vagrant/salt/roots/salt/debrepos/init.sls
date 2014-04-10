@@ -2,14 +2,14 @@
 
 reprepro:
   pkg:
-    - latest
+    - installed
 
 # use germinate to help build
 # small partial debian repository
 # capable of debootstrap
 germinate:
   pkg:
-    - latest
+    - installed
 
 
 # This fake-random-source state is
@@ -24,7 +24,7 @@ germinate:
 # be used in the vagrant environment.
 
 #fake-random-source:
-#  pkg.latest:
+#  pkg.installed:
 #    - name: rng-tools
 #  service:
 #    - running
@@ -54,6 +54,14 @@ germinate:
 /home/vagrant/wheezy-automatic.gpg:
   file.managed:
     - source: salt://debrepos/wheezy-automatic.gpg
+    - user: vagrant
+    - group: vagrant
+    - mode: 644
+
+# add this script to debian-archive-keyring package
+/home/vagrant/add-paella-insecure:
+  file.managed:
+    - source: salt://debrepos/add-paella-insecure
     - user: vagrant
     - group: vagrant
     - mode: 644
@@ -209,5 +217,14 @@ update-debrepos:
 
 
 
+
+build-keyring-package:
+  cmd.script:
+    - source: salt://scripts/build-keyring-package.sh
+    - unless: test -d /home/vagrant/workspace
+    - user: vagrant
+    - group: vagrant
+    - requires:
+      - cmd: update-debrepos
 
 

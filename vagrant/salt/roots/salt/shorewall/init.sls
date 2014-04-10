@@ -7,7 +7,7 @@ include:
 
 shorewall:
   pkg:
-    - latest
+    - installed
 
 restart-shorewall:
   cmd.run:

@@ -2,6 +2,6 @@
 
 squid:
   pkg:
-    - latest
+    - installed
   service:
     - running
