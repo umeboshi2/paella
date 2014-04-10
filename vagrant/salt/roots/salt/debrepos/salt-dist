@@ -1,0 +1,9 @@
+Origin: saltstack.com
+Label: Debian Salt Backporting
+Codename: wheezy-saltstack
+Architectures: i386 
+Components: main
+Description: Apt repository for project salt backporting
+Log: logfile
+Update: main
+SignWith: 62804AE5

@@ -1,0 +1,6 @@
+Name: main
+Method: http://debian.saltstack.com/debian
+VerifyRelease: F2AE6AB9
+Architectures: amd64 i386 source i686 armhf mips
+Components: main contrib non-free
+UDebComponents: none

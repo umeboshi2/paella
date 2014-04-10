@@ -58,6 +58,13 @@ germinate:
     - group: vagrant
     - mode: 644
 
+/home/vagrant/saltrepos.gpg:
+  file.managed:
+    - source: salt://debrepos/saltrepos.gpg
+    - user: vagrant
+    - group: vagrant
+    - mode: 644
+
 # add this script to debian-archive-keyring package
 /home/vagrant/add-paella-insecure:
   file.managed:
@@ -97,6 +104,16 @@ import-wheezy-stable-key:
     - requires:
       - file: /home/vagrant/wheezy-stable.gpg
 
+import-saltrepos-key:
+  cmd.run:
+    - name: gpg --import saltrepos.gpg
+    - unless: gpg --list-key F2AE6AB9
+    - user: vagrant
+    - group: vagrant
+    - cwd: /home/vagrant
+    - requires:
+      - file: /home/vagrant/saltrepos.gpg
+
 keyring-ready:
   cmd.run:
     - name: echo "Keyring Ready"
@@ -108,6 +125,7 @@ keyring-ready:
       - cmd: import-wheezy-stable-key
       - cmd: import-wheezy-automatic-key
       - cmd: import-insecure-gpg-key
+      - cmd: import-saltrepos-key
 
 
 create-binary-pubkey:
@@ -218,13 +236,38 @@ update-debrepos:
 
 
 
-build-keyring-package:
-  cmd.script:
-    - source: salt://scripts/build-keyring-package.sh
-    - unless: test -d /home/vagrant/workspace
+#build-keyring-package:
+#  cmd.script:
+#    - source: salt://scripts/build-keyring-package.sh
+#    - unless: test -d /home/vagrant/workspace
+#    - user: vagrant
+#    - group: vagrant
+#    - requires:
+#      - cmd: update-debrepos
+
+
+# saltrepos
+/srv/debrepos/salt/conf:
+  file.directory:
+    - makedirs: True
+
+/srv/debrepos/salt/conf/updates:
+  file.managed:
+    - source: salt://debrepos/salt-updates
+
+/srv/debrepos/salt/conf/distributions:
+  file.managed:
+    - source: salt://debrepos/salt-dist
+
+update-saltrepos:
+  cmd.run:
+    - name: reprepro -VV --noskipold update
+    - unless: test -d /srv/debrepos/salt/db
     - user: vagrant
     - group: vagrant
+    - cwd: /srv/debrepos/salt
     - requires:
       - cmd: update-debrepos
+
 
 
