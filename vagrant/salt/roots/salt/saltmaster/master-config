@@ -130,72 +130,14 @@ auto_accept: True
 # Default: 100
 #file_recv_max_size: 100
 
-# Signature verification on messages published from the master.
-# This causes the master to cryptographically sign all messages published to its event
-# bus, and minions then verify that signature before acting on the message.
-#
-# This is False by default.
-#
-# Note that to facilitate interoperability with masters and minions that are different
-# versions, if sign_pub_messages is True but a message is received by a minion with
-# no signature, it will still be accepted, and a warning message will be logged.
-# Conversely, if sign_pub_messages is False, but a minion receives a signed
-# message it will be accepted, the signature will not be checked, and a warning message
-# will be logged.  This behavior will go away in Salt 0.17.6 (or Hydrogen RC1, whichever
-# comes first) and these two situations will cause minion to throw an exception and
-# drop the message.
-#
 # sign_pub_messages: False
 
-#####    Master Module Management    #####
-##########################################
-# Manage how master side modules are loaded
-
-# Add any additional locations to look for master runners
-#runner_dirs: []
-
-# Enable Cython for master side modules
-#cython_enable: False
 
 
 #####      State System settings     #####
-##########################################
-# The state system uses a "top" file to tell the minions what environment to
-# use and what modules to use. The state_top file is defined relative to the
-# root of the base environment as defined in "File Server settings" below.
-#state_top: top.sls
-
-# The master_tops option replaces the external_nodes option by creating
-# a plugable system for the generation of external top data. The external_nodes
-# option is deprecated by the master_tops option.
-# To gain the capabilities of the classic external_nodes system, use the
-# following configuration:
-# master_tops:
-#   ext_nodes: <Shell command which returns yaml>
-#
-#master_tops: {}
-
-# The external_nodes option allows Salt to gather data that would normally be
-# placed in a top file. The external_nodes option is the executable that will
-# return the ENC data. Remember that Salt will look for external nodes AND top
-# files and combine the results if both are enabled!
-#external_nodes: None
 
 # The renderer to use on the minions to render the state data
-#renderer: yaml_jinja
-
-# The Jinja renderer can strip extra carriage returns and whitespace
-# See http://jinja.pocoo.org/docs/api/#high-level-api
-#
-# If this is set to True the first newline after a Jinja block is removed
-# (block, not variable tag!). Defaults to False, corresponds to the Jinja
-# environment init variable "trim_blocks".
-# jinja_trim_blocks: False
-#
-# If this is set to True leading spaces and tabs are stripped from the start
-# of a line to a block. Defaults to False, corresponds to the Jinja
-# environment init variable "lstrip_blocks".
-# jinja_lstrip_blocks: False
+renderer: yaml_mako
 
 # The failhard option tells the minions to stop immediately after the first
 # failure detected in the state execution, defaults to False
@@ -235,109 +177,20 @@ auto_accept: True
 #     - /srv/salt/prod/services
 #     - /srv/salt/prod/states
 
-#file_roots:
-#  base:
-#    - /srv/salt
+file_roots:
+  base:
+    - /srv/master/salt
 
-# The hash_type is the hash to use when discovering the hash of a file on
-# the master server. The default is md5, but sha1, sha224, sha256, sha384
-# and sha512 are also supported.
-#hash_type: md5
+hash_type: md5
 
-# The buffer size in the file server can be adjusted here:
-#file_buffer_size: 1048576
 
-# A regular expression (or a list of expressions) that will be matched
-# against the file path before syncing the modules and states to the minions.
-# This includes files affected by the file.recurse state.
-# For example, if you manage your custom modules and states in subversion
-# and don't want all the '.svn' folders and content synced to your minions,
-# you could set this to '/\.svn($|/)'. By default nothing is ignored.
-#
-#file_ignore_regex:
-#  - '/\.svn($|/)'
-#  - '/\.git($|/)'
-
-# A file glob (or list of file globs) that will be matched against the file
-# path before syncing the modules and states to the minions. This is similar
-# to file_ignore_regex above, but works on globs instead of regex. By default
-# nothing is ignored.
-#
-# file_ignore_glob:
-#  - '*.pyc'
-#  - '*/somefolder/*.bak'
-#  - '*.swp'
-
-# File Server Backend
-# Salt supports a modular fileserver backend system, this system allows
-# the salt master to link directly to third party systems to gather and
-# manage the files available to minions. Multiple backends can be
-# configured and will be searched for the requested file in the order in which
-# they are defined here. The default setting only enables the standard backend
-# "roots" which uses the "file_roots" option.
-#
-#fileserver_backend:
+fileserver_backend:
+  - git
 #  - roots
 #
-# To use multiple backends list them in the order they are searched:
-#
-#fileserver_backend:
-#  - git
-#  - roots
-#
-# Uncomment the line below if you do not want the file_server to follow
-# symlinks when walking the filesystem tree. This is set to True
-# by default. Currently this only applies to the default roots
-# fileserver_backend.
-#
-#fileserver_followsymlinks: False
-#
-# Uncomment the line below if you do not want symlinks to be
-# treated as the files they are pointing to. By default this is set to
-# False. By uncommenting the line below, any detected symlink while listing
-# files on the Master will not be returned to the Minion.
-#
-#fileserver_ignoresymlinks: True
-#
-# By default, the Salt fileserver recurses fully into all defined environments
-# to attempt to find files. To limit this behavior so that the fileserver only
-# traverses directories with SLS files and special Salt directories like _modules,
-# enable the option below. This might be useful for installations where a file root
-# has a very large number of files and performance is impacted. Default is False.
-#
-# fileserver_limit_traversal: False
-#
-# The fileserver can fire events off every time the fileserver is updated,
-# these are disabled by default, but can be easily turned on by setting this
-# flag to True
-#fileserver_events: False
-#
-# Git fileserver backend configuration
-# When using the git fileserver backend at least one git remote needs to be
-# defined. The user running the salt master will need read access to the repo.
-#
-#gitfs_remotes:
-#  - git://github.com/saltstack/salt-states.git
-#  - file:///var/git/saltmaster
-#
-# The gitfs_ssl_verify option specifies whether to ignore ssl certificate
-# errors when contacting the gitfs backend. You might want to set this to
-# false if you're using a git backend that uses a self-signed certificate but
-# keep in mind that setting this flag to anything other than the default of True
-# is a security concern, you may want to try using the ssh transport.
-#gitfs_ssl_verify: True
-#
-# The repos will be searched in order to find the file requested by a client
-# and the first repo to have the file will return it.
-# When using the git backend branches and tags are translated into salt
-# environments.
-# Note:  file:// repos will be treated as a remote, so refs you want used must
-# exist in that repo as *local* refs.
-#
-# The gitfs_root option gives the ability to serve files from a subdirectory
-# within the repository. The path is defined relative to the root of the
-# repository and defaults to the repository root.
-#gitfs_root: somefolder/otherfolder
+
+gitfs_remotes:
+  - https://github.com/umeboshi2/paella-states.git
 
 
 #####         Pillar settings        #####

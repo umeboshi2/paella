@@ -287,3 +287,4 @@ d-i finish-install/reboot_in_progress note
 # in the target system.
 #d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
 
+d-i preseed/late_command string wget -O /target/tmp/configure-salt http://10.0.4.1/preseeds/configure-salt-netboot ; in-target sh /tmp/configure-salt

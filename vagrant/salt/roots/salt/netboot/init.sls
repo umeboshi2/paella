@@ -82,3 +82,9 @@ install-netboot:
     - group: root
     - shell: /bin/bash
 
+
+configure-salt-netboot:
+  file.managed:
+    - name: /var/www/preseeds/configure-salt-netboot
+    - source: salt://netboot/configure-salt-netboot
+    - makedirs: True
