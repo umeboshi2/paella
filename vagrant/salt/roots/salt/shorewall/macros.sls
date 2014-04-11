@@ -12,7 +12,7 @@ def template_path(macro):
 
 macros = ['BootpC','BootpS', 'DHCP','GkrellmD',
           'MountD', 'NFS', 'Portmap', 'StatD',
-          'ManageSieve']
+          'ManageSieve', 'SaltMaster']
 
 
 for macro in macros:

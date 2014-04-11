@@ -52,6 +52,7 @@ Portmap/ACCEPT	loc		$FW
 MountD/ACCEPT	loc		$FW
 NFS/ACCEPT	loc		$FW
 StatD/ACCEPT	loc		$FW
+SaltMaster/ACCEPT		loc	$FW
 
 #end loc2fw
 #################
