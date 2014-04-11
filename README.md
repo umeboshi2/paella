@@ -1,9 +1,7 @@
-===========
-Paella
-===========
+# Paella
 
-Introduction 
-----------------------
+
+## Introduction 
 
 Paella is a system for that has been used to install preconfigured 
 debian systems over a local network in a manner similar to FAI_.  The 
@@ -13,8 +11,24 @@ the target machine.
 
 The old website for this project is at http://paella.berlios.de
 
-Current Features
------------------------
+## NEWS
+
+- Paella is being rewritten completely.  
+
+- [Vagrant](http://www.vagrantup.com/) is being used to create a 
+  testing environment.
+
+- Currently using i386 vagrant box running debian/wheezy
+
+- Using Debian Installer via PXE for first stage install
+
+- Using [salt](http://saltstack.org/) for second stage
+  installation and configuration.
+  
+  
+  
+
+## Current Features
 
 - Automated network installation over a local network.
 
@@ -50,8 +64,7 @@ Current Features
   between logical and physical configurations.  This allows the administrator 
   to more easily upgrade a machine to a new physical configuration.
 
-TODO
------------------------
+## TODO
 
 - Cleanup vestigial portions of the code.
 
@@ -65,8 +78,7 @@ TODO
 
 
 
-History
----------------
+## History
 
 Paella was written over eight years ago, yet much of the core components 
 have changed little since the project started approaching stability.  Some 
