@@ -48,6 +48,8 @@ Two deployment scenarios:
   
 ### Install Routine
 
+#### Default Live System
+
 Boot a machine over the network.  The default boot menu will allow you to boot into 
 a live system where you can identify the machine and set a flag on the server to install 
 the machine.
@@ -55,19 +57,27 @@ the machine.
 Two scripts on the live system:
 
 1. identify-machine <name>
+   
    sends a name to the server
+   
    the salt config should already have this name
+   
    in the future, use web app to create machines from sls file list, etc.
+   
    all mac addresses sent to server tied to name
    
 
 2. install-machine
+   
    machine must already be identified
+   
    name lookup based on matching mac address
+   
    command tells server to create special pxe config files named after mac addresses
+   
    kernel command line has preseed url for machine
    
-   
+ #### General Install Procedure  
  Procedure when machine set to be installed:
  
  1. Boot machine from network.
