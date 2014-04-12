@@ -1,12 +1,18 @@
 # -*- mode: yaml -*-
 
-mirror: http://ftp.us.debian.org/debian
-mirror_security: http://security.debian.org/
-
-binary_images: net
-bootloader: syslinux
-
-net_root_server: 10.0.4.1
+livebuild:
+  distribution: wheezy
+  parent_distribution: wheezy
+  architectures: i386
+  mirror: http://ftp.us.debian.org/debian
+  mirror_security: http://security.debian.org/
+  bootloader: syslinux
+  binary_images: netboot
+  net_root_server: 10.0.4.1
+  net_root_filesystem: nfs
+  net_root_path: /srv/debian-live
+  apt_key: http://localhost/debrepos/paella.gpg
+  local_mirror: http://localhost/debrepos/debian
 
 
 

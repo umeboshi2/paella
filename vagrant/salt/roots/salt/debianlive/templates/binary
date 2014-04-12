@@ -1,4 +1,7 @@
 # config/binary - options for live-build(7), binary stage
+<% livebuild = pillar['livebuild'] %>
+<% lb = livebuild %>
+<% nfsroot = '%s:%s' % (lb['net_root_server'], lb['net_root_path']) %>
 
 # $LB_BINARY_FILESYSTEM: set image filesystem
 # (Default: fat32)
@@ -6,7 +9,7 @@ LB_BINARY_FILESYSTEM="fat32"
 
 # $LB_BINARY_IMAGES: set image type
 # (Default: iso-hybrid)
-LB_BINARY_IMAGES="netboot"
+LB_BINARY_IMAGES="${livebuild['binary_images']}"
 
 # $LB_APT_INDICES: set apt/aptitude generic indices
 # (Default: true)
@@ -14,7 +17,7 @@ LB_APT_INDICES="true"
 
 # $LB_BOOTAPPEND_LIVE: set boot parameters
 # (Default: empty)
-LB_BOOTAPPEND_LIVE="boot=live config netboot=nfs nfsroot=10.0.4.1:/srv/debian-live splash"
+LB_BOOTAPPEND_LIVE="boot=live config netboot=nfs nfsroot=${nfsroot} splash"
 
 # $LB_BOOTAPPEND_INSTALL: set boot parameters
 # (Default: empty)
@@ -22,11 +25,11 @@ LB_BOOTAPPEND_INSTALL=""
 
 # $LB_BOOTAPPEND_LIVE_FAILSAFE: set boot parameters
 # (Default: empty)
-LB_BOOTAPPEND_LIVE_FAILSAFE="boot=live config memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=normal"
+LB_BOOTAPPEND_LIVE_FAILSAFE="boot=live config netboot=nfs nfsroot=${nfsroot} memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=normal"
 
 # $LB_BOOTLOADER: set bootloader
 # (Default: syslinux)
-LB_BOOTLOADER="syslinux"
+LB_BOOTLOADER="${livebuild['bootloader']}"
 
 # $LB_CHECKSUMS: set checksums
 # (Default: md5)
@@ -40,7 +43,7 @@ LB_COMPRESSION="none"
 # (Default: true)
 LB_ZSYNC="true"
 
-# ${LB_BUILD_WITH_CHROOT: control if we build binary images chrooted
+# $LB_BUILD_WITH_CHROOT: control if we build binary images chrooted
 # (Default: true)
 # DO NEVER, *NEVER*, *N*E*V*E*R* SET THIS OPTION to false.
 LB_BUILD_WITH_CHROOT="true"
@@ -107,7 +110,7 @@ LB_WIN32_LOADER="false"
 
 # $LB_NET_ROOT_FILESYSTEM: set netboot filesystem
 # (Default: nfs)
-LB_NET_ROOT_FILESYSTEM="nfs"
+LB_NET_ROOT_FILESYSTEM="${livebuild['net_root_filesystem']}"
 
 # $LB_NET_ROOT_MOUNTOPTIONS: set nfsopts
 # (Default: empty)
@@ -115,11 +118,11 @@ LB_NET_ROOT_MOUNTOPTIONS=""
 
 # $LB_NET_ROOT_PATH: set netboot server directory
 # (Default: /srv/debian-live)
-LB_NET_ROOT_PATH="/srv/debian-live"
+LB_NET_ROOT_PATH="${livebuild['net_root_path']}"
 
 # $LB_NET_ROOT_SERVER: set netboot server address
 # (Default: 192.168.1.1)
-LB_NET_ROOT_SERVER="10.0.4.1"
+LB_NET_ROOT_SERVER="${livebuild['net_root_server']}"
 
 # $LB_NET_COW_FILESYSTEM: set net client cow filesystem
 # (Default: nfs)

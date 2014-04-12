@@ -8,17 +8,13 @@ fi
 
 echo "Building live images............."
 
-echo "Merging config"
-
 livebuild=/var/cache/netboot/livebuild
 
 if ! [ -d $livebuild ]; then
-    echo "Creating $livebuild"
-    mkdir -p $livebuild
+    echo "ERROR: $livebuild absent"
+    exit 1
 fi
 
-echo "Syncing work tree with $livebuild/config"
-rsync -avHX /srv/livebuild/config/ $livebuild/config/
 
 pushd $livebuild
 
@@ -37,7 +33,8 @@ fi
 
 
 echo "Building live image......"
-lb build
+lb build > live-build.log
+
 
 
 echo "Build Complete."

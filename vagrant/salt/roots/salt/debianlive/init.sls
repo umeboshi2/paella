@@ -19,3 +19,19 @@ live-build:
     - mode: 755
 
 
+livebuild-configdir:
+  file.directory:
+    - name: /var/cache/netboot/livebuild/config
+    - user: root
+    - group: root
+    - mode: 755
+    - makedirs: True
+
+
+%for cfile in ['binary', 'bootstrap', 'chroot', 'common', 'source']:
+livebuild-config-${cfile}:
+  file.managed:
+    - name: /var/cache/netboot/livebuild/config/${cfile}
+    - source: salt://debianlive/templates/${cfile}
+    - template: mako
+%endfor

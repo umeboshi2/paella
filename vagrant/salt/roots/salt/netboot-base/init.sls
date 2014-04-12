@@ -1,8 +1,9 @@
 # -*- mode: yaml -*-
 
-syslinux:
+bootloader:
   pkg:
     - installed
+    - name: ${pillar['livebuild']['bootloader']}
 
 nfs-kernel-server:
   pkg:
@@ -20,4 +21,5 @@ nfs-exports:
     - user: root
     - group: root
     - mode: 644
+    - template: mako
 
