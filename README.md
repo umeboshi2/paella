@@ -77,7 +77,8 @@ Two scripts on the live system:
    
    kernel command line has preseed url for machine
    
- #### General Install Procedure  
+
+#### General Install Procedure  
  Procedure when machine set to be installed:
  
  1. Boot machine from network.
