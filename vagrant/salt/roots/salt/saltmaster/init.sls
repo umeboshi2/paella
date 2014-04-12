@@ -5,6 +5,8 @@ salt-master:
     - installed
   service:
     - running
+    - watch:
+      - file: /etc/salt/master
 
 /etc/salt/pki:
   file.directory:

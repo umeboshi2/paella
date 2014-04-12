@@ -8,4 +8,5 @@ base:
     - debrepos
     - saltmaster
     - netboot
+    - mainserver
 

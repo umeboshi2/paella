@@ -177,37 +177,18 @@ renderer: yaml_mako
 #     - /srv/salt/prod/services
 #     - /srv/salt/prod/states
 
-file_roots:
-  base:
-    - /srv/master/salt
 
 hash_type: md5
 
 
 fileserver_backend:
   - git
-#  - roots
-#
 
 gitfs_remotes:
   - https://github.com/umeboshi2/paella-states.git
 
-
-#####         Pillar settings        #####
-##########################################
-# Salt Pillars allow for the building of global data that can be made selectively
-# available to different minions based on minion grain filtering. The Salt
-# Pillar is laid out in the same fashion as the file server, with environments,
-# a top file and sls files. However, pillar data does not need to be in the
-# highstate format, and is generally just key/value pairs.
-
-#pillar_roots:
-#  base:
-#    - /srv/pillar
-
-#ext_pillar:
-#  - hiera: /etc/hiera.yaml
-#  - cmd_yaml: cat /etc/salt/yaml
+ext_pillar:
+  - git: master https://github.com/umeboshi2/paella-pillar.git
 
 # The pillar_gitfs_ssl_verify option specifies whether to ignore ssl certificate
 # errors when contacting the pillar gitfs backend. You might want to set this to
