@@ -119,6 +119,20 @@ chunks; basic info, disk/partition config, apt info, and so on.  There needs to
 be a collection of disk configs that can be referred to by name, filling out the 
 debconf selections for the preseed file.
 
+The preseed is built dynamically and served through pyramid string renderer.
+
+I desire most of the data to be stored and managed via salt.  The data for the 
+preseed file should be contained in a salt pillar.  The master should be able to 
+get the pillar data for the identified machine and fill the preseed file with that 
+data.
+
+### Pillar Data
+
+The default pillar data is in a git repository.  I desire for these pillar files, eventually, 
+to be python scripts that access a database using SQLAlchemy.
+
+
+
 ## Features
 - Automated network installation over a local network.
 
