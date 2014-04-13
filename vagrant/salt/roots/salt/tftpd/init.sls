@@ -10,8 +10,8 @@ tftpd-hpa:
 
 /var/lib/tftpboot:
   file.directory:
-    - user: vagrant
-    - group: vagrant
+    - user: ${pillar['paella_user']}
+    - group: ${pillar['paella_group']}
     - dir_mode: 755
     - file_mode: 644
     - makedirs: True

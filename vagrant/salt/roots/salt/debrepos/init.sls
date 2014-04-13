@@ -1,5 +1,9 @@
 # -*- mode: yaml -*-
 
+<% user = pillar['paella_user'] %>
+<% group = pillar['paella_group'] %>
+
+
 reprepro:
   pkg:
     - installed
@@ -40,45 +44,45 @@ germinate:
 /home/vagrant/paella-insecure-sec.gpg:
   file.managed:
     - source: salt://debrepos/paella-insecure-sec.gpg
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - mode: 400
 
 /home/vagrant/wheezy-stable.gpg:
   file.managed:
     - source: salt://debrepos/wheezy-stable.gpg
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - mode: 644
 
 /home/vagrant/wheezy-automatic.gpg:
   file.managed:
     - source: salt://debrepos/wheezy-automatic.gpg
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - mode: 644
 
 /home/vagrant/saltrepos.gpg:
   file.managed:
     - source: salt://debrepos/saltrepos.gpg
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - mode: 644
 
 # add this script to debian-archive-keyring package
 /home/vagrant/add-paella-insecure:
   file.managed:
     - source: salt://debrepos/add-paella-insecure
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - mode: 644
 
 import-insecure-gpg-key:
   cmd.run:
     - name: gpg --import paella-insecure-sec.gpg
     - unless: gpg --list-key 62804AE5
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /home/vagrant
     - requires:
       - file: /home/vagrant/paella-insecure-sec.gpg
@@ -87,8 +91,8 @@ import-wheezy-automatic-key:
   cmd.run:
     - name: gpg --import wheezy-automatic.gpg
     - unless: gpg --list-key 46925553
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /home/vagrant
     - requires:
       - file: /home/vagrant/wheezy-automatic.gpg
@@ -98,8 +102,8 @@ import-wheezy-stable-key:
   cmd.run:
     - name: gpg --import wheezy-stable.gpg
     - unless: gpg --list-key 65FFB764
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /home/vagrant
     - requires:
       - file: /home/vagrant/wheezy-stable.gpg
@@ -108,8 +112,8 @@ import-saltrepos-key:
   cmd.run:
     - name: gpg --import saltrepos.gpg
     - unless: gpg --list-key F2AE6AB9
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /home/vagrant
     - requires:
       - file: /home/vagrant/saltrepos.gpg
@@ -118,8 +122,8 @@ keyring-ready:
   cmd.run:
     - name: echo "Keyring Ready"
     - unless: gpg --list-key 65FFB764
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /home/vagrant
     - requires:
       - cmd: import-wheezy-stable-key
@@ -172,8 +176,8 @@ create-udeb-list:
 repos-ready:
   cmd.run:
     - name: echo "repos-ready"
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /srv/debrepos/debian
     - requires:
       - cmd: create-udeb-list
@@ -227,8 +231,8 @@ update-debrepos:
   cmd.run:
     - name: reprepro -VV --noskipold update
     - unless: test -d /srv/debrepos/debian/db
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /srv/debrepos/debian
     - requires:
       - cmd: apache-ready
@@ -240,8 +244,8 @@ update-debrepos:
 #  cmd.script:
 #    - source: salt://scripts/build-keyring-package.sh
 #    - unless: test -d /home/vagrant/workspace
-#    - user: vagrant
-#    - group: vagrant
+#    - user: ${user}
+#    - group: ${group}
 #    - requires:
 #      - cmd: update-debrepos
 
@@ -263,8 +267,8 @@ update-saltrepos:
   cmd.run:
     - name: reprepro -VV --noskipold update
     - unless: test -d /srv/debrepos/salt/db
-    - user: vagrant
-    - group: vagrant
+    - user: ${user}
+    - group: ${group}
     - cwd: /srv/debrepos/salt
     - requires:
       - cmd: update-debrepos

@@ -88,3 +88,5 @@ configure-salt-netboot:
     - name: /var/www/preseeds/configure-salt-netboot
     - source: salt://netboot/configure-salt-netboot
     - makedirs: True
+
+
