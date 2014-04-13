@@ -7,6 +7,23 @@ apache-support-packages:
       - apache2-mpm-worker
       - apache2-utils
 
+/etc/apache2/conf.d/debrepos:
+  file.managed:
+    - source: salt://apache/debrepos.conf
+
+/etc/apache2/conf.d/paella:
+  file.managed:
+    - source: salt://apache/paella.conf
+
+
+/etc/apache2/paella.wsgi:
+  file.managed:
+    - source: salt://apache/paella.wsgi
+    - user: root
+    - group: root
+    - mode: 755
+
+
 apache2:
   pkg.installed:
     - name: apache2
@@ -16,10 +33,9 @@ apache2:
   service:
     - name: apache2
     - running
-
+    - watch:
+      - file: /etc/apache2/paella.wsgi
+      - file: /etc/apache2/conf.d/debrepos
+      - file: /etc/apache2/conf.d/paella
   
-
-/etc/apache2/conf.d/debrepos:
-  file.managed:
-    - source: salt://apache/debrepos.conf
 

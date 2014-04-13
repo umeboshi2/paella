@@ -5,11 +5,6 @@ live-build:
     - installed
 
 
-/srv/livebuild:
-  file.directory:
-    - makedirs: True
-
-
 # This is modified to accept a url with the _KEY variable
 /usr/lib/live/build/bootstrap_archive-keys:
   file.managed:
