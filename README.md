@@ -27,14 +27,15 @@ The old website for this project is at http://paella.berlios.de
 
 ## Vagrant
 
-Vagrant is used to establish a testing environment for paella.  The Vagrantfile creates 
-a virtualbox machine with two network interfaces.  The second network is a virtualbox 
-internal network where the installation system is hosted.  The installation system can 
-be tested by creating virtual machines and booting from the internal network to 
-define and install the system.
+Vagrant is used to establish a testing environment for paella.  The 
+Vagrantfile creates a virtualbox machine with two network interfaces.  
+The second network is a virtualbox internal network where the installation 
+system is hosted.  The installation system can be tested by creating virtual 
+machines and booting from the internal network to define and install the 
+system.
 
-At the moment, there is only the proof of concept installer that installs a minimal 
-i386 system.
+At the moment, there is only the proof of concept installer that installs a 
+minimal i386 system.
 
 ## Outline
 
@@ -42,40 +43,44 @@ How is paella going to work?
 
 Two deployment scenarios:
 
-1. Set up a network in the office or workplace of a person who creates servers for people.  This person can use paella to create fully configured machines that can be physically carried and installed at another location.
+1. Set up a network in the office or workplace of a person who creates servers 
+   for people.  This person can use paella to create fully configured machines 
+   that can be physically carried and installed at another location.
 
-2. Set up a network where the hosts on the network are installed and managed by a paella server.
+2. Set up a network where the hosts on the network are installed and managed 
+   by a paella server.
   
 ### Install Routine
 
 #### Default Live System
 
-Boot a machine over the network.  The default boot menu will allow you to boot into 
-a live system where you can identify the machine and set a flag on the server to install 
-the machine.
+Boot a machine over the network.  The default boot menu will allow you to 
+boot into a live system where you can identify the machine and set a flag 
+on the server to install the machine.
 
 Two scripts on the live system:
 
 1. identify-machine <name>
    
-   sends a name to the server
+   1. sends a name to the server
    
-   the salt config should already have this name
+   2. the salt config should already have this name
    
-   in the future, use web app to create machines from sls file list, etc.
+   3. in the future, use web app to create machines from sls file list, etc.
    
-   all mac addresses sent to server tied to name
+   4. all mac addresses sent to server tied to name
    
 
 2. install-machine
    
-   machine must already be identified
+   1. machine must already be identified
    
-   name lookup based on matching mac address
+   2. name lookup based on matching mac address
    
-   command tells server to create special pxe config files named after mac addresses
+   3. command tells server to create special pxe config files named 
+	  after mac addresses
    
-   kernel command line has preseed url for machine
+   4. kernel command line has preseed url for machine
    
 
 #### General Install Procedure  
@@ -95,7 +100,8 @@ Procedure when machine set to be installed:
  
 7. late command needs machine specific url to supply script to configure salt
  
-8. late script sents http POST to server to tell server first stage install completed
+8. late script sents http POST to server to tell server first stage install 
+   completed
  
 9. when server receives install complete post, it deletes pxe config files
  
@@ -104,85 +110,63 @@ Procedure when machine set to be installed:
 ### PXE Issues
 
 Netbooting varies from machine to machine.  There are many machines that will 
-not boot from the network unless a key, like F12, is pressed during the preboot.  
-Other machines will readily boot from the network at first option.  I intend for paella 
-to be flexible enough to handle these situations.  For example, instead of deleting 
-the machine specific pxe config files in the tftpboot directory, those files could be 
-modified to boot from the first hard drive, allowing the second stage installer to 
-continue, rather than being stuck in a repeated install loop.
+not boot from the network unless a key, like F12, is pressed during the 
+preboot.  
+
+Other machines will readily boot from the network at first option.  I intend 
+for paella to be flexible enough to handle these situations.  For example, 
+instead of deleting the machine specific pxe config files in the tftpboot 
+directory, those files could be modified to boot from the first hard drive, 
+allowing the second stage installer to continue, rather than being stuck 
+in a repeated install loop.
 
 ### Preseed builder
 
 There needs to be a method of gather variables from a data source and 
 generating a preseed file.  The preseed file needs to be managed in certain 
 chunks; basic info, disk/partition config, apt info, and so on.  There needs to 
-be a collection of disk configs that can be referred to by name, filling out the 
-debconf selections for the preseed file.
+be a collection of disk configs that can be referred to by name, filling out 
+the debconf selections for the preseed file.
 
 The preseed is built dynamically and served through pyramid string renderer.
 
 I desire most of the data to be stored and managed via salt.  The data for the 
-preseed file should be contained in a salt pillar.  The master should be able to 
-get the pillar data for the identified machine and fill the preseed file with that 
-data.
+preseed file should be contained in a salt pillar.  The master should be able 
+to get the pillar data for the identified machine and fill the preseed file 
+with that data.
 
 ### Pillar Data
 
-The default pillar data is in a git repository.  I desire for these pillar files, eventually, 
-to be python scripts that access a database using SQLAlchemy.
+The default pillar data is in a git repository.  I desire for these pillar 
+files, eventually, to be python scripts that access a database using 
+SQLAlchemy.
 
-
-
-## Features
-- Automated network installation over a local network.
-
-- The configuration is split into conceptual entities that are
-  organized in a manner that defines a machine by the functions 
-  that it performs, the group of machines it belongs to according to 
-  network, role, or any other criteria that you define.
-
-- The boot media is created from debian live, which allows for nfs,
-  cdrom, and usb media types.
-
-- A gui exists to help manage the database.
-
-- The installer system is very flexible, where each step in the 
-  configuration is able to be overridden with a script.
-
-- The system is split into independent packages that clearly describe 
-  their requirements, attempting to relieve the bloat that can occur 
-  when using a single source tree to provide functionality in 
-  differing environments (for example, qt4 doesn't need to be present 
-  on the installation systems).
-
-- The system can be used to install preconfigured machines that are 
-  ready to be deployed to another network, or it can be used to install 
-  machines on the local network as a service.  The distinction depends upon 
-  the configuration of the database.
-
-- Paella works upon the principle that the value of an entity, such as a 
-  hostname, should be stored in one place, then referenced from other places 
-  as the need requires, rather than being copied. (http://paella.berlios.de/docs/abstract.html#one-location-for-a-variable)
-
-- The structure of the database allows the administrator to distinguish 
-  between logical and physical configurations.  This allows the administrator 
-  to more easily upgrade a machine to a new physical configuration.
 
 ## TODO
 
-- Cleanup vestigial portions of the code.
+- Make scripts for live netboot system to identify machines and set
+  for install.
+  
+- Make server that accepts POST requests and assigns machine names 
+  to mac addresses.
+  
+- Get server to render preseed files based on name of machine.
 
-- Use SQLAlchemy for database access.
+- Get server to create and destroy pxe config files for machines in 
+  /var/lib/tftpboot.
 
-- Use MakoTemplates instead of the simple tag substitutions
+- Setup scripts to help with partial repository
 
-- Integrate with salt to maintain configurations.
+- Move more info into pillar data
 
-- Rewrite the user interface to work in a pyramid web framework.
-
+- Create some simple disk/partition recipes to use as a starting 
+  point.
+  
 
 
 ## History
+
+### What was it?
 
 Paella was written over eight years ago, yet much of the core components 
 have changed little since the project started approaching stability.  Some 
@@ -227,6 +211,37 @@ configuration database is not located on the local network.  Furthermore,
 I desired to develop a gui to manipulate the configuration, and the sql 
 database lent itself to quicker gui development.
 
+### Features on Older Version
+- Automated network installation over a local network.
 
+- The configuration is split into conceptual entities that are
+  organized in a manner that defines a machine by the functions 
+  that it performs, the group of machines it belongs to according to 
+  network, role, or any other criteria that you define.
 
+- The boot media is created from debian live, which allows for nfs,
+  cdrom, and usb media types.
 
+- A gui exists to help manage the database.
+
+- The installer system is very flexible, where each step in the 
+  configuration is able to be overridden with a script.
+
+- The system is split into independent packages that clearly describe 
+  their requirements, attempting to relieve the bloat that can occur 
+  when using a single source tree to provide functionality in 
+  differing environments (for example, qt4 doesn't need to be present 
+  on the installation systems).
+
+- The system can be used to install preconfigured machines that are 
+  ready to be deployed to another network, or it can be used to install 
+  machines on the local network as a service.  The distinction depends upon 
+  the configuration of the database.
+
+- Paella works upon the principle that the value of an entity, such as a 
+  hostname, should be stored in one place, then referenced from other places 
+  as the need requires, rather than being copied. (http://paella.berlios.de/docs/abstract.html#one-location-for-a-variable)
+
+- The structure of the database allows the administrator to distinguish 
+  between logical and physical configurations.  This allows the administrator 
+  to more easily upgrade a machine to a new physical configuration.
