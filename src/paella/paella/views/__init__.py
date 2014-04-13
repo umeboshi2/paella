@@ -3,13 +3,11 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
-from .models import (
-    DBSession,
-    MyModel,
-    )
+from paella.models.base import DBSession
+from paella.models.main import MyModel
 
 
-@view_config(route_name='home', renderer='templates/mytemplate.pt')
+@view_config(route_name='home', renderer='paella:templates/mytemplate.pt')
 def my_view(request):
     try:
         one = DBSession.query(MyModel).filter(MyModel.name == 'one').first()

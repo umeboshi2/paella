@@ -69,14 +69,6 @@ germinate:
     - group: ${group}
     - mode: 644
 
-# add this script to debian-archive-keyring package
-/home/vagrant/add-paella-insecure:
-  file.managed:
-    - source: salt://debrepos/add-paella-insecure
-    - user: ${user}
-    - group: ${group}
-    - mode: 644
-
 import-insecure-gpg-key:
   cmd.run:
     - name: gpg --import paella-insecure-sec.gpg
@@ -139,6 +131,14 @@ create-binary-pubkey:
     - requires:
       - cmd: keyring-ready
 
+# add this script to debian-archive-keyring package
+/home/vagrant/add-paella-insecure:
+  file.managed:
+    - source: salt://debrepos/add-paella-insecure
+    - user: ${user}
+    - group: ${group}
+    - mode: 644
+
 /srv/debrepos/debian/conf:
   file.directory:
     - makedirs: True
@@ -188,6 +188,7 @@ repos-ready:
 
 include:
   - apache
+  - postgresql
   - tftpd
   - bind
   - dhcpd
@@ -197,13 +198,14 @@ include:
   - netboot-base
 
 
-
 local-packages:
   cmd.script:
     - creates: /srv/debrepos/debian/conf/local-packages
     - source: salt://scripts/create-local-packages-list.sh
+    - cwd: /srv/debrepos/debian
     - require:
       - sls: apache
+      - sls: postgresql
       - sls: tftpd
       - sls: bind
       - sls: dhcpd
@@ -263,6 +265,17 @@ update-debrepos:
   file.managed:
     - source: salt://debrepos/salt-dist
 
+saltrepos-ready:
+  cmd.run:
+    - name: echo "saltrepos-ready"
+    - user: ${user}
+    - group: ${group}
+    - cwd: /srv/debrepos/salt
+    - requires:
+      - cmd: update-debrepos
+      - file: /srv/debrepos/salt/conf/updates
+      - file: /srv/debrepos/salt/conf/distributions
+
 update-saltrepos:
   cmd.run:
     - name: reprepro -VV --noskipold update
@@ -271,10 +284,7 @@ update-saltrepos:
     - group: ${group}
     - cwd: /srv/debrepos/salt
     - requires:
-      - cmd: update-debrepos
-
-
-
+      - cmd: saltrepos-ready
 
 # security updates
 /srv/debrepos/security/conf:
@@ -285,20 +295,44 @@ update-saltrepos:
   file.managed:
     - source: salt://debrepos/security-updates
 
+/srv/debrepos/security/conf/live-packages:
+  file.managed:
+    - source: salt://debrepos/live-packages
+
 /srv/debrepos/security/conf/distributions:
   file.managed:
     - source: salt://debrepos/security-dist
 
+local-packages-security:
+  cmd.script:
+    - creates: /srv/debrepos/security/conf/local-packages
+    - source: salt://scripts/create-local-packages-list.sh
+    - cwd: /srv/debrepos/security
+    - require:
+      - cmd: local-packages
+      - file: /srv/debrepos/security/conf
+      - file: /srv/debrepos/security/conf/updates
+      - file: /srv/debrepos/security/conf/distributions
+      - file: /srv/debrepos/security/conf/live-packages
+
+security-repos-ready:
+  cmd.run:
+    - name: echo "security repos ready"
+    - user: ${user}
+    - group: ${group}
+    - cwd: /srv/debrepos/salt
+    - requires:
+      - cmd: local-packages-security
+
 update-security-repos:
   cmd.run:
     - name: reprepro -VV --noskipold update
-    - unless: test -d /srv/debrepos/security/conf/db
+    - unless: test -d /srv/debrepos/security/db
     - user: ${user}
     - group: ${group}
     - cwd: /srv/debrepos/security
     - requires:
-      - cmd: update-debrepos
-      - file: /srv/debrepos/security
+      - cmd: security-repos-ready
 
 
 

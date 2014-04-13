@@ -20,6 +20,13 @@ setup-paella:
       - virtualenv: /var/lib/paella/venv
     - source: salt://scripts/setup-paella.sh
     - user: ${pillar['paella_user']}
-    - group: ${pillar['paella_group']}
 
+
+setup-paella-database:
+  cmd.script:
+    - unless: psql --tuples-only -c 'SELECT name FROM models;' paella | grep '^ one$'
+    - requires:
+      - cmd: setup-paella
+    - source: salt://scripts/setup-paella-database.sh
+    - user: postgres
 

@@ -23,6 +23,9 @@ apache-support-packages:
     - group: root
     - mode: 755
 
+/var/www/index.html:
+  file.managed:
+    - source: salt://apache/index.html
 
 apache2:
   pkg.installed:

@@ -3,7 +3,7 @@ import transaction
 
 from pyramid import testing
 
-from .models import DBSession
+from paella.models.base import DBSession
 
 
 class TestMyViewSuccessCondition(unittest.TestCase):

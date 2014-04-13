@@ -11,12 +11,12 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-from ..models import (
+from paella.models.base import (
     DBSession,
-    MyModel,
     Base,
     )
 
+from paella.models.main import MyModel
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
