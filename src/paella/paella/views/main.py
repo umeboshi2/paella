@@ -1,3 +1,6 @@
+import json
+
+from pyramid.exceptions import HTTPNotFound
 from cornice.resource import resource, view
 
 
@@ -17,12 +20,15 @@ class MachineResource(object):
         pass
     
     def collection_post(self):
-        name = self.request.json['name']
-        addresses = self.request.json['addresses']
-        data = self.mgr.add_new_machine(name, addresses)
-        data['machine'] = data['machine'].serialize()
-        data['addresses'] = [a.serialize() for a in data['addresses']]
-        data['result'] = 'success'
+        data = json.loads(self.request.json)
+        name = data['machine']
+        addresses = data['addresses']
+        # add machine
+        data = self.mgr.update_machine(name, addresses)
+        # FIXME
+        if data is not None:
+            data['machine'] = data['machine'].serialize()
+            data['addresses'] = [a.serialize() for a in data['addresses']]
         return data
         
     def collection_put(self):
@@ -33,7 +39,8 @@ class MachineResource(object):
 
     def get(self):
         name = self.request.matchdict['name']
-        raise RuntimeError, "Not implemented"
+        return dict(name=name)
+    
         
     
 @resource(collection_path='/api0/addresses',

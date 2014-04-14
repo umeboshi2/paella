@@ -24,7 +24,7 @@ class MyModel(Base):
 class Machine(Base, SerialBase):
     __tablename__ = 'machines'
     id = Column(Integer, primary_key=True)
-    name = Column(Text)
+    name = Column(Text, unique=True)
 
 class MacAddr(Base, SerialBase):
     __tablename__ = 'macaddrs'

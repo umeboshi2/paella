@@ -42,15 +42,16 @@ def make_data(name):
 def sumbit_machine(name):
     data = make_data(name)
     r = requests.post(url, data=json.dumps(data), headers=headers)
-    return r
+    if not r.ok:
+        raise RuntimeError, "Server responded with %d" % r.status_code
 
 def main():
     for a in get_mac_addresses():
         print "Address: %s" % a
-    r = sumbit_machine(name)
-    return r
+    sumbit_machine(name)
+    print "Machine %s submitted to paella." % name
 
 if __name__ == '__main__':
-    r = main()
+    main()
     
         

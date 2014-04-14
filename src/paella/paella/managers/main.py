@@ -20,7 +20,7 @@ class MachineAddressManager(object):
     def add_machine(self, name):
         with transaction.manager:
             m = Machine()
-            machine.name = name
+            m.name = name
             self.session.add(m)
         return self.session.merge(m)
 
@@ -45,7 +45,7 @@ class MachineAddressManager(object):
         q = self.session.query(MacAddr)
         q = q.filter_by(address=address)
         mc = q.one()
-        m = self.session.query(Machine).get(mc.id)
+        m = self.session.query(Machine).get(mc.machine_id)
         if m is not None:
             return m.name
     
@@ -58,6 +58,16 @@ class MachineAddressManager(object):
             alist.append(am)
         return dict(machine=m, addresses=alist)
 
+    def update_machine(self, name, addresses):
+        try:
+            m = self.session.query(Machine).filter_by(name=name).one()
+        except NoResultFound:
+            return self.add_new_machine(name, addresses)
+        # delete addresses in database, then
+        # add the addresses passed.
+        # FIXME
+
+    
     
 
     def delete_machine(self, name):
