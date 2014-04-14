@@ -11,7 +11,7 @@
 
 /srv/debrepos/security/conf/updates:
   file.managed:
-    - source: salt://debrepos/security-updates
+    - source: salt://debrepos/repos/security/updates
 
 /srv/debrepos/security/conf/live-packages:
   file.managed:
@@ -19,7 +19,7 @@
 
 /srv/debrepos/security/conf/distributions:
   file.managed:
-    - source: salt://debrepos/security-dist
+    - source: salt://debrepos/repos/security/distributions
 
 local-packages-security:
   cmd.script:

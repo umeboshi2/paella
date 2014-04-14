@@ -5,32 +5,32 @@
 
 /srv/debrepos/paella.gpg:
   file.managed:
-    - source: salt://debrepos/paella-insecure-pub.gpg
+    - source: salt://debrepos/keys/paella-insecure-pub.gpg
 
 /home/vagrant/paella-insecure-sec.gpg:
   file.managed:
-    - source: salt://debrepos/paella-insecure-sec.gpg
+    - source: salt://debrepos/keys/paella-insecure-sec.gpg
     - user: ${user}
     - group: ${group}
     - mode: 400
 
 /home/vagrant/wheezy-stable.gpg:
   file.managed:
-    - source: salt://debrepos/wheezy-stable.gpg
+    - source: salt://debrepos/keys/wheezy-stable.gpg
     - user: ${user}
     - group: ${group}
     - mode: 644
 
 /home/vagrant/wheezy-automatic.gpg:
   file.managed:
-    - source: salt://debrepos/wheezy-automatic.gpg
+    - source: salt://debrepos/keys/wheezy-automatic.gpg
     - user: ${user}
     - group: ${group}
     - mode: 644
 
 /home/vagrant/saltrepos.gpg:
   file.managed:
-    - source: salt://debrepos/saltrepos.gpg
+    - source: salt://debrepos/keys/saltrepos.gpg
     - user: ${user}
     - group: ${group}
     - mode: 644

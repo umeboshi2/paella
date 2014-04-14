@@ -11,11 +11,11 @@
 
 /srv/debrepos/salt/conf/updates:
   file.managed:
-    - source: salt://debrepos/salt-updates
+    - source: salt://debrepos/repos/salt/updates
 
 /srv/debrepos/salt/conf/distributions:
   file.managed:
-    - source: salt://debrepos/salt-dist
+    - source: salt://debrepos/repos/salt/distributions
 
 saltrepos-ready:
   cmd.run:

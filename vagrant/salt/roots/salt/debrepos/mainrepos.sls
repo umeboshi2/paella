@@ -32,11 +32,11 @@ create-udeb-list:
 
 /srv/debrepos/debian/conf/updates:
   file.managed:
-    - source: salt://debrepos/updates
+    - source: salt://debrepos/repos/debian/updates
 
 /srv/debrepos/debian/conf/distributions:
   file.managed:
-    - source: salt://debrepos/distributions
+    - source: salt://debrepos/repos/debian/distributions
 
 repos-ready:
   cmd.run:
