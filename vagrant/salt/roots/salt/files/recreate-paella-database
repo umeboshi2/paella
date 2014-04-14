@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+sudo /etc/init.d/apache2 stop
+
+dropdb -U dbadmin paella || true
+
+createdb -U dbadmin paella
+
+sudo /etc/init.d/apache2 start

@@ -35,6 +35,7 @@
     - group: root
     - mode: 755
   
-
-/usr/local/bin/install-netboot:
-  file.absent
+/usr/local/bin/recreate-paella-database:
+  file.managed:
+    - source: salt://files/recreate-paella-database
+    - mode: 755
