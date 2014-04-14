@@ -1,5 +1,5 @@
-paella-client (0.1-1) unstable; urgency=low
+paella-client (0.1dev-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * source package automatically created by stdeb 0.6.0+git
 
- -- Joseph Rawson <joseph.rawson.works@gmail.com>  Mon, 14 Apr 2014 08:55:16 -0500
+ -- Joseph Rawson <joseph.rawson.works@gmail.com>  Mon, 14 Apr 2014 15:26:51 +0000

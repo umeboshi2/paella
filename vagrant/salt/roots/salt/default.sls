@@ -41,3 +41,12 @@ python-dev:
       - python-dev
       - python-requests
       - virtualenvwrapper
+      - python-stdeb
+
+misc-packages:
+  pkg.installed:
+    - pkgs:
+      - bible-kjv
+      - ascii
+      - fortune-mod
+      - cowsay

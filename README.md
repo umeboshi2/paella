@@ -162,7 +162,9 @@ SQLAlchemy.
 - Create some simple disk/partition recipes to use as a starting 
   point.
   
-
+- Automate key generation and preseed the keys during first stage 
+  install.
+  http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
 
 ## History
 

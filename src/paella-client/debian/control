@@ -1,15 +1,12 @@
 Source: paella-client
-Section: unknown
-Priority: extra
 Maintainer: Joseph Rawson <joseph.rawson.works@gmail.com>
-Build-Depends: debhelper (>= 8.0.0)
-Standards-Version: 3.9.3
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://git.debian.org/collab-maint/paella-client.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/paella-client.git;a=summary
+Section: python
+Priority: optional
+Build-Depends: python-setuptools (>= 0.6b3), python-all (>= 2.6.6-3), debhelper (>= 7.4.3)
+Standards-Version: 3.9.1
 
-Package: paella-client
-Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Package: python-paella-client
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}
+Description: Command line paella client
+ Command line paella client

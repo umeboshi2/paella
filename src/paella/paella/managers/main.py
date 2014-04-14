@@ -46,16 +46,25 @@ class MachineAddressManager(object):
         q = q.filter_by(address=address)
         mc = q.one()
         m = self.session.query(Machine).get(mc.id)
-        return m.name
+        if m is not None:
+            return m.name
     
 
     def add_new_machine(self, name, addresses):
         m = self.add_machine(name)
+        alist = list()
         for a in addresses:
-            self.add_macaddr(a, m.id)
+            am = self.add_macaddr(a, m.id)
+            alist.append(am)
+        return dict(machine=m, addresses=alist)
 
+    
 
     def delete_machine(self, name):
         m = self.query(Machine).filter_by(name=name).one()
         
             
+    def list_machines(self):
+        q = self.query(Machine)
+        return q.all()
+    
