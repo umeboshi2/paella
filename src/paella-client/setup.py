@@ -31,5 +31,6 @@ Command line paella client""",
       # -*- Entry points: -*-
       [console_scripts]
       paella-submit-machine = paellaclient.submit_machine:main
+      paella-set-install = paellaclient.set_install:main
       """,
       )

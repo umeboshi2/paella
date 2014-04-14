@@ -5,6 +5,8 @@ from optparse import OptionParser
 
 import requests
 
+from paellaclient.base import get_mac_addresses
+
 #FIXME!
 url = 'http://10.0.4.1/paella/api0/machines'
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
@@ -18,21 +20,6 @@ if not len(args) or len(args) != 1:
 
 name = args[0]
 
-
-def get_mac_addresses(interface=''):
-    process = subprocess.Popen(['/sbin/ifconfig'], stdout=subprocess.PIPE)
-    retval = process.wait()
-    if retval:
-        raise RuntimeError , "ifconfig returned %d" % retval
-    if interface:
-        raise RuntimeError , "interface keyword is currently ignored"
-    macs = []
-    for line in process.stdout:
-        if line.startswith('eth'):
-            columns = [c.strip() for c in line.split()]
-            mac = columns[4].replace(':', '')
-            macs.append(mac)
-    return macs
 
 def make_data(name):
     addresses = get_mac_addresses()
