@@ -1,0 +1,15 @@
+Source: paella-client
+Section: unknown
+Priority: extra
+Maintainer: Joseph Rawson <joseph.rawson.works@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/paella-client.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/paella-client.git;a=summary
+
+Package: paella-client
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
