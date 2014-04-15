@@ -8,3 +8,7 @@ dropdb -U dbadmin paella || true
 createdb -U dbadmin paella
 
 sudo /etc/init.d/apache2 start
+
+. /var/lib/paella/venv/bin/activate
+initialize_paella_db /srv/src/paella/development.ini
+

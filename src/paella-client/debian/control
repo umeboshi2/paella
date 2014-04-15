@@ -7,6 +7,6 @@ Standards-Version: 3.9.1
 
 Package: python-paella-client
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-requests
+Depends: ${misc:Depends}, ${python:Depends}, python-requests, python-setuptools
 Description: Command line paella client
  Command line paella client

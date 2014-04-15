@@ -12,7 +12,7 @@ from paellaclient.base import get_mac_addresses
 #FIXME!
 base_url = 'http://10.0.4.1/paella/api0/addresses'
 
-headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+
 
 parser = OptionParser()
 
@@ -34,14 +34,17 @@ def get_machine_name():
         raise RuntimeError, "No entry found for this machine."
     return machine
 
-
-def make_data(name):
-    addresses = get_mac_addresses()
-    data = dict(machine=name, addresses=addresses)
-    return json.dumps(data)
+def make_install_request(machine):
+    data = dict(action='install', machine=machine)
+    #FIXME
+    url = 'http://10.0.4.1/paella/api0/machines'
+    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}    
+    r = requests.post(url, data=json.dumps(data), headers=headers)
+    return r
 
 def main():
     name = get_machine_name()
+    r = make_install_request(name)
     print "Machine %s not really set to install yet." % name
 
 if __name__ == '__main__':

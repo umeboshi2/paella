@@ -41,6 +41,7 @@ nosetests.xml
 
 # my development cruft
 /src/paella-client/debian/python-paella-client*
+/src/paella-client_*
 /src/paella-client/debian/files
 /src/*.deb
 

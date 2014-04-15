@@ -13,6 +13,10 @@ livebuild:
   net_root_path: /srv/debian-live
   apt_key: http://localhost/debrepos/paella.gpg
   local_mirror: http://localhost/debrepos/debian
+  local_security_mirror: http://localhost/debrepos/security
+  lan_mirror: http://10.0.4.1/debrepos/debian
+  lan_security_mirror: http://10.0.4.1/debrepos/security
+
 
 
 

@@ -23,8 +23,7 @@ name = args[0]
 
 def make_data(name):
     addresses = get_mac_addresses()
-    data = dict(machine=name, addresses=addresses)
-    return json.dumps(data)
+    return dict(action='submit', machine=name, addresses=addresses)
 
 def sumbit_machine(name):
     data = make_data(name)

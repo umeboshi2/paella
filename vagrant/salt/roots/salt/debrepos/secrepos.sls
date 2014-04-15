@@ -38,7 +38,6 @@ security-repos-ready:
     - name: echo "security repos ready"
     - user: ${user}
     - group: ${group}
-    - cwd: /srv/debrepos/salt
     - requires:
       - cmd: local-packages-security
 

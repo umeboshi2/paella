@@ -7,6 +7,7 @@ base:
     - squid
     - debrepos
     - saltmaster
+    - paella-client
     - netboot
     - mainserver
 

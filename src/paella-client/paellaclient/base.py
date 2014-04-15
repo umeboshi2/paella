@@ -12,8 +12,12 @@ def get_mac_addresses(interface=''):
     macs = []
     for line in process.stdout:
         if line.startswith('eth'):
+            # convert to lowercase
+            line = line.lower()
             columns = [c.strip() for c in line.split()]
-            mac = columns[4].replace(':', '')
+            mac = columns[4].replace(':', '-')
+            # ethernet is ARP 1 type
+            mac = '01-%s' % mac
             macs.append(mac)
     return macs
 

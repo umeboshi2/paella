@@ -28,6 +28,10 @@
   file.managed:
     - source: salt://netboot/splash.png
 
+/var/lib/tftpboot/paella-splash.png:
+  file.managed:
+    - source: salt://netboot/paella-splash.png
+
 preseed-example:
   file.managed:
     - name: /var/www/preseeds/preseed-example
@@ -89,4 +93,9 @@ configure-salt-netboot:
     - source: salt://netboot/configure-salt-netboot
     - makedirs: True
 
+vagrant-owns-tftpboot:
+  cmd.run:
+    - name: chown -R vagrant:vagrant /var/lib/tftpboot
+    - require:
+      - cmd: install-tftpboot-files
 

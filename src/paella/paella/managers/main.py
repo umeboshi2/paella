@@ -41,6 +41,12 @@ class MachineAddressManager(object):
         q = q.filter_by(machine_id=machine_id)
         return q.all()
 
+    def list_machine_addresses(self, name):
+        m = self.session.query(Machine).filter_by(name=name).one()
+        al = self.get_machine_addresses(m.id)
+        return [a.address for a in al]
+    
+        
     def identify_machine(self, address):
         q = self.session.query(MacAddr)
         q = q.filter_by(address=address)

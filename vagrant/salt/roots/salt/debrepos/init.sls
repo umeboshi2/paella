@@ -9,7 +9,7 @@ include:
   - debrepos.mainrepos
   - debrepos.saltrepos
   - debrepos.secrepos
-
+  - debrepos.paellarepos
 
 debrepos-ready:
   cmd.run: 
@@ -20,5 +20,6 @@ debrepos-ready:
       - sls: debrepos.mainrepos
       - sls: debrepos.saltrepos
       - sls: debrepos.secrepos
+      - sls: debrepos.paellarepos
       
       
