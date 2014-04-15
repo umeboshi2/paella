@@ -11,10 +11,10 @@ d-i keyboard-configuration/xkb-keymap select us
 d-i keyboard-configuration/layoutcode string us
 
 d-i netcfg/choose_interface select auto
-d-i netcfg/get_hostname string unassigned-hostname
+d-i netcfg/get_hostname string ${hostname}
 d-i netcfg/get_domain string unassigned-domain
 
-d-i netcfg/hostname string ${hostname}
+#d-i netcfg/hostname string ${hostname}
 
 d-i netcfg/wireless_wep string
 
@@ -30,14 +30,14 @@ d-i mirror/suite string wheezy
 d-i mirror/udeb/suite string wheezy
 
 d-i passwd/root-login boolean false
-d-i passwd/make-user boolean false
+#d-i passwd/make-user boolean false
 
 # To create a normal user account.
-#d-i passwd/user-fullname string Debian User
-#d-i passwd/username string debian
+d-i passwd/user-fullname string Debian User
+d-i passwd/username string debian
 # Normal user's password, either in clear text
-#d-i passwd/user-password password debian
-#d-i passwd/user-password-again password debian
+d-i passwd/user-password password debian
+d-i passwd/user-password-again password debian
 
 # or encrypted using an MD5 hash.
 #d-i passwd/user-password-crypted password [MD5 hash]
