@@ -201,6 +201,9 @@ SQLAlchemy.
   install.
   http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
 
+- use system uuid instead of mac addresses: dmidecode -s system-uuid
+
+
 ## History
 
 ### What was it?
