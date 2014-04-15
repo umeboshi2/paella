@@ -60,28 +60,37 @@ on the server to install the machine.
 
 Two scripts on the live system:
 
-1. identify-machine <name>
+1. paella-submit-machine <name>
    
    1. sends a name to the server
    
+	   - actually sends json.dumps(
+		 dict(action='submit', machine=name, addresses=[a1, a2]))
+		 in a POST request to http://host/paella/machines
+   
    2. the salt config should already have this name
    
-   3. in the future, use web app to create machines from sls file list, etc.
-   
-   4. all mac addresses sent to server tied to name
+   3. all mac addresses sent to server and tied to name
    
 
 2. install-machine
    
-   1. machine must already be identified
+   1. machine must already be submitted by script above
    
    2. name lookup based on matching mac address
    
-   3. command tells server to create special pxe config files named 
-	  after mac addresses
+   3. the script gets addresses on local machine then checks 
+   http://host/paella/addresses/{address} for a machine name, 
+   accepting the first match.
+		 
+
    
-   4. kernel command line has preseed url for machine
+   4. command tells server to create special pxe config files named 
+   after mac addresses
    
+   5. kernel command line has preseed url for machine
+   
+	   - http://host/paella/preseed/{machine}
 
 #### General Install Procedure  
 Procedure when machine set to be installed:
