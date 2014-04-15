@@ -83,14 +83,23 @@ Two scripts on the live system:
    http://host/paella/addresses/{address} for a machine name, 
    accepting the first match.
 		 
-
+   4. after a successful match, the retrieved machine name is sent 
+   in a POST request dict(action='install', machine=name) to
+   http;//host/paella/machines .
    
-   4. command tells server to create special pxe config files named 
-   after mac addresses
+   5. The request above tells the server to create special pxe config 
+   files named after the mac addresses linked to the machine in the 
+   database.
    
-   5. kernel command line has preseed url for machine
+   6. The distinctive feature of the specific pxe config file for the
+   mac address of the target machine is that appends a preseed 
+   url to the kernel command line specific to the machine.
    
 	   - http://host/paella/preseed/{machine}
+	   
+   7. It is the preseed file's duty to make sure salt-minion is installed,
+   and the machine identified for the minion to work.  This is currently being 
+   done using hostname.
 
 #### General Install Procedure  
 Procedure when machine set to be installed:
@@ -131,19 +140,36 @@ in a repeated install loop.
 
 ### Preseed builder
 
-There needs to be a method of gather variables from a data source and 
-generating a preseed file.  The preseed file needs to be managed in certain 
-chunks; basic info, disk/partition config, apt info, and so on.  There needs to 
-be a collection of disk configs that can be referred to by name, filling out 
-the debconf selections for the preseed file.
+The preseed is currently a mako template.  
 
-The preseed is built dynamically and served through pyramid string renderer.
+The preseed file has certain responsibilities beyond automating the first 
+stage of the installation.
 
-I desire most of the data to be stored and managed via salt.  The data for the 
-preseed file should be contained in a salt pillar.  The master should be able 
-to get the pillar data for the identified machine and fill the preseed file 
-with that data.
+1. The early command must download and execute a  script that:
 
+	1. Determines the partman recipe for the machine and installs it 
+	to the installer filesystem (/tmp/disk-recipe).
+	
+	2. Overrides the archive.gpg in the installer environment with the 
+	key from the local repository.  (This is still problematic and the 
+	first stage install is still unauthenticated.)
+	
+2. The preseed file must install salt-minion.
+
+3. The late command must download and execute a script that:
+
+	1. Configures salt-minion with the identity of the machine.
+	
+	2. Send a post request to the server informing it that stage one is almost
+	complete.  This will cause the server to delete the pxe config files (or alternatively,
+	reconfigure the files to default to hard drive booting).
+
+	3. Preseeds the salt-minion with the installer keys. (This isn't implemented
+	yet.  The master is running in open mode.)  The request made above should 
+	signal the server to locate the minion keys for the machine, and if no keys are 
+	found, to generate them.  The paella server should keep track of all the keys 
+	and only set the master to accept those that it preseeds.
+	
 ### Pillar Data
 
 The default pillar data is in a git repository.  I desire for these pillar 
