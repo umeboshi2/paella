@@ -12,8 +12,5 @@ menu color title 1;36;44 #ffcccc55 #cc220000 std
 menu color border 0 #00ffffff #00000000 std
 
 menu title Network Boot Menu
-#label live
 include live/live.cfg Standard Live System
-#label installer
-include installer/i386/installer.cfg
 

@@ -14,7 +14,7 @@ menu color border 0 #00ffffff #00000000 std
 menu title Network Boot Menu
 
 label install
-      menu label ^Install
+      menu label ^Install ${machine} with Paella
       kernel installer/i386/linux
       append vga=788 initrd=installer/i386/initrd.gz auto=true priority=critical url=http://10.0.4.1/paella/preseed/${machine}
 
