@@ -35,28 +35,34 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   dirname = ENV['HOME'] + '/.vagrant.d/boxes/' + boxname
   if File.directory?(dirname)
     config.vm.box = 'umeboshi/trumpet-i386'
-    #config.vm.box = 'chef-debian-7.4-i386-vboxguest-4.1.18'
   else
     config.vm.box = 'chef/debian-7.4-i386'
   end
 
   config.vm.hostname = 'paella'
 
+  # This can be helpful when wanting to test the 
+  # paella web server
   #config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # salt 
   config.vm.synced_folder 'vagrant/salt/roots/salt/', '/srv/salt/'
   config.vm.synced_folder 'vagrant/salt/roots/pillar/', '/srv/pillar/'
+  config.vm.synced_folder 'vagrant/salt/roots/pillar.local/', '/srv/pillar.local/'
 
   # debrepos for reprepro
   config.vm.synced_folder 'vagrant/debrepos', '/srv/debrepos'
-  
-  # debianlive config
-  config.vm.synced_folder 'vagrant/netboot', '/srv/livebuild/'
+
+  # for wsgi server
+  config.vm.synced_folder 'src', '/srv/src'
 
   config.vm.provider "virtualbox" do |vb|
     # Don't boot with headless mode
     #vb.gui = true
+    
+    # if you need a different nat ip
+    #vb.customize ["modifyvm", :id, "--natnet1", "10.0.3/24"]
+    
 
     vb.customize ["modifyvm", :id, "--memory", "512"]
     # a secondary internal network is used for the paella installer

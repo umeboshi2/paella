@@ -4,7 +4,7 @@
 # Values that are commented out but have no space after the comment are
 # defaults that need not be set in the config. If there is a space after the
 # comment that the value is presented as an example and is not the default.
-
+<% saltmaster = pillar['saltmaster'] %>
 # Per default, the master will automatically include all config files
 # from master.d/*.conf (master.d is a directory in the same directory
 # as the main master config file)
@@ -59,11 +59,11 @@ user: ${pillar['paella_user']}
 # authentication, this is only intended for highly secure environments or for
 # the situation where your keys end up in a bad state. If you run in open mode
 # you do so at your own risk!
-open_mode: True
+open_mode: ${saltmaster['open_mode']}
 
 # Enable auto_accept, this setting will automatically accept all incoming
 # public keys from the minions. Note that this is insecure.
-auto_accept: True
+auto_accept: ${saltmaster['auto_accept']}
 
 
 # If the autosign_file is specified, incoming keys specified in the
@@ -137,7 +137,7 @@ auto_accept: True
 #####      State System settings     #####
 
 # The renderer to use on the minions to render the state data
-renderer: yaml_mako
+renderer: ${saltmaster['renderer']}
 
 # The failhard option tells the minions to stop immediately after the first
 # failure detected in the state execution, defaults to False
@@ -178,17 +178,17 @@ renderer: yaml_mako
 #     - /srv/salt/prod/states
 
 
-hash_type: md5
+hash_type: ${saltmaster['hash_type']}
 
 
 fileserver_backend:
   - git
 
 gitfs_remotes:
-  - https://github.com/umeboshi2/paella-states.git
+   - ${saltmaster['top_gitfs_remote']}
 
 ext_pillar:
-  - git: master https://github.com/umeboshi2/paella-pillar.git
+  - git: ${saltmaster['top_ext_git_pillar']}
 
 # The pillar_gitfs_ssl_verify option specifies whether to ignore ssl certificate
 # errors when contacting the pillar gitfs backend. You might want to set this to

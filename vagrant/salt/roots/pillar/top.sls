@@ -6,4 +6,5 @@ base:
     - default-ports
     - livebuild
     - reprepro
+    - saltmaster
 
