@@ -1,0 +1,26 @@
+// ---------------------------------------------------------------------------
+// Imports
+
+// Color ----------------------------------------------------------------------
+@import "partials/colors";
+
+/* -------------------------------------------------------*/
+/* Base Colors */
+
+//$basecolor: $color-SkyBlue;
+//$basecolor: $color-LightSkyBlue;
+//$basecolor: lighten($color-DarkSeaGreen, 25%);
+//$basecolor: lighten($color-IndianRed, 30%);
+//$basecolor: lighten($color-burlywood, 3%);
+
+//$basecolor: desaturate(lighten($color-DarkSeaGreen, 20%), 18%);
+
+//$basecolor: desaturate(lighten($color-CornflowerBlue, 30%), 20%);
+$basecolor: desaturate(lighten($color-CornflowerBlue, 20%), 50%);
+
+$basecolor1: darken($basecolor, 10%);
+$basecolor2: darken($basecolor, 20%);
+$basecolor4: desaturate(darken($color-plum, 30%), 35%);
+$basecolor3: desaturate(darken($color-plum, 20%), 35%);
+
+

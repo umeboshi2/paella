@@ -1,0 +1,56 @@
+@import "compass/css3/border-radius";
+
+
+@import "partials/fonts";
+@import "partials/action-button";
+
+
+/* Basic Grid */
+
+$total-columns  : 12;
+$column-width   : 6em;
+$gutter-width   : 1em;
+$grid-padding   : $gutter-width + 0.5em;
+
+$tablet: 8;
+$computer: 8em 12;
+
+
+body {
+    padding-top: 4em;
+}
+
+
+.page {
+    font-family: "Source Sans Pro",sans;
+}
+
+.main-header {
+    @include border-radius(0.5em);
+    background: $basecolor4;
+    color: $basecolor;
+    text-align: center;
+    font-size: 1.5em;
+    border-style: solid;
+    border-width: 0.2em;
+    border-color: $basecolor2;
+}
+
+.small-header {
+    @extend .main-header;
+    font-size: 1em;
+}
+
+#header {
+    @extend .main-header;
+}
+
+.two-col {
+}
+
+
+.right-column-content {
+}
+
+.sidebar {
+}

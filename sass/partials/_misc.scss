@@ -1,0 +1,36 @@
+@import "compass/css3/border-radius";
+
+.listview-list {
+    background: $basecolor4;
+    padding: 0.3em;
+}
+
+.listview-list-entry {
+    background: $basecolor4;
+    margin: 0.5em;
+    border-style: solid;
+    border-width: 0.1em;
+    border-color: $basecolor2;
+    padding: 0.3em;
+    a {
+	color: $basecolor1;
+	}
+}
+
+
+.listview-header {
+    @include border-radius(0.5em);
+    background: $basecolor4;
+    color: $basecolor;
+    text-align: center;
+    font-size: 1.5em;
+    border-style: solid;
+    border-width: 0.2em;
+    border-color: $basecolor2;
+}
+
+#editor {
+    position: relative;
+    width: 100%;
+    height: 40em;
+}

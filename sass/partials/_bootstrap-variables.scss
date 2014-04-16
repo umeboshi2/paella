@@ -1,0 +1,48 @@
+
+
+$body-bg: $basecolor3;
+
+
+$btn-default-color:              #333 !default;
+$btn-default-bg:                 $basecolor2;
+$btn-default-border:             $basecolor4;
+
+
+$btn-primary-color: black;
+$btn-primary-bg: $basecolor2;
+$btn-primary-border: $basecolor4;
+
+$navbar-default-bg: $basecolor3;
+$navbar-default-brand-bg: $basecolor3;
+$navbar-brand-color: $basecolor2;
+
+$input-color-placeholder: darken($basecolor3, 20);
+
+/*
+$dropdown-header-color: $basecolor1;
+$dropdown-caret-color: $basecolor1;
+$dropdown-link-color: $basecolor1;
+
+$navbar-default-color: $basecolor1;
+*/
+
+$navbar-default-link-color: $basecolor1;
+
+
+.navbar-default .navbar {
+    margin-bottom: 1em;
+}
+
+
+header.header > h1 {
+    font-family: "Rambla";
+}
+header.header > h2 {
+    font-family: "Rambla";
+}
+
+.btn-default {
+    font-family: "Rambla";
+}
+
+
