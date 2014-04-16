@@ -10,3 +10,6 @@
 # vagrant stuff
 .vagrant
 
+# node modules
+/node_modules
+
