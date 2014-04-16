@@ -87,11 +87,11 @@ d-i apt-setup/local0/key string http://10.0.4.1/debrepos/paella.gpg
 d-i debian-installer/allow_unauthenticated boolean true
 
 # Individual additional packages to install
-d-i pkgsel/include string salt-minion
+d-i pkgsel/include string salt-minion python-requests
 
 popularity-contest popularity-contest/participate boolean false
 
 # Avoid that last message about the install being complete.
 d-i finish-install/reboot_in_progress note
 
-d-i preseed/late_command string wget -O /target/tmp/configure-salt http://10.0.4.1/preseeds/configure-salt-netboot ; in-target sh /tmp/configure-salt
+d-i preseed/late_command string wget -O /target/tmp/configure-salt http://10.0.4.1/paella/latecmd/${machine} ; in-target python /tmp/configure-salt

@@ -87,12 +87,6 @@ install-netboot:
     - shell: /bin/bash
 
 
-configure-salt-netboot:
-  file.managed:
-    - name: /var/www/preseeds/configure-salt-netboot
-    - source: salt://netboot/configure-salt-netboot
-    - makedirs: True
-
 vagrant-owns-tftpboot:
   cmd.run:
     - name: chown -R vagrant:vagrant /var/lib/tftpboot

@@ -45,7 +45,16 @@ class MachineResource(object):
                 raise RuntimeError, "%s doesn't exist." % filename
             
         
-        
+    def _stage_one_over(self, data):
+        name = data['machine']
+        addresses = self.mgr.list_machine_addresses(name)
+        for address in addresses:
+            remove_pxeconfig(address)
+            filename = pxeconfig_filename(address)
+            print "FILENAME: %s" % filename
+            if os.path.isfile(filename):
+                raise RuntimeError, "%s still exists." % filename
+    
     def collection_post(self):
         data = self.request.json
         action = data['action']
@@ -55,16 +64,10 @@ class MachineResource(object):
             self._install_machine(data)
             data = dict(result='success')
         elif action == 'stage_over':
-            raise RuntimeError, "Not implemented"
-        
+            self._stage_one_over(data)
+            data = dict(result='success')
         return data
         
-    def collection_put(self):
-        raise RuntimeError, "Not implemented"
-
-    def put(self):
-        raise RuntimeError, "Not implemented"
-
     def get(self):
         name = self.request.matchdict['name']
         return dict(name=name)
