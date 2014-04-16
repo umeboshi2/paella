@@ -1,0 +1,54 @@
+{
+  "name": "Paella Pages",
+  "version": "0.0.0",
+  "homepage": "https://github.com/umeboshi2/paella",
+  "authors": [
+    "Joseph Rawson <joseph.rawson.works@littledebian.org>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "jquery-ui": "~1.10.3",
+    "underscore": "~1.6.0",
+    "backbone": "~1.1.2",
+    "backbone.wreqr": "~1.1.0",
+    "marionette": "~1.6.4",
+    "bootstrap": "~3.0.3",
+    "fullcalendar": "~1.6.4",
+    "modernizr": "~2.7.1",
+    "coffee-script": "~1.6.3",
+    "require-cs": "https://github.com/requirejs/require-cs",
+    "requirejs-bower": "https://github.com/jrburke/requirejs-bower.git#~2.1.9",
+    "teacup": "https://github.com/goodeggs/teacup.git",
+    "backbone.babysitter": "~0.1.1",
+    "font-awesome": "~4.0.3",
+    "lodash": "~2.4.1",
+    "backbone.validation": "~0.7.1",
+    "font-play-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/play/Play-Regular.ttf",
+    "font-sacramento-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/sacramento/Sacramento-Regular.ttf",
+    "font-sourcesanspro-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/sourcesanspro/SourceSansPro-Regular.ttf",
+    "font-droidserif-bold": "https://googlefontdirectory.googlecode.com/hg/apache/droidserif/DroidSerif-Bold.ttf",
+    "font-rambla-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/rambla/Rambla-Regular.ttf",
+    "font-droidsans": "https://googlefontdirectory.googlecode.com/hg/apache/droidsans/DroidSans.ttf",
+    "font-droidserif": "https://googlefontdirectory.googlecode.com/hg/apache/droidserif/DroidSerif.ttf",
+    "font-cabin-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/cabin/Cabin-Regular.ttf",
+    "font-nunito-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/nunito/Nunito-Regular.ttf",
+    "font-droidsans-bold": "https://googlefontdirectory.googlecode.com/hg/apache/droidsans/DroidSans-Bold.ttf",
+    "font-rumraisin-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/rumraisin/RumRaisin-Regular.ttf",
+    "font-questrial-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/questrial/Questrial-Regular.ttf",
+    "marked": "~0.3.0",
+    "backbone.modal": "*"
+  },
+  "resolutions": {
+    "jquery": "~2.1.0",
+    "backbone.wreqr": "~1.1.0"
+  }
+}
