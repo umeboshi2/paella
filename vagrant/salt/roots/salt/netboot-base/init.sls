@@ -3,7 +3,7 @@
 bootloader:
   pkg:
     - installed
-    - name: ${pillar['livebuild']['bootloader']}
+    - name: syslinux
 
 nfs-kernel-server:
   pkg:

@@ -12,5 +12,11 @@ menu color title 1;36;44 #ffcccc55 #cc220000 std
 menu color border 0 #00ffffff #00000000 std
 
 menu title Network Boot Menu
+
+label harddisk
+      menu label Boot from Hard Disk
+      kernel chain.c32
+      append hd0 0
+
 include live/live.cfg Standard Live System
 

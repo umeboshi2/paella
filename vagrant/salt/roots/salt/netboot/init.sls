@@ -1,5 +1,6 @@
 # -*- mode: yaml -*-
 
+
 # debian installer files for tftpboot
 
 /var/lib/tftpboot/installer:
@@ -46,6 +47,8 @@ preseed-example:
 
 include:
   - debrepos
+  - tftpd
+
 
 
 /var/cache/netboot/livebuild:
@@ -87,9 +90,17 @@ install-netboot:
     - shell: /bin/bash
 
 
+copy-chainloader:
+  cmd.run:
+    - name: cp -a /usr/lib/syslinux/chain.c32 /var/lib/tftpboot
+    - unless: test -r /var/lib/tftpboot/chain.c32
+    - requires:
+      - file: /var/lib/tftpboot
+
 vagrant-owns-tftpboot:
   cmd.run:
     - name: chown -R vagrant:vagrant /var/lib/tftpboot
     - require:
       - cmd: install-tftpboot-files
+      - cmd: copy-chainloader
 
