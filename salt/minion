@@ -1,0 +1,18 @@
+# Standard masterless salt minion set-up
+master: localhost
+id: paella
+renderer: yaml_mako
+
+file_client: local
+file_roots:
+  base:
+    - /srv/salt
+
+pillar_roots:
+  base:
+    - /srv/pillar
+# For your own local config, copy pillar to pillar.local
+# and edit those files. Comment the "- /srv/pillar" line 
+# above and uncomment the one below.  The git repository 
+# will ignore files in the pillar.local directory.
+#    - /srv/pillar.local

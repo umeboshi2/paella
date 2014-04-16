@@ -1,0 +1,12 @@
+
+# emacs
+*~
+\#*#
+.#*
+
+# compiled sls files
+*.slsc
+
+# vagrant stuff
+.vagrant
+
