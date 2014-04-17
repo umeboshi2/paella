@@ -33,6 +33,7 @@
     "grunt-shell": "~0.6.1",
     "lodash-cli": "~2.4.1",
     "grunt-lodash": "~0.3.0",
-    "http-server": "^0.6.1"
+    "http-server": "^0.6.1",
+    "requirejs": "^2.1.11"
   }
 }

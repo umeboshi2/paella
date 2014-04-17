@@ -5,22 +5,12 @@
 @import "partials/action-button";
 
 
-/* Basic Grid */
-
-$total-columns  : 12;
-$column-width   : 6em;
-$gutter-width   : 1em;
-$grid-padding   : $gutter-width + 0.5em;
-
-$tablet: 8;
-$computer: 8em 12;
-
 
 body {
   font-size: 15px;
   line-height: 1.5; 
   background: $basecolor4;
-  font-family: 'Helvetica Neue', Helvetica, Arial, serif;
+  font-family: 'Source Sans Pro';
   font-weight: 400;
   color: #222;
 }
@@ -35,8 +25,6 @@ a:hover {
 
 header {
     @include border-radius(2em);
-    //padding-top: 40px;
-    //padding-bottom: 40px;
     padding: 1em;
     font-family: 'Architects Daughter', 'Helvetica Neue', Helvetica, Arial, serif; 
     background: #2e7bcf url(../images/header-bg.jpg) 0 0 repeat-x;
@@ -83,6 +71,22 @@ header a.button {
   top: 1em;
   background: transparent url(../images/github-button.png) 0 0 no-repeat;
 }
+.inner {
+  position: relative;
+  width: 940px;
+  margin: 0 auto;
+}
+
+#content-wrapper {
+  border-top: solid 1px #fff;
+  padding-top: 30px;
+}
+
+#main-content {
+  width: 690px;
+  float: left;
+}
+
 aside a.button {
   width: 138px;
   padding-left: 64px;
@@ -99,5 +103,23 @@ footer {
   padding-bottom: 30px;
   font-size: 13px;
   color: #aaa;
+}
+
+aside#sidebar {
+  width: 200px;
+  padding-left: 20px;
+  min-height: 504px;
+  float: right;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+aside#sidebar p.repo-owner,
+aside#sidebar p.repo-owner a {
+  font-weight: bold;
+}
+
+#downloads {
+  margin-bottom: 40px;
 }
 
