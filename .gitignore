@@ -16,3 +16,6 @@
 # bower components
 /bower_components
 
+# compass
+.sass-cache
+

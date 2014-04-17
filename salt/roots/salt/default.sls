@@ -22,7 +22,6 @@ devpackages:
       - devscripts
       - cdbs
       - pkg-config
-      - rubygems
 
 python-libdev:
   pkg.installed:
@@ -50,3 +49,15 @@ misc-packages:
       - ascii
       - fortune-mod
       - cowsay
+
+ruby-packages:
+  pkg.installed:
+    - pkgs:
+      - ruby1.9.3
+      - rubygems
+
+github-pages-gem:
+  gem.installed:
+    - name: github-pages
+    - require:
+      - pkg: ruby-packages
