@@ -41,7 +41,8 @@
     "coffee-script": "~1.7.1",
     "backbone.babysitter": "~0.1.1",
     "underscore": "~1.6.0",
-    "backbone": "~1.1.2"
+    "backbone": "~1.1.2",
+    "requirejs-text": "~2.0.12"
   },
   "resolutions": {
     "jquery": ">= 1.9.0"

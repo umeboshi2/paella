@@ -3,7 +3,10 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   teacup = require 'teacup'
-
+  marked = require 'marked'
+  
+  readme = require 'text!common/readme.txt'
+  
   renderable = teacup.renderable
 
   div = teacup.div
@@ -14,6 +17,7 @@ define (require, exports, module) ->
   label = teacup.label
   input = teacup.input
 
+  raw = teacup.raw
   text = teacup.text
 
   # Main Templates must use teacup.
@@ -97,7 +101,8 @@ define (require, exports, module) ->
     div '#content-wrapper', ->
       div '.inner.clearfix', ->
         section '#main-content', ->
-          text 'This is a lot of text'
+          div ->
+            raw marked readme
         aside '#sidebar', ->
           a '.button',
           href:'https://github.com/umeboshi2/paella/zipball/master', ->
@@ -109,7 +114,7 @@ define (require, exports, module) ->
             text '.tar.gz file'
           p '.repo-owner', ->
             a href:'https://github.com/umeboshi2/paella', ->
-              text 'is maintained by'
+              text 'is maintained by '
               a href:'https://github.com/umeboshi2', 'umeboshi2'
 
                   
