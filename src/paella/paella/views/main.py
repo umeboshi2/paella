@@ -26,8 +26,11 @@ class MachineResource(object):
     def _submit_machine(self, data):
         name = data['machine']
         addresses = data['addresses']
+        uuid = None
+        if 'uuid' in data:
+            uuid = data['uuid']
         # add machine
-        data = self.mgr.update_machine(name, addresses)
+        data = self.mgr.update_machine(name, addresses, uuid=uuid)
         # FIXME
         if data is not None:
             data['machine'] = data['machine'].serialize()

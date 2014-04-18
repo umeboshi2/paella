@@ -17,10 +17,12 @@ class MachineAddressManager(object):
     def __init__(self, session):
         self.session = session
 
-    def add_machine(self, name):
+    def add_machine(self, name, uuid=None):
         with transaction.manager:
             m = Machine()
             m.name = name
+            if uuid is not None:
+                m.uuid = uuid
             self.session.add(m)
         return self.session.merge(m)
 
@@ -46,6 +48,19 @@ class MachineAddressManager(object):
         al = self.get_machine_addresses(m.id)
         return [a.address for a in al]
     
+
+    def identify_machine_by_uuid(self, uuid):
+        q = self.session.query(Machine)
+        q = q.filter_by(uuid=uuid)
+        machines = q.all()
+        if len(machines) > 1:
+            raise RuntimeError, "UUID should be unique"
+        if not len(machines):
+            name = None
+        else:
+            name = machines[0].name
+        return name
+        
         
     def identify_machine(self, address):
         q = self.session.query(MacAddr)
@@ -56,23 +71,30 @@ class MachineAddressManager(object):
             return m.name
     
 
-    def add_new_machine(self, name, addresses):
-        m = self.add_machine(name)
+    def add_new_machine(self, name, addresses, uuid=None):
+        m = self.add_machine(name, uuid=uuid)
         alist = list()
         for a in addresses:
             am = self.add_macaddr(a, m.id)
             alist.append(am)
         return dict(machine=m, addresses=alist)
 
-    def update_machine(self, name, addresses):
-        try:
-            m = self.session.query(Machine).filter_by(name=name).one()
-        except NoResultFound:
-            return self.add_new_machine(name, addresses)
-        # delete addresses in database, then
-        # add the addresses passed.
-        # FIXME
-
+    def update_machine(self, name, addresses, uuid=uuid):
+        q = self.session.query(Machine)
+        if uuid is None:
+            try:
+                m = q.filter_by(name=name).one()
+            except NoResultFound:
+                return self.add_new_machine(name, addresses)
+            # delete addresses in database, then
+            # add the addresses passed.
+            # FIXME
+        else:
+            try:
+                m = q.filter_by(uuid=uuid).one()
+            except NoResultFound:
+                return self.add_new_machine(name, addresses, uuid=uuid)
+            
     
     
 

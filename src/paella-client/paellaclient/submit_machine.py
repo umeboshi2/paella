@@ -6,6 +6,7 @@ from optparse import OptionParser
 import requests
 
 from paellaclient.base import get_mac_addresses
+from paellaclient.base import get_system_uuid
 
 #FIXME!
 url = 'http://10.0.4.1/paella/api0/machines'
@@ -23,7 +24,10 @@ name = args[0]
 
 def make_data(name):
     addresses = get_mac_addresses()
-    return dict(action='submit', machine=name, addresses=addresses)
+    uuid = get_system_uuid()
+    data = dict(action='submit', machine=name, uuid=uuid,
+                addresses=addresses)
+    return data
 
 def sumbit_machine(name):
     data = make_data(name)
@@ -34,6 +38,7 @@ def sumbit_machine(name):
 def main():
     for a in get_mac_addresses():
         print "Address: %s" % a
+    print "System UUID:", get_system_uuid()
     sumbit_machine(name)
     print "Machine %s submitted to paella." % name
 

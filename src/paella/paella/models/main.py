@@ -25,7 +25,8 @@ class Machine(Base, SerialBase):
     __tablename__ = 'machines'
     id = Column(Integer, primary_key=True)
     name = Column(Text, unique=True)
-
+    uuid = Column(Text, unique=True)
+    
 class MacAddr(Base, SerialBase):
     __tablename__ = 'macaddrs'
     id = Column(Integer, primary_key=True)

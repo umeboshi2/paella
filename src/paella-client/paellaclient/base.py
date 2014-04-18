@@ -21,3 +21,19 @@ def get_mac_addresses(interface=''):
             macs.append(mac)
     return macs
 
+# this command uses sudo because
+# it needs access to read the smbios
+# for the uuid.
+def get_system_uuid():
+    cmd = ['sudo', 'dmidecode', '-s', 'system-uuid']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    retval = proc.wait()
+    if retval:
+        raise RuntimeError , "command failed with %d" % retval
+    content = proc.stdout.read()
+    return content.strip()
+
+
+if __name__ == '__main__':
+    uuid = get_system_uuid()
+    
