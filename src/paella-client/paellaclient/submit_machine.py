@@ -7,9 +7,9 @@ import requests
 
 from paellaclient.base import get_mac_addresses
 from paellaclient.base import get_system_uuid
+from paellaclient.config import config
 
-#FIXME!
-url = 'http://10.0.4.1/paella/api0/machines'
+url = config.get('main', 'machines_url')
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 parser = OptionParser()

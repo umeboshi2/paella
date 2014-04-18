@@ -7,8 +7,11 @@ def pxeconfig_filename(address):
     dirname = '/var/lib/tftpboot/pxelinux.cfg'
     return os.path.join(dirname, address)
 
-
+# address can be either mac address or
+# system uuid.
 def make_pxeconfig(address, machine):
+    # force lowercase
+    address = address.lower()
     filename = pxeconfig_filename(address)
     env = dict(machine=machine)
     template = 'paella:templates/pxeconfig.mako'
@@ -17,6 +20,7 @@ def make_pxeconfig(address, machine):
         pxeconfig.write(content)
 
 
+        
 def remove_pxeconfig(address):
     filename = pxeconfig_filename(address)
     os.remove(filename)

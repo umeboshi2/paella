@@ -79,7 +79,7 @@ class MachineAddressManager(object):
             alist.append(am)
         return dict(machine=m, addresses=alist)
 
-    def update_machine(self, name, addresses, uuid=uuid):
+    def update_machine(self, name, addresses, uuid=None):
         q = self.session.query(Machine)
         if uuid is None:
             try:

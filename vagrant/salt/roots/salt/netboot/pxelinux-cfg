@@ -22,3 +22,5 @@ label harddisk
 
 include live/live.cfg Standard Live System
 
+include installer/i386/installer.cfg Test Install
+

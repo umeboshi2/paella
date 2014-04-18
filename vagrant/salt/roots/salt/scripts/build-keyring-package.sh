@@ -23,6 +23,9 @@ apt-get source debian-archive-keyring
 
 pushd $pkgdir
 
+# This will always put a debian revision on a 
+# package that can always be expected to be 
+# a debian native package.
 dch -l-paella 'add paella key'
 dch -r 'wheezy'
 cp /home/vagrant/add-paella-insecure active-keys/
@@ -32,6 +35,9 @@ pushd active-keys
 sha256=`sha256sum add-paella-insecure|awk '{print$1}'`
 echo "sha256-$sha256  add-paella-insecure" >> index
 unset sha256
+# the index was already signed with the package
+# maintainer's key.  Remove it and sign the index
+# with the paella key.
 rm index.gpg
 gpg --no-tty --output index.gpg -a --detach-sign index
 popd
@@ -85,8 +91,9 @@ popd
 
 echo 'back in workspace'
 ls
-popd
 
 reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includedeb wheezy debian-archive-keyring_2012.4-paella1_all.deb
 
 reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includeudeb wheezy debian-archive-keyring-udeb_2012.4-paella1_all.udeb 
+
+popd

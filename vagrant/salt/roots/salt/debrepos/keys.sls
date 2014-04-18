@@ -90,10 +90,15 @@ keyring-ready:
       - cmd: import-saltrepos-key
 
 
+# This key goes into the web server's
+# document root so that the early command
+# can replace the archive.gpg key in the
+# debian-installer system
 create-binary-pubkey:
   cmd.run:
     - name: gpg --export 62804AE5 > /srv/debrepos/paella.bin.gpg
     - unless: test -r /srv/debrepos/paella.bin.gpg
+    - user: ${user}
     - requires:
       - cmd: keyring-ready
 

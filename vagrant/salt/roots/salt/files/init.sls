@@ -39,3 +39,8 @@
   file.managed:
     - source: salt://files/recreate-paella-database
     - mode: 755
+
+/usr/local/bin/destroy-livebuild-states:
+  file.managed:
+    - source: salt://scripts/destroy-livebuild-states.sh
+    - mode: 755

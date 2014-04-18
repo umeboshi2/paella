@@ -2,6 +2,8 @@ import os
 import json
 
 from pyramid.exceptions import HTTPNotFound
+from pyramid.exceptions import HTTPBadRequest
+
 from cornice.resource import resource, view
 
 
@@ -21,7 +23,17 @@ class MachineResource(object):
         self.mgr = MachineAddressManager(self.db)
         
     def collection_get(self):
-        pass
+        if self.request.GET.items():
+            if 'uuid' not in self.request.GET:
+                raise HTTPBadRequest
+            uuid = self.request.GET['uuid']
+            name = self.identify_machine_by_uuid(uuid)
+            if name is None:
+                raise HTTPNotFound, "No machine found with %s" % name
+            return dict(name=name)
+        else:
+            return dict(data='need a list of machines')
+        
 
     def _submit_machine(self, data):
         name = data['machine']
