@@ -92,8 +92,16 @@ popd
 echo 'back in workspace'
 ls
 
-reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includedeb wheezy debian-archive-keyring_2012.4-paella1_all.deb
+pkgname="debian-archive-keyring_2012.4-paella1_all.deb"
+pkgdirname='/srv/debrepos/debian/pool/main/d/debian-archive-keyring'
 
-reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includeudeb wheezy debian-archive-keyring-udeb_2012.4-paella1_all.udeb 
+if ! [ -r $pkgdirname/$pkgname ]; then
+    reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includedeb wheezy $pkgname
+fi
+
+pkgname="debian-archive-keyring-udeb_2012.4-paella1_all.udeb"
+if ! [ -r $pkgdirname/$pkgname ]; then
+    reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includeudeb wheezy $pkgname
+fi
 
 popd

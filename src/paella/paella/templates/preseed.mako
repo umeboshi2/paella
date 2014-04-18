@@ -84,7 +84,7 @@ d-i apt-setup/local0/key string http://10.0.4.1/debrepos/paella.gpg
 
 
 # FIXME
-d-i debian-installer/allow_unauthenticated boolean true
+d-i debian-installer/allow_unauthenticated boolean false
 
 # Individual additional packages to install
 d-i pkgsel/include string salt-minion python-requests

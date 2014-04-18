@@ -32,7 +32,7 @@ keyring-package-build-dependencies:
 build-keyring-package:
   cmd.script:
     - source: salt://scripts/build-keyring-package.sh
-    - unless: test -d /home/vagrant/workspace
+    - unless: test -r /home/vagrant/workspace/debian-archive-keyring_2012.4-paella1_i386.changes
     - user: ${user}
     - group: ${group}
     - requires:
