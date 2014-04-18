@@ -9,17 +9,17 @@
 body {
   font-size: 15px;
   line-height: 1.5; 
-  background: $basecolor4;
+  background: lighten($basecolor4, 20);
   font-family: 'Source Sans Pro';
   font-weight: 400;
   color: #222;
 }
 
 a {
-    color: $basecolor1;
+    color: lighten($basecolor1, 20);
 }
 a:hover {
-    color: darken($basecolor4, 40);
+    color: darken($basecolor3, 10);
 }
 
 
