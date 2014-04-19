@@ -51,6 +51,15 @@ class MachineResource(object):
 
     def _install_machine(self, data):
         name = data['machine']
+        machine = self.mgr.get_machine(name)
+        if machine.uuid:
+            uuid = machine.uuid
+            make_pxeconfig(uuid, name)
+            filename = pxeconfig_filename(uuid)
+            if not os.path.isfile(filename):
+                raise RuntimeError, "%s doesn't exist." % filename
+            return
+        
         addresses = self.mgr.list_machine_addresses(name)
         for address in addresses:
             make_pxeconfig(address, name)
@@ -62,6 +71,15 @@ class MachineResource(object):
         
     def _stage_one_over(self, data):
         name = data['machine']
+        machine = self.mgr.get_machine(name)
+        if machine.uuid:
+            uuid = machine.uuid
+            remove_pxeconfig(uuid)
+            filename = pxeconfig_filename(uuid)
+            if os.path.isfile(filename):
+                raise RuntimeError, "%s still exists." % filename
+            return
+        
         addresses = self.mgr.list_machine_addresses(name)
         for address in addresses:
             remove_pxeconfig(address)

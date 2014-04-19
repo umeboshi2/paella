@@ -99,10 +99,12 @@ class MachineAddressManager(object):
     
 
     def delete_machine(self, name):
-        m = self.query(Machine).filter_by(name=name).one()
+        m = self.session.query(Machine).filter_by(name=name).one()
         
             
     def list_machines(self):
         q = self.query(Machine)
         return q.all()
     
+    def get_machine(self, name):
+        return self.session.query(Machine).filter_by(name=name).one()

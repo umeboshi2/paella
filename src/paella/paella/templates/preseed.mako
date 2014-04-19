@@ -29,15 +29,22 @@ d-i apt-setup/10.0.4.1/key string http://10.0.4.1/debrepos/paella.gpg
 d-i mirror/suite string wheezy
 d-i mirror/udeb/suite string wheezy
 
-d-i passwd/root-login boolean false
-#d-i passwd/make-user boolean false
+d-i passwd/root-login boolean true
+# Root password, either in clear text
+d-i passwd/root-password password root
+d-i passwd/root-password-again password root
+# or encrypted using an MD5 hash.
+#d-i passwd/root-password-crypted password [MD5 hash]
+
+
+d-i passwd/make-user boolean false
 
 # To create a normal user account.
-d-i passwd/user-fullname string Debian User
-d-i passwd/username string debian
+#d-i passwd/user-fullname string Debian User
+#d-i passwd/username string debian
 # Normal user's password, either in clear text
-d-i passwd/user-password password debian
-d-i passwd/user-password-again password debian
+#d-i passwd/user-password password debian
+#d-i passwd/user-password-again password debian
 
 # or encrypted using an MD5 hash.
 #d-i passwd/user-password-crypted password [MD5 hash]
@@ -83,7 +90,6 @@ d-i apt-setup/local0/comment string saltrepos
 d-i apt-setup/local0/key string http://10.0.4.1/debrepos/paella.gpg
 
 
-# FIXME
 d-i debian-installer/allow_unauthenticated boolean false
 
 # Individual additional packages to install

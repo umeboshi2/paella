@@ -11,12 +11,15 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 requires = [
     'pyramid',
     'pyramid_chameleon',
+    'pyramid_mako',
     'pyramid_debugtoolbar',
     'pyramid_tm',
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
     'waitress',
+    'debrepos',
+    'cornice',
     ]
 
 setup(name='paella',
@@ -44,4 +47,7 @@ setup(name='paella',
       [console_scripts]
       initialize_paella_db = paella.scripts.initializedb:main
       """,
+      dependency_links=[
+        'https://github.com/umeboshi2/debrepos/archive/master.tar.gz#egg=debrepos',
+        ],
       )
