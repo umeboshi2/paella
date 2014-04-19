@@ -13,6 +13,45 @@ from sqlalchemy import func
 from paella.models.main import Machine, MacAddr
 
 
+# store keys in database.
+# only database keys exists as files
+# submit_machine generates keys that are stored in database
+# set_install will make sure key is accepted by minion
+# late command will send keypair to minion
+
+
+class SaltKeyManager(object):
+    def __init__(self, session):
+        self.session = session
+
+    def base_keyname(self, name, keytype='public'):
+        print "basename of key"
+
+    def keyname(self, name, keytype='public'):
+        print "path/to/key"
+        
+    def generate_keypair(self, name):
+        print "generate a key pair with this name"
+        print "files are created"
+        
+    def check_key(self, name, keytype='public'):
+        print "does this key exist"
+        
+    def does_keypair_exist(self, name):
+        print "does this keypair exist"
+
+    def get_public_key(self, name):
+        print "get the public key, raise no exist error."
+        print "return content"
+        
+    def get_private_key(self, name):
+        print "get the private key, raise no exist error."
+        print "return content"
+
+    def get_keypair(self, name):
+        print "get both keys for name"
+        print "return dict(public=dict(name=name, content=content), private=)"
+        
 class MachineAddressManager(object):
     def __init__(self, session):
         self.session = session
