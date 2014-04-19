@@ -20,6 +20,7 @@
 /var/lib/tftpboot/installer/i386/installer.cfg:
   file.managed:
     - source: salt://netboot/installer.cfg
+    - template: mako
 
 /var/lib/tftpboot/pxelinux.cfg/default:
   file.managed:
@@ -38,6 +39,8 @@ preseed-example:
     - name: /var/www/preseeds/preseed-example
     - source: salt://netboot/preseed-example
     - makedirs: True
+    - template: mako
+
 
 #####################################
 

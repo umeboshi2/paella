@@ -20,6 +20,7 @@ isc-dhcp-server:
     - user: root
     - group: root
     - mode: 644
+    - template: mako
 
 /etc/default/isc-dhcp-server:
   file.managed:

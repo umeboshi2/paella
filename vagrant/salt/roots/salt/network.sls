@@ -4,6 +4,7 @@
 /etc/network/interfaces:
   file.managed:
     - source: salt://files/network-interfaces
+    - template: mako
 
 enable-eth1:
   cmd.wait:

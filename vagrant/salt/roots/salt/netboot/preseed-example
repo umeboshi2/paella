@@ -3,7 +3,7 @@
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
 
-d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://10.0.4.1/debrepos/paella.bin.gpg
+d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${pillar['paella_server_ip']}/debrepos/paella.bin.gpg
 
 # The values can also be preseeded individually for greater 
 # flexibility.
@@ -69,13 +69,9 @@ d-i netcfg/wireless_wep string
 # to be set.
 #d-i mirror/protocol string ftp
 d-i mirror/country string manual
-d-i mirror/http/hostname string 10.0.4.1
+d-i mirror/http/hostname string ${pillar['paella_server_ip']}
 d-i mirror/http/directory string /debrepos/debian
 d-i mirror/http/proxy string
-
-
-d-i apt-setup/10.0.4.1/key string http://10.0.4.1/debrepos/paella.gpg
-
 
 
 # Suite to install.
@@ -206,14 +202,14 @@ d-i apt-setup/services-select multiselect
 
 # Additional repositories, local[0-9] available
 d-i apt-setup/local0/repository string \
-       http://10.0.4.1/debrepos/salt wheezy-saltstack main
+       http://${pillar['paella_server_ip']}/debrepos/salt wheezy-saltstack main
 d-i apt-setup/local0/comment string saltrepos
 # Enable deb-src lines
 #d-i apt-setup/local0/source boolean true
 # URL to the public key of the local repository; you must provide a key or
 # apt will complain about the unauthenticated repository and so the
 # sources.list line will be left commented out
-d-i apt-setup/local0/key string http://10.0.4.1/debrepos/paella.gpg
+d-i apt-setup/local0/key string http://${pillar['paella_server_ip']}/debrepos/paella.gpg
 
 
 # By default the installer requires that repositories be authenticated
@@ -287,4 +283,5 @@ d-i finish-install/reboot_in_progress note
 # in the target system.
 #d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
 
-d-i preseed/late_command string wget -O /target/tmp/configure-salt http://10.0.4.1/preseeds/configure-salt-netboot ; in-target sh /tmp/configure-salt
+d-i preseed/late_command string wget -O /target/tmp/configure-salt http://${pillar['paella_server_ip']}/preseeds/configure-salt-netboot ; in-target sh /tmp/configure-salt
+
