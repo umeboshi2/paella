@@ -2,6 +2,7 @@
 
 base:
   'paella':
+    - localmirror
     - default
     - files
     - squid

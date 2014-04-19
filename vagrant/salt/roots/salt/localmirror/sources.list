@@ -1,0 +1,5 @@
+deb ${pillar['paella_localmirror_mainrepo']} wheezy main
+deb-src ${pillar['paella_localmirror_mainrepo']} wheezy main
+
+deb ${pillar['paella_localmirror_secrepo']} wheezy/updates main
+deb-src ${pillar['paella_localmirror_secrepo']} wheezy/updates main
