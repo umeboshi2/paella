@@ -3,7 +3,7 @@
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
 
-d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://10.0.4.1/debrepos/paella.bin.gpg
+d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${paella_server_ip}/debrepos/paella.bin.gpg
 
 d-i keymap select us
 d-i console-setup/ask_detect boolean false
@@ -19,12 +19,12 @@ d-i netcfg/get_domain string unassigned-domain
 d-i netcfg/wireless_wep string
 
 d-i mirror/country string manual
-d-i mirror/http/hostname string 10.0.4.1
+d-i mirror/http/hostname string ${paella_server_ip}
 d-i mirror/http/directory string /debrepos/debian
 d-i mirror/http/proxy string
 
 
-d-i apt-setup/10.0.4.1/key string http://10.0.4.1/debrepos/paella.gpg
+d-i apt-setup/${paella_server_ip}/key string http://${paella_server_ip}/debrepos/paella.gpg
 
 d-i mirror/suite string wheezy
 d-i mirror/udeb/suite string wheezy
@@ -85,9 +85,9 @@ d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 
 # Additional repositories, local[0-9] available
 d-i apt-setup/local0/repository string \
-       http://10.0.4.1/debrepos/salt wheezy-saltstack main
+       http://${paella_server_ip}/debrepos/salt wheezy-saltstack main
 d-i apt-setup/local0/comment string saltrepos
-d-i apt-setup/local0/key string http://10.0.4.1/debrepos/paella.gpg
+d-i apt-setup/local0/key string http://${paella_server_ip}/debrepos/paella.gpg
 
 
 d-i debian-installer/allow_unauthenticated boolean false
@@ -100,4 +100,4 @@ popularity-contest popularity-contest/participate boolean false
 # Avoid that last message about the install being complete.
 d-i finish-install/reboot_in_progress note
 
-d-i preseed/late_command string wget -O /target/tmp/configure-salt http://10.0.4.1/paella/latecmd/${machine} ; in-target python /tmp/configure-salt
+d-i preseed/late_command string wget -O /target/tmp/configure-salt http://${paella_server_ip}/paella/latecmd/${machine} ; in-target python /tmp/configure-salt

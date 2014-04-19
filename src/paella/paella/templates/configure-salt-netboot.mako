@@ -19,7 +19,7 @@ subprocess.check_call(cmd)
 
 # FIXME - fix ip address
 minion_config = """\
-master: 10.0.4.1
+master: ${paella_server_ip}
 id: ${machine}
 """
 
@@ -49,7 +49,7 @@ subprocess.call(['chmod', '755', '/etc/rc.local'])
 
 
 # FIXME - fix ip address
-url = 'http://10.0.4.1/paella/api0/machines'
+url = 'http://${paella_server_ip}/paella/api0/machines'
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}    
 data = dict(action='stage_over', machine=machine)
 
