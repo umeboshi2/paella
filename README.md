@@ -202,20 +202,22 @@ SQLAlchemy.
 
 ## TODO
 
-- Make scripts for live netboot system to identify machines and set
+- DONE: Make scripts for live netboot system to identify machines and set
   for install.
   
-- Make server that accepts POST requests and assigns machine names 
+- DONE: Make server that accepts POST requests and assigns machine names 
   to mac addresses.
   
-- Get server to render preseed files based on name of machine.
+- DONE: Get server to render preseed files based on name of machine.
 
-- Get server to create and destroy pxe config files for machines in 
+- DONE: Get server to create and destroy pxe config files for machines in 
   /var/lib/tftpboot.
 
-- Setup scripts to help with partial repository
+- Setup scripts to help with partial repository STARTED
 
 - Move more info into pillar data
+
+  - wipe out all hardcoded entries of '10.0.4.1' to config files or pillar data
 
 - Create some simple disk/partition recipes to use as a starting 
   point.
@@ -224,7 +226,9 @@ SQLAlchemy.
   install.
   http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
 
-- use system uuid instead of mac addresses: dmidecode -s system-uuid
+- DONE: use system uuid instead of mac addresses: dmidecode -s system-uuid
+
+
 
 
 ## History

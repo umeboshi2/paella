@@ -45,7 +45,10 @@ with file('/etc/rc.local', 'w') as rfile:
 
 subprocess.call(['chmod', '755', '/etc/rc.local'])
 
-
+# We need to get the minion keys from the server.
+# In order to get the keys, a POST request must
+# be sent to the server with the system-uuid in
+# the payload.
 
 
 # FIXME - fix ip address
