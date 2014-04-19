@@ -49,7 +49,37 @@ Two deployment scenarios:
 
 2. Set up a network where the hosts on the network are installed and managed 
    by a paella server.
-  
+
+### System UUID
+
+The machines on the paella network are identified by their system 
+uuid.  In normal network operations, AFAICT, the system uuid is only 
+transferred over the network during the PXE negotiation, in plaintext.  
+When using paella, the uuid, is transferred over the network in http 
+requests by the client when identifying itself to the server.  The paella 
+database should not provide a uuid to a paella client.
+
+Even though paella is really meant to be used on a local network where 
+the administrator has enough physical access and monitoring ability to 
+provide trust during a network install, it would be valuable to raise 
+the bar of an attacker to the point of having to discover or guess a 
+system uuid.  Due to the nature of PXE, attempts to write code that 
+would block an attacker that sniffs the network would be pointless.  
+The design is mostly to keep a user of one machine to be able to 
+retrieve the pillar data or minion keys of another machine.
+
+### Pillar Data
+
+The default pillar data is in a git repository.  I desire for these pillar 
+files, eventually, to be python scripts that access a database using 
+SQLAlchemy.
+
+There are currently other problems with having the data in a pillar.  The 
+ability to refer to pillar keys within the pillar is not directly 
+available.  Due to the fact that pillar data is basically a set of nested 
+dictionaries, it should be possible to achieve the desired results through 
+a different pillar rendering system.
+
 ### Install Routine
 
 #### Default Live System
@@ -155,11 +185,12 @@ not boot from the network unless a key, like F12, is pressed during the
 preboot.  
 
 Other machines will readily boot from the network at first option.  I intend 
-for paella to be flexible enough to handle these situations.  For example, 
-instead of deleting the machine specific pxe config files in the tftpboot 
-directory, those files could be modified to boot from the first hard drive, 
-allowing the second stage installer to continue, rather than being stuck 
-in a repeated install loop.
+for paella to be flexible enough to handle these situations.  The default 
+pxe config file will default to booting from the first hard drive 
+automatically after a ten second delay.  A machine that boots from the 
+network by default, or as the first boot device, will effectively 
+default to booting from their first hard drive.
+
 
 ### Preseed builder
 
@@ -193,11 +224,6 @@ stage of the installation.
 	keys are found, to generate them.  The paella server should keep track of 
 	all the keys and only set the master to accept those that it preseeds.
 	
-### Pillar Data
-
-The default pillar data is in a git repository.  I desire for these pillar 
-files, eventually, to be python scripts that access a database using 
-SQLAlchemy.
 
 
 ## TODO
