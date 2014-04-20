@@ -3,6 +3,8 @@
 
 ## History
 
+The old website for this project is at http://paella.berlios.de
+
 ### What was it?
 
 Paella was written over eight years ago, yet much of the core components 

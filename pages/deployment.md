@@ -1,15 +1,5 @@
 # [Paella](#)
 
-## Introduction 
-
-Paella is a system for that has been used to install preconfigured 
-debian systems over a local network in a manner similar to FAI_.  The 
-project started in 2004 as a set of scripts within the FAI installer than 
-communicated with a PostgreSQL database to retrieve the configuration for 
-the target machine.
-
-The old website for this project is at http://paella.berlios.de
-
 ## Outline
 
 How is paella going to work?
