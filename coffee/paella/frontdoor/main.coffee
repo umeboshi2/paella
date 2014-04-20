@@ -15,6 +15,7 @@ define (require, exports, module) ->
     appRoutes:
       '': 'start'
       'frontdoor': 'start'
+      'pages/:name' : 'show_page'
       
   MSGBUS.commands.setHandler 'frontdoor:route', () ->
     console.log "frontdoor:route being handled"

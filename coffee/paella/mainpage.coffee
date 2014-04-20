@@ -50,7 +50,6 @@ define (require, exports, module) ->
   
   MSGBUS.events.on 'mainbar:displayed', (view) ->
     console.log 'new handle for mainbar:displayed'
-    display_mainbar_contents view
     console.log 'mainbar should be visible'
     
   MSGBUS.commands.setHandler 'mainpage:init', () ->

@@ -17,18 +17,12 @@ define (require, exports, module) ->
     app.addRegions
       mainview: 'body'
       
-      mainbar: '#mainbar'
-      content: '#content'
-      header: '#header'
-      subheader: '#subheader'
+      content: '#main-content'
+      header: '#main-header'
       footer: '#footer'
       
-      main_menu: '#main-menu'
-      user_menu: '#user-menu'
-      
-      
-      sidebar: '.sidebar'
-      rcontent: '.right-column-content'
+      sidebar: '#sidebar'
+      rcontent: '#main-content'
       
     app.on 'initialize:after', ->
       Backbone.history.start() unless Backbone.history.started
@@ -47,20 +41,22 @@ define (require, exports, module) ->
       
     # connect events
     MSGBUS.events.on 'mainpage:show', (view) =>
-      #console.log 'mainpage:show called'
+      console.log 'mainpage:show called'
       app.mainview.show view
-
+      
     MSGBUS.events.on 'mainbar:show', (view) =>
-      #console.log 'mainbar:show called'
-      app.mainbar.show view
+      console.log 'mainbar:show called'
+      window.testview = view
+      #app.mainbar.show view
       MSGBUS.events.trigger 'mainbar:displayed', view
+      console.log 'doing nothing in mainpage:show handler'
       
     MSGBUS.events.on 'main-menu:show', (view) =>
-      #console.log 'main-menu:show called'
+      console.log 'main-menu:show called'
       app.main_menu.show view
       
     MSGBUS.events.on 'user-menu:show', (view) =>
-      #console.log 'user-menu:show called'
+      console.log 'user-menu:show called'
       app.user_menu.show view
 
 

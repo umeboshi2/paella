@@ -34,63 +34,7 @@ define (require, exports, module) ->
   ########################################
   # Templates
   ########################################
-  user_menu = renderable (user) ->
-    name = user.username
-    ul '#user-menu.ctx-menu.nav.navbar-nav', ->
-      li '.dropdown', ->
-        a '.dropdown-toggle', 'data-toggle':'dropdown', ->
-          if name == undefined
-            text "Guest"
-          else
-            text name
-          b '.caret'
-        ul '.dropdown-menu', ->
-          if name == undefined
-            li ->
-              a href:'/login', 'login'
-          else
-            li ->
-              a href:'/app/user', 'User Page'
-            # we need a "get user info" from server
-            # to populate this menu with 'admin' link
-            admin = false
-            unless name == undefined
-              groups = user.groups
-              if groups != undefined
-                for g in groups
-                  if g.name == 'admin'
-                    admin = true
-            if admin
-              li ->
-                a href:'/admin', 'Administer Site'
-            li ->
-              a href:'/logout', 'Logout'
-
-  ########################################
-  main_bar = renderable () ->
-    div '.navbar-header', ->
-      button '.navbar-toggle', type:'button', 'data-toggle':'collapse',
-      'data-target':'#mainbar-collapse', ->
-        span '.sr-only', 'Toggle navigations'
-        span 'badge', 'expand'
-    div '#mainbar-collapse.collapse.navbar-collapse', ->
-      div '#main-menu.nav.navbar-nav.navbar-left.main-menu'
-      div '#user-menu.navbar.navbar-nav.navbar-right.main-menu'
-
-  ########################################
-  PageLayoutTemplateOrig = renderable (user) ->
-    nav '#mainbar', 'data-spy':'affix', 'data-offset-top':'10'
-    div '.page.container-fluid', ->
-      div '#main-content', ->
-        div '#header'
-        div '#subheader'
-        div '#content', ->
-          div '.two-col.row', ->
-            div '.sidebar.col-md-2'
-            div '.right-column-content.col-md-10'
-        div '#footer'
-
-  PageLayoutTemplate = renderable () ->
+  main_header = renderable () ->
     header ->
       div '.inner', ->
         h1 'Paella'
@@ -98,31 +42,40 @@ define (require, exports, module) ->
         a '.button', href:'https://github.com/umeboshi2/paella', ->
           small 'View project on'
           text 'GitHub'
-    div '#content-wrapper', ->
-      div '.inner.clearfix', ->
-        section '#main-content', ->
-          div ->
-            raw marked readme
-        aside '#sidebar', ->
-          a '.button',
-          href:'https://github.com/umeboshi2/paella/zipball/master', ->
-            small 'Download'
-            text '.zip file'
-          a '.button',
-          href:'https://github.com/umeboshi2/paella/tarball/master', ->
-            small 'Download'
-            text '.tar.gz file'
-          p '.repo-owner', ->
-            a href:'https://github.com/umeboshi2/paella', ->
-              text 'is maintained by '
-              a href:'https://github.com/umeboshi2', 'umeboshi2'
+
+  main_sidebar = renderable (model) ->
+    ul '.sidebar-menu', ->
+      for entry in model.entries
+        li ->
+          a href:entry.url, entry.name
+    a '.button',
+    href:'https://github.com/umeboshi2/paella/zipball/master', ->
+      small 'Download'
+      text '.zip file'
+    a '.button',
+    href:'https://github.com/umeboshi2/paella/tarball/master', ->
+      small 'Download'
+      text '.tar.gz file'
+    p '.repo-owner', ->
+      a href:'https://github.com/umeboshi2/paella', ->
+        text 'is maintained by '
+        a href:'https://github.com/umeboshi2', 'umeboshi2'
 
                   
+  ########################################
+  PageLayoutTemplate = renderable () ->
+    div '#main-header', ->
+      main_header()
+    div '#content-wrapper', ->
+      div '.inner.clearfix', ->
+        section '#main-content'
+        aside '#sidebar'
+    div '#footer'
           
             
   module.exports =
     PageLayoutTemplate: PageLayoutTemplate
-    main_bar: main_bar
-    user_menu: user_menu
+    main_header: main_header
+    main_sidebar: main_sidebar
     
       

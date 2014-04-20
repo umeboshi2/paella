@@ -4,9 +4,11 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   teacup = require 'teacup'
-
+  marked = require 'marked'
+  
   renderable = teacup.renderable
-
+  raw = teacup.raw
+  
   div = teacup.div
   # I use "icon" for font-awesome
   icon = teacup.i
@@ -36,8 +38,9 @@ define (require, exports, module) ->
   layout = renderable () ->
     div '.something-very-special'
     
-  frontdoor_main = renderable () ->
-    div '.action-button', 'hello'
+  frontdoor_main = renderable (page) ->
+    raw marked page.content
+    
               
   module.exports =
     layout: layout

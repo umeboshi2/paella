@@ -6,22 +6,12 @@ define (require, exports, module) ->
   # Models
   ########################################
 
-  class RssFeed extends Backbone.Model
-    defaults:
-      name: 'No RSS'
-      url: '#'
-    url: '/rest/simplerss/feeds'
-    validation:
-      name:
-        required: true
-      url:
-        required: true
-        
-  class RssData extends Backbone.Model
+  class Page extends Backbone.Model
     url: () ->
-      '/rest/simplerss/feeds/' + @id + '/feeddata'
-          
-  module.exports =
-    RssFeed: RssFeed
-    RssData: RssData
+      '/pages/' + @id + '.json'
 
+
+  Backbone.sync
+  module.exports =
+    Page: Page
+    

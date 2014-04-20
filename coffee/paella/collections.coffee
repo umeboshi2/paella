@@ -3,8 +3,8 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   
-  { User, Group, RssFeed,
-  RssData } = require 'models'
+  Models = require 'models'
+  
   MSGBUS = require 'msgbus'
       
 
@@ -17,38 +17,40 @@ define (require, exports, module) ->
     parse: (response) ->
       return response.data
 
-  class RssFeedList extends BaseCollection
-    model: RssFeed
-    url: '/rest/simplerss/feeds'
+  class PageCollection extends BaseCollection
+    model: Models.Page
 
-  class RssDataList extends BaseCollection
-    model: RssData
     
   # set handlers on message bus
   #
-  main_feed_list = new RssFeedList
-  MSGBUS.reqres.setHandler 'rss:feedlist', ->
-    main_feed_list
+  main_page_collection = new PageCollection
 
-  MSGBUS.reqres.setHandler 'rss:getfeedinfo', (feed_id) ->
-    console.log 'handle rss:getfeedinfo ' + feed_id
-    main_feed_list.get feed_id
-    
+  MSGBUS.reqres.setHandler 'pages:collection', ->
+    main_page_collection
 
-  main_data_list = new RssDataList
-  
-  
-  MSGBUS.reqres.setHandler 'rss:feeddata', (feed_id) ->
-    console.log 'handle rss:feeddata ' + feed_id
-    model = main_data_list.get feed_id
+  MSGBUS.reqres.setHandler 'pages:getpage', (page_id) ->
+    console.log 'handle pages:getpage ' + page_id
+    model = main_page_collection.get page_id
     if model == undefined
-      model = new RssData
-        id: feed_id
-      main_data_list.add model
+      model = new Models.Page
+        id: page_id
+      main_page_collection.add model
     else
       model
       
+
+  #####################################################
+  #main_data_list = new RssDataList
+  #MSGBUS.reqres.setHandler 'rss:feeddata', (feed_id) ->
+  #  console.log 'handle rss:feeddata ' + feed_id
+  #  model = main_data_list.get feed_id
+  #  if model == undefined
+  #    model = new Page
+  #      id: feed_id
+  #    main_data_list.add model
+  #  else
+  #    model
+      
   
   module.exports =
-    RssFeedList: RssFeedList
-    
+    PageCollection: PageCollection
