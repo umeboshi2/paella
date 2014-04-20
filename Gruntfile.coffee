@@ -49,6 +49,10 @@ module.exports = (grunt) ->
       buildjs:
         files: 'build.coffee'
         tasks: ['coffee:compileBuildJS']
+      makepages:
+        files: ['pages/**/*.md']
+        tasks: ['shell:pages']
+        
         
       
         
@@ -73,6 +77,11 @@ module.exports = (grunt) ->
         command: 'python scripts/prepare-bower-components.py'
         options:
           stdout: true
+      pages:
+        command: 'python scripts/make-pages.py'
+        options:
+          stdout: true
+          
         
     # load grunt-* tasks
     require('matchdep').filterDev('grunt-*').forEach grunt.loadNpmTasks
@@ -82,6 +91,8 @@ module.exports = (grunt) ->
       'coffee:compile'
       'compass:compile'
       'coffee:compileBuildJS'
+      'coffee:compileWithMaps'
+      'shell:pages'
       ]
                           
         

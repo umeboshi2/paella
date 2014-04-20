@@ -42,10 +42,10 @@ define (require, exports, module) ->
           text 'GitHub'
 
   main_sidebar = renderable (model) ->
-    ul '.sidebar-menu', ->
+    div '.sidebar-menu', ->
       for entry in model.entries
-        li ->
-          a href:entry.url, entry.name
+        div '.sidebar-entry', ->
+          a href:entry.url, entry.name          
     a '.button',
     href:'https://github.com/umeboshi2/paella/zipball/master', ->
       small 'Download'
