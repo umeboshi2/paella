@@ -2,8 +2,6 @@
 import os, sys
 import json
 
-ignored_suffixes = ['.json', '~']
-
 pages_dir = 'pages'
 
 if not os.path.isdir(pages_dir):
@@ -13,14 +11,15 @@ base_dir = os.getcwd()
 
 os.chdir(pages_dir)
 
-files = os.listdir('.')
-for suffix in ignored_suffixes:
-    files = [f for f in files if not f.endswith(suffix)]
+md_suffix = '.md'
+
+files = [f for f in os.listdir('.') if f.endswith(md_suffix)]
 
 for filename in files:
-    data = dict(id=filename, content=file(filename).read())
-    json_filename = '%s.json' % filename
+    name = filename[:-len(md_suffix)]
+    data = dict(id=name, content=file(filename).read())
+    json_filename = '%s.json' % name
     with file(json_filename, 'w') as outfile:
         json.dump(data, outfile)
-    print "created", filename
+    print "created", json_filename
     
