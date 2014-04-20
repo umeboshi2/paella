@@ -8,7 +8,7 @@ define (require, exports, module) ->
 
   class Page extends Backbone.Model
     url: () ->
-      '/pages/' + @id + '.json'
+      '/paella/pages/' + @id + '.json'
 
 
   Backbone.sync

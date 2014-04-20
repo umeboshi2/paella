@@ -5,8 +5,6 @@ define (require, exports, module) ->
   teacup = require 'teacup'
   marked = require 'marked'
   
-  readme = require 'text!common/readme.txt'
-  
   renderable = teacup.renderable
 
   div = teacup.div
