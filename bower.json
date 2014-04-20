@@ -31,7 +31,7 @@
     "font-questrial-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/questrial/Questrial-Regular.ttf",
     "marked": "~0.3.2",
     "font-sourcesanspro-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/sourcesanspro/SourceSansPro-Regular.ttf",
-    "marionette": "~1.8.1",
+    "marionette.bundle": "https://raw.github.com/marionettejs/backbone.marionette/master/lib/backbone.marionette.js",
     "lodash": "~2.4.1",
     "jquery-ui": "~1.10.3",
     "teacup": "https://github.com/goodeggs/teacup.git",

@@ -1,6 +1,6 @@
 define (require, exports, module) ->
-    Wreqr = require 'backbone.wreqr'
-
+    Marionette = require 'marionette'
+    Wreqr = Backbone.Wreqr
     module.exports =
         reqres: new Wreqr.RequestResponse()
         commands: new Wreqr.Commands()
