@@ -179,15 +179,15 @@ code {
 }
 
 pre {
-  padding: 20px;
-  background: #fff;
+  padding: 10px;
+  background: lighten($basecolor1, 1);
   text-shadow: none;
   overflow: auto;
   border: solid 1px #f2f2f2;
 }
 pre code {
-  color: #2879d0;
-  background-color: #fff;
+  color: $basecolor4;
+  background-color: lighten($basecolor1, 1);
   border: none;
   padding: 0;
 }

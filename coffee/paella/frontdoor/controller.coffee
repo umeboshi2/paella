@@ -79,7 +79,7 @@ define (require, exports, module) ->
         view = new FDViews.FrontDoorMainView
           model: page
         MSGBUS.events.trigger 'rcontent:show', view
-        $('html, body').animate {scrollTop: 0}, 'fast'
+        #$('html, body').animate {scrollTop: 0}, 'fast'
           
     start: ->
       @make_main_content()
