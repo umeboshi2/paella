@@ -12,11 +12,12 @@ def pxeconfig_filename(address):
     dirname = '/var/lib/tftpboot/pxelinux.cfg'
     return os.path.join(dirname, address)
 
-def make_pxeconfig(address, machine):
+def make_pxeconfig(address, machine, settings):
     # force lowercase
     address = address.lower()
     filename = pxeconfig_filename(address)
-    env = dict(machine=machine)
+    env = dict(machine=machine,
+               paella_server_ip=settings['paella_server_ip'])
     template = 'paella:templates/pxeconfig.mako'
     content = render(template, env)
     with file(filename, 'w') as pxeconfig:

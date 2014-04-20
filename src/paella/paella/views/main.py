@@ -50,11 +50,12 @@ class MachineResource(object):
         return data
 
     def _install_machine(self, data):
+        settings = self.request.registry.settings
         name = data['machine']
         machine = self.mgr.get_machine(name)
         if machine.uuid:
             uuid = machine.uuid
-            make_pxeconfig(uuid, name)
+            make_pxeconfig(uuid, name, settings)
             filename = pxeconfig_filename(uuid)
             if not os.path.isfile(filename):
                 raise RuntimeError, "%s doesn't exist." % filename
@@ -62,7 +63,7 @@ class MachineResource(object):
         
         addresses = self.mgr.list_machine_addresses(name)
         for address in addresses:
-            make_pxeconfig(address, name)
+            make_pxeconfig(address, name, settings)
             filename = pxeconfig_filename(address)
             print "FILENAME: %s" % filename
             if not os.path.isfile(filename):
@@ -87,7 +88,35 @@ class MachineResource(object):
             print "FILENAME: %s" % filename
             if os.path.isfile(filename):
                 raise RuntimeError, "%s still exists." % filename
-    
+
+    def _update_package_list(self):
+        # the paella client will make a dictionary
+        # from the package selection and send it
+        # to the server in json format
+        #
+        # the server will then use the debrepos
+        # manager to update the filter list
+        #
+        # a long running process such as updating
+        # the repository after the list is updated
+        # will wait until a job server is implemented
+        raise RuntimeError, "Not implemented"
+        request = self.request
+        settings = self.request.registry.settings
+        baseparent = settings['debrepos_baseparent']
+        from debrepos.server import PartialMirrorManager
+        pmm = PartialMirrorManager(baseparent)
+        # FIXME
+        dist = 'wheezy'
+        # package-list is a dictionary
+        data = self.request.json['package-list']
+        updated = pmm.update_list(dist, data)
+        if updated:
+            return dict(result='success')
+        else:
+            return dict(result='failed')
+        
+        
     def collection_post(self):
         data = self.request.json
         action = data['action']
@@ -99,6 +128,9 @@ class MachineResource(object):
         elif action == 'stage_over':
             self._stage_one_over(data)
             data = dict(result='success')
+        elif action == 'update_package_list':
+            data = self._update_package_list(data)
+            
         return data
         
     def get(self):
