@@ -21,9 +21,9 @@ The other edge of this sword is that, in the attempt to design a flexible
 framework that can be directed almost entirely through the configuration, 
 the code that actually executes the framework has remained sessile.  While 
 this provides stability and predictability, it comes at a price.  At this 
-point in time, many of the upstreams sources that paella depends upon have 
-all been deprecated by world developers at large, in favor of sources that 
-are being actively developed and maintained.  This effectively puts the 
+point in time, many of the upstream sources that paella depends upon have 
+all been largely abandoned by world developers at large, in favor of sources 
+that are being actively developed and maintained.  This effectively puts the 
 future of paella in jeopardy if the framework isn't eventually modified 
 to take advantages of the state of our shared codebase that have happened 
 over the last eight years.
@@ -58,7 +58,7 @@ database lent itself to quicker gui development.
   that it performs, the group of machines it belongs to according to 
   network, role, or any other criteria that you define.
 
-- The boot media is created from debian live, which allows for nfs,
+- The boot media is created from debian live, which allows for netboot,
   cdrom, and usb media types.
 
 - A gui exists to help manage the database.

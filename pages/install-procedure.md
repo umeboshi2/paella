@@ -2,7 +2,7 @@
 
 ## General Install Procedure  
 
-Procedure when the machine is introduced to the network:
+### Procedure when the machine is introduced to the network
 
 1. Boot machine from network into live system.
 
@@ -10,10 +10,10 @@ Procedure when the machine is introduced to the network:
    where <name> is the name of the machine.
    
 3. Next, type: paella-set-install.  This will instruct 
-   the server to create pxe config files for the mac 
-   addresses of the machine.
+   the server to create pxe config files for the system
+   uuid of the machine.
 
-Procedure when machine set to be installed:
+### Procedure when machine set to be installed:
  
 1. Boot machine from network.  The pxe menu will have an install
    entry at the top that provides the installer with a preseed file 
@@ -37,7 +37,7 @@ Procedure when machine set to be installed:
    
 5. The script will also send a POST request to the server instructing it 
    that the debian install procedure is about to complete.  The server will 
-   then remove the pxe config files.
+   then remove the special pxe config file.
 
 6. Once the late command finishes, the debian installer tidies up and 
    unmounts the filesystems, then reboots.  If the machine doesn't default 
