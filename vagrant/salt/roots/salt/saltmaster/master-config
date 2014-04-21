@@ -179,16 +179,32 @@ renderer: ${saltmaster['renderer']}
 
 
 hash_type: ${saltmaster['hash_type']}
+file_ignore_glob:
+  - '.#*'
 
-
+file_roots:
+  base:
+    - ${saltmaster['base_fileserver_root']}
 fileserver_backend:
+%if saltmaster['use_gitfs_remote']:
   - git
+%else:
+  - roots
+%endif
 
+%if saltmaster['use_gitfs_remote']:
 gitfs_remotes:
    - ${saltmaster['top_gitfs_remote']}
+%endif
 
+pillar_roots:
+  base:
+    - ${saltmaster['base_pillar_root']}
+
+%if saltmaster['use_ext_git_pillar']:
 ext_pillar:
   - git: ${saltmaster['top_ext_git_pillar']}
+%endif
 
 # The pillar_gitfs_ssl_verify option specifies whether to ignore ssl certificate
 # errors when contacting the pillar gitfs backend. You might want to set this to
