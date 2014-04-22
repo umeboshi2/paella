@@ -55,4 +55,5 @@ nosetests.xml
 /cache-bootstrap.tar.gz
 /vagrant/debrepos
 /vagrant/salt/roots/pillar.local
+/vagrant/paella
 
