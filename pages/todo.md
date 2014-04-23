@@ -28,5 +28,10 @@
 
 - DONE: use system uuid instead of mac addresses: dmidecode -s system-uuid
 
+- Implement per machine auto install option when generating install pxe 
+  config file.
+
+- Start preparing to handle both amd64 and i386.
+
 
 
