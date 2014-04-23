@@ -7,16 +7,15 @@ from pyramid.renderers import render
 # system uuid.
 
 def pxeconfig_filename(address):
-    # force lowercase
+    # force lowercase for filename
     address = address.lower()
+    # FIXME
     dirname = '/var/lib/tftpboot/pxelinux.cfg'
     return os.path.join(dirname, address)
 
 def make_pxeconfig(address, machine, settings):
-    # force lowercase
-    address = address.lower()
     filename = pxeconfig_filename(address)
-    env = dict(machine=machine,
+    env = dict(machine=machine, uuid=address,
                paella_server_ip=settings['paella_server_ip'])
     template = 'paella:templates/pxeconfig.mako'
     content = render(template, env)

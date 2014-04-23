@@ -16,7 +16,7 @@ menu title Network Boot Menu
 label install
       menu label ^Install ${machine} with Paella
       kernel installer/i386/linux
-      append vga=788 initrd=installer/i386/initrd.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine}
+      append vga=788 initrd=installer/i386/initrd.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${uuid}
 
 #label live
 include live/live.cfg Standard Live System

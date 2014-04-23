@@ -31,7 +31,7 @@ rc_local = """\
 # that can be removed later without disturbing the 
 # system.
 if ! [ -r /etc/salt/highstate-complete ]; then
-    salt-call state.highstate
+    salt-call state.highstate | tee -a /root/paella-install.log
     touch /etc/salt/highstate-complete
 fi
 exit 0

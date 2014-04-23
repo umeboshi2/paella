@@ -11,6 +11,7 @@ from sqlalchemy import desc
 from sqlalchemy import func
 
 from paella.models.main import Machine, MacAddr
+from paella.models.main import PartmanRecipe
 
 
 # store keys in database.
@@ -51,6 +52,38 @@ class SaltKeyManager(object):
     def get_keypair(self, name):
         print "get both keys for name"
         print "return dict(public=dict(name=name, content=content), private=)"
+
+
+        
+class PartmanRecipeManager(object):
+    def __init__(self, session):
+        self.session = session
+
+    def _query(self):
+        return self.session.query(PartmanRecipe)
+
+    def get(self, id):
+        return self._query().get(id)
+
+    def add(self, name, content):
+        with transaction.manager:
+            pr = PartmanRecipe()
+            pr.name = name
+            pr.content = content
+            self.session.add(pr)
+        return self.session.merge(pr)
+
+    def update(self, name, content):
+        with transaction.manager:
+            pr = self._query().filter_by(name=name).one()
+            pr.content = content
+            self.session.add(pr)
+        return self.session.merge(pr)
+
+    def list_recipes(self):
+        return [r.name for r in self._query()]
+
+    
         
 class MachineAddressManager(object):
     def __init__(self, session):
@@ -88,7 +121,7 @@ class MachineAddressManager(object):
         return [a.address for a in al]
     
 
-    def identify_machine_by_uuid(self, uuid):
+    def identify_machine_by_uuid(self, uuid, name=True):
         q = self.session.query(Machine)
         q = q.filter_by(uuid=uuid)
         machines = q.all()
@@ -97,18 +130,24 @@ class MachineAddressManager(object):
         if not len(machines):
             name = None
         else:
-            name = machines[0].name
+            # this is ugly code, fix the api
+            if name:
+                name = machines[0].name
+            else:
+                name = machines[0]
         return name
         
         
-    def identify_machine(self, address):
+    def identify_machine(self, address, name=True):
         q = self.session.query(MacAddr)
         q = q.filter_by(address=address)
         mc = q.one()
         m = self.session.query(Machine).get(mc.machine_id)
         if m is not None:
-            return m.name
-    
+            if name:
+                return m.name
+            else:
+                return m
 
     def add_new_machine(self, name, addresses, uuid=None):
         m = self.add_machine(name, uuid=uuid)

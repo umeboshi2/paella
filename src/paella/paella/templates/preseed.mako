@@ -14,8 +14,6 @@ d-i netcfg/choose_interface select auto
 d-i netcfg/get_hostname string ${hostname}
 d-i netcfg/get_domain string unassigned-domain
 
-#d-i netcfg/hostname string ${hostname}
-
 d-i netcfg/wireless_wep string
 
 d-i mirror/country string manual
@@ -100,4 +98,4 @@ popularity-contest popularity-contest/participate boolean false
 # Avoid that last message about the install being complete.
 d-i finish-install/reboot_in_progress note
 
-d-i preseed/late_command string wget -O /target/tmp/configure-salt http://${paella_server_ip}/paella/latecmd/${machine} ; in-target python /tmp/configure-salt
+d-i preseed/late_command string wget -O /target/tmp/configure-salt http://${paella_server_ip}/paella/latecmd/${uuid} ; in-target python /tmp/configure-salt
