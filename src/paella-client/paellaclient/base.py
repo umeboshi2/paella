@@ -31,7 +31,8 @@ def get_system_uuid():
     if retval:
         raise RuntimeError , "command failed with %d" % retval
     content = proc.stdout.read()
-    return content.strip()
+    # enforce lowercase here
+    return content.strip().lower()
 
 
 if __name__ == '__main__':

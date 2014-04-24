@@ -15,6 +15,16 @@ parser = OptionParser()
 
 opts, args = parser.parse_args(sys.argv[1:])
 
+def make_identity_request(uuid):
+    url = os.path.join(base_url, uuid)
+    headers = {'Content-type': 'application/json',
+               'Accept': 'application/json'}    
+    r = requests.get(url, headers=headers)
+    if not r.ok:
+        raise RuntimeError, "FIXME something bad happened"
+    return json.loads(r.content)
+
+
 def make_install_request(uuid):
     url = base_url
     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}    
@@ -24,6 +34,8 @@ def make_install_request(uuid):
 
 def main():
     uuid = get_system_uuid()
+    machine = make_identity_request(uuid)
+    
     r = make_install_request(uuid)
     if r.ok:
         print "Machine %s set to install." % uuid

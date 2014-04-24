@@ -26,7 +26,7 @@ class RecipeResource(object):
         self.mgr = PartmanRecipeManager(self.db)
 
     def collection_get(self):
-        return dict(data=self.mgr.list_recipes)
+        return dict(data=self.mgr.list_recipes())
 
     def get(self):
         name = self.request.matchdict['name']
@@ -34,14 +34,27 @@ class RecipeResource(object):
         return recipe.serialize()
 
     def collection_post(self):
-        print "create a new recipe"
+        data = self.request.json
+        name = data['name']
+        content = data['content']
+        recipe = self.mgr.add(name, content)
+        return recipe.serialize()
 
     def post(self):
-        print "update a recipe"
+        data = self.request.json
+        name = self.request.matchdict['name']
+        recipe = self.mgr.get_by_name(name)
+        content = data['content']
+        recipe = self.mgr.update(recipe, content=content)
+        return recipe.serialize()
+        
 
     def delete(self):
-        print "delete a recipe"
-        
+        name = self.request.matchdict['name']
+        recipe = self.mgr.get_by_name(name)
+        self.mgr.delete(recipe)
+        return dict(result='success')
+    
     
 
 @resource(collection_path='/api0/machines',

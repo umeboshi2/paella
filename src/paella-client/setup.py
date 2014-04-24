@@ -32,5 +32,6 @@ Command line paella client""",
       [console_scripts]
       paella-submit-machine = paellaclient.submit_machine:main
       paella-set-install = paellaclient.set_install:main
+      paella-recipe = paellaclient.recipe_manager:main
       """,
       )

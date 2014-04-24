@@ -3,14 +3,14 @@ from pyramid.view import view_config
 from pyramid.renderers import render
 
 
-from paella.managers.main import MachineAddressManager
+from paella.managers.main import MachineManager
 
 def _installer_view(request, template):
-    mgr = MachineAddressManager(request.db)
+    mgr = MachineManager(request.db)
     settings = request.registry.settings
     paella_server_ip = settings['paella_server_ip']
     uuid = request.matchdict['uuid']
-    m = mgr.identify_machine_by_uuid(uuid, name=False)
+    m = mgr.get_by_uuid(uuid)
     name = m.name
     env = dict(uuid=uuid, hostname=name, machine=name,
                paella_server_ip=paella_server_ip)
