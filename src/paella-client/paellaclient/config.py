@@ -8,8 +8,6 @@ DEFAULT_CONFIG_TEXT = """\
 [main]
 # FIXME don't use ip address here
 machines_url: http://10.0.4.1/paella/api0/machines
-addresses_url: http://10.0.4.1/paella/api0/addresses
-
 """
 
 config = ConfigParser()

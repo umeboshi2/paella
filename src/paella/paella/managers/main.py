@@ -10,7 +10,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import desc
 from sqlalchemy import func
 
-from paella.models.main import Machine, MacAddr
+from paella.models.main import Machine
 from paella.models.main import PartmanRecipe
 
 
@@ -19,8 +19,6 @@ from paella.models.main import PartmanRecipe
 # submit_machine generates keys that are stored in database
 # set_install will make sure key is accepted by minion
 # late command will send keypair to minion
-
-
 class SaltKeyManager(object):
     def __init__(self, session):
         self.session = session
@@ -76,116 +74,72 @@ class PartmanRecipeManager(object):
             self.session.add(pr)
         return self.session.merge(pr)
 
-    def update(self, name, content):
+    def update(self, recipe, name=None, content=None):
         with transaction.manager:
-            pr = self._query().filter_by(name=name).one()
-            pr.content = content
-            self.session.add(pr)
-        return self.session.merge(pr)
+            if name is not None or content is not None:
+                if name is not None:
+                    recipe.name = name
+                if content is not None:
+                    recipe.content = content
+                self.session.add(recipe)
+        return self.session.merge(recipe)
 
     def list_recipes(self):
         return [r.name for r in self._query()]
 
-    
-        
-class MachineAddressManager(object):
+    def delete(self, recipe):
+        with transaction.manager:
+            self.session.delete(recipe)
+            
+class MachineManager(object):
     def __init__(self, session):
         self.session = session
 
-    def add_machine(self, name, uuid=None):
+    def _query(self):
+        return self.session.query(Machine)
+
+    def get(self, id):
+        return self._query().get(id)
+
+    def _get_one_by(self, **kw):
+        return self._query().filter_by(**kw).one()
+    
+    def get_by_name(self, name):
+        return self._get_one_by(name=name)
+    
+    def get_by_uuid(self, uuid):
+        return self._get_one_by(uuid=uuid)
+    
+    def add(self, name, uuid, autoinstall=False, recipe=None):
         with transaction.manager:
-            m = Machine()
-            m.name = name
-            if uuid is not None:
-                m.uuid = uuid
-            self.session.add(m)
-        return self.session.merge(m)
+            machine = Machine()
+            machine.name = name
+            machine.uuid = uuid
+            machine.autoinstall = autoinstall
+            if recipe is not None:
+                machine.recipe_id = recipe.id
+            self.session.add(machine)
+        return self.session.merge(machine)
 
-    def add_macaddr(self, address, machine_id):
+    def update(self, machine, name=None, autoinstall=None,
+               recipe=None):
         with transaction.manager:
-            mc = MacAddr()
-            mc.address = address
-            mc.machine_id = machine_id
-            self.session.add(mc)
-        return self.session.merge(mc)
+            if name is not None or autoinstall is not None \
+                    or recipe is not None:
+                if name is not None:
+                    machine.name = name
+                if autoinstall is not None:
+                    machine.autoinstall = autoinstall
+                if recipe is not None:
+                    machine.recipe_id = recipe.id
+                self.session.add(machine)
+        return self.session.merge(machine)
 
-    def update_macaddr(self, address, machine_id):
-        pass
-    
-
-    def get_machine_addresses(self, machine_id):
-        q = self.session.query(MacAddr)
-        q = q.filter_by(machine_id=machine_id)
-        return q.all()
-
-    def list_machine_addresses(self, name):
-        m = self.session.query(Machine).filter_by(name=name).one()
-        al = self.get_machine_addresses(m.id)
-        return [a.address for a in al]
-    
-
-    def identify_machine_by_uuid(self, uuid, name=True):
-        q = self.session.query(Machine)
-        q = q.filter_by(uuid=uuid)
-        machines = q.all()
-        if len(machines) > 1:
-            raise RuntimeError, "UUID should be unique"
-        if not len(machines):
-            name = None
-        else:
-            # this is ugly code, fix the api
-            if name:
-                name = machines[0].name
-            else:
-                name = machines[0]
-        return name
-        
-        
-    def identify_machine(self, address, name=True):
-        q = self.session.query(MacAddr)
-        q = q.filter_by(address=address)
-        mc = q.one()
-        m = self.session.query(Machine).get(mc.machine_id)
-        if m is not None:
-            if name:
-                return m.name
-            else:
-                return m
-
-    def add_new_machine(self, name, addresses, uuid=None):
-        m = self.add_machine(name, uuid=uuid)
-        alist = list()
-        for a in addresses:
-            am = self.add_macaddr(a, m.id)
-            alist.append(am)
-        return dict(machine=m, addresses=alist)
-
-    def update_machine(self, name, addresses, uuid=None):
-        q = self.session.query(Machine)
-        if uuid is None:
-            try:
-                m = q.filter_by(name=name).one()
-            except NoResultFound:
-                return self.add_new_machine(name, addresses)
-            # delete addresses in database, then
-            # add the addresses passed.
-            # FIXME
-        else:
-            try:
-                m = q.filter_by(uuid=uuid).one()
-            except NoResultFound:
-                return self.add_new_machine(name, addresses, uuid=uuid)
-            
-    
-    
-
-    def delete_machine(self, name):
-        m = self.session.query(Machine).filter_by(name=name).one()
-        
-            
     def list_machines(self):
-        q = self.query(Machine)
-        return q.all()
+        return [m.name for m in self._query()]
     
-    def get_machine(self, name):
-        return self.session.query(Machine).filter_by(name=name).one()
+    def delete(self, machine):
+        with transaction.manager:
+            self.session.delete(machine)
+            
+

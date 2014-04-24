@@ -42,10 +42,3 @@ class Machine(Base, SerialBase):
                     nullable=True)
     
                     
-class MacAddr(Base, SerialBase):
-    __tablename__ = 'macaddrs'
-    id = Column(Integer, primary_key=True)
-    address = Column(Text, unique=True)
-    machine_id = Column(Integer, ForeignKey('machines.id'))
-
-    

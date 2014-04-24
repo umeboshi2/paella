@@ -3,26 +3,27 @@ import os
 from pyramid.renderers import render
 
 
-# address can be either mac address or
-# system uuid.
+# uuid is system uuid.
 
-def pxeconfig_filename(address):
+def pxeconfig_filename(uuid):
     # force lowercase for filename
-    address = address.lower()
+    uuid = uuid.lower()
     # FIXME
     dirname = '/var/lib/tftpboot/pxelinux.cfg'
-    return os.path.join(dirname, address)
+    return os.path.join(dirname, uuid)
 
-def make_pxeconfig(address, machine, settings):
-    filename = pxeconfig_filename(address)
-    env = dict(machine=machine, uuid=address,
+# machine is db object
+def make_pxeconfig(machine, settings):
+    filename = pxeconfig_filename(machine.uuid)
+    env = dict(machine=machine.name, uuid=machine.uuid,
+               autoinstall=machine.autoinstall,
                paella_server_ip=settings['paella_server_ip'])
     template = 'paella:templates/pxeconfig.mako'
     content = render(template, env)
     with file(filename, 'w') as pxeconfig:
         pxeconfig.write(content)
 
-def remove_pxeconfig(address):
-    filename = pxeconfig_filename(address)
+def remove_pxeconfig(uuid):
+    filename = pxeconfig_filename(uuid)
     os.remove(filename)
     

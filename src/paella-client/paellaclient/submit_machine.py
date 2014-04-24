@@ -5,7 +5,6 @@ from optparse import OptionParser
 
 import requests
 
-from paellaclient.base import get_mac_addresses
 from paellaclient.base import get_system_uuid
 from paellaclient.config import config
 
@@ -23,10 +22,8 @@ name = args[0]
 
 
 def make_data(name):
-    addresses = get_mac_addresses()
     uuid = get_system_uuid()
-    data = dict(action='submit', machine=name, uuid=uuid,
-                addresses=addresses)
+    data = dict(action='submit', machine=name, uuid=uuid)
     return data
 
 def sumbit_machine(name):
