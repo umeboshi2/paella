@@ -103,6 +103,8 @@ def edit_recipe(name):
 
 
 def main():
+    if command in REQUIRED_ARG_COMMANDS:
+        name = args[1]
     if command == 'create':
         if name in list_recipes():
             raise RuntimeError, "A recipe named %s already exists." % name
