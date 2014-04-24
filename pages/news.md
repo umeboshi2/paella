@@ -14,3 +14,5 @@
 - Using [salt](http://saltstack.org/) for second stage
   installation and configuration.
 
+- Using system uuid's to for machine identification and 
+  network access.
