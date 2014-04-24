@@ -65,6 +65,9 @@ class PartmanRecipeManager(object):
     def get(self, id):
         return self._query().get(id)
 
+    def get_by_name(self, name):
+        return self._query().filter_by(name=name).one()
+    
     def add(self, name, content):
         with transaction.manager:
             pr = PartmanRecipe()

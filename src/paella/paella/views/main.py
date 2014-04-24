@@ -8,11 +8,39 @@ from cornice.resource import resource, view
 
 
 from paella.managers.main import MachineAddressManager
+from paella.managers.main import PartmanRecipeManager
 from paella.managers.pxeconfig import make_pxeconfig, remove_pxeconfig
 from paella.managers.pxeconfig import pxeconfig_filename
 
 
 from paella.views.base import BaseResource
+
+@resource(collection_path='/api0/recipes',
+          path='/api0/recipes/{name}')
+class RecipeResource(object):
+    def __init__(self, request):
+        self.request = request
+        self.db = self.request.db
+        self.mgr = PartmanRecipeManager(self.db)
+
+    def collection_get(self):
+        return dict(data=self.mgr.list_recipes)
+
+    def get(self):
+        name = self.request.matchdict['name']
+        recipe = self.mgr.get_by_name(name)
+        return recipe.serialize()
+
+    def collection_post(self):
+        print "create a new recipe"
+
+    def post(self):
+        print "update a recipe"
+
+    def delete(self):
+        print "delete a recipe"
+        
+    
 
 @resource(collection_path='/api0/machines',
           path='/api0/machines/{name}')
