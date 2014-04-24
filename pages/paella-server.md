@@ -31,19 +31,19 @@ requests have an "action" parameter.
 
 #### POST Actions
 
-- **submit** (name, uuid)
+- **submit** (name, uuid)  
   This is the command that creates a machine in the database,
   with a unique name tied to the system uuid.
 
-- **install** (uuid)
+- **install** (uuid)  
   This is the command that instructs the server to create a
   PXE config file for the machine identified by the uuid.
 
-- **stage_over** (uuid)
+- **stage_over** (uuid)  
   This is the command that instructs the server to delete the 
   PXE config file for the machine identified by the uuid.
 
-- **update_machine** (uuid, name=None, recipe=None, autoinstall=None)
+- **update_machine** (uuid, name=None, recipe=None, autoinstall=None)  
   The uuid is required.  Any parameter that is not None will be updated 
   accordingly in the database.  The autoinstall paramater is boolean.  
   The recipe is identified by a unique name.
