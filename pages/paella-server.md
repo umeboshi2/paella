@@ -23,11 +23,9 @@ requests have an "action" parameter.
 
 #### GET Actions
 
-- **identify** (uuid="system-uuid")  
-  This is not implemented.  At the moment there is only
-  one GET request that performs this fuction and doesn't require an 
-  action parameter.  The server will respond with a bad request error 
-  if there is no uuid parameter.
+- /paella/api0/machines/{uuid}
+  This will basically get a JSON machine object from the database.
+
 
 #### POST Actions
 
@@ -43,10 +41,11 @@ requests have an "action" parameter.
   This is the command that instructs the server to delete the 
   PXE config file for the machine identified by the uuid.
 
-- **update_machine** (uuid, name=None, recipe=None, autoinstall=None)  
-  The uuid is required.  Any parameter that is not None will be updated 
-  accordingly in the database.  The autoinstall paramater is boolean.  
-  The recipe is identified by a unique name.
+- **update_machine** (name=None, recipe=None, autoinstall=None)
+  /paella/api0/machines/{uuid}
+  Any parameter that is not None will be updated accordingly in the 
+  database.  The autoinstall paramater is boolean. The recipe is 
+  identified by a unique name.
   
 - **update_package_list**
   This needs to be done with another url.
