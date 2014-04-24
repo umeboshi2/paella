@@ -78,11 +78,22 @@ class MachineResource(object):
     # recipe is by name
     # if recipe is not None, we retrieve it from
     # the database.
-    def _submit_machine(self, name, uuid, autoinstall=False,
-                        recipe=None):
+    def _submit_machine(self, data):
+        # FIXME machine parameter must go
+        if 'name' in data:
+            name = data['name']
+        else:
+            name = data['machine']
         if name in self.mgr.list_machines():
             msg = "A machine named %s already exists." % name
             raise HTTPForbidden, msg
+        uuid = data['uuid']
+        autoinstall = False
+        if 'autoinstall' in data:
+            autoinstall = data['autoinstall']
+        recipe = None
+        if 'recipe' in data:
+            recipe = data['recipe']
         if recipe is not None:
             recipe = self.recipes.get_by_name(recipe)
         machine = self.mgr.add(name, uuid, autoinstall=autoinstall,
@@ -159,9 +170,3 @@ class MachineResource(object):
             
         return data
         
-    def get(self):
-        name = self.request.matchdict['name']
-        return dict(name=name)
-    
-        
-    

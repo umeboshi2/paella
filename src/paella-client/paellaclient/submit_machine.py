@@ -23,7 +23,9 @@ name = args[0]
 
 def make_data(name):
     uuid = get_system_uuid()
-    data = dict(action='submit', machine=name, uuid=uuid)
+    data = dict(action='submit', name=name,
+                # FIXME machine key must go
+                machine=name, uuid=uuid)
     return data
 
 def sumbit_machine(name):

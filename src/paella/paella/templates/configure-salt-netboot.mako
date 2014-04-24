@@ -8,6 +8,7 @@ import requests
 
 
 machine='${machine}'
+uuid='${uuid}'
 
 print "Configure Salt Netboot Started..."
 
@@ -54,7 +55,7 @@ subprocess.call(['chmod', '755', '/etc/rc.local'])
 # FIXME - fix ip address
 url = 'http://${paella_server_ip}/paella/api0/machines'
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}    
-data = dict(action='stage_over', machine=machine)
+data = dict(action='stage_over', uuid=uuid)
 
 r = requests.post(url, data=json.dumps(data), headers=headers)
 
