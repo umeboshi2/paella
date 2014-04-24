@@ -22,7 +22,31 @@ retrieve the pillar data or minion keys of another machine.
 ## Rules Concerning System UUID
 
 These are the rules that are intended to be implemented in the paella 
-system.
+system.  These are the rules for unauthenticated access.  In the near 
+future, submitting machines, and setting them for install may require 
+authentication.
+
+
+### Major Guidelines
+
+The uuid is the primary identifier for a machine.  The uuid is the 
+main token for unauthenticated access.
+
+Machine information cannot be retrieved from a query by the 
+name of the machine, nor any other identifier other than the 
+uuid of that machine.
+
+The only uuid ever retrieved from the server should match the uuid 
+sent in requests by the client.  Normally this will be the machine 
+that is being used.  In no circumstance must there be a uuid for 
+another machine revealed.  There must be no way to retrieve a map of 
+machine names and uuids.
+
+
+
+
+
+
 
 ### Submit Machine
 
@@ -30,10 +54,9 @@ Submit machine will submit uuid and name.  UUID is gathered from system
 automatically; name must be entered as command line argument.  This will 
 be a POST request. (/paella/api0/machines)
 
-If the uuid is present in the database, the POST request will fail if 
-the name is not identical, but will succeed if the name is identical.  The 
-name of the machine can be changed on a PUT/PATCH request with 
-action='update', as long as the new name doesn't already exist.
+If either the name or the uuid is present in the database, the POST 
+request will fail.
+
 
 ### Set Install
 
@@ -45,11 +68,24 @@ pxe config files.  The preseed file will need to be retrieved using
 the uuid, rather than the name.  This needs to be true for the late 
 command script as well.
 
+### Preseed and late command files
+
+Preseed files on the server are referred to by uuid.  The url for 
+the late command script is also retrieved by uuid.
+
+### Retrieve machine data
+
+The GET request for a machine's data needs a url with the uuid 
+included.  A machine's data cannot be retrieved by the name of 
+the machine.
+
+
 ### Salt Minion
 
 The salt minion id will be the name of the machine, which will be 
 unique.  It seems to be too cumbersome to use the uuid as the minion 
 id when maintaining configurations.
+
 
 ## Network Discovery of UUIDs
 

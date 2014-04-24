@@ -26,7 +26,6 @@ requests have an "action" parameter.
 - /paella/api0/machines/{uuid}
   This will basically get a JSON machine object from the database.
 
-
 #### POST Actions
 
 - **submit** (name, uuid)  
