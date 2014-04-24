@@ -33,8 +33,6 @@ def sumbit_machine(name):
         raise RuntimeError, "Server responded with %d" % r.status_code
 
 def main():
-    for a in get_mac_addresses():
-        print "Address: %s" % a
     print "System UUID:", get_system_uuid()
     sumbit_machine(name)
     print "Machine %s submitted to paella." % name
