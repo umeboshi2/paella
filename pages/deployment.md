@@ -13,3 +13,19 @@ Two deployment scenarios:
 2. Set up a network where the hosts on the network are installed and managed 
    by a paella server.
 
+## Where is this stuff useful?
+
+Paella is not designed for deploying debian systems in a cloud environment.  
+There are plenty of tools to help with this, and ability to use 
+[salt](saltstack.org), or another configuration system, is already 
+generally available.  Paella, due to how it uses the debian installer 
+in an automated fashion, could be useful in creating the base images that 
+will be deployed in a cloud environment, but this is not why it was 
+designed.
+
+Paella could be very useful in server farms where machines are added and 
+removed as needed.  Again, I didn't design paella for use in those 
+environments, but it could be very easily done.  If each machine in the 
+server farm was configured to boot from the network automatically, and 
+the autoinstall property is set for each machine, the network can be 
+completely managed remotely.
