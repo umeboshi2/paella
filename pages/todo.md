@@ -2,17 +2,6 @@
 
 ## TODO
 
-- DONE: Make scripts for live netboot system to identify machines and set
-  for install.
-  
-- DONE: Make server that accepts POST requests and assigns machine names 
-  to mac addresses.
-  
-- DONE: Get server to render preseed files based on name of machine.
-
-- DONE: Get server to create and destroy pxe config files for machines in 
-  /var/lib/tftpboot.
-
 - Setup scripts to help with partial repository STARTED
 
 - Move more info into pillar data
@@ -26,12 +15,23 @@
   install.
   http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
 
-- DONE: use system uuid instead of mac addresses: dmidecode -s system-uuid
-
 - Implement per machine auto install option when generating install pxe 
   config file.
 
 - Start preparing to handle both amd64 and i386.
 
+- Decide how to handle newer UEFI systems.
 
+- DONE: Make scripts for live netboot system to identify machines and set
+  for install.
+  
+- DONE: Make server that accepts POST requests and assigns machine names 
+  to mac addresses.
+  
+- DONE: Get server to render preseed files based on name of machine.
+
+- DONE: Get server to create and destroy pxe config files for machines in 
+  /var/lib/tftpboot.
+
+- DONE: use system uuid instead of mac addresses: dmidecode -s system-uuid
 

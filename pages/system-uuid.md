@@ -22,9 +22,12 @@ retrieve the pillar data or minion keys of another machine.
 ## Rules Concerning System UUID
 
 These are the rules that are intended to be implemented in the paella 
-system.  These are the rules for unauthenticated access.  In the near 
-future, submitting machines, and setting them for install may require 
-authentication.
+system.  These are the rules for the unauthenticated access that the 
+installer requires to operate.  
+
+The command line tools to submit machines and set them to install 
+currently operate in an unauthenticated manner, but this will 
+change to require authentication as paella is further developed.
 
 
 ### Major Guidelines
@@ -41,11 +44,6 @@ sent in requests by the client.  Normally this will be the machine
 that is being used.  In no circumstance must there be a uuid for 
 another machine revealed.  There must be no way to retrieve a map of 
 machine names and uuids.
-
-
-
-
-
 
 
 ### Submit Machine

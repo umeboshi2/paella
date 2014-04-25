@@ -29,3 +29,4 @@ environments, but it could be very easily done.  If each machine in the
 server farm was configured to boot from the network automatically, and 
 the autoinstall property is set for each machine, the network can be 
 completely managed remotely.
+
