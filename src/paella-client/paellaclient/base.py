@@ -1,6 +1,12 @@
+import os
 import sys
 import subprocess
 import json
+import requests
+
+from paellaclient.config import config
+
+base_url = config.get('main', 'machines_url')
 
 def get_mac_addresses(interface=''):
     process = subprocess.Popen(['/sbin/ifconfig'], stdout=subprocess.PIPE)
@@ -33,6 +39,15 @@ def get_system_uuid():
     content = proc.stdout.read()
     # enforce lowercase here
     return content.strip().lower()
+
+def make_identity_request(uuid):
+    url = os.path.join(base_url, uuid)
+    headers = {'Content-type': 'application/json',
+               'Accept': 'application/json'}    
+    r = requests.get(url, headers=headers)
+    if not r.ok:
+        raise RuntimeError, "FIXME something bad happened"
+    return json.loads(r.content)
 
 
 if __name__ == '__main__':

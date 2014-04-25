@@ -38,7 +38,7 @@ class Machine(Base, SerialBase):
     autoinstall = Column(Boolean, default=False)
     # FIXME: do we want a i386 default?
     arch = Column(Text, default='i386')
-    recipe = Column(Integer, ForeignKey('partman_recipes.id'),
-                    nullable=True)
+    recipe_id = Column(Integer, ForeignKey('partman_recipes.id'),
+                       nullable=True)
     
                     

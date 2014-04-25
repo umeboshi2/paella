@@ -9,6 +9,7 @@ DEFAULT_CONFIG_TEXT = """\
 # FIXME don't use ip address here
 machines_url: http://10.0.4.1/paella/api0/machines
 recipes_url: http://10.0.4.1/paella/api0/recipes
+debrepos_url: http://10.0.4.1/paella/api0/debrepos
 """
 
 config = ConfigParser()

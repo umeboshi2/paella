@@ -125,8 +125,24 @@ class MachineResource(object):
         return
 
 
-    def _update_machine(self, data):
-        pass
+    def post(self):
+        data = self.request.json
+        if not data:
+            return {}
+        uuid = self.request.matchdict['uuid']
+        update = dict().fromkeys(['name', 'autoinstall'])
+        for key in data:
+            if key in update:
+                update[key] = data[key]
+        update['recipe'] = None
+        if 'recipe' in data:
+            rname = data['recipe']
+            recipe = self.recipes.get_by_name(rname)
+            update['recipe'] = recipe
+        machine = self.mgr.get_by_uuid(uuid)
+        machine = self.mgr.update(machine, **update)
+        return machine.serialize()
+        
     
         
     def _update_package_list(self):
