@@ -3,9 +3,7 @@
 samba-support-packages:
   pkg.installed:
     - pkgs:
-      - libapache2-mod-wsgi
-      - apache2-mpm-worker
-      - apache2-utils
+      - smbclient
 
 samba-server:
   pkg.installed:
