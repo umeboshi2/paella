@@ -109,7 +109,14 @@ class MachineManager(object):
     
     def get_by_uuid(self, uuid):
         return self._get_one_by(uuid=uuid)
-    
+
+    def does_machine_exist(self, uuid):
+        try:
+            m = self.get_by_uuid(uuid)
+            return True
+        except NoResultFound:
+            return False
+        
     def add(self, name, uuid, autoinstall=False, recipe=None):
         with transaction.manager:
             machine = Machine()

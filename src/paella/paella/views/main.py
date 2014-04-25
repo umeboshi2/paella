@@ -88,6 +88,9 @@ class MachineResource(object):
             msg = "A machine named %s already exists." % name
             raise HTTPForbidden, msg
         uuid = data['uuid']
+        # check uuid against database
+        if self.mgr.does_machine_exist(uuid):
+            raise RuntimeError, "A machine with this uuid already exists."
         autoinstall = False
         if 'autoinstall' in data:
             autoinstall = data['autoinstall']

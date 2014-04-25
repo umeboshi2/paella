@@ -22,3 +22,4 @@ paella_localmirror_secrepo: http://cypress/debrepos/security
 paella_localmirror_archive_key: http://cypress/debrepos/debrepos.gpg
 paella_localmirror_archive_key_id: C4B08740
 
+paella_enable_samba: False
