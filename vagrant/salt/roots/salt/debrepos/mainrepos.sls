@@ -61,7 +61,9 @@ include:
   - squid
   - debianlive
   - netboot-base
-
+  %if pillar['paella_enable_samba']:
+  - samba
+  %endif
 
 local-packages:
   cmd.script:
@@ -77,6 +79,9 @@ local-packages:
       - sls: shorewall
       - sls: debianlive
       - sls: netboot-base
+      %if pillar['paella_enable_samba']:
+      - sls: samba
+      %endif
       - pkg: squid
       - cmd: repos-ready
 

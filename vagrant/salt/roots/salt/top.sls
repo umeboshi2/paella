@@ -11,7 +11,4 @@ base:
     - paella-client
     - netboot
     - mainserver
-    %if pillar['paella_enable_samba']:
-    - samba
-    %endif
 
