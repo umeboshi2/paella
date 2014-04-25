@@ -22,4 +22,11 @@ paella_localmirror_secrepo: http://cypress/debrepos/security
 paella_localmirror_archive_key: http://cypress/debrepos/debrepos.gpg
 paella_localmirror_archive_key_id: C4B08740
 
-paella_enable_samba: False
+#paella_enable_samba: False
+paella_enable_samba: True
+
+# after everything has been downloaded and verified,
+# setting this option to false will make calls to 
+# highstate much quicker.
+#paella_enable_software_download_states: True
+paella_enable_software_download_states: False

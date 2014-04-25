@@ -10,10 +10,19 @@ pager:
 emacs:
   pkg.installed:
     - name: emacs23
+  alternatives.set:
+    - name: editor
+    - path: /usr/bin/emacs23
 
 screen:
   pkg:
     - installed
+
+basic-tools:
+  pkg.installed:
+    - pkgs:
+      - iotop
+      - htop
 
 devpackages:
   pkg.installed:

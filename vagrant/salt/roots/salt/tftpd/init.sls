@@ -7,6 +7,8 @@ tftpd-hpa:
     - running
     - require:
         - file: /var/lib/tftpboot
+    - watch:
+        - file: /var/lib/tftpboot
 
 /var/lib/tftpboot:
   file.directory:
