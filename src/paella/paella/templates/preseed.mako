@@ -59,7 +59,12 @@ d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
 d-i partman-lvm/confirm_nooverwrite boolean true
 
+%if recipe is None:
 d-i partman-auto/choose_recipe select atomic
+%else:
+d-i partman-auto/expert_recipe string ${recipe}
+%endif
+
 # Or provide a recipe of your own...
 # If you have a way to get a recipe file into the d-i environment, 
 # you can just point at it.
