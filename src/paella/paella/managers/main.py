@@ -52,6 +52,18 @@ class SaltKeyManager(object):
         print "return dict(public=dict(name=name, content=content), private=)"
 
 
+def prepare_recipe(content):
+    one_space = chr(32)
+    two_spaces = one_space * 2
+    # strip new lines
+    content = content.replace('\n', '')
+    # convert tabs to spaces
+    content = content.replace('\t', one_space)
+    # convert all double spaces to single spaces
+    while two_spaces in content:
+        content = content.replace(two_spaces, one_space)
+    return content
+
         
 class PartmanRecipeManager(object):
     def __init__(self, session):
@@ -90,7 +102,13 @@ class PartmanRecipeManager(object):
     def delete(self, recipe):
         with transaction.manager:
             self.session.delete(recipe)
-            
+
+    def prepare_recipe(self, id):
+        r = self.get(id)
+        if r is None:
+            raise NoResultFound
+        return prepare_recipe(r.content)
+    
 class MachineManager(object):
     def __init__(self, session):
         self.session = session
