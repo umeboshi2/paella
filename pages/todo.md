@@ -35,3 +35,4 @@
 
 - DONE: use system uuid instead of mac addresses: dmidecode -s system-uuid
 
+- Work on [deployment](#pages/deployment) notes.

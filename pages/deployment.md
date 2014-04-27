@@ -30,3 +30,7 @@ server farm was configured to boot from the network automatically, and
 the autoinstall property is set for each machine, the network can be 
 completely managed remotely.
 
+## Interesting Links
+
+http://sourceforge.net/projects/unattended/
+
