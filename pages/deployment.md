@@ -34,3 +34,11 @@ completely managed remotely.
 
 http://sourceforge.net/projects/unattended/
 
+http://www.thewindowsclub.com/the-system-preparation-tool-sysprep-in-microsoft-windows-7
+
+http://www.thinkwiki.org/wiki/Windows_PE
+
+http://technet.microsoft.com/en-us/library/cc709665(WS.10).aspx
+
+https://eldon.me/?p=73
+
