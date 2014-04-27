@@ -29,4 +29,10 @@ paella_enable_samba: True
 # setting this option to false will make calls to 
 # highstate much quicker.
 #paella_enable_software_download_states: True
-paella_enable_software_download_states: False
+paella_enable_software_download_states: True
+
+
+# nu2_mirror CANNOT end with a trailing /
+#nu2_mirror: http://ftp.rz.tu-bs.de/pub/mirror/www.nu2.nu/nu2files
+#nu2_mirror: http://securitywonks.org/n2u/mirrorfiles
+nu2_mirror: ftp://dl.xs4all.nl/pub/mirror/nu2files

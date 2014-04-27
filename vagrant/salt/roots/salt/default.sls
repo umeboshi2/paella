@@ -59,3 +59,20 @@ misc-packages:
       - ascii
       - fortune-mod
       - cowsay
+
+
+wimlib-build-depends:
+  pkg.installed:
+    - pkgs:
+      - autotools-dev
+      - libfuse-dev
+      - ntfs-3g-dev
+      - attr-dev
+      - attr
+
+wimlib-runtime-depends:
+  pkg.installed:
+    - pkgs:
+      - genisoimage
+      - cabextract
+
