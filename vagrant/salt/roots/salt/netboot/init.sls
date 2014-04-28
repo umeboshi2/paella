@@ -7,6 +7,11 @@
   file.directory:
     - makedirs: True
 
+############################################
+############################################
+############################################
+%if False:
+# It seems that I can't pinpoint a particular release
 /var/lib/tftpboot/installer/i386/initrd.gz:
   file.managed:
     - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u1+b2/images/netboot/debian-installer/i386/initrd.gz
@@ -16,6 +21,23 @@
   file.managed:
     - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u1+b2/images/netboot/debian-installer/i386/linux
     - source_hash: sha256=b60550692a0528b856f2dac883e79ec8388d392413a0954873c31f89172e0a59
+%endif
+############################################
+############################################
+############################################
+
+<% checksums = pillar['debian_installer_i386_checksums'] %>
+
+
+/var/lib/tftpboot/installer/i386/initrd.gz:
+  file.managed:
+    - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz
+    - source_hash: ${checksums['initrd']}
+
+/var/lib/tftpboot/installer/i386/linux:
+  file.managed:
+    - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/linux
+    - source_hash: ${checksums['linux']}
 
 /var/lib/tftpboot/installer/i386/installer.cfg:
   file.managed:
@@ -45,7 +67,6 @@ preseed-example:
 #####################################
 
 # debian live
-
 # the local debian repository must be ready
 
 include:

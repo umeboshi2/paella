@@ -3,7 +3,7 @@
 %if pillar['paella_enable_software_download_states']:
 <% cache = '/vagrant/vagrant/cache' %>
 
-%if False:
+%if pillar['paella_really_download_or_check_the_large_iso_files']:
 win7-ultimate-i386-iso:
   file.managed:
     - source: http://msft.digitalrivercontent.net/win/X17-59463.iso
@@ -28,6 +28,12 @@ nu2-bfd.zip:
     - source: ${pillar['nu2_mirror']}/bfd107.zip
     - source_hash: sha256=768467860ce870010e977a051a26fae712ad853b96667bd242a71122ea049c01
     - name: ${nu2_directory}/bfd107.zip
+
+win7pxelinux:
+  file.managed:
+    - source: http://www.ultimatedeployment.org/win7pxelinux.tgz
+    - source_hash: sha256=8e061380278785b47130a42a2af5772a500e55bd197e1c1cd938195cfab04e91
+    - name: ${cache}/win7pxelinux.tgz
 
 %endif
 

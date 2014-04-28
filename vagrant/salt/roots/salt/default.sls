@@ -64,8 +64,15 @@ misc-packages:
 wimlib-build-depends:
   pkg.installed:
     - pkgs:
+      - autoconf
+      - automake
+      - libtool
+      - debhelper
       - autotools-dev
+      - pkg-config
       - libfuse-dev
+      - libxml2-dev
+      - libssl-dev
       - ntfs-3g-dev
       - attr-dev
       - attr

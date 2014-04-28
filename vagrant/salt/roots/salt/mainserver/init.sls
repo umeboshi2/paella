@@ -30,3 +30,9 @@ setup-paella-database:
     - source: salt://scripts/setup-paella-database.sh
     - user: postgres
 
+
+debrepos-github:
+  git.latest:
+    - name: https://github.com/umeboshi2/debrepos.git
+    - target: /home/vagrant/workspace/debrepos
+    - user: ${pillar['paella_user']}

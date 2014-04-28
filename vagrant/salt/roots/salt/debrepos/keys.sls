@@ -102,3 +102,9 @@ create-binary-pubkey:
     - requires:
       - cmd: keyring-ready
 
+add-local-apt-key:
+  cmd.run:
+    - name: apt-key add /srv/debrepos/paella.gpg
+    - unless: apt-key list | grep 62804AE5
+    - require:
+      - cmd: keyring-ready

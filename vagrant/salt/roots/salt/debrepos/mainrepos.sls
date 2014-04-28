@@ -8,12 +8,14 @@
   file.directory:
     - makedirs: True
 
+<% checksums = pillar['debian_installer_i386_checksums'] %>
+
 
 i386-udeb-list-upstream:
   file.managed:
     - name: /srv/debrepos/debian/conf/i386-udeb-list-upstream
     - source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-i386/current/images/udeb.list
-    - source_hash: sha256=15ce82c5c843a4d752932e05596a3ae22d7575e4b713a27a4367a7d2697a5777
+    - source_hash: ${checksums['udeb_list']}
     - requires:
       - file: /srv/debrepos/debian/conf
 
