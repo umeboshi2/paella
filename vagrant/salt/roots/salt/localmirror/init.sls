@@ -1,5 +1,6 @@
 # -*- mode: yaml -*-
 
+# FIXME This isn't working yet
 <% use_localmirror = pillar['paella_use_local_mirror'] %>
 
 %if use_localmirror:
