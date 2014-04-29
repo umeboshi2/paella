@@ -106,6 +106,24 @@ example-peauto.bat:
     - name: /home/vagrant/workspace/peauto.bat
     - source: salt://paella-client/peauto.bat
 
+example-overlay-directory:
+  file.directory:
+    - name: /var/cache/netboot/winpe
+    - makedirs: True
+
+example-autounattend-xml:
+  file.managed:
+    - name: /var/cache/netboot/winpe/Autounattend.xml
+    - source: salt://files/Autounattend.xml
+
+example-winpe-files:
+  cmd.wait:
+    - name: echo "example-winpe-files ready"
+    - require:
+      - file: example-autounattend-xml
+      - file: example-peauto.bat
+
+
 # This command demonstrates the reason for the 
 # all the trouble required to get the AIK and 
 # wimlib setup properly.  This state will 
@@ -116,4 +134,18 @@ make-test-winpe-iso:
     - user: ${pillar['paella_user']}
     - cwd: /vagrant
     - unless: test -r /vagrant/testme-peauto.iso
+    - require:
+      - cmd: example-winpe-files
     - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat /vagrant/testme-peauto.iso
+
+make-another-test-winpe-iso:
+  cmd.run:
+    - user: ${pillar['paella_user']}
+    - cwd: /vagrant
+    - unless: test -r /srv/debrepos/winpe.iso
+    - require:
+      - cmd: example-winpe-files
+    # this is a simple image
+    #- name: mkwinpeimg -A /srv/shares/aik --iso /srv/debrepos/winpe.iso
+    - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat -O /var/cache/netboot/winpe /srv/debrepos/winpe.iso
+

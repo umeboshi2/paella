@@ -29,6 +29,7 @@
 /var/lib/tftpboot/pxelinux.cfg/default:
   file.managed:
     - source: salt://netboot/pxelinux-cfg
+    - template: mako
 
 /var/lib/tftpboot/splash.png:
   file.managed:
@@ -104,12 +105,15 @@ install-netboot:
     - shell: /bin/bash
 
 
-copy-chainloader:
+# copy syslinux files to tftpboot
+%for filename in ['chain.c32', 'gpxelinux.0', 'memdisk']:
+copy-${filename}:
   cmd.run:
-    - name: cp -a /usr/lib/syslinux/chain.c32 /var/lib/tftpboot
-    - unless: test -r /var/lib/tftpboot/chain.c32
+    - name: cp -a /usr/lib/syslinux/${filename} /var/lib/tftpboot
+    - unless: test -r /var/lib/tftpboot/${filename}
     - requires:
       - file: /var/lib/tftpboot
+%endfor
 
 # FIXME:  This command always runs!  Figure out when it's
 # necessary from the other states.
@@ -118,5 +122,8 @@ vagrant-owns-tftpboot:
     - name: chown -R vagrant:vagrant /var/lib/tftpboot
     - require:
       - cmd: install-tftpboot-files
-      - cmd: copy-chainloader
+      %for filename in ['chain.c32', 'gpxelinux.0', 'memdisk']:
+      - cmd: copy-${filename}
+      %endfor
+
 

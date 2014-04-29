@@ -1,7 +1,9 @@
 @echo Hello world.
 
-@echo This script doesn't do anything yet.
+wpeinit
 
-@echo Press a key to reboot.
+net use z: \\paella\win7
+z:\setup
 
 @pause
+
