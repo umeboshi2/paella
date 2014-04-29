@@ -29,11 +29,24 @@ nu2-bfd.zip:
     - source_hash: sha256=768467860ce870010e977a051a26fae712ad853b96667bd242a71122ea049c01
     - name: ${nu2_directory}/bfd107.zip
 
-win7pxelinux:
-  file.managed:
-    - source: http://www.ultimatedeployment.org/win7pxelinux.tgz
-    - source_hash: sha256=8e061380278785b47130a42a2af5772a500e55bd197e1c1cd938195cfab04e91
-    - name: ${cache}/win7pxelinux.tgz
+
+# I really don't feel like grepping through a server
+# log where the daemon is forced to run -vvv
+
+#win7pxelinux:
+#  file.managed:
+#    - source: http://www.ultimatedeployment.org/win7pxelinux.tgz
+#    - source_hash: sha256=8e061380278785b47130a42a2af5772a500e55bd197e1c1cd938195cfab04e91
+#    - name: ${cache}/win7pxelinux.tgz
+
+
+# pebuilder is only for windows xp
+
+#pebuilder.zip:
+#  file.managed:
+#    - source: ${pillar['nu2_mirror']}/pebuilder3110a.zip
+#    - source_hash: sha256=e706e30bffcb4279e7906c2b3f044c10740cf9cb0c53d328597ded9604ad1f75
+#    - name: ${nu2_directory}/pebuilder3110a.zip
 
 %endif
 

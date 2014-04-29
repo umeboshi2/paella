@@ -60,6 +60,10 @@ misc-packages:
       - fortune-mod
       - cowsay
 
+debian-archive-keyring-build-depends:
+  pkg.installed:
+    - pkgs:
+      - jetring
 
 wimlib-build-depends:
   pkg.installed:

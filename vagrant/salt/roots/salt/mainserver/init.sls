@@ -36,3 +36,4 @@ debrepos-github:
     - name: https://github.com/umeboshi2/debrepos.git
     - target: /home/vagrant/workspace/debrepos
     - user: ${pillar['paella_user']}
+    - rev: af38fcc8928bb542924702da89fdc1a43104b22a

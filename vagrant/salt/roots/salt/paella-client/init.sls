@@ -35,6 +35,7 @@ wimlib-git-repos:
     - name: git://git.code.sf.net/p/wimlib/code
     - target: /home/vagrant/workspace/wimlib-code
     - user: ${pillar['paella_user']}
+    - rev: f303b46312f8d8be4210fba66082d5a7572dbd70
 
 build-wimlib-package:
   cmd.run:
@@ -95,4 +96,5 @@ make-test-winpe-iso:
     - user: ${pillar['paella_user']}
     - cwd: /vagrant
     - unless: test -r /vagrant/testme-peauto.iso
-    - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat /vagrant/testme-peauto.iso
+    #- name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat /vagrant/testme-peauto.iso
+    - name: mkwinpeimg -A /srv/shares/aik --iso /vagrant/testme-peauto.iso
