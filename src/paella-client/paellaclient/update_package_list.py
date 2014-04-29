@@ -54,14 +54,19 @@ def make_update_list_request(plist):
     headers = {'Content-type': 'application/json',
                'Accept': 'application/json'}    
     url = base_url
-    
-    
+    r = requests.post(url, data=json.dumps(data), headers=headers)
+    if not r.ok:
+        raise RuntimeError, "Something bad happened, returned %s" % r
+    return r.content
 
 
 
 
 def main():
     print "update the package list on the server"
+    plist = get_dpkg_selections()
+    make_update_list_request(plist)
+    
     
 if __name__ == '__main__':
     main()

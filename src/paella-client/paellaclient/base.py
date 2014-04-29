@@ -49,6 +49,31 @@ def make_identity_request(uuid):
         raise RuntimeError, "FIXME something bad happened"
     return json.loads(r.content)
 
+def selections_to_dictionary(fileobj, install=False):
+    data = dict()
+    for line in fileobj:
+        line = line.strip()
+        package, action = [i.strip() for i in line.split()]
+        #print '%s: %s' % (package, action)
+        multiarch_stripped = False
+        if ':' in package:
+            print "multiarch detected: %s" % package
+            package = package.split(':')[0]
+            multiarch_stripped = True
+        if package in data and not multiarch_stripped:
+            msg = 'Package %s already present...' % package
+            raise RuntimeError, msg
+        else:
+            if install:
+                action = 'install'
+            if action != 'install':
+                print "WARNING: %s set for action %s" % (package, action)
+            data[package] = action
+    return data
+
+
+
+
 
 if __name__ == '__main__':
     uuid = get_system_uuid()

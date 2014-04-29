@@ -34,5 +34,6 @@ Command line paella client""",
       paella-set-install = paellaclient.set_install:main
       paella-recipe = paellaclient.recipe_manager:main
       paella-update-machine = paellaclient.update_machine:main
+      paella-update-packages = paellaclient.update_package_list:main
       """,
       )
