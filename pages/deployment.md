@@ -42,3 +42,23 @@ http://technet.microsoft.com/en-us/library/cc709665(WS.10).aspx
 
 https://eldon.me/?p=73
 
+
+DriverPacks with Sysprep
+
+http://forum.driverpacks.net/viewtopic.php?id=4849
+
+## Windows Stuff
+
+### Netboot a PE environment
+
+Use wimlib to make pe iso.
+netboot iso and server iso http instead of tftp (ipxe or gpxe?)
+
+or
+
+Use PXE entirely, (seems that sending the winpe.wim will 
+take too long).
+
+### Configure PE environment
+
+
