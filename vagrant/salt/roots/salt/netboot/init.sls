@@ -7,25 +7,7 @@
   file.directory:
     - makedirs: True
 
-############################################
-############################################
-############################################
-%if False:
-# It seems that I can't pinpoint a particular release
-/var/lib/tftpboot/installer/i386/initrd.gz:
-  file.managed:
-    - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u1+b2/images/netboot/debian-installer/i386/initrd.gz
-    - source_hash: sha256=ec9cd8f2f4113b6cea59165672e9a41f676ce1fe47643d8a57933d672245bd93
-
-/var/lib/tftpboot/installer/i386/linux:
-  file.managed:
-    - source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u1+b2/images/netboot/debian-installer/i386/linux
-    - source_hash: sha256=b60550692a0528b856f2dac883e79ec8388d392413a0954873c31f89172e0a59
-%endif
-############################################
-############################################
-############################################
-
+# FIXME make better names for multi architecture support
 <% checksums = pillar['debian_installer_i386_checksums'] %>
 
 
@@ -56,6 +38,7 @@
   file.managed:
     - source: salt://netboot/paella-splash.png
 
+# FIXME:  This isn't really needed anymore
 preseed-example:
   file.managed:
     - name: /var/www/preseeds/preseed-example
@@ -81,6 +64,13 @@ include:
     - group: root
     - makedirs: True
 
+
+# FIXME:  These scripts aren't really that great and
+# are not really good for salt states.  They will 
+# generally work to help build the basic development
+# environment, but better methods should be used to 
+# build and manage live images in the production 
+# environment.
 build-live-images:
   cmd.script:
     - require:
@@ -121,6 +111,8 @@ copy-chainloader:
     - requires:
       - file: /var/lib/tftpboot
 
+# FIXME:  This command always runs!  Figure out when it's
+# necessary from the other states.
 vagrant-owns-tftpboot:
   cmd.run:
     - name: chown -R vagrant:vagrant /var/lib/tftpboot

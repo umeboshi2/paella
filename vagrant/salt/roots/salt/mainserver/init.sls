@@ -13,6 +13,11 @@
     - user: ${pillar['paella_user']}
     - requirements: salt://mainserver/requirements.txt
 
+# this command is always run
+# this command checks if paella is in `pip freeze` 
+# before executing, but this can't be done easily
+# with the unless paramater due to the need for 
+# the virtualenv requirement.
 setup-paella:
   cmd.script:
     - unless: false
@@ -22,6 +27,8 @@ setup-paella:
     - user: ${pillar['paella_user']}
 
 
+# FIXME This command also should require
+# that the postgres server is running.
 setup-paella-database:
   cmd.script:
     - unless: psql --tuples-only -c 'SELECT name FROM models;' paella | grep '^ one$'
@@ -30,7 +37,9 @@ setup-paella-database:
     - source: salt://scripts/setup-paella-database.sh
     - user: postgres
 
-
+# I haven't decided entirely how to use this yet.
+# There is already a debrepos dependency in the
+# paella setup.py that links to the github repo.
 debrepos-github:
   git.latest:
     - name: https://github.com/umeboshi2/debrepos.git

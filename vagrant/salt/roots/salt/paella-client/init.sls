@@ -37,6 +37,14 @@ wimlib-git-repos:
     - user: ${pillar['paella_user']}
     - rev: f303b46312f8d8be4210fba66082d5a7572dbd70
 
+# This darned command should almost be a script.
+# In order to keep the development base and partial
+# debian repository reasonably small, the building 
+# of the doc package is bypassed.  The tests are 
+# also bypassed as they require extra build depends,
+# as well as being root, instead of fakeroot.  The
+# tests for this build passed when the package was 
+# built manually.
 build-wimlib-package:
   cmd.run:
     - require:
@@ -79,6 +87,13 @@ wimlib-packages:
     - pkgs:
       - wimtools
 
+# the mkwinpeimage command depends on the mkisofs 
+# command being in the PATH.
+# FIXME
+# make the symlink somewhere else and append that 
+# to PATH in the evironment where mkwinpeimage will
+# be used.  This will help find other tools that
+# depend on the mkisofs command. 
 legacy-mkisofs-symlink:
   file.symlink:
     - name: /usr/local/bin/mkisofs
@@ -91,10 +106,14 @@ example-peauto.bat:
     - name: /home/vagrant/workspace/peauto.bat
     - source: salt://paella-client/peauto.bat
 
+# This command demonstrates the reason for the 
+# all the trouble required to get the AIK and 
+# wimlib setup properly.  This state will 
+# disappear eventually when I make a more generic
+# image and/or other special images.
 make-test-winpe-iso:
   cmd.run:
     - user: ${pillar['paella_user']}
     - cwd: /vagrant
     - unless: test -r /vagrant/testme-peauto.iso
-    #- name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat /vagrant/testme-peauto.iso
-    - name: mkwinpeimg -A /srv/shares/aik --iso /vagrant/testme-peauto.iso
+    - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat /vagrant/testme-peauto.iso
