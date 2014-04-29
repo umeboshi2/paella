@@ -1,4 +1,7 @@
 screen
 most
 rsync
+nfs-common
+# need paella debrepos for these
 python-paella-client
+wimtools
