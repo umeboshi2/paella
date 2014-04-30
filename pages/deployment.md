@@ -61,6 +61,30 @@ take too long).
 
 ### Configure PE environment
 
+Another approach:  make custom winpe iso for each machine on demand.
+Autounattend.xml for specific machine on iso root directory.
+machine.ini for machine information
+
+winpe environment script:
+
+```
+net use z: \\paella\win7
+z:
+setup.exe
+```
+
+Hopefully if windows installer picks up Autounattend.xml on cd drive
+things will be ok.
+
+Alternate idea:
+
+Have the Autounattend.xml on the top directory of a samba share 
+and map the drive before calling win7 setup.  This will be better 
+if it works.  The docs I've read say that setup looks at the root 
+directory of each bootable disk.  I am hoping that it looks at the 
+root directory of each attached drive.
+
+
 
 ### Set up reference environment
 
