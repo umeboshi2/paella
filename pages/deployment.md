@@ -74,16 +74,17 @@ setup.exe
 ```
 
 Hopefully if windows installer picks up Autounattend.xml on cd drive
-things will be ok.
+things will be ok.  It did!
 
-Alternate idea:
+### Learn GuiRunOnce
 
-Have the Autounattend.xml on the top directory of a samba share 
-and map the drive before calling win7 setup.  This will be better 
-if it works.  The docs I've read say that setup looks at the root 
-directory of each bootable disk.  I am hoping that it looks at the 
-root directory of each attached drive.
+Attempt to stick python and autoit on the base system after install.
 
+Every windows system will have python installed.  Autoit will either 
+be installed permanently, or placed in a temporary location to 
+execute the configuration scripts before being removed.  In this 
+circumstance, the autoit binary will have to be provided by the 
+configuration provisioner to execute the autoit scripts.
 
 
 ### Set up reference environment
@@ -108,3 +109,31 @@ root directory of each attached drive.
 	- can we do the bcdboot stage with wimlib?  If not we need to 
 	  boot into WinPE environment and use it there.
 	  
+### Look at using salt windows software repo
+
+salt-minion on windows
+
+preseeded keys can be included in winpe.iso
+
+### Driverpacks
+
+- slipstream driverpacks into iso
+
+	- can this be done entirely within debian?
+	
+	- easily?
+	
+- use a samba share for the driverpacks
+
+	- still need to have network drivers available beforehand
+	
+- store driverpacks installer in system wim
+
+	- most every system should work, but wim is much larger
+	
+	- store driverpacks installer with local network drivers on system
+	  wim, then driverpack install from samba share
+	  
+	  
+	
+	
