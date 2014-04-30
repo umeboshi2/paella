@@ -24,8 +24,13 @@ include live/live.cfg Standard Live System
 
 include installer/i386/installer.cfg Test Install
 
-label WinPE
-      menu label WinPE
+label WinPEshell 
+      menu label WinPE Shell
+      kernel memdisk
+      append iso initrd=http://${pillar['paella_server_ip']}/debrepos/winpe-shell.iso
+
+label WinPEinstall
+      menu label WinPE Auto Install
       kernel memdisk
       append iso initrd=http://${pillar['paella_server_ip']}/debrepos/winpe.iso
 

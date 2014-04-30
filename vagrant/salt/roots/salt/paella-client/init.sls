@@ -35,7 +35,7 @@ wimlib-git-repos:
     - name: git://git.code.sf.net/p/wimlib/code
     - target: /home/vagrant/workspace/wimlib-code
     - user: ${pillar['paella_user']}
-    - rev: f303b46312f8d8be4210fba66082d5a7572dbd70
+    - rev: 8682c564e55aae964457f183a9b860de3631d4d1
 
 # This darned command should almost be a script.
 # In order to keep the development base and partial
@@ -148,4 +148,13 @@ make-another-test-winpe-iso:
     # this is a simple image
     #- name: mkwinpeimg -A /srv/shares/aik --iso /srv/debrepos/winpe.iso
     - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat -O /var/cache/netboot/winpe /srv/debrepos/winpe.iso
+
+make-test-winpe-shell-iso:
+  cmd.run:
+    - user: ${pillar['paella_user']}
+    - cwd: /vagrant
+    - unless: test -r /srv/debrepos/winpe-shell.iso
+    - require:
+      - cmd: example-winpe-files
+    - name: mkwinpeimg -A /srv/shares/aik --iso /srv/debrepos/winpe-shell.iso
 

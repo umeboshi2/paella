@@ -87,3 +87,10 @@ wimlib-runtime-depends:
       - genisoimage
       - cabextract
 
+
+bootloader-packages:
+  pkg.installed:
+    - pkgs:
+      - syslinux
+      - ipxe
+      

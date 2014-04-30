@@ -1,9 +1,8 @@
 # -*- mode: yaml -*-
 
-bootloader:
-  pkg:
-    - installed
-    - name: syslinux
+include:
+  - default
+
 
 nfs-kernel-server:
   pkg:
