@@ -62,3 +62,25 @@ take too long).
 ### Configure PE environment
 
 
+### Set up reference environment
+
+- Use the automated install to install base system.
+
+- Manually install the applications and configure the sytem.
+
+- Use sysprep to prepare the system for capture.
+
+- Reboot system from network to standard live system
+
+- Use wimcapture to make .wim image of reference install
+
+- Next boot the target machine and use imagex apply on drive
+
+	- does it need partitioning/formatting?  Should we do this 
+	  setup-storage from FAI or write some tools?  Using debian
+	  servers eliminates some of the necessity for complex drive
+	  systems on the windows hosts.
+	
+	- can we do the bcdboot stage with wimlib?  If not we need to 
+	  boot into WinPE environment and use it there.
+	  
