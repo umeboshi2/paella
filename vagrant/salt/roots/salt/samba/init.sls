@@ -4,18 +4,31 @@
 <% cache = '/vagrant/vagrant/cache' %>
 
 %if pillar['paella_really_download_or_check_the_large_iso_files']:
-win7-ultimate-i386-iso:
+<% win7 = pillar['win7_ultimate_iso'] %>
+%for arch in ['i386', 'amd64']:
+win7-ultimate-${arch}-iso:
   file.managed:
-    - source: http://msft.digitalrivercontent.net/win/X17-59463.iso
-    - source_hash: sha256=e2c009a66d63a742941f5087acae1aa438dcbe87010bddd53884b1af6b22c940
-    - name: ${cache}/win7-ultimate-i386.iso
+    - source: ${win7[arch]['source']}
+    - source_hash: ${win7[arch]['source_hash']}
+    - name: ${cache}/win7-ultimate-${arch}.iso
+%endfor
 
-kb3aik_en.iso:
+%for iso in pillar['cached_iso_files']:
+${iso}_iso:
+  <% i = pillar[iso] %>
   file.managed:
-    - source: http://download.microsoft.com/download/8/E/9/8E9BBC64-E6F8-457C-9B8D-F6C9A16E6D6A/KB3AIK_EN.iso
-    - source_hash: sha256=c6639424b2cebabff3e851913e5f56410f28184bbdb648d5f86c05d93a4cebba
-    - name: ${cache}/kb3aik.iso
+    - source: ${i['source']}
+    - source_hash: ${i['source_hash']}
+    - name: ${cache}/${i['name']}
+%endfor
+
+#kb3aik_en.iso:
+#  file.managed:
+#    - source: http://download.microsoft.com/download/8/E/9/8E9BBC64-E6F8-457C-9B8D-F6C9A16E6D6A/KB3AIK_EN.iso
+#    - source_hash: sha256=c6639424b2cebabff3e851913e5f56410f28184bbdb648d5f86c05d93a4cebba
+#    - name: ${cache}/kb3aik.iso
 %endif
+
 
 <% nu2_directory = '%s/nu2-files' % cache %>
 nu2_files_directory:

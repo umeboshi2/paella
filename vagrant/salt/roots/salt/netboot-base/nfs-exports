@@ -12,3 +12,4 @@ ${pillar['livebuild']['net_root_path']}	*(ro,sync,no_subtree_check,no_root_squas
 
 # FIXME, restrict the permissions to something reasonable
 /srv/shares/incoming *(rw,sync,no_subtree_check,no_root_squash)
+

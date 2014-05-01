@@ -1,7 +1,14 @@
 screen
 most
 rsync
+
+# need access to nfs exports
 nfs-common
+
+# need to partition disk and make filesystems for win7
+parted
+ntfs-3g
+
 # need paella debrepos for these
 python-paella-client
 wimtools

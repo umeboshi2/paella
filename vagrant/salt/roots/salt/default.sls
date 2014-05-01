@@ -94,3 +94,7 @@ bootloader-packages:
       - syslinux
       - ipxe
       
+disk-tools:
+  pkg.installed:
+    - pkgs:
+      - parted
