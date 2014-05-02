@@ -109,6 +109,14 @@ configuration provisioner to execute the autoit scripts.
 	- can we do the bcdboot stage with wimlib?  If not we need to 
 	  boot into WinPE environment and use it there.
 	  
+	- even if we can't do the bcd boot from wimlib, we can send 
+	  a POST request to the server instructing it that we need 
+	  a winpe system to boot next with a script that will execute
+	  bcdboot properly then reboot back into the windows system.
+	  
+	  
+	
+	
 ### Look at using salt windows software repo
 
 salt-minion on windows
@@ -137,3 +145,38 @@ preseeded keys can be included in winpe.iso
 	  
 	
 	
+### custom machines
+
+A special unattend file and other scripts and files can be 
+created on a special winpe iso for the target machine.  This 
+will be done using mkwinpeimg.  The iso can be written to stdout 
+making it easy to serve over http without making too many unnecessary 
+temporary files.  The iso could be reached by a url 
+
+/paella/api0/winpe/iso/install/{uuid}
+
+This url can be place in the pxe config file
+
+
+
+### another outline
+
+- basic windows auto installer -> creates very basic system in audit mode
+
+- use the basic windows auto installer to create base reference system
+
+- create auto installer to install base reference system in audit mode
+
+- the base reference system will make the useful images, which can 
+  be categorized as needed
+  
+
+- debian live system installs reference image
+
+	- still need to reboot to winpe to run bcdboot
+	
+	- think about using virtualbox to run a quick winpe
+	  session to run bcdboot (all windows 7+ systems will
+	  have enough memory to do this effectively).
+	  
+	  
