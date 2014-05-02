@@ -114,6 +114,19 @@ configuration provisioner to execute the autoit scripts.
 	  a winpe system to boot next with a script that will execute
 	  bcdboot properly then reboot back into the windows system.
 	  
+	- VirtualBox will be used to execute bcdboot in a winpe 
+	  environment.  The live user needs to be a member of the 
+	  disk group and possible a member of the fuse group
+	  
+	- There needs to be a way to determine whether or not 
+	  the execution of bcdboot in virtualbox actually 
+	  succeeded.
+	  
+	- Using virtualbox to prepare the machine to boot should 
+	  be regarded as a temporary measure while an alternative 
+	  method to prepare the machine for booting is pursued.
+	  
+	  
 	  
 	
 	
@@ -180,3 +193,16 @@ This url can be place in the pxe config file
 	  have enough memory to do this effectively).
 	  
 	  
+	  
+### more stuff
+
+A machine now has an ostype property.  Now only supported is 
+debian and win7.  OS type for debian machines may use release 
+names.  The word debian should default to whatever is stable, or 
+be deprecated and removed.  The win7 ostype is win7 ultimate, 
+currently.  Devise manner for naming windows releases.
+
+Another idea.  Have ostype be either debian or microsoft.  Have 
+a release property that identifies the release of the ostype.
+The microsoft machines also need WIM path for the image they will 
+be using.
