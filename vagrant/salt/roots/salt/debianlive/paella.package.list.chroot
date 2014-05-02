@@ -1,6 +1,7 @@
 screen
 most
 rsync
+bash-completion
 
 # need access to nfs exports
 nfs-common
@@ -9,6 +10,13 @@ nfs-common
 parted
 ntfs-3g
 
+# virtualbox needed to run bcdboot in a winpe environment
+virtualbox
+
 # need paella debrepos for these
 python-paella-client
 wimtools
+
+# needed to test virtualbox
+xfce4
+

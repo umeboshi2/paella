@@ -106,6 +106,11 @@ example-peauto.bat:
     - name: /home/vagrant/workspace/peauto.bat
     - source: salt://paella-client/peauto.bat
 
+example-bcdauto.bat:
+  file.managed:
+    - name: /home/vagrant/workspace/bcdauto.bat
+    - source: salt://paella-client/bcdauto.bat
+
 example-overlay-directory:
   file.directory:
     - name: /var/cache/netboot/winpe
@@ -122,6 +127,8 @@ example-winpe-files:
     - require:
       - file: example-autounattend-xml
       - file: example-peauto.bat
+      - file: example-bcdauto.bat
+
 
 
 # This command demonstrates the reason for the 
@@ -157,4 +164,14 @@ make-test-winpe-shell-iso:
     - require:
       - cmd: example-winpe-files
     - name: mkwinpeimg -A /srv/shares/aik --iso /srv/debrepos/winpe-shell.iso
+
+<% bcdauto = '/srv/shares/incoming/bcdauto.iso' %>
+make-test-bcdauto-winpe-iso:
+  cmd.run:
+    - user: ${pillar['paella_user']}
+    - cwd: /vagrant
+    - unless: test -r ${bcdauto}
+    - require:
+      - cmd: example-winpe-files
+    - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/bcdauto.bat ${bcdauto}
 

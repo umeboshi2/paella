@@ -18,3 +18,6 @@ mkfs.ntfs -f -L Windows $windevice
 
 echo "applying WIM $2 to $windevice"
 wimlib-imagex apply $2 $windevice
+
+echo "Copying bootloader to master boot record."
+dd if=/mnt/bootloader.bin $DRIVE

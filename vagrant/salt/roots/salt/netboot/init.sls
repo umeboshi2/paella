@@ -73,14 +73,34 @@ install-netboot:
 
 
 # copy syslinux files to tftpboot
+<% statenames = [] %>
 %for filename in ['chain.c32', 'gpxelinux.0', 'memdisk']:
-copy-${filename}:
+<% sname = 'copy-%s' % filename %>
+<% statenames.append(sname) %>
+${sname}:
   cmd.run:
     - name: cp -a /usr/lib/syslinux/${filename} /var/lib/tftpboot
     - unless: test -r /var/lib/tftpboot/${filename}
     - requires:
       - file: /var/lib/tftpboot
 %endfor
+
+syslinux-files-installed:
+  cmd.run:
+    - name: echo "syslinux-files-installed"
+    - requires:
+      %for sname in statenames:
+      - ${sname}
+      %endfor
+
+ipxe-boot-file:
+  cmd.run:
+    - name: cp -a /usr/lib/ipxe/undionly.kpxe /var/lib/tftpboot
+    - unless: test -r /var/lib/tftpboot/undionly.kpxe
+    - requires:
+      - cmd: syslinux-files-installed
+
+
 
 # FIXME:  This command always runs!  Figure out when it's
 # necessary from the other states.
@@ -89,8 +109,6 @@ vagrant-owns-tftpboot:
     - name: chown -R vagrant:vagrant /var/lib/tftpboot
     - require:
       - cmd: install-tftpboot-files
-      %for filename in ['chain.c32', 'gpxelinux.0', 'memdisk']:
-      - cmd: copy-${filename}
-      %endfor
+      - cmd: syslinux-files-installed
 
 

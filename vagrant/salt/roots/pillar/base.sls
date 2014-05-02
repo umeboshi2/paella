@@ -76,6 +76,19 @@ clonezilla_iso:
   source_hash: sha256=e057437c82127dc7188b5b52b012c5476b6e73a31863c6232874e52fac097e71
   name: clonezilla-i386.iso
 
+
+mdt-i386_msi:
+  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MicrosoftDeploymentToolkit2013_x86.msi
+
+mdt-amd64_msi:
+  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MicrosoftDeploymentToolkit2013_x64.msi
+
+mdt-docs_zip:
+  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MDT%202013%20Documentation.zip
+
+
 cached_iso_files:
   - aik_iso
   - clonezilla_iso
+
+

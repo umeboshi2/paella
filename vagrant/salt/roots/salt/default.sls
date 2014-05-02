@@ -98,3 +98,20 @@ disk-tools:
   pkg.installed:
     - pkgs:
       - parted
+
+# the virtualbox packages will be 
+# needed for the live installer
+virtualbox-packages:
+  pkg.installed:
+    - pkgs:
+      - virtualbox
+
+# I need this to test virtualbox
+test-virtualbox-packages:
+  pkg.installed:
+    - pkgs:
+      - xfce4
+      - lightdm
+
+    
+  
