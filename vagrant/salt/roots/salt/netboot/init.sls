@@ -39,37 +39,26 @@ include:
 # environment, but better methods should be used to 
 # build and manage live images in the production 
 # environment.
-build-live-images:
-  cmd.script:
+build-live-image-script:
+  file.managed:
     - require:
       - sls: debrepos
       - file: /var/cache/netboot/livebuild
-    - unless: test -r /var/cache/netboot/livebuild/binary.netboot.tar
+    - name: /usr/local/bin/make-live-image
     - source: salt://scripts/make-live-image.sh
+    - mode: 755
 
-install-binary-filesystem:
-  cmd.script:
+%for arch in ['i386', 'amd64']:
+<% lbdir = '/var/cache/netboot/livebuild/%s' % arch %>
+build-live-image-${arch}:
+  cmd.run:
     - require:
-      - cmd: build-live-images
-    - unless: test -r /srv/debian-live/live/filesystem.squashfs
-    - source: salt://scripts/install-netboot-filesystem.sh
-
-install-tftpboot-files:
-  cmd.script:
-    - require:
-      - cmd: install-binary-filesystem
-    - unless: test -r /var/lib/tftpboot/.ready
-    - source: salt://scripts/install-tftpboot-files.sh
-
-install-netboot:
-  cmd.script:
-    - require:
-      - file: /var/lib/tftpboot
       - sls: debrepos
-    - source: salt://scripts/install-netboot.sh
-    - user: root
-    - group: root
-    - shell: /bin/bash
+      - file: build-live-image-script
+    - unless: test -r ${lbdir}/binary.netboot.tar
+    - name: make-live-image ${arch}
+    - cwd: ${lbdir}
+%endfor
 
 
 # copy syslinux files to tftpboot

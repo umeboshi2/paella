@@ -8,7 +8,10 @@ fi
 
 echo "Building live images............."
 
-livebuild=/var/cache/netboot/livebuild
+arch=$1
+
+livebuild=/var/cache/netboot/livebuild/$1
+
 
 if ! [ -d $livebuild ]; then
     echo "ERROR: $livebuild absent"
