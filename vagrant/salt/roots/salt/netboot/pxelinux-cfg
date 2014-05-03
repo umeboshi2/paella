@@ -2,16 +2,20 @@ ui vesamenu.c32
 prompt 0
 timeout 100
 
-menu background paella-splash.png
+menu background splash.png
 #menu vshift 13
-menu color tabmsg 37;44 #ffcccc55 #cc222200 std
-menu color cmdline 37;44 #ffcccc55 #cc222200 std
-menu color sel 7;37;40 #ffcccc55 #ff555555 all
 menu color unsel 37;44 #ffcccc55 #cc222200 std
-menu color title 1;36;44 #ffcccc55 #ee220000 std
-menu color border 0 #00ffffff #55cc55cc std
-menu color timeout_msg 37;44 #ffcccc55 #cc222200 std
+menu color tabmsg 37;44 #ffcccc55 #cc222200 std
+menu color sel 7;37;40 #ffcccc55 #ff555555 all
+menu color cmdline 37;44 #ffcccc55 #cc222200 std
+menu color unsel 37;44 #ffcccc55 #cc222200 std
+menu color title 1;36;44 #ffcccc55 #cc220000 std
+menu color border 0 #00ffffff #00000000 std
 
+# The default is to boot from the hard drive.  If a 
+# machine needs to default to a netboot system, it 
+# should get a specific pxe config before reaching
+# this file.
 default harddisk
 menu title Network Boot Menu
 
@@ -24,10 +28,12 @@ include live/live.cfg Standard Live System
 
 include installer/i386/installer.cfg Test Install
 
+
 label WinPEshell 
       menu label WinPE Shell
       kernel memdisk
       append iso initrd=http://${pillar['paella_server_ip']}/debrepos/winpe-shell.iso
+
 
 label WinPEinstall
       menu label WinPE Auto Install

@@ -35,10 +35,21 @@ class Machine(Base, SerialBase):
     id = Column(Integer, primary_key=True)
     name = Column(Text, unique=True)
     uuid = Column(Text, unique=True)
+    # ostype is either debian or mswindows
+    ostype = Column(Text, default='debian')
+    # a NULL release is the default release for the ostype
+    release = Column(Text, nullable=True)
     autoinstall = Column(Boolean, default=False)
+    # the arch is specified in debian terms and is
+    # translated as needed
     # FIXME: do we want a i386 default?
     arch = Column(Text, default='i386')
+    # recipe_id is ignored for ostype mswindows
     recipe_id = Column(Integer, ForeignKey('partman_recipes.id'),
                        nullable=True)
+    # imagepath is ignored for ostype debian
+    imagepath = Column(Text, nullable=True)
+    
+    
     
                     

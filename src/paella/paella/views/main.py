@@ -126,11 +126,13 @@ class MachineResource(object):
 
 
     def post(self):
+        textkeys = ['name', 'autoinstall', 'ostype', 'release', 'arch',
+                    'imagepath']
         data = self.request.json
         if not data:
             return {}
         uuid = self.request.matchdict['uuid']
-        update = dict().fromkeys(['name', 'autoinstall'])
+        update = dict().fromkeys(textkeys)
         for key in data:
             if key in update:
                 update[key] = data[key]

@@ -22,6 +22,12 @@ parser.add_option('--autoinstall', action='store_true',
                   dest='autoinstall', default=None)
 parser.add_option('--no-autoinstall', action='store_false',
                   dest='autoinstall', default=None)
+parser.add_option('--ostype', type='string', action='store',
+                  dest='ostype', default='')
+parser.add_option('--release', type='string', action='store',
+                  dest='release', default='')
+parser.add_option('--arch', type='string', action='store',
+                  dest='arch', default='')
 
 
 opts, args = parser.parse_args(sys.argv[1:])
@@ -35,7 +41,8 @@ def make_install_request(uuid):
     return r
 
 def make_update_request(uuid, name=None, autoinstall=None,
-                        recipe=None):
+                        recipe=None, ostype=None, release=None,
+                        arch=None):
     url = os.path.join(base_url, uuid)
     headers = {'Content-type': 'application/json',
                'Accept': 'application/json'}
@@ -46,6 +53,12 @@ def make_update_request(uuid, name=None, autoinstall=None,
         data['autoinstall'] = autoinstall
     if recipe is not None:
         data['recipe'] = recipe
+    if ostype is not None:
+        data['ostype'] = ostype
+    if release is not None:
+        data['release'] = release
+    if arch is not None:
+        data['arch'] = arch
     r = requests.post(url, data=json.dumps(data), headers=headers)
     return r
 
@@ -54,17 +67,16 @@ def make_update_request(uuid, name=None, autoinstall=None,
 def main():
     uuid = get_system_uuid()
     machine = make_identity_request(uuid)
-    update = dict().fromkeys(['name', 'autoinstall', 'recipe'])
-    
+    textkeys = ['name', 'recipe', 'ostype', 'release', 'arch']
+    update = dict().fromkeys(textkeys)
     if opts.autoinstall is not None:
         print "Set autoinstall to", opts.autoinstall
         update['autoinstall'] = opts.autoinstall
-    if opts.name:
-        print "Set name to", opts.name
-        update['name'] = opts.name
-    if opts.recipe:
-        print "Set recipe to", opts.recipe
-        update['recipe'] = opts.recipe
+    for key in textkeys:
+        value = getattr(opts, key)
+        if attribute:
+            print "Set %s to %s" % (key, value)
+            update[key] = value
     r = make_update_request(uuid, **update)
     
     

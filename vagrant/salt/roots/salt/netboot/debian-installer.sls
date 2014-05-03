@@ -7,6 +7,18 @@
   file.directory:
     - makedirs: True
 
+%for release in pillar['debian_pxe_installer']:
+%for arch in release:
+<% basepath = '/var/lib/tftpboot/debinstall/%s' % arch %>
+%for sfile in ['linux', 'initrd.gz']:
+${basepath}/${sfile}:
+  file.managed:
+    source: ${arch[sfile]['source']}
+    source_hash: ${arch[sfile]['source_hash']}
+%endfor
+%endfor
+%endfor
+
 # FIXME make better names for multi architecture support
 <% checksums = pillar['debian_installer_i386_checksums'] %>
 

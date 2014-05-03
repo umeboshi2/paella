@@ -147,16 +147,27 @@ class MachineManager(object):
         return self.session.merge(machine)
 
     def update(self, machine, name=None, autoinstall=None,
-               recipe=None):
+               recipe=None, ostype=None, release=None, arch=None,
+               imagepath=None):
         with transaction.manager:
             if name is not None or autoinstall is not None \
-                    or recipe is not None:
+                    or recipe is not None or ostype is not None \
+                    or release is not None or arch is not None \
+                    or imagepath is not None:
                 if name is not None:
                     machine.name = name
                 if autoinstall is not None:
                     machine.autoinstall = autoinstall
                 if recipe is not None:
                     machine.recipe_id = recipe.id
+                if ostype is not None:
+                    machine.ostype = ostype
+                if release is not None:
+                    machine.release = release
+                if arch is not None:
+                    machine.arch = arch
+                if imagepath is not None:
+                    machine.imagepath = imagepath
                 self.session.add(machine)
         return self.session.merge(machine)
 

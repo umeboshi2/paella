@@ -51,6 +51,20 @@ paella_really_download_or_check_the_large_iso_files: False
 #nu2_mirror: http://securitywonks.org/n2u/mirrorfiles
 nu2_mirror: ftp://dl.xs4all.nl/pub/mirror/nu2files
 
+debian_pxe_installer:
+  wheezy:
+    i386:
+      linux:
+        source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/linux
+        source_hash: sha256=de2603ec02171643ecbb615373a834302fdab2804294472edb673ec0055c9955
+      initrd.gz:
+        source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz
+        source_hash: sha256=0aef8471b5092000991d7549be503d46b7e301cf89582d2c68619b14cedea50f
+      udeb_list:
+        source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-i386/current/images/udeb.list
+        source_hash: sha256=d9ffa71c7f1be047f5eafb8f5a3359d86dd34e7ce09acd0ea5d44e9aaff8cc20
+
+
 debian_installer_i386_checksums:
   udeb_list: sha256=d9ffa71c7f1be047f5eafb8f5a3359d86dd34e7ce09acd0ea5d44e9aaff8cc20
   initrd: sha256=0aef8471b5092000991d7549be503d46b7e301cf89582d2c68619b14cedea50f
