@@ -1,7 +1,7 @@
 Origin: saltstack.com
 Label: Debian Salt Backporting
 Codename: wheezy-saltstack
-Architectures: i386 
+Architectures: ${pillar['reprepro']['architectures']}
 Components: main
 Description: Apt repository for project salt backporting
 Log: logfile

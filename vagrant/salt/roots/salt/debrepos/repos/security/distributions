@@ -4,7 +4,7 @@ Suite: stable
 Codename: wheezy/updates
 Version: None
 FakeComponentPrefix: updates
-Architectures: i386
+Architectures: ${pillar['reprepro']['architectures']}
 Components: main contrib non-free
 Description: Debian stable Security Updates
 Log: logfile

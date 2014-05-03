@@ -2,7 +2,7 @@ Origin: Debian
 Label: Debian
 Suite: stable
 Codename: wheezy
-Architectures: i386
+Architectures: ${pillar['reprepro']['architectures']}
 Components: main contrib non-free
 UDebComponents: main contrib non-free
 Description: Debian 7.4 Released 08 February 2014

@@ -3,7 +3,7 @@ Label: Paella
 Suite: wheezy
 Version: 7.4
 Codename: wheezy
-Architectures: i386 source
+Architectures: ${pillar['reprepro']['architectures']}
 Components: main contrib non-free
 UDebComponents: main non-free
 Description: Paella local repository for wheezy

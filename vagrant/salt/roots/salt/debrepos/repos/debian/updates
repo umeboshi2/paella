@@ -2,7 +2,7 @@ Name: main
 Method: http://ftp.us.debian.org/debian
 Fallback: http://debian.mirrors.tds.net/debian
 VerifyRelease: 46925553
-Architectures: i386
+Architectures: ${pillar['reprepro']['architectures']}
 Components: main contrib non-free
 UDebComponents: none
 FilterList: deinstall local-packages live-packages i386-udeb-list
@@ -11,7 +11,7 @@ Name: di
 Method: http://ftp.us.debian.org/debian
 Fallback: http://debian.mirrors.tds.net/debian
 VerifyRelease: 46925553
-Architectures: i386
+Architectures: ${pillar['reprepro']['architectures']}
 Components:
 UDebComponents: main non-free
 

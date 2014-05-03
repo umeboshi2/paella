@@ -38,6 +38,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   else
     config.vm.box = 'chef/debian-7.4-i386'
   end
+  
+  config.vm.box = 'chef/debian-7.4'
 
   config.vm.hostname = 'paella'
 

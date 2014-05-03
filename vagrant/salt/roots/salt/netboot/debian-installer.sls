@@ -6,15 +6,17 @@
 /var/lib/tftpboot/installer:
   file.directory:
     - makedirs: True
-
-%for release in pillar['debian_pxe_installer']:
-%for arch in release:
-<% basepath = '/var/lib/tftpboot/debinstall/%s' % arch %>
+<% installer = pillar['debian_pxe_installer'] %>
+%for release in installer:
+%for arch in installer[release]:
+<% basepath = '/var/lib/tftpboot/debinstall/%s/%s' % (release, arch) %>
 %for sfile in ['linux', 'initrd.gz']:
 ${basepath}/${sfile}:
+  <% base = installer[release][arch][sfile] %>
   file.managed:
-    source: ${arch[sfile]['source']}
-    source_hash: ${arch[sfile]['source_hash']}
+    - makedirs: True
+    - source: ${base['source']}
+    - source_hash: ${base['source_hash']}
 %endfor
 %endfor
 %endfor
