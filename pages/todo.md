@@ -20,6 +20,8 @@
 
 - Start preparing to handle both amd64 and i386.
 
+- Handle different operating system releases
+
 - Decide how to handle newer UEFI systems.
 
 - DONE: Make scripts for live netboot system to identify machines and set
@@ -37,3 +39,13 @@
 
 - Work on [deployment](#pages/deployment) notes.
 
+- Use debian live system to install custom wim image and prepare boot.
+
+- Look at using streamable WIM's using wimlib.  Serve WIM based on 
+  uuid.  Serve unattend.xml based on uuid.
+  
+- Make image capture and submission scripts. Should WIM's get their 
+  own database table?
+  
+
+  
