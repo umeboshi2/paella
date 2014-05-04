@@ -8,7 +8,7 @@ fi
 
 echo "Moving live images............."
 
-livebuild=/var/cache/netboot/livebuild
+livebuild=/var/cache/netboot/livebuild/${arch}
 
 
 if ! [ -d $livebuild ]; then
@@ -19,6 +19,6 @@ fi
 bindir=$livebuild/binary
 
 
-rsync -avHX $bindir/ /srv/debian-live/
+rsync -avHX $bindir/ /srv/debian-live/${arch}/
 
 echo "Rsync complete."
