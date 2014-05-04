@@ -66,6 +66,7 @@ include:
   - debianlive
   - netboot-base
   - samba
+  - pbuilder
 
 local-packages:
   cmd.script:
