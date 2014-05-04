@@ -1,3 +1,5 @@
+<% livebuild = pillar['livebuild'] %>
+
 screen
 most
 rsync
@@ -15,8 +17,12 @@ virtualbox
 
 # need paella debrepos for these
 python-paella-client
+%if arch == 'amd64':
 wimtools
+%endif
 
+%if livebuild['enable_xfce_desktop']:
 # needed to test virtualbox
 xfce4
+%endif
 

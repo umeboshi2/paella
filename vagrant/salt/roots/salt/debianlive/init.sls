@@ -26,25 +26,17 @@ livebuild-configdir-${arch}:
     - mode: 755
     - makedirs: True
 
-%for cfile in ['binary', 'common', 'source']:
+%for cfile in ['binary', 'bootstrap', 'chroot', 'common', 'source']:
 livebuild-config-${arch}-${cfile}:
   file.managed:
     - name: ${configdir}/${cfile}
     - source: salt://debianlive/templates/${cfile}
     - template: mako
+    - defaults:
+        arch: ${arch}
     - require:
       - file: livebuild-configdir-${arch}
 %endfor
-%for cfile in ['bootstrap', 'chroot']:
-livebuild-config-${arch}-${cfile}:
-  file.managed:
-    - name: ${configdir}/${cfile}
-    - source: salt://debianlive/templates/${cfile}.${arch}
-    - template: mako
-    - require:
-      - file: livebuild-configdir-${arch}
-%endfor
-
 
 ${configdir}/archives:
   file.directory:
@@ -77,8 +69,10 @@ livebuild-${arch}-paella-apt-binary:
 livebuild-${arch}-paella-package-list:
   file.managed:
     - name: ${configdir}/package-lists/paella.list.chroot
-    - source: salt://debianlive/paella.package.list.chroot.${arch}
+    - source: salt://debianlive/paella.package.list.chroot
     - template: mako
+    - defaults:
+        arch: ${arch}
     - require:
       - file: ${configdir}/package-lists
 

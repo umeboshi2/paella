@@ -2,7 +2,7 @@
 <% livebuild = pillar['livebuild'] %>
 # $LB_ARCHITECTURES: select chroot architectures
 # (Default: autodetected)
-LB_ARCHITECTURES="${livebuild['architectures_amd64']}"
+LB_ARCHITECTURES="${arch}"
 
 # $LB_DISTRIBUTION: select distribution to use
 # (Default: wheezy)
