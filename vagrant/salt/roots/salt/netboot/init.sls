@@ -58,15 +58,15 @@ build-live-image-${arch}:
     - unless: test -r ${lbdir}/binary.netboot.tar
     - name: make-live-image ${arch}
     - cwd: ${lbdir}
+
 install-live-filesystem-${arch}:
   cmd.script:
     - require:
       - cmd: build-live-image-${arch}
     - unless: test -r /srv/debian-live/${arch}/FIXME
     - source: salt://scripts/install-netboot-filesystem.sh
-    - template: mako
-    - defaults:
-        arch: ${arch}
+    - env:
+      - ARCH: ${arch}
 %endfor
 
 
