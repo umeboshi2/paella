@@ -59,10 +59,16 @@ build-live-image-${arch}:
     - name: make-live-image ${arch}
     - cwd: ${lbdir}
 
+livebuild-filesystem-share-${arch}:
+  file.directory:
+    - name: /srv/debian-live/${arch}
+    - makedirs: True
+
 install-live-filesystem-${arch}:
   cmd.script:
     - require:
       - cmd: build-live-image-${arch}
+      - file: livebuild-filesystem-share-${arch}
     - unless: test -r /srv/debian-live/${arch}/FIXME
     - source: salt://scripts/install-netboot-filesystem.sh
     - env:
