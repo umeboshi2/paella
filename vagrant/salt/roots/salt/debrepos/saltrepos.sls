@@ -12,10 +12,12 @@
 /srv/debrepos/salt/conf/updates:
   file.managed:
     - source: salt://debrepos/repos/salt/updates
+    - template: mako
 
 /srv/debrepos/salt/conf/distributions:
   file.managed:
     - source: salt://debrepos/repos/salt/distributions
+    - template: mako
 
 saltrepos-ready:
   cmd.run:

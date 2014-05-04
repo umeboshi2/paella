@@ -22,11 +22,6 @@ ${iso}_iso:
     - name: ${cache}/${i['name']}
 %endfor
 
-#kb3aik_en.iso:
-#  file.managed:
-#    - source: http://download.microsoft.com/download/8/E/9/8E9BBC64-E6F8-457C-9B8D-F6C9A16E6D6A/KB3AIK_EN.iso
-#    - source_hash: sha256=c6639424b2cebabff3e851913e5f56410f28184bbdb648d5f86c05d93a4cebba
-#    - name: ${cache}/kb3aik.iso
 %endif
 
 
@@ -91,28 +86,28 @@ aik_share_mounted:
     - require:
       - file: aik-iso-exists
 
-win7_share_directory:
+%for arch in ['i386', 'amd64']:
+win7_${arch}_share_directory:
   file.directory:
-    - name: /srv/shares/win7
-    - require:
-      - file: shares_directory
+    - name: /srv/shares/win7/${arch}
+    - makedirs: True
 
-
-win7-iso-exists:
+win7-${arch}-iso-exists:
   file.exists:
-    - name: ${cache}/win7-ultimate-i386.iso
+    - name: ${cache}/win7-ultimate-${arch}.iso
 
-win7_share_mounted:
+win7_${arch}_share_mounted:
   mount.mounted:
-    - name: /srv/shares/win7
-    - device: ${cache}/win7-ultimate-i386.iso
+    - name: /srv/shares/win7/${arch}
+    - device: ${cache}/win7-ultimate-${arch}.iso
     - fstype: udf
     - mkmnt: True
     - opts:
       - defaults
       - loop
     - require:
-      - file: win7-iso-exists
+      - file: win7-${arch}-iso-exists
+%endfor
 
 samba_incoming_share_directory:
   file.directory:
@@ -136,6 +131,7 @@ smb.conf:
   file.managed:
     - name: /etc/samba/smb.conf
     - source: salt://samba/smb.conf
+    - template: mako
     - requires:
       - pkg: samba-server-package
 

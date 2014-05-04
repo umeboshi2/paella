@@ -8,7 +8,7 @@ base:
     - squid
     - debrepos
     - saltmaster
-    - paella-client
+    - winpe
     - netboot
     - mainserver
 

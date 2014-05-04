@@ -12,6 +12,7 @@
 /srv/debrepos/security/conf/updates:
   file.managed:
     - source: salt://debrepos/repos/security/updates
+    - template: mako
 
 /srv/debrepos/security/conf/live-packages:
   file.managed:
@@ -20,6 +21,7 @@
 /srv/debrepos/security/conf/distributions:
   file.managed:
     - source: salt://debrepos/repos/security/distributions
+    - template: mako
 
 local-packages-security:
   cmd.script:

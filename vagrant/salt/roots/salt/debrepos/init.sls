@@ -22,17 +22,10 @@ debrepos-ready:
       - sls: debrepos.secrepos
       - sls: debrepos.paellarepos
       
-      
-keyring-package-build-dependencies:
-  pkg.installed:
-    - pkgs:
-      - jetring
-
-
 build-keyring-package:
   cmd.script:
     - source: salt://scripts/build-keyring-package.sh
-    - unless: test -r /home/vagrant/workspace/debian-archive-keyring_2012.4-paella1_i386.changes
+    - unless: test -r /home/vagrant/workspace/debian-archive-keyring_2012.4-paella1_amd64.changes
     - user: ${user}
     - group: ${group}
     - requires:

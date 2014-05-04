@@ -12,6 +12,7 @@
 /srv/debrepos/paella/conf/distributions:
   file.managed:
     - source: salt://debrepos/repos/paella/distributions
+    - template: mako
 
 paellarepos-ready:
   cmd.run:

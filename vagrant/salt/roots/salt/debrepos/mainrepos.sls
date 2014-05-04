@@ -35,10 +35,12 @@ create-udeb-list:
 /srv/debrepos/debian/conf/updates:
   file.managed:
     - source: salt://debrepos/repos/debian/updates
+    - template: mako
 
 /srv/debrepos/debian/conf/distributions:
   file.managed:
     - source: salt://debrepos/repos/debian/distributions
+    - template: mako
 
 repos-ready:
   cmd.run:
