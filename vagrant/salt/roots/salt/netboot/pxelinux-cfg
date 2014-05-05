@@ -24,7 +24,9 @@ label harddisk
       kernel chain.c32
       append hd0 0
 
-include live/live.cfg Standard Live System
+include live-amd64.cfg Standard Live System (amd64)
+include live-i386.cfg Standard Live System (i386)
+
 
 include installer/i386/installer.cfg Test Install
 

@@ -55,7 +55,7 @@ build-live-image-${arch}:
     - require:
       - sls: debrepos
       - file: build-live-image-script
-    - unless: test -r ${lbdir}/binary.netboot.tar
+    - unless: test -r ${lbdir}/binary/md5sum.txt
     - name: make-live-image ${arch}
     - cwd: ${lbdir}
 
@@ -73,19 +73,56 @@ install-live-filesystem-${arch}:
     - source: salt://scripts/install-netboot-filesystem.sh
     - env:
       - ARCH: ${arch}
+
+live-${arch}.cfg:
+  file.copy:
+    - name: /var/lib/tftpboot/live-${arch}.cfg
+    - source: ${lbdir}/tftpboot/live.cfg
+
+edit-live-${arch}.cfg:
+  file.sed:
+    - name: /var/lib/tftpboot/live-${arch}.cfg
+    - before: /live/
+    - after: /live-${arch}/
+    - flags: g
+
+
+%if arch == 'i386':
+%for ver in ['1', '2']:
+livebuild-bootfile-vmlinuz${ver}-${arch}:
+  file.copy:
+    - name: /var/lib/tftpboot/live-${arch}/vmlinuz${ver}
+    - source: ${lbdir}/binary/live/vmlinuz${ver}
+    - makedirs: True
+livebuild-bootfile-initrd${ver}.img-${arch}:
+  file.copy:
+    - name: /var/lib/tftpboot/live-${arch}/initrd${ver}.img
+    - source: ${lbdir}/binary/live/initrd${ver}.img
+    - makedirs: True
+%endfor
+%elif arch == 'amd64':
+%for filename in ['vmlinuz', 'initrd.img']:
+livebuild-bootfile-${filename}-${arch}:
+  file.copy:
+    - name: /var/lib/tftpboot/live-${arch}/${filename}
+    - source: ${lbdir}/binary/live/${filename}
+    - makedirs: True
+%endfor
+%endif
+
 %endfor
 
 
 # copy syslinux files to tftpboot
 <% statenames = [] %>
-%for filename in ['chain.c32', 'gpxelinux.0', 'memdisk']:
+%for filename in ['chain.c32', 'gpxelinux.0', 'memdisk', 'pxelinux.0', 'vesamenu.c32']:
 <% sname = 'copy-%s' % filename %>
 <% statenames.append(sname) %>
 ${sname}:
-  cmd.run:
-    - name: cp -a /usr/lib/syslinux/${filename} /var/lib/tftpboot
-    - unless: test -r /var/lib/tftpboot/${filename}
-    - requires:
+  file.copy:
+    - name: /var/lib/tftpboot/${filename}
+    - source: /usr/lib/syslinux/${filename}
+    - require:
       - file: /var/lib/tftpboot
 %endfor
 

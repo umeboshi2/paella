@@ -1,7 +1,7 @@
 # config/binary - options for live-build(7), binary stage
 <% livebuild = pillar['livebuild'] %>
 <% lb = livebuild %>
-<% nfsroot = '%s:%s/${arch}' % (lb['net_root_server'], lb['net_root_path']) %>
+<% nfsroot = '%s:%s/%s' % (lb['net_root_server'], lb['net_root_path'], arch) %>
 
 # $LB_BINARY_FILESYSTEM: set image filesystem
 # (Default: fat32)
@@ -118,7 +118,7 @@ LB_NET_ROOT_MOUNTOPTIONS=""
 
 # $LB_NET_ROOT_PATH: set netboot server directory
 # (Default: /srv/debian-live)
-LB_NET_ROOT_PATH="${livebuild['net_root_path']}"
+LB_NET_ROOT_PATH="${livebuild['net_root_path']}/${arch}"
 
 # $LB_NET_ROOT_SERVER: set netboot server address
 # (Default: 192.168.1.1)
@@ -142,7 +142,7 @@ LB_NET_COW_SERVER=""
 
 # $LB_NET_TARBALL: set net tarball
 # (Default: true)
-LB_NET_TARBALL="true"
+LB_NET_TARBALL="false"
 
 # $LB_FIRMWARE_BINARY: include firmware packages in debian-installer
 # (Default: true)
