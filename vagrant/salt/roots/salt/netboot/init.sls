@@ -3,6 +3,7 @@
 include:
   - debrepos
   - tftpd
+  - netboot.base
   - netboot.debian-installer
 
 

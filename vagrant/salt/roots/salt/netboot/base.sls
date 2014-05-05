@@ -16,7 +16,7 @@ nfs-kernel-server:
 nfs-exports:
   file.managed:
     - name: /etc/exports
-    - source: salt://netboot-base/nfs-exports
+    - source: salt://netboot/nfs-exports
     - user: root
     - group: root
     - mode: 644

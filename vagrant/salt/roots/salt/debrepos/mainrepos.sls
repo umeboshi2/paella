@@ -64,7 +64,7 @@ include:
   - shorewall
   - squid
   - debianlive
-  - netboot-base
+  - netboot.base
   - samba
   - pbuilder
   - schroot.base
