@@ -38,6 +38,7 @@ build-wimlib-package-script:
     - name: ${buildscript}
     - source: salt://scripts/build-wimlib-package.sh
     - mode: 755
+    - user: ${pillar['paella_user']}
     - makedirs: True
 
 
