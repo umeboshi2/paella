@@ -74,7 +74,7 @@ def main():
         update['autoinstall'] = opts.autoinstall
     for key in textkeys:
         value = getattr(opts, key)
-        if attribute:
+        if value:
             print "Set %s to %s" % (key, value)
             update[key] = value
     r = make_update_request(uuid, **update)
