@@ -18,11 +18,28 @@ menu color timeout_msg 37;44 #ffcccc55 #cc222200 std
 
 menu title Network Boot Menu
 
+%if machine.ostype == 'debian':
+
+<% release = 'wheezy' %>
+%if machine.release is not None:
+<% release = machine.release %>
+%endif
+
 label install
       menu label ^Install ${machine.name} with Paella
-      kernel installer/i386/linux
-      append vga=788 initrd=installer/i386/initrd.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid}
+      kernel debinstall/${release}/${machine.arch}/linux
+      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid}
 
+%elif machine.ostype == 'mswindows':
+
+label install
+      menu label WinPE Auto ^Install
+      kernel memdisk
+      append iso initrd=http://${pillar['paella_server_ip']}/debrepos/winpe.iso
+
+%endif
+
+      
 #label live
 include live/live.cfg Standard Live System
 
