@@ -7,7 +7,7 @@
 - [Vagrant](http://www.vagrantup.com/) is being used to create a 
   testing environment.
 
-- Currently using i386 vagrant box running debian/wheezy
+- Currently using chef/debian-7.4 vagrant box 
 
 - Using Debian Installer via PXE for first stage install
 
@@ -17,7 +17,16 @@
 - Using system [uuid's](#pages/system-uuid) to for machine 
   identification and network access.
 
-- Investigating using samba with the rest of the stack to 
-  provide
+- Currently supporting i386 and amd64 debian installs
+
+- A preliminary environment exists to help manage windows 
+  installations.  The installation of a customized system 
+  can be performed automatically, but the system can, and 
+  for the time being will have to be, configured manually 
+  using sysprep.
+
+
+## links
+
 [Windows Deployment Services](http://en.wikipedia.org/wiki/Windows_Deployment_Services) to the network.
 

@@ -18,9 +18,19 @@
 - Implement per machine auto install option when generating install pxe 
   config file.
 
-- Start preparing to handle both amd64 and i386.
+- Start preparing to handle both amd64 and i386. (STARTED)
+
+	- make sure debian installs work on both archs
+	
+	- make sure that mswindows ostype installs with live system
+	
 
 - Handle different operating system releases
+
+	- test using debian jessie pxe boot
+	
+	- windows is left as local exercise due to availability of content
+	
 
 - Decide how to handle newer UEFI systems.
 
