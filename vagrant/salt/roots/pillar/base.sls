@@ -73,7 +73,17 @@ debian_pxe_installer:
       udeb_list:
         source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/udeb.list
         source_hash: sha256=a9a8f2b3f1abf921356240cf1f9a2eb31eaaece25cd2aa1849cd58259ff45cb5
-
+  jessie:
+    i386:
+      linux:
+        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20140316/images/netboot/debian-installer/i386/linux
+        source_hash: sha256=17a5a290a5c83478394e604877653058d7a5bb6a1198d40dde32e4b988af3df9
+      initrd.gz:
+        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20140316/images/netboot/debian-installer/i386/initrd.gz
+        source_hash: sha256=04627b4d2ba7feaa70fc970884524fecf1ed39b3446f677f626b89058a9887cd
+      udeb_list:
+        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20140316/images/udeb.list
+        source_hash: sha256=a5a9e0a7ecc78df2183feaceffabfd4b563e167faf37383fa7072abb2419461b
 debian_installer_i386_checksums:
   udeb_list: sha256=d9ffa71c7f1be047f5eafb8f5a3359d86dd34e7ce09acd0ea5d44e9aaff8cc20
   initrd: sha256=0aef8471b5092000991d7549be503d46b7e301cf89582d2c68619b14cedea50f
@@ -109,6 +119,12 @@ mdt-amd64_msi:
 mdt-docs_zip:
   source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MDT%202013%20Documentation.zip
 
+
+salt_windows_installer_files:
+  i386:
+    source: https://docs.saltstack.com/downloads/Salt-Minion-2014.1.3-1-win32-Setup.exe
+  amd64:
+    source: https://docs.saltstack.com/downloads/Salt-Minion-2014.1.3-1-AMD64-Setup.exe
 
 cached_iso_files:
   - aik_iso

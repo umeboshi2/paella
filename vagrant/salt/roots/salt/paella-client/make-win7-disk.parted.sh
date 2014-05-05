@@ -2,10 +2,13 @@
 set -e
 
 DRIVE=$1
-parted -s $DRIVE "mklabel msdos"
-parted -s $DRIVE "mkpart primary ntfs 1 200MB"
-parted -s $DRIVE "set 1 boot on"
-parted -s $DRIVE "mkpart primary ntfs 200MB -0"
+PARTED=/sbin/parted
+
+$PARTED -s $DRIVE "mklabel msdos"
+$PARTED -s $DRIVE "mkpart primary ntfs 1 200MB"
+$PARTED -s $DRIVE "set 1 boot on"
+$PARTED
+ -s $DRIVE "mkpart primary ntfs 200MB -0"
 
 sysdevice=${DRIVE}1
 windevice=${DRIVE}2
