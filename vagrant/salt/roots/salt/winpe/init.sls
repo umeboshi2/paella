@@ -8,6 +8,7 @@
 
 
 include:
+  - schroot
   - paella-client
   - wimlib
 

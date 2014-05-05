@@ -14,6 +14,8 @@ rm /var/lib/tftpboot/* -f || true
 rm /var/lib/tftpboot/live -fr
 rm /var/lib/tftpboot/pxelinux.cfg -fr
 rm /var/lib/tftpboot/.ready -f
+rm /var/lib/tftpboot/debinstall -fr
+rm /var/lib/tftpboot/live* -fr
 
 # remove the filesystem
 rm /srv/debian-live -fr

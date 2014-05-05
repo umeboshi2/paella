@@ -9,6 +9,8 @@
 include:
   - debrepos
   - default
+  - schroot
+
 
 <% cachedir = '/vagrant/vagrant/cache' %>
 
@@ -29,6 +31,15 @@ cache-wimlib-git-repos:
 <% localrepo = '%s/wimlib-code' % reposdir %>
 
 <% workspace = '/home/vagrant/workspace' %>
+
+<% buildscript = '/home/vagrant/bin/build-wimlib-package' %>
+build-wimlib-package-script:
+  file.managed:
+    - name: ${buildscript}
+    - source: salt://scripts/build-wimlib-package.sh
+    - mode: 755
+    - makedirs: True
+
 
 %for arch in ['i386', 'amd64']:
 
@@ -53,8 +64,6 @@ wimlib-git-repos-${arch}:
 
 <% builddir = '%s/wimlib-code' % archspace %>
 
-
-%if arch == 'amd64':
 # This darned command should almost be a script.
 # In order to keep the development base and partial
 # debian repository reasonably small, the building 
@@ -67,10 +76,15 @@ build-wimlib-package-${arch}:
   cmd.run:
     - require:
       - cmd: upload-paella-client-package
-    - unless: test -r ${archspace}/wimlib_1.6.2-1_amd64.changes
-    - name: debuild --no-lintian --no-tgz-check -us -uc
-    - name: rm -f debian/wimlib-doc.docs debian/wimlib-doc.examples && ./bootstrap && env DEB_BUILD_OPTIONS=nocheck DEBUILD_DPKG_BUILDPACKAGE_OPTS="-B" debuild --preserve-envvar=DEB_BUILD_OPTIONS --preserve-envvar=DEBUILD_DPKG_BUILDPACKAGE_OPTS --no-lintian --no-tgz-check -us -uc -d
-
+      - file: build-wimlib-package-script
+    - unless: test -r ${archspace}/wimlib_1.6.2-1_${arch}.changes
+    %if arch == 'amd64':
+    - name: ${buildscript}
+    %elif arch == 'i386':
+    - name: schroot -c wheezy32 ${buildscript}
+    %else:
+    - name: /bin/false
+    %endif
     - cwd: ${builddir}
     - user: ${pillar['paella_user']}
 
@@ -79,11 +93,9 @@ upload-wimlib-package-${arch}:
   cmd.run:
     - require:
       - cmd: build-wimlib-package-${arch}
-    - unless: test -n "`reprepro -b /srv/debrepos/paella list wheezy wimtools`"
+    - unless: test -n "`reprepro -b /srv/debrepos/paella list wheezy wimtools | grep ${arch}`"
     - cwd: ${archspace}
-    - name: reprepro -b /srv/debrepos/paella --ignore=wrongdistribution include wheezy wimlib_1.6.2-1_amd64.changes
+    - name: reprepro -b /srv/debrepos/paella --ignore=wrongdistribution include wheezy wimlib_1.6.2-1_${arch}.changes
     - user: ${pillar['paella_user']}
-
-%endif
 %endfor
 

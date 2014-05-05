@@ -67,6 +67,8 @@ include:
   - netboot-base
   - samba
   - pbuilder
+  - schroot.base
+
 
 local-packages:
   cmd.script:
