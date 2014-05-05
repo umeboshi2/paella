@@ -83,7 +83,7 @@ local-packages:
       - sls: dhcpd
       - sls: shorewall
       - sls: debianlive
-      - sls: netboot-base
+      - sls: netboot.base
       %if pillar['paella_enable_samba']:
       - sls: samba
       %endif
