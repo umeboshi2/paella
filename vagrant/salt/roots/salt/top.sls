@@ -9,6 +9,7 @@ base:
     - debrepos
     - saltmaster
     - winpe
+    - driverpacks
     - netboot
     - mainserver
 

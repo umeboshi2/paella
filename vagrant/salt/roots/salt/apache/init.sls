@@ -10,6 +10,7 @@ apache-support-packages:
 /etc/apache2/conf.d/debrepos:
   file.managed:
     - source: salt://apache/debrepos.conf
+    - template: mako
 
 /etc/apache2/conf.d/paella:
   file.managed:

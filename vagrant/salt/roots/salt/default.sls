@@ -113,5 +113,23 @@ test-virtualbox-packages:
       - xfce4
       - lightdm
 
-    
+disable-lightdm-service:
+  service.disabled:
+    - name: lightdm
+    - require:
+      - pkg: test-virtualbox-packages
+
+kill-lightdm-service:
+  service.dead:
+    - name: lightdm
+    - sig: /usr/sbin/lightdm
+    - require:
+      - service: disable-lightdm-service
+
   
+python-debrepos-support-packages:
+  pkg.installed:
+    - pkgs:
+      - python-libtorrent
+      - python-feedparser
+

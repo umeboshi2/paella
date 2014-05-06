@@ -37,12 +37,3 @@ setup-paella-database:
     - source: salt://scripts/setup-paella-database.sh
     - user: postgres
 
-# I haven't decided entirely how to use this yet.
-# There is already a debrepos dependency in the
-# paella setup.py that links to the github repo.
-debrepos-github:
-  git.latest:
-    - name: https://github.com/umeboshi2/debrepos.git
-    - target: /home/vagrant/workspace/debrepos
-    - user: ${pillar['paella_user']}
-    - rev: af38fcc8928bb542924702da89fdc1a43104b22a

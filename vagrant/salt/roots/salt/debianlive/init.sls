@@ -4,9 +4,7 @@ live-build:
   pkg:
     - installed
 
-<% configdir = '/var/cache/netboot/livebuild/config' %>
-
-<% basedir = '/var/cache/netboot/livebuild' %>
+<% basedir = pillar['livebuild']['base_directory'] %>
 # This is modified to accept a url with the _KEY variable
 /usr/lib/live/build/bootstrap_archive-keys:
   file.managed:

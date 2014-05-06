@@ -9,4 +9,5 @@ base:
     - livebuild
     - reprepro
     - saltmaster
+    - internet-resources
 

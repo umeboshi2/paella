@@ -21,8 +21,18 @@ ${iso}_iso:
     - source_hash: ${i['source_hash']}
     - name: ${cache}/${i['name']}
 %endfor
-
 %endif
+
+%for filename in pillar['cached_windows_files']:
+cached_windoes_file_${filename}:
+  <% f = pillar[filename] %>
+  file.managed:
+    - source: ${f['source']}
+    - source_hash: ${f['source_hash']}
+    - name: ${cache}/windows/${f['name']}
+    - makedirs: True
+%endfor
+
 
 
 <% nu2_directory = '%s/nu2-files' % cache %>
@@ -145,3 +155,9 @@ samba-server-service:
       - mount: aik_share_mounted
       - mount: win7_share_mounted
 
+
+rsync-windows-files:
+  cmd.run:
+    - name: rsync -avHX /vagrant/vagrant/cache/windows/ /srv/shares/incoming/windows/
+    - require:
+      - file: samba_incoming_share_directory

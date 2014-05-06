@@ -7,6 +7,7 @@ include:
 <% paella_server_ip = '10.0.4.1' %>
 
 livebuild:
+  base_directory: /var/cache/netboot/livebuild
   distribution: wheezy
   parent_distribution: wheezy
   architectures_i386: i386
