@@ -3,6 +3,7 @@
     
 include:
   - network
+  - shorewall.base
   - shorewall.macros
 
 shorewall:
@@ -25,61 +26,16 @@ restart-shorewall:
       - file: /etc/default/shorewall
       - sls: network
 
-/etc/shorewall/interfaces:
-  file.managed:
-    - source: salt://shorewall/templates/double/interfaces
-    - user: root
-    - group: root
-    - mode: 644
+<% conffiles = ['interfaces', 'Makefile', 'masq', 'policy', 'routestopped', 'rules', 'shorewall.conf', 'zones'] %>
 
-/etc/shorewall/Makefile:
+%for filename in conffiles:
+/etc/shorewall/${filename}:
   file.managed:
-    - source: salt://shorewall/templates/double/Makefile
+    - source: salt://shorewall/templates/double/${filename}
     - user: root
     - group: root
     - mode: 644
-
-/etc/shorewall/masq:
-  file.managed:
-    - source: salt://shorewall/templates/double/masq
-    - user: root
-    - group: root
-    - mode: 644
-
-/etc/shorewall/policy:
-  file.managed:
-    - source: salt://shorewall/templates/double/policy
-    - user: root
-    - group: root
-    - mode: 644
-
-/etc/shorewall/routestopped:
-  file.managed:
-    - source: salt://shorewall/templates/double/routestopped
-    - user: root
-    - group: root
-    - mode: 644
-
-/etc/shorewall/rules:
-  file.managed:
-    - source: salt://shorewall/templates/double/rules
-    - user: root
-    - group: root
-    - mode: 644
-
-/etc/shorewall/shorewall.conf:
-  file.managed:
-    - source: salt://shorewall/templates/double/shorewall.conf
-    - user: root
-    - group: root
-    - mode: 644
-
-/etc/shorewall/zones:
-  file.managed:
-    - source: salt://shorewall/templates/double/zones
-    - user: root
-    - group: root
-    - mode: 644
+%endfor
 
 /etc/default/shorewall:
   file.managed:
