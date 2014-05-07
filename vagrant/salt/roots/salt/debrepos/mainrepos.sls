@@ -60,12 +60,13 @@ include:
   - postgresql
   - tftpd
   - bind
-  - dhcpd
+  - dhcpd.base
   - shorewall
   - squid
   - debianlive
   - netboot.base
-  - samba
+  - saltmaster.base
+  - samba.base
   - pbuilder
   - schroot.base
 
@@ -80,13 +81,12 @@ local-packages:
       - sls: postgresql
       - sls: tftpd
       - sls: bind
-      - sls: dhcpd
+      - sls: dhcpd.base
       - sls: shorewall
       - sls: debianlive
       - sls: netboot.base
-      %if pillar['paella_enable_samba']:
-      - sls: samba
-      %endif
+      - sls: saltmaster.base
+      - sls: samba.base
       - pkg: squid
       - cmd: repos-ready
 

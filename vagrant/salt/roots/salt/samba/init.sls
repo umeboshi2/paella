@@ -1,5 +1,8 @@
 # -*- mode: yaml -*-
 
+include:
+  - samba.base
+
 %if pillar['paella_enable_software_download_states']:
 <% cache = '/vagrant/vagrant/cache' %>
 
@@ -114,18 +117,6 @@ samba_incoming_share_directory:
     - name: /srv/shares/incoming
     - makedirs: True
     - mode: 777
-
-samba-support-packages:
-  pkg.installed:
-    - pkgs:
-      - smbclient
-
-samba-server-package:
-  pkg.installed:
-    - name: samba
-    - requires:
-      - pkg: samba-support-packages
-
 
 smb.conf:
   file.managed:

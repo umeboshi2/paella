@@ -1,12 +1,15 @@
 # -*- mode: yaml -*-
 
+include:
+  - saltmaster.base
+
 salt-master:
-  pkg:
-    - installed
   service:
     - running
     - watch:
       - file: /etc/salt/master
+    - require:
+        - pkg: salt-master-package
 
 /etc/salt/master:
   file.managed:
