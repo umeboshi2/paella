@@ -61,7 +61,7 @@ include:
   - tftpd
   - bind
   - dhcpd.base
-  - shorewall
+  - shorewall.base
   - squid
   - debianlive
   - netboot.base
@@ -82,7 +82,7 @@ local-packages:
       - sls: tftpd
       - sls: bind
       - sls: dhcpd.base
-      - sls: shorewall
+      - sls: shorewall.base
       - sls: debianlive
       - sls: netboot.base
       - sls: saltmaster.base
