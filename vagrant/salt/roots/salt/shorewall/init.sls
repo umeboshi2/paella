@@ -6,16 +6,12 @@ include:
   - shorewall.base
   - shorewall.macros
 
-shorewall:
-  pkg:
-    - installed
-
 restart-shorewall:
   cmd.run:
     - name: /etc/init.d/shorewall restart
     - unless: shorewall status
     - requires:
-      - pkg: shorewall
+      - pkg: shorewall-package
       - file: /etc/shorewall/interfaces
       - file: /etc/shorewall/Makefile
       - file: /etc/shorewall/masq

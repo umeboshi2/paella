@@ -1,7 +1,8 @@
 # -*- mode: yaml -*-
 
     
-shorewall:
-  pkg:
-    - installed
+shorewall-package:
+  pkg.installed:
+    - name: shorewall
+
 

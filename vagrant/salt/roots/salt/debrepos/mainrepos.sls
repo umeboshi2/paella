@@ -62,7 +62,6 @@ include:
   - bind
   - dhcpd.base
   - shorewall.base
-  - squid
   - debianlive
   - netboot.base
   - saltmaster.base
@@ -87,7 +86,6 @@ local-packages:
       - sls: netboot.base
       - sls: saltmaster.base
       - sls: samba.base
-      - pkg: squid
       - cmd: repos-ready
 
 /usr/local/bin/make-master-pkglist:

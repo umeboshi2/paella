@@ -5,9 +5,7 @@ base:
     - localmirror
     - default
     - files
-    - squid
     - debrepos
-    - saltmaster
     - winpe
     - driverpacks
     - netboot
