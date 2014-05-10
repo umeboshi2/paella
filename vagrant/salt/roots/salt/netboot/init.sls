@@ -3,12 +3,11 @@
 include:
   - debrepos
   - shorewall
-  - tftpd
   - dhcpd
   - samba
   - saltmaster
-  - netboot.base
   - netboot.debian-installer
+  - netboot.services
 
 
 /var/lib/tftpboot/pxelinux.cfg/default:

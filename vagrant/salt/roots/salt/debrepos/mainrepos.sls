@@ -77,7 +77,6 @@ local-packages:
     - require:
       - sls: apache
       - sls: postgresql.base
-      - sls: tftpd
       - sls: bind
       - sls: dhcpd.base
       - sls: shorewall.base
