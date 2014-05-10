@@ -3,6 +3,19 @@
 <% user = pillar['paella_user'] %>
 <% group = pillar['paella_group'] %>
 
+include:
+  - apache
+  - postgresql.base
+  - bind
+  - dhcpd.base
+  - shorewall.base
+  - debianlive
+  - netboot.base
+  - saltmaster.base
+  - samba.base
+  - pbuilder
+  - schroot.base
+
 
 /srv/debrepos/debian/conf:
   file.directory:
@@ -55,20 +68,6 @@ repos-ready:
       - file: /srv/debrepos/debian/conf/updates
       - file: /srv/debrepos/debian/conf/distributions
 
-include:
-  - apache
-  - postgresql
-  - tftpd
-  - bind
-  - dhcpd.base
-  - shorewall.base
-  - debianlive
-  - netboot.base
-  - saltmaster.base
-  - samba.base
-  - pbuilder
-  - schroot.base
-
 
 local-packages:
   cmd.script:
@@ -77,7 +76,7 @@ local-packages:
     - cwd: /srv/debrepos/debian
     - require:
       - sls: apache
-      - sls: postgresql
+      - sls: postgresql.base
       - sls: tftpd
       - sls: bind
       - sls: dhcpd.base

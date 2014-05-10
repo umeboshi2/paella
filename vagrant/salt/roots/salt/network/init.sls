@@ -3,7 +3,7 @@
 
 /etc/network/interfaces:
   file.managed:
-    - source: salt://files/network-interfaces
+    - source: salt://network/network-interfaces
     - template: mako
 
 enable-eth1:
