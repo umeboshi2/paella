@@ -153,7 +153,7 @@ vagrant-owns-tftpboot:
   cmd.run:
     - name: chown -R vagrant:vagrant /var/lib/tftpboot
     - require:
-      - cmd: install-tftpboot-files
       - cmd: syslinux-files-installed
+      - cmd: ipxe-boot-file
 
 

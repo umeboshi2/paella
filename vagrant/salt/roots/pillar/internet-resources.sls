@@ -67,7 +67,7 @@ clonezilla_iso:
 chrome_standalone_enterprise_msi:
   source: https://dl.google.com/edgedl/chrome/install/GoogleChromeStandaloneEnterprise.msi
   source_hash: sha256=c7090500b6761af8bdd51a4814b13ddae764dffbb332e569ef4b10441bb3ca89
-  name: google-chrome-enterprise.msi
+  name: chrome/google-chrome-enterprise.msi
 
 mdt-i386_msi:
   source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MicrosoftDeploymentToolkit2013_x86.msi
@@ -92,15 +92,15 @@ cached_iso_files:
 python27-msi:
   source: https://www.python.org/ftp/python/2.7.6/python-2.7.6.msi
   source_hash: sha256=cfa801a6596206ec7476e9bc2687fcd331c514b3dd92ffc3cd7d63e749ba0b2f
-  name: python-2.7.6.msi
+  name: python/python-2.7.6.msi
 
 vcredist_x86.exe:
   source: http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
   source_hash: sha256=41f45a46ee56626ff2699d525bb56a3bb4718c5ca5f4fb5b3b38add64584026b
-  name: vcredist_x86.exe
+  name: vcredist/vcredist_x86.exe
 
 MicrosoftDeploymentToolkit2012_x86.msi:
-  name: MicrosoftDeploymentToolkit2012_x86.msi
+  name: mdt2012/MicrosoftDeploymentToolkit2012_x86.msi
   source: http://download.microsoft.com/download/b/3/a/b3a89fae-f7bf-4e7c-b208-223b991e9c30/MicrosoftDeploymentToolkit2012_x86.msi
   source_hash: sha256=bf52b31e7c127d153206d9c6433fe0269547a00f176ddce74d936d9c95496e28
 
@@ -108,12 +108,12 @@ MicrosoftDeploymentToolkit2012_x86.msi:
 msysgit:
   source: https://github.com/msysgit/msysgit/releases/download/Git-1.9.2-preview20140411/Git-1.9.2-preview20140411.exe
   source_hash: sha256=0d459304a9994292635d341e698a2b8a275c0294d7159ba57ab8f917da968c7a
-  name: Git-1.9.2-preview20140411.exe
+  name: msysgit/Git-1.9.2-preview20140411.exe
   
 7zip-install.exe:
   source: http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.20/7z920.exe?r=http%3A%2F%2Fwww.7-zip.org%2F&ts=1399403652&use_mirror=superb-dca2
   source_hash: sha256=1e2f2a8fb52d3972b9b65b8ad1bebb66965c47a2994f89b3d652c31e6f6e4c3c
-  name: 7zip-install.exe
+  name: 7zip/7zip-install.exe
 
 cached_windows_files:
   - chrome_standalone_enterprise_msi
@@ -122,3 +122,7 @@ cached_windows_files:
   - msysgit
   - MicrosoftDeploymentToolkit2012_x86.msi
   - 7zip-install.exe
+
+
+
+#http://www.freecommander.com/FreeCommanderXE_portable.zip

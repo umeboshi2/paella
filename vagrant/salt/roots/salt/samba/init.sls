@@ -128,6 +128,23 @@ samba_incoming_share_directory:
     - makedirs: True
     - mode: 777
 
+samba_winstall_share_directory:
+  file.directory:
+    - name: /srv/shares/winstall
+    - makedirs: True
+    - mode: 777
+
+samba_winstall_base_directory:
+  file.directory:
+    - name: /srv/shares/winstall/base
+    - makedirs: True
+
+install_samba_winstall_base_directory:
+  cmd.run:
+    - name: cp -sa /srv/shares/win7/* base
+    - cwd: /srv/shares/winstall
+    - unless: test -r /srv/shares/winstall/base/i386/setup.exe
+
 smb.conf:
   file.managed:
     - name: /etc/samba/smb.conf

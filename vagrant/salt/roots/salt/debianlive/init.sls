@@ -94,6 +94,15 @@ make-win7-system-${arch}:
     - require:
       - file: livebuild-configdir-${arch}
 
+install-win7-image-${arch}:
+  file.managed:
+    - makedirs: True
+    - name: ${configdir}/includes.chroot/usr/local/bin/install-win7-image
+    - mode: 755
+    - source: salt://debianlive/install-win7-image.sh
+    - require:
+      - file: livebuild-configdir-${arch}
+
 livebuild-${arch}-srv-incoming:
   file.directory:
     - makedirs: True
