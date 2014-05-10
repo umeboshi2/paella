@@ -1,9 +1,7 @@
 # -*- mode: yaml -*-
 
-postgresql-support-packages:
-  pkg.installed:
-    - pkgs:
-      - postgresql-contrib
+include:
+  - postgresql.base
 
 /etc/postgresql/9.1/main/pg_hba.conf:
   file.managed:
@@ -12,16 +10,11 @@ postgresql-support-packages:
     - group: postgres
     - mode: 640
 
-
-postgresql:
-  pkg.installed:
+postgresql-service:
+  service.running:
     - name: postgresql
     - requires:
-      - pkg: postgresql-support-packages
-
-  service:
-    - name: postgresql
-    - running
+      - pkg: postgresql-package
     - watch:
       - file: /etc/postgresql/9.1/main/pg_hba.conf
 

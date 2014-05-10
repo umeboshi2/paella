@@ -1,17 +1,33 @@
 # -*- mode: yaml -*-
 
-/var/lib/paella:
-  file.directory:
-    - makedirs: True
-    - group: ${pillar['paella_group']}
-    - mode: 2775
+include:
+  - apache
+  - virtualenv
+
+extend:
+  apache-service:
+    service:
+      - watch:
+        - file: paella-apache-config
+        - file: paella-wsgi-script
 
 
-/var/lib/paella/venv:
-  virtualenv.managed:
-    - system_site_packages: False
-    - user: ${pillar['paella_user']}
-    - requirements: salt://mainserver/requirements.txt
+
+paella-apache-config:
+  file.managed:
+    - name: /etc/apache2/conf.d/paella
+    - source: salt://mainserver/paella-apache-config
+    - template: mako
+
+
+paella-wsgi-script:
+  file.managed:
+    - name: /etc/apache2/paella.wsgi
+    - source: salt://mainserver/paella-wsgi-script
+    - user: root
+    - group: root
+    - mode: 755
+
 
 # this command is always run
 # this command checks if paella is in `pip freeze` 
@@ -22,9 +38,11 @@ setup-paella:
   cmd.script:
     - unless: false
     - requires:
-      - virtualenv: /var/lib/paella/venv
+      - virtualenv: mainserver-virtualenv
     - source: salt://scripts/setup-paella.sh
     - user: ${pillar['paella_user']}
+    - template: mako
+
 
 
 # FIXME This command also should require
@@ -36,4 +54,5 @@ setup-paella-database:
       - cmd: setup-paella
     - source: salt://scripts/setup-paella-database.sh
     - user: postgres
+    - template: mako
 

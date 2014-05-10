@@ -78,7 +78,7 @@ wimlib-build-depends:
       - libxml2-dev
       - libssl-dev
       - ntfs-3g-dev
-      - attr-dev
+      - libattr1-dev
       - attr
 
 wimlib-runtime-depends:

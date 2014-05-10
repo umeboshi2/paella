@@ -4,6 +4,7 @@
 
 include:
   - driverpacks.base
+  - virtualenv
 
 # I haven't decided entirely how to use this yet.
 # There is already a debrepos dependency in the
@@ -23,12 +24,4 @@ get-driverpacks-script:
     - require:
       - git: debrepos-github
 
-
-get-driverpacks-virtualenv:
-  virtualenv.managed:
-    - name: /var/lib/paella/dp-venv
-    - system_site_packages: False
-    - user: ${pillar['paella_user']}
-    - requirements: salt://driverpacks/requirements.txt
-  
 

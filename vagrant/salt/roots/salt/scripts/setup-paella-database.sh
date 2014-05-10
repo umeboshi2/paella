@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-. /var/lib/paella/venv/bin/activate
+. ${pillar['paella_virtualenv_basedir']}/venv/bin/activate
 
 if true; then
     echo "Initializing paella database"

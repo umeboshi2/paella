@@ -15,14 +15,18 @@ include:
   file.managed:
     - source: salt://netboot/pxelinux-cfg
     - template: mako
+    - makedirs: True
+    - user: ${pillar['paella_user']}
 
 /var/lib/tftpboot/splash.png:
   file.managed:
     - source: salt://netboot/splash.png
+    - user: ${pillar['paella_user']}
 
 /var/lib/tftpboot/paella-splash.png:
   file.managed:
     - source: salt://netboot/paella-splash.png
+    - user: ${pillar['paella_user']}
 
 
 #####################################
@@ -83,6 +87,12 @@ live-${arch}.cfg:
     - name: /var/lib/tftpboot/live-${arch}.cfg
     - source: ${lbdir}/tftpboot/live.cfg
 
+live-${arch}-directory:
+  file.directory:
+    - name: /var/lib/tftpboot/live-${arch}
+    - makedirs: True
+    - user: ${pillar['paella_user']}
+
 edit-live-${arch}.cfg:
   file.sed:
     - name: /var/lib/tftpboot/live-${arch}.cfg
@@ -98,11 +108,15 @@ livebuild-bootfile-vmlinuz${ver}-${arch}:
     - name: /var/lib/tftpboot/live-${arch}/vmlinuz${ver}
     - source: ${lbdir}/binary/live/vmlinuz${ver}
     - makedirs: True
+    - require:
+      - file: live-${arch}-directory
 livebuild-bootfile-initrd${ver}.img-${arch}:
   file.copy:
     - name: /var/lib/tftpboot/live-${arch}/initrd${ver}.img
     - source: ${lbdir}/binary/live/initrd${ver}.img
     - makedirs: True
+    - require:
+      - file: live-${arch}-directory
 %endfor
 %elif arch == 'amd64':
 %for filename in ['vmlinuz', 'initrd.img']:
@@ -111,6 +125,8 @@ livebuild-bootfile-${filename}-${arch}:
     - name: /var/lib/tftpboot/live-${arch}/${filename}
     - source: ${lbdir}/binary/live/${filename}
     - makedirs: True
+    - require:
+      - file: live-${arch}-directory
 %endfor
 %endif
 
