@@ -2,10 +2,6 @@
 
 include:
   - debrepos
-  - shorewall
-  - dhcpd
-  - samba
-  - saltmaster
   - netboot.debian-installer
   - netboot.services
 
