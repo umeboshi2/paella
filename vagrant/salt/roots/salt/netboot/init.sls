@@ -1,7 +1,9 @@
 # -*- mode: yaml -*-
 
 include:
-  - debrepos
+  - winpe
+  - mainserver
+  - driverpacks
   - netboot.debian-installer
   - netboot.services
 
@@ -56,7 +58,7 @@ build-live-image-script:
 build-live-image-${arch}:
   cmd.run:
     - require:
-      - sls: debrepos
+      - sls: winpe
       - file: build-live-image-script
     - unless: test -r ${lbdir}/binary/md5sum.txt
     - name: make-live-image ${arch}

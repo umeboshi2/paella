@@ -65,14 +65,6 @@ wimlib-git-repos-${arch}:
 
 <% builddir = '%s/wimlib-code' % archspace %>
 
-# This darned command should almost be a script.
-# In order to keep the development base and partial
-# debian repository reasonably small, the building 
-# of the doc package is bypassed.  The tests are 
-# also bypassed as they require extra build depends,
-# as well as being root, instead of fakeroot.  The
-# tests for this build passed when the package was 
-# built manually.
 build-wimlib-package-${arch}:
   cmd.run:
     - require:

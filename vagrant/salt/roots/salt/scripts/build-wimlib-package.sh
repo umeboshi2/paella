@@ -1,6 +1,14 @@
 #!/bin/bash
 set -e
 
+# In order to keep the development base and partial
+# debian repository reasonably small, the building 
+# of the doc package is bypassed.  The tests are 
+# also bypassed as they require extra build depends,
+# as well as being root, instead of fakeroot.  The
+# tests for this build passed when the package was 
+# built manually.
+
 if ! [ -d debian ]; then
     echo "ERROR: no debian subdirectory, is the cwd correct?"
     exit 1

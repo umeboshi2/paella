@@ -1,5 +1,8 @@
 # -*- mode: yaml -*-
 
+include:
+  - files
+
 pager:
   pkg.installed:
     - name: most

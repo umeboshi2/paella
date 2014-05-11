@@ -2,13 +2,12 @@
 
 #####################################
 
-# paella-client
+# winpe
 # 
 # the local debian repository must be ready
 
 
 include:
-  - schroot
   - paella-client
   - wimlib
 
