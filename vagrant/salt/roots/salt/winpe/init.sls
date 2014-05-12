@@ -54,12 +54,17 @@ legacy-mkisofs-symlink:
 example-peauto.bat:
   file.managed:
     - name: /home/vagrant/workspace/peauto.bat
-    - source: salt://paella-client/peauto.bat
+    - source: salt://winpe/peauto.bat
+
+example-peauto64.bat:
+  file.managed:
+    - name: /home/vagrant/workspace/peauto64.bat
+    - source: salt://winpe/peauto64.bat
 
 example-bcdauto.bat:
   file.managed:
     - name: /home/vagrant/workspace/bcdauto.bat
-    - source: salt://paella-client/bcdauto.bat
+    - source: salt://winpe/bcdauto.bat
 
 example-overlay-directory:
   file.directory:
@@ -77,6 +82,7 @@ example-winpe-files:
     - require:
       - file: example-autounattend-xml
       - file: example-peauto.bat
+      - file: example-peauto64.bat
       - file: example-bcdauto.bat
 
 
@@ -102,9 +108,16 @@ make-another-test-winpe-iso:
     - unless: test -r /srv/debrepos/winpe.iso
     - require:
       - cmd: example-winpe-files
-    # this is a simple image
-    #- name: mkwinpeimg -A /srv/shares/aik --iso /srv/debrepos/winpe.iso
     - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat -O /var/cache/netboot/winpe /srv/debrepos/winpe.iso
+
+make-another-test-winpe-iso-amd64:
+  cmd.run:
+    - user: ${pillar['paella_user']}
+    - cwd: /vagrant
+    - unless: test -r /srv/debrepos/winpe64.iso
+    - require:
+      - cmd: example-winpe-files
+    - name: mkwinpeimg --arch=amd64 -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto64.bat -O /var/cache/netboot/winpe /srv/debrepos/winpe64.iso
 
 make-test-winpe-shell-iso:
   cmd.run:

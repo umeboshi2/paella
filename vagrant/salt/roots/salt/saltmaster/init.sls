@@ -41,4 +41,8 @@ salt-master:
       - user
       - group
 
+<% cachedir = '/vagrant/vagrant/cache' %>
+
+<% reposdir = '%s/repos' % cachedir %>
+
 

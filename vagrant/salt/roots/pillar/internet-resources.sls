@@ -39,6 +39,8 @@ debian_pxe_installer:
       udeb_list:
         source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20140316/images/udeb.list
         source_hash: sha256=a5a9e0a7ecc78df2183feaceffabfd4b563e167faf37383fa7072abb2419461b
+
+
 debian_installer_i386_checksums:
   udeb_list: sha256=d9ffa71c7f1be047f5eafb8f5a3359d86dd34e7ce09acd0ea5d44e9aaff8cc20
   initrd: sha256=0aef8471b5092000991d7549be503d46b7e301cf89582d2c68619b14cedea50f
@@ -115,14 +117,54 @@ msysgit:
   source_hash: sha256=1e2f2a8fb52d3972b9b65b8ad1bebb66965c47a2994f89b3d652c31e6f6e4c3c
   name: 7zip/7zip-install.exe
 
+
+devkit-ruby-mingw-i386:
+  source: http://cdn.rubyinstaller.org/archives/devkits/DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe
+  source_hash: md5=9383f12958aafc425923e322460a84de
+  name: DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe
+
+devkit-ruby-mingw-amd64:
+  source: http://cdn.rubyinstaller.org/archives/devkits/DevKit-mingw64-64-4.7.2-20130224-1432-sfx.exe
+  source_hash: md5=ce99d873c1acc8bffc639bd4e764b849
+  name: DevKit-mingw64-64-4.7.2-20130224-1432-sfx.exe
+
+zeromq-3.2.4-windows-source-zip:
+  name: zeromq-3.2.4.zip
+  source: http://download.zeromq.org/zeromq-3.2.4.zip
+  source_hash: sha1=7e2bd51a8dfd4510049170f2f041bcbd82ec84c0
+
+openssl-source-tarball:
+  name: openssl-1.0.1g.tar.gz
+  source: http://www.openssl.org/source/openssl-1.0.1g.tar.gz
+  source_hash: sha1=b28b3bcb1dc3ee7b55024c9f795be60eb3183e3c
+
+
+activestate-perl-i386-msi:
+  source: http://downloads.activestate.com/ActivePerl/releases/5.18.2.1802/ActivePerl-5.18.2.1802-MSWin32-x86-64int-298023.msi
+  name: ActivePerl-5.18.2.1802-MSWin32-x86-64int-298023.msi
+  source_hash: sha256=b6b46b7d16c83aad9c76934143dbb6fabb8624009ef9e5d542ba891e90bce2a0
+
+activestate-perl-amd64-msi:
+  source: http://downloads.activestate.com/ActivePerl/releases/5.18.2.1802/ActivePerl-5.18.2.1802-MSWin32-x64-298023.msi
+  name: ActivePerl-5.18.2.1802-MSWin32-x64-298023.msi
+  source_hash: sha256=4d0bbe46d6e1bba5d197bbc49ee2eb4901bec8277f213abfb52deb01473d0c71
+
+
 cached_windows_files:
   - chrome_standalone_enterprise_msi
   - python27-msi
+  # vcredist_x86 should be removed if possible
   - vcredist_x86.exe
   - msysgit
   - MicrosoftDeploymentToolkit2012_x86.msi
   - 7zip-install.exe
-
+  - devkit-ruby-mingw-i386
+  - devkit-ruby-mingw-amd64
+  - zeromq-3.2.4-windows-source-zip
+  # use MinGW to build openssl source tarball
+  - openssl-source-tarball
+  - activestate-perl-i386-msi
+  - activestate-perl-amd64-msi
 
 
 #http://www.freecommander.com/FreeCommanderXE_portable.zip

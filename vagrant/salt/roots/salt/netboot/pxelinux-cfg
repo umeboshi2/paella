@@ -42,3 +42,8 @@ label WinPEinstall
       kernel memdisk
       append iso initrd=http://${pillar['paella_server_ip']}/debrepos/winpe.iso
 
+label WinPEinstall64
+      menu label WinPE Auto Install amd64
+      kernel memdisk
+      append iso initrd=http://${pillar['paella_server_ip']}/debrepos/winpe64.iso
+
