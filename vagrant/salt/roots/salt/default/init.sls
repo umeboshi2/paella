@@ -136,3 +136,9 @@ python-debrepos-support-packages:
       - python-libtorrent
       - python-feedparser
 
+
+mingw-packages:
+  pkg.installed:
+    - pkgs:
+      - mingw-w64
+      - mingw-w64-tools

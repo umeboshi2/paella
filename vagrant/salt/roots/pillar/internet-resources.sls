@@ -149,6 +149,11 @@ activestate-perl-amd64-msi:
   name: ActivePerl-5.18.2.1802-MSWin32-x64-298023.msi
   source_hash: sha256=4d0bbe46d6e1bba5d197bbc49ee2eb4901bec8277f213abfb52deb01473d0c71
 
+win-builds-bundle-zip:
+  source: http://win-builds.org/stable/win-builds-bundle-1.3.0.zip
+  source_hash: sha256=39452620ad67bb292d6910bba9dd79fcce17ddd5e9774d26c0b27ea8ddec4c5e
+  name: win-builds-bundle-1.3.0.zip
+
 
 cached_windows_files:
   - chrome_standalone_enterprise_msi
@@ -158,13 +163,22 @@ cached_windows_files:
   - msysgit
   - MicrosoftDeploymentToolkit2012_x86.msi
   - 7zip-install.exe
-  - devkit-ruby-mingw-i386
-  - devkit-ruby-mingw-amd64
   - zeromq-3.2.4-windows-source-zip
   # use MinGW to build openssl source tarball
   - openssl-source-tarball
   - activestate-perl-i386-msi
   - activestate-perl-amd64-msi
+  - win-builds-bundle-zip
 
 
 #http://www.freecommander.com/FreeCommanderXE_portable.zip
+
+#http://sourceforge.net/projects/mingw-w64/files/latest/download?source=files
+
+#http://prdownloads.sourceforge.net/nsis/nsis-2.46-setup.exe
+
+# mingw-64 x86
+#http://downloads.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/32-bit/threads-win32/sjlj/x32-4.8.1-release-win32-sjlj-rev5.7z
+
+# mingw-64 x64
+#http://downloads.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/64-bit/threads-win32/seh/x64-4.8.1-release-win32-seh-rev5.7z

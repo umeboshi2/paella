@@ -3,5 +3,6 @@
 base:
   'paella':
     - localmirror
-    - netboot
+    - winbuilder
+
 
