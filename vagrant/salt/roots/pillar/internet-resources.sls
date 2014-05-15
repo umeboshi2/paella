@@ -71,16 +71,6 @@ chrome_standalone_enterprise_msi:
   source_hash: sha256=c7090500b6761af8bdd51a4814b13ddae764dffbb332e569ef4b10441bb3ca89
   name: chrome/google-chrome-enterprise.msi
 
-mdt-i386_msi:
-  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MicrosoftDeploymentToolkit2013_x86.msi
-
-mdt-amd64_msi:
-  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MicrosoftDeploymentToolkit2013_x64.msi
-
-mdt-docs_zip:
-  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MDT%202013%20Documentation.zip
-
-
 salt_windows_installer_files:
   i386:
     source: https://docs.saltstack.com/downloads/Salt-Minion-2014.1.3-1-win32-Setup.exe
@@ -96,10 +86,11 @@ python27-msi:
   source_hash: sha256=cfa801a6596206ec7476e9bc2687fcd331c514b3dd92ffc3cd7d63e749ba0b2f
   name: python/python-2.7.6.msi
 
-vcredist_x86.exe:
-  source: http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
-  source_hash: sha256=41f45a46ee56626ff2699d525bb56a3bb4718c5ca5f4fb5b3b38add64584026b
-  name: vcredist/vcredist_x86.exe
+python27-amd64-msi:
+  source: https://www.python.org/ftp/python/2.7.6/python-2.7.6.amd64.msi
+  source_hash: sha256=3793cb8874f5e156a161239fea04ad98829d4ecf623d52d43513780837eb4807
+  name: python-2.7.6.amd64.msi
+
 
 MicrosoftDeploymentToolkit2012_x86.msi:
   name: mdt2012/MicrosoftDeploymentToolkit2012_x86.msi
@@ -117,6 +108,10 @@ msysgit:
   source_hash: sha256=1e2f2a8fb52d3972b9b65b8ad1bebb66965c47a2994f89b3d652c31e6f6e4c3c
   name: 7zip/7zip-install.exe
 
+7zip-install-x64-msi:
+  source: http://downloads.sourceforge.net/sevenzip/7z920-x64.msi
+  source_hash: sha256=62df458bc521001cd9a947643a84810ecbaa5a16b5c8e87d80df8e34c4a16fe2
+  name: 7z920-x64.msi
 
 devkit-ruby-mingw-i386:
   source: http://cdn.rubyinstaller.org/archives/devkits/DevKit-mingw64-32-4.7.2-20130224-1151-sfx.exe
@@ -149,26 +144,78 @@ activestate-perl-amd64-msi:
   name: ActivePerl-5.18.2.1802-MSWin32-x64-298023.msi
   source_hash: sha256=4d0bbe46d6e1bba5d197bbc49ee2eb4901bec8277f213abfb52deb01473d0c71
 
-win-builds-bundle-zip:
-  source: http://win-builds.org/stable/win-builds-bundle-1.3.0.zip
-  source_hash: sha256=39452620ad67bb292d6910bba9dd79fcce17ddd5e9774d26c0b27ea8ddec4c5e
-  name: win-builds-bundle-1.3.0.zip
+
+
+mingw-w64-x86:
+  source: http://downloads.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/32-bit/threads-win32/sjlj/x32-4.8.1-release-win32-sjlj-rev5.7z
+  source_hash: sha256=6d00011b9fb8c916f2a3ba8b57941ebe90352c987258a53302137f757fcc0e00
+  name: x32-4.8.1-release-win32-sjlj-rev5.7z
+
+mingw-w64-x64:
+  source: http://downloads.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/64-bit/threads-win32/seh/x64-4.8.1-release-win32-seh-rev5.7z
+  source_hash: sha256=8a8c23e72478a4f8fec2ecc8a6e35225aaa2334fb235aac9e2b3ffc3ffd77f7e
+  name: x64-4.8.1-release-win32-seh-rev5.7z
+
+gedit-exe:
+  source: http://ftp.gnome.org/pub/GNOME/binaries/win32/gedit/2.30/gedit-setup-2.30.1-1.exe
+  source_hash: sha256=a611e9c233321c29cf8307d94d37e5a9028b2d99bba9ecd06ebb9a670cfb29a2
+  name: gedit-setup-2.30.1-1.exe
+
+nsis-exe:
+  source: http://prdownloads.sourceforge.net/nsis/nsis-2.46-setup.exe?download
+  source_hash: sha256=69c2ae5c9f2ee45b0626905faffaa86d4e2fc0d3e8c118c8bc6899df68467b32
+  name: nsis-2.46-setup.exe
+
+mingw-get-setup-exe:
+  source: http://sourceforge.net/projects/mingw/files/Installer/mingw-get-setup.exe/download
+  source_hash: sha256=aab27bd5547d35dc159288f3b5b8760f21b0cfec86e8f0032b49dd0410f232bc
+  name: mingw-get-setup.exe
+
+mingw-get-bin-zip:
+  source: http://sourceforge.net/projects/mingw/files/Installer/mingw-get/mingw-get-0.6.2-beta-20131004-1/mingw-get-0.6.2-mingw32-beta-20131004-1-bin.zip/download
+  source_hash: sha256=2e0e9688d42adc68c5611759947e064156e169ff871816cae52d33ee0655826d
+  name: mingw-get-bin.zip
+  #name: mingw-get-0.6.2-mingw32-beta-20131004-1-bin.zip
+
+swigwin-3.0.0-zip:
+  source: http://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.0/swigwin-3.0.0.zip/download
+  source_hash: sha256=be829be4b87cc6a24d88cd9771a8c3c2eabcc72095f4d370d01a0080aae1a060
+  name: swigwin-3.0.0.zip
+
+
+codeblocks-setup-exe:
+  source: http://prdownload.berlios.de/codeblocks/codeblocks-13.12-setup.exe
+  source_hash: sha256=aa2df2f614f24ff3f3a9799e30708577ef15e5582c2ab967e710729aa18ae097
+  name: codeblocks-13.12-setup.exe
+
+
+# http://sourceforge.net/projects/mingw/files/Installer/mingw-get/mingw-get-0.6.2-beta-20131004-1/mingw-get-0.6.2-mingw32-beta-20131004-1-bin.zip/download
+
 
 
 cached_windows_files:
   - chrome_standalone_enterprise_msi
-  - python27-msi
-  # vcredist_x86 should be removed if possible
-  - vcredist_x86.exe
-  - msysgit
-  - MicrosoftDeploymentToolkit2012_x86.msi
   - 7zip-install.exe
+  - 7zip-install-x64-msi
+  - python27-amd64-msi
+  - python27-msi
+  - activestate-perl-i386-msi
+  - activestate-perl-amd64-msi
+  - mingw-w64-x86
+  - mingw-w64-x64
+  - mingw-get-bin-zip
+  - mingw-get-setup-exe
+  - swigwin-3.0.0-zip
+  - msysgit
+  - gedit-exe
+  - nsis-exe
+  - MicrosoftDeploymentToolkit2012_x86.msi
   - zeromq-3.2.4-windows-source-zip
   # use MinGW to build openssl source tarball
   - openssl-source-tarball
-  - activestate-perl-i386-msi
-  - activestate-perl-amd64-msi
-  - win-builds-bundle-zip
+  # this won't be needed for autobuilding but will
+  # help get things going
+  - codeblocks-setup-exe
 
 
 #http://www.freecommander.com/FreeCommanderXE_portable.zip
@@ -177,8 +224,26 @@ cached_windows_files:
 
 #http://prdownloads.sourceforge.net/nsis/nsis-2.46-setup.exe
 
-# mingw-64 x86
-#http://downloads.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/32-bit/threads-win32/sjlj/x32-4.8.1-release-win32-sjlj-rev5.7z
+#####################################################
+## Not using these resources
+#####################################################
+mdt-i386_msi:
+  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MicrosoftDeploymentToolkit2013_x86.msi
 
-# mingw-64 x64
-#http://downloads.sourceforge.net/project/mingwbuilds/host-windows/releases/4.8.1/64-bit/threads-win32/seh/x64-4.8.1-release-win32-seh-rev5.7z
+mdt-amd64_msi:
+  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MicrosoftDeploymentToolkit2013_x64.msi
+
+mdt-docs_zip:
+  source: http://download.microsoft.com/download/B/F/5/BF5DF779-ED74-4BEC-A07E-9EB25694C6BB/MDT%202013%20Documentation.zip
+
+
+win-builds-bundle-zip:
+  source: http://win-builds.org/stable/win-builds-bundle-1.3.0.zip
+  source_hash: sha256=39452620ad67bb292d6910bba9dd79fcce17ddd5e9774d26c0b27ea8ddec4c5e
+  name: win-builds-bundle-1.3.0.zip
+
+
+vcredist_x86.exe:
+  source: http://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe
+  source_hash: sha256=41f45a46ee56626ff2699d525bb56a3bb4718c5ca5f4fb5b3b38add64584026b
+  name: vcredist/vcredist_x86.exe

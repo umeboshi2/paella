@@ -27,6 +27,7 @@ ping -n 10 localhost > nul
 goto try_again
 
 :mapped
+:: if not exist $Z%\ goto mapit
 echo Finished
 goto end
 
@@ -35,12 +36,11 @@ goto hang
 
 :end
 
-z:
-cd \windows
+cd /D %Z%\windows
 
-msiexec /qb /i python-2.7.6.msi 
+msiexec /qb /i python-2.7.6.amd64.msi ALLUSERS=1
 
-c:\Python27\python z:\install.py
+c:\Python27\python %Z%\install.py
 
 
 @pause
