@@ -103,10 +103,10 @@ msysgit:
   source_hash: sha256=0d459304a9994292635d341e698a2b8a275c0294d7159ba57ab8f917da968c7a
   name: msysgit/Git-1.9.2-preview20140411.exe
   
-7zip-install.exe:
-  source: http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.20/7z920.exe?r=http%3A%2F%2Fwww.7-zip.org%2F&ts=1399403652&use_mirror=superb-dca2
-  source_hash: sha256=1e2f2a8fb52d3972b9b65b8ad1bebb66965c47a2994f89b3d652c31e6f6e4c3c
-  name: 7zip/7zip-install.exe
+7zip-install.msi:
+  source: http://downloads.sourceforge.net/project/sevenzip/7-Zip/9.20/7z920.msi
+  source_hash: sha256=fe4807b4698ec89f82de7d85d32deaa4c772fc871537e31fb0fccf4473455cb8
+  name: 7z920.msi
 
 7zip-install-x64-msi:
   source: http://downloads.sourceforge.net/sevenzip/7z920-x64.msi
@@ -133,6 +133,10 @@ openssl-source-tarball:
   source: http://www.openssl.org/source/openssl-1.0.1g.tar.gz
   source_hash: sha1=b28b3bcb1dc3ee7b55024c9f795be60eb3183e3c
 
+pywin32-219-zip:
+  source: http://sourceforge.net/projects/pywin32/files/pywin32/Build%20219/pywin32-219.zip/download
+  source_hash: sha256=30c3dbcd45d0c126ad9102d4bbcdeb6b9846869d0b1721faa4f8c9b563ccdb49
+  name: pywin32-219.zip
 
 activestate-perl-i386-msi:
   source: http://downloads.activestate.com/ActivePerl/releases/5.18.2.1802/ActivePerl-5.18.2.1802-MSWin32-x86-64int-298023.msi
@@ -182,6 +186,10 @@ swigwin-3.0.0-zip:
   source_hash: sha256=be829be4b87cc6a24d88cd9771a8c3c2eabcc72095f4d370d01a0080aae1a060
   name: swigwin-3.0.0.zip
 
+ez_setup_py:
+  source: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
+  source_hash: sha256=bda2153493b18212a87c6720d6c581887a980f14c8cacceb2fe864b88efc5424
+  name: ez_setup.py
 
 codeblocks-setup-exe:
   source: http://prdownload.berlios.de/codeblocks/codeblocks-13.12-setup.exe
@@ -191,11 +199,20 @@ codeblocks-setup-exe:
 
 # http://sourceforge.net/projects/mingw/files/Installer/mingw-get/mingw-get-0.6.2-beta-20131004-1/mingw-get-0.6.2-mingw32-beta-20131004-1-bin.zip/download
 
+dotnet-4.5-exe:
+  source: http://download.microsoft.com/download/1/6/7/167F0D79-9317-48AE-AEDB-17120579F8E2/NDP451-KB2858728-x86-x64-AllOS-ENU.exe
+  source_hash: sha256=5ded8628ce233a5afa8e0efc19ad34690f05e9bb492f2ed0413508546af890fe
+  name: microsoft-dotnet-4.5.exe
+
+dotnet-4.0-exe:
+  source: http://download.microsoft.com/download/9/5/A/95A9616B-7A37-4AF6-BC36-D6EA96C8DAAE/dotNetFx40_Full_x86_x64.exe
+  source_hash: sha256=65e064258f2e418816b304f646ff9e87af101e4c9552ab064bb74d281c38659f
+  name: dotNetFx40_Full_x86_x64.exe
 
 
 cached_windows_files:
   - chrome_standalone_enterprise_msi
-  - 7zip-install.exe
+  - 7zip-install.msi
   - 7zip-install-x64-msi
   - python27-amd64-msi
   - python27-msi
@@ -206,6 +223,7 @@ cached_windows_files:
   - mingw-get-bin-zip
   - mingw-get-setup-exe
   - swigwin-3.0.0-zip
+  - ez_setup_py
   - msysgit
   - gedit-exe
   - nsis-exe
@@ -213,9 +231,11 @@ cached_windows_files:
   - zeromq-3.2.4-windows-source-zip
   # use MinGW to build openssl source tarball
   - openssl-source-tarball
+  - pywin32-219-zip
   # this won't be needed for autobuilding but will
   # help get things going
   - codeblocks-setup-exe
+  - dotnet-4.0-exe
 
 
 #http://www.freecommander.com/FreeCommanderXE_portable.zip

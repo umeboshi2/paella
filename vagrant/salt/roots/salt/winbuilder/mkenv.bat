@@ -38,8 +38,25 @@ goto hang
 
 cd /D %Z%\windows
 
-msiexec /qb /i python-2.7.6.amd64.msi ALLUSERS=1
+if "%PROCESSOR_ARCHITECTURE%" == "AMD64" goto install_python64
+:install_python32
+echo Install Python %PROCESSOR_ARCHITECTURE% 32bit
+msiexec /qb /i python-2.7.6.msi ALLUSERS=1
+goto run_install
 
+
+:install_python64
+echo Install Python %PROCESSOR_ARCHITECTURE% 64bit
+msiexec /qb /i python-2.7.6.amd64.msi ALLUSERS=1
+goto run_install
+
+
+:run_install
+:: FIXME do this in install.py script
+:: echo Install ez_setup.py
+:: c:\Python27\python %Z%\windows\ez_setup.py
+
+echo Run install
 c:\Python27\python %Z%\install.py
 
 
