@@ -68,8 +68,10 @@ clonezilla_iso:
 
 chrome_standalone_enterprise_msi:
   source: https://dl.google.com/edgedl/chrome/install/GoogleChromeStandaloneEnterprise.msi
-  source_hash: sha256=c7090500b6761af8bdd51a4814b13ddae764dffbb332e569ef4b10441bb3ca89
-  name: chrome/google-chrome-enterprise.msi
+  #source_hash: sha256=c7090500b6761af8bdd51a4814b13ddae764dffbb332e569ef4b10441bb3ca89
+  #source_hash: sha256=a579f41a50b5adab149a0a9831d787625ece9df48b98e417cdcfe8519548da30
+  source_hash: sha256=0907e17c8643f55f755e87d8da5ec06777bc9e94c088106e32a2aada329ad1a8
+  name: google-chrome-enterprise.msi
 
 salt_windows_installer_files:
   i386:
@@ -84,7 +86,7 @@ cached_iso_files:
 python27-msi:
   source: https://www.python.org/ftp/python/2.7.6/python-2.7.6.msi
   source_hash: sha256=cfa801a6596206ec7476e9bc2687fcd331c514b3dd92ffc3cd7d63e749ba0b2f
-  name: python/python-2.7.6.msi
+  name: python-2.7.6.msi
 
 python27-amd64-msi:
   source: https://www.python.org/ftp/python/2.7.6/python-2.7.6.amd64.msi

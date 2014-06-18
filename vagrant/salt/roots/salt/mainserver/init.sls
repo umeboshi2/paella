@@ -3,6 +3,7 @@
 include:
   - apache
   - virtualenv
+  - postgresql
 
 extend:
   apache-service:
@@ -39,10 +40,11 @@ setup-paella:
     - unless: false
     - requires:
       - virtualenv: mainserver-virtualenv
+      - sls: postgresql
     - source: salt://scripts/setup-paella.sh
     - user: ${pillar['paella_user']}
     - template: mako
-
+    
 
 
 # FIXME This command also should require

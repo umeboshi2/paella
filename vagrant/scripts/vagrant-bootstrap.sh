@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DEBMIRROR=http://ftp.us.debian.org/debian
+
+
 if [ -x /usr/bin/salt-minion ]; then
     echo "Salt Minion already installed, skipping....."
     exit 0
@@ -8,8 +11,8 @@ fi
 if [ -d /vagrant/vagrant/debrepos/debian/dists ]; then
     apt-key add /vagrant/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-pub.gpg
     echo "deb file:///vagrant/vagrant/debrepos/debian wheezy main contrib non-free" > /etc/apt/sources.list
-    echo "deb http://mirrors.kernel.org/debian wheezy main contrib non-free" >> /etc/apt/sources.list
-    echo "deb-src http://mirrors.kernel.org/debian wheezy main contrib non-free" >> /etc/apt/sources.list
+    echo "deb $DEBMIRROR wheezy main contrib non-free" >> /etc/apt/sources.list
+    echo "deb-src $DEBMIRROR wheezy main contrib non-free" >> /etc/apt/sources.list
     echo >> /etc/apt/sources.list
     if [ -d /vagrant/vagrant/debrepos/security ]; then
 	echo "deb file:///vagrant/vagrant/debrepos/security wheezy/updates main contrib non-free" >> /etc/apt/sources.list
