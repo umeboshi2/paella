@@ -88,6 +88,13 @@ example-winpe-files:
       - file: example-bcdauto.bat
 
 
+wimlib-tools-ready:
+  cmd.wait:
+    - name: echo "wimlib-tools-ready"
+    - require:
+      - cmd: example-winpe-files
+      - pkg: wimlib-packages
+
 
 # This command demonstrates the reason for the 
 # all the trouble required to get the AIK and 
@@ -100,7 +107,7 @@ make-test-winpe-iso:
     - cwd: /vagrant
     - unless: test -r /vagrant/testme-peauto.iso
     - require:
-      - cmd: example-winpe-files
+      - cmd: wimlib-tools-ready
     - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat /vagrant/testme-peauto.iso
 
 make-another-test-winpe-iso:
@@ -109,7 +116,7 @@ make-another-test-winpe-iso:
     - cwd: /vagrant
     - unless: test -r /srv/debrepos/winpe.iso
     - require:
-      - cmd: example-winpe-files
+      - cmd: wimlib-tools-ready
     - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto.bat -O /var/cache/netboot/winpe /srv/debrepos/winpe.iso
 
 make-another-test-winpe-iso-amd64:
@@ -118,7 +125,7 @@ make-another-test-winpe-iso-amd64:
     - cwd: /vagrant
     - unless: test -r /srv/debrepos/winpe64.iso
     - require:
-      - cmd: example-winpe-files
+      - cmd: wimlib-tools-ready
     - name: mkwinpeimg --arch=amd64 -A /srv/shares/aik --iso -s /home/vagrant/workspace/peauto64.bat -O /var/cache/netboot/winpe /srv/debrepos/winpe64.iso
 
 make-test-winpe-shell-iso:
@@ -127,7 +134,7 @@ make-test-winpe-shell-iso:
     - cwd: /vagrant
     - unless: test -r /srv/debrepos/winpe-shell.iso
     - require:
-      - cmd: example-winpe-files
+      - cmd: wimlib-tools-ready
     - name: mkwinpeimg -A /srv/shares/aik --iso /srv/debrepos/winpe-shell.iso
 
 <% bcdauto = '/srv/shares/incoming/bcdauto.iso' %>
@@ -137,6 +144,6 @@ make-test-bcdauto-winpe-iso:
     - cwd: /vagrant
     - unless: test -r ${bcdauto}
     - require:
-      - cmd: example-winpe-files
+      - cmd: wimlib-tools-ready
     - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/bcdauto.bat ${bcdauto}
 

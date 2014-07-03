@@ -190,7 +190,7 @@ swigwin-3.0.0-zip:
 
 ez_setup_py:
   source: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
-  source_hash: sha256=bda2153493b18212a87c6720d6c581887a980f14c8cacceb2fe864b88efc5424
+  source_hash: sha256=e5e522b5562d1c1950c3e416dac91514a1264503b30b445ffc0215a142ec17f0
   name: ez_setup.py
 
 codeblocks-setup-exe:
@@ -236,7 +236,8 @@ cached_windows_files:
   - pywin32-219-zip
   # this won't be needed for autobuilding but will
   # help get things going
-  - codeblocks-setup-exe
+  # fix codeblocks url
+  #- codeblocks-setup-exe
   - dotnet-4.0-exe
 
 
