@@ -1,0 +1,37 @@
+{
+  "name": "conspectus",
+  "version": "0.0.0",
+  "homepage": "https://github.com/umeboshi2/conspectus",
+  "authors": [
+    "Joseph Rawson <joseph.rawson.works@littledebian.org>"
+  ],
+  "description": "project skeleton",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "Public Domain",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "lodash": "~2.4.1",
+    "backbone": "~1.1.2",
+    "marionette": "~2.1.0",
+    "bootstrap": "~3.2.0",
+    "jquery-ui": "~1.11.1",
+    "teacup": "https://github.com/goodeggs/teacup.git#~0.4.1",
+    "fullcalendar": "1.6.4",
+    "marked": "~0.3.2",
+    "backbone.validation": "~0.7.1",
+    "backbone.paginator": "~2.0.2"
+  },
+  "resolutions": {
+    "jquery": "~2.1.1"
+  }
+}
