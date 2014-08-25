@@ -43,3 +43,8 @@ bowercache.tar
 # vagrant
 .vagrant
 
+
+# built files
+stylesheets
+javascripts
+
