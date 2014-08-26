@@ -9,6 +9,7 @@ require.config
     'backbone.wreqr': '../../../components/backbone.wreqr/lib/backbone.wreqr'
     marionette: '../../../components/marionette/lib/core/backbone.marionette'
     validation: '../../../components/backbone.validation/dist/backbone-validation-amd'
+    bblocalStorage: '../../../components/backbone.localStorage/backbone.localStorage'
     bootstrap: '../../../components/bootstrap/dist/js/bootstrap'
     moment: '../../../components/moment/moment'
     fullcalendar: '../../../components/fullcalendar/fullcalendar'
@@ -33,6 +34,9 @@ require.config
     marionette:
       deps: ['jquery', 'underscore', 'backbone']
       exports: 'Marionette'
+    bblocalStorage:
+      deps: ['backbone']
+      exports: 'Backbone.localStorage'
 
 
 require [

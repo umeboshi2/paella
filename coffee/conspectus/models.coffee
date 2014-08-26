@@ -37,12 +37,12 @@ define (require, exports, module) ->
     app_settings
     
   class Page extends Backbone.Model
-    url: () ->
-      pathname = '/hubby/pages/'
-      if window.location.pathname == '/index.local.html'
-        pathname = '/pages/'
-      return pathname + @id + '.json'
-
+    #url: () ->
+    #  null
+      
+    
+      
+    
   module.exports =
     Page: Page
     

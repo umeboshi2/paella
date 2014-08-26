@@ -30,9 +30,11 @@
     "marked": "~0.3.2",
     "backbone.validation": "~0.7.1",
     "backbone.paginator": "~2.0.2",
-    "requirejs": "~2.1.14"
+    "requirejs": "~2.1.14",
+    "backbone.localStorage": "~1.1.13"
   },
   "resolutions": {
-    "jquery": "~2.1.1"
+    "jquery": "~2.1.1",
+    "backbone": "~1.1.2"
   }
 }

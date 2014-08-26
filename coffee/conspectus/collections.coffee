@@ -6,6 +6,8 @@ define (require, exports, module) ->
   Models = require 'models'
   
   MSGBUS = require 'msgbus'
+  localStorage = require 'bblocalStorage'
+  
       
 
   ########################################
@@ -17,10 +19,8 @@ define (require, exports, module) ->
     parse: (response) ->
       return response.data
 
-  class BaseLocalStorageCollection extends Backbone.Collection
-
-      
-  class PageCollection extends BaseCollection
+  class PageCollection extends Backbone.Collection
+    localStorage: new localStorage('pages')
     model: Models.Page
 
     
@@ -38,8 +38,10 @@ define (require, exports, module) ->
       model = new Models.Page
         id: page_id
       main_page_collection.add model
-    else
-      model
+      if page_id == 'intro'
+        model.set 'content', 'This is the intro.'
+        model.save()
+    model
       
   module.exports =
     PageCollection: PageCollection

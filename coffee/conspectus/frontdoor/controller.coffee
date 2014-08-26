@@ -37,11 +37,11 @@ define (require, exports, module) ->
     show_page: (name) ->
       @make_sidebar()
       page = MSGBUS.reqres.request 'pages:getpage', name
-      response = page.fetch()
-      response.done =>
-        view = new FDViews.FrontDoorMainView
-          model: page
-        MSGBUS.events.trigger 'rcontent:show', view
+      #response = page.fetch()
+      #response.done =>
+      view = new FDViews.FrontDoorMainView
+        model: page
+      MSGBUS.events.trigger 'rcontent:show', view
           
     start: ->
       console.log 'controller.start called'
