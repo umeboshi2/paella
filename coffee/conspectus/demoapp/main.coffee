@@ -8,21 +8,21 @@ define (require, exports, module) ->
 
   class Router extends Backbone.Marionette.AppRouter
     appRoutes:
-      'hubby': 'start'
-      'hubby/viewmeeting/:id': 'show_meeting'
-      'hubby/listmeetings': 'list_meetings'
+      'demoapp': 'start'
+      'demoapp/viewmeeting/:id': 'show_meeting'
+      'demoapp/listmeetings': 'list_meetings'
       
   current_calendar_date = undefined
-  MSGBUS.commands.setHandler 'hubby:maincalendar:set_date', () ->
+  MSGBUS.commands.setHandler 'demoapp:maincalendar:set_date', () ->
     cal = $ '#maincalendar'
     current_calendar_date = cal.fullCalendar 'getDate'
 
-  MSGBUS.reqres.setHandler 'hubby:maincalendar:get_date', () ->
+  MSGBUS.reqres.setHandler 'demoapp:maincalendar:get_date', () ->
     current_calendar_date
     
-  MSGBUS.commands.setHandler 'hubby:route', () ->
+  MSGBUS.commands.setHandler 'demoapp:route', () ->
     #window.msgbus = MSGBUS
-    console.log "hubby:route being handled..."
+    console.log "demoapp:route being handled..."
     controller = new Controller
     router = new Router
       controller: controller

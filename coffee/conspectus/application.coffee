@@ -37,7 +37,7 @@ define (require, exports, module) ->
 
       # then setup the routes
       MSGBUS.commands.execute 'frontdoor:route'
-      MSGBUS.commands.execute 'hubby:route'
+      MSGBUS.commands.execute 'demoapp:route'
       
     # connect events
     MSGBUS.events.on 'mainpage:show', (view) =>

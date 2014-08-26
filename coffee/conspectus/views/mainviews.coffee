@@ -5,11 +5,11 @@ define (require, exports, module) ->
 
   Templates = require 'views/templates'
   
-  MSGBUS.reqres.setHandler 'hubby:navbar-color', ->
+  MSGBUS.reqres.setHandler 'demoapp:navbar-color', ->
     navbar = $ '#main-navbar'
     navbar.css 'color'
     
-  MSGBUS.reqres.setHandler 'hubby:navbar-bg-color', ->
+  MSGBUS.reqres.setHandler 'demoapp:navbar-bg-color', ->
     navbar = $ '#main-navbar'
     navbar.css 'background-color'
     
