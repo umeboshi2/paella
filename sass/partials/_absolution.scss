@@ -37,12 +37,13 @@
 }
 
 @import "partials/basecolors";
+@import "partials/base_variables";
 
 // Default Radius
 $ui-border-radius: 5px;
 
 // Default Fonts
-$ui-font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif;
+$ui-font-family: $base-font-family;
 
 $ui-fixed-font-family: "andale mono", "lucida console", monospace;
 
