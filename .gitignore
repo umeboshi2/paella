@@ -26,6 +26,8 @@ node_modules
 
 # bower components
 bower_components
+components
+
 
 *.py[cod]
 
