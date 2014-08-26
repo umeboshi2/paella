@@ -26,12 +26,6 @@ define (require, exports, module) ->
       console.log 'list_meetings_pressed called'
       @_navigate '#demoapp/listmeetings'
       
-  class SimpleMeetingView extends Backbone.Marionette.ItemView
-    template: Templates.meeting_list_entry
-    
-  class MeetingListView extends Backbone.Marionette.CollectionView
-    childView: SimpleMeetingView
-
   class ShowPageView extends Backbone.Marionette.ItemView
     template: Templates.page_view
 
@@ -63,5 +57,7 @@ define (require, exports, module) ->
       
   module.exports =
     SideBarView: SideBarView
+    ShowPageView: ShowPageView
+    EditPageView: EditPageView
     
     

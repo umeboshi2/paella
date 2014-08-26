@@ -17,6 +17,9 @@ define (require, exports, module) ->
     parse: (response) ->
       return response.data
 
+  class BaseLocalStorageCollection extends Backbone.Collection
+
+      
   class PageCollection extends BaseCollection
     model: Models.Page
 
