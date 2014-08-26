@@ -1,4 +1,7 @@
 # Require any additional compass plugins here.
+#require 'sassy-buttons'
+require 'bootstrap-sass'
+require 'compass-ui'
 
 # Set this to the root of your project when deployed:
 http_path = "/"
