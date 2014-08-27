@@ -2,15 +2,16 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   MSGBUS = require 'msgbus'
   Marionette = require 'marionette'
-
+  
+  Models = require 'models'
   Templates = require 'common/templates'
 
   FDTemplates = require 'frontdoor/templates'
-  FormView = require 'common/form_view'
+  FormView = require 'common/views/formview'
   { navigate_to_url } = require 'common/util'
     
-  BaseEditPageView = require 'common/editview'
-  BaseSideBarView = require 'common/sidebarview'
+  BaseEditPageView = require 'common/views/editor'
+  BaseSideBarView = require 'common/views/sidebar'
     
   class FrontDoorMainView extends Backbone.Marionette.ItemView
     template: FDTemplates.frontdoor_main
@@ -38,12 +39,47 @@ define (require, exports, module) ->
 
   class EditPageView extends BaseEditPageView
     template: FDTemplates.edit_page
-    
+
+  class NewPageFormView extends FormView
+    ui:
+      name: '[name="name"]'
+      content: '[name="content"]'
+
+    template: FDTemplates.new_page_form
+
+    createModel: ->
+      #pages = MSGBUS.reqres.request 'pages:collection'
+      #pages.create()
+      new Models.Page
+        validation:
+          name:
+            required: true
+          content:
+            required: true
+            
+      
+    updateModel: ->
+      collection = MSGBUS.reqres.request 'pages:collection'
+      page_id = @ui.name.val()
+      @model.set
+        id: page_id
+        name: page_id
+        content: @ui.content.val()
+      collection.add @model
+
+    onSuccess: (model) ->
+      navigate_to_url '#wiki/editpage/' + model.get 'id'
+
+    onFailure: (model) ->
+      #alert "Failed"
+      
+      
   module.exports =
     FrontDoorMainView: FrontDoorMainView
     SideBarView: SideBarView
     PageListView: PageListView
     ShowPageView: ShowPageView
     EditPageView: EditPageView
+    NewPageFormView: NewPageFormView
     
     

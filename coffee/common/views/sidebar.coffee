@@ -3,7 +3,6 @@ define (require, exports, module) ->
   MSGBUS = require 'msgbus'
   Marionette = require 'marionette'
 
-  FormView = require 'common/form_view'
   Templates = require 'common/templates'
   { navigate_to_url } = require 'common/util'
   

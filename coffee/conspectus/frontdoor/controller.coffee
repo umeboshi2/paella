@@ -67,7 +67,9 @@ define (require, exports, module) ->
 
     add_page: () ->
       @make_sidebar()
-      alert 'make a form view'
+      view = new FDViews.NewPageFormView
+      MSGBUS.events.trigger 'rcontent:show', view
+      
       
     start: ->
       console.log 'controller.start called'

@@ -18,11 +18,10 @@ define (require, exports, module) ->
     app_settings
     
   class Page extends Backbone.Model
-    #url: () ->
-    #  null
-      
-    
-      
+    validation:
+      name:
+        required: true
+        
     
   module.exports =
     Page: Page
