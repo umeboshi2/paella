@@ -18,7 +18,7 @@ require.config
     text: '../../../components/requirejs-text/text'
     teacup: '../../../components/teacup/lib/teacup'
     marked: '../../../components/marked/lib/marked'
-    
+    ace: '../../../components/ace-builds/src/ace'
   # FIXME:  try to reduce the shim to only the
   # necessary resources
   shim:

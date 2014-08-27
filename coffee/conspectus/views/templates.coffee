@@ -88,7 +88,7 @@ define (require, exports, module) ->
   main_sidebar = renderable (model) ->
     div '.sidebar-menu', ->
       for entry in model.entries
-        div '.sidebar-entry.top-button', ->
+        div '.sidebar-entry.btn.btn-default', ->
           a href:entry.url, entry.name          
   
 

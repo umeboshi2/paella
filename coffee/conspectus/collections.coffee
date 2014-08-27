@@ -37,6 +37,7 @@ define (require, exports, module) ->
     if model == undefined
       model = new Models.Page
         id: page_id
+        content: ''
       main_page_collection.add model
       if page_id == 'intro'
         model.set 'content', 'This is the intro.'
