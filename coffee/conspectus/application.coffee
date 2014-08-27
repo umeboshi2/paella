@@ -10,7 +10,7 @@ define (require, exports, module) ->
   MSGBUS = require 'msgbus'
   Models = require 'models'
   
-  require 'mainpage'
+  require 'common/mainpage'
   require 'frontdoor/main'
   require 'demoapp/main'
   
