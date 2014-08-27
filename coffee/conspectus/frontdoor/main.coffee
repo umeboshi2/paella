@@ -17,8 +17,10 @@ define (require, exports, module) ->
       
   MSGBUS.commands.setHandler 'frontdoor:route', () ->
     console.log "frontdoor:route being handled"
-    controller = new Controller
-    router = new Router
-      controller: controller
-    console.log 'router created'
-    
+    page_collection = MSGBUS.reqres.request 'pages:collection'
+    response = page_collection.fetch()
+    response.done =>
+      controller = new Controller
+      router = new Router
+        controller: controller
+      console.log 'router created'

@@ -3,7 +3,7 @@ define (require, exports, module) ->
   MSGBUS = require 'msgbus'
   Marionette = require 'marionette'
 
-  Templates = require 'views/templates'
+  Templates = require 'common/templates'
 
   FDTemplates = require 'frontdoor/templates'
   FormView = require 'common/form_view'

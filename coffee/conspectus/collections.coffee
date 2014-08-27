@@ -21,14 +21,16 @@ define (require, exports, module) ->
   # set handlers on message bus
   #
   main_page_collection = new PageCollection
-
   MSGBUS.reqres.setHandler 'pages:collection', ->
     main_page_collection
 
   MSGBUS.reqres.setHandler 'pages:getpage', (page_id) ->
     console.log 'handle pages:getpage ' + page_id
     model = main_page_collection.get page_id
-    if model == undefined
+    window.mmodel = model
+    #return model
+    if model is undefined
+      console.log 'make new page model ' + page_id
       model = new Models.Page
         id: page_id
         content: ''

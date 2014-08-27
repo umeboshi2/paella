@@ -2,7 +2,7 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   Marionette = require 'marionette'
   MSGBUS = require 'msgbus'
-  Views = require 'views/mainviews'
+  Views = require 'common/mainviews'
 
   ProjectBrand = new Backbone.Model
     name: 'Project'
