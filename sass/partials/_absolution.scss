@@ -36,11 +36,10 @@
   @include absolution-tabs;
 }
 
-@import "partials/basecolors";
 @import "partials/base_variables";
 
 // Default Radius
-$ui-border-radius: 5px;
+$ui-border-radius: $ui-border-radius;
 
 // Default Fonts
 $ui-font-family: $base-font-family;
