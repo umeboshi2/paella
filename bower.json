@@ -31,7 +31,9 @@
     "backbone.validation": "~0.7.1",
     "backbone.paginator": "~2.0.2",
     "requirejs": "~2.1.14",
-    "backbone.localStorage": "~1.1.13"
+    "backbone.localStorage": "~1.1.13",
+    "font-awesome": "~4.2.0",
+    "ace-builds": "~1.1.6"
   },
   "resolutions": {
     "jquery": "~2.1.1",
