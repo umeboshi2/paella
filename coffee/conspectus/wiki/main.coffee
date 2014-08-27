@@ -4,15 +4,18 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   MSGBUS = require 'msgbus'
 
-  Controller = require 'frontdoor/controller'
+  Controller = require 'wiki/controller'
 
   class Router extends Backbone.Marionette.AppRouter
     appRoutes:
-      '': 'start'
-      'frontdoor': 'start'
+      'wiki': 'start'
+      'wiki/listpages': 'list_pages'
+      'wiki/showpage/:name' : 'show_page'
+      'wiki/editpage/:name': 'edit_page'
+      'wiki/addpage': 'add_page'
       
-  MSGBUS.commands.setHandler 'frontdoor:route', () ->
-    console.log "frontdoor:route being handled"
+  MSGBUS.commands.setHandler 'wiki:route', () ->
+    console.log "wiki:route being handled"
     page_collection = MSGBUS.reqres.request 'pages:collection'
     response = page_collection.fetch()
     response.done =>

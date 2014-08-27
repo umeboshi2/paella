@@ -12,6 +12,7 @@ require.config
     marionette: components + 'marionette/lib/core/backbone.marionette'
     validation: components + 'backbone.validation/dist/backbone-validation-amd'
     bblocalStorage: components + 'backbone.localStorage/backbone.localStorage'
+    'backbone.paginator': components+ 'backbone.paginator/lib/backbone.paginator'
     bootstrap: components + 'bootstrap/dist/js/bootstrap'
     moment: components + 'moment/moment'
     fullcalendar: components + 'fullcalendar/fullcalendar'

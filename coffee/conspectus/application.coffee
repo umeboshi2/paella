@@ -13,7 +13,8 @@ define (require, exports, module) ->
   require 'common/mainpage'
   require 'frontdoor/main'
   require 'demoapp/main'
-  
+  require 'wiki/main'
+    
   prepare_app = (app) ->
     app.addRegions
       mainview: 'body'
@@ -38,6 +39,7 @@ define (require, exports, module) ->
       # then setup the routes
       MSGBUS.commands.execute 'frontdoor:route'
       MSGBUS.commands.execute 'demoapp:route'
+      MSGBUS.commands.execute 'wiki:route'
       
     # connect events
     MSGBUS.events.on 'mainpage:show', (view) =>
@@ -82,6 +84,19 @@ define (require, exports, module) ->
 
   prepare_app app
   app.ready = true
+
+  
+  # These are handlers to retrieve the colors
+  # from the navbars, and are used to create
+  # the default color for the fullcalendar
+  # events.
+  MSGBUS.reqres.setHandler 'mainpage:navbar-color', ->
+    navbar = $ '#main-navbar'
+    navbar.css 'color'
+    
+  MSGBUS.reqres.setHandler 'mainpage:navbar-bg-color', ->
+    navbar = $ '#main-navbar'
+    navbar.css 'background-color'
     
   
   module.exports = app

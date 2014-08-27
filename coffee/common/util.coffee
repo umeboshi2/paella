@@ -3,6 +3,9 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
 
+  scroll_top_fast = ()  ->
+    $('html, body').animate {scrollTop: 0}, 'fast'
+  
   navigate_to_url = (url) ->
     r = new Backbone.Router
     r.navigate url, trigger:true
@@ -34,6 +37,7 @@ define (require, exports, module) ->
       
 
   module.exports =
+    scroll_top_fast: scroll_top_fast
     navigate_to_url: navigate_to_url
     capitalize: capitalize
     handle_newlines: handle_newlines

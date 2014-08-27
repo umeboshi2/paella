@@ -4,7 +4,7 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   MSGBUS = require 'msgbus'
 
-  FDViews = require 'frontdoor/views'
+  FDViews = require 'wiki/views'
 
   marked = require 'marked'
   Models = require 'models'
@@ -17,12 +17,12 @@ define (require, exports, module) ->
         url: '#'
       }
       {
-        name: 'Wiki'
-        url: '#wiki'
+        name: 'News'
+        url: '#wiki/showpage/news'
       }
       {
-        name: 'Hello'
-        url: '#demoapp'
+        name: 'List Pages'
+        url: '#wiki/listpages'
       }
       ]
 
@@ -38,6 +38,16 @@ define (require, exports, module) ->
       @make_sidebar()
       @show_page 'intro'
 
+    list_pages: ->
+      @make_sidebar()
+      pages = MSGBUS.reqres.request 'pages:collection'
+      response = pages.fetch()
+      response.done =>
+        view = new FDViews.PageListView
+          collection: pages
+        MSGBUS.events.trigger 'rcontent:show', view
+      window.pages = pages
+      
     show_page: (name) ->
       @make_sidebar()
       page = MSGBUS.reqres.request 'pages:getpage', name
@@ -47,10 +57,24 @@ define (require, exports, module) ->
         model: page
       MSGBUS.events.trigger 'rcontent:show', view
 
+    edit_page: (name) ->
+      @make_sidebar()
+      page = MSGBUS.reqres.request 'pages:getpage', name
+      window.current_page = page
+      view = new FDViews.EditPageView
+        model: page
+      MSGBUS.events.trigger 'rcontent:show', view
+
+    add_page: () ->
+      @make_sidebar()
+      view = new FDViews.NewPageFormView
+      MSGBUS.events.trigger 'rcontent:show', view
+      
+      
     start: ->
       console.log 'controller.start called'
       @make_main_content()
-      console.log 'frontdoor started'
+      console.log 'wiki started'
 
   module.exports = Controller
   
