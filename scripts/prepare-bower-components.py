@@ -2,6 +2,7 @@ import os, sys
 import subprocess
 import json
 
+COMPONENT_PATH = 'bower_components'
 
 # I will only need one of these two
 IGNORED_NEEDED = ['ace', 'ace-builds']
@@ -54,12 +55,31 @@ def parse_npm_package(pathspec):
 
 
 def handle_fontawesome(pathspec):
-    srcdir = os.path.join(pathspec, 'fonts')
-    fonts = os.listdir(srcdir)
-    for basename in fonts:
-        src = os.path.join(srcdir, basename)
-        handle_file(src)
+    if type(pathspec) is not list:
+        raise RuntimeError, "pathspec for fontawesome must be a list."
+    name = 'font-awesome'
+    for path in pathspec:
+        if path.endswith('*'):
+            path = os.path.dirname(path)
+            files = os.listdir(path)
+            for filename in files:
+                fpath = os.path.join(path, filename)
+                handle_file(fpath)
+        elif os.path.isdir(path):
+            handle_dir(name, path)
+        elif os.path.isfile(path):
+            handle_file(path)
+        else:
+            raise RuntimeError, "Don't know what to do with %s." % path
         
+def handle_ace_editor(components):
+    basedir = os.path.join(components, 'ace-builds/src')
+    print "Handling ace"
+    for basename in os.listdir(basedir):
+        pathspec = os.path.join(basedir, basename)
+        handle_file(pathspec)
+        
+
 def handle_requirejs(pathspec):
     filename = os.path.join(pathspec, 'require.js')
     if not os.path.isfile(filename):
@@ -146,6 +166,9 @@ def handle_generic_component(name, pathspec):
         handle_single_item(name, pathspec)    
             
 def handle_item(name, pathspec):
+    if name == 'font-awesome':
+        handle_fontawesome(pathspec)
+        return
     if name not in IGNORED:
         handle_generic_component(name, pathspec)
         
@@ -161,3 +184,7 @@ if __name__ == '__main__':
         handle_item(name, pathspec)
     for path in SPECIAL_PATHS:
         handle_file(path)
+    ace_path = os.path.join(COMPONENT_PATH, 'ace-builds')
+    if os.path.isdir(ace_path):
+        handle_ace_editor(COMPONENT_PATH)
+        
