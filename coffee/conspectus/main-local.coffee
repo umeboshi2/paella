@@ -19,6 +19,7 @@ require.config
     teacup: '../../../components/teacup/lib/teacup'
     marked: '../../../components/marked/lib/marked'
     ace: '../../../components/ace-builds/src/ace'
+    common: '../common'
   # FIXME:  try to reduce the shim to only the
   # necessary resources
   shim:
