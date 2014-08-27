@@ -22,8 +22,19 @@ define (require, exports, module) ->
   class PageListView extends Backbone.Marionette.CompositeView
     template: FDTemplates.page_list
     childView: PageListEntryView
-    className: '.listview-list'
+    childViewContainer: '.listview-list'
+    # handle new page button click
+    events:
+      'click #add-new-page-button': 'add_new_page_pressed'
+      
+    _navigate: (url) ->
+      r = new Backbone.Router
+      r.navigate url, trigger:true
 
+    add_new_page_pressed: () ->
+      console.log 'add_new_page_pressed called'
+      @_navigate '#wiki/addpage'
+      
   class ShowPageView extends Backbone.Marionette.ItemView
     template: FDTemplates.show_page_view
 

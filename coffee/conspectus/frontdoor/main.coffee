@@ -13,6 +13,7 @@ define (require, exports, module) ->
       'wiki/listpages': 'list_pages'
       'wiki/showpage/:name' : 'show_page'
       'wiki/editpage/:name': 'edit_page'
+      'wiki/addpage': 'add_page'
       
   MSGBUS.commands.setHandler 'frontdoor:route', () ->
     console.log "frontdoor:route being handled"

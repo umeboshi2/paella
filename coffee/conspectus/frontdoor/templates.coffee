@@ -52,7 +52,9 @@ define (require, exports, module) ->
       a href:'#wiki/showpage/' + page.id, page.id
         
   page_list = renderable () ->
-    div '.listview-header', 'Wiki Pages'
+    div '.listview-header', ->
+      text 'Wiki Pages'
+      span '#add-new-page-button.btn.btn-default.btn-xs.pull-right', 'New Page'
     div '.listview-list'
 
   show_page_view = renderable (page) ->
