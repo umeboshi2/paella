@@ -1,6 +1,5 @@
 # https://github.com/scottaj/marionette-form-view-demo
 # 
-
 define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'

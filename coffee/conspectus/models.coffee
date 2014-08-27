@@ -3,31 +3,12 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   MSGBUS = require 'msgbus'
-  
+
+  BaseLocalStorageModel = require 'common/localstoragemodel'
+    
   ########################################
   # Models
   ########################################
-
-  class BaseLocalStorageModel extends Backbone.Model
-    initialize: () ->
-      @fetch()
-      @on 'change', @save, @
-
-    fetch: () ->
-      console.log '===== FETCH FIRED LOADING LOCAL STORAGE ===='
-      @set JSON.parse localStorage.getItem @id
-
-    save: (attributes) ->
-      console.log '===== CHANGE FIRED SAVING LOCAL STORAGE ===='
-      localStorage.setItem(@id, JSON.stringify(@toJSON()))
-
-    destroy: (options) ->
-      console.log '===== DESTROY LOCAL STORAGE ===='
-      localStorage.removeItem @id
-
-    isEmpty: () ->
-      _.size @attributes <= 1
-      
 
   class AppSettings extends BaseLocalStorageModel
     id: 'app_settings'

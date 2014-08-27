@@ -7,15 +7,16 @@ define (require, exports, module) ->
 
   FDTemplates = require 'frontdoor/templates'
   FormView = require 'common/form_view'
-
-  require 'ace'
+  { navigate_to_url } = require 'common/util'
+    
+  BaseEditPageView = require 'common/editview'
+  BaseSideBarView = require 'common/sidebarview'
     
   class FrontDoorMainView extends Backbone.Marionette.ItemView
     template: FDTemplates.frontdoor_main
 
-  class SideBarView extends Backbone.Marionette.ItemView
-    template: Templates.main_sidebar
-
+  class SideBarView extends BaseSideBarView
+    
   class PageListEntryView extends Backbone.Marionette.ItemView
     template: FDTemplates.page_list_entry
     
@@ -27,44 +28,17 @@ define (require, exports, module) ->
     events:
       'click #add-new-page-button': 'add_new_page_pressed'
       
-    _navigate: (url) ->
-      r = new Backbone.Router
-      r.navigate url, trigger:true
-
     add_new_page_pressed: () ->
       console.log 'add_new_page_pressed called'
-      @_navigate '#wiki/addpage'
+      navigate_to_url '#wiki/addpage'
       
   class ShowPageView extends Backbone.Marionette.ItemView
     template: FDTemplates.show_page_view
 
-  class EditPageView extends Backbone.Marionette.ItemView
+
+  class EditPageView extends BaseEditPageView
     template: FDTemplates.edit_page
-
-    onDomRefresh: () ->
-      savebutton = $ '#save-button'
-      savebutton.hide()
-      editor = ace.edit('editor')
-      editor.setTheme 'ace/theme/twilight'
-      session = editor.getSession()
-      session.setMode('ace/mode/markdown')
-      content = @model.get 'content'
-      editor.setValue(content)
-
-      session.on('change', () ->
-        savebutton.show()
-      )
-      
-      savebutton.click =>
-        @model.set('content', editor.getValue())
-        response = @model.save()
-        response.done ->
-          console.log 'Model successfully saved.'
-          savebutton.hide()
-      window.editor = editor
-          
-          
-          
+    
   module.exports =
     FrontDoorMainView: FrontDoorMainView
     SideBarView: SideBarView

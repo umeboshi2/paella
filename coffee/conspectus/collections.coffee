@@ -13,12 +13,6 @@ define (require, exports, module) ->
   ########################################
   # Collections
   ########################################
-  class BaseCollection extends Backbone.Collection
-    # wrap the parsing to retrieve the
-    # 'data' attribute from the json response
-    parse: (response) ->
-      return response.data
-
   class PageCollection extends Backbone.Collection
     localStorage: new localStorage('pages')
     model: Models.Page
