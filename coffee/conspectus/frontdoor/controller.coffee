@@ -22,7 +22,7 @@ define (require, exports, module) ->
       }
       {
         name: 'Hello'
-        url: '#demoapp'
+        url: '#bumblr'
       }
       ]
 
