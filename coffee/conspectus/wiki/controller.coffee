@@ -2,10 +2,11 @@ define (require, exports, module) ->
   $ = require 'jquery'
   Backbone = require 'backbone'
   Marionette = require 'marionette'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
 
   FDViews = require 'wiki/views'
-
+  AppBus = require 'wiki/msgbus'
+  
   marked = require 'marked'
   Models = require 'models'
   Collections = require 'collections'
@@ -33,10 +34,10 @@ define (require, exports, module) ->
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
       navbar_set_active '#wiki'
-      MSGBUS.events.trigger 'sidebar:close'
+      MainBus.vent.trigger 'sidebar:close'
       view = new FDViews.SideBarView
         model: side_bar_data
-      MSGBUS.events.trigger 'sidebar:show', view
+      MainBus.vent.trigger 'sidebar:show', view
       
     make_main_content: ->
       @make_sidebar()
@@ -44,35 +45,35 @@ define (require, exports, module) ->
 
     list_pages: ->
       @make_sidebar()
-      pages = MSGBUS.reqres.request 'pages:collection'
+      pages = AppBus.reqres.request 'pages:collection'
       response = pages.fetch()
       response.done =>
         view = new FDViews.PageListView
           collection: pages
-        MSGBUS.events.trigger 'rcontent:show', view
+        MainBus.vent.trigger 'rcontent:show', view
       window.pages = pages
       
     show_page: (name) ->
       @make_sidebar()
-      page = MSGBUS.reqres.request 'pages:getpage', name
+      page = AppBus.reqres.request 'pages:getpage', name
       #response = page.fetch()
       #response.done =>
       view = new FDViews.FrontDoorMainView
         model: page
-      MSGBUS.events.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'rcontent:show', view
 
     edit_page: (name) ->
       @make_sidebar()
-      page = MSGBUS.reqres.request 'pages:getpage', name
+      page = AppBus.reqres.request 'pages:getpage', name
       window.current_page = page
       view = new FDViews.EditPageView
         model: page
-      MSGBUS.events.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'rcontent:show', view
 
     add_page: () ->
       @make_sidebar()
       view = new FDViews.NewPageFormView
-      MSGBUS.events.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'rcontent:show', view
       
       
     start: ->

@@ -1,12 +1,13 @@
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
   Marionette = require 'marionette'
   
   Models = require 'models'
   Templates = require 'common/templates'
 
   FDTemplates = require 'wiki/templates'
+  AppBus = require 'wiki/msgbus'
+  
   FormView = require 'common/views/formview'
   { navigate_to_url } = require 'common/util'
     
@@ -48,8 +49,6 @@ define (require, exports, module) ->
     template: FDTemplates.new_page_form
 
     createModel: ->
-      #pages = MSGBUS.reqres.request 'pages:collection'
-      #pages.create()
       new Models.Page
         validation:
           name:
@@ -59,7 +58,7 @@ define (require, exports, module) ->
             
       
     updateModel: ->
-      collection = MSGBUS.reqres.request 'pages:collection'
+      collection = AppBus.reqres.request 'pages:collection'
       page_id = @ui.name.val()
       @model.set
         id: page_id

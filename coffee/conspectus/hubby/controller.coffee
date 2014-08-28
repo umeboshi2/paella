@@ -2,10 +2,11 @@ define (require, exports, module) ->
   $ = require 'jquery'
   Backbone = require 'backbone'
   Marionette = require 'marionette'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
 
   Views = require 'hubby/views'
   Models = require 'hubby/models'
+  AppBus = require 'hubby/msgbus'
   
   Collections = require 'hubby/collections'
 
@@ -26,15 +27,15 @@ define (require, exports, module) ->
       }
     ]
 
-  meetings = MSGBUS.reqres.request 'hubby:meetinglist'
+  meetings = AppBus.reqres.request 'meetinglist'
   
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
       navbar_set_active '#hubby'
-      MSGBUS.events.trigger 'sidebar:close'
+      MainBus.vent.trigger 'sidebar:close'
       view = new Views.SideBarView
         model: sidebar_model
-      MSGBUS.events.trigger 'sidebar:show', view
+      MainBus.vent.trigger 'sidebar:show', view
       
     set_header: (title) ->
       header = $ '#header'
@@ -42,8 +43,8 @@ define (require, exports, module) ->
       
     start: ->
       #console.log 'hubby start'
-      MSGBUS.events.trigger 'rcontent:close'
-      MSGBUS.events.trigger 'sidebar:close'
+      MainBus.vent.trigger 'rcontent:close'
+      MainBus.vent.trigger 'sidebar:close'
       @set_header 'Hubby'
       @show_calendar()
       
@@ -51,7 +52,7 @@ define (require, exports, module) ->
       #console.log 'hubby show calendar'
       @make_sidebar()
       view = new Views.MeetingCalendarView
-      MSGBUS.events.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'rcontent:show', view
       scroll_top_fast()
       
     show_meeting: (meeting_id) ->
@@ -63,7 +64,7 @@ define (require, exports, module) ->
       response.done =>
         view = new Views.ShowMeetingView
           model: meeting
-        MSGBUS.events.trigger 'rcontent:show', view
+        MainBus.vent.trigger 'rcontent:show', view
       scroll_top_fast()
 
     list_meetings: () ->
@@ -73,7 +74,7 @@ define (require, exports, module) ->
         collection: meetings
       if meetings.length == 0
         meetings.fetch()
-      MSGBUS.events.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'rcontent:show', view
       scroll_top_fast()
       
   module.exports = Controller

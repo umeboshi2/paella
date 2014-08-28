@@ -3,10 +3,11 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   PageableCollection = require 'backbone.paginator'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
   localStorage = require 'bblocalStorage'
   Models = require 'bumblr/models'
-        
+  AppBus = require 'bumblr/msgbus'
+  
 
   ########################################
   # Collections
@@ -50,15 +51,15 @@ define (require, exports, module) ->
         @state.currentPage * @state.pageSize
         
   make_blog_post_collection = (base_hostname) ->
-    settings = MSGBUS.reqres.request 'bumblr:get_app_settings'
+    settings = AppBus.reqres.request 'get_app_settings'
     api_key = settings.get 'consumer_key'
     bp = new BlogPosts
     bp.api_key = api_key
     bp.base_hostname = base_hostname
     return bp
     
-  req = 'bumblr:make_blog_post_collection'
-  MSGBUS.reqres.setHandler req, (base_hostname) ->
+  req = 'make_blog_post_collection'
+  AppBus.reqres.setHandler req, (base_hostname) ->
     make_blog_post_collection(base_hostname)
     
   
@@ -78,10 +79,10 @@ define (require, exports, module) ->
       return model
           
   local_blogs = new LocalBlogCollection
-  settings = MSGBUS.reqres.request 'bumblr:get_app_settings'
+  settings = AppBus.reqres.request 'get_app_settings'
   api_key = settings.get 'consumer_key'
   local_blogs.api_key = api_key
-  MSGBUS.reqres.setHandler 'bumblr:get_local_blogs', ->
+  AppBus.reqres.setHandler 'get_local_blogs', ->
     local_blogs
 
     

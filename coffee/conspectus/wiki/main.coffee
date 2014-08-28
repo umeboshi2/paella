@@ -2,10 +2,11 @@
 # Simple entry app
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
 
   Controller = require 'wiki/controller'
-
+  AppBus = require 'wiki/msgbus'
+  
   # require this for msgbus handlers
   require 'wiki/collections'
   
@@ -17,9 +18,9 @@ define (require, exports, module) ->
       'wiki/editpage/:name': 'edit_page'
       'wiki/addpage': 'add_page'
       
-  MSGBUS.commands.setHandler 'wiki:route', () ->
+  MainBus.commands.setHandler 'wiki:route', () ->
     console.log "wiki:route being handled"
-    page_collection = MSGBUS.reqres.request 'pages:collection'
+    page_collection = AppBus.reqres.request 'pages:collection'
     response = page_collection.fetch()
     response.done =>
       controller = new Controller

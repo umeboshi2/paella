@@ -2,9 +2,10 @@ define (require, exports, module) ->
   $ = require 'jquery'
   Backbone = require 'backbone'
   Marionette = require 'marionette'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
 
   FDViews = require 'frontdoor/views'
+  WikiBus = require 'wiki/msgbus'
 
   marked = require 'marked'
   Models = require 'models'
@@ -37,10 +38,10 @@ define (require, exports, module) ->
     make_sidebar: ->
       Util.navbar_set_active '#'
       
-      MSGBUS.events.trigger 'sidebar:close'
+      MainBus.vent.trigger 'sidebar:close'
       view = new FDViews.SideBarView
         model: side_bar_data
-      MSGBUS.events.trigger 'sidebar:show', view
+      MainBus.vent.trigger 'sidebar:show', view
       
     make_main_content: ->
       @make_sidebar()
@@ -48,12 +49,12 @@ define (require, exports, module) ->
 
     show_page: (name) ->
       @make_sidebar()
-      page = MSGBUS.reqres.request 'pages:getpage', name
+      page = WikiBus.reqres.request 'pages:getpage', name
       #response = page.fetch()
       #response.done =>
       view = new FDViews.FrontDoorMainView
         model: page
-      MSGBUS.events.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'rcontent:show', view
 
     start: ->
       console.log 'controller.start called'

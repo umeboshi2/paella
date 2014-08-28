@@ -1,6 +1,5 @@
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
   Marionette = require 'marionette'
   require 'ace'
   { navigate_to_url } = require 'common/util'

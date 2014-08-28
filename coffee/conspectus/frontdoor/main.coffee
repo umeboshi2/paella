@@ -2,8 +2,10 @@
 # Simple entry app
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
-
+  MainBus = require 'msgbus'
+  WikiBus = require 'wiki/msgbus'
+  AppBus = require 'frontdoor/msgbus'
+  
   Controller = require 'frontdoor/controller'
 
   class Router extends Backbone.Marionette.AppRouter
@@ -11,9 +13,9 @@ define (require, exports, module) ->
       '': 'start'
       'frontdoor': 'start'
       
-  MSGBUS.commands.setHandler 'frontdoor:route', () ->
+  MainBus.commands.setHandler 'frontdoor:route', () ->
     console.log "frontdoor:route being handled"
-    page_collection = MSGBUS.reqres.request 'pages:collection'
+    page_collection = WikiBus.reqres.request 'pages:collection'
     response = page_collection.fetch()
     response.done =>
       controller = new Controller

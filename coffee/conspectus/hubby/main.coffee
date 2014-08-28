@@ -1,10 +1,10 @@
 #
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
 
   Controller = require 'hubby/controller'
-  
+  AppBus = require 'hubby/msgbus'  
 
   class Router extends Backbone.Marionette.AppRouter
     appRoutes:
@@ -13,15 +13,14 @@ define (require, exports, module) ->
       'hubby/listmeetings': 'list_meetings'
       
   current_calendar_date = undefined
-  MSGBUS.commands.setHandler 'hubby:maincalendar:set_date', () ->
+  AppBus.commands.setHandler 'maincalendar:set_date', () ->
     cal = $ '#maincalendar'
     current_calendar_date = cal.fullCalendar 'getDate'
 
-  MSGBUS.reqres.setHandler 'hubby:maincalendar:get_date', () ->
+  AppBus.reqres.setHandler 'maincalendar:get_date', () ->
     current_calendar_date
     
-  MSGBUS.commands.setHandler 'hubby:route', () ->
-    #window.msgbus = MSGBUS
+  MainBus.commands.setHandler 'hubby:route', () ->
     console.log "hubby:route being handled..."
     controller = new Controller
     router = new Router

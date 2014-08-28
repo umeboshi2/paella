@@ -4,9 +4,8 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
 
   Models = require 'hubby/models'
-  MSGBUS = require 'msgbus'
-      
-
+  AppBus = require 'hubby/msgbus'
+  
   ########################################
   # Collections
   ########################################
@@ -21,7 +20,7 @@ define (require, exports, module) ->
     url: 'http://hubby.littledebian.org/rest/v0/main/meeting'
 
   main_meeting_list = new MeetingCollection
-  MSGBUS.reqres.setHandler 'hubby:meetinglist', ->
+  AppBus.reqres.setHandler 'meetinglist', ->
     main_meeting_list
 
   class ItemActionCollection extends BaseCollection
@@ -33,7 +32,7 @@ define (require, exports, module) ->
     c.url = url
     return c
     
-  MSGBUS.reqres.setHandler 'hubby:item_action_collection', (itemid) ->
+  AppBus.reqres.setHandler 'item_action_collection', (itemid) ->
     make_item_action_collection itemid
     
   module.exports =

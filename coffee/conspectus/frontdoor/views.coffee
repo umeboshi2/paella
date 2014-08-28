@@ -1,6 +1,5 @@
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
   Marionette = require 'marionette'
   
   Models = require 'models'

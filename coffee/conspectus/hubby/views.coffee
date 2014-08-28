@@ -1,10 +1,11 @@
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
   Marionette = require 'marionette'
 
   Templates = require 'hubby/templates'
   Models = require 'hubby/models'
+  AppBus = require 'hubby/msgbus'
   BaseSideBarView = require 'common/views/sidebar'
   
   require 'jquery-ui'
@@ -17,7 +18,7 @@ define (require, exports, module) ->
       'font-size' : '0.9em'
 
   calendar_view_render = (view, element) ->
-    MSGBUS.commands.execute 'hubby:maincalendar:set_date'
+    AppBus.commands.execute 'maincalendar:set_date'
 
   loading_calendar_events = (bool) ->
     loading = $ '#loading'
@@ -43,9 +44,9 @@ define (require, exports, module) ->
     onDomRefresh: () ->
       # get the current calendar date that has been stored
       # before creating the calendar
-      date  = MSGBUS.reqres.request 'hubby:maincalendar:get_date'
-      navbar_color = MSGBUS.reqres.request 'hubby:navbar-color'
-      navbar_bg_color = MSGBUS.reqres.request 'hubby:navbar-bg-color'
+      date  = AppBus.reqres.request 'maincalendar:get_date'
+      navbar_color = MainBus.reqres.request 'get-navbar-color'
+      navbar_bg_color = MainBus.reqres.request 'get-navbar-bg-color'
       cal = $ '#maincalendar'
       cal.fullCalendar
         header:
@@ -89,8 +90,8 @@ define (require, exports, module) ->
           action_area.toggle()
         else
           itemid = el.attr('id')
-          req = 'hubby:item_action_collection'
-          collection = MSGBUS.reqres.request req, itemid
+          req = 'item_action_collection'
+          collection = AppBus.reqres.request req, itemid
           response = collection.fetch()
           response.done =>
             html = ''

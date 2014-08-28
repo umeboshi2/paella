@@ -1,11 +1,13 @@
 define (require, exports, module) ->
   Backbone = require 'backbone'
-  MSGBUS = require 'msgbus'
+  MainBus = require 'msgbus'
   Marionette = require 'marionette'
 
   FormView = require 'common/views/formview'
   Templates = require 'bumblr/templates'
   Models = require 'bumblr/models'
+  AppBus = require 'bumblr/msgbus'
+  
   BaseModels = require 'models'
   BaseSideBarView = require 'common/views/sidebar'
   require 'jquery-ui'
@@ -28,8 +30,7 @@ define (require, exports, module) ->
 
     updateModel: ->
       console.log 'updateModel'
-      @collection = MSGBUS.reqres.request 'bumblr:get_local_blogs'
-      console.log 'window.blcollection set'
+      @collection = AppBus.reqres.request 'get_local_blogs'
       @model = @collection.add_blog @ui.blog_name.val()
 
     onSuccess: ->
@@ -103,7 +104,7 @@ define (require, exports, module) ->
         token_secret: @ui.token_secret.val()
         
     createModel: ->
-      MSGBUS.reqres.request 'bumblr:get_app_settings'
+      AppBus.reqres.request 'get_app_settings'
         
     onSuccess: (model) ->
       console.log 'onSuccess called'

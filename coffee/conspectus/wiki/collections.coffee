@@ -2,11 +2,11 @@ define (require, exports, module) ->
   $ = require 'jquery'
   _ = require 'underscore'
   Backbone = require 'backbone'
+  MainBus = require 'msgbus'
+  localStorage = require 'bblocalStorage'
   
   Models = require 'wiki/models'
-  
-  MSGBUS = require 'msgbus'
-  localStorage = require 'bblocalStorage'
+  AppBus = require 'wiki/msgbus'
   
       
 
@@ -21,10 +21,10 @@ define (require, exports, module) ->
   # set handlers on message bus
   #
   main_page_collection = new PageCollection
-  MSGBUS.reqres.setHandler 'pages:collection', ->
+  AppBus.reqres.setHandler 'pages:collection', ->
     main_page_collection
 
-  MSGBUS.reqres.setHandler 'pages:getpage', (page_id) ->
+  AppBus.reqres.setHandler 'pages:getpage', (page_id) ->
     console.log 'handle pages:getpage ' + page_id
     model = main_page_collection.get page_id
     window.mmodel = model
