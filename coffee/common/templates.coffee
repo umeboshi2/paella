@@ -48,28 +48,6 @@ define (require, exports, module) ->
                     
                   
   ########################################
-  make_menu = renderable (model) ->
-    cls = '.' + model.tagclass + '.ctx-menu.nav.navbar.navbar-nav'
-    ul cls, ->
-      li '.dropdown', ->
-        a '.dropdown-toggle', 'data-toggle':'dropdown', ->
-          text model.label
-          b '.caret'
-        ul '.dropdown-menu', ->
-          for entry in model.entries
-            li ->
-              a href:entry.url, entry.name
-            
-
-            
-  PageLayoutTemplate = renderable () ->
-    div '.wrapper', ->
-      div '#main-header'
-      div '#content-wrapper', ->
-        aside '#sidebar'
-        section '#main-content'
-    div '#footer'
-
   BootstrapNavBarTemplate = renderable (appmodel) ->
     div '.container', ->
       div '#navbar-brand.navbar-header', ->
@@ -107,11 +85,9 @@ define (require, exports, module) ->
   
 
   module.exports =
-    PageLayoutTemplate: PageLayoutTemplate
     BootstrapLayoutTemplate: BootstrapLayoutTemplate
     BootstrapNavBarTemplate: BootstrapNavBarTemplate
     main_sidebar: main_sidebar
-    make_menu: make_menu
 
 
 

@@ -8,10 +8,8 @@ define (require, exports, module) ->
     console.log 'initialize_page'
     layout = new Views.MainPageLayout
     layout.on 'show', =>
-      view = new Views.MainPageView
       navbar = new Views.BootstrapNavBarView
         model: appmodel
-      #window.nbview = navbar
       MSGBUS.events.trigger 'main-navbar:show', navbar
       
     MSGBUS.events.trigger 'mainpage:show', layout
