@@ -14,26 +14,6 @@ define (require, exports, module) ->
 
   class SideBarView extends BaseSideBarView
       
-      
-  render_calendar_event = (calEvent, element) ->
-    calEvent.url = '#bumblr/viewmeeting/' + calEvent.id
-    element.css
-      'font-size' : '0.9em'
-
-  calendar_view_render = (view, element) ->
-    MSGBUS.commands.execute 'bumblr:maincalendar:set_date'
-
-  loading_calendar_events = (bool) ->
-    loading = $ '#loading'
-    header = $ '.fc-header'
-    if bool
-      loading.show()
-      header.hide()
-    else
-      loading.hide()
-      header.show()
-      
-
   class SimpleBlogInfoView extends Backbone.Marionette.ItemView
     template: Templates.simple_blog_info
 
@@ -90,18 +70,23 @@ define (require, exports, module) ->
     get_prev_page: () ->
       @collection.getPreviousPage()
 
+    keydownHandler: (event_object) =>
+      console.log 'keydownHandler ' + event_object
+      window.eo = event_object
+      if event_object.keyCode == 65
+        @get_prev_page()
+      if event_object.keyCode == 90
+        @get_next_page()
+        
+
     onDomRefresh: () ->
       console.log 'onDomRefresh called on BlogPostListView'
-      container = $ 'body'
-      window.container = container
-      container.keydown (event_object) =>
-        console.log 'keydown' + event_object
-        window.eo = event_object
-        if event_object.keyCode == 65
-          @get_prev_page()
-        if event_object.keyCode == 90
-          @get_next_page()
+      $('html').keydown @keydownHandler
 
+    onBeforeDestroy: () ->
+      console.log "Remove @keydownHandler" + @keydownHandler
+      $('html').unbind 'keydown', @keydownHandler
+      
   class ConsumerKeyFormView extends FormView
     template: Templates.consumer_key_form
     ui:

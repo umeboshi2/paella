@@ -32,12 +32,6 @@ define (require, exports, module) ->
   subtitle, section, hr
   } = teacup
             
-  capitalize = (str) ->
-    str.charAt(0).toUpperCase() + str.slice(1)
-
-  handle_newlines = (str) ->
-   str.replace(/(?:\r\n|\r|\n)/g, '<br />')
-    
   ########################################
   # Templates
   ########################################

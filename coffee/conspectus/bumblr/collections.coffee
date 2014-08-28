@@ -87,7 +87,3 @@ define (require, exports, module) ->
     
   module.exports =
     PhotoPostCollection: PhotoPostCollection
-    
-
-    
-    
