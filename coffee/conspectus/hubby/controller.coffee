@@ -10,7 +10,8 @@ define (require, exports, module) ->
   Collections = require 'hubby/collections'
 
   fullCalendar = require 'fullcalendar'
-  { navbar_set_active } = require 'common/util'
+  { navbar_set_active
+    scroll_top_fast } = require 'common/util'
   
   
   sidebar_model = new Backbone.Model
@@ -51,6 +52,7 @@ define (require, exports, module) ->
       @make_sidebar()
       view = new Views.MeetingCalendarView
       MSGBUS.events.trigger 'rcontent:show', view
+      scroll_top_fast()
       
     show_meeting: (meeting_id) ->
       #console.log 'show_meeting called'
@@ -62,24 +64,17 @@ define (require, exports, module) ->
         view = new Views.ShowMeetingView
           model: meeting
         MSGBUS.events.trigger 'rcontent:show', view
+      scroll_top_fast()
 
     list_meetings: () ->
-      console.log 'list_meetings called'
+      #console.log 'list_meetings called'
       @make_sidebar()
       view = new Views.MeetingListView
         collection: meetings
       if meetings.length == 0
         meetings.fetch()
       MSGBUS.events.trigger 'rcontent:show', view
+      scroll_top_fast()
       
-    edit_page: (page_id) ->
-      @make_sidebar()
-      page = MSGBUS.reqres.request 'wiki:pagecontent', page_id
-      view = new Views.EditPageView
-        model: page
-      MSGBUS.events.trigger 'rcontent:show', view
-      
-      
-              
   module.exports = Controller
   
