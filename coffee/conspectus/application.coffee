@@ -11,8 +11,8 @@ define (require, exports, module) ->
   Models = require 'models'
   
   require 'common/mainpage'
+  
   require 'frontdoor/main'
-  require 'demoapp/main'
   require 'wiki/main'
   require 'bumblr/main'
   require 'hubby/main'
@@ -50,18 +50,19 @@ define (require, exports, module) ->
     app.on 'start', ->
       console.log "start event being handled"
       Backbone.history.start() unless Backbone.history.started
-      
+
+    # I really only use this in the console
+    # when app is attached to window
     app.msgbus = MSGBUS
 
     app.addInitializer ->
       # execute code to generate basic page
       # layout
-      window.appmodel = appmodel
+      #window.appmodel = appmodel
       MSGBUS.commands.execute 'mainpage:init', appmodel
 
       # then setup the routes
       MSGBUS.commands.execute 'frontdoor:route'
-      MSGBUS.commands.execute 'demoapp:route'
       MSGBUS.commands.execute 'wiki:route'
       MSGBUS.commands.execute 'bumblr:route'
       MSGBUS.commands.execute 'hubby:route'
