@@ -14,11 +14,6 @@ $secondary-color: $color-salmon2;
 $text-color: darken($color-RosyBrown, 35%);
 
 // good
-$primary-color: desaturate($color-BlanchedAlmond, 80%);
-$secondary-color: $color-salmon2;
-$text-color: darken($color-RosyBrown, 35%);
-
-// good
 $primary-color: lighten(desaturate($color-DarkSeaGreen, 20%), 20%);
 $secondary-color: $color-salmon3;
 $text-color: darken($color-RosyBrown, 35%);
@@ -27,6 +22,11 @@ $text-color: darken($color-RosyBrown, 35%);
 // good
 $primary-color: $color-LavenderBlush3;
 $secondary-color: $color-MistyRose;
+$text-color: darken($color-RosyBrown, 35%);
+
+// good
+$primary-color: desaturate($color-BlanchedAlmond, 80%);
+$secondary-color: $color-salmon4;
 $text-color: darken($color-RosyBrown, 35%);
 
 
