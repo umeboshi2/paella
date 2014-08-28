@@ -70,22 +70,21 @@ define (require, exports, module) ->
         section '#main-content'
     div '#footer'
 
-  BootstrapNavBarTemplate = renderable (brand) ->
+  BootstrapNavBarTemplate = renderable (appmodel) ->
     div '.container', ->
-      div '.navbar-header', ->
+      div '#navbar-brand.navbar-header', ->
         button '.navbar-toggle', type:'button', 'data-toggle':'collapse',
         'data-target':'.navbar-collapse', ->
           span '.sr-only', 'Toggle Navigation'
           span '.icon-bar'
           span '.icon-bar'
           span '.icon-bar'
-        a '.navbar-brand', href:brand.url, brand.name
+        a '.navbar-brand', href:appmodel.brand.url, appmodel.brand.name
       div '.navbar-collapse.collapse', ->
-        ul '.nav.navbar-nav', ->
-          li ->
-            a href:'#', 'Home'
-          li ->
-            a href:'#demoapp', 'Demo(FIXME)'
+        ul '#app-navbar.nav.navbar-nav', ->
+          for app in appmodel.apps
+            li ->
+              a href:app.url, app.name
         ul '.nav.navbar-nav.navbar-right', ->
               
 

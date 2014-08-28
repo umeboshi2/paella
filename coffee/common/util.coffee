@@ -34,6 +34,19 @@ define (require, exports, module) ->
     return App
     
       
+  navbar_set_active = (url) ->
+    anchors = $('#app-navbar a')
+    for a in anchors
+      aq = $ a
+      window.aq = aq
+      aq.parent().removeClass('active')
+      top = aq.attr('href').split('/')[0]
+      top_split = url.split(top)[0]
+      if top_split == ''
+        aq.parent().addClass('active')
+      
+      
+
       
 
   module.exports =
@@ -42,7 +55,8 @@ define (require, exports, module) ->
     capitalize: capitalize
     handle_newlines: handle_newlines
     start_application: start_application
-
+    navbar_set_active: navbar_set_active
+    
 
 
 

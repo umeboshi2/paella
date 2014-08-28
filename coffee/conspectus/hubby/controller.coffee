@@ -10,18 +10,18 @@ define (require, exports, module) ->
   Collections = require 'hubby/collections'
 
   fullCalendar = require 'fullcalendar'
-  #gcal = require 'fc_gcal'
-
+  { navbar_set_active } = require 'common/util'
+  
+  
   sidebar_model = new Backbone.Model
-    header: 'Sidebar'
     entries: [
       {
-        name: 'maincalendar'
-        label: 'Main Calendar'
+        url: '#hubby'
+        name: 'Main Calendar'
       }
       {
-        name: 'listmeetings'
-        label: 'List Meetings'
+        url: '#hubby/listmeetings'
+        name: 'List Meetings'
       }
     ]
 
@@ -29,16 +29,11 @@ define (require, exports, module) ->
   
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
-      meetings = MSGBUS.reqres.request 'hubby:meetinglist'
-      
+      navbar_set_active '#hubby'
       MSGBUS.events.trigger 'sidebar:close'
       view = new Views.SideBarView
         model: sidebar_model
       MSGBUS.events.trigger 'sidebar:show', view
-      #if meetings.length == 0
-      #  console.log 'fetching pages for sidebar'
-      #  meetings.fetch()
-      
       
     set_header: (title) ->
       header = $ '#header'

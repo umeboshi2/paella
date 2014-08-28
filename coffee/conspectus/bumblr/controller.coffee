@@ -41,6 +41,7 @@ define (require, exports, module) ->
   window.credentials = credentials    
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
+      Util.navbar_set_active '#bumblr'
       meetings = MSGBUS.reqres.request 'hubby:meetinglist'
       
       MSGBUS.events.trigger 'sidebar:close'

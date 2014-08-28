@@ -16,7 +16,27 @@ define (require, exports, module) ->
   require 'wiki/main'
   require 'bumblr/main'
   require 'hubby/main'
-        
+
+  appmodel = new Backbone.Model
+    brand:
+      name: 'Conspectus'
+      url: '#'
+    apps:
+      [
+        {
+          name: 'Wiki'
+          url: '#wiki'
+        }
+        {
+          name: 'Bumblr'
+          url: '#bumblr'
+        }
+        {
+          name: 'Hubby'
+          url: '#hubby'
+        }
+      ]
+                
   prepare_app = (app) ->
     app.addRegions
       mainview: 'body'
@@ -36,7 +56,8 @@ define (require, exports, module) ->
     app.addInitializer ->
       # execute code to generate basic page
       # layout
-      MSGBUS.commands.execute 'mainpage:init'
+      window.appmodel = appmodel
+      MSGBUS.commands.execute 'mainpage:init', appmodel
 
       # then setup the routes
       MSGBUS.commands.execute 'frontdoor:route'

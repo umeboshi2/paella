@@ -4,18 +4,13 @@ define (require, exports, module) ->
   MSGBUS = require 'msgbus'
   Views = require 'common/mainviews'
 
-  ProjectBrand = new Backbone.Model
-    name: 'Project'
-    url: '#'
-    
-    
-  initialize_page = () ->
+  initialize_page = (appmodel) ->
     console.log 'initialize_page'
     layout = new Views.MainPageLayout
     layout.on 'show', =>
       view = new Views.MainPageView
       navbar = new Views.BootstrapNavBarView
-        model: ProjectBrand
+        model: appmodel
       #window.nbview = navbar
       MSGBUS.events.trigger 'main-navbar:show', navbar
       
@@ -23,6 +18,6 @@ define (require, exports, module) ->
 
 
   
-  MSGBUS.commands.setHandler 'mainpage:init', () ->
-    initialize_page()
+  MSGBUS.commands.setHandler 'mainpage:init', (appmodel) ->
+    initialize_page(appmodel)
     

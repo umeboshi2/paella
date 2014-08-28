@@ -10,6 +10,8 @@ define (require, exports, module) ->
   Models = require 'models'
   Collections = require 'collections'
 
+  Util = require 'common/util'
+
   side_bar_data = new Backbone.Model
     entries: [
       {
@@ -33,6 +35,8 @@ define (require, exports, module) ->
            
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
+      Util.navbar_set_active '#'
+      
       MSGBUS.events.trigger 'sidebar:close'
       view = new FDViews.SideBarView
         model: side_bar_data
