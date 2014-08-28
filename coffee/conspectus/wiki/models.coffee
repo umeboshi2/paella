@@ -2,16 +2,20 @@ define (require, exports, module) ->
   $ = require 'jquery'
   _ = require 'underscore'
   Backbone = require 'backbone'
-  
-  Models = require 'models'
-  
   MSGBUS = require 'msgbus'
-  localStorage = require 'bblocalStorage'
-  
-      
 
+  BaseLocalStorageModel = require 'common/localstoragemodel'
+    
   ########################################
-  # Collections
+  # Models
   ########################################
-  module.exports = null
-  
+
+  class Page extends Backbone.Model
+    validation:
+      name:
+        required: true
+        
+    
+  module.exports =
+    Page: Page
+    

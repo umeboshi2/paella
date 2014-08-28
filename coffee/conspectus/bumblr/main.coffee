@@ -8,10 +8,12 @@ define (require, exports, module) ->
   # FIXME: this is to make sure that MSGBUS handlers
   # are running
   Models = require 'bumblr/models'  
-
+  require 'bumblr/collections'
+  
   class Router extends Backbone.Marionette.AppRouter
     appRoutes:
       'bumblr': 'start'
+      'bumblr/settings': 'settings_page'
       'bumblr/dashboard': 'show_dashboard'
       'bumblr/listblogs': 'list_blogs'
       'bumblr/viewblog/:id': 'view_blog'
@@ -27,7 +29,10 @@ define (require, exports, module) ->
     
   MSGBUS.commands.setHandler 'bumblr:route', () ->
     console.log "bumblr:route being handled..."
-    controller = new Controller
-    router = new Router
-      controller: controller
-      
+    blog_collection = MSGBUS.reqres.request 'bumblr:get_local_blogs'
+    response = blog_collection.fetch()
+    response.done =>
+      controller = new Controller
+      router = new Router
+        controller: controller
+      console.log 'bumblr router created'

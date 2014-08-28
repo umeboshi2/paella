@@ -8,13 +8,24 @@ define (require, exports, module) ->
   ########################################
   # Models
   ########################################
+  baseURL = 'http://api.tumblr.com/v2'
+  
   class BumblrSettings extends BaseLocalStorageModel
     id: 'bumblr_settings'
 
+  class BaseTumblrModel extends Backbone.Model
+    baseURL: baseURL
+    
+  class BlogInfo extends BaseTumblrModel
+    url: () ->
+      @baseURL + '/blog/' + @id + '/info?api_key=' + @api_key + '&callback=?'
+      
   #bumblr_settings = new BumblrSettings id:'bumblr'
   consumer_key = '4mhV8B1YQK6PUA2NW8eZZXVHjU55TPJ3UZnZGrbSoCnqJaxDyH'
   bumblr_settings = new BumblrSettings consumer_key:consumer_key
   MSGBUS.reqres.setHandler 'bumblr:get_app_settings', ->
     bumblr_settings
       
-  module.exports = null
+  module.exports =
+    BlogInfo: BlogInfo
+    

@@ -4,7 +4,9 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   PageableCollection = require 'backbone.paginator'
   MSGBUS = require 'msgbus'
-      
+  localStorage = require 'bblocalStorage'
+  Models = require 'bumblr/models'
+        
 
   ########################################
   # Collections
@@ -53,8 +55,6 @@ define (require, exports, module) ->
     bp = new BlogPosts
     bp.api_key = api_key
     bp.base_hostname = base_hostname
-    #console.log 'bp.api_key is ' + bp.api_key
-    #console.log 'bp.url() is ' + bp.url()
     return bp
     
   req = 'bumblr:make_blog_post_collection'
@@ -62,6 +62,28 @@ define (require, exports, module) ->
     make_blog_post_collection(base_hostname)
     
   
+  class LocalBlogCollection extends Backbone.Collection
+    localStorage: new localStorage('blogs')
+    model: Models.BlogInfo
+
+    # FIXME: This is ugly!
+    add_blog: (name) ->
+      sitename = name + '.tumblr.com'
+      model = new Models.BlogInfo
+      model.set 'id', sitename
+      model.set 'name', name
+      model.api_key = @api_key
+      @add model
+      model.fetch()
+      return model
+          
+  local_blogs = new LocalBlogCollection
+  settings = MSGBUS.reqres.request 'bumblr:get_app_settings'
+  api_key = settings.get 'consumer_key'
+  local_blogs.api_key = api_key
+  MSGBUS.reqres.setHandler 'bumblr:get_local_blogs', ->
+    local_blogs
+
     
   module.exports =
     PhotoPostCollection: PhotoPostCollection

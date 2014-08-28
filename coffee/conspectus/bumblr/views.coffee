@@ -7,31 +7,10 @@ define (require, exports, module) ->
   Templates = require 'bumblr/templates'
   Models = require 'bumblr/models'
   BaseModels = require 'models'
-    
+  BaseSideBarView = require 'common/views/sidebar'
   require 'jquery-ui'
-  
-  class SideBarView extends Backbone.Marionette.ItemView
-    template: Templates.sidebar
-    events:
-      'click .mainview-button': 'mainview_pressed'
-      'click .dashboard-view-button': 'dashboard_view_pressed'
-      'click .list-blogs-button': 'list_blogs_pressed'
-      
-    _navigate: (url) ->
-      r = new Backbone.Router
-      r.navigate url, trigger:true
 
-    mainview_pressed: () ->
-      console.log 'mainview_pressed called'
-      @_navigate '#bumblr'
-      
-    dashboard_view_pressed: () ->
-      console.log 'dashboard_view_pressed called'
-      @_navigate '#bumblr/dashboard'
-
-    list_blogs_pressed: () ->
-      console.log 'list_blogs_pressed called'
-      @_navigate '#bumblr/listblogs'
+  class SideBarView extends BaseSideBarView
       
       
   render_calendar_event = (calEvent, element) ->
@@ -66,14 +45,15 @@ define (require, exports, module) ->
       blog_name: '[name="blog_name"]'
 
     updateModel: ->
-      collection = MSGBUS.reqres.request 'bumblr:get_local_blogs'
-      collection.add_blog @ui.blog_name.val()
+      console.log 'updateModel'
+      @collection = MSGBUS.reqres.request 'bumblr:get_local_blogs'
+      console.log 'window.blcollection set'
+      @model = @collection.add_blog @ui.blog_name.val()
 
     saveModel: ->
       console.log 'called saveModel'
-      collection = MSGBUS.reqres.request 'bumblr:get_local_blogs'
-      collection.save()
-
+      @model.save()
+      
     onSuccess: ->
       console.log 'onSuccess called'
       r = new Backbone.Router
@@ -81,9 +61,6 @@ define (require, exports, module) ->
   
     createModel: ->
       return new Backbone.Model url:'/'
-      
-        
-      
       
         
                 
@@ -154,5 +131,6 @@ define (require, exports, module) ->
     SimpleBlogListView: SimpleBlogListView
     BlogPostListView: BlogPostListView
     NewBlogFormView: NewBlogFormView
+    ConsumerKeyFormView: ConsumerKeyFormView
     
     

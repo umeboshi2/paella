@@ -13,22 +13,25 @@ define (require, exports, module) ->
   fullCalendar = require 'fullcalendar'
   #gcal = require 'fc_gcal'
 
-  sidebar_model = new Backbone.Model
-    header: 'Sidebar'
+  side_bar_data = new Backbone.Model
     entries: [
       {
-        name: 'mainview-button'
-        label: 'Main View'
+        name: 'Main'
+        url: '#bumblr'
       }
       {
-        name: 'dashboard-view-button'
-        label: 'Dashboard'
+        name: 'Dashboard'
+        url: '#bumblr/dashboard'
       }
       {
-        name: 'list-blogs-button'
-        label: 'List Blogs'
+        name: 'List Blogs'
+        url: '#bumblr/listblogs'
       }
-    ]
+      {
+        name: 'Settings'
+        url: '#bumblr/settings'
+      }
+      ]
 
   meetings = MSGBUS.reqres.request 'hubby:meetinglist'
 
@@ -42,7 +45,7 @@ define (require, exports, module) ->
       
       MSGBUS.events.trigger 'sidebar:close'
       view = new Views.SideBarView
-        model: sidebar_model
+        model: side_bar_data
       MSGBUS.events.trigger 'sidebar:show', view
       #if meetings.length == 0
       #  console.log 'fetching pages for sidebar'
@@ -105,5 +108,11 @@ define (require, exports, module) ->
       MSGBUS.events.trigger 'rcontent:show', view
       Util.scroll_top_fast()
             
+    settings_page: () ->
+      console.log 'Settings page.....'
+      settings = MSGBUS.reqres.request 'bumblr:get_app_settings'
+      view = new Views.ConsumerKeyFormView model:settings
+      MSGBUS.events.trigger 'rcontent:show', view
+      
   module.exports = Controller
   

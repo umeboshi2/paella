@@ -125,5 +125,6 @@ define (require, exports, module) ->
     simple_post_view: simple_post_view
     simple_post_page_view: simple_post_page_view
     new_blog_form_view: new_blog_form_view
+    consumer_key_form: consumer_key_form
     
     
