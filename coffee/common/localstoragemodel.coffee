@@ -16,10 +16,13 @@ define (require, exports, module) ->
       console.log '===== FETCH FIRED LOADING LOCAL STORAGE ===='
       @set JSON.parse localStorage.getItem @id
 
-    save: (attributes) ->
+    save: (attributes, options) ->
       console.log '===== CHANGE FIRED SAVING LOCAL STORAGE ===='
       localStorage.setItem(@id, JSON.stringify(@toJSON()))
-
+      return $.ajax
+        success: options.success
+        error: options.error
+        
     destroy: (options) ->
       console.log '===== DESTROY LOCAL STORAGE ===='
       localStorage.removeItem @id

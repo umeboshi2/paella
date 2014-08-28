@@ -15,7 +15,8 @@ define (require, exports, module) ->
   require 'demoapp/main'
   require 'wiki/main'
   require 'bumblr/main'
-      
+  require 'hubby/main'
+        
   prepare_app = (app) ->
     app.addRegions
       mainview: 'body'
@@ -42,6 +43,7 @@ define (require, exports, module) ->
       MSGBUS.commands.execute 'demoapp:route'
       MSGBUS.commands.execute 'wiki:route'
       MSGBUS.commands.execute 'bumblr:route'
+      MSGBUS.commands.execute 'hubby:route'
       
     # connect events
     MSGBUS.events.on 'mainpage:show', (view) =>

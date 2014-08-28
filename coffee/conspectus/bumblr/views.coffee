@@ -10,6 +10,8 @@ define (require, exports, module) ->
   BaseSideBarView = require 'common/views/sidebar'
   require 'jquery-ui'
 
+  { navigate_to_url } = require 'common/util'
+
   class SideBarView extends BaseSideBarView
       
       
@@ -50,14 +52,9 @@ define (require, exports, module) ->
       console.log 'window.blcollection set'
       @model = @collection.add_blog @ui.blog_name.val()
 
-    saveModel: ->
-      console.log 'called saveModel'
-      @model.save()
-      
     onSuccess: ->
       console.log 'onSuccess called'
-      r = new Backbone.Router
-      r.navigate '#bumblr/listblogs', trigger:true
+      navigate_to_url '#bumblr/listblogs'
   
     createModel: ->
       return new Backbone.Model url:'/'
@@ -123,7 +120,10 @@ define (require, exports, module) ->
     createModel: ->
       MSGBUS.reqres.request 'bumblr:get_app_settings'
         
-
+    onSuccess: (model) ->
+      console.log 'onSuccess called'
+      navigate_to_url '#bumblr'
+      
   module.exports =
     SideBarView: SideBarView
     MainBumblrView: MainBumblrView

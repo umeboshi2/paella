@@ -2,6 +2,7 @@
 #require 'sassy-buttons'
 require 'bootstrap-sass'
 require 'compass-ui'
+require 'sassy-buttons'
 
 # Set this to the root of your project when deployed:
 http_path = "/"

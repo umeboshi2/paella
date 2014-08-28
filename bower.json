@@ -26,17 +26,18 @@
     "bootstrap": "~3.2.0",
     "jquery-ui": "~1.11.1",
     "teacup": "https://github.com/goodeggs/teacup.git#~0.4.1",
-    "fullcalendar": "1.6.4",
     "marked": "~0.3.2",
     "backbone.validation": "~0.7.1",
     "backbone.paginator": "~2.0.2",
     "requirejs": "~2.1.14",
     "backbone.localStorage": "~1.1.13",
     "font-awesome": "~4.2.0",
-    "ace-builds": "~1.1.6"
+    "ace-builds": "~1.1.6",
+    "fullcalendar": "~2.1.0"
   },
   "resolutions": {
     "jquery": "~2.1.1",
-    "backbone": "~1.1.2"
+    "backbone": "~1.1.2",
+    "fullcalendar": "~2.1.0"
   }
 }

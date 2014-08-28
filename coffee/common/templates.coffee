@@ -31,6 +31,21 @@ define (require, exports, module) ->
   ########################################
   # Templates
   ########################################
+  login_form = renderable (user) ->
+    form role:'form', method:'POST',
+    action:'/login', ->
+      div '.form-group', ->
+        label for:'input_username', 'User Name'
+        input '#input_username.form-control',
+        name: 'username',
+        placeholder:"User Name"
+      div '.form-group', ->
+        label for:'input_password', 'Password'
+        input '#input_password.form-control',
+        name: 'password',
+        type:'password', placeholder:'password'
+      button '.btn.btn-default', type:'submit', 'login'
+                    
                   
   ########################################
   make_menu = renderable (model) ->

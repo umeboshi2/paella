@@ -21,8 +21,12 @@ define (require, exports, module) ->
         url: '#wiki'
       }
       {
-        name: 'Hello'
+        name: 'Bumblr'
         url: '#bumblr'
+      }
+      {
+        name: 'Hubby'
+        url: '#hubby'
       }
       ]
 

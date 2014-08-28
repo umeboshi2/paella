@@ -15,7 +15,7 @@ require.config
     'backbone.paginator': components + 'backbone.paginator/lib/backbone.paginator'
     bootstrap: components + 'bootstrap/dist/js/bootstrap'
     moment: components + 'moment/moment'
-    fullcalendar: components + 'fullcalendar/fullcalendar'
+    fullcalendar: components + 'fullcalendar/dist/fullcalendar'
     'jquery-ui': components + 'jquery-ui/jquery-ui'
     requirejs: components + 'requirejs/require'
     text: components + 'requirejs-text/text'
