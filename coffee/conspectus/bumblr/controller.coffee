@@ -16,14 +16,6 @@ define (require, exports, module) ->
   side_bar_data = new Backbone.Model
     entries: [
       {
-        name: 'Main'
-        url: '#bumblr'
-      }
-      {
-        name: 'Dashboard'
-        url: '#bumblr/dashboard'
-      }
-      {
         name: 'List Blogs'
         url: '#bumblr/listblogs'
       }
@@ -33,8 +25,6 @@ define (require, exports, module) ->
       }
       ]
 
-  meetings = MSGBUS.reqres.request 'hubby:meetinglist'
-
   credentials = MSGBUS.reqres.request 'bumblr:get_app_settings'
   api_key = credentials.consumer_key
   console.log 'api_key is -> ' + api_key
@@ -42,28 +32,21 @@ define (require, exports, module) ->
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
       Util.navbar_set_active '#bumblr'
-      meetings = MSGBUS.reqres.request 'hubby:meetinglist'
-      
       MSGBUS.events.trigger 'sidebar:close'
       view = new Views.SideBarView
         model: side_bar_data
       MSGBUS.events.trigger 'sidebar:show', view
-      #if meetings.length == 0
-      #  console.log 'fetching pages for sidebar'
-      #  meetings.fetch()
-      
       
     set_header: (title) ->
       header = $ '#header'
       header.text title
       
     start: ->
-      #console.log 'hubby start'
       MSGBUS.events.trigger 'rcontent:close'
       MSGBUS.events.trigger 'sidebar:close'
       @set_header 'Bumblr'
-      @show_mainview()
-
+      @list_blogs()
+      
     show_mainview: () ->
       @make_sidebar()
       view = new Views.MainBumblrView
@@ -114,6 +97,7 @@ define (require, exports, module) ->
       settings = MSGBUS.reqres.request 'bumblr:get_app_settings'
       view = new Views.ConsumerKeyFormView model:settings
       MSGBUS.events.trigger 'rcontent:show', view
+      Util.scroll_top_fast()
       
   module.exports = Controller
   
