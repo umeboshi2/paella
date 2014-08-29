@@ -24,14 +24,17 @@ define (require, exports, module) ->
     apps:
       [
         {
+          appname: 'wiki'
           name: 'Wiki'
           url: '#wiki'
         }
         {
+          appname: 'bumblr'
           name: 'Bumblr'
           url: '#bumblr'
         }
         {
+          appname: 'hubby'
           name: 'Hubby'
           url: '#hubby'
         }

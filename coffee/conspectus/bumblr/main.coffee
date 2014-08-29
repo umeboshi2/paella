@@ -7,12 +7,15 @@ define (require, exports, module) ->
   Controller = require 'bumblr/controller'
   AppBus = require 'bumblr/msgbus'
 
+  { BootStrapAppRouter } = require 'common/approuters'
+  
+
   # FIXME: this is to make sure that AppBus handlers
   # are running
   Models = require 'bumblr/models'  
   require 'bumblr/collections'
   
-  class Router extends Backbone.Marionette.AppRouter
+  class Router extends BootStrapAppRouter
     appRoutes:
       'bumblr': 'start'
       'bumblr/settings': 'settings_page'
@@ -20,12 +23,6 @@ define (require, exports, module) ->
       'bumblr/listblogs': 'list_blogs'
       'bumblr/viewblog/:id': 'view_blog'
       'bumblr/addblog' : 'add_new_blog'
-
-    onRoute: (name, path, args) ->
-      #console.log 'onRoute name: ' + name
-      #console.log 'onRoute path: ' + path
-      #console.log 'onRoute args:' + args
-      
       
   current_calendar_date = undefined
   AppBus.commands.setHandler 'maincalendar:set_date', () ->

@@ -61,7 +61,7 @@ define (require, exports, module) ->
       div '.navbar-collapse.collapse', ->
         ul '#app-navbar.nav.navbar-nav', ->
           for app in appmodel.apps
-            li ->
+            li appname:app.appname, ->
               a href:app.url, app.name
         ul '.nav.navbar-nav.navbar-right', ->
               

@@ -8,7 +8,9 @@ define (require, exports, module) ->
   
   Controller = require 'frontdoor/controller'
 
-  class Router extends Backbone.Marionette.AppRouter
+  { BootStrapAppRouter } = require 'common/approuters'
+
+  class Router extends BootStrapAppRouter
     appRoutes:
       '': 'start'
       'frontdoor': 'start'

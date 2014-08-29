@@ -6,11 +6,13 @@ define (require, exports, module) ->
 
   Controller = require 'wiki/controller'
   AppBus = require 'wiki/msgbus'
-  
+
+  { BootStrapAppRouter } = require 'common/approuters'
+    
   # require this for msgbus handlers
   require 'wiki/collections'
   
-  class Router extends Backbone.Marionette.AppRouter
+  class Router extends BootStrapAppRouter
     appRoutes:
       'wiki': 'start'
       'wiki/listpages': 'list_pages'

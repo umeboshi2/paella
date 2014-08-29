@@ -6,7 +6,9 @@ define (require, exports, module) ->
   Controller = require 'hubby/controller'
   AppBus = require 'hubby/msgbus'  
 
-  class Router extends Backbone.Marionette.AppRouter
+  { BootStrapAppRouter } = require 'common/approuters'
+
+  class Router extends BootStrapAppRouter
     appRoutes:
       'hubby': 'start'
       'hubby/viewmeeting/:id': 'show_meeting'

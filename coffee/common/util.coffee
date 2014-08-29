@@ -33,8 +33,16 @@ define (require, exports, module) ->
     start_app_one()
     return App
     
-      
-  navbar_set_active = (url) ->
+
+  navbar_set_active = (path) ->
+    path_top = path.split('/')[0]
+    for li in $('#app-navbar li')
+      liq = $ li
+      liq.removeClass('active')
+      if path_top == liq.attr('appname')
+        liq.addClass('active')
+        
+  navbar_set_active2 = (url) ->
     anchors = $('#app-navbar a')
     for a in anchors
       aq = $ a
