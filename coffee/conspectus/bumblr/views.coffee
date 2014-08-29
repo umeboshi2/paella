@@ -29,12 +29,12 @@ define (require, exports, module) ->
       blog_name: '[name="blog_name"]'
 
     updateModel: ->
-      console.log 'updateModel'
+      #console.log 'updateModel'
       @collection = AppBus.reqres.request 'get_local_blogs'
       @model = @collection.add_blog @ui.blog_name.val()
 
     onSuccess: ->
-      console.log 'onSuccess called'
+      #console.log 'onSuccess called'
       navigate_to_url '#bumblr/listblogs'
   
     createModel: ->
@@ -55,7 +55,6 @@ define (require, exports, module) ->
   class SimpleBlogPostView extends Backbone.Marionette.ItemView
     template: Templates.simple_post_view
     className: 'col-sm-5'
-    #tagName: 'span'
     
   class BlogPostListView extends Backbone.Marionette.CompositeView
     template: Templates.simple_post_page_view
@@ -72,7 +71,7 @@ define (require, exports, module) ->
       @collection.getPreviousPage()
 
     keydownHandler: (event_object) =>
-      console.log 'keydownHandler ' + event_object
+      #console.log 'keydownHandler ' + event_object
       window.eo = event_object
       if event_object.keyCode == 65
         @get_prev_page()
@@ -81,11 +80,11 @@ define (require, exports, module) ->
         
 
     onDomRefresh: () ->
-      console.log 'onDomRefresh called on BlogPostListView'
+      #console.log 'onDomRefresh called on BlogPostListView'
       $('html').keydown @keydownHandler
 
     onBeforeDestroy: () ->
-      console.log "Remove @keydownHandler" + @keydownHandler
+      #console.log "Remove @keydownHandler" + @keydownHandler
       $('html').unbind 'keydown', @keydownHandler
       
   class ConsumerKeyFormView extends FormView
@@ -107,7 +106,7 @@ define (require, exports, module) ->
       AppBus.reqres.request 'get_app_settings'
         
     onSuccess: (model) ->
-      console.log 'onSuccess called'
+      #console.log 'onSuccess called'
       navigate_to_url '#bumblr'
       
   module.exports =

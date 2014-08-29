@@ -31,7 +31,7 @@ define (require, exports, module) ->
       'click #add-new-page-button': 'add_new_page_pressed'
       
     add_new_page_pressed: () ->
-      console.log 'add_new_page_pressed called'
+      #console.log 'add_new_page_pressed called'
       navigate_to_url '#wiki/addpage'
       
   class ShowPageView extends Backbone.Marionette.ItemView

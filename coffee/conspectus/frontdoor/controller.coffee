@@ -57,9 +57,9 @@ define (require, exports, module) ->
       MainBus.vent.trigger 'rcontent:show', view
 
     start: ->
-      console.log 'controller.start called'
+      #console.log 'controller.start called'
       @make_main_content()
-      console.log 'frontdoor started'
+      #console.log 'frontdoor started'
 
   module.exports = Controller
   

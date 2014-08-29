@@ -62,7 +62,7 @@ define (require, exports, module) ->
       Util.scroll_top_fast()
         
     list_blogs: () ->
-      console.log 'list_blogs called;'
+      #console.log 'list_blogs called;'
       @make_sidebar()
       blogs = AppBus.reqres.request 'get_local_blogs'
       view = new Views.SimpleBlogListView
@@ -72,7 +72,7 @@ define (require, exports, module) ->
       
       
     view_blog: (blog_id) ->
-      console.log 'view blog called for ' + blog_id
+      #console.log 'view blog called for ' + blog_id
       @make_sidebar()
       make_collection = 'make_blog_post_collection'
       base_hostname = blog_id + '.tumblr.com'
@@ -87,14 +87,14 @@ define (require, exports, module) ->
         Util.scroll_top_fast()
 
     add_new_blog: () ->
-      console.log 'add_new_blog called'
+      #console.log 'add_new_blog called'
       @make_sidebar()
       view = new Views.NewBlogFormView
       MainBus.vent.trigger 'rcontent:show', view
       Util.scroll_top_fast()
             
     settings_page: () ->
-      console.log 'Settings page.....'
+      #console.log 'Settings page.....'
       settings = AppBus.reqres.request 'get_app_settings'
       view = new Views.ConsumerKeyFormView model:settings
       MainBus.vent.trigger 'rcontent:show', view

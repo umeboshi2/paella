@@ -77,9 +77,9 @@ define (require, exports, module) ->
       
       
     start: ->
-      console.log 'controller.start called'
+      #console.log 'controller.start called'
       @make_main_content()
-      console.log 'wiki started'
+      #console.log 'wiki started'
 
   module.exports = Controller
   

@@ -25,12 +25,12 @@ define (require, exports, module) ->
     main_page_collection
 
   AppBus.reqres.setHandler 'pages:getpage', (page_id) ->
-    console.log 'handle pages:getpage ' + page_id
+    #console.log 'handle pages:getpage ' + page_id
     model = main_page_collection.get page_id
     window.mmodel = model
     #return model
     if model is undefined
-      console.log 'make new page model ' + page_id
+      #console.log 'make new page model ' + page_id
       model = new Models.Page
         id: page_id
         content: ''

@@ -48,10 +48,9 @@ require.config
 
 
 require [
-  'application',
-  'common/util',
+  'application'
+  'common/util'
   'frontdoor/main'
-  'demoapp/main'
   ], (App, Util) ->
   # debug
   window.app = App

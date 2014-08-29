@@ -48,7 +48,7 @@ define (require, exports, module) ->
       content: '#main-content'
       
     app.on 'start', ->
-      console.log "start event being handled"
+      #console.log "start event being handled"
       Backbone.history.start() unless Backbone.history.started
 
     # I really only use this in the console
@@ -69,37 +69,37 @@ define (require, exports, module) ->
       
     # connect events
     MainBus.vent.on 'mainpage:show', (view) =>
-      console.log 'mainpage:show called'
+      #console.log 'mainpage:show called'
       app.mainview.show view
       
     MainBus.vent.on 'main-menu:show', (view) =>
-      console.log 'main-menu:show called'
+      #console.log 'main-menu:show called'
       app.main_menu.show view
       
 
     MainBus.vent.on 'sidebar:show', (view) =>
-      console.log 'sidebar:show called'
+      #console.log 'sidebar:show called'
       app.sidebar.show view
 
     MainBus.vent.on 'sidebar:close', () =>
-      console.log 'sidebar:close called'
+      #console.log 'sidebar:close called'
       if 'sidebar' in app
         app.sidebar.destroy()
 
     MainBus.vent.on 'main-navbar:show', (view) =>
-      console.log 'main-navbar:show called'
+      #console.log 'main-navbar:show called'
       app.navbar.show view
       
     MainBus.vent.on 'rcontent:show', (view) =>
-      console.log 'rcontent:show called'
+      #console.log 'rcontent:show called'
       app.content.show view
       
     MainBus.vent.on 'rcontent:close', () =>
-      console.log "rcontent:close called"
+      #console.log "rcontent:close called"
       if app.content != undefined
-        console.log app.content
+        #console.log app.content
         if app.content.currentView != undefined
-          console.log app.content.currentView
+          #console.log app.content.currentView
           app.content.empty()
       
             

@@ -36,4 +36,4 @@ define (require, exports, module) ->
       controller = new Controller
       router = new Router
         controller: controller
-      console.log 'bumblr router created'
+      #console.log 'bumblr router created'

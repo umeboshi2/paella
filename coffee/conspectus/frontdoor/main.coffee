@@ -21,4 +21,4 @@ define (require, exports, module) ->
       controller = new Controller
       router = new Router
         controller: controller
-      console.log 'router created'
+      #console.log 'router created'
