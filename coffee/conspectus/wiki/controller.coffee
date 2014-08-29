@@ -13,6 +13,8 @@ define (require, exports, module) ->
   
   { navbar_set_active } = require 'common/util'
 
+  { SideBarController } = require 'common/controllers'
+  
 
   side_bar_data = new Backbone.Model
     entries: [
@@ -30,15 +32,13 @@ define (require, exports, module) ->
       }
       ]
 
-           
-  class Controller extends Backbone.Marionette.Controller
-    make_sidebar: ->
-      navbar_set_active '#wiki'
-      MainBus.vent.trigger 'sidebar:close'
-      view = new FDViews.SideBarView
-        model: side_bar_data
-      MainBus.vent.trigger 'sidebar:show', view
-      
+  class Controller extends SideBarController
+    mainbus: MainBus
+    sidebarclass: FDViews.SideBarView
+    sidebar_model: side_bar_data
+    init_page: () ->
+      @navbar_set_active '#wiki'
+
     make_main_content: ->
       @make_sidebar()
       @show_page 'intro'

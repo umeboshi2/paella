@@ -27,9 +27,9 @@ define (require, exports, module) ->
       ]
 
   credentials = AppBus.reqres.request 'get_app_settings'
-  api_key = credentials.consumer_key
-  console.log 'api_key is -> ' + api_key
-  window.credentials = credentials    
+  api_key = credentials.get 'consumer_key'
+  #console.log 'api_key is -> ' + api_key
+  
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
       Util.navbar_set_active '#bumblr'

@@ -1,6 +1,7 @@
 #
 define (require, exports, module) ->
   Backbone = require 'backbone'
+  Util = require 'common/util'
   MainBus = require 'msgbus'
 
   Controller = require 'bumblr/controller'
@@ -19,6 +20,12 @@ define (require, exports, module) ->
       'bumblr/listblogs': 'list_blogs'
       'bumblr/viewblog/:id': 'view_blog'
       'bumblr/addblog' : 'add_new_blog'
+
+    onRoute: (name, path, args) ->
+      #console.log 'onRoute name: ' + name
+      #console.log 'onRoute path: ' + path
+      #console.log 'onRoute args:' + args
+      
       
   current_calendar_date = undefined
   AppBus.commands.setHandler 'maincalendar:set_date', () ->
