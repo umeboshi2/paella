@@ -4,7 +4,7 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   MainBus = require 'msgbus'
 
-  FDViews = require 'frontdoor/views'
+  Views = require 'frontdoor/views'
   WikiBus = require 'wiki/msgbus'
 
   marked = require 'marked'
@@ -12,6 +12,8 @@ define (require, exports, module) ->
   Collections = require 'collections'
 
   Util = require 'common/util'
+
+  { SideBarController } = require 'common/controllers'
 
   side_bar_data = new Backbone.Model
     entries: [
@@ -33,13 +35,10 @@ define (require, exports, module) ->
       }
       ]
 
-           
-  class Controller extends Backbone.Marionette.Controller
-    make_sidebar: ->
-      MainBus.vent.trigger 'sidebar:close'
-      view = new FDViews.SideBarView
-        model: side_bar_data
-      MainBus.vent.trigger 'sidebar:show', view
+  class Controller extends SideBarController
+    mainbus: MainBus
+    sidebarclass: Views.SideBarView
+    sidebar_model: side_bar_data
       
     make_main_content: ->
       @make_sidebar()
@@ -50,7 +49,7 @@ define (require, exports, module) ->
       page = WikiBus.reqres.request 'pages:getpage', name
       #response = page.fetch()
       #response.done =>
-      view = new FDViews.FrontDoorMainView
+      view = new Views.FrontDoorMainView
         model: page
       MainBus.vent.trigger 'rcontent:show', view
 

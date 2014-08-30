@@ -13,7 +13,9 @@ define (require, exports, module) ->
   fullCalendar = require 'fullcalendar'
   { navbar_set_active
     scroll_top_fast } = require 'common/util'
-  
+
+  { SideBarController } = require 'common/controllers'
+    
   
   sidebar_model = new Backbone.Model
     entries: [
@@ -29,12 +31,10 @@ define (require, exports, module) ->
 
   meetings = AppBus.reqres.request 'meetinglist'
   
-  class Controller extends Backbone.Marionette.Controller
-    make_sidebar: ->
-      MainBus.vent.trigger 'sidebar:close'
-      view = new Views.SideBarView
-        model: sidebar_model
-      MainBus.vent.trigger 'sidebar:show', view
+  class Controller extends SideBarController
+    mainbus: MainBus
+    sidebarclass: Views.SideBarView
+    sidebar_model: sidebar_model
       
     set_header: (title) ->
       header = $ '#header'

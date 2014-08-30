@@ -13,6 +13,8 @@ define (require, exports, module) ->
   
   fullCalendar = require 'fullcalendar'
 
+  { SideBarController } = require 'common/controllers'
+
   side_bar_data = new Backbone.Model
     entries: [
       {
@@ -29,12 +31,10 @@ define (require, exports, module) ->
   api_key = credentials.get 'consumer_key'
   #console.log 'api_key is -> ' + api_key
   
-  class Controller extends Backbone.Marionette.Controller
-    make_sidebar: ->
-      MainBus.vent.trigger 'sidebar:close'
-      view = new Views.SideBarView
-        model: side_bar_data
-      MainBus.vent.trigger 'sidebar:show', view
+  class Controller extends SideBarController
+    mainbus: MainBus
+    sidebarclass: Views.SideBarView
+    sidebar_model: side_bar_data
       
     set_header: (title) ->
       header = $ '#header'

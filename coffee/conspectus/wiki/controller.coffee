@@ -4,7 +4,7 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   MainBus = require 'msgbus'
 
-  FDViews = require 'wiki/views'
+  Views = require 'wiki/views'
   AppBus = require 'wiki/msgbus'
   
   { SideBarController } = require 'common/controllers'
@@ -28,7 +28,7 @@ define (require, exports, module) ->
 
   class Controller extends SideBarController
     mainbus: MainBus
-    sidebarclass: FDViews.SideBarView
+    sidebarclass: Views.SideBarView
     sidebar_model: side_bar_data
 
     make_main_content: ->
@@ -40,27 +40,27 @@ define (require, exports, module) ->
       pages = AppBus.reqres.request 'pages:collection'
       response = pages.fetch()
       response.done =>
-        view = new FDViews.PageListView
+        view = new Views.PageListView
           collection: pages
         MainBus.vent.trigger 'rcontent:show', view
       
     show_page: (name) ->
       @make_sidebar()
       page = AppBus.reqres.request 'pages:getpage', name
-      view = new FDViews.FrontDoorMainView
+      view = new Views.FrontDoorMainView
         model: page
       MainBus.vent.trigger 'rcontent:show', view
 
     edit_page: (name) ->
       @make_sidebar()
       page = AppBus.reqres.request 'pages:getpage', name
-      view = new FDViews.EditPageView
+      view = new Views.EditPageView
         model: page
       MainBus.vent.trigger 'rcontent:show', view
 
     add_page: () ->
       @make_sidebar()
-      view = new FDViews.NewPageFormView
+      view = new Views.NewPageFormView
       MainBus.vent.trigger 'rcontent:show', view
       
       
