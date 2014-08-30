@@ -1,8 +1,13 @@
 define (require, exports, module) ->
   Backbone = require 'backbone'
   Marionette = require 'marionette'
-  require 'ace'
+
   { navigate_to_url } = require 'common/util'
+
+  require 'jquery-ui'
+
+  ace = require 'ace/ace'
+    
   # FIXME - if require 'ace' is directly below the preceding line,
   # it doesn't seem to import properly.  If it is separated
   # by a blank line, it will be imported properly.  If it is
@@ -29,6 +34,13 @@ define (require, exports, module) ->
       savebutton = $ @save_button
       savebutton.hide()
       editor = ace.edit(@editorContainer)
+      editor_el = $ @editorContainer
+      @$el.resizable
+        # FIXME! the resizing is a bit off
+        stop: (event, ui) ->
+          $(editor.container).css 'height', ui.size.height + 'px'
+          $(editor.container).css 'width', ui.size.width + 'px'
+          editor.resize()
       editor.setTheme @editorTheme
       session = editor.getSession()
       session.setMode @editorMode
@@ -42,7 +54,9 @@ define (require, exports, module) ->
         @model.set @contentAttribute, editor.getValue()
         response = @model.save()
         response.done ->
-          console.log 'Model successfully saved.'
+          # FIXME make a basic method to display alert div
+          # or something
+          #console.log 'Model successfully saved.'
           savebutton.hide()
             
   module.exports = BaseEditPageView

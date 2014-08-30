@@ -72,7 +72,7 @@ def handle_fontawesome(pathspec):
         else:
             raise RuntimeError, "Don't know what to do with %s." % path
         
-def handle_ace_editor(components):
+def handle_ace_editororig(components):
     basedir = os.path.join(components, 'ace-builds/src')
     print "Handling ace"
     for basename in os.listdir(basedir):
@@ -80,6 +80,14 @@ def handle_ace_editor(components):
         handle_file(pathspec)
         
 
+def handle_ace_editor(components):
+    libdir = os.path.join(components, 'ace/lib')
+    components_dir = os.path.join('components/ace')
+    if not os.path.isdir(components_dir):
+        os.makedirs(components_dir)
+    cmd = ['cp', '-a', libdir, components_dir]
+    subprocess.check_call(cmd)
+    
 def handle_requirejs(pathspec):
     filename = os.path.join(pathspec, 'require.js')
     if not os.path.isfile(filename):
@@ -184,7 +192,7 @@ if __name__ == '__main__':
         handle_item(name, pathspec)
     for path in SPECIAL_PATHS:
         handle_file(path)
-    ace_path = os.path.join(COMPONENT_PATH, 'ace-builds')
+    ace_path = os.path.join(COMPONENT_PATH, 'ace')
     if os.path.isdir(ace_path):
         handle_ace_editor(COMPONENT_PATH)
         
