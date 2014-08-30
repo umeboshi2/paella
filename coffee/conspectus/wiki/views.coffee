@@ -3,9 +3,8 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   
   Models = require 'models'
-  Templates = require 'common/templates'
 
-  FDTemplates = require 'wiki/templates'
+  Templates = require 'wiki/templates'
   AppBus = require 'wiki/msgbus'
   
   FormView = require 'common/views/formview'
@@ -15,15 +14,15 @@ define (require, exports, module) ->
   BaseSideBarView = require 'common/views/sidebar'
     
   class FrontDoorMainView extends Backbone.Marionette.ItemView
-    template: FDTemplates.frontdoor_main
+    template: Templates.frontdoor_main
 
   class SideBarView extends BaseSideBarView
     
   class PageListEntryView extends Backbone.Marionette.ItemView
-    template: FDTemplates.page_list_entry
+    template: Templates.page_list_entry
     
   class PageListView extends Backbone.Marionette.CompositeView
-    template: FDTemplates.page_list
+    template: Templates.page_list
     childView: PageListEntryView
     childViewContainer: '.listview-list'
     # handle new page button click
@@ -35,18 +34,18 @@ define (require, exports, module) ->
       navigate_to_url '#wiki/addpage'
       
   class ShowPageView extends Backbone.Marionette.ItemView
-    template: FDTemplates.show_page_view
+    template: Templates.show_page_view
 
 
   class EditPageView extends BaseEditPageView
-    template: FDTemplates.edit_page
+    template: Templates.edit_page
 
   class NewPageFormView extends FormView
     ui:
       name: '[name="name"]'
       content: '[name="content"]'
 
-    template: FDTemplates.new_page_form
+    template: Templates.new_page_form
 
     createModel: ->
       new Models.Page
