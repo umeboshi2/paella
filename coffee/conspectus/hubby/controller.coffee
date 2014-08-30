@@ -31,7 +31,6 @@ define (require, exports, module) ->
   
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
-      navbar_set_active '#hubby'
       MainBus.vent.trigger 'sidebar:close'
       view = new Views.SideBarView
         model: sidebar_model

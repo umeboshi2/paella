@@ -7,12 +7,6 @@ define (require, exports, module) ->
   FDViews = require 'wiki/views'
   AppBus = require 'wiki/msgbus'
   
-  marked = require 'marked'
-  Models = require 'models'
-  Collections = require 'collections'
-  
-  { navbar_set_active } = require 'common/util'
-
   { SideBarController } = require 'common/controllers'
   
 
@@ -36,8 +30,6 @@ define (require, exports, module) ->
     mainbus: MainBus
     sidebarclass: FDViews.SideBarView
     sidebar_model: side_bar_data
-    init_page: () ->
-      @navbar_set_active '#wiki'
 
     make_main_content: ->
       @make_sidebar()
@@ -51,13 +43,10 @@ define (require, exports, module) ->
         view = new FDViews.PageListView
           collection: pages
         MainBus.vent.trigger 'rcontent:show', view
-      window.pages = pages
       
     show_page: (name) ->
       @make_sidebar()
       page = AppBus.reqres.request 'pages:getpage', name
-      #response = page.fetch()
-      #response.done =>
       view = new FDViews.FrontDoorMainView
         model: page
       MainBus.vent.trigger 'rcontent:show', view
@@ -65,7 +54,6 @@ define (require, exports, module) ->
     edit_page: (name) ->
       @make_sidebar()
       page = AppBus.reqres.request 'pages:getpage', name
-      window.current_page = page
       view = new FDViews.EditPageView
         model: page
       MainBus.vent.trigger 'rcontent:show', view

@@ -12,7 +12,6 @@ define (require, exports, module) ->
   Util = require 'common/util'
   
   fullCalendar = require 'fullcalendar'
-  #gcal = require 'fc_gcal'
 
   side_bar_data = new Backbone.Model
     entries: [
@@ -32,7 +31,6 @@ define (require, exports, module) ->
   
   class Controller extends Backbone.Marionette.Controller
     make_sidebar: ->
-      Util.navbar_set_active '#bumblr'
       MainBus.vent.trigger 'sidebar:close'
       view = new Views.SideBarView
         model: side_bar_data
