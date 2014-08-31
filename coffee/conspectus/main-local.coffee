@@ -21,8 +21,7 @@ require.config
     text: components + 'requirejs-text/text'
     teacup: components + 'teacup/lib/teacup'
     marked: components + 'marked/lib/marked'
-    ace: components + 'ace-builds/src/ace'
-
+    ace: components + 'ace/lib/ace'
     # common is the path to the common modules
     # These should maybe be packaged as bower
     # component.
@@ -45,7 +44,6 @@ require.config
     bblocalStorage:
       deps: ['backbone']
       exports: 'Backbone.localStorage'
-
 
 require [
   'application'

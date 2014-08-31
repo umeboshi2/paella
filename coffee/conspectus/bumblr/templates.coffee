@@ -70,9 +70,14 @@ define (require, exports, module) ->
       span ->
         #for photo in post.photos
         photo = post.photos[0]
+        current_width = 0
+        current_size = null
         for size in photo.alt_sizes
-          if size.width == 250
-            img src:size.url, href:post.url
+          if size.width > current_width and size.width < 600
+            current_size = size
+            current_width = size.width
+        size = current_size 
+        img src:size.url, href:post.url
 
   new_blog_form_view = renderable (model) ->
     div '.form-group', ->

@@ -54,7 +54,7 @@ define (require, exports, module) ->
 
   class SimpleBlogPostView extends Backbone.Marionette.ItemView
     template: Templates.simple_post_view
-    className: 'col-sm-5'
+    className: 'col-sm-10'
     
   class BlogPostListView extends Backbone.Marionette.CompositeView
     template: Templates.simple_post_page_view

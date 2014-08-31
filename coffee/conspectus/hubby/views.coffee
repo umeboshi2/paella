@@ -22,13 +22,13 @@ define (require, exports, module) ->
 
   loading_calendar_events = (bool) ->
     loading = $ '#loading'
-    header = $ '.fc-header'
+    toolbar = $ '.fc-toolbar'
     if bool
       loading.show()
-      header.hide()
+      toolbar.hide()
     else
       loading.hide()
-      header.show()
+      toolbar.show()
       
       
     

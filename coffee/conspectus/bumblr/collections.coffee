@@ -43,7 +43,7 @@ define (require, exports, module) ->
 
     state:
       firstPage: 0
-      pageSize: 2
+      pageSize: 1
       
     queryParams:
       pageSize: 'limit'
