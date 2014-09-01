@@ -40,15 +40,25 @@ define (require, exports, module) ->
 
   class MeetingCalendarView extends Backbone.Marionette.ItemView
     template: Templates.meeting_calendar
-
+    ui:
+      calendar: '#maincalendar'
+      
+    keydownHandler: (event_object) =>
+      #console.log 'keydownHandler ' + event_object
+      window.eo = event_object
+      if event_object.keyCode == 65
+        @ui.calendar.fullCalendar('prev')
+      if event_object.keyCode == 90
+        @ui.calendar.fullCalendar('next')
+                  
     onDomRefresh: () ->
+      $('html').keydown @keydownHandler
       # get the current calendar date that has been stored
       # before creating the calendar
       date  = AppBus.reqres.request 'maincalendar:get_date'
       navbar_color = MainBus.reqres.request 'get-navbar-color'
       navbar_bg_color = MainBus.reqres.request 'get-navbar-bg-color'
-      cal = $ '#maincalendar'
-      cal.fullCalendar
+      @ui.calendar.fullCalendar
         header:
           left: 'today'
           center: 'title'
@@ -70,8 +80,12 @@ define (require, exports, module) ->
       # if the current calendar date that has been set,
       # go to that date
       if date != undefined
-        cal.fullCalendar('gotoDate', date)
+        @ui.calendar.fullCalendar('gotoDate', date)
         
+    onBeforeDestroy: () ->
+      #console.log "Remove @keydownHandler" + @keydownHandler
+      $('html').unbind 'keydown', @keydownHandler
+      
   class ShowMeetingView extends Backbone.Marionette.ItemView
     template: Templates.show_meeting_view
 
