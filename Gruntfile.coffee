@@ -3,7 +3,7 @@
 module.exports = (grunt) ->
   # variables to use in config
   # foo = 'bar'
-  app_dir = 'javascripts'
+  app_dir = 'client/javascripts'
     
   # config
   grunt.initConfig
@@ -42,20 +42,9 @@ module.exports = (grunt) ->
         files: 'build.coffee'
         tasks: ['shell:compileBuildJS']
         
-    copy:
-      coffee:
-        files:
-          [
-            expand: true
-            src: ['**/*.coffee']
-            dest: 'javascripts/'
-            cwd: 'coffee'
-          ]  
-        
-        
     clean:
       js:
-        src: ['javascripts/**/*.js']
+        src: ['client/javascripts/**/*.js']
       emacs:
         src: ['**/*~']
         

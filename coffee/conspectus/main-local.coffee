@@ -1,8 +1,8 @@
 # set path to components
-components = '../../../components/'
+components = '../../components/'
 # require config comes first
 require.config
-  baseUrl: 'javascripts/conspectus'
+  baseUrl: 'client/javascripts/conspectus'
   paths:
     jquery: components + 'jquery/dist/jquery'
     underscore: components + 'lodash/dist/lodash.compat'

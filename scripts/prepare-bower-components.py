@@ -3,6 +3,7 @@ import subprocess
 import json
 
 COMPONENT_PATH = 'bower_components'
+DEST_PATH = os.path.join('client','components')
 
 # I will only need one of these two
 IGNORED_NEEDED = ['ace', 'ace-builds']
@@ -81,8 +82,10 @@ def handle_ace_editororig(components):
         
 
 def handle_ace_editor(components):
-    libdir = os.path.join(components, 'ace/lib')
-    components_dir = os.path.join('components/ace')
+    libdir = os.path.join(COMPONENT_PATH, 'ace/lib')
+    print "LIBDIR", libdir
+    components_dir = os.path.join(components, 'ace')
+    print "DEPLOY", components_dir
     if not os.path.isdir(components_dir):
         os.makedirs(components_dir)
     cmd = ['cp', '-a', libdir, components_dir]
@@ -102,7 +105,7 @@ def handle_file(pathspec):
     bower_dir = 'bower_components/'
     if dpath.startswith(bower_dir):
         dpath = dpath[len(bower_dir):]
-    dest = os.path.join('components', dpath)
+    dest = os.path.join(DEST_PATH, dpath)
     dirname = os.path.dirname(dest)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -194,5 +197,5 @@ if __name__ == '__main__':
         handle_file(path)
     ace_path = os.path.join(COMPONENT_PATH, 'ace')
     if os.path.isdir(ace_path):
-        handle_ace_editor(COMPONENT_PATH)
+        handle_ace_editor(DEST_PATH)
         
