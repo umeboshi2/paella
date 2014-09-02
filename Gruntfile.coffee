@@ -27,13 +27,6 @@ module.exports = (grunt) ->
         ext: '.js'
         cwd: 'coffee'
         
-      compileBuildJS:
-        options:
-          bare: true
-        src: 'build.coffee'
-        dest: 'build.js'
-        
-        
     compass:
       compile:
         config: 'config.rb'
@@ -47,7 +40,7 @@ module.exports = (grunt) ->
         tasks: ['compass']
       buildjs:
         files: 'build.coffee'
-        tasks: ['coffee:compileBuildJS']
+        tasks: ['shell:compileBuildJS']
         
     copy:
       coffee:
@@ -71,7 +64,12 @@ module.exports = (grunt) ->
         command: 'python scripts/prepare-bower-components.py'
         options:
           stdout: true
-        
+
+      compileBuildJS:
+        command: 'python scripts/make-build-js.py'
+        options:
+          stdout: true
+          
     # load grunt-* tasks
     require('matchdep').filterDev('grunt-*').forEach grunt.loadNpmTasks
     
