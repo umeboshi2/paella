@@ -118,9 +118,22 @@ define (require, exports, module) ->
               div '#hubby-meeting-item-actions-' + item.id
 
 
-                                                        
+                                                          
               
-          
+  show_meeting_item = (mitem, item, item_count) ->
+    div '.hubby-meeting-item', ->
+      div '.hubby-meeting-item-info', ->
+        agenda_num = mitem.agenda_num
+        if agenda_num is null
+          agenda_num = item_count
+        div '.hubby-meeting-item-agenda-num', agenda_num
+        div '.hubby-meeting-item-fileid', item.file_id
+        div '.hubby-meeting-item-status', item.status
+      div '.hubby-meeting-item-content', ->
+        p '.hubby-meeting-item-text', item.title
+                                                          
+              
+              
   ##################################################################
   # ##########################
   ##################################################################    

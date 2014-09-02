@@ -30,7 +30,19 @@ define (require, exports, module) ->
     ]
 
   meetings = AppBus.reqres.request 'meetinglist'
-  
+
+  prepare_slideshow_meeting_items = (meeting) ->
+    pages = []
+    agenda_section = 'start'
+    item_count = 0
+    meeting_items = meeting.meeting_items
+    if meeting_items?
+      for mitem in meeting_items
+        item_count += 1
+        item = meeting.items[mitem.item_id]
+        if mitem.type != agenda_section and mitem.type
+          agenda_section = mitem.type
+        
   class Controller extends SideBarController
     mainbus: MainBus
     sidebarclass: Views.SideBarView
