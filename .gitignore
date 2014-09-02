@@ -50,3 +50,7 @@ bowercache.tar
 stylesheets
 javascripts
 
+# generated scss
+sass/bootstrap-custom-*.scss
+sass/jqueryui-*.scss
+sass/screen-*.scss
