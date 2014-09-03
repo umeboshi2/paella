@@ -17,6 +17,8 @@ define (require, exports, module) ->
   require 'bumblr/main'
   require 'hubby/main'
 
+  { prepare_app } = require 'common/approuters'
+  
   appmodel = new Backbone.Model
     brand:
       name: 'Conspectus'
@@ -39,79 +41,27 @@ define (require, exports, module) ->
           url: '#hubby'
         }
       ]
-                
-  prepare_app = (app) ->
-    app.addRegions
-      mainview: 'body'
 
-      navbar: '#main-navbar'
-      footer: '#footer'
-      
-      sidebar: '#sidebar'
-      content: '#main-content'
-      
-    app.on 'start', ->
-      #console.log "start event being handled"
-      Backbone.history.start() unless Backbone.history.started
-
-    # I really only use this in the console
-    # when app is attached to window
-    app.msgbus = MainBus
-
-    app.addInitializer ->
-      # execute code to generate basic page
-      # layout
-      #window.appmodel = appmodel
-      MainBus.commands.execute 'mainpage:init', appmodel
-
-      # then setup the routes
-      MainBus.commands.execute 'frontdoor:route'
-      MainBus.commands.execute 'wiki:route'
-      MainBus.commands.execute 'bumblr:route'
-      MainBus.commands.execute 'hubby:route'
-      
-    # connect events
-    MainBus.vent.on 'mainpage:show', (view) =>
-      #console.log 'mainpage:show called'
-      app.mainview.show view
-      
-    MainBus.vent.on 'main-menu:show', (view) =>
-      #console.log 'main-menu:show called'
-      app.main_menu.show view
-      
-
-    MainBus.vent.on 'sidebar:show', (view) =>
-      #console.log 'sidebar:show called'
-      app.sidebar.show view
-
-    MainBus.vent.on 'sidebar:close', () =>
-      #console.log 'sidebar:close called'
-      if 'sidebar' in app
-        app.sidebar.destroy()
-
-    MainBus.vent.on 'main-navbar:show', (view) =>
-      #console.log 'main-navbar:show called'
-      app.navbar.show view
-      
-    MainBus.vent.on 'rcontent:show', (view) =>
-      #console.log 'rcontent:show called'
-      app.content.show view
-      
-    MainBus.vent.on 'rcontent:close', () =>
-      #console.log "rcontent:close called"
-      if app.content != undefined
-        #console.log app.content
-        if app.content.currentView != undefined
-          #console.log app.content.currentView
-          app.content.empty()
-      
-            
+  appregions =
+    mainview: 'body'
+    navbar: '#main-navbar'
+    sidebar: '#sidebar'
+    content: '#main-content'
+    footer: '#footer'
+    
+  approutes = [
+    'frontdoor:route'
+    'wiki:route'
+    'bumblr:route'
+    'hubby:route'
+    ]
+    
       
   app = new Marionette.Application()
     
   app.ready = false
 
-  prepare_app app
+  prepare_app app, appmodel, appregions, MainBus, approutes
   app.ready = true
 
   
