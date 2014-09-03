@@ -3,7 +3,9 @@ import subprocess
 import json
 
 COMPONENT_PATH = 'bower_components'
-DEST_PATH = os.path.join('client','components')
+#DEST_PATH = os.path.join('client','components')
+DEST_PATH = 'components'
+
 
 # I will only need one of these two
 IGNORED_NEEDED = ['ace', 'ace-builds']

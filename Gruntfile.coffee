@@ -3,7 +3,7 @@
 module.exports = (grunt) ->
   # variables to use in config
   # foo = 'bar'
-  app_dir = 'client/javascripts'
+  app_dir = 'javascripts'
     
   # config
   grunt.initConfig
@@ -44,7 +44,7 @@ module.exports = (grunt) ->
         
     clean:
       js:
-        src: ['client/javascripts/**/*.js']
+        src: ['javascripts/**/*.js']
       emacs:
         src: ['**/*~']
         
