@@ -7,8 +7,11 @@ define (require, exports, module) ->
     $('html, body').animate {scrollTop: 0}, 'fast'
   
   navigate_to_url = (url) ->
-    r = new Backbone.Router
-    r.navigate url, trigger:true
+    if url.split('/')[0] == ''
+      window.location = url
+    else
+      r = new Backbone.Router
+      r.navigate url, trigger:true
     
   capitalize = (str) ->
     str.charAt(0).toUpperCase() + str.slice(1)
@@ -42,21 +45,6 @@ define (require, exports, module) ->
       if path_top == liq.attr('appname')
         liq.addClass('active')
         
-  navbar_set_active2 = (url) ->
-    anchors = $('#app-navbar a')
-    for a in anchors
-      aq = $ a
-      window.aq = aq
-      aq.parent().removeClass('active')
-      top = aq.attr('href').split('/')[0]
-      top_split = url.split(top)[0]
-      if top_split == ''
-        aq.parent().addClass('active')
-      
-      
-
-      
-
   module.exports =
     scroll_top_fast: scroll_top_fast
     navigate_to_url: navigate_to_url
