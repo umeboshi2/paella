@@ -85,6 +85,7 @@ define (require, exports, module) ->
   
 
   module.exports =
+    login_form: login_form
     BootstrapLayoutTemplate: BootstrapLayoutTemplate
     BootstrapNavBarTemplate: BootstrapNavBarTemplate
     main_sidebar: main_sidebar

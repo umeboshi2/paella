@@ -20,9 +20,11 @@ define (require, exports, module) ->
   class BootstrapNavBarView extends Backbone.Marionette.ItemView
     template: Templates.BootstrapNavBarTemplate
         
+  class LoginView extends Backbone.Marionette.ItemView
+    template: Templates.login_form
   
   module.exports =
     MainPageLayout: MainPageLayout
     BootstrapNavBarView: BootstrapNavBarView
-    
+    LoginView: LoginView
   
