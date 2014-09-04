@@ -20,8 +20,9 @@ define (require, exports, module) ->
           app.sidebar.destroy()
       mainbus.vent.on 'main-navbar:show', (view) =>
         app.navbar.show view
+        mainbus.vent.trigger 'main-navbar:displayed', view
       mainbus.vent.on 'user-menu:show', (view) =>
-        app.user-menu.show view
+        app.user_menu.show view
       mainbus.vent.on 'rcontent:show', (view) =>
         app.content.show view
       mainbus.vent.on 'rcontent:close', (view) =>

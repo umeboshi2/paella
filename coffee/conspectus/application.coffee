@@ -10,7 +10,9 @@ define (require, exports, module) ->
   MainBus = require 'msgbus'
   Models = require 'models'
   
-  require 'common/mainpage'
+  MainPage = require 'common/mainpage'
+  MainPage.set_init_page_handler MainBus
+  
   
   require 'frontdoor/main'
   require 'wiki/main'

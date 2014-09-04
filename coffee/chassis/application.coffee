@@ -9,7 +9,7 @@ define (require, exports, module) ->
   
   MainBus = require 'msgbus'
   Models = require 'models'
-
+  
   { set_get_current_user_handler } = require 'common/models'
 
   current_user_url = '/rest/v0/main/current/user'
@@ -19,20 +19,34 @@ define (require, exports, module) ->
   MainPage.set_init_page_handler MainBus
   MainPage.set_main_navbar_handler MainBus
   
+  
   require 'frontdoor/main'
+  require 'wiki/main'
+  require 'bumblr/main'
+  require 'hubby/main'
 
   { prepare_app } = require 'common/approuters'
-
+  
   appmodel = new Backbone.Model
     brand:
-      name: 'Cenotaph'
-      url: '#'
+      name: 'Chassis'
+      url: '/'
     apps:
       [
         {
-          appname: 'conspectus'
-          name: 'Conspectus'
-          url: '/app/conspectus'
+          appname: 'wiki'
+          name: 'Wiki'
+          url: '#wiki'
+        }
+        {
+          appname: 'bumblr'
+          name: 'Bumblr'
+          url: '#bumblr'
+        }
+        {
+          appname: 'hubby'
+          name: 'Hubby'
+          url: '#hubby'
         }
       ]
 
@@ -46,6 +60,9 @@ define (require, exports, module) ->
     
   approutes = [
     'frontdoor:route'
+    'wiki:route'
+    'bumblr:route'
+    'hubby:route'
     ]
     
       
@@ -59,6 +76,7 @@ define (require, exports, module) ->
     prepare_app app, appmodel, appregions, MainBus, approutes
     app.ready = true
 
+  
   # These are handlers to retrieve the colors
   # from the navbars, and are used to create
   # the default color for the fullcalendar

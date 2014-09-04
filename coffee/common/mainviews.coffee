@@ -22,9 +22,13 @@ define (require, exports, module) ->
         
   class LoginView extends Backbone.Marionette.ItemView
     template: Templates.login_form
-  
+
+  class UserMenuView extends Backbone.Marionette.ItemView
+    template: Templates.user_menu
+    
   module.exports =
     MainPageLayout: MainPageLayout
     BootstrapNavBarView: BootstrapNavBarView
     LoginView: LoginView
-  
+    UserMenuView: UserMenuView
+      

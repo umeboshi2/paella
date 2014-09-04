@@ -48,6 +48,39 @@ define (require, exports, module) ->
                     
                   
   ########################################
+  user_menu = renderable (user) ->
+    name = user.username
+    ul '#user-menu.ctx-menu.nav.navbar-nav', ->
+      li '.dropdown', ->
+        a '.dropdown-toggle', 'data-toggle':'dropdown', ->
+          if name == undefined
+            text "Guest"
+          else
+            text name
+          b '.caret'
+        ul '.dropdown-menu', ->
+          if name == undefined
+            li ->
+              a href:'/login', 'login'
+          else
+            li ->
+              a href:'/app/user', 'User Page'
+            # we need a "get user info" from server
+            # to populate this menu with 'admin' link
+            admin = false
+            unless name == undefined
+              groups = user.groups
+              if groups != undefined
+                for g in groups
+                  if g.name == 'admin'
+                    admin = true
+            if admin
+              li ->
+                a href:'/admin', 'Administer Site'
+            li ->
+              a href:'/logout', 'Logout'
+
+  ########################################
   BootstrapNavBarTemplate = renderable (appmodel) ->
     div '.container', ->
       div '#navbar-brand.navbar-header', ->
@@ -63,7 +96,7 @@ define (require, exports, module) ->
           for app in appmodel.apps
             li appname:app.appname, ->
               a href:app.url, app.name
-        ul '.nav.navbar-nav.navbar-right', ->
+        ul '#user-menu.nav.navbar-nav.navbar-right'
               
 
   BootstrapLayoutTemplate = renderable () ->
@@ -86,6 +119,7 @@ define (require, exports, module) ->
 
   module.exports =
     login_form: login_form
+    user_menu: user_menu
     BootstrapLayoutTemplate: BootstrapLayoutTemplate
     BootstrapNavBarTemplate: BootstrapNavBarTemplate
     main_sidebar: main_sidebar
