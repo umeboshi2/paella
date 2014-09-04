@@ -13,6 +13,8 @@ define (require, exports, module) ->
 
   { SideBarController } = require 'common/controllers'
 
+  { LoginView } = require 'common/mainviews'
+  
   side_bar_data = new Backbone.Model
     entries: [
       {
@@ -28,10 +30,17 @@ define (require, exports, module) ->
       
     make_main_content: ->
       @make_sidebar()
-      page = new Backbone.Model
-        content: 'hello there'
-      view = new Views.FrontDoorMainView
-        model: page
+      user = MainBus.reqres.request 'get-current-user'
+      # FIXME
+      show_login_form = false
+      if ! user.has('name')
+        view = new LoginView
+        show_login_form = true
+      else
+        page = new Backbone.Model
+          content: 'hello there'
+        view = new Views.FrontDoorMainView
+          model: page
       MainBus.vent.trigger 'rcontent:show', view
       
     show_page: (name) ->
