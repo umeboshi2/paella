@@ -2,8 +2,8 @@ define (require, exports, module) ->
   $ = require 'jquery'
   _ = require 'underscore'
   Backbone = require 'backbone'
-  MainBus = require 'msgbus'
-
+  BaseLocalStorageModel = require 'common/localstoragemodel'
+    
   ########################################
   # Models
   ########################################
