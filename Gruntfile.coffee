@@ -45,7 +45,7 @@ module.exports = (grunt) ->
         tasks: ['shell:compileBuildJS']
         
     grunt.event.on 'watch', (action, filepath) ->
-      #console.log action + ' on ' + filepath
+      #console.log "#{action} on #{filepath}"
       filepath = filepath.split('coffee/')[1]
       #console.log action + ' on ' + filepath
       grunt.config 'coffee.compileWithMaps.src', filepath
