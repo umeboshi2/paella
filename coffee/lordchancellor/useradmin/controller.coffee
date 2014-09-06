@@ -4,17 +4,30 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   MainBus = require 'msgbus'
 
-  Views = require 'wiki/views'
-  AppBus = require 'wiki/msgbus'
+  Views = require 'useradmin/views'
+  AppBus = require 'useradmin/msgbus'
   
   { SideBarController } = require 'common/controllers'
   
+  #    'useradmin/viewuser/:id': 'view_user'
 
   side_bar_data = new Backbone.Model
     entries: [
       {
         name: 'List Users'
         url: '#useradmin/listusers'
+      }
+      {
+        name: 'Add User'
+        url: '#useradmin/adduser'
+      }
+      {
+        name: 'List Groups'
+        url: '#useradmin/listgroups'
+      }
+      {
+        name: 'Add Group'
+        url: '#useradmin/addgroup'
       }
       ]
 

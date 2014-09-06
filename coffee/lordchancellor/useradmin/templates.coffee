@@ -35,13 +35,6 @@ define (require, exports, module) ->
   ########################################
   # Templates
   ########################################
-  useradmin_sidebar = renderable (model) ->
-    div '.listview-list.btn-group-vertical', ->
-      for entry in model.entries
-        div '.btn.btn-default.' + entry.name, entry.label
-        
-    
-      
   simple_user_entry = renderable (model) ->
     div '.listview-list-entry', ->
       a href:'#useradmin/viewuser/' + model.id, model.name
@@ -52,9 +45,11 @@ define (require, exports, module) ->
 
   simple_user_list = renderable (users) ->
     div '.listview-header', 'Users'
+    div '.listview-list'
     
   simple_group_list = renderable (groups) ->
     div '.listview-header', 'Groups'
+    div '.listview-list'
 
 
   view_user_page = renderable (model) ->
@@ -94,7 +89,6 @@ define (require, exports, module) ->
     
          
   module.exports =
-    useradmin_sidebar: useradmin_sidebar
     simple_user_entry: simple_user_entry
     simple_group_entry: simple_group_entry
     simple_user_list: simple_user_list

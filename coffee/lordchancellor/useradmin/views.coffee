@@ -2,7 +2,7 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   Marionette = require 'marionette'
   
-  Models = require 'models'
+  Models = require 'useradmin/models'
 
   Templates = require 'useradmin/templates'
   AppBus = require 'useradmin/msgbus'
@@ -23,16 +23,16 @@ define (require, exports, module) ->
 
   class UserListView extends Backbone.Marionette.CompositeView
     template: Templates.simple_user_list
-    itemView: SimpleUserEntryView
-    className: 'listview-list'
+    childView: SimpleUserEntryView
+    childViewContainer: '.listview-list'
 
   class SimpleGroupEntryView extends Backbone.Marionette.ItemView
     template: Templates.simple_group_entry
 
   class GroupListView extends Backbone.Marionette.CompositeView
     template: Templates.simple_group_list
-    itemView: SimpleGroupEntryView
-    className: 'listview-list'
+    childView: SimpleGroupEntryView
+    childViewContainer: '.listview-list'
     
   class NewUserFormView extends FormView
     ui:
@@ -50,11 +50,11 @@ define (require, exports, module) ->
         name: @ui.name.val()
         password: @ui.password.val()
         confirm: @ui.confirm.val()
-      users = MSGBUS.reqres.request 'useradmin:userlist'
+      users = AppBus.reqres.request 'get-users'
       users.add @model
 
     onSuccess: (model) ->
-      MSGBUS.events.trigger 'useradmin:event:user_added'
+      AppBus.vent.trigger 'user_added'
       
       
         
@@ -83,11 +83,7 @@ define (require, exports, module) ->
       console.log 'confirm_delete_pressed'
       button = $ '.confirm-delete-button'
       @model.destroy()
-      MSGBUS.events.trigger 'rcontent:close'
-      
-      
-
-      
+      MainBus.vent.trigger 'rcontent:close'
       
       
   module.exports =

@@ -3,42 +3,43 @@ define (require, exports, module) ->
   _ = require 'underscore'
   Backbone = require 'backbone'
   MainBus = require 'msgbus'
-  localStorage = require 'bblocalStorage'
   
-  Models = require 'wiki/models'
-  AppBus = require 'wiki/msgbus'
+  Models = require 'useradmin/models'
+  AppBus = require 'useradmin/msgbus'
   
-      
+  { BaseCollection } = require 'common/collections'
+        
 
   ########################################
   # Collections
   ########################################
-  class PageCollection extends Backbone.Collection
-    localStorage: new localStorage('pages')
-    model: Models.Page
+  rscroot = '/rest/v0/main'
+  
+  class UserList extends BaseCollection
+    model: Models.User
+    url: rscroot + '/users'
 
+  class GroupList extends BaseCollection
+    model: Models.Group
+    url: rscroot + '/groups'
+
+  MainUserList = new UserList
+  MainGroupList = new GroupList
+
+  make_ug_collection = (user_id) ->
+    class uglist extends BaseCollection
+      model: Models.Group
+      url: rscroot + '/users/' + user_id + '/groups'
+    return new uglist
     
-  # set handlers on message bus
-  #
-  main_page_collection = new PageCollection
-  AppBus.reqres.setHandler 'pages:collection', ->
-    main_page_collection
-
-  AppBus.reqres.setHandler 'pages:getpage', (page_id) ->
-    #console.log 'handle pages:getpage ' + page_id
-    model = main_page_collection.get page_id
-    window.mmodel = model
-    #return model
-    if model is undefined
-      #console.log 'make new page model ' + page_id
-      model = new Models.Page
-        id: page_id
-        content: ''
-      main_page_collection.add model
-      if page_id == 'intro'
-        model.set 'content', 'This is the intro.'
-        model.save()
-    model
-      
+  AppBus.reqres.setHandler 'get-users', ->
+    MainUserList
+  AppBus.reqres.setHandler 'get-groups', ->
+    MainGroupList
+  
   module.exports =
-    PageCollection: PageCollection
+    MainUserList: MainUserList
+    MainGroupList: MainGroupList
+    make_ug_collection: make_ug_collection
+    
+    

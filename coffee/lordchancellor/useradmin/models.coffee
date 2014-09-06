@@ -2,18 +2,33 @@ define (require, exports, module) ->
   $ = require 'jquery'
   _ = require 'underscore'
   Backbone = require 'backbone'
-  BaseLocalStorageModel = require 'common/localstoragemodel'
     
   ########################################
   # Models
   ########################################
 
-  class Page extends Backbone.Model
+  class User extends Backbone.Model
+    defaults:
+      name: ''
+      password: 'none'
+      confirm: 'unconfirmed'
+
     validation:
       name:
         required: true
+        msg: 'Name required.'
+      password:
+        required: true
+      confirm:
+        required: true
+        equalTo: 'password'
+        msg: 'The passwords do not match.'
         
-    
+
+  class Group extends Backbone.Model
+    defaults:
+      name: ''
+
   module.exports =
-    Page: Page
-    
+    User: User
+    Group: Group
