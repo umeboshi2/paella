@@ -1,5 +1,3 @@
-#
-# Simple entry app
 define (require, exports, module) ->
   Backbone = require 'backbone'
   MainBus = require 'msgbus'
