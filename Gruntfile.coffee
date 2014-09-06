@@ -35,6 +35,8 @@ module.exports = (grunt) ->
       coffee:
         files: ['coffee/**/*.coffee']
         tasks: ['coffee:compileWithMaps']
+        options:
+          spawn: false
       compass:
         files: ['sass/**/*.scss']
         tasks: ['compass']
@@ -42,6 +44,12 @@ module.exports = (grunt) ->
         files: 'build.coffee'
         tasks: ['shell:compileBuildJS']
         
+    grunt.event.on 'watch', (action, filepath) ->
+      #console.log action + ' on ' + filepath
+      filepath = filepath.split('coffee/')[1]
+      #console.log action + ' on ' + filepath
+      grunt.config 'coffee.compileWithMaps.src', filepath
+      
     clean:
       js:
         src: ['javascripts/**/*.js']
@@ -62,6 +70,11 @@ module.exports = (grunt) ->
     # load grunt-* tasks
     require('matchdep').filterDev('grunt-*').forEach grunt.loadNpmTasks
     
+
+    #grunt.event.on 'watch', (action, filepath, target) ->
+    #  message = target + ': ' + filepath + ' has ' + action
+    #  console.log message
+    
     grunt.registerTask 'default', [
       'shell:bower'
       'coffee:compile'
@@ -70,4 +83,3 @@ module.exports = (grunt) ->
       'coffee:compileWithMaps'
       ]
                           
-        
