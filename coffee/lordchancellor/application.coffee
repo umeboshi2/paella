@@ -21,7 +21,6 @@ define (require, exports, module) ->
   
   
   require 'frontdoor/main'
-  require 'wiki/main'
   require 'useradmin/main'
   require 'sitetext/main'
     
@@ -34,7 +33,7 @@ define (require, exports, module) ->
     apps:
       [
         {
-          appname: 'users'
+          appname: 'useradmin'
           name: 'Accounts'
           url: '#useradmin'
         }
@@ -42,11 +41,6 @@ define (require, exports, module) ->
           appname: 'sitetext'
           name: 'Site Text'
           url: '#sitetext'
-        }
-        {
-          appname: 'wiki'
-          name: 'Wiki'
-          url: '#wiki'
         }
       ]
 
@@ -60,7 +54,6 @@ define (require, exports, module) ->
     
   approutes = [
     'frontdoor:route'
-    'wiki:route'
     'useradmin:route'
     'sitetext:route'
     ]

@@ -5,7 +5,7 @@ define (require, exports, module) ->
   MainBus = require 'msgbus'
 
   Views = require 'frontdoor/views'
-  WikiBus = require 'wiki/msgbus'
+  WikiBus = require 'sitetext/msgbus'
 
   marked = require 'marked'
   Models = require 'models'
@@ -14,6 +14,7 @@ define (require, exports, module) ->
   Util = require 'common/util'
 
   { SideBarController } = require 'common/controllers'
+
 
   side_bar_data = new Backbone.Model
     entries: [

@@ -31,7 +31,8 @@ define (require, exports, module) ->
 
     make_main_content: ->
       @make_sidebar()
-
+      #@show_page 1
+      
     list_pages: ->
       @make_sidebar()
       pages = AppBus.reqres.request 'get-pages'
