@@ -25,7 +25,7 @@
     "marionette": "~2.1.0",
     "bootstrap": "~3.2.0",
     "jquery-ui": "~1.11.1",
-    "teacup": "https://github.com/goodeggs/teacup.git#~0.4.1",
+    "teacup": "https://github.com/goodeggs/teacup.git#169d92198db33e0e85d4b7872e0db0640c2df579",
     "marked": "~0.3.2",
     "backbone.validation": "~0.7.1",
     "backbone.paginator": "~2.0.2",
