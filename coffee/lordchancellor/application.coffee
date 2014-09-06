@@ -23,7 +23,8 @@ define (require, exports, module) ->
   require 'frontdoor/main'
   require 'wiki/main'
   require 'useradmin/main'
-  
+  require 'sitetext/main'
+    
   { prepare_app } = require 'common/approuters'
   
   appmodel = new Backbone.Model
@@ -36,6 +37,11 @@ define (require, exports, module) ->
           appname: 'users'
           name: 'Accounts'
           url: '#useradmin'
+        }
+        {
+          appname: 'sitetext'
+          name: 'Site Text'
+          url: '#sitetext'
         }
         {
           appname: 'wiki'
@@ -56,6 +62,7 @@ define (require, exports, module) ->
     'frontdoor:route'
     'wiki:route'
     'useradmin:route'
+    'sitetext:route'
     ]
     
       
