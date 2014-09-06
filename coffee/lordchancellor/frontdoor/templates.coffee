@@ -35,13 +35,9 @@ define (require, exports, module) ->
   ########################################
   # Templates
   ########################################
-  layout = renderable () ->
-    div '.something-very-special'
-    
   frontdoor_main = renderable (page) ->
     raw marked page.content
     
               
   module.exports =
-    layout: layout
     frontdoor_main: frontdoor_main

@@ -35,9 +35,6 @@ define (require, exports, module) ->
   ########################################
   # Templates
   ########################################
-  layout = renderable () ->
-    div '.something-very-special'
-    
   frontdoor_main = renderable (page) ->
     raw marked page.content
     
@@ -74,19 +71,18 @@ define (require, exports, module) ->
     div '.form-group', ->
       label '.control-label', for:'input_name', 'Page Name'
       input '#input_name.form-control',
-      name:'name', 'data-validation':'name',
+      name:'name', dataValidation:'name',
       placeholder:'New Page', value:''
     div '.form-group', ->
       label '.control-label', for:'input_content', 'Content'
       textarea '#input_content.form-control',
-      name:'content', 'data-validation':'content',
+      name:'content', dataValidation:'content',
       placeholder:'...add text....', value:''
     input '.btn.btn-default.btn-xs', type:'submit', value:'Add Page'
     
 
       
   module.exports =
-    layout: layout
     frontdoor_main: frontdoor_main
     page_list_entry: page_list_entry
     page_list: page_list

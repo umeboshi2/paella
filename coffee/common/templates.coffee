@@ -52,7 +52,7 @@ define (require, exports, module) ->
     name = user.username
     ul '#user-menu.ctx-menu.nav.navbar-nav', ->
       li '.dropdown', ->
-        a '.dropdown-toggle', 'data-toggle':'dropdown', ->
+        a '.dropdown-toggle', dataToggle:'dropdown', ->
           if name == undefined
             text "Guest"
           else
@@ -76,7 +76,11 @@ define (require, exports, module) ->
                     admin = true
             if admin
               li ->
-                a href:'/admin', 'Administer Site'
+                href = '/admin'
+                pathname = window.location.pathname
+                if pathname.split(href)[0] == ''
+                  href = '#'
+                a href:href, 'Administer Site'
             li ->
               a href:'/logout', 'Logout'
 
@@ -84,8 +88,8 @@ define (require, exports, module) ->
   BootstrapNavBarTemplate = renderable (appmodel) ->
     div '.container', ->
       div '#navbar-brand.navbar-header', ->
-        button '.navbar-toggle', type:'button', 'data-toggle':'collapse',
-        'data-target':'.navbar-collapse', ->
+        button '.navbar-toggle', type:'button', dataToggle:'collapse',
+        dataTarget:'.navbar-collapse', ->
           span '.sr-only', 'Toggle Navigation'
           span '.icon-bar'
           span '.icon-bar'
@@ -113,7 +117,7 @@ define (require, exports, module) ->
   main_sidebar = renderable (model) ->
     div '.sidebar-menu', ->
       for entry in model.entries
-        div '.sidebar-entry-button', 'button-url':entry.url, ->
+        div '.sidebar-entry-button', buttonUrl:entry.url, ->
           text entry.name          
   
 

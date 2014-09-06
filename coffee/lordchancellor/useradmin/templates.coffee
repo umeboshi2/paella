@@ -64,17 +64,17 @@ define (require, exports, module) ->
     div '.form-group', ->
       label '.control-label', for:'input_name', 'User Name'
       input '#input_name.form-control',
-      name:'name', 'data-validation':'name',
+      name:'name', dataValidation:'name',
       placeholder:'User Name', value: ''
     div '.form-group', ->
       label '.control-label', for:'input_password', 'Password'
       input '#input_password.form-control',
-      name:'password', 'data-validation':'password',
+      name:'password', dataValidation:'password',
       placeholder:'', value:'', type:'password'
     div '.form-group', ->
       label '.control-label', for:'input_confirm', 'Confirm Password'
       input '#input_confirm.form-control',
-      name:'confirm', 'data-validation':'confirm',
+      name:'confirm', dataValidation:'confirm',
       placeholder:'', value:'', type:'password'
     input '.btn.btn-default.btn-xs', type:'submit', value:"Add New User"
     
@@ -82,7 +82,7 @@ define (require, exports, module) ->
     div '.form-group', ->
       label '.control-label', for:'input_name', 'Group Name'
       input '#input_name.form-control',
-      name:'name', 'data-validation':'name',
+      name:'name', dataValidation:'name',
       placeholder:'Group Name', value: ''
     input '.btn.btn-default.btn-xs', type:'submit', value:"Add New Group"
 

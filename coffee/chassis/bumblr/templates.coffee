@@ -83,7 +83,7 @@ define (require, exports, module) ->
     div '.form-group', ->
       label '.control-label', for:'input_blogname', 'Blog Name'
       input '#input_blogname.form-control',
-      name:'blog_name', 'data-validation':'blog_name',
+      name:'blog_name', dataValidation:'blog_name',
       placeholder:'', value: '8bitfuture'
     input '.btn.btn-default.btn-xs', type:'submit', value:'Add Blog'
     
@@ -91,22 +91,22 @@ define (require, exports, module) ->
     div '.form-group', ->
       label '.control-label', for:'input_key', 'Consumer Key'
       input '#input_key.form-control',
-      name:'consumer_key', 'data-validation':'consumer_key',
+      name:'consumer_key', dataValidation:'consumer_key',
       placeholder:'', value: settings.consumer_key
     div '.form-group', ->
       label '.control-label', for:'input_secret', 'Consumer Secret'
       input '#input_secret.form-control',
-      name:'consumer_secret', 'data-validation':'consumer_secret',
+      name:'consumer_secret', dataValidation:'consumer_secret',
       placeholder:'', value: settings.consumer_secret
     div '.form-group', ->
       label '.control-label', for:'input_token', 'Token'
       input '#input_token.form-control',
-      name:'token', 'data-validation':'token',
+      name:'token', dataValidation:'token',
       placeholder:'', value: settings.token
     div '.form-group', ->
       label '.control-label', for:'input_tsecret', 'Token Secret'
       input '#input_tsecret.form-control',
-      name:'token_secret', 'data-validation':'token_secret',
+      name:'token_secret', dataValidation:'token_secret',
       placeholder:'', value: settings.token_secret
     input '.btn.btn-default.btn-xs', type:'submit', value:'Submit'
     
