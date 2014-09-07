@@ -61,7 +61,6 @@ define (require, exports, module) ->
       div '.mytoolbar', ->
         div '#prev-page-button.btn.btn-default.pull-left', '<-'
         div '#next-page-button.btn.btn-default.pull-right', '->'
-      #div '#posts-container'
       
   simple_post_view = renderable (post) ->
     div '.alert.alert-success', ->

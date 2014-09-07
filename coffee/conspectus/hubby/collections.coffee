@@ -27,7 +27,7 @@ define (require, exports, module) ->
     model: Models.ItemActionModel
 
   make_item_action_collection = (itemid) ->
-    url = 'http://hubby.littledebian.org/rest/v0/main/itemaction/' + itemid
+    url = "http://hubby.littledebian.org/rest/v0/main/itemaction/#{itemid}"
     c = new ItemActionCollection
     c.url = url
     return c

@@ -9,7 +9,7 @@ define (require, exports, module) ->
 
   class MainMeetingModel extends Backbone.Model
     url: () ->
-      'http://hubby.littledebian.org/rest/v0/main/meeting/' + @id
+      "http://hubby.littledebian.org/rest/v0/main/meeting/#{@id}"
     parse: (response) ->
       response.data
 

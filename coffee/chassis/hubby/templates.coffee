@@ -8,6 +8,9 @@ define (require, exports, module) ->
   
   teacup = require 'teacup'
 
+  { capitalize
+    handle_newlines } = require 'common/util'
+
   renderable = teacup.renderable
 
   div = teacup.div
@@ -31,13 +34,8 @@ define (require, exports, module) ->
   h1, h2, h3,
   subtitle, section, hr
   } = teacup
-            
-  capitalize = (str) ->
-    str.charAt(0).toUpperCase() + str.slice(1)
 
-  handle_newlines = renderable (str) ->
-   str.replace(/(?:\r\n|\r|\n)/g, '<br />')
-    
+              
   ########################################
   # Templates
   ########################################
@@ -133,11 +131,6 @@ define (require, exports, module) ->
         p '.hubby-meeting-item-text', item.title
                                                           
               
-              
-  ##################################################################
-  # ##########################
-  ##################################################################    
-          
   module.exports =
     sidebar: sidebar
     short_action: short_action

@@ -16,17 +16,15 @@ define (require, exports, module) ->
   
   class PhotoPostCollection extends Backbone.Collection
     url: () ->
-      baseURL + '/' + @id + '/posts/photo' + '?callback=?'
+      "#{baseURL}/#{@id}/posts/photo?callback=?"
       
   class BlogPosts extends PageableCollection
     mode: 'server'
     full: true
     baseURL: baseURL
     url: () ->
-      url = @baseURL + '/blog/' + @base_hostname 
-      url = url + '/posts/photo?api_key=' + @api_key
-      return url
-      
+      "#{@baseURL}/blog/#{@base_hostname}/posts/photo?api_key=#{@api_key}"
+  
     fetch: (options) ->
       options || options = {}
       data = (options.data || {})
@@ -69,7 +67,7 @@ define (require, exports, module) ->
 
     # FIXME: This is ugly!
     add_blog: (name) ->
-      sitename = name + '.tumblr.com'
+      sitename = "#{name}.tumblr.com"
       model = new Models.BlogInfo
       model.set 'id', sitename
       model.set 'name', name

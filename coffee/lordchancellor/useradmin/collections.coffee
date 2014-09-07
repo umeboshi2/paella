@@ -17,11 +17,11 @@ define (require, exports, module) ->
   
   class UserList extends BaseCollection
     model: Models.User
-    url: rscroot + '/users'
+    url: "#{rscroot}/users"
 
   class GroupList extends BaseCollection
     model: Models.Group
-    url: rscroot + '/groups'
+    url: "#{rscroot}/groups"
 
   MainUserList = new UserList
   MainGroupList = new GroupList
@@ -29,7 +29,7 @@ define (require, exports, module) ->
   make_ug_collection = (user_id) ->
     class uglist extends BaseCollection
       model: Models.Group
-      url: rscroot + '/users/' + user_id + '/groups'
+      url: "#{rscroot}/users/#{user_id}/groups"
     return new uglist
     
   AppBus.reqres.setHandler 'get-users', ->
