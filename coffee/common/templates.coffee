@@ -27,7 +27,7 @@ define (require, exports, module) ->
   button, a, nav, form, small, section, 
   ul, li, b, h1, h2, aside, p,
   header} = teacup
-            
+
   ########################################
   # Templates
   ########################################
@@ -36,7 +36,8 @@ define (require, exports, module) ->
       label '.control-label',
         for:data.input_id
         data.label
-      input "##{data.input_id}.form-control", data.input_attributes
+      input_type = if data?.input_type then data.input_type else input
+      input_type "##{data.input_id}.form-control", data.input_attributes
           
   login_form = renderable (user) ->
     form
