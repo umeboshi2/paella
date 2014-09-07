@@ -31,22 +31,33 @@ define (require, exports, module) ->
   ########################################
   # Templates
   ########################################
+  form_group_input_div = renderable (data) ->
+    div '.form-group', ->
+      label '.control-label',
+        for:data.input_id
+        data.label
+      input "##{data.input_id}.form-control", data.input_attributes
+          
   login_form = renderable (user) ->
-    form role:'form', method:'POST',
-    action:'/login', ->
-      div '.form-group', ->
-        label for:'input_username', 'User Name'
-        input '#input_username.form-control',
-        name: 'username',
-        placeholder:"User Name"
-      div '.form-group', ->
-        label for:'input_password', 'Password'
-        input '#input_password.form-control',
-        name: 'password',
-        type:'password', placeholder:'password'
-      button '.btn.btn-default', type:'submit', 'login'
-                    
-                  
+    form
+      role:'form'
+      method: 'POST'
+      action: '/login', ->
+        form_group_input_div
+          input_id: 'input_username'
+          label: 'User Name'
+          input_attributes:
+            name: 'username'
+            placeholder: 'User Name'
+        form_group_input_div
+          input_id: 'input_password'
+          label: 'Password'
+          input_attributes:
+            name: 'password'
+            type: 'password'
+            placeholder: 'Type your password here....'
+        button '.btn.btn-default', type:'submit', 'login'
+        
   ########################################
   user_menu = renderable (user) ->
     name = user.username
@@ -67,6 +78,7 @@ define (require, exports, module) ->
               a href:'/app/user', 'User Page'
             # we need a "get user info" from server
             # to populate this menu with 'admin' link
+            # FIXME use "?." to help here
             admin = false
             unless name == undefined
               groups = user.groups
@@ -103,6 +115,7 @@ define (require, exports, module) ->
         ul '#user-menu.nav.navbar-nav.navbar-right'
               
 
+  ########################################
   BootstrapLayoutTemplate = renderable () ->
     div '#main-navbar.navbar.navbar-default.navbar-fixed-top',
     role:'navigation'
@@ -114,6 +127,7 @@ define (require, exports, module) ->
     div '#footer'
     
 
+  ########################################
   main_sidebar = renderable (model) ->
     div '.sidebar-menu', ->
       for entry in model.entries
@@ -121,7 +135,9 @@ define (require, exports, module) ->
           text entry.name          
   
 
+  ########################################
   module.exports =
+    form_group_input_div: form_group_input_div
     login_form: login_form
     user_menu: user_menu
     BootstrapLayoutTemplate: BootstrapLayoutTemplate

@@ -31,7 +31,8 @@ define (require, exports, module) ->
   subtitle, section, hr
   } = teacup
             
-    
+  { form_group_input_div } = require 'common/templates'
+      
   ########################################
   # Templates
   ########################################
@@ -56,34 +57,41 @@ define (require, exports, module) ->
     div ->
       div '.listview-header', model.name
       p ->
-        text "This is the user page for " + model.name
+        text "This is the user page for #{model.name}"
       hr
       div '.btn.btn-default.delete-user-button', 'Delete User'
-      
+
+
   new_user_form = renderable () ->
-    div '.form-group', ->
-      label '.control-label', for:'input_name', 'User Name'
-      input '#input_name.form-control',
-      name:'name', dataValidation:'name',
-      placeholder:'User Name', value: ''
-    div '.form-group', ->
-      label '.control-label', for:'input_password', 'Password'
-      input '#input_password.form-control',
-      name:'password', dataValidation:'password',
-      placeholder:'', value:'', type:'password'
-    div '.form-group', ->
-      label '.control-label', for:'input_confirm', 'Confirm Password'
-      input '#input_confirm.form-control',
-      name:'confirm', dataValidation:'confirm',
-      placeholder:'', value:'', type:'password'
+    form_group_input_div
+      input_id: 'input_name'
+      label: 'User Name'
+      input_attributes:
+        name: 'name'
+        placeholder: 'User Name'
+    form_group_input_div
+      input_id: 'input_password'
+      label: 'Password'
+      input_attributes:
+        name: 'password'
+        type: 'password'
+        placeholder: 'Enter password'
+    form_group_input_div
+      input_id: 'input_confirm'
+      label: 'Confirm Password'
+      input_attributes:
+        name: 'confirm'
+        type: 'password'
+        placeholder: 'Confirm your password'
     input '.btn.btn-default.btn-xs', type:'submit', value:"Add New User"
-    
+      
   new_group_form = renderable () ->
-    div '.form-group', ->
-      label '.control-label', for:'input_name', 'Group Name'
-      input '#input_name.form-control',
-      name:'name', dataValidation:'name',
-      placeholder:'Group Name', value: ''
+    form_group_input_div
+      input_id: 'input_name'
+      label: 'Group Name'
+      input_attributes:
+        name: 'name'
+        placeholder: 'Enter group name'
     input '.btn.btn-default.btn-xs', type:'submit', value:"Add New Group"
 
     
