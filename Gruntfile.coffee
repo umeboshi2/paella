@@ -30,6 +30,11 @@ module.exports = (grunt) ->
     compass:
       compile:
         config: 'config.rb'
+      watch:
+        config: 'config.rb'
+        watch: true
+        quiet: false
+        
         
     watch:
       coffee:
@@ -39,10 +44,16 @@ module.exports = (grunt) ->
           spawn: false
       compass:
         files: ['sass/**/*.scss']
-        tasks: ['compass']
+        tasks: ['compass:watch']
       buildjs:
         files: 'build.coffee'
         tasks: ['shell:compileBuildJS']
+
+    concurrent:
+      watchers:
+        tasks: ['watch:coffee', 'watch:compass']
+        options:
+          logConcurrentOutput: true
         
     grunt.event.on 'watch', (action, filepath) ->
       #console.log "#{action} on #{filepath}"
@@ -82,4 +93,7 @@ module.exports = (grunt) ->
       'coffee:compileBuildJS'
       'coffee:compileWithMaps'
       ]
-                          
+
+    grunt.registerTask 'watchers', [
+      'concurrent:watchers'
+      ]
