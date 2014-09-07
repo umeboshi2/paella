@@ -31,14 +31,11 @@ define (require, exports, module) ->
   subtitle, section, hr
   } = teacup
             
-    
+  { form_group_input_div } = require 'common/templates'
+
   ########################################
   # Templates
   ########################################
-  jellyfish = renderable () ->
-    div 'listview-header', ->
-      text 'Jelly fish content'
-      
   page_list_entry = renderable (page) ->
     div '.listview-list-entry', ->
       span '.btn-default.btn-xs', ->
@@ -68,20 +65,22 @@ define (require, exports, module) ->
     
 
   new_page_form = renderable () ->
-    div '.form-group', ->
-      label '.control-label', for:'input_name', 'Page Name'
-      input '#input_name.form-control',
-      name:'name', dataValidation:'name',
-      placeholder:'New Page', value:''
-    div '.form-group', ->
-      label '.control-label', for:'input_content', 'Content'
-      textarea '#input_content.form-control',
-      name:'content', dataValidation:'content',
-      placeholder:'...add text....', value:''
+    form_group_input_div
+      input_id: 'input_name'
+      label: 'Page Name'
+      input_attributes:
+        name: 'name'
+        placeholder: 'New Page'
+    form_group_input_div
+      input_id: 'input_content'
+      input_type: textarea
+      label: 'Content'
+      input_attributes:
+        name: 'content'
+        placeholder: '...add some text....'
     input '.btn.btn-default.btn-xs', type:'submit', value:'Add Page'
-    
+        
   module.exports =
-    jellyfish: jellyfish
     page_list_entry: page_list_entry
     page_list: page_list
     page_view: page_view
