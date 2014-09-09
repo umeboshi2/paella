@@ -93,7 +93,7 @@ define (require, exports, module) ->
       new Views.Search
 
     getLayout: ->
-      new Views.Layout
+      new Views.BookLayout
 
     search: (searchTerm) ->
       @listBooks @collection
@@ -101,7 +101,7 @@ define (require, exports, module) ->
 
     defaultSearch: ->
       #console.log "APP:Booklist>> API.defaultsearch"
-      @search books.previousSearch or @defaultTerm
+      @search @collection.previousSearch or @defaultTerm
 
       
   module.exports = Controller

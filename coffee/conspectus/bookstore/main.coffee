@@ -20,24 +20,17 @@ define (require, exports, module) ->
 
   MainBus.commands.setHandler 'bookstore:route', () ->
     console.log "bookstore:route being handled"
-    #page_collection = AppBus.reqres.request 'pages:collection'
-    #response = page_collection.fetch()
-    #response.done =>
-    #  controller = new Controller
-    #  router = new Router
-    #    controller: controller
-    #  #console.log 'router created'
     books = AppBus.reqres.request 'book:entities'
-    response = books.fetch()
-    response.done =>
-      controller = new Controller
-        defaultSearchTerm: 'West Highland Terrier'
-        collection: books 
-      AppBus.vent.on 'list:book:clicked', (book) ->
-        controller.showBookDetail book
-      AppBus.vent.on 'search:term', (searchTerm) ->
-        navigate_to_url "bookstore/search/#{searchTerm}"
-      router = new Router
-        controller: controller
-      #console.log 'approuter created'
+    #response = books.fetch()
+    #response.done =>
+    controller = new Controller
+    controller.collection = books
+    controller.defaultSearchTerm = 'West Highland Terrier'
+    AppBus.vent.on 'list:book:clicked', (book) ->
+      controller.showBookDetail book
+    AppBus.vent.on 'search:term', (searchTerm) ->
+      navigate_to_url "bookstore/search/#{searchTerm}"
+    router = new Router
+      controller: controller
+    console.log 'router created'
       
