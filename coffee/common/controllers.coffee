@@ -15,10 +15,11 @@ define (require, exports, module) ->
   class SideBarController extends BaseController
     make_sidebar: () ->
       @init_page()
-      @mainbus.vent.trigger 'sidebar:close'
+      # the model may change
+      @mainbus.vent.trigger 'appregion:sidebar:empty'
       view = new @sidebarclass
         model: @sidebar_model
-      @mainbus.vent.trigger 'sidebar:show', view
+      @mainbus.vent.trigger 'appregion:sidebar:show', view
       
   module.exports =
     BaseController: BaseController

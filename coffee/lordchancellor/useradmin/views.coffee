@@ -83,7 +83,7 @@ define (require, exports, module) ->
       console.log 'confirm_delete_pressed'
       button = $ '.confirm-delete-button'
       @model.destroy()
-      MainBus.vent.trigger 'rcontent:close'
+      MainBus.vent.trigger 'appregion:content:empty'
       
       
   module.exports =

@@ -46,13 +46,13 @@ define (require, exports, module) ->
       response.done =>
         view = new Views.UserListView
           collection: userlist
-        MainBus.vent.trigger 'rcontent:show', view
+        MainBus.vent.trigger 'appregion:content:show', view
 
     add_user: ->
       @make_sidebar()
       console.log "add_user called on controller"
       view = new Views.NewUserFormView
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       
     list_groups: ->
       @make_sidebar()
@@ -63,7 +63,7 @@ define (require, exports, module) ->
       response.done =>
         view = new Views.GroupListView
           collection: grouplist
-        MainBus.vent.trigger 'rcontent:show', view
+        MainBus.vent.trigger 'appregion:content:show', view
         
 
     add_group: ->
@@ -72,7 +72,7 @@ define (require, exports, module) ->
       #@set_header 'add group'
       
       view = new Views.NewGroupFormView
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
 
     view_user: (user_id) ->
       @make_sidebar()
@@ -83,9 +83,10 @@ define (require, exports, module) ->
       
       view = new Views.ViewUserView
         model: users.get user_id
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       
     start: ->
+      MainBus.vent.trigger 'appregion:content:empty', ''
       #console.log 'controller.start called'
       @make_main_content()
       #console.log 'wiki started'

@@ -51,7 +51,7 @@ define (require, exports, module) ->
       #response.done =>
       view = new Views.FrontDoorMainView
         model: page
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
 
     start: ->
       #console.log 'controller.start called'

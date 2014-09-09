@@ -40,13 +40,13 @@ define (require, exports, module) ->
       response.done =>
         view = new Views.PageListView
           collection: pages
-        MainBus.vent.trigger 'rcontent:show', view
+        MainBus.vent.trigger 'appregion:content:show', view
 
     add_page: ->
       @make_sidebar()
       console.log "add_page called on controller"
       view = new Views.NewPageFormView
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       
     show_page: (page_id) ->
       @make_sidebar()
@@ -54,16 +54,17 @@ define (require, exports, module) ->
       page = AppBus.reqres.request 'get-page', page_id
       view = new Views.ShowPageView
         model: page
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
 
     edit_page: (page_id) ->
       @make_sidebar()
       page = AppBus.reqres.request 'get-page', page_id
       view = new Views.EditPageView
         model: page
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       
     start: ->
+      MainBus.vent.trigger 'appregion:content:empty'
       #console.log 'controller.start called'
       @make_main_content()
       #console.log 'wiki started'

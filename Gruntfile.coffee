@@ -3,6 +3,7 @@
 module.exports = (grunt) ->
   # variables to use in config
   # foo = 'bar'
+  _ = require 'lodash'
   app_dir = 'javascripts'
     
   # config
@@ -55,11 +56,19 @@ module.exports = (grunt) ->
         options:
           logConcurrentOutput: true
         
+    # from the docs
+    changedFiles = Object.create null
+    update_changedFiles = () ->
+      grunt.config.set 'coffee.compileWithMaps.src', Object.keys changedFiles
+      changedFiles = Object.create null
+    onChange = _.debounce(update_changedFiles, 200)
+      
     grunt.event.on 'watch', (action, filepath) ->
-      #console.log "#{action} on #{filepath}"
+      #console.log "watch:->#{action} on #{filepath}"
       filepath = filepath.split('coffee/')[1]
-      #console.log action + ' on ' + filepath
-      grunt.config 'coffee.compileWithMaps.src', filepath
+      changedFiles[filepath] = action
+      #console.log "files should equal -> #{Object.keys changedFiles}"
+      onChange()
       
     clean:
       js:
