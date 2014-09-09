@@ -9,26 +9,19 @@ define (require, exports, module) ->
   renderable = teacup.renderable
   raw = teacup.raw
   
-  div = teacup.div
   # I use "icon" for font-awesome
   icon = teacup.i
-  strong = teacup.strong
-  span = teacup.span
-  label = teacup.label
-  input = teacup.input
-  textarea = teacup.textarea
   text = teacup.text
-  img = teacup.img
   # Main Templates must use teacup.
   # The template must be a teacup.renderable, 
   # and accept a layout model as an argument.
 
   # Tagnames to be used in the template.
-  {div, span, link, text, strong, label, input, 
+  {div, span, link, strong, label, input, img, textarea
   button, a, nav, form, p,
   ul, li, b,
   h1, h2, h3,
-  subtitle, section
+  subtitle, section, hr
   } = teacup
             
     

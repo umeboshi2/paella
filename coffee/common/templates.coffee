@@ -144,15 +144,3 @@ define (require, exports, module) ->
     BootstrapLayoutTemplate: BootstrapLayoutTemplate
     BootstrapNavBarTemplate: BootstrapNavBarTemplate
     main_sidebar: main_sidebar
-
-
-
-
-
-
-
-
-
-
-
-
