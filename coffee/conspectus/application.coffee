@@ -18,7 +18,8 @@ define (require, exports, module) ->
   require 'wiki/main'
   require 'bumblr/main'
   require 'hubby/main'
-
+  require 'bookstore/main'
+  
   { prepare_app } = require 'common/approuters'
   
   appmodel = new Backbone.Model
@@ -56,6 +57,7 @@ define (require, exports, module) ->
     'wiki:route'
     'bumblr:route'
     'hubby:route'
+    'bookstore:route'
     ]
     
       
