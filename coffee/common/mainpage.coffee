@@ -8,11 +8,13 @@ define (require, exports, module) ->
     console.log 'initialize_page'
     layout = new Views.MainPageLayout
     layout.on 'show', =>
+      #console.log 'layout show---->'
       navbar = new Views.BootstrapNavBarView
         model: appmodel
-      msgbus.vent.trigger 'main-navbar:show', navbar
-      
-    msgbus.vent.trigger 'mainpage:show', layout
+      msgbus.vent.trigger 'appregion:navbar:show', navbar
+      #console.log 'triggered appregion:navbar:show'
+    #console.log 'added layout event callback'
+    msgbus.vent.trigger 'appregion:mainview:show', layout
 
 
   set_init_page_handler = (msgbus) ->
@@ -20,15 +22,16 @@ define (require, exports, module) ->
       initialize_page(appmodel, msgbus)
 
   display_main_navbar_contents = (msgbus) ->
+    #console.log 'called display_main_navbar_contents'
     user = msgbus.reqres.request 'get-current-user'
-    window.ffuser = user
     view = new Views.UserMenuView
       model: user
-    window.uview = view
-    msgbus.vent.trigger 'user-menu:show', view
+    #window.uview = view
+    msgbus.vent.trigger 'appregion:usermenu:show', view
 
   set_main_navbar_handler = (msgbus) ->
-    msgbus.vent.on 'main-navbar:displayed', (view) ->
+    msgbus.vent.on 'appregion:navbar:displayed', (view) ->
+      #console.log 'appregion:navbar:displayed triggered'
       display_main_navbar_contents msgbus
       
   module.exports =

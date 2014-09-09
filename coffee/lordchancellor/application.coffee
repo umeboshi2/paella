@@ -24,7 +24,7 @@ define (require, exports, module) ->
   require 'useradmin/main'
   require 'sitetext/main'
     
-  { prepare_app } = require 'common/approuters'
+  { prepare_app, user_appregions } = require 'common/approuters'
   
   appmodel = new Backbone.Model
     brand:
@@ -44,14 +44,8 @@ define (require, exports, module) ->
         }
       ]
 
-  appregions =
-    mainview: 'body'
-    navbar: '#main-navbar'
-    user_menu: '#user-menu'
-    sidebar: '#sidebar'
-    content: '#main-content'
-    footer: '#footer'
-    
+  appregions = user_appregions
+        
   approutes = [
     'frontdoor:route'
     'useradmin:route'

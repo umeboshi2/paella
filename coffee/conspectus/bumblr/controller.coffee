@@ -41,22 +41,22 @@ define (require, exports, module) ->
       header.text title
       
     start: ->
-      MainBus.vent.trigger 'rcontent:close'
-      MainBus.vent.trigger 'sidebar:close'
+      MainBus.vent.trigger 'appregion:content:empty'
+      MainBus.vent.trigger 'appregion:sidebar:empty'
       @set_header 'Bumblr'
       @list_blogs()
       
     show_mainview: () ->
       @make_sidebar()
       view = new Views.MainBumblrView
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       Util.scroll_top_fast()
       
 
     show_dashboard: () ->
       @make_sidebar()
       view = new Views.BumblrDashboardView
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       Util.scroll_top_fast()
         
     list_blogs: () ->
@@ -65,7 +65,7 @@ define (require, exports, module) ->
       blogs = AppBus.reqres.request 'get_local_blogs'
       view = new Views.SimpleBlogListView
         collection: blogs
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       Util.scroll_top_fast()
       
       
@@ -81,21 +81,21 @@ define (require, exports, module) ->
         view = new Views.BlogPostListView
           collection: collection
         window.blogView = view
-        MainBus.vent.trigger 'rcontent:show', view
+        MainBus.vent.trigger 'appregion:content:show', view
         Util.scroll_top_fast()
 
     add_new_blog: () ->
       #console.log 'add_new_blog called'
       @make_sidebar()
       view = new Views.NewBlogFormView
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       Util.scroll_top_fast()
             
     settings_page: () ->
       #console.log 'Settings page.....'
       settings = AppBus.reqres.request 'get_app_settings'
       view = new Views.ConsumerKeyFormView model:settings
-      MainBus.vent.trigger 'rcontent:show', view
+      MainBus.vent.trigger 'appregion:content:show', view
       Util.scroll_top_fast()
       
   module.exports = Controller

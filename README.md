@@ -99,3 +99,11 @@ App
   - controller for app
   - manage views
 
+#Todo
+
+- fix api for site text
+- provide site text for guest
+- add groups
+- add/remove users to/from groups
+- remove localstorage and use memory and defaults in code
+- create docs on common modules
