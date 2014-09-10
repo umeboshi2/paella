@@ -2,6 +2,7 @@ define (require, exports, module) ->
   $ = require 'jquery'
   Backbone = require 'backbone'
   Marionette = require 'marionette'
+  Wreqr = Backbone.Wreqr
   Util = require 'common/util'
 
   basic_appregions = 
@@ -46,12 +47,18 @@ define (require, exports, module) ->
       #console.log "#{signal} #{method} called on #{sigregion}=#{region}"
       if region of app
         app[region]?.empty()
+      
+    signal = "#{prefix}:hasview"
+    mainbus.reqres.setHandler signal, () =>
+      if region of app
+        app[region]?.hasView()
 
   add_region_view_handlers = (mainbus, app, regions) ->
     for region of regions
       add_view_handlers mainbus, app, regions, region
       
   prepare_app = (app, appmodel, regions, mainbus, routes) ->
+    app.radio = Backbone.Wreqr.radio
     app.addRegions(regions)
     app.on 'start', ->
       Backbone.history.start() unless Backbone.history.started
