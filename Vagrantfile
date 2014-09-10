@@ -10,7 +10,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "umeboshi/trumpet-i386"
+  boxname = 'chef-debian-7.4-vboxguest-4.1.18'
+  dirname = ENV['HOME'] + '/.vagrant.d/boxes/' + boxname
+  if File.directory?(dirname)
+    config.vm.box = boxname
+  else
+    config.vm.box = 'chef/debian-7.4'
+  end
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -20,7 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 8080, host: 8080
-  config.vm.network "forwarded_port", guest: 6543, host: 6543
+  #config.vm.network "forwarded_port", guest: 6543, host: 6543
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -46,25 +52,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.synced_folder 'vagrant/salt/roots/pillar/', '/srv/pillar/'
 
 
-  # Provider-specific configuration so you can fine-tune various
-  # backing providers for Vagrant. These expose provider-specific options.
-  # Example for VirtualBox:
-  #
-  # config.vm.provider "virtualbox" do |vb|
-  #   # Don't boot with headless mode
-  #   vb.gui = true
-  #
-  #   # Use VBoxManage to customize the VM. For example to change memory:
-  #   vb.customize ["modifyvm", :id, "--memory", "1024"]
-  # end
-  #
-  # View the documentation for the provider you're using for more
-  # information on available options.
-
-  #config.vm.provider "virtualbox" do |vb|
-  #  vb.customize ["modifyvm", :id, "--hwvirtex", "off"]
-  #end
-
+  # This config is needed for building nodejs
+  # and can be readjusted once the package is built.
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 1024
+    vb.cpus = 4
+  end
   #config.vm.provision "shell", path: "scripts/vagrant-bootstrap.sh"
   config.vm.provision "shell", path: "vagrant/scripts/vagrant-bootstrap.sh"
 

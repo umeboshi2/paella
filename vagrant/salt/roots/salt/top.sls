@@ -4,3 +4,5 @@ base:
   '*':
     - default
     - files
+    - gems
+    - nodejs
