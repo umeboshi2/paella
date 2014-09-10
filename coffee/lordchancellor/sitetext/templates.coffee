@@ -32,7 +32,7 @@ define (require, exports, module) ->
   page_list_entry = renderable (page) ->
     div '.listview-list-entry', ->
       span '.btn-default.btn-xs', ->
-        a href:"#sitetext/editpage/#{page.name}"
+        a href:"#sitetext/editpage/#{page.name}",
         style:'color:black', ->
           icon '.edit-page.fa.fa-pencil'
       text "    "
