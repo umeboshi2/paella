@@ -15,8 +15,8 @@ define (require, exports, module) ->
       'sitetext': 'start'
       'sitetext/listpages': 'list_pages'
       'sitetext/addpage': 'add_page'
-      'sitetext/editpage/:id': 'edit_page'
-      'sitetext/showpage/:id': 'show_page'
+      'sitetext/editpage/:name': 'edit_page'
+      'sitetext/showpage/:name': 'show_page'
 
   MainBus.commands.setHandler 'sitetext:route', () ->
     console.log 'sitetext:route being handled'

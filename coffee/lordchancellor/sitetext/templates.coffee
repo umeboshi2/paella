@@ -32,11 +32,11 @@ define (require, exports, module) ->
   page_list_entry = renderable (page) ->
     div '.listview-list-entry', ->
       span '.btn-default.btn-xs', ->
-        a href:'#sitetext/editpage/' + page.id,
+        a href:"#sitetext/editpage/#{page.name}"
         style:'color:black', ->
           icon '.edit-page.fa.fa-pencil'
       text "    "
-      a href:'#sitetext/showpage/' + page.id, page.name
+      a href:"#sitetext/showpage/#{page.name}", page.name
         
       
   page_list = renderable () ->
@@ -47,11 +47,11 @@ define (require, exports, module) ->
     div '.listview-header', ->
       text page.name
     div '.listview-list', ->
-      teacup.raw marked page.content
+      teacup.raw marked page?.content
       
   edit_page = renderable (page) ->
     div '.listview-header', ->
-      text "Editing " + page.name
+      text "Editing #{page.name}"
       div '#save-button.pull-left.btn.btn-default.btn-xs', ->
         text 'save'
     div '#editor'

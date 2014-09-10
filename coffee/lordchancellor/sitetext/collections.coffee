@@ -16,15 +16,17 @@ define (require, exports, module) ->
   rscroot = '/rest/v0/main'
 
   class PageCollection extends BaseCollection
-    model: Models.PageModel
+    model: Models.GetPageModel
     url: rscroot + '/sitetext'
 
   main_page_list = new PageCollection
   AppBus.reqres.setHandler 'get-pages', ->
+    #window.main_page_list = main_page_list
     main_page_list
 
-  AppBus.reqres.setHandler 'get-page', (page_id) ->
-    main_page_list.get page_id
+  AppBus.reqres.setHandler 'get-page', (name) ->
+    #console.log "get-page #{name}"
+    main_page_list.get name
     
   module.exports =
     PageCollection: PageCollection

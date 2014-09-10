@@ -11,7 +11,7 @@ define (require, exports, module) ->
   { SideBarController } = require 'common/controllers'
   
   #    'sitetext/viewuser/:id': 'view_user'
-
+  
   side_bar_data = new Backbone.Model
     entries: [
       {
@@ -28,37 +28,54 @@ define (require, exports, module) ->
     mainbus: MainBus
     sidebarclass: Views.SideBarView
     sidebar_model: side_bar_data
-
+    pages: AppBus.reqres.request 'get-pages'
     make_main_content: ->
       @make_sidebar()
       #@show_page 1
       
     list_pages: ->
       @make_sidebar()
-      pages = AppBus.reqres.request 'get-pages'
-      response = pages.fetch()
+      response = @pages.fetch()
       response.done =>
         view = new Views.PageListView
-          collection: pages
+          collection: @pages
         MainBus.vent.trigger 'appregion:content:show', view
 
     add_page: ->
       @make_sidebar()
-      console.log "add_page called on controller"
+      #console.log "add_page called on controller"
       view = new Views.NewPageFormView
       MainBus.vent.trigger 'appregion:content:show', view
-      
-    show_page: (page_id) ->
-      @make_sidebar()
-      console.log "show_page called on controller"
-      page = AppBus.reqres.request 'get-page', page_id
+
+    _show_page: (page) ->
+      #window.showpage = page
+      #console.log "_show_page for #{page} called on controller"
+      #console.log page
       view = new Views.ShowPageView
         model: page
       MainBus.vent.trigger 'appregion:content:show', view
-
-    edit_page: (page_id) ->
+      
+    show_page: (name) ->
       @make_sidebar()
-      page = AppBus.reqres.request 'get-page', page_id
+      # we do this if/else in case this url is called
+      # as the entry point.  This should probably be
+      # generalized in a base controller class. 
+      # we should probably check for length of pages
+      if not MainBus.reqres.request 'appregion:content:hasview'
+        MainBus.vent.trigger 'appregion:content:close'
+        response = @pages.fetch()
+        response.done =>
+          page = @pages.get name
+          @_show_page page
+      else
+        page = AppBus.reqres.request 'get-page', name
+        @_show_page page
+      
+    edit_page: (name) ->
+      @make_sidebar()
+      #console.log "Get page named #{name} for editing"
+      page = AppBus.reqres.request 'get-page', name
+      #console.log "Here is the page #{page}"
       view = new Views.EditPageView
         model: page
       MainBus.vent.trigger 'appregion:content:show', view
