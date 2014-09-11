@@ -62,17 +62,20 @@ define (require, exports, module) ->
     listBooks: (books) ->
       @layout = @getLayout()
       @layout.on 'show', =>
+        console.log '@layout.show triggered'
         @showSearchBar()
         @showBookList books
-      AppBus.vent.trigger 'app:show', @layout
-
+      #AppBus.vent.trigger 'app:show', @layout
+      MainBus.vent.trigger 'appregion:content:show', @layout
+      
     showBookDetail: (book) ->
       console.log "controller>> showBookDetail"
       view = @getDetailView book
       view.on "dialog:button:clicked", ->
         console.log "editView instance dialog:button:clicked"
-      AppBus.vent.trigger "app:show:modal", view
-
+      #AppBus.vent.trigger "app:show:modal", view
+      MainBus.vent.trigger 'appregion:content:show', view
+      
     getDetailView: (book) ->
       new Views.BookDetailView
         model: book
@@ -90,18 +93,22 @@ define (require, exports, module) ->
       @layout.search.attachView searchView
 
     getSearchView: ->
-      new Views.Search
+      new Views.SearchView
 
     getLayout: ->
       new Views.BookLayout
 
     search: (searchTerm) ->
+      console.log "search called with #{searchTerm}"
       @listBooks @collection
       AppBus.vent.trigger 'search:term', searchTerm
+      console.log "exit search"
+      
 
     defaultSearch: ->
       #console.log "APP:Booklist>> API.defaultsearch"
-      @search @collection.previousSearch or @defaultTerm
+      console.log @defaultSearchTerm
+      @search @collection.previousSearch or @defaultSearchTerm
 
       
   module.exports = Controller

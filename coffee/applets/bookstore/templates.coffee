@@ -32,28 +32,28 @@ define (require, exports, module) ->
     raw marked page.content
     
   book_view = renderable (model) ->
-    img '.book', src:model.thumbnail, alt=""
+    img '.book', src:model.thumbnail, alt:""
 
   bookstore_layout = renderable () ->
     div '#searchBar', ->
       text 'Search : '
-      input '#searchTerm', type:'text', name:'search',
+      input '#searchTerm.form-control', type:'text', name:'search',
       autocomplete:'off', value:''
-      img '#spinner', src:"/FIXME/GET?SPINNER", alt:'Loading...'
+      icon '#spinner.fa.fa-spinner.fa-spin'
     div '#bookContainer'
 
   booklist_view = renderable () ->
+    icon_button = '.btn.btn-default.btn-sm.fa'
     div style:'display:table;width:100%;height:100%;', ->
-      img src:'shadow-search', style:'position:absolute;left: 0px;top: 0px;'
-      img src:'shadow-search-right', style:'position:absolute;right: 0px;top: 0px;'
-      div '.leftBar'
+      div '.toolbar', ->
+        icon "#{icon_button}.fa-arrow-left.pull-left"
+        icon "#{icon_button}.fa-arrow-right.pull-right"
       div '.books'
-      div '.rightBar'
 
   book_detail_view = renderable (book) ->
-    a '#close-dialog.close', dataDissmiss='modal', 'x'
+    a '#close-dialog.close', dataDissmiss:'modal', 'x'
     div '.imgBook', ->
-      img src=book.thumbnail
+      img src:book.thumbnail
     h1 book.title
     subtitle = if book?.subtitle then h2 book.subtitle else null
     description = if book?.description then p book.description else null

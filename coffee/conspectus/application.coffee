@@ -44,6 +44,11 @@ define (require, exports, module) ->
           name: 'Hubby'
           url: '#hubby'
         }
+        {
+          appname: 'bookstore'
+          name: 'Bookstore'
+          url: '#bookstore'
+        }
       ]
     appregions: AppRegions.basic_appregions
     approutes: [
