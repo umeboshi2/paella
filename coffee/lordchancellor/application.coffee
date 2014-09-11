@@ -9,6 +9,7 @@ define (require, exports, module) ->
   
   MainBus = require 'msgbus'
   Models = require 'models'
+  AppRegions = require 'common/appregions'
   
   { set_get_current_user_handler } = require 'common/models'
 
@@ -24,7 +25,6 @@ define (require, exports, module) ->
   require 'useradmin/main'
   require 'sitetext/main'
     
-  { prepare_app, user_appregions } = require 'common/approuters'
   
   appmodel = new Backbone.Model
     brand:
@@ -43,14 +43,12 @@ define (require, exports, module) ->
           url: '#sitetext'
         }
       ]
-
-  appregions = user_appregions
-        
-  approutes = [
-    'frontdoor:route'
-    'useradmin:route'
-    'sitetext:route'
-    ]
+    appregions: AppRegions.user_appregions
+    approutes: [
+      'frontdoor:route'
+      'useradmin:route'
+      'sitetext:route'
+      ]
     
       
   app = new Marionette.Application()
@@ -60,7 +58,7 @@ define (require, exports, module) ->
   user = MainBus.reqres.request 'get-current-user'
   response = user.fetch()
   response.done ->
-    prepare_app app, appmodel, appregions, MainBus, approutes
+    AppRegions.prepare_app app, appmodel, MainBus
     app.ready = true
 
   

@@ -9,6 +9,7 @@ define (require, exports, module) ->
   
   MainBus = require 'msgbus'
   Models = require 'models'
+  AppRegions = require 'common/appregions'
 
   { set_get_current_user_handler } = require 'common/models'
 
@@ -20,8 +21,6 @@ define (require, exports, module) ->
   MainPage.set_main_navbar_handler MainBus
   
   require 'frontdoor/main'
-
-  { prepare_app, user_appregions } = require 'common/approuters'
 
   appmodel = new Backbone.Model
     brand:
@@ -35,12 +34,10 @@ define (require, exports, module) ->
           url: '/app/conspectus'
         }
       ]
-
-  appregions = user_appregions
-        
-  approutes = [
-    'frontdoor:route'
-    ]
+    appregions: AppRegions.user_appregions
+    approutes: [
+      'frontdoor:route'
+      ]
     
       
   app = new Marionette.Application()
@@ -50,7 +47,7 @@ define (require, exports, module) ->
   user = MainBus.reqres.request 'get-current-user'
   response = user.fetch()
   response.done ->
-    prepare_app app, appmodel, appregions, MainBus, approutes
+    AppRegions.prepare_app app, appmodel, MainBus
     app.ready = true
 
   # These are handlers to retrieve the colors

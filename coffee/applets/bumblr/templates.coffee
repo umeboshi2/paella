@@ -24,6 +24,7 @@ define (require, exports, module) ->
   subtitle, section, hr
   } = teacup
             
+  { form_group_input_div } = require 'common/templates'
     
   ########################################
   # Templates
@@ -72,34 +73,44 @@ define (require, exports, module) ->
         img src:size.url, href:post.url
 
   new_blog_form_view = renderable (model) ->
-    div '.form-group', ->
-      label '.control-label', for:'input_blogname', 'Blog Name'
-      input '#input_blogname.form-control',
-      name:'blog_name', dataValidation:'blog_name',
-      placeholder:'', value: '8bitfuture'
+    form_group_input_div
+      input_id: 'input_blogname'
+      label: 'Blog Name'
+      input_attributes:
+        name: 'blog_name'
+        placeholder: ''
+        value: 'dutch-and-flemish-painters'
     input '.btn.btn-default.btn-xs', type:'submit', value:'Add Blog'
-    
+        
   consumer_key_form = renderable (settings) ->
-    div '.form-group', ->
-      label '.control-label', for:'input_key', 'Consumer Key'
-      input '#input_key.form-control',
-      name:'consumer_key', dataValidation:'consumer_key',
-      placeholder:'', value: settings.consumer_key
-    div '.form-group', ->
-      label '.control-label', for:'input_secret', 'Consumer Secret'
-      input '#input_secret.form-control',
-      name:'consumer_secret', dataValidation:'consumer_secret',
-      placeholder:'', value: settings.consumer_secret
-    div '.form-group', ->
-      label '.control-label', for:'input_token', 'Token'
-      input '#input_token.form-control',
-      name:'token', dataValidation:'token',
-      placeholder:'', value: settings.token
-    div '.form-group', ->
-      label '.control-label', for:'input_tsecret', 'Token Secret'
-      input '#input_tsecret.form-control',
-      name:'token_secret', dataValidation:'token_secret',
-      placeholder:'', value: settings.token_secret
+    form_group_input_div
+      input_id: 'input_key'
+      label: 'Consumer Key'
+      input_attributes:
+        name: 'consumer_key'
+        placeholder: ''
+        value: settings.consumer_key
+    form_group_input_div
+      input_id: 'input_secret'
+      label: 'Consumer Secret'
+      input_attributes:
+        name: 'consumer_secret'
+        placeholder: ''
+        value: settings.consumer_secret
+    form_group_input_div
+      input_id: 'input_token'
+      label: 'Token'
+      input_attributes:
+        name: 'token'
+        placeholder: ''
+        value: settings.token
+    form_group_input_div
+      input_id: 'input_tsecret'
+      label: 'Token Secret'
+      input_attributes:
+        name: 'token_secret'
+        placeholder: ''
+        value: settings.token_secret
     input '.btn.btn-default.btn-xs', type:'submit', value:'Submit'
     
               

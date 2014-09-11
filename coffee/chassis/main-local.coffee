@@ -26,6 +26,13 @@ require.config
     # These should maybe be packaged as bower
     # component.
     common: '../common'
+    # applets
+    hubby: '../applets/hubby'
+    bumblr: '../applets/bumblr'
+    wiki: '../applets/wiki'
+    frontdoor: '../applets/frontdoor'
+    bookstore: '../applets/bookstore'
+    
   # FIXME:  try to reduce the shim to only the
   # necessary resources
   shim:

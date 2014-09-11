@@ -9,6 +9,8 @@ define (require, exports, module) ->
   
   MainBus = require 'msgbus'
   Models = require 'models'
+
+  AppRegions = require 'common/appregions'
   
   MainPage = require 'common/mainpage'
   MainPage.set_init_page_handler MainBus
@@ -19,8 +21,7 @@ define (require, exports, module) ->
   require 'bumblr/main'
   require 'hubby/main'
   require 'bookstore/main'
-  
-  { prepare_app } = require 'common/approuters'
+
   
   appmodel = new Backbone.Model
     brand:
@@ -44,28 +45,21 @@ define (require, exports, module) ->
           url: '#hubby'
         }
       ]
-
-  appregions =
-    mainview: 'body'
-    navbar: '#main-navbar'
-    sidebar: '#sidebar'
-    content: '#main-content'
-    footer: '#footer'
-    
-  approutes = [
-    'frontdoor:route'
-    'wiki:route'
-    'bumblr:route'
-    'hubby:route'
-    'bookstore:route'
-    ]
+    appregions: AppRegions.basic_appregions
+    approutes: [
+      'frontdoor:route'
+      'wiki:route'
+      'bumblr:route'
+      'hubby:route'
+      'bookstore:route'
+      ]
     
       
   app = new Marionette.Application()
     
   app.ready = false
 
-  prepare_app app, appmodel, appregions, MainBus, approutes
+  AppRegions.prepare_app app, appmodel, MainBus
   app.ready = true
 
   

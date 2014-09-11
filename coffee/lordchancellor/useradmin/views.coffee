@@ -54,11 +54,8 @@ define (require, exports, module) ->
       users.add @model
 
     onSuccess: (model) ->
-      AppBus.vent.trigger 'user_added'
-      
-      
+      navigate_to_url '#useradmin/listusers'
         
-      
   class NewGroupFormView extends FormView
     template: Templates.new_group_form
 
