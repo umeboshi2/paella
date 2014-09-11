@@ -2,12 +2,8 @@
 
 echo "Preparing to build nodejs"
 
-mkdir /tmp/make-nodejs
+pushd /var/tmp/make-nodejs
 
-pushd /tmp/make-nodejs
-
-echo "WARNING: Need to pull or track specific revision"
-git clone https://github.com/mark-webster/node-debian
 
 pushd node-debian
 

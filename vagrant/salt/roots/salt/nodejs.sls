@@ -6,14 +6,15 @@ include:
 node-debian-git-repo:
   git.latest:
     - name: https://github.com/mark-webster/node-debian
-    - target: /srv/make-nodejs
+    - target: /srv/node-debian
 
 node-debian-build-repo:
   git.latest:
     - require:
       - git: node-debian-git-repo
-    - name: /srv/make-nodejs
-    - target: /tmp/make-nodejs
+    - name: /srv/node-debian
+    - target: /var/tmp/make-nodejs/node-debian
+
 
 
 

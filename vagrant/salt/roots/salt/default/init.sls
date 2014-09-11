@@ -36,5 +36,7 @@ devpackages:
       - devscripts
       - cdbs
       - pkg-config
+      - curl
+      - zlib1g-dev
       - rubygems
 
