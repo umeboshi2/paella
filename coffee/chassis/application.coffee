@@ -26,7 +26,7 @@ define (require, exports, module) ->
   require 'wiki/main'
   require 'bumblr/main'
   require 'hubby/main'
-
+  require 'bookstore/main'
   
   appmodel = new Backbone.Model
     brand:
@@ -49,6 +49,11 @@ define (require, exports, module) ->
           name: 'Hubby'
           url: '#hubby'
         }
+        {
+          appname: 'bookstore'
+          name: 'Bookstore'
+          url: '#bookstore'
+        }
       ]
     appregions: AppRegions.user_appregions
     approutes: [
@@ -56,6 +61,7 @@ define (require, exports, module) ->
       'wiki:route'
       'bumblr:route'
       'hubby:route'
+      'bookstore:route'
       ]
       
   app = new Marionette.Application()

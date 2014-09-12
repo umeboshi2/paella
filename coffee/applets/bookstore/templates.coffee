@@ -32,7 +32,7 @@ define (require, exports, module) ->
     raw marked page.content
     
   book_view = renderable (model) ->
-    img '.book', src:model.thumbnail, alt:""
+    img '.book.item', src:model.thumbnail, alt:""
 
   bookstore_layout = renderable () ->
     div '#searchBar', ->

@@ -1,7 +1,8 @@
 define (require, exports, module) ->
   Backbone = require 'backbone'
   Marionette = require 'marionette'
-  
+  Masonry = require 'masonry'
+    
   Models = require 'models'
 
   Templates = require 'bookstore/templates'
@@ -12,7 +13,8 @@ define (require, exports, module) ->
     
   BaseEditPageView = require 'common/views/editor'
   BaseSideBarView = require 'common/views/sidebar'
-  
+
+  window.Masonry = Masonry
   class FrontDoorMainView extends Backbone.Marionette.ItemView
     template: Templates.frontdoor_main
 
@@ -41,6 +43,12 @@ define (require, exports, module) ->
       if ((scrollTop + margin) >= totalHeight)
         #console.log "BOOKLIST: >>search"
         AppBus.vent.trigger "search:more"
+
+    onDomRefresh: () ->
+      msnry = new Masonry 'div.books',
+        itemSelector: '.book'
+        columnWidth: 200
+      window.msnry = msnry
 
   class BookLayout extends Backbone.Marionette.LayoutView
     template: Templates.bookstore_layout
