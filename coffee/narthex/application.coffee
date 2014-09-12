@@ -49,19 +49,6 @@ define (require, exports, module) ->
   response.done ->
     AppRegions.prepare_app app, appmodel, MainBus
     app.ready = true
-
-  # These are handlers to retrieve the colors
-  # from the navbars, and are used to create
-  # the default color for the fullcalendar
-  # events.
-  MainBus.reqres.setHandler 'get-navbar-color', ->
-    navbar = $ '#main-navbar'
-    navbar.css 'color'
-    
-  MainBus.reqres.setHandler 'get-navbar-bg-color', ->
-    navbar = $ '#main-navbar'
-    navbar.css 'background-color'
-    
   
   module.exports = app
   

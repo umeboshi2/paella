@@ -33,6 +33,10 @@ define (require, exports, module) ->
       #console.log 'appregion:navbar:displayed triggered'
       display_main_navbar_contents msgbus
 
+  # These are handlers to retrieve the colors
+  # from the navbars, and are used to create
+  # the default color for the fullcalendar
+  # events.
   set_get_navbar_color_handlers = (msgbus) ->
     msgbus.reqres.setHandler 'get-navbar-color', ->
       navbar = $ '#main-navbar'

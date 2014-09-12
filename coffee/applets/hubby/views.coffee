@@ -10,6 +10,12 @@ define (require, exports, module) ->
   
   require 'jquery-ui'
 
+  { set_get_navbar_color_handlers } = require 'common/mainpage'
+
+  # set the color handlers for the calendar events.
+  set_get_navbar_color_handlers MainBus
+
+  
   class SideBarView extends BaseSideBarView
       
   render_calendar_event = (calEvent, element) ->
