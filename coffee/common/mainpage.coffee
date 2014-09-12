@@ -2,7 +2,6 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   Marionette = require 'marionette'
   Views = require 'common/mainviews'
-  MainBus = require 'msgbus'
 
   initialize_page = (appmodel, msgbus) ->
     console.log 'initialize_page'
@@ -33,7 +32,17 @@ define (require, exports, module) ->
     msgbus.vent.on 'appregion:navbar:displayed', (view) ->
       #console.log 'appregion:navbar:displayed triggered'
       display_main_navbar_contents msgbus
+
+  set_get_navbar_color_handlers = (msgbus) ->
+    msgbus.reqres.setHandler 'get-navbar-color', ->
+      navbar = $ '#main-navbar'
+      navbar.css 'color'
+    msgbus.reqres.setHandler 'get-navbar-bg-color', ->
+      navbar = $ '#main-navbar'
+      navbar.css 'background-color'
       
   module.exports =
     set_init_page_handler: set_init_page_handler
     set_main_navbar_handler: set_main_navbar_handler
+    set_get_navbar_color_handlers: set_get_navbar_color_handlers
+    
