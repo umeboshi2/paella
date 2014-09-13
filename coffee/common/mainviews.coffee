@@ -6,6 +6,9 @@ define (require, exports, module) ->
 
   class MainPageLayout extends Backbone.Marionette.LayoutView
     template: Templates.BootstrapLayoutTemplate
+
+  class BootstrapNoGridLayout extends Backbone.Marionette.LayoutView
+    template: Templates.BootstrapNoGridLayoutTemplate
     
   class BootstrapNavBarView extends Backbone.Marionette.ItemView
     template: Templates.BootstrapNavBarTemplate
@@ -18,6 +21,7 @@ define (require, exports, module) ->
     
   module.exports =
     MainPageLayout: MainPageLayout
+    BootstrapNoGridLayout: BootstrapNoGridLayout
     BootstrapNavBarView: BootstrapNavBarView
     LoginView: LoginView
     UserMenuView: UserMenuView

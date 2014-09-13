@@ -44,33 +44,45 @@ define (require, exports, module) ->
   simple_blog_list = renderable () ->
     div ->
       a '.btn.btn-default', href:'#bumblr/addblog', "Add blog"
-      div '#bloglist-container'
+      div '#bloglist-container.listview-list'
       
   simple_blog_info = renderable (blog) ->
-    div ->
+    div '.blog.listview-list-entry', ->
       a href:'#bumblr/viewblog/' + blog.name, blog.name
-
+      #div "#delete-#{blog.name}.btn.btn-default", ->
+      #  icon ".fa.fa-close"
+      icon ".delete-blog-button.fa.fa-close.btn.btn-default.btn-xs",
+      blog:blog.name
+      
   simple_post_page_view = renderable () ->
-    div '#posts-container', ->
-      div '.mytoolbar', ->
-        div '#prev-page-button.btn.btn-default.pull-left', '<-'
-        div '#next-page-button.btn.btn-default.pull-right', '->'
+    div '.mytoolbar.row', ->
+      ul '.pager', ->
+        li '.previous', ->
+          icon '#prev-page-button.fa.fa-arrow-left.btn.btn-default'
+        li ->
+          icon '#slideshow-button.fa.fa-play.btn.btn-default'
+        li '.next', ->
+          icon '#next-page-button.fa.fa-arrow-right.btn.btn-default'
+      #icon '#prev-page-button.fa.fa-arrow-left.btn.btn-default.pull-left'
+      #icon '#slideshow-button.fa.fa-play.btn.btn-default'
+    div '#posts-container.row'
       
   simple_post_view = renderable (post) ->
-    div '.alert.alert-success', ->
-      p ->
-        a href:post.post_url, target:'_blank', post.blog_name
+    div '.listview-list-entry', ->
+      #p ->
+      # a href:post.post_url, target:'_blank', post.blog_name
       span ->
         #for photo in post.photos
         photo = post.photos[0]
         current_width = 0
         current_size = null
         for size in photo.alt_sizes
-          if size.width > current_width and size.width < 600
+          if size.width > current_width and size.width < 250
             current_size = size
             current_width = size.width
         size = current_size 
-        img src:size.url, href:post.url
+        a href:post.post_url, target:'_blank', ->
+          img src:size.url
 
   new_blog_form_view = renderable (model) ->
     form_group_input_div

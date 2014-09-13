@@ -120,6 +120,7 @@ define (require, exports, module) ->
   BootstrapLayoutTemplate = renderable () ->
     div '#main-navbar.navbar.navbar-default.navbar-fixed-top',
     role:'navigation'
+    #div '#header.listview-header'
     div '.container-fluid', ->
       div '.row', ->
         div '#sidebar.col-sm-2'
@@ -127,7 +128,16 @@ define (require, exports, module) ->
         
     div '#footer'
     
-
+  BootstrapNoGridLayoutTemplate = renderable () ->
+    div '#main-navbar.navbar.navbar-default.navbar-fixed-top',
+    role:'navigation'
+    #div '#header.listview-header'
+    div '.main-layout', ->
+      div '#sidebar'
+      div '#main-content'
+        
+    div '#footer'
+    
   ########################################
   main_sidebar = renderable (model) ->
     div '.sidebar-menu', ->
@@ -141,6 +151,7 @@ define (require, exports, module) ->
     form_group_input_div: form_group_input_div
     login_form: login_form
     user_menu: user_menu
-    BootstrapLayoutTemplate: BootstrapLayoutTemplate
     BootstrapNavBarTemplate: BootstrapNavBarTemplate
+    BootstrapLayoutTemplate: BootstrapLayoutTemplate
+    BootstrapNoGridLayoutTemplate: BootstrapNoGridLayoutTemplate
     main_sidebar: main_sidebar

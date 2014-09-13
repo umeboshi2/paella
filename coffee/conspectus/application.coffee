@@ -13,7 +13,7 @@ define (require, exports, module) ->
   AppRegions = require 'common/appregions'
   
   MainPage = require 'common/mainpage'
-  MainPage.set_init_page_handler MainBus
+  MainPage.set_mainpage_init_handler MainBus
   
   
   require 'frontdoor/main'

@@ -3,12 +3,13 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   Views = require 'common/mainviews'
 
-  initialize_page = (appmodel, msgbus) ->
-    console.log 'initialize_page'
-    layout = new Views.MainPageLayout
+  initialize_page = (appmodel, msgbus, layout, navbar) ->
+    console.log "initialize_page #{layout} #{navbar}"
+    window.lllayout = layout
+    layout = new layout
     layout.on 'show', =>
       #console.log 'layout show---->'
-      navbar = new Views.BootstrapNavBarView
+      navbar = new navbar
         model: appmodel
       msgbus.vent.trigger 'appregion:navbar:show', navbar
       #console.log 'triggered appregion:navbar:show'
@@ -16,9 +17,19 @@ define (require, exports, module) ->
     msgbus.vent.trigger 'appregion:mainview:show', layout
 
 
-  set_init_page_handler = (msgbus) ->
-    msgbus.commands.setHandler 'mainpage:init', (appmodel) ->
-      initialize_page(appmodel, msgbus)
+  set_init_page_handler = (msgbus, pagename, layout, navbar) ->
+    initsignal = "#{pagename}:init"
+    displaysignal = "#{pagename}:displayed"
+    console.log "#{initsignal} and #{displaysignal} defined"
+    msgbus.commands.setHandler initsignal, (appmodel) =>
+      initialize_page appmodel, msgbus, layout, navbar
+      msgbus.vent.trigger displaysignal
+      console.log "Triggered #{displaysignal}"
+      
+  set_mainpage_init_handler = (msgbus) =>
+    layout = Views.MainPageLayout
+    navbar = Views.BootstrapNavBarView
+    set_init_page_handler msgbus, 'mainpage', layout, navbar
 
   display_main_navbar_contents = (msgbus) ->
     #console.log 'called display_main_navbar_contents'
@@ -47,6 +58,7 @@ define (require, exports, module) ->
       
   module.exports =
     set_init_page_handler: set_init_page_handler
+    set_mainpage_init_handler: set_mainpage_init_handler
     set_main_navbar_handler: set_main_navbar_handler
     set_get_navbar_color_handlers: set_get_navbar_color_handlers
     
