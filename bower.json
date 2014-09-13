@@ -33,7 +33,9 @@
     "backbone.localStorage": "~1.1.13",
     "font-awesome": "~4.2.0",
     "fullcalendar": "~2.1.0",
-    "ace": "~1.1.6"
+    "ace": "~1.1.6",
+    "imagesloaded": "~3.1.8",
+    "masonry": "~3.1.5"
   },
   "resolutions": {
     "jquery": "~2.1.1",
