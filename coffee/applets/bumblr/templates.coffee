@@ -41,6 +41,16 @@ define (require, exports, module) ->
     p 'bumblr_dashboard_view'
 
 
+  blog_dialog_view = renderable (blog) ->
+    div '.modal-header', ->
+      h2 'This is a modal!'
+    div '.modal-body', ->
+      p 'here is some content'
+    div '.modal-footer', ->
+      button '#modal-cancel-button.btn', 'cancel'
+      button '#modal-ok-button.btn.btn-default', 'Ok'
+
+
   simple_blog_list = renderable () ->
     div ->
       a '.btn.btn-default', href:'#bumblr/addblog', "Add blog"
@@ -130,6 +140,7 @@ define (require, exports, module) ->
     sidebar: sidebar
     main_bumblr_view: main_bumblr_view
     bumblr_dashboard_view: bumblr_dashboard_view
+    blog_dialog_view: blog_dialog_view
     simple_blog_list: simple_blog_list
     simple_blog_info: simple_blog_info
     simple_post_view: simple_post_view

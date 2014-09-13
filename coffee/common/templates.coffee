@@ -118,6 +118,7 @@ define (require, exports, module) ->
 
   ########################################
   BootstrapLayoutTemplate = renderable () ->
+    div '#modal'
     div '#main-navbar.navbar.navbar-default.navbar-fixed-top',
     role:'navigation'
     #div '#header.listview-header'

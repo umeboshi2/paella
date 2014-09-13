@@ -35,6 +35,10 @@ define (require, exports, module) ->
     mainbus: MainBus
     sidebarclass: Views.SideBarView
     sidebar_model: side_bar_data
+
+    init_page: ->
+      view = new Views.BlogModal()
+      MainBus.vent.trigger 'appregion:modal:show', view
       
     set_header: (title) ->
       header = $ '#header'

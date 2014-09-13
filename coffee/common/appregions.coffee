@@ -4,13 +4,37 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   Wreqr = Backbone.Wreqr
 
+  class ModalRegion extends Backbone.Marionette.Region
+    el: '#modal'
+    #events:
+    #  show: (view) ->
+    #    @showModal view
+    events:
+      'view:show': ->
+        @showModal @
+        
+    getEl: (selector) ->
+      $el = $ selector
+      $el.attr 'class', 'modal bs-example-modal'
+      #$el.on 'hidden', @close
+      $el
+
+    showModal: (view) ->
+      @listenTo view, 'close', @hideModal, @
+      @$el.modal 'show'
+
+    hideModal: ->
+      @$el.modal 'hide'
+      
+      
   basic_appregions = 
     mainview: 'body'
     navbar: '#main-navbar'
     sidebar: '#sidebar'
     content: '#main-content'
     footer: '#footer'
-
+    modal: ModalRegion
+    
   user_appregions = 
     mainview: 'body'
     navbar: '#main-navbar'
@@ -18,6 +42,7 @@ define (require, exports, module) ->
     sidebar: '#sidebar'
     content: '#main-content'
     footer: '#footer'
+    modal: ModalRegion
     apptriggers:
       navbar:
         show: 'appregion:navbar:displayed'
@@ -72,6 +97,8 @@ define (require, exports, module) ->
       # init routes
       for route in routes
         mainbus.commands.execute route
+    mainbus.reqres.setHandler 'main:app:object', ->
+      app  
 
   module.exports =
     prepare_app: prepare_app

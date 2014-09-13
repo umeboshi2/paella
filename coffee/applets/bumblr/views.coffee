@@ -17,7 +17,10 @@ define (require, exports, module) ->
   { navigate_to_url } = require 'common/util'
 
   class SideBarView extends BaseSideBarView
-      
+
+  class BlogModal extends Backbone.Marionette.ItemView
+    template: Templates.blog_dialog_view
+    
   class SimpleBlogInfoView extends Backbone.Marionette.ItemView
     template: Templates.simple_blog_info
 
@@ -99,10 +102,18 @@ define (require, exports, module) ->
       'click #next-page-button': 'get_next_page'
       'click #prev-page-button': 'get_prev_page'
       'click #slideshow-button': 'manage_slideshow'
+      #'click #slideshow-button': 'blog_dialog'
 
     keycommands:
       prev: 65
       next: 90
+      
+
+    blog_dialog: (event) ->
+      console.log event
+      
+      app = MainBus.reqres.request 'main:app:object'
+      app.modal.showModal app.modal.currentView
       
 
     manage_slideshow: () ->
@@ -218,6 +229,7 @@ define (require, exports, module) ->
       
   module.exports =
     SideBarView: SideBarView
+    BlogModal: BlogModal
     MainBumblrView: MainBumblrView
     BumblrDashboardView: BumblrDashboardView
     SimpleBlogListView: SimpleBlogListView
