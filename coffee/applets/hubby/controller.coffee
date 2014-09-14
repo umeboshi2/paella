@@ -54,8 +54,12 @@ define (require, exports, module) ->
       
     start: ->
       #console.log 'hubby start'
-      MainBus.vent.trigger 'appregion:content:empty'
-      MainBus.vent.trigger 'appregion:sidebar:empty'
+      if @App.content.hasView()
+        console.log 'empty content....'
+        @App.content.empty()
+      if @App.sidebar.hasView()
+        console.log 'empty sidebar....'
+        @App.sidebar.empty()
       @set_header 'Hubby'
       @show_calendar()
       
@@ -63,7 +67,7 @@ define (require, exports, module) ->
       #console.log 'hubby show calendar'
       @make_sidebar()
       view = new Views.MeetingCalendarView
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       scroll_top_fast()
       
     show_meeting: (meeting_id) ->
@@ -75,7 +79,7 @@ define (require, exports, module) ->
       response.done =>
         view = new Views.ShowMeetingView
           model: meeting
-        MainBus.vent.trigger 'appregion:content:show', view
+        @App.content.show view
       scroll_top_fast()
 
     list_meetings: () ->
@@ -85,7 +89,7 @@ define (require, exports, module) ->
         collection: meetings
       if meetings.length == 0
         meetings.fetch()
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       scroll_top_fast()
       
   module.exports = Controller

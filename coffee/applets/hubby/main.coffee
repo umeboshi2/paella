@@ -24,7 +24,7 @@ define (require, exports, module) ->
     
   MainBus.commands.setHandler 'hubby:route', () ->
     console.log "hubby:route being handled..."
-    controller = new Controller
+    controller = new Controller MainBus
     router = new Router
       controller: controller
       

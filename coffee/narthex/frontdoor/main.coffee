@@ -16,7 +16,7 @@ define (require, exports, module) ->
       
   MainBus.commands.setHandler 'frontdoor:route', () ->
     console.log "frontdoor:route being handled"
-    controller = new Controller
+    controller = new Controller MainBus
     router = new Router
       controller: controller
     #console.log 'router created'

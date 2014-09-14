@@ -39,13 +39,13 @@ define (require, exports, module) ->
       response.done =>
         view = new Views.PageListView
           collection: @pages
-        MainBus.vent.trigger 'appregion:content:show', view
+        @App.content.show view
 
     add_page: ->
       @make_sidebar()
       #console.log "add_page called on controller"
       view = new Views.NewPageFormView
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
 
     _show_page: (page) ->
       #window.showpage = page
@@ -53,7 +53,7 @@ define (require, exports, module) ->
       #console.log page
       view = new Views.ShowPageView
         model: page
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       
     show_page: (name) ->
       @make_sidebar()
@@ -61,8 +61,8 @@ define (require, exports, module) ->
       # as the entry point.  This should probably be
       # generalized in a base controller class. 
       # we should probably check for length of pages
-      if not MainBus.reqres.request 'appregion:content:hasview'
-        MainBus.vent.trigger 'appregion:content:close'
+      if not @App.content.hasView()
+        @App.content.empty()
         response = @pages.fetch()
         response.done =>
           page = @pages.get name
@@ -78,10 +78,11 @@ define (require, exports, module) ->
       #console.log "Here is the page #{page}"
       view = new Views.EditPageView
         model: page
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       
     start: ->
-      MainBus.vent.trigger 'appregion:content:empty'
+      if @App.content.hasView()
+        @App.content.empty()
       #console.log 'controller.start called'
       @make_main_content()
       #console.log 'wiki started'

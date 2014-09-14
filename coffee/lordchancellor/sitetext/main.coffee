@@ -20,6 +20,6 @@ define (require, exports, module) ->
 
   MainBus.commands.setHandler 'sitetext:route', () ->
     console.log 'sitetext:route being handled'
-    controller = new Controller
+    controller = new Controller MainBus
     router = new Router
       controller: controller

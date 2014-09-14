@@ -23,7 +23,7 @@ define (require, exports, module) ->
     page_collection = AppBus.reqres.request 'pages:collection'
     response = page_collection.fetch()
     response.done =>
-      controller = new Controller
+      controller = new Controller MainBus
       router = new Router
         controller: controller
       #console.log 'router created'

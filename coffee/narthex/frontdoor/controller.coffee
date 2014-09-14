@@ -41,7 +41,7 @@ define (require, exports, module) ->
           content: 'hello there'
         view = new Views.FrontDoorMainView
           model: page
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       
     show_page: (name) ->
       @make_sidebar()
@@ -49,7 +49,7 @@ define (require, exports, module) ->
       #response.done =>
       view = new Views.FrontDoorMainView
         model: page
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
 
     start: ->
       #console.log 'controller.start called'

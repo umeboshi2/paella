@@ -21,6 +21,6 @@ define (require, exports, module) ->
 
   MainBus.commands.setHandler 'useradmin:route', () ->
     console.log 'useradmin:route being handled'
-    controller = new Controller
+    controller = new Controller MainBus
     router = new Router
       controller: controller

@@ -3,28 +3,27 @@ define (require, exports, module) ->
   Marionette = require 'marionette'
   Views = require 'common/mainviews'
 
-  initialize_page = (appmodel, msgbus, layout, navbar) ->
-    console.log "initialize_page #{layout} #{navbar}"
-    window.lllayout = layout
+  initialize_page = (app, msgbus, layout, navbar) ->
+    #console.log "initialize_page #{layout} #{navbar}"
     layout = new layout
     layout.on 'show', =>
       #console.log 'layout show---->'
       navbar = new navbar
-        model: appmodel
-      msgbus.vent.trigger 'appregion:navbar:show', navbar
-      #console.log 'triggered appregion:navbar:show'
+        model: app.appmodel
+      app.navbar.show navbar
     #console.log 'added layout event callback'
-    msgbus.vent.trigger 'appregion:mainview:show', layout
+    app.mainview.show layout
 
 
   set_init_page_handler = (msgbus, pagename, layout, navbar) ->
     initsignal = "#{pagename}:init"
     displaysignal = "#{pagename}:displayed"
-    console.log "#{initsignal} and #{displaysignal} defined"
+    #console.log "#{initsignal} and #{displaysignal} defined"
     msgbus.commands.setHandler initsignal, (appmodel) =>
-      initialize_page appmodel, msgbus, layout, navbar
+      app = msgbus.reqres.request 'main:app:object'
+      initialize_page app, msgbus, layout, navbar
       msgbus.vent.trigger displaysignal
-      console.log "Triggered #{displaysignal}"
+      #console.log "Triggered #{displaysignal}"
       
   set_mainpage_init_handler = (msgbus) =>
     layout = Views.MainPageLayout
@@ -32,16 +31,16 @@ define (require, exports, module) ->
     set_init_page_handler msgbus, 'mainpage', layout, navbar
 
   display_main_navbar_contents = (msgbus) ->
-    #console.log 'called display_main_navbar_contents'
+    console.log 'called display_main_navbar_contents'
     user = msgbus.reqres.request 'get-current-user'
     view = new Views.UserMenuView
       model: user
     #window.uview = view
-    msgbus.vent.trigger 'appregion:usermenu:show', view
+    app = msgbus.reqres.request 'main:app:object'
+    app.usermenu.show view
 
   set_main_navbar_handler = (msgbus) ->
-    msgbus.vent.on 'appregion:navbar:displayed', (view) ->
-      #console.log 'appregion:navbar:displayed triggered'
+    msgbus.vent.on 'appregion:navbar:displayed', ->
       display_main_navbar_contents msgbus
 
   # These are handlers to retrieve the colors

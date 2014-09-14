@@ -5,6 +5,13 @@ define (require, exports, module) ->
   Util = require 'common/util'
   
   class BaseController extends Backbone.Marionette.Controller
+    constructor: (mainbus) ->
+      if mainbus != undefined
+        @mainbus = mainbus
+        @App = @mainbus.reqres.request 'main:app:object'
+      else
+        console.log "======WARNING Constructing controller with ", mainbus
+        
     init_page: () ->
       # do nothing
     scroll_top: Util.scroll_top_fast
@@ -16,11 +23,11 @@ define (require, exports, module) ->
     make_sidebar: () ->
       @init_page()
       # the model may change
-      @mainbus.vent.trigger 'appregion:sidebar:empty'
+      @App.sidebar.empty()
       view = new @sidebarclass
         model: @sidebar_model
-      @mainbus.vent.trigger 'appregion:sidebar:show', view
-      
+      @App.sidebar.show view
+
   module.exports =
     BaseController: BaseController
     SideBarController: SideBarController

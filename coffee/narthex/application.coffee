@@ -17,12 +17,13 @@ define (require, exports, module) ->
   set_get_current_user_handler MainBus, current_user_url
       
   MainPage = require 'common/mainpage'
-  MainPage.set_init_page_handler MainBus
+  MainPage.set_mainpage_init_handler MainBus
   MainPage.set_main_navbar_handler MainBus
   
   require 'frontdoor/main'
 
   appmodel = new Backbone.Model
+    hasUser: true
     brand:
       name: 'Cenotaph'
       url: '#'

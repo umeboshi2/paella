@@ -42,26 +42,26 @@ define (require, exports, module) ->
       response.done =>
         view = new Views.PageListView
           collection: pages
-        MainBus.vent.trigger 'appregion:content:show', view
-      
+        @App.content.show view
+        
     show_page: (name) ->
       @make_sidebar()
       page = AppBus.reqres.request 'pages:getpage', name
       view = new Views.FrontDoorMainView
         model: page
-      MainBus.vent.trigger 'appregion:content:show', view
-
+      @App.content.show view
+  
     edit_page: (name) ->
       @make_sidebar()
       page = AppBus.reqres.request 'pages:getpage', name
       view = new Views.EditPageView
         model: page
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
 
     add_page: () ->
       @make_sidebar()
       view = new Views.NewPageFormView
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       
       
     start: ->

@@ -80,8 +80,7 @@ define (require, exports, module) ->
       console.log 'confirm_delete_pressed'
       button = $ '.confirm-delete-button'
       @model.destroy()
-      MainBus.vent.trigger 'appregion:content:empty'
-      
+      @App.content.empty()
       
   module.exports =
     FrontDoorMainView: FrontDoorMainView
