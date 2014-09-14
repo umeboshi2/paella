@@ -37,7 +37,7 @@ define (require, exports, module) ->
     blog_collection = AppBus.reqres.request 'get_local_blogs'
     response = blog_collection.fetch()
     response.done =>
-      controller = new Controller
+      controller = new Controller MainBus
       router = new Router
         controller: controller
       #console.log 'bumblr router created'

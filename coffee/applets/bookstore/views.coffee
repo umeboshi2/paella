@@ -2,7 +2,8 @@ define (require, exports, module) ->
   Backbone = require 'backbone'
   Marionette = require 'marionette'
   Masonry = require 'masonry'
-    
+  imagesLoaded = require 'imagesloaded'
+      
   Models = require 'models'
 
   Templates = require 'bookstore/templates'
@@ -14,7 +15,6 @@ define (require, exports, module) ->
   BaseEditPageView = require 'common/views/editor'
   BaseSideBarView = require 'common/views/sidebar'
 
-  window.Masonry = Masonry
   class FrontDoorMainView extends Backbone.Marionette.ItemView
     template: Templates.frontdoor_main
 
@@ -22,6 +22,7 @@ define (require, exports, module) ->
     
   class BookView extends Backbone.Marionette.ItemView
     template: Templates.book_view
+    className: 'book'
     events:
       'click': ->
         AppBus.vent.trigger 'list:book:clicked', @model
@@ -34,6 +35,28 @@ define (require, exports, module) ->
     events:
       scroll: 'loadmorebooks'
 
+    #onRenderCollection: ->
+    #  @set_image_layout()
+
+        
+    set_image_layout: ->
+      #console.log 'set_image_layout called'
+      items = $ '.book'
+      #window.items = items
+      container = 'div.books'
+      #console.log "The items are #{items}"
+      imagesLoaded items, =>
+        #console.log "imagesLoaded for #{container} #{@masonry}"
+        #console.log @masonry
+        @masonry.addItems items
+        @masonry.layout()
+
+    set_layout: ->
+      items = $ '.book'
+      imagesLoaded items, =>
+        @masonry.reloadItems()
+        @masonry.layout()
+        
     loadmorebooks: ->
       totalHeight = @.$("> div").height()
       scrollTop = @.$el.scrollTop() + @.$el.height()
@@ -47,9 +70,17 @@ define (require, exports, module) ->
     onDomRefresh: () ->
       msnry = new Masonry 'div.books',
         itemSelector: '.book'
-        columnWidth: 200
+        columnWidth: 5
+        isInitLayout: false
+        itemSelector: '.book'
       window.msnry = msnry
+      @masonry = msnry
 
+    onRenderCollection: ->
+      #@set_image_layout()
+      @set_layout()
+      
+      
   class BookLayout extends Backbone.Marionette.LayoutView
     template: Templates.bookstore_layout
     regions:

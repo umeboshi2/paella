@@ -32,7 +32,8 @@ require.config
     masonry: "#{components}/masonry/masonry"
     #item: "#{components}/outlayer/item"
     outlayer: "#{components}/outlayer"
-
+    imagesloaded: "#{components}/imagesloaded/imagesloaded"
+    
     # common is the path to the common modules
     # These should maybe be packaged as bower
     # component.

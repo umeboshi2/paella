@@ -23,7 +23,7 @@ define (require, exports, module) ->
     books = AppBus.reqres.request 'book:entities'
     #response = books.fetch()
     #response.done =>
-    controller = new Controller
+    controller = new Controller MainBus
     controller.collection = books
     controller.defaultSearchTerm = 'West Highland Terrier'
     AppBus.vent.on 'list:book:clicked', (book) ->

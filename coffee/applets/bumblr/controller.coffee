@@ -32,35 +32,39 @@ define (require, exports, module) ->
   #console.log 'api_key is -> ' + api_key
   
   class Controller extends SideBarController
-    mainbus: MainBus
     sidebarclass: Views.SideBarView
     sidebar_model: side_bar_data
-
+    
     init_page: ->
+      #console.log 'init_page', @App
       view = new Views.BlogModal()
-      MainBus.vent.trigger 'appregion:modal:show', view
+      @App.modal.show view
       
     set_header: (title) ->
       header = $ '#header'
       header.text title
       
     start: ->
-      MainBus.vent.trigger 'appregion:content:empty'
-      MainBus.vent.trigger 'appregion:sidebar:empty'
+      if @App.content.hasView()
+        console.log 'empty content....'
+        @App.content.empty()
+      if @App.sidebar.hasView()
+        console.log 'empty sidebar....'
+        @App.sidebar.empty()
       @set_header 'Bumblr'
       @list_blogs()
       
     show_mainview: () ->
       @make_sidebar()
       view = new Views.MainBumblrView
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       Util.scroll_top_fast()
       
 
     show_dashboard: () ->
       @make_sidebar()
       view = new Views.BumblrDashboardView
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       Util.scroll_top_fast()
         
     list_blogs: () ->
@@ -69,7 +73,7 @@ define (require, exports, module) ->
       blogs = AppBus.reqres.request 'get_local_blogs'
       view = new Views.SimpleBlogListView
         collection: blogs
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       Util.scroll_top_fast()
       
       
@@ -79,27 +83,25 @@ define (require, exports, module) ->
       make_collection = 'make_blog_post_collection'
       base_hostname = blog_id + '.tumblr.com'
       collection = AppBus.reqres.request make_collection, base_hostname
-      window.blcollection = collection
       response = collection.fetch()
       response.done =>
         view = new Views.BlogPostListView
           collection: collection
-        window.blogView = view
-        MainBus.vent.trigger 'appregion:content:show', view
+        @App.content.show view
         Util.scroll_top_fast()
 
     add_new_blog: () ->
       #console.log 'add_new_blog called'
       @make_sidebar()
       view = new Views.NewBlogFormView
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       Util.scroll_top_fast()
             
     settings_page: () ->
       #console.log 'Settings page.....'
       settings = AppBus.reqres.request 'get_app_settings'
       view = new Views.ConsumerKeyFormView model:settings
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       Util.scroll_top_fast()
       
   module.exports = Controller

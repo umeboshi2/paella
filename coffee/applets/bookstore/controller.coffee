@@ -65,16 +65,14 @@ define (require, exports, module) ->
         console.log '@layout.show triggered'
         @showSearchBar()
         @showBookList books
-      #AppBus.vent.trigger 'app:show', @layout
-      MainBus.vent.trigger 'appregion:content:show', @layout
+      @App.content.show @layout
       
     showBookDetail: (book) ->
       console.log "controller>> showBookDetail"
       view = @getDetailView book
       view.on "dialog:button:clicked", ->
         console.log "editView instance dialog:button:clicked"
-      #AppBus.vent.trigger "app:show:modal", view
-      MainBus.vent.trigger 'appregion:content:show', view
+      @App.content.show view
       
     getDetailView: (book) ->
       new Views.BookDetailView
