@@ -34,7 +34,7 @@ nodejs:
       - cmd: build-nodejs-package
 
 
-%for pkg in ['coffee-script', 'grunt-cli', 'bower', 'http-server']:
+%for pkg in ['coffee-script', 'grunt-cli', 'bower', 'http-server', 'js2coffee']:
 
 npm-${pkg}:
   npm.installed:
