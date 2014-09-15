@@ -30,7 +30,7 @@ define (require, exports, module) ->
     childViewContainer: '#bloglist-container'
     ui:
       blogs: '#bloglist-container'
-      
+
     onDomRefresh: () ->
       console.log 'onDomRefresh called on SimpleBlogListView'
       @masonry = new Masonry "#bloglist-container",
@@ -39,6 +39,7 @@ define (require, exports, module) ->
         itemSelector: '.blog'
         columnWidth: 100
       delete_buttons = $ '.delete-blog-button'
+      delete_buttons.hide()
       delete_buttons.on 'click', (event) =>
         target = $ event.currentTarget
         blog = target.attr 'blog'
@@ -53,6 +54,12 @@ define (require, exports, module) ->
     set_layout: ->
       @masonry.reloadItems()
       @masonry.layout()
+      $('.blog').on 'mouseenter', (event) ->
+        button = event.target.find('.delete-blog-button')
+        button.show()
+      $('.blog').on 'mouseleave', (event) ->
+        button = event.target.find('.delete-blog-button')
+        button.hide()
         
   class NewBlogFormView extends FormView
     template: Templates.new_blog_form_view

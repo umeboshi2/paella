@@ -59,8 +59,6 @@ define (require, exports, module) ->
   simple_blog_info = renderable (blog) ->
     div '.blog.listview-list-entry', ->
       a href:'#bumblr/viewblog/' + blog.name, blog.name
-      #div "#delete-#{blog.name}.btn.btn-default", ->
-      #  icon ".fa.fa-close"
       icon ".delete-blog-button.fa.fa-close.btn.btn-default.btn-xs",
       blog:blog.name
       
