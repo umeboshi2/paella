@@ -30,7 +30,6 @@ require.config
     eventie: "#{components}/eventie"
     'get-style-property': "#{components}/get-style-property"
     masonry: "#{components}/masonry/masonry"
-    #item: "#{components}/outlayer/item"
     outlayer: "#{components}/outlayer"
     imagesloaded: "#{components}/imagesloaded/imagesloaded"
     
