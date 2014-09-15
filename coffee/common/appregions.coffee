@@ -26,10 +26,12 @@ define (require, exports, module) ->
     hideModal: ->
       @$el.modal 'hide'
       
-      
+  class NavBarRegion extends Backbone.Marionette.Region
+    el: '#main-navbar'
+
   basic_appregions = 
     mainview: 'body'
-    navbar: '#main-navbar'
+    navbar: NavBarRegion
     sidebar: '#sidebar'
     content: '#main-content'
     footer: '#footer'
@@ -37,8 +39,7 @@ define (require, exports, module) ->
     
   user_appregions = 
     mainview: 'body'
-    navbar: '#main-navbar'
-    usermenu: '#user-menu'
+    navbar: NavBarRegion
     sidebar: '#sidebar'
     content: '#main-content'
     footer: '#footer'

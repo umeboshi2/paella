@@ -6,11 +6,11 @@ define (require, exports, module) ->
   bootstrap = require 'bootstrap'
   Marionette = require 'marionette'
 
+  AppRegions = require 'common/appregions'
   Views = require 'common/mainviews'
+  MainPage = require 'common/mainpage'
   
   MainBus = require 'msgbus'
-  Models = require 'models'
-  AppRegions = require 'common/appregions'
   
   { set_get_current_user_handler } = require 'common/models'
 
@@ -20,7 +20,6 @@ define (require, exports, module) ->
   set_get_current_user_handler MainBus, current_user_url
       
   
-  MainPage = require 'common/mainpage'
   MainPage.set_mainpage_init_handler MainBus
   MainPage.set_main_navbar_handler MainBus
 
@@ -29,8 +28,8 @@ define (require, exports, module) ->
   MainPage.set_init_page_handler MainBus, 'nogridpage', layout, navbar
 
   
-
   
+  # require applets
   require 'frontdoor/main'
   require 'wiki/main'
   require 'bumblr/main'

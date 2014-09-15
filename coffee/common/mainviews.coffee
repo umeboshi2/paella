@@ -10,9 +10,12 @@ define (require, exports, module) ->
   class BootstrapNoGridLayout extends Backbone.Marionette.LayoutView
     template: Templates.BootstrapNoGridLayoutTemplate
     
-  class BootstrapNavBarView extends Backbone.Marionette.ItemView
+  class BootstrapNavBarView extends Backbone.Marionette.LayoutView
     template: Templates.BootstrapNavBarTemplate
-        
+    regions:
+      usermenu: '#user-menu'
+      mainmenu: '#main-menu'
+      
   class LoginView extends Backbone.Marionette.ItemView
     template: Templates.login_form
 

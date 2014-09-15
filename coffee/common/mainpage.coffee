@@ -35,9 +35,8 @@ define (require, exports, module) ->
     user = msgbus.reqres.request 'get-current-user'
     view = new Views.UserMenuView
       model: user
-    #window.uview = view
     app = msgbus.reqres.request 'main:app:object'
-    app.usermenu.show view
+    app.navbar.currentView.usermenu.show view
 
   set_main_navbar_handler = (msgbus) ->
     msgbus.vent.on 'appregion:navbar:displayed', ->

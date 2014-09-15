@@ -113,6 +113,7 @@ define (require, exports, module) ->
           for app in appmodel.apps
             li appname:app.appname, ->
               a href:app.url, app.name
+        ul '#main-menu.nav.navbar-nav.navbar-left'
         ul '#user-menu.nav.navbar-nav.navbar-right'
               
 
