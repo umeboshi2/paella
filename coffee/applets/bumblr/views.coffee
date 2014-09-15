@@ -54,13 +54,25 @@ define (require, exports, module) ->
     set_layout: ->
       @masonry.reloadItems()
       @masonry.layout()
-      $('.blog').on 'mouseenter', (event) ->
-        button = event.target.find('.delete-blog-button')
+      blog = $ '.blog'
+      handlerIn = (event) ->
+        window.enterevent = event
+        button = $(event.target).find '.delete-blog-button'
         button.show()
-      $('.blog').on 'mouseleave', (event) ->
-        button = event.target.find('.delete-blog-button')
+        # set button to disappear after two seconds
+        # without this, some buttons appear to stick
+        # and stay when the mouse jumps between entries
+        # too quickly.
+        # FIXME configure time elsewhere?
+        setTimeout () ->
+          button.hide()
+        , 2000 
+      handlerOut = (event) ->
+        window.leaveevent = event
+        button = $(event.target).find '.delete-blog-button'
         button.hide()
-        
+      blog.hover handlerIn, handlerOut
+      
   class NewBlogFormView extends FormView
     template: Templates.new_blog_form_view
     ui:
