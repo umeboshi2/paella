@@ -107,3 +107,12 @@ App
 - add/remove users to/from groups
 - remove localstorage and use memory and defaults in code
 - create docs on common modules
+- use jquery-cookie to set session cookie from server and
+  don't refresh page.
+- rearrange manner in which bower components are handled
+- test using grunt-bower-requirejs
+- create a multipage build config with a common stack
+  - consider making separate modules for ace and other large libs that are
+	only occasionally used.
+	
+  
