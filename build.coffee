@@ -25,7 +25,24 @@
     teacup: '../../components/teacup/lib/teacup'
     marked: '../../components/marked/lib/marked'
     ace: '../../components/ace/lib/ace'
+    'matches-selector': "../../components/matches-selector"
+    'jquery.bridget': "../../components/jquery-bridget/jquery.bridget"
+    'doc-ready': "../../components/doc-ready"
+    eventEmitter: "../../components/eventEmitter"
+    'get-size': "../../components/get-size"
+    eventie: "../../components/eventie"
+    'get-style-property': "../../components/get-style-property"
+    masonry: "../../components/masonry/masonry"
+    outlayer: "../../components/outlayer"
+    imagesloaded: "../../components/imagesloaded/imagesloaded"
+    
     common: '../common'
+    # applets
+    hubby: '../applets/hubby'
+    bumblr: '../applets/bumblr'
+    wiki: '../applets/wiki'
+    frontdoor: '../applets/frontdoor'
+    bookstore: '../applets/bookstore'
     
   name: 'main'
   out: 'javascripts/conspectus-built.js'
