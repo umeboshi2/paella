@@ -12,7 +12,12 @@ define (require, exports, module) ->
     
   BaseEditPageView = require 'common/views/editor'
   BaseSideBarView = require 'common/views/sidebar'
-    
+
+  # ace requirements
+  require 'ace/theme/twilight'
+  require 'ace/mode/markdown'
+  
+  
   class FrontDoorMainView extends Backbone.Marionette.ItemView
     template: Templates.frontdoor_main
 
