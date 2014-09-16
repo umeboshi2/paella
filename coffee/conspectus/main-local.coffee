@@ -63,15 +63,32 @@ require.config
     bblocalStorage:
       deps: ['backbone']
       exports: 'Backbone.localStorage'
-
-require [
-  'application'
-  'common/util'
-  'frontdoor/main'
-  ], (App, Util) ->
-  # debug
-  window.app = App
-  # simple app starter
-  return Util.start_application(App)
+  deps: ['require']
+  callback: (require) ->
+    'use strict'
+    filename = location.pathname.match(/\/([^\/]*)$/)
+    console.log "Filename #{filename}"
+    modulename = undefined
+    if filename and filename[1] isnt ""
+      modulename = [
+        #"app"
+        #filename[1].split(".")[0]
+        "application"
+      ].join("/")
+      require [modulename, 'common/util'], (App, Util) ->
+        return Util.start_application(App)
+    else
+      console.log "no modulename found via location.pathname"  if window.console
+    return
+    
+#require [
+#  'application'
+#  'common/util'
+#  'frontdoor/main'
+#  ], (App, Util) ->
+#  # debug
+#  window.app = App
+#  # simple app starter
+#  return Util.start_application(App)
         
         
