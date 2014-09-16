@@ -116,3 +116,23 @@ App
 	only occasionally used.
 	
   
+setup
+---------
+
+using vagrant: vagrant up
+
+using schroot: sudo python scripts/make-webdev-schroot.py
+
+within vagrant or schroot:
+
+- npm install
+
+- bower install
+
+- python scripts/generate-scss.py
+
+- python scripts/prepare-bower-components.py
+
+- http-server
+
+- sensible-browser http://localhost:8080/index.local.html
