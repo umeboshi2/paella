@@ -2,6 +2,7 @@
 
 base:
   'paella':
+    - default
     - localmirror
     - winbuilder
 

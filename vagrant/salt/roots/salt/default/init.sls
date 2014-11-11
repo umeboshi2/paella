@@ -26,6 +26,8 @@ basic-tools:
     - pkgs:
       - iotop
       - htop
+      - rsync
+
 
 devpackages:
   pkg.installed:
