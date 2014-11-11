@@ -11,23 +11,23 @@ debian_pxe_installer:
     i386:
       linux:
         source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/linux
-        source_hash: sha256=de2603ec02171643ecbb615373a834302fdab2804294472edb673ec0055c9955
+        source_hash: sha256=1f256c7d273247fc257cdd3d40046c8e32f3a9f8e78bbfecc925999ff69d7b82
       initrd.gz:
         source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz
-        source_hash: sha256=0aef8471b5092000991d7549be503d46b7e301cf89582d2c68619b14cedea50f
+        source_hash: sha256=ae122861a3f1eaceb0de9591e17f1c8eadd6761e06eacfffe0b49d6c34e8ca6e
       udeb_list:
         source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-i386/current/images/udeb.list
-        source_hash: sha256=d9ffa71c7f1be047f5eafb8f5a3359d86dd34e7ce09acd0ea5d44e9aaff8cc20
+        source_hash: sha256=a4bce242e3b8a32a68f980cd4011fbb3f20ec6a1370f2bee10a046a41a2f80d0
     amd64:
       linux:
         source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
-        source_hash: sha256=175b487eac5b11ccff9ffff9f759f6530e3852ac179cab6f4c04b0b413b62ec8
+        source_hash: sha256=487e2dc3635e22f3f7d6e90e36d6dccbf9c5e09a747179d0aa42bc6b063d492a
       initrd.gz:
         source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
-        source_hash: sha256=a74a88d3396aba220a557bba0f8f60de87c4c05a7c993503f300afec54aba4a5
+        source_hash: sha256=c91a2216fe00ddb9bd42a8000e19997b5df897a561f904b0a88e03a65f6c6dad
       udeb_list:
         source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/udeb.list
-        source_hash: sha256=a9a8f2b3f1abf921356240cf1f9a2eb31eaaece25cd2aa1849cd58259ff45cb5
+        source_hash: sha256=6d2a05b7b1f7ecc9a8ab868905c9b1254e3e82fc47bce8b5eef78b26cca1cc2c
   jessie:
     i386:
       linux:
@@ -42,7 +42,7 @@ debian_pxe_installer:
 
 
 debian_installer_i386_checksums:
-  udeb_list: sha256=d9ffa71c7f1be047f5eafb8f5a3359d86dd34e7ce09acd0ea5d44e9aaff8cc20
+  udeb_list: sha256=a4bce242e3b8a32a68f980cd4011fbb3f20ec6a1370f2bee10a046a41a2f80d0
   initrd: sha256=0aef8471b5092000991d7549be503d46b7e301cf89582d2c68619b14cedea50f
   linux: sha256=de2603ec02171643ecbb615373a834302fdab2804294472edb673ec0055c9955
 
@@ -68,9 +68,7 @@ clonezilla_iso:
 
 chrome_standalone_enterprise_msi:
   source: https://dl.google.com/edgedl/chrome/install/GoogleChromeStandaloneEnterprise.msi
-  #source_hash: sha256=c7090500b6761af8bdd51a4814b13ddae764dffbb332e569ef4b10441bb3ca89
-  #source_hash: sha256=a579f41a50b5adab149a0a9831d787625ece9df48b98e417cdcfe8519548da30
-  source_hash: sha256=0907e17c8643f55f755e87d8da5ec06777bc9e94c088106e32a2aada329ad1a8
+  source_hash: sha256=f5520d79d8f85929931b369040095530a9c1201d55415884b50cbb9c087f94cc
   name: google-chrome-enterprise.msi
 
 salt_windows_installer_files:
@@ -190,7 +188,7 @@ swigwin-3.0.0-zip:
 
 ez_setup_py:
   source: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
-  source_hash: sha256=e5e522b5562d1c1950c3e416dac91514a1264503b30b445ffc0215a142ec17f0
+  source_hash: sha256=9dfc64e3e2124489c490696c6ff943a5a2a5f03d9e55874b0aacd5d579e6f41c
   name: ez_setup.py
 
 codeblocks-setup-exe:

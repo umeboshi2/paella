@@ -3,7 +3,7 @@ set -e
 
 workspace=/home/vagrant/workspace
 pkg=debian-archive-keyring
-version=2012.4
+version=2014.1~deb7u1
 pkgdir=$workspace/$pkg-$version
 
 
@@ -68,9 +68,9 @@ cat <<EOF > $active
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iEYEABECAAYFAlNG+jQACgkQOJcw62KASuXutwCgiHKTRv/2FPJVOBFAAdQPWLzJ
-c9kAnizw/Nc/9EZhodhe59n1hPufdjff
-=h7Dl
+iEYEABECAAYFAlRhMFYACgkQOJcw62KASuU4AgCeKEw3A6EPmQ8DsyrE+SXEWVyA
+2GkAoIfM/s9LSTw9oZPLWF9nJMlk2Fnp
+=In4K
 -----END PGP SIGNATURE-----
 EOF
 
@@ -78,9 +78,9 @@ cat <<EOF > $removed
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.12 (GNU/Linux)
 
-iEYEABECAAYFAlNG+kUACgkQOJcw62KASuVBTACfXK2R8J9HVIuzdqGXVAxdR27m
-mOgAnj7+vzsiAsL0pGFoEYTV2aSw/wPl
-=2qPp
+iEYEABECAAYFAlRhMIAACgkQOJcw62KASuU+SACePbE4FHvDREdLKKB9m73lQECR
+eYcAn2aB38/k/SVBw/UJh0wHYocx32jV
+=Lkh+
 -----END PGP SIGNATURE-----
 EOF
 popd
@@ -92,14 +92,14 @@ popd
 echo 'back in workspace'
 ls
 
-pkgname="debian-archive-keyring_2012.4-paella1_all.deb"
+pkgname="debian-archive-keyring_${version}-paella1_all.deb"
 pkgdirname='/srv/debrepos/debian/pool/main/d/debian-archive-keyring'
 
 if ! [ -r $pkgdirname/$pkgname ]; then
     reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includedeb wheezy $pkgname
 fi
 
-pkgname="debian-archive-keyring-udeb_2012.4-paella1_all.udeb"
+pkgname="debian-archive-keyring-udeb_${version}-paella1_all.udeb"
 if ! [ -r $pkgdirname/$pkgname ]; then
     reprepro -b /srv/debrepos/debian/ --ignore=wrongdistribution includeudeb wheezy $pkgname
 fi
