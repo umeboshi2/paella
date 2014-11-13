@@ -56,7 +56,7 @@ def prepare_recipe(content):
     one_space = chr(32)
     two_spaces = one_space * 2
     # strip new lines
-    content = content.replace('\n', '')
+    content = content.replace('\n', one_space)
     # convert tabs to spaces
     content = content.replace('\t', one_space)
     # convert all double spaces to single spaces

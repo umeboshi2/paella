@@ -3,7 +3,7 @@
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
 
-d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${paella_server_ip}/debrepos/paella.bin.gpg
+d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${paella_server_ip}/debrepos/paella.bin.gpg ; anna-install partman-reiserfs
 
 d-i keymap select us
 d-i console-setup/ask_detect boolean false
@@ -78,11 +78,11 @@ d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
 
 # This makes partman automatically partition without confirmation.
-d-i partman-md/confirm boolean true
-d-i partman-partitioning/confirm_write_new_label boolean true
-d-i partman/choose_partition select finish
-d-i partman/confirm boolean true
-d-i partman/confirm_nooverwrite boolean true
+#d-i partman-md/confirm boolean true
+#d-i partman-partitioning/confirm_write_new_label boolean true
+#d-i partman/choose_partition select finish
+#d-i partman/confirm boolean true
+#d-i partman/confirm_nooverwrite boolean true
 
 d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 

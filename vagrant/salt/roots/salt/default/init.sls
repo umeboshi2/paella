@@ -103,6 +103,9 @@ disk-tools:
   pkg.installed:
     - pkgs:
       - parted
+      - xfsprogs
+      - reiserfsprogs
+      - e2fsprogs
 
 # the virtualbox packages will be 
 # needed for the live installer
