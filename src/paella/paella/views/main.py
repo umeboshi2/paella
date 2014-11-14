@@ -99,8 +99,11 @@ class MachineResource(object):
             recipe = data['recipe']
         if recipe is not None:
             recipe = self.recipes.get_by_name(recipe)
+        arch=None
+        if 'arch' in data:
+            arch = data['arch']
         machine = self.mgr.add(name, uuid, autoinstall=autoinstall,
-                               recipe=recipe)
+                               recipe=recipe, arch=arch)
         return machine.serialize()
     
         

@@ -55,7 +55,7 @@ class SaltKeyManager(object):
 def prepare_recipe(content):
     one_space = chr(32)
     two_spaces = one_space * 2
-    # strip new lines
+    # convert new lines to spaces
     content = content.replace('\n', one_space)
     # convert tabs to spaces
     content = content.replace('\t', one_space)
@@ -135,12 +135,15 @@ class MachineManager(object):
         except NoResultFound:
             return False
         
-    def add(self, name, uuid, autoinstall=False, recipe=None):
+    def add(self, name, uuid, autoinstall=False, recipe=None,
+            arch=None):
         with transaction.manager:
             machine = Machine()
             machine.name = name
             machine.uuid = uuid
             machine.autoinstall = autoinstall
+            if arch is not None:
+                machine.arch = arch
             if recipe is not None:
                 machine.recipe_id = recipe.id
             self.session.add(machine)

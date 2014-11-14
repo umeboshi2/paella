@@ -20,10 +20,19 @@ if not len(args) or len(args) != 1:
 
 name = args[0]
 
-
+def get_arch():
+    cmd = ['dpkg', '--print-architecture']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    proc.wait()
+    if proc.retcode:
+        raise RuntimeError, "Proc returned %d" % proc.retcode
+    return proc.stdout.read().strip()
+    
 def make_data(name):
     uuid = get_system_uuid()
+    
     data = dict(action='submit', name=name,
+                arch=get_arch(),
                 # FIXME machine key must go
                 machine=name, uuid=uuid)
     return data
