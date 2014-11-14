@@ -41,7 +41,4 @@ label install
 
       
 #label live
-include live-${machine.arch}/live.cfg Standard Live System
-
-
-
+include live-${machine.arch}.cfg Standard Live System (${machine.arch})
