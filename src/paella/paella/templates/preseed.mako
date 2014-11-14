@@ -53,7 +53,19 @@ d-i clock-setup/ntp boolean true
 # NTP server to use. The default is almost always fine here.
 #d-i clock-setup/ntp-server string ntp.example.com
 
-d-i partman-auto/method string lvm
+
+
+
+# FIXME: there is currently no support for raid
+<% method = 'lvm' %>
+%if recipe is not None and 'raid' in recipe:
+<% method = 'raid' %>
+%endif
+
+# FIXME: if there are multiple disks on the machine the disk needs to be selected
+#d-i partman-auto/disk string /dev/sda /dev/sdb
+
+d-i partman-auto/method string ${method}
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
 d-i partman-lvm/confirm boolean true
@@ -64,6 +76,9 @@ d-i partman-auto/choose_recipe select atomic
 %else:
 d-i partman-auto/expert_recipe string ${recipe}
 %endif
+
+# FIXME: raid support
+#di partman-auto-raid/recipe string <insert raid recipe>
 
 # Or provide a recipe of your own...
 # If you have a way to get a recipe file into the d-i environment, 

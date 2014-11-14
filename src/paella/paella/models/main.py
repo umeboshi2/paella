@@ -27,6 +27,12 @@ class PartmanRecipe(Base, SerialBase):
     name = Column(Text, unique=True)
     content = Column(Text)
     
+class PartmanRaidRecipe(Base, SerialBase):
+    __tablename__ = 'partman_raid_recipes'
+    id = Column(Integer, primary_key=True)
+    name = Column(Text, unique=True)
+    content = Column(Text)
+    
 # Machine.autoinstall is a boolean that determines
 # whether or not to set the installer pxe config file
 # to automatically boot the installer for that machine.
@@ -47,6 +53,9 @@ class Machine(Base, SerialBase):
     # recipe_id is ignored for ostype mswindows
     recipe_id = Column(Integer, ForeignKey('partman_recipes.id'),
                        nullable=True)
+    # raid_recipe_id is ignored for ostype mswindows
+    raid_recipe_id = Column(Integer, ForeignKey('partman_raid_recipes.id'),
+                            nullable=True)
     # imagepath is ignored for ostype debian
     imagepath = Column(Text, nullable=True)
     
