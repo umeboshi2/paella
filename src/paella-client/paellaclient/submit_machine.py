@@ -24,8 +24,8 @@ def get_arch():
     cmd = ['dpkg', '--print-architecture']
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
     proc.wait()
-    if proc.retcode:
-        raise RuntimeError, "Proc returned %d" % proc.retcode
+    if proc.returncode:
+        raise RuntimeError, "Proc returned %d" % proc.returncode
     return proc.stdout.read().strip()
     
 def make_data(name):

@@ -22,6 +22,8 @@ subprocess.check_call(cmd)
 minion_config = """\
 master: ${paella_server_ip}
 id: ${machine}
+grains:
+    system-uuid: ${uuid}
 """
 
 rc_local = """\
