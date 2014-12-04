@@ -20,6 +20,7 @@ requires = [
     'waitress',
     'debrepos',
     'cornice',
+    'networkx',
     ]
 
 setup(name='paella',

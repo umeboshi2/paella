@@ -58,6 +58,65 @@ class Machine(Base, SerialBase):
                             nullable=True)
     # imagepath is ignored for ostype debian
     imagepath = Column(Text, nullable=True)
+
+
+class SaltKey(Base, SerialBase):
+    __tablename__ = 'machine_salt_keys'
+    id = Column(Integer, ForeignKey('machines.id'),
+                primary_key=True)
+    public = Column(Text, nullable=False)
+    private = Column(Text, nullable=False)
+
+
+# traits
+
+class Trait(Base, SerialBase):
+    __tablename__ = 'traits'
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, unique=True)
+    description Column(UnicodeText)
+    
+class TraitParent(Base, SerialBase):
+    __tablename__ = 'trait_parents'
+    trait_id = Column(Integer, ForeignKey('traits.id'),
+                primary_key=True)
+    parent_id = Column(Integer, ForeignKey('traits.id'),
+                primary_key=True)
+    
+class TraitVariable(Base, SerialBase):
+    __tablename__ = 'trait_variables'
+    trait_id = Column(Integer, ForeignKey('traits.id'),
+                primary_key=True)
+    name = Column(Unicode, primary_key=True)
+    value = Column(UnicodeText)
+    pickled = Column(PickleType)
+    
+
+# families
+
+class Family(Base, SerialBase):
+    __tablename__ = 'families'
+    id = Column(Integer, primary_key=True)
+    name = Column(Unicode, unique=True)
+    description = Column(UnicodeText)
+
+class FamilyParent(Base, SerialBase):
+    __tablename__ = 'family_parents'
+    family_id = Column(Integer, ForeignKey('families.id'),
+                       primary_key=True)
+    parent_id = Column(Integer, ForeignKey('families.id'),
+                       primary_key=True)
+
+class FamilyVariable(Base, SerialBase):
+    __tablename__ = 'family_variables'
+    family_id = Column(Integer, ForeignKey('families.id'),
+                       primary_key=True)
+    name = Column(Unicode, primary_key=True)
+    value = Column(UnicodeText)
+    pickled = Column(PickleType)
+    
+
+    
     
     
     
