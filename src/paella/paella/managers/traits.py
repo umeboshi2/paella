@@ -7,7 +7,20 @@ import networkx as nx
 
 from paella.models.main import Trait, TraitParent, TraitVariable
 
-    
+
+
+# nx.predecessor(g, node) will return a dictionary of reachable nodes
+#
+# nx.has_path(g, source, target) returns bool
+
+# make trait graph:
+#
+# add all traits first
+# for trait in traits:
+#     g.add_node(trait)
+# for trait in traits:
+#    for parent in trait.parents:
+#        g.add_edge(trait, parent)
 
 def _directed_graph(foobar=None):
     g = nx.DiGraph()
@@ -53,7 +66,8 @@ class TraitManager(object):
         return self.session.merge(trait)
     
     def remove_trait(self, trait):
-        raise NotImplementedError, "FIXME"
+        with transaction.manager:
+            self.session.delete(trait)
 
     def update_description(self, trait, newdesc):
         with transaction.manager:
@@ -61,8 +75,10 @@ class TraitManager(object):
             self.session.add(trait)
         return self.session.merge(trait)
 
-    def list_parents(self, trait_id):
-        raise NotImplementedError, "FIXME"
+    def get_parents(self, trait):
+        subquery = self.session.query(TraitParent.id).filter_by(trait_id=trait.id)
+        q = self.query().filter(Trait.id in subquery)
+        return q.all()
 
     def _add_parent(self, trait_id, parent_id):
         with transaction.manager:
@@ -86,10 +102,27 @@ class TraitManager(object):
         raise NotImplementedError, "FIXME"
 
     def add_variable(self, trait_id, name, value):
-        raise NotImplementedError, "FIXME"
+        with transaction.manager:
+            tv = TraitVariable()
+            tv.trait_id = trait_id
+            tv.name = name
+            tv.value = value
+            self.session.add(tv)
+        return self.session.merge(tv)
 
+    def update_variable(self, trait_id, name, value):
+        with transaction.manager:
+            tv = self.session.query(TraitVariable).get((trait_id, name))
+            if tv is not None:
+                tv.value = value
+                self.session.add(tv)
+        tv = self.session.merge(tv)
+        return tv
+    
     def remove_variable(self, trait_id, name):
-        raise NotImplementedError, "FIXME"
+        with transaction.manager: 
+            tv = self.session.query(TraitVariable).get((trait_id, name))
+            self.session.delete(tv)
     
     
     

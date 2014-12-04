@@ -74,7 +74,7 @@ class Trait(Base, SerialBase):
     __tablename__ = 'traits'
     id = Column(Integer, primary_key=True)
     name = Column(Unicode, unique=True)
-    description Column(UnicodeText)
+    description = Column(UnicodeText)
     
 class TraitParent(Base, SerialBase):
     __tablename__ = 'trait_parents'
