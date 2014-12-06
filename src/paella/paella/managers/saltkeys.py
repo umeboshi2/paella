@@ -10,20 +10,123 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import desc
 from sqlalchemy import func
 
-import networkx as nx
+from paella.models.main import SaltKey, Machine
 
-from paella.models.main import Machine
-from paella.models.main import PartmanRecipe
+from paella.managers.util import generate_minion_keys
 
-from paella.managers.saltkeys import SaltKeyManager
+class SaltKeyFiles(object):
+    def __init__(self):
+        self.pkipath = '/etc/salt/pki/master'
+        self.minions_path = os.path.join(self.pkipath, 'minions')
+        self.minions_pre_path = os.path.join(self.pkipath, 'minions_pre')
+        self.minions_rejected_path = os.path.join(self.pkipath, 'minions_rejected')
+        
+    def _rm(self, filename):
+        os.remove(filename)
 
-from paella.managers.util import prepare_recipe
+    def _create(self, filename, data):
+        file(filename, 'w').write(data)
+
+    def _chmod(self, filename, mode):
+        os.chmod(filename, mode)
+
+    
+
+# store keys in database.
+# only database keys exists as files
+# submit_machine generates keys that are stored in database
+# set_install will make sure key is accepted by minion
+# late command will send keypair to minion
+class SaltKeyManager(object):
+    def __init__(self, session):
+        self.session = session
+
+    def query(self):
+        return self.session.query(SaltKey)
+
+    def get_machine(self, name):
+        q = self.session.query(Machine)
+        q = q.filter_by(name=name)
+        try:
+            machine = q.one()
+        except NoResultFound:
+            machine = None
+        return machine
+    
+    def get(self, id):
+        return self.query().get(id)
+
+    def get_by_name(self, name):
+        machine = self.get_machine(name)
+        if machine is None:
+            return
+        return self.get(machine.id)
+
+    # why?
+    def base_keyname(self, name, keytype='public'):
+        print "basename of key"
+
+    # why?
+    def keyname(self, name, keytype='public'):
+        print "path/to/key"
+        
+    def generate_keypair(self, name):
+        print "generate a key pair with this name"
+        machine = self.get_machine(name)
+        if machine is None:
+            raise RuntimeError, "No such machine, %s" % name
+        keydata = self.get(machine.id)
+        if keydata is not None:
+            raise RuntimeError, "Keys already exist for %s." % name
+        keydata = generate_minion_keys(name)
+        print "files are created, then destroyed"
+        print "generation can take time"
+        with transaction.manager:
+            skey = SaltKey()
+            skey.id = machine.id
+            for ktype in ['public', 'private']:
+                setattr(skey, ktype, keydata[ktype])
+            self.session.add(skey)
+        return self.session.merge(skey)
+    
+    # why?
+    def check_key(self, name, keytype='public'):
+        print "does this key exist"
+
+    # why?
+    def does_keypair_exist(self, name):
+        print "does this keypair exist"
+
+    def get_public_key(self, name):
+        print "get the public key, raise no exist error."
+        print "return content"
+        
+    def get_private_key(self, name):
+        print "get the private key, raise no exist error."
+        print "return content"
+
+    def get_keypair(self, name):
+        print "get both keys for name"
+        print "return dict(public=dict(name=name, content=content), private=)"
+
+
+def prepare_recipe(content):
+    one_space = chr(32)
+    two_spaces = one_space * 2
+    # convert new lines to spaces
+    content = content.replace('\n', one_space)
+    # convert tabs to spaces
+    content = content.replace('\t', one_space)
+    # convert all double spaces to single spaces
+    while two_spaces in content:
+        content = content.replace(two_spaces, one_space)
+    return content
+
         
 class PartmanRecipeManager(object):
     def __init__(self, session):
         self.session = session
-        self.keymanager = SaltKeyManager(self.session)
-        
+
     def _query(self):
         return self.session.query(PartmanRecipe)
 
