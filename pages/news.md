@@ -25,6 +25,8 @@
   for the time being will have to be, configured manually 
   using sysprep.
 
+- Web interface to help manage machines and configurations.
+
 
 ## links
 

@@ -14,6 +14,18 @@
 - Automate key generation and preseed the keys during first stage 
   install.
   http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
+  - pyramid_celery and rabbitmq to help queue key generation jobs
+  - keys are instaled in configure netboot script
+  - need to enforce ssl on apache to pass data across network
+  
+
+- work on web interface
+
+- edit state files with ace editor
+
+
+
+- work on deployment plan
 
 - Implement per machine auto install option when generating install pxe 
   config file.
