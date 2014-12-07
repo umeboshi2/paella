@@ -26,7 +26,9 @@ TEMPLATES['bootstrap-custom'] = bootstrap_template
 
 
 BASECOLORS = ['bisque', 'BlanchedAlmond',
-              'DarkSeaGreen', 'LavenderBlush']
+              'DarkSeaGreen', 'LavenderBlush',
+              'PaellaDefault',
+              ]
 
 def generate_scss(basecolor, name, template):
     filename = '%s-%s.scss' % (name, basecolor)
