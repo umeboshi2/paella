@@ -3,3 +3,5 @@ WSGIPassAuthorization On
 WSGIDaemonProcess pyramid user=vagrant group=vagrant threads=4 python-path=${pillar['paella_virtualenv_basedir']}/venv/lib/python2.7/site-packages
 WSGIProcessGroup pyramid
 WSGIApplicationGroup %{GLOBAL}
+
+Alias /client /vagrant/client

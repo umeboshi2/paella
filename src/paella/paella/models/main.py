@@ -6,6 +6,7 @@ from sqlalchemy import Date, Time, DateTime
 from sqlalchemy import Enum
 from sqlalchemy import PickleType
 from sqlalchemy import LargeBinary
+from sqlalchemy import func
 
 from sqlalchemy.exc import IntegrityError
 
@@ -66,6 +67,7 @@ class SaltKey(Base, SerialBase):
                 primary_key=True)
     public = Column(Text, nullable=False)
     private = Column(Text, nullable=False)
+    created = Column(DateTime, default=func.now())
 
 
 # traits

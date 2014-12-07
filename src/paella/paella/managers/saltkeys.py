@@ -1,4 +1,6 @@
-#import os
+import os
+import logging
+
 #from datetime import datetime, timedelta
 #from zipfile import ZipFile
 #from StringIO import StringIO
@@ -14,21 +16,43 @@ from paella.models.main import SaltKey, Machine
 
 from paella.managers.util import generate_minion_keys
 
+log = logging.getLogger(__name__)
+
 class SaltKeyFiles(object):
     def __init__(self):
         self.pkipath = '/etc/salt/pki/master'
         self.minions_path = os.path.join(self.pkipath, 'minions')
         self.minions_pre_path = os.path.join(self.pkipath, 'minions_pre')
         self.minions_rejected_path = os.path.join(self.pkipath, 'minions_rejected')
+        self.master_keyname = os.path.join(self.pkipath, 'master.pub')
+        
         
     def _rm(self, filename):
         os.remove(filename)
 
-    def _create(self, filename, data):
-        file(filename, 'w').write(data)
+    def _create(self, filename, content):
+        with file(filename, 'w') as ofile:
+            ofile.write(content)
 
     def _chmod(self, filename, mode):
         os.chmod(filename, mode)
+
+    def get_masterkey(self):
+        return file(self.master_keyname).read()
+    
+    def accept(self, name, content):
+        if name in os.listdir(self.minions_rejected_path):
+            raise RuntimeError, "Minion %s is rejected." % name
+        if name in os.listdir(self.minions_pre_path):
+            os.remove(os.path.join(self.minions_pre_path, name))
+        filename = os.path.join(self.minions_path, name)
+        if name in os.listdir(self.minions_path):
+            return
+        else:
+            self._create(filename, content)
+        if not os.path.isfile(filename):
+           raise RuntimeError, "Problem accepting %s." % name     
+                      
 
     
 
@@ -40,6 +64,8 @@ class SaltKeyFiles(object):
 class SaltKeyManager(object):
     def __init__(self, session):
         self.session = session
+        self.filemgr =SaltKeyFiles()
+        self.masterkey = self.filemgr.get_masterkey()
 
     def query(self):
         return self.session.query(SaltKey)
@@ -62,14 +88,18 @@ class SaltKeyManager(object):
             return
         return self.get(machine.id)
 
-    # why?
-    def base_keyname(self, name, keytype='public'):
-        print "basename of key"
+    def generate_minion_keys(self, name):
+        log.info('generating minion keys for %s' % name)
+        return generate_minion_keys(name)
 
-    # why?
-    def keyname(self, name, keytype='public'):
-        print "path/to/key"
-        
+    def add_keypair_no_txn(self, id, keydata):
+        skey = SaltKey()
+        skey.id = id
+        for ktype in ['public', 'private']:
+            setattr(skey, ktype, keydata[ktype])
+        self.session.add(skey)
+        return skey
+    
     def generate_keypair(self, name):
         print "generate a key pair with this name"
         machine = self.get_machine(name)
@@ -78,165 +108,19 @@ class SaltKeyManager(object):
         keydata = self.get(machine.id)
         if keydata is not None:
             raise RuntimeError, "Keys already exist for %s." % name
-        keydata = generate_minion_keys(name)
-        print "files are created, then destroyed"
-        print "generation can take time"
+        #print "files are created, then destroyed"
+        #print "generation can take time"
         with transaction.manager:
-            skey = SaltKey()
-            skey.id = machine.id
-            for ktype in ['public', 'private']:
-                setattr(skey, ktype, keydata[ktype])
-            self.session.add(skey)
+            keydata = self.generate_minion_keys(name)
+            skey = self.add_keypair_without_txn(machine.id, keydata)
         return self.session.merge(skey)
-    
-    # why?
-    def check_key(self, name, keytype='public'):
-        print "does this key exist"
 
-    # why?
-    def does_keypair_exist(self, name):
-        print "does this keypair exist"
-
-    def get_public_key(self, name):
-        print "get the public key, raise no exist error."
-        print "return content"
+    def accept_machine(self, machine):
+        keydata = self.get(machine.id)
+        self.filemgr.accept(machine.name, keydata.public)
         
-    def get_private_key(self, name):
-        print "get the private key, raise no exist error."
-        print "return content"
-
-    def get_keypair(self, name):
-        print "get both keys for name"
-        print "return dict(public=dict(name=name, content=content), private=)"
-
-
-def prepare_recipe(content):
-    one_space = chr(32)
-    two_spaces = one_space * 2
-    # convert new lines to spaces
-    content = content.replace('\n', one_space)
-    # convert tabs to spaces
-    content = content.replace('\t', one_space)
-    # convert all double spaces to single spaces
-    while two_spaces in content:
-        content = content.replace(two_spaces, one_space)
-    return content
-
         
-class PartmanRecipeManager(object):
-    def __init__(self, session):
-        self.session = session
-
-    def _query(self):
-        return self.session.query(PartmanRecipe)
-
-    def get(self, id):
-        return self._query().get(id)
-
-    def get_by_name(self, name):
-        return self._query().filter_by(name=name).one()
-    
-    def add(self, name, content):
-        with transaction.manager:
-            pr = PartmanRecipe()
-            pr.name = name
-            pr.content = content
-            self.session.add(pr)
-        return self.session.merge(pr)
-
-    def update(self, recipe, name=None, content=None):
-        with transaction.manager:
-            if name is not None or content is not None:
-                if name is not None:
-                    recipe.name = name
-                if content is not None:
-                    recipe.content = content
-                self.session.add(recipe)
-        return self.session.merge(recipe)
-
-    def list_recipes(self):
-        return [r.name for r in self._query()]
-
-    def delete(self, recipe):
-        with transaction.manager:
-            self.session.delete(recipe)
-
-    def prepare_recipe(self, id):
-        r = self.get(id)
-        if r is None:
-            raise NoResultFound
-        return prepare_recipe(r.content)
-    
-class MachineManager(object):
-    def __init__(self, session):
-        self.session = session
-
-    def _query(self):
-        return self.session.query(Machine)
-
-    def get(self, id):
-        return self._query().get(id)
-
-    def _get_one_by(self, **kw):
-        return self._query().filter_by(**kw).one()
-    
-    def get_by_name(self, name):
-        return self._get_one_by(name=name)
-    
-    def get_by_uuid(self, uuid):
-        return self._get_one_by(uuid=uuid)
-
-    def does_machine_exist(self, uuid):
-        try:
-            m = self.get_by_uuid(uuid)
-            return True
-        except NoResultFound:
-            return False
         
-    def add(self, name, uuid, autoinstall=False, recipe=None,
-            arch=None):
-        with transaction.manager:
-            machine = Machine()
-            machine.name = name
-            machine.uuid = uuid
-            machine.autoinstall = autoinstall
-            if arch is not None:
-                machine.arch = arch
-            if recipe is not None:
-                machine.recipe_id = recipe.id
-            self.session.add(machine)
-        return self.session.merge(machine)
-
-    def update(self, machine, name=None, autoinstall=None,
-               recipe=None, ostype=None, release=None, arch=None,
-               imagepath=None):
-        with transaction.manager:
-            if name is not None or autoinstall is not None \
-                    or recipe is not None or ostype is not None \
-                    or release is not None or arch is not None \
-                    or imagepath is not None:
-                if name is not None:
-                    machine.name = name
-                if autoinstall is not None:
-                    machine.autoinstall = autoinstall
-                if recipe is not None:
-                    machine.recipe_id = recipe.id
-                if ostype is not None:
-                    machine.ostype = ostype
-                if release is not None:
-                    machine.release = release
-                if arch is not None:
-                    machine.arch = arch
-                if imagepath is not None:
-                    machine.imagepath = imagepath
-                self.session.add(machine)
-        return self.session.merge(machine)
-
-    def list_machines(self):
-        return [m.name for m in self._query()]
+        
     
-    def delete(self, machine):
-        with transaction.manager:
-            self.session.delete(machine)
-            
 

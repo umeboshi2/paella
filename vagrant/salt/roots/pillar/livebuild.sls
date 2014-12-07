@@ -24,7 +24,7 @@ livebuild:
   local_security_mirror: http://localhost/debrepos/security
   lan_mirror: http://${paella_server_ip}/debrepos/debian
   lan_security_mirror: http://${paella_server_ip}/debrepos/security
-  enable_xfce_desktop: False
+  enable_xfce_desktop: True
 
 
 

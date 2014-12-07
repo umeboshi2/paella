@@ -253,5 +253,7 @@ wget install
 whiptail install
 winbind install
 xkb-data install
+xserver-xorg-video-geode install
+xserver-xorg-video-i740 install
 xz-utils install
 zlib1g install

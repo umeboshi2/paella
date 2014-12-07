@@ -3,6 +3,8 @@ import sys
 import transaction
 
 from sqlalchemy import engine_from_config
+from sqlalchemy.exc import IntegrityError
+
 
 from pyramid.paster import (
     get_appsettings,
@@ -11,12 +13,36 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
+from trumpet.security import encrypt_password
+
+from trumpet.models.usergroup import User, Password, Group, UserConfig, UserGroup
+from trumpet.models.usergroup import populate
+
 from paella.models.base import (
     DBSession,
     Base,
     )
 
 from paella.models.main import MyModel
+
+    
+
+def populate_usergroups(session):
+    with transaction.manager:
+        g = Group('admin')
+        session.add(g)
+        g = session.merge(g)
+        u = User('admin')
+        password = encrypt_password('admin')
+        session.add(u)
+        u = session.merge(u)
+        pw = Password(u.id, password)
+        session.add(pw)
+        config = UserConfig(u.id, '')
+        session.add(config)
+        ug = UserGroup(g.id, u.id)
+        session.add(ug)
+        
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -38,3 +64,5 @@ def main(argv=sys.argv):
     with transaction.manager:
         model = MyModel(name='one', value=1)
         DBSession.add(model)
+    populate_usergroups(session)
+    

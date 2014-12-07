@@ -105,6 +105,7 @@ disk-tools:
       - parted
       - xfsprogs
       - reiserfsprogs
+      - btrfs-tools
       - e2fsprogs
 
 # the virtualbox packages will be 

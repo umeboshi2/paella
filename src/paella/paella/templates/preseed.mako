@@ -103,12 +103,16 @@ d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 
 # Additional repositories, local[0-9] available
 d-i apt-setup/local0/repository string \
-       http://${paella_server_ip}/debrepos/salt wheezy-saltstack main
+       http://${paella_server_ip}/debrepos/salt wheezy-saltstack-2014-01 main
 d-i apt-setup/local0/comment string saltrepos
 d-i apt-setup/local0/key string http://${paella_server_ip}/debrepos/paella.gpg
 
 
 d-i debian-installer/allow_unauthenticated boolean false
+
+# select a task or we'll get desktop if desktop task is in repository
+tasksel tasksel/first multiselect standard
+
 
 # Individual additional packages to install
 d-i pkgsel/include string salt-minion python-requests

@@ -1,9 +1,25 @@
+<% saltrepos = pillar['reprepro']['saltrepos'] %>
+%for debdist in saltrepos['debdists']:
 Origin: saltstack.com
 Label: Debian Salt Backporting
-Codename: wheezy-saltstack
+Codename: ${debdist}-saltstack
 Architectures: ${pillar['reprepro']['architectures']}
 Components: main
 Description: Apt repository for project salt backporting
 Log: logfile
 Update: main
 SignWith: 62804AE5
+
+%for saltbranch in saltrepos['saltbranches']:
+Origin: saltstack.com
+Label: Debian Salt Backporting
+Codename: ${debdist}-saltstack-${saltbranch}
+Architectures: ${pillar['reprepro']['architectures']}
+Components: main
+Description: Apt repository for project salt backporting
+Log: logfile
+Update: main
+SignWith: 62804AE5
+
+%endfor
+%endfor

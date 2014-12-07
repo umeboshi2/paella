@@ -39,3 +39,18 @@ mainserver-virtualenv:
     - requirements: salt://mainserver/requirements.txt
     - require:
       - file: virtualenv-basedir
+
+<% import os %>
+<% basedir = pillar['paella_virtualenv_basedir'] %>
+%for repo in ['trumpet', 'debrepos']:
+%if not os.path.isfile(os.path.join(basedir, 'venv/lib/python2.7/site-packages/%s.egg-link' % repo)):
+${repo}-requirement:
+  pip.installed:
+    - name: ${repo}
+    - user: ${pillar['paella_user']}
+    - bin_env: ${os.path.join(basedir, 'venv')}
+    - editable: git+https://github.com/umeboshi2/${repo}.git#egg=${repo}
+    - require:
+        - virtualenv: mainserver-virtualenv
+%endif
+%endfor

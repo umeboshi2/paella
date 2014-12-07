@@ -15,6 +15,8 @@ include:
   - samba.base
   - pbuilder
   - schroot.base
+  - xfce.base
+  
 
 
 local-packages-installed:

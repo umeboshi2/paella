@@ -25,7 +25,7 @@ debrepos-ready:
 build-keyring-package:
   cmd.script:
     - source: salt://scripts/build-keyring-package.sh
-    - unless: test -r /home/vagrant/workspace/debian-archive-keyring_2012.4-paella1_amd64.changes
+    - unless: test -r /home/vagrant/workspace/debian-archive-keyring_2014.1~deb7u1-paella1_amd64.changes
     - user: ${user}
     - group: ${group}
     - requires:

@@ -21,6 +21,7 @@ wimtools
 
 %if livebuild['enable_xfce_desktop']:
 # needed to test virtualbox
-xfce4
+#xfce4
+task-xfce-desktop
 %endif
 

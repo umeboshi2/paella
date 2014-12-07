@@ -3,6 +3,21 @@ import subprocess
 
 import tempfile
 
+######################
+# from configparser
+
+_boolean_states = {'1': True, 'yes': True, 'true': True, 'on': True,
+                   'y': True, 't': True,
+                   '0': False, 'no': False, 'false': False, 'off': False,
+                   'n': False, 'f': False}
+
+def getboolean(value):
+    lc = value.lower()
+    if lc not in _boolean_states:
+        raise ValueError, 'Not a boolean %s' % value
+    return _boolean_states[lc]
+
+######################
 
 def prepare_recipe(content):
     one_space = chr(32)

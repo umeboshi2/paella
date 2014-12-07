@@ -1,0 +1,3 @@
+# salt-master defaults for initscript
+
+DAEMON_ARGS="-d -l ${pillar['saltmaster']['daemon_loglevel']} -u${pillar['paella_user']}"

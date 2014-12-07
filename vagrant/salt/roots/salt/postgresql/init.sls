@@ -10,6 +10,13 @@ include:
     - group: postgres
     - mode: 640
 
+/etc/postgresql/9.1/main/postgresql.conf:
+  file.managed:
+    - source: salt://postgresql/postgresql.conf
+    - user: postgres
+    - group: postgres
+    - mode: 644
+
 postgresql-service:
   service.running:
     - name: postgresql
@@ -17,6 +24,7 @@ postgresql-service:
       - pkg: postgresql-package
     - watch:
       - file: /etc/postgresql/9.1/main/pg_hba.conf
+      - file: /etc/postgresql/9.1/main/postgresql.conf
 
 pg_createuser_dbadmin:
   cmd.run:

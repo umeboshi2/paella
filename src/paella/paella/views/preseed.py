@@ -17,9 +17,11 @@ def _installer_view(request, template):
     if m.recipe_id is not None:
         pmgr = PartmanRecipeManager(request.db)
         recipe = pmgr.prepare_recipe(m.recipe_id)
+    keydata = mgr.keymanager.get(m.id)
     env = dict(uuid=uuid, hostname=name, machine=name,
                paella_server_ip=paella_server_ip,
-               recipe=recipe)
+               recipe=recipe, keydata=keydata,
+               masterkey=mgr.keymanager.masterkey)
     content = render(template, env)
     return content
     

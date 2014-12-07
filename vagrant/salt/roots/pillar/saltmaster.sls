@@ -1,8 +1,9 @@
 # -*- mode: yaml -*-
 
 saltmaster:
-  open_mode: True
-  auto_accept: True
+  daemon_loglevel: debug
+  open_mode: False
+  auto_accept: False
   renderer: yaml_mako
   hash_type: sha256
   #use_gitfs_remote: True

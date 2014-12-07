@@ -5,6 +5,13 @@ include:
   - virtualenv
   - postgresql
 
+rabbitmq-packages:
+  pkg.installed:
+    - pkgs:
+      - rabbitmq-server
+
+
+  
 extend:
   apache-service:
     service:

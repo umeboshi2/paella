@@ -22,7 +22,6 @@ from paella.managers.util import prepare_recipe
 class PartmanRecipeManager(object):
     def __init__(self, session):
         self.session = session
-        self.keymanager = SaltKeyManager(self.session)
         
     def _query(self):
         return self.session.query(PartmanRecipe)
@@ -67,6 +66,7 @@ class PartmanRecipeManager(object):
 class MachineManager(object):
     def __init__(self, session):
         self.session = session
+        self.keymanager = SaltKeyManager(self.session)
 
     def _query(self):
         return self.session.query(Machine)
@@ -102,7 +102,15 @@ class MachineManager(object):
             if recipe is not None:
                 machine.recipe_id = recipe.id
             self.session.add(machine)
+            machine = self.session.merge(machine)
+            keydata = self.keymanager.generate_minion_keys(name)
+            skey = self.keymanager.add_keypair_no_txn(machine.id, keydata)
         return self.session.merge(machine)
+
+    def accept_machine(self, machine, id=None, name=None):
+        self.keymanager.accept_machine(machine)
+
+    
 
     def update(self, machine, name=None, autoinstall=None,
                recipe=None, ostype=None, release=None, arch=None,

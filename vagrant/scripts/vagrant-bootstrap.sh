@@ -1,7 +1,9 @@
 #!/bin/bash
 
 DEBMIRROR=http://ftp.us.debian.org/debian
-
+DEBDIST=wheezy
+#SALTBRANCH=2014-07
+SALTBRANCH=2014-01
 
 if [ -x /usr/bin/salt-minion ]; then
     echo "Salt Minion already installed, skipping....."
@@ -11,16 +13,16 @@ fi
 if [ -d /vagrant/vagrant/debrepos/debian/dists ]; then
     apt-key add /vagrant/vagrant/salt/roots/salt/debrepos/keys/paella-insecure-pub.gpg
     echo "deb file:///vagrant/vagrant/debrepos/debian wheezy main contrib non-free" > /etc/apt/sources.list
-    echo "deb $DEBMIRROR wheezy main contrib non-free" >> /etc/apt/sources.list
-    echo "deb-src $DEBMIRROR wheezy main contrib non-free" >> /etc/apt/sources.list
+    echo "deb $DEBMIRROR ${DEBDIST} main contrib non-free" >> /etc/apt/sources.list
+    echo "deb-src $DEBMIRROR ${DEBDIST} main contrib non-free" >> /etc/apt/sources.list
     echo >> /etc/apt/sources.list
     if [ -d /vagrant/vagrant/debrepos/security ]; then
-	echo "deb file:///vagrant/vagrant/debrepos/security wheezy/updates main contrib non-free" >> /etc/apt/sources.list
-	echo "deb http://security.debian.org/ wheezy/updates main contrib non-free" >> /etc/apt/sources.list
+	echo "deb file:///vagrant/vagrant/debrepos/security ${DEBDIST}/updates main contrib non-free" >> /etc/apt/sources.list
+	echo "deb http://security.debian.org/ ${DEBDIST}/updates main contrib non-free" >> /etc/apt/sources.list
 	echo >> /etc/apt/sources.list
     fi
     if [ -d /vagrant/vagrant/debrepos/salt ]; then
-	echo "deb file:///vagrant/vagrant/debrepos/salt wheezy-saltstack main" >> /etc/apt/sources.list
+	echo "deb file:///vagrant/vagrant/debrepos/salt ${DEBDIST}-saltstack-${SALTBRANCH} main" >> /etc/apt/sources.list
 	echo >> /etc/apt/sources.list
     fi
 fi
@@ -36,7 +38,7 @@ fi
 
 if ! [ -f /etc/apt/sources.list.d/salt.list ]; then
     echo "adding sources list for salt"
-    echo "deb http://debian.saltstack.com/debian wheezy-saltstack main" \
+    echo "deb http://debian.saltstack.com/debian ${DEBDIST}-saltstack-${SALTBRANCH} main" \
 	> /etc/apt/sources.list.d/salt.list
 fi
 

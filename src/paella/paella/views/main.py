@@ -104,6 +104,7 @@ class MachineResource(object):
             arch = data['arch']
         machine = self.mgr.add(name, uuid, autoinstall=autoinstall,
                                recipe=recipe, arch=arch)
+        self.mgr.accept_machine(machine)
         return machine.serialize()
     
         
@@ -182,8 +183,11 @@ class MachineResource(object):
         data = self.request.json
         action = data['action']
         if action == 'submit':
+            # submit a brand new machine
             data = self._submit_machine(data)
         elif action == 'install':
+            # set a machine to be installed
+            # creates pxeconfig
             self._install_machine(data)
             data = dict(result='success')
         elif action == 'stage_over':
