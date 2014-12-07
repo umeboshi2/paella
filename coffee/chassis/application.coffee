@@ -16,7 +16,7 @@ define (require, exports, module) ->
 
   appmodel = require 'appmodel'
   
-  current_user_url = '/rest/v0/main/current/user'
+  current_user_url = '/paella/rest/v0/main/current/user'
   set_get_current_user_handler MainBus, current_user_url
       
   

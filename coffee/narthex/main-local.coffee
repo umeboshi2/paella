@@ -2,7 +2,7 @@
 components = '../../components'
 # require config comes first
 require.config
-  baseUrl: '../javascripts/narthex'
+  baseUrl: 'client/javascripts/narthex'
   paths:
     jquery: "#{components}/jquery/dist/jquery"
     underscore: "#{components}/lodash/dist/lodash.compat"

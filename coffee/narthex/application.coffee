@@ -14,7 +14,7 @@ define (require, exports, module) ->
     
   { set_get_current_user_handler } = require 'common/models'
 
-  current_user_url = '/rest/v0/main/current/user'
+  current_user_url = '/paella/rest/v0/main/current/user'
   set_get_current_user_handler MainBus, current_user_url
       
   MainPage.set_mainpage_init_handler MainBus

@@ -43,7 +43,7 @@ define (require, exports, module) ->
     form
       role:'form'
       method: 'POST'
-      action: '/login', ->
+      action: '/paella/login', ->
         form_group_input_div
           input_id: 'input_username'
           label: 'User Name'
@@ -73,10 +73,10 @@ define (require, exports, module) ->
         ul '.dropdown-menu', ->
           if name == undefined
             li ->
-              a href:'/login', 'login'
+              a href:'/paella/login', 'login'
           else
             li ->
-              a href:'/app/user', 'User Page'
+              a href:'/paella/app/user', 'User Page'
             # we need a "get user info" from server
             # to populate this menu with 'admin' link
             # FIXME use "?." to help here
@@ -89,13 +89,13 @@ define (require, exports, module) ->
                     admin = true
             if admin
               li ->
-                href = '/admin'
+                href = '/paella/admin'
                 pathname = window.location.pathname
                 if pathname.split(href)[0] == ''
                   href = '#'
                 a href:href, 'Administer Site'
             li ->
-              a href:'/logout', 'Logout'
+              a href:'/paella/logout', 'Logout'
 
   ########################################
   BootstrapNavBarTemplate = renderable (appmodel) ->

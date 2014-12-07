@@ -2,7 +2,7 @@
 components = '../../components'
 # require config comes first
 require.config
-  baseUrl: '../javascripts/chassis'
+  baseUrl: 'paella/client/javascripts/chassis'
   paths:
     jquery: "#{components}/jquery/dist/jquery"
     underscore: "#{components}/lodash/dist/lodash.compat"

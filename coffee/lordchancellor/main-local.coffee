@@ -2,7 +2,7 @@
 components = '../../components'
 # require config comes first
 require.config
-  baseUrl: '../javascripts/lordchancellor'
+  baseUrl: 'client/javascripts/lordchancellor'
   paths:
     jquery: "#{components}/jquery/dist/jquery"
     underscore: "#{components}/lodash/dist/lodash.compat"
