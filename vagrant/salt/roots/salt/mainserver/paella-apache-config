@@ -4,4 +4,4 @@ WSGIDaemonProcess pyramid user=vagrant group=vagrant threads=4 python-path=${pil
 WSGIProcessGroup pyramid
 WSGIApplicationGroup %{GLOBAL}
 
-Alias /client /vagrant/client
+Alias /paella/client /vagrant/client

@@ -51,6 +51,7 @@ class Machine(Base, SerialBase):
     # translated as needed
     # FIXME: do we want a i386 default?
     arch = Column(Text, default='i386')
+
     # recipe_id is ignored for ostype mswindows
     recipe_id = Column(Integer, ForeignKey('partman_recipes.id'),
                        nullable=True)
@@ -60,6 +61,11 @@ class Machine(Base, SerialBase):
     # imagepath is ignored for ostype debian
     imagepath = Column(Text, nullable=True)
 
+    # if there is more than one network interface that is discovered
+    # by the debian-installer, this is the interface that will be used
+    # during the install.
+    iface = Column(Text, default='eth0')
+    
 
 class SaltKey(Base, SerialBase):
     __tablename__ = 'machine_salt_keys'

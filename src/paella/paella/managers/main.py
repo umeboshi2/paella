@@ -23,14 +23,14 @@ class PartmanRecipeManager(object):
     def __init__(self, session):
         self.session = session
         
-    def _query(self):
+    def query(self):
         return self.session.query(PartmanRecipe)
 
     def get(self, id):
-        return self._query().get(id)
+        return self.query().get(id)
 
     def get_by_name(self, name):
-        return self._query().filter_by(name=name).one()
+        return self.query().filter_by(name=name).one()
     
     def add(self, name, content):
         with transaction.manager:
@@ -51,7 +51,7 @@ class PartmanRecipeManager(object):
         return self.session.merge(recipe)
 
     def list_recipes(self):
-        return [r.name for r in self._query()]
+        return [r.name for r in self.query()]
 
     def delete(self, recipe):
         with transaction.manager:

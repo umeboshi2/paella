@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 
 from pyramid.exceptions import HTTPNotFound
 from pyramid.exceptions import HTTPBadRequest
@@ -17,6 +18,9 @@ from paella.managers.pxeconfig import pxeconfig_filename
 
 from paella.views.base import BaseResource
 
+log = logging.getLogger(__name__)
+
+
 @resource(collection_path='/api0/recipes',
           path='/api0/recipes/{name}')
 class RecipeResource(object):
@@ -26,8 +30,9 @@ class RecipeResource(object):
         self.mgr = PartmanRecipeManager(self.db)
 
     def collection_get(self):
-        return dict(data=self.mgr.list_recipes())
-
+        #return dict(data=self.mgr.list_recipes())
+        return dict(data=[x.serialize() for x in self.mgr.query()], result='success')
+    
     def get(self):
         name = self.request.matchdict['name']
         recipe = self.mgr.get_by_name(name)
@@ -54,6 +59,14 @@ class RecipeResource(object):
         recipe = self.mgr.get_by_name(name)
         self.mgr.delete(recipe)
         return dict(result='success')
+
+    def put(self):
+        recipe = self.mgr.get(self.request.json.get('id'))
+        log.info('json is %s' % self.request.json)
+        content = self.request.json.get('content')
+        log.info('content is %s' % content)
+        self.mgr.update(recipe, content=content)
+        
     
     
 

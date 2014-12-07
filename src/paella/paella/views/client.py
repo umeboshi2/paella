@@ -19,12 +19,14 @@ class MyResource(object):
         self.__parent__ = parent
         
 
-def make_page(appname, settings, basecolor=None):
+def make_page(appname, settings, basecolor=None, view=None):
     template = 'paella:templates/mainview.mako'
     if basecolor is None:
         basecolor = settings.get('default.css.basecolor', 'BlanchedAlmond')
     csspath = settings.get('default.css.path', '/client/stylesheets')
     jspath = settings.get('default.js.path', '/client/javascripts')
+    if view is not None:
+        jspath = '../%s' % jspath
     requirejs = settings.get('default.js.requirejs')
     env = dict(appname=appname,
                basecolor=basecolor,
@@ -62,20 +64,20 @@ class ClientView(BaseUserViewCallable):
                 return self.handle_logout()
             elif view == 'login':
                 appname = settings.get('default.js.login_app', 'login')
-                self.get_main(appname=appname)
+                self.get_main(appname=appname, view=view)
                 return
         elif view == 'admin':
             appname = settings.get('default.js.admin_app', 'admin')
             basecolor = settings.get('default.admin.basecolor', 'DarkSeaGreen')
-            self.get_main(appname=appname, basecolor=basecolor)
+            self.get_main(appname=appname, basecolor=basecolor, view=view)
         else:
             raise HTTPNotFound, 'no way'
         
-    def get_main(self, appname=None, basecolor=None):
+    def get_main(self, appname=None, basecolor=None, view=None):
         settings = self.get_app_settings()
         if appname is None:
             appname = settings.get('default.js.mainapp', 'frontdoor')
-        content = make_page(appname, settings, basecolor=basecolor)
+        content = make_page(appname, settings, basecolor=basecolor, view=view)
         self.response = Response(body=content)
         self.response.encode_content()
         
@@ -83,7 +85,8 @@ class ClientView(BaseUserViewCallable):
         if check_login_form(self.request):
             username = post['username']
             headers = remember(self.request, username)
-        self.response = HTTPFound('/')
+        home = self.request.route_url('home')
+        self.response = HTTPFound(home)
 
 
     def handle_logout(self):
