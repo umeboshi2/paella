@@ -9,8 +9,8 @@ define (require, exports, module) ->
   appmodel = new Backbone.Model
     hasUser: true
     brand:
-      name: 'Chassis'
-      url: '/'
+      name: 'Paella'
+      url: '/paella'
     apps:
       [
         {

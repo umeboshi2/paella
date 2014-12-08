@@ -9,14 +9,14 @@ define (require, exports, module) ->
   appmodel = new Backbone.Model
     hasUser: true
     brand:
-      name: 'Cenotaph'
-      url: '#'
+      name: 'Paella'
+      url: '/paella'
     apps:
       [
         {
           appname: 'conspectus'
           name: 'Conspectus'
-          url: '/app/conspectus'
+          url: '/paella/app/conspectus'
         }
       ]
     appregions: AppRegions.user_appregions

@@ -43,6 +43,7 @@ require.config
     wiki: '../applets/wiki'
     frontdoor: '../applets/frontdoor'
     bookstore: '../applets/bookstore'
+    diskrecipes: '../applets/diskrecipes'
     
   # FIXME:  try to reduce the shim to only the
   # necessary resources

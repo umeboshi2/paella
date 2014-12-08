@@ -14,9 +14,8 @@ define (require, exports, module) ->
   # Collections
   ########################################
   class PageCollection extends Backbone.Collection
-    localStorage: new localStorage('pages')
     model: Models.Page
-
+    url: '/paella/rest/v0/main/sitetext'
     
   # set handlers on message bus
   #

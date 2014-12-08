@@ -13,7 +13,7 @@ define (require, exports, module) ->
   ########################################
   # Collections
   ########################################
-  rscroot = '/rest/v0/main'
+  rscroot = '/paella/rest/v0/main'
 
   class PageCollection extends BaseCollection
     model: Models.GetPageModel

@@ -26,7 +26,7 @@ define (require, exports, module) ->
   {div, span, link, text, strong, label, input, 
   button, a, nav, form, small, section, 
   ul, li, b, h1, h2, aside, p,
-  header} = teacup
+  header, textarea} = teacup
 
   ########################################
   # Templates
@@ -58,7 +58,23 @@ define (require, exports, module) ->
             type: 'password'
             placeholder: 'Type your password here....'
         button '.btn.btn-default', type:'submit', 'login'
-        
+
+  name_content_form = renderable (model) ->
+    form_group_input_div
+      input_id: 'input_name'
+      label: 'Name'
+      input_attributes:
+        name: 'name'
+        placeholder: 'Name'
+    form_group_input_div
+      input_id: 'input_content'
+      input_type: textarea
+      label: 'Content'
+      input_attributes:
+        name: 'content'
+        placeholder: '...'
+    input '.btn.btn-default.btn-xs', type:'submit', value:'Add'
+    
   ########################################
   user_menu = renderable (user) ->
     name = user.username
@@ -152,8 +168,10 @@ define (require, exports, module) ->
   module.exports =
     form_group_input_div: form_group_input_div
     login_form: login_form
+    name_content_form: name_content_form
     user_menu: user_menu
     BootstrapNavBarTemplate: BootstrapNavBarTemplate
     BootstrapLayoutTemplate: BootstrapLayoutTemplate
     BootstrapNoGridLayoutTemplate: BootstrapNoGridLayoutTemplate
     main_sidebar: main_sidebar
+    

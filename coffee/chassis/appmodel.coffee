@@ -1,11 +1,17 @@
 define (require, exports, module) ->
   AppRegions = require 'common/appregions'
   appmodel = new Backbone.Model
+    hasUser: true
     brand:
-      name: 'Chassis'
+      name: 'Paella'
       url: '/'
     apps:
       [
+        {
+          appname: 'diskrecipes'
+          name: 'Disk Recipes'
+          url: '#diskrecipes'
+        }
         {
           appname: 'wiki'
           name: 'Wiki'
@@ -21,19 +27,14 @@ define (require, exports, module) ->
           name: 'Hubby'
           url: '#hubby'
         }
-        {
-          appname: 'bookstore'
-          name: 'Bookstore'
-          url: '#bookstore'
-        }
       ]
     appregions: AppRegions.user_appregions
     approutes: [
       'frontdoor:route'
+      'diskrecipes:route'
       'wiki:route'
       'bumblr:route'
       'hubby:route'
-      'bookstore:route'
       ]
       
   module.exports = appmodel

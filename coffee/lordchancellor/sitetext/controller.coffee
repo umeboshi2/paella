@@ -29,6 +29,7 @@ define (require, exports, module) ->
     sidebarclass: Views.SideBarView
     sidebar_model: side_bar_data
     pages: AppBus.reqres.request 'get-pages'
+    
     make_main_content: ->
       @make_sidebar()
       #@show_page 1
