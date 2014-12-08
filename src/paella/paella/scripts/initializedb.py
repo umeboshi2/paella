@@ -26,6 +26,7 @@ from paella.models.base import (
 
 from paella.models.main import MyModel
 
+import paella.models.sitecontent
     
 
 def populate_usergroups(session):

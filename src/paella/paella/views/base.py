@@ -9,6 +9,11 @@ from sqlalchemy.exc import DBAPIError
 from paella.models.base import DBSession
 from paella.models.main import MyModel
 
+APIROOT = '/rest/v0'
+
+MAIN_RESOURCE_ROOT = '%s/main' % APIROOT
+
+
 class BaseResource(object):
     def __init__(self, request):
         self.request = request

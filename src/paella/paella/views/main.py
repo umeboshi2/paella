@@ -21,8 +21,8 @@ from paella.views.base import BaseResource
 log = logging.getLogger(__name__)
 
 
-@resource(collection_path='/api0/recipes',
-          path='/api0/recipes/{name}')
+@resource(collection_path='/rest/v0/main/recipes',
+          path='/rest/v0/main/recipes/{name}')
 class RecipeResource(object):
     def __init__(self, request):
         self.request = request
@@ -66,12 +66,13 @@ class RecipeResource(object):
         content = self.request.json.get('content')
         log.info('content is %s' % content)
         self.mgr.update(recipe, content=content)
+        return dict(result='success')
         
     
     
 
-@resource(collection_path='/api0/machines',
-          path='/api0/machines/{uuid}')
+@resource(collection_path='/rest/v0/main/machines',
+          path='/rest/v0/main/machines/{uuid}')
 class MachineResource(object):
     def __init__(self, request):
         self.request = request

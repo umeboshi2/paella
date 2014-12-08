@@ -103,7 +103,7 @@ subprocess.call(['chmod', '755', '/etc/rc.local'])
 
 
 # FIXME - fix ip address
-url = 'http://{paella_server_ip}/paella/api0/machines'.format(**template_data)
+url = 'http://{paella_server_ip}/paella/rest/v0/main/machines'.format(**template_data)
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}    
 data = dict(action='stage_over', uuid=uuid)
 

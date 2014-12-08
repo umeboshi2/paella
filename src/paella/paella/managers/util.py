@@ -63,6 +63,16 @@ def generate_minion_keys(name):
 
 
 
+#@resource(**make_resource(path, ident='name'))
+def make_resource(rpath, ident='id', cross_site=True):
+    path = os.path.join(rpath, '{%s}' % ident)
+    data = dict(collection_path=rpath, path=path)
+    if cross_site:
+        data['cors_origins'] = ('*',)
+    return data
+
+
+
 if __name__ == '__main__':
     genkeys = generate_minion_keys
     

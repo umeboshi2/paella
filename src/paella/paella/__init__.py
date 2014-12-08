@@ -55,6 +55,9 @@ def main(global_config, **settings):
     config.scan('paella.views.preseed')
     config.scan('paella.views.main')
     config.scan('paella.views.currentuser')
+    config.scan('paella.views.sitetext')
+    config.scan('paella.views.useradmin')
+    
     
     # static assets
     serve_static_assets = False
