@@ -44,6 +44,7 @@ nosetests.xml
 /src/paella-client_*
 /src/paella-client/debian/files
 /src/*.deb
+logs/
 
 # compiled sls files
 *.slsc
@@ -56,5 +57,12 @@ nosetests.xml
 /vagrant/debrepos
 /vagrant/salt/roots/pillar.local
 /vagrant/paella
-/vagrant/cache
+/vagrant/cache*
 
+*.iso
+*.wim
+
+
+# web client
+client
+src/paella/data
