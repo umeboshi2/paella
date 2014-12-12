@@ -67,9 +67,9 @@ class BaseRecipeManager(object):
         return prepare_recipe(r.content)
     
 
-class PartmanRecipeManager(object):
+class PartmanRecipeManager(BaseRecipeManager):
     dbmodel = PartmanRecipe
 
-class PartmanRaidRecipeManager(object):
+class PartmanRaidRecipeManager(BaseRecipeManager):
     dbmodel = PartmanRaidRecipe
     

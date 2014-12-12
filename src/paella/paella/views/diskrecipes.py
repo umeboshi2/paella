@@ -13,8 +13,6 @@ from cornice.resource import resource, view
 from paella.managers.main import MachineManager
 from paella.managers.recipes import PartmanRecipeManager
 from paella.managers.recipes import PartmanRaidRecipeManager
-from paella.managers.pxeconfig import make_pxeconfig, remove_pxeconfig
-from paella.managers.pxeconfig import pxeconfig_filename
 
 from paella.views.base import BaseResource
 
@@ -76,6 +74,6 @@ class RecipeResource(BaseRecipeResource):
 
 @resource(collection_path='/rest/v0/main/raidrecipes',
           path='/rest/v0/main/raidrecipes/{name}')
-class RecipeResource(BaseRecipeResource):
+class RaidRecipeResource(BaseRecipeResource):
     mgrclass = PartmanRaidRecipeManager
 

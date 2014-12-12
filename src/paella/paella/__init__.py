@@ -58,7 +58,7 @@ def main(global_config, **settings):
     config.add_route('latecmd', '/latecmd/{uuid}')
     config.scan('paella.views.preseed')
     config.scan('paella.views.diskrecipes')
-    config.scan('paella.views.main')
+    config.scan('paella.views.machines')
     config.scan('paella.views.currentuser')
     config.scan('paella.views.sitetext')
     config.scan('paella.views.useradmin')
