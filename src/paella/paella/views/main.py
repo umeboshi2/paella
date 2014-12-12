@@ -10,8 +10,9 @@ from pyramid.exceptions import HTTPForbidden
 from cornice.resource import resource, view
 
 
-from paella.managers.main import MachineManager
-from paella.managers.main import PartmanRecipeManager
+from paella.managers.machines import MachineManager
+from paella.managers.recipes import PartmanRecipeManager
+from paella.managers.recipes import PartmanRaidRecipeManager
 from paella.managers.pxeconfig import make_pxeconfig, remove_pxeconfig
 from paella.managers.pxeconfig import pxeconfig_filename
 
@@ -21,55 +22,15 @@ from paella.views.base import BaseResource
 log = logging.getLogger(__name__)
 
 
-@resource(collection_path='/rest/v0/main/recipes',
-          path='/rest/v0/main/recipes/{name}')
-class RecipeResource(object):
-    def __init__(self, request):
-        self.request = request
-        self.db = self.request.db
-        self.mgr = PartmanRecipeManager(self.db)
-
-    def collection_get(self):
-        #return dict(data=self.mgr.list_recipes())
-        return dict(data=[x.serialize() for x in self.mgr.query()], result='success')
-    
-    def get(self):
-        name = self.request.matchdict['name']
-        recipe = self.mgr.get_by_name(name)
-        return recipe.serialize()
-
-    def collection_post(self):
-        data = self.request.json
-        name = data['name']
-        content = data['content']
-        recipe = self.mgr.add(name, content)
-        return recipe.serialize()
-
-    def post(self):
-        data = self.request.json
-        name = self.request.matchdict['name']
-        recipe = self.mgr.get_by_name(name)
-        content = data['content']
-        recipe = self.mgr.update(recipe, content=content)
-        return recipe.serialize()
-        
-
-    def delete(self):
-        name = self.request.matchdict['name']
-        recipe = self.mgr.get_by_name(name)
-        self.mgr.delete(recipe)
-        return dict(result='success')
-
-    def put(self):
-        recipe = self.mgr.get(self.request.json.get('id'))
-        log.info('json is %s' % self.request.json)
-        content = self.request.json.get('content')
-        log.info('content is %s' % content)
-        self.mgr.update(recipe, content=content)
-        return dict(result='success')
-        
-    
-    
+# Machine POST Actions
+#
+# submit - submit a brand new machien
+#
+# install - sets a machine to be installed
+#
+# stage_over - tells paella server that debian-installer has completed
+#
+# 
 
 @resource(collection_path='/rest/v0/main/machines',
           path='/rest/v0/main/machines/{uuid}')
@@ -79,6 +40,8 @@ class MachineResource(object):
         self.db = self.request.db
         self.mgr = MachineManager(self.db)
         self.recipes = PartmanRecipeManager(self.db)
+        self.raid_recipes = PartmanRaidRecipeManager(self.db)
+        
 
     def collection_get(self):
         return dict(data=self.mgr.list_machines())
@@ -133,15 +96,18 @@ class MachineResource(object):
             raise RuntimeError, "%s doesn't exist." % filename
         return
 
-    
-    def _stage_one_over(self, data):
-        uuid = data['uuid']
+
+    def _unset_install_pxeconfig(self, uuid):
         remove_pxeconfig(uuid) 
         filename = pxeconfig_filename(uuid)
         if os.path.isfile(filename):
             raise RuntimeError, "%s still exists." % filename
         return
-
+        
+    def _stage_one_over(self, data):
+        uuid = data['uuid']
+        self._unset_install_pxeconfig(uuid)
+        
 
     def post(self):
         textkeys = ['name', 'autoinstall', 'ostype', 'release', 'arch',
@@ -159,11 +125,14 @@ class MachineResource(object):
             rname = data['recipe']
             recipe = self.recipes.get_by_name(rname)
             update['recipe'] = recipe
+        update['recipe'] = None
+        if 'raid_recipe' in data:
+            rname = data['raid_recipe']
+            recipe = self.raid_recipes.get_by_name(rname)
+            update['raid_recipe'] = recipe
         machine = self.mgr.get_by_uuid(uuid)
         machine = self.mgr.update(machine, **update)
         return machine.serialize()
-        
-    
         
     def _update_package_list(self):
         # the paella client will make a dictionary

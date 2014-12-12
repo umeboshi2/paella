@@ -1,3 +1,5 @@
+import logging
+
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import scoped_session
@@ -9,6 +11,8 @@ from trumpet.security import authn_policy, authz_policy
 from trumpet.config import add_static_views
 
 from paella.models.base import Base
+
+log = logging.getLogger(__name__)
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
@@ -53,6 +57,7 @@ def main(global_config, **settings):
     config.add_route('preseed', '/preseed/{uuid}')
     config.add_route('latecmd', '/latecmd/{uuid}')
     config.scan('paella.views.preseed')
+    config.scan('paella.views.diskrecipes')
     config.scan('paella.views.main')
     config.scan('paella.views.currentuser')
     config.scan('paella.views.sitetext')
