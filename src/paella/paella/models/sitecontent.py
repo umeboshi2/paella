@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 
 import transaction
@@ -17,6 +18,8 @@ from trumpet.models.util import SerialBase
 from paella.models.base import DBSession, Base
 
 from sqlalchemy.exc import IntegrityError
+
+log = logging.getLogger(__name__)
 
 class SiteImage(Base, SerialBase):
     __tablename__ = 'site_images'

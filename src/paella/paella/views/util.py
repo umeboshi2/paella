@@ -1,4 +1,5 @@
 import os
+import logging
 
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -8,6 +9,7 @@ from trumpet.security import check_password, encrypt_password
 
 from trumpet.models.usergroup import User, Password
 
+log = logging.getLogger(__name__)
 
 class UserContainer(object):
     pass

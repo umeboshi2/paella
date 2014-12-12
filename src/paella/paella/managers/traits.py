@@ -1,3 +1,5 @@
+import logging
+
 import transaction
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import desc
@@ -7,6 +9,7 @@ import networkx as nx
 
 from paella.models.main import Trait, TraitParent, TraitVariable
 
+log = logging.getLogger(__name__)
 
 
 # nx.predecessor(g, node) will return a dictionary of reachable nodes

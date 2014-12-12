@@ -1,10 +1,14 @@
+import logging
+
 from pyramid.response import Response
 from pyramid.view import view_config
 from pyramid.renderers import render
 
 
 from paella.managers.main import MachineManager
-from paella.managers.main import PartmanRecipeManager
+from paella.managers.recipes import PartmanRecipeManager
+
+log = logging.getLogger(__name__)
 
 def _installer_view(request, template):
     mgr = MachineManager(request.db)

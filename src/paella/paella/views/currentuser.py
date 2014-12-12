@@ -1,4 +1,5 @@
 import os
+import logging
 from ConfigParser import ConfigParser
 from datetime import datetime
 
@@ -6,6 +7,8 @@ from cornice.resource import resource, view
 from trumpet.views.base import BaseUserView
 
 from trumpet.models.usergroup import User
+
+log = logging.getLogger(__name__)
 
 APIROOT = '/rest/v0'
 

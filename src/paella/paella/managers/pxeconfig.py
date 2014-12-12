@@ -1,7 +1,9 @@
 import os
+import logging
 
 from pyramid.renderers import render
 
+log = logging.getLogger(__name__)
 
 # uuid is system uuid.
 

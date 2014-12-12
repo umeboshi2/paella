@@ -1,16 +1,19 @@
 import os
+import logging
 from ConfigParser import ConfigParser
 from datetime import datetime
 
 from cornice.resource import resource, view
 from trumpet.views.rest import BaseResource, BaseManagementResource
 
-from cenotaph.models.usergroup import User, Group, Password
-from cenotaph.models.usergroup import UserGroup
+from trumpet.models.usergroup import User, Group, Password
+from trumpet.models.usergroup import UserGroup
 
-from cenotaph.views.util import make_resource as make_base_resource
-from cenotaph.views.rest import MAIN_RESOURCE_ROOT
-from cenotaph.managers.useradmin import UserManager
+from paella.views.util import make_resource as make_base_resource
+from paella.views.base import MAIN_RESOURCE_ROOT
+from paella.managers.useradmin import UserManager
+
+log = logging.getLogger(__name__)
 
 rscroot = MAIN_RESOURCE_ROOT
 

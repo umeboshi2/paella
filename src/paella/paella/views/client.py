@@ -1,3 +1,5 @@
+import logging
+
 from pyramid.renderers import render
 from pyramid.response import Response
 
@@ -10,6 +12,8 @@ from pyramid.security import remember, forget
 from trumpet.views.base import BaseUserViewCallable
 
 from paella.views.util import check_login_form
+
+log = logging.getLogger(__name__)
 
 APIROOT = '/rest/v0'
 

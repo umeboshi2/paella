@@ -1,7 +1,10 @@
 import os, sys
+import logging
 import subprocess
 
 import tempfile
+
+log = logging.getLogger(__name__)
 
 ######################
 # from configparser

@@ -1,3 +1,5 @@
+import logging
+
 from pyramid.response import Response
 from pyramid.view import view_config
 
@@ -8,6 +10,8 @@ from sqlalchemy.exc import DBAPIError
 
 from paella.models.base import DBSession
 from paella.models.main import MyModel
+
+log = logging.getLogger(__name__)
 
 APIROOT = '/rest/v0'
 

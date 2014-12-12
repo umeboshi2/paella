@@ -1,5 +1,5 @@
-
 import os
+import logging
 from ConfigParser import ConfigParser
 from datetime import datetime
 
@@ -12,6 +12,8 @@ from paella.views.base import MAIN_RESOURCE_ROOT
 from paella.views.util import make_resource
 from paella.managers.wiki import WikiManager
 
+
+log = logging.getLogger(__name__)
 
 rscroot = MAIN_RESOURCE_ROOT
 sitetext_path = os.path.join(rscroot, 'sitetext')

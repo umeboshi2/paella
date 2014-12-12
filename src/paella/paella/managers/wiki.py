@@ -1,4 +1,5 @@
 import os
+import logging
 from datetime import datetime, timedelta
 from zipfile import ZipFile
 from StringIO import StringIO
@@ -12,6 +13,7 @@ from sqlalchemy import func
 
 from paella.models.sitecontent import SiteText
 
+log = logging.getLogger(__name__)
 
 class BaseWikiManager(object):
     def __init__(self, session):

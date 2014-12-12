@@ -1,3 +1,4 @@
+import logging
 from ConfigParser import ConfigParser
 from StringIO import StringIO
 from sqlalchemy.orm.exc import NoResultFound
@@ -9,6 +10,7 @@ from trumpet.security import encrypt_password
 from trumpet.models.usergroup import User, Group, Password
 from trumpet.models.usergroup import UserGroup, UserConfig
 
+log = logging.getLogger(__name__)
 
 
 class UserManager(object):

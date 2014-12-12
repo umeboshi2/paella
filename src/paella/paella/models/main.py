@@ -1,3 +1,5 @@
+import logging
+
 from sqlalchemy import Column
 from sqlalchemy import Integer, Text
 from sqlalchemy import Unicode, UnicodeText
@@ -14,6 +16,7 @@ from sqlalchemy.orm import relationship, backref
 
 from paella.models.base import Base, SerialBase
 
+log = logging.getLogger(__name__)
 
 # FIXME - get rid of this
 class MyModel(Base):
