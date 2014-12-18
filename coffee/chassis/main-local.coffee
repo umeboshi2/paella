@@ -44,6 +44,7 @@ require.config
     frontdoor: '../applets/frontdoor'
     bookstore: '../applets/bookstore'
     diskrecipes: '../applets/diskrecipes'
+    machines: '../applets/machines'
     
   # FIXME:  try to reduce the shim to only the
   # necessary resources

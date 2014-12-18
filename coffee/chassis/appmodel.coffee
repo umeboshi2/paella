@@ -13,6 +13,11 @@ define (require, exports, module) ->
           url: '#diskrecipes'
         }
         {
+          appname: 'machines'
+          name: 'Machines'
+          url: '#machines'
+        }
+        {
           appname: 'wiki'
           name: 'Wiki'
           url: '#wiki'
@@ -32,6 +37,7 @@ define (require, exports, module) ->
     approutes: [
       'frontdoor:route'
       'diskrecipes:route'
+      'machines:route'
       'wiki:route'
       'bumblr:route'
       'hubby:route'
