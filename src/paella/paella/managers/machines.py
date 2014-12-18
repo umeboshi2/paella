@@ -91,7 +91,7 @@ class MachineManager(object):
         return self.session.merge(machine)
 
     def list_machines(self):
-        return [m.name for m in self._query()]
+        return [m.serialize() for m in self._query()]
     
     def delete(self, machine):
         with transaction.manager:

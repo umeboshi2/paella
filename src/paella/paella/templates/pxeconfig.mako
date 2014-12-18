@@ -28,7 +28,8 @@ menu title Network Boot Menu
 label install
       menu label ^Install ${machine.name} with Paella
       kernel debinstall/${release}/${machine.arch}/linux
-      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name}
+      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name} netcfg/choose_interface=${machine.iface}
+      
 
 %elif machine.ostype == 'mswindows':
 
