@@ -39,7 +39,9 @@ def main(global_config, **settings):
                           request_factory=request_factory,
                           authentication_policy=authn_policy,
                           authorization_policy=authz_policy)
-    includes = ['pyramid_chameleon', 'pyramid_mako', 'pyramid_beaker',
+    includes = ['pyramid_chameleon',
+                'pyramid_mako',
+                'pyramid_beaker',
                 'cornice',]
     for i in includes:
         config.include(i)
@@ -59,6 +61,7 @@ def main(global_config, **settings):
     config.scan('paella.views.preseed')
     config.scan('paella.views.diskrecipes')
     config.scan('paella.views.machines')
+    config.scan('paella.views.machadm')
     config.scan('paella.views.currentuser')
     config.scan('paella.views.sitetext')
     config.scan('paella.views.useradmin')

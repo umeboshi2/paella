@@ -18,10 +18,15 @@ from paella.managers.pxeconfig import pxeconfig_filename
 
 
 from paella.views.base import BaseResource, MAIN_RESOURCE_ROOT
-from paella.views.basemachines import BaseMachineResource
-from paella.views.util import make_resource
+from paella.views.util import make_resource as make_base_resource
+
 
 log = logging.getLogger(__name__)
+
+def make_resource(rpath, ident='id', cross_site=True):
+    data = make_base_resource(rpath, ident=ident, cross_site=cross_site)
+    data['permission'] = 'admin'
+    return data
 
 
 # Machine POST Actions
@@ -33,10 +38,26 @@ log = logging.getLogger(__name__)
 # stage_over - tells paella server that debian-installer has completed
 #
 # 
-
-@resource(**make_resource(os.path.join(MAIN_RESOURCE_ROOT, 'machines'),
+@resource(**make_resource(os.path.join(MAIN_RESOURCE_ROOT, 'admin/machines'),
                           ident='uuid'))
-class MachineResource(BaseMachineResource):
+class MachineAdminResource(object):
+    def __init__(self, request):
+        self.request = request
+        self.db = self.request.db
+        self.mgr = MachineManager(self.db)
+        self.recipes = PartmanRecipeManager(self.db)
+        self.raid_recipes = PartmanRaidRecipeManager(self.db)
+        
+
+    def collection_get(self):
+        return dict(data=self.mgr.list_machines())
+
+    def get(self):
+        uuid = self.request.matchdict['uuid']
+        machine = self.mgr.get_by_uuid(uuid)
+        return machine.serialize()
+
+
     # recipe is by name
     # if recipe is not None, we retrieve it from
     # the database.
@@ -119,19 +140,6 @@ class MachineResource(BaseMachineResource):
         machine = self.mgr.update(machine, **update)
         return machine.serialize()
         
-    def _update_package_list(self):
-        # the paella client will make a dictionary
-        # from the package selection and send it
-        # to the server in json format
-        #
-        # the server will then use the debrepos
-        # manager to update the filter list
-        #
-        # a long running process such as updating
-        # the repository after the list is updated
-        # will wait until a job server is implemented
-        raise RuntimeError, "Not implemented"
-        
     def collection_post(self):
         data = self.request.json
         action = data['action']
@@ -146,7 +154,5 @@ class MachineResource(BaseMachineResource):
         elif action == 'stage_over':
             self._stage_one_over(data)
             data = dict(result='success')
-        elif action == 'update_package_list':
-            data = self._update_package_list(data)
         return data
         
