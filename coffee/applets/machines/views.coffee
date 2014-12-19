@@ -21,30 +21,21 @@ define (require, exports, module) ->
 
   class SideBarView extends BaseSideBarView
 
-  class SimpleRecipeEntryView extends Backbone.Marionette.ItemView
-    template: Templates.recipe_name_entry
+  class SimpleMachineEntryView extends Backbone.Marionette.ItemView
+    template: Templates.machine_name_entry
+
+  class SimpleMachineListView extends PageableView
+    childView: SimpleMachineEntryView
+    childViewContainer: '.listview-list'
+    itemSelector: '.machine'
+    template: Templates.simple_machine_list
+    ui: () ->
+      super
+        container: @childViewContainer
+
+  class BasicMachineView extends Backbone.Marionette.ItemView
+    template: Templates.view_machine
     
-  class SimpleRecipeListView extends PageableView
-    childView: SimpleRecipeEntryView
-    childViewContainer: '.listview-list'
-    itemSelector: '.recipe'
-    template: Templates.simple_recipe_list
-    ui: () ->
-      super
-        container: @childViewContainer
-
-  class SimpleRaidRecipeEntryView extends Backbone.Marionette.ItemView
-    template: Templates.raid_recipe_name_entry
-
-  class SimpleRaidRecipeListView extends PageableView
-    childView: SimpleRaidRecipeEntryView
-    childViewContainer: '.listview-list'
-    itemSelector: '.recipe'
-    template: Templates.simple_raid_recipe_list
-    ui: () ->
-      super
-        container: @childViewContainer
-
   class EditRecipeView extends BaseEditPageView
     template: Templates.edit_recipe
 
@@ -67,8 +58,8 @@ define (require, exports, module) ->
   module.exports =
     FrontDoorMainView: FrontDoorMainView
     SideBarView: SideBarView
-    SimpleRecipeListView: SimpleRecipeListView
-    SimpleRaidRecipeListView: SimpleRaidRecipeListView
+    SimpleMachineListView: SimpleMachineListView
+    BasicMachineView: BasicMachineView
     EditRecipeView: EditRecipeView
     NewRecipeView: NewRecipeView
     NewRaidRecipeView: NewRaidRecipeView

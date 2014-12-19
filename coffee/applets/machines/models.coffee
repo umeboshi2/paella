@@ -6,12 +6,9 @@ define (require, exports, module) ->
   ########################################
   # Models
   ########################################
-  class Recipe extends Backbone.Model
+  class Machine extends Backbone.Model
     url: () ->
-      "/paella/rest/v0/main/recipes/#{@name}"
-        
+      "/paella/rest/v0/main/admin/machines/#{@name}"
     
   module.exports =
-    Recipe: Recipe
-    
-    
+    Machine: Machine

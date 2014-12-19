@@ -25,16 +25,8 @@ define (require, exports, module) ->
         url: '#machines'
       }
       {
-        name: 'New Recipy'
-        url: '#machines/newrecipe'
-      }
-      {
-        name: 'List Raid'
-        url: '#machines/listraid'
-      }
-      {
-        name: 'New Raid'
-        url: '#machines/newraid'
+        name: 'New Machine'
+        url: '#machines/newmachine'
       }
       ]
 
@@ -45,29 +37,31 @@ define (require, exports, module) ->
       
     make_main_content: ->
       @make_sidebar()
-      @list_recipes()
+      @list_machines()
 
 
-    list_recipes: ->
+    list_machines: ->
       @make_sidebar()
-      rlist = AppBus.reqres.request 'recipe:collection'
-      response = rlist.fetch()
+      collection = AppBus.reqres.request 'machine:collection'
+      response = collection.fetch()
       response.done =>
-        view = new Views.SimpleRecipeListView
-          collection: rlist
+        view = new Views.SimpleMachineListView
+          collection: collection
+        window.lmview = view
         @App.content.show view
         Util.scroll_top_fast()
 
-    list_raid_recipes: ->
+    view_machine: (name) ->
       @make_sidebar()
-      rlist = AppBus.reqres.request 'raid_recipe:collection'
-      response = rlist.fetch()
+      machine = new Models.Machine
+      machine.name = name
+      response = machine.fetch()
       response.done =>
-        view = new Views.SimpleRaidRecipeListView
-          collection: rlist
+        view = new Views.BasicMachineView
+          model: machine
         @App.content.show view
         Util.scroll_top_fast()
-
+      
     edit_recipe: (name) ->
       @make_sidebar()
       recipe = new Models.Recipe

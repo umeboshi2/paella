@@ -14,6 +14,16 @@ define (require, exports, module) ->
     apps:
       [
         {
+          appname: 'diskrecipes'
+          name: 'Disk Recipes'
+          url: '#diskrecipes'
+        }
+        {
+          appname: 'machines'
+          name: 'Machines'
+          url: '#machines'
+        }
+        {
           appname: 'useradmin'
           name: 'Accounts'
           url: '#useradmin'
@@ -29,6 +39,8 @@ define (require, exports, module) ->
       'frontdoor:route'
       'useradmin:route'
       'sitetext:route'
+      'diskrecipes:route'
+      'machines:route'
       ]
     
       

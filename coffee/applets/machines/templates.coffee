@@ -23,7 +23,9 @@ define (require, exports, module) ->
   button, a, nav, form, p,
   ul, li, b,
   h1, h2, h3,
-  subtitle, section, hr
+  subtitle, section, hr,
+  table, tr, td,
+  select, option,
   } = teacup
             
     
@@ -37,25 +39,76 @@ define (require, exports, module) ->
   frontdoor_main = renderable (page) ->
     raw marked page.content
 
-  _recipe_header = renderable (label) ->
+  _listview_header = renderable (label) ->
     div '.listview-header', "#{label}"
+
+  _recipe_option = renderable (machine, attribute) ->
+    label = '<No Recipe>'
+    if attribute not of machine
+      option selected: null, label
+    else
+      option label
       
-  recipe_name_entry = renderable (model) ->
-    div '.listview-list-entry.recipe', ->
-      a href: '#diskrecipes/viewrecipe/' + model.name, model.name
-
-  raid_recipe_name_entry = renderable (model) ->
-    div '.listview-list-entry.recipe', ->
-      a href: '#diskrecipes/viewraid/' + model.name, model.name
-
-  simple_recipe_list = renderable () ->
-    _recipe_header 'Partition Recipes'
+  _select_input = renderable (machine, attribute, optionlist, label, title) ->
+    div '.input-group', ->
+      span '.input-group-addon', label
+      select "##{attribute}.selectpicker.form-control", dataLiveSearch:'true',
+      title:title, ->
+        if attribute in ['recipe', 'raid_recipe']
+          _recipe_option machine, attribute
+        for opt in optionlist
+          if attribute of machine and machine[attribute] == opt
+            option selected: null, opt
+          else
+            option opt
+            
+      
+  machine_name_entry = renderable (model) ->
+    div '.listview-list-entry.machine', ->
+      a href: '#machines/viewmachine/' + model.name, model.name
+      
+  simple_machine_list = renderable () ->
+    _listview_header 'Machines'
     div '.listview-list'
 
-  simple_raid_recipe_list = renderable () ->
-    _recipe_header 'Raid Recipes'
-    div '.listview-list'
+  view_machine_orig = renderable (machine) ->
+    div ->
+      text machine.name
+    div ->
+      text machine.uuid
     
+  _set_install_button = renderable (machine) ->
+    bmain = '#set-install-button.btn.btn-default.btn-xs'
+    verb = 'Set'
+    bvalue = 'set'
+    if machine.pxeconfig
+      verb = 'Remove'
+      bvalue = 'remove'
+    div bmain, bvalue: bvalue, ->
+      text "#{verb} #{machine.name} for install."
+      
+  view_machine = renderable (machine) ->
+    archs = ['amd64', 'i386']
+    ostypes = ['debian', 'mswindows']
+    _set_install_button machine
+    div '.listview-header', ->
+      div machine.name
+      div machine.uuid
+    div '.listview-list', ->
+      _select_input machine, 'arch', archs, 'Arch:', 'Select an architecture.'
+      _select_input machine, 'ostype', ostypes, 'OS Type:', 'Select an operating system.'
+      _select_input machine, 'recipe', machine.all_recipes, 'Partition Recipe',
+      'Select a partition recipe.'
+      _select_input machine, 'raid_recipe', machine.all_raid_recipes, 'Raid Recipe',
+      'Select a raid recipe.'
+      form_group_input_div
+        input_id: 'input_iface'
+        label: 'Network Interface for Install'
+        input_attributes:
+          name: 'iface'
+          placeholder: ''
+          value: machine.iface
+      div '#update-machine-button.btn.btn-default.btn-sm', 'Update Machine'
     
   edit_recipe = renderable (recipe) ->
     div '.listview-header', ->
@@ -65,23 +118,8 @@ define (require, exports, module) ->
     div '#editor'
     console.log 'recipe', recipe
 
-  new_recipe_form = renderable (recipe) ->
-    _recipe_header 'New Recipe'
-    div '.listview-list', ->
-      name_content_form recipe
-
-  new_raid_recipe_form = renderable (recipe) ->
-    _recipe_header "New Raid Recipe"
-    div '.listview-list', ->
-      name_content_form recipe
-
   module.exports =
     frontdoor_main: frontdoor_main
-    recipe_name_entry: recipe_name_entry
-    raid_recipe_name_entry: raid_recipe_name_entry
-    simple_recipe_list: simple_recipe_list
-    simple_raid_recipe_list: simple_raid_recipe_list
-    edit_recipe: edit_recipe
-    new_recipe_form: new_recipe_form
-    new_raid_recipe_form: new_raid_recipe_form
-    
+    machine_name_entry: machine_name_entry
+    simple_machine_list: simple_machine_list
+    view_machine: view_machine

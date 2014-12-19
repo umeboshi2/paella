@@ -24,10 +24,6 @@ define (require, exports, module) ->
       
   MainBus.commands.setHandler 'diskrecipes:route', () ->
     console.log "diskrecipes:route being handled"
-    recipe_collection = AppBus.reqres.request 'recipe:collection'
-    response = recipe_collection.fetch()
-    response.done =>
-      controller = new Controller MainBus
-      router = new Router
-        controller: controller
-      #console.log 'router created'
+    controller = new Controller MainBus
+    router = new Router
+      controller: controller
