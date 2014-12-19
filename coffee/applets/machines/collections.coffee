@@ -30,16 +30,13 @@ define (require, exports, module) ->
       firstPage: 0
       pageSize: 30
 
-  class RecipeCollection extends BaseCollection
-    url: '/paella/rest/v0/main/recipes'
+  class MachineCollection extends BaseCollection
+    url: '/paella/rest/v0/main/admin/machines'
 
-  main_recipe_collection = new RecipeCollection
-  AppBus.reqres.setHandler 'recipe:collection', ->
-    main_recipe_collection
-    
-  main_raid_recipe_collection = new RecipeCollection
-  AppBus.reqres.setHandler 'raid_recipe:collection', ->
-    main_raid_recipe_collection
+  main_machine_collection = new MachineCollection
+  AppBus.reqres.setHandler 'machine:collection', ->
+    main_machine_collection
     
   module.exports =
-    RecipeCollection: RecipeCollection
+    MachineCollection: MachineCollection
+    
