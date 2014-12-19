@@ -90,7 +90,9 @@ class MachineManager(object):
                 self.session.add(machine)
         return self.session.merge(machine)
 
-    def list_machines(self):
+    def list_machines(self, names=False):
+        if names:
+            return [m.name for m in self._query()]
         return [m.serialize() for m in self._query()]
     
     def delete(self, machine):

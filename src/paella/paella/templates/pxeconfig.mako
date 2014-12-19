@@ -36,7 +36,7 @@ label install
 label install
       menu label WinPE Auto ^Install
       kernel memdisk
-      append iso initrd=http://${pillar['paella_server_ip']}/debrepos/winpe.iso
+      append iso initrd=http://${paella_server_ip}/debrepos/winpe.iso
 
 %endif
 

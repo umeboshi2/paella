@@ -10,13 +10,6 @@ from pyramid.exceptions import HTTPForbidden
 from cornice.resource import resource, view
 
 
-from paella.managers.machines import MachineManager
-from paella.managers.recipes import PartmanRecipeManager
-from paella.managers.recipes import PartmanRaidRecipeManager
-from paella.managers.pxeconfig import make_pxeconfig, remove_pxeconfig
-from paella.managers.pxeconfig import pxeconfig_filename
-
-
 from paella.views.base import BaseResource, MAIN_RESOURCE_ROOT
 from paella.views.basemachines import BaseMachineResource
 from paella.views.util import make_resource
@@ -26,7 +19,7 @@ log = logging.getLogger(__name__)
 
 # Machine POST Actions
 #
-# submit - submit a brand new machien
+# submit - submit a brand new machine
 #
 # install - sets a machine to be installed
 #
@@ -37,6 +30,9 @@ log = logging.getLogger(__name__)
 @resource(**make_resource(os.path.join(MAIN_RESOURCE_ROOT, 'machines'),
                           ident='uuid'))
 class MachineResource(BaseMachineResource):
+    def collection_get(self):
+        return dict(data=self.mgr.list_machines(names=True))
+
     # recipe is by name
     # if recipe is not None, we retrieve it from
     # the database.
@@ -73,21 +69,12 @@ class MachineResource(BaseMachineResource):
 
     def _install_machine(self, data):
         uuid = data['uuid']
-        settings = self.request.registry.settings
         machine = self.mgr.get_by_uuid(uuid)
-        make_pxeconfig(machine, settings)
-        filename = pxeconfig_filename(uuid)
-        if not os.path.isfile(filename):
-            raise RuntimeError, "%s doesn't exist." % filename
-        return
-
+        self._set_machine_install(machine, install=True)
 
     def _unset_install_pxeconfig(self, uuid):
-        remove_pxeconfig(uuid) 
-        filename = pxeconfig_filename(uuid)
-        if os.path.isfile(filename):
-            raise RuntimeError, "%s still exists." % filename
-        return
+        machine = self.mgr.get_by_uuid(uuid)
+        self._set_machine_install(machine, install=False)
         
     def _stage_one_over(self, data):
         uuid = data['uuid']
@@ -134,6 +121,8 @@ class MachineResource(BaseMachineResource):
         
     def collection_post(self):
         data = self.request.json
+        if 'uuid' not in data:
+            raise HTTPBadRequest, "Request requires uuid."
         action = data['action']
         if action == 'submit':
             # submit a brand new machine
@@ -146,7 +135,5 @@ class MachineResource(BaseMachineResource):
         elif action == 'stage_over':
             self._stage_one_over(data)
             data = dict(result='success')
-        elif action == 'update_package_list':
-            data = self._update_package_list(data)
         return data
         

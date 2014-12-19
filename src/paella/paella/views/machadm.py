@@ -10,16 +10,9 @@ from pyramid.exceptions import HTTPForbidden
 from cornice.resource import resource, view
 
 
-from paella.managers.machines import MachineManager
-from paella.managers.recipes import PartmanRecipeManager
-from paella.managers.recipes import PartmanRaidRecipeManager
-from paella.managers.pxeconfig import make_pxeconfig, remove_pxeconfig
-from paella.managers.pxeconfig import pxeconfig_filename
-
-
 from paella.views.base import BaseResource, MAIN_RESOURCE_ROOT
 from paella.views.util import make_resource as make_base_resource
-
+from paella.views.basemachines import BaseMachineResource
 
 log = logging.getLogger(__name__)
 
@@ -31,31 +24,25 @@ def make_resource(rpath, ident='id', cross_site=True):
 
 # Machine POST Actions
 #
-# submit - submit a brand new machien
-#
-# install - sets a machine to be installed
-#
-# stage_over - tells paella server that debian-installer has completed
 #
 # 
+
 @resource(**make_resource(os.path.join(MAIN_RESOURCE_ROOT, 'admin/machines'),
-                          ident='uuid'))
-class MachineAdminResource(object):
-    def __init__(self, request):
-        self.request = request
-        self.db = self.request.db
-        self.mgr = MachineManager(self.db)
-        self.recipes = PartmanRecipeManager(self.db)
-        self.raid_recipes = PartmanRaidRecipeManager(self.db)
-        
-
-    def collection_get(self):
-        return dict(data=self.mgr.list_machines())
-
+                          ident='name'))
+class MachineAdminResource(BaseMachineResource):
     def get(self):
-        uuid = self.request.matchdict['uuid']
-        machine = self.mgr.get_by_uuid(uuid)
-        return machine.serialize()
+        name = self.request.matchdict['name']
+        machine = self.mgr.get_by_name(name)
+        mdata = machine.serialize()
+        mdata['all_recipes'] = self.recipes.list_recipes()
+        mdata['all_raid_recipes'] = self.raid_recipes.list_recipes()
+        mdata['pxeconfig'] = self.has_pxeconfig(machine)
+        if machine.recipe_id is not None:
+            mdata['recipe'] = self.recipes.get(machine.recipe_id).serialize()
+        if machine.raid_recipe_id is not None:
+            mdata['raid_recipe'] = self.raid_recipes.get(machine.raid_recipe_id).serialize()
+        return mdata
+    
 
 
     # recipe is by name
