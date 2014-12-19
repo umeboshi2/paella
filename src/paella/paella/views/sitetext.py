@@ -15,8 +15,7 @@ from paella.managers.wiki import WikiManager
 
 log = logging.getLogger(__name__)
 
-rscroot = MAIN_RESOURCE_ROOT
-sitetext_path = os.path.join(rscroot, 'sitetext')
+sitetext_path = os.path.join(MAIN_RESOURCE_ROOT, 'sitetext')
 
 
 def convert_range_to_datetime(start, end):

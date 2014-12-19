@@ -22,6 +22,7 @@ users_path = os.path.join(rscroot, 'users')
 groups_path = os.path.join(rscroot, 'groups')
 usergroup_path = os.path.join(users_path, '{uid}', 'groups')
 groupmember_path = os.path.join(groups_path, '{gid}', 'members')                           
+
 def convert_range_to_datetime(start, end):
     "start and end are timestamps"
     start = datetime.fromtimestamp(float(start))

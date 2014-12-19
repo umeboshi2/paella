@@ -15,6 +15,8 @@ from paella.managers.recipes import PartmanRecipeManager
 from paella.managers.recipes import PartmanRaidRecipeManager
 
 from paella.views.base import BaseResource
+from paella.views.base import MAIN_RESOURCE_ROOT
+from paella.views.util import make_resource
 
 log = logging.getLogger(__name__)
 
@@ -67,13 +69,13 @@ class BaseRecipeResource(object):
         
 
 
-@resource(collection_path='/rest/v0/main/recipes',
-          path='/rest/v0/main/recipes/{name}')
+@resource(**make_resource(os.path.join(MAIN_RESOURCE_ROOT, 'recipes'),
+                          ident='name'))
 class RecipeResource(BaseRecipeResource):
     mgrclass = PartmanRecipeManager
 
-@resource(collection_path='/rest/v0/main/raidrecipes',
-          path='/rest/v0/main/raidrecipes/{name}')
+@resource(**make_resource(os.path.join(MAIN_RESOURCE_ROOT, 'raidrecipes'),
+                          ident='name'))
 class RaidRecipeResource(BaseRecipeResource):
     mgrclass = PartmanRaidRecipeManager
 
