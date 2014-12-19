@@ -206,3 +206,16 @@ Another idea.  Have ostype be either debian or microsoft.  Have
 a release property that identifies the release of the ostype.
 The microsoft machines also need WIM path for the image they will 
 be using.
+
+
+## Building Salt Minion on Windows 7
+
+- Use MinGW as the toolchain.
+
+- Use Msys for dev shell
+
+- Install ActivePerl to build openssl
+
+- Build openssl from source
+
+- use openssl to build m2crypto

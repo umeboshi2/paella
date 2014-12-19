@@ -20,9 +20,9 @@
   
 
 - work on web interface
+  - work on machine manager 
 
 - edit state files with ace editor
-
 
 
 - work on deployment plan
