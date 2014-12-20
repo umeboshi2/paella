@@ -38,9 +38,9 @@ class MachineAdminResource(BaseMachineResource):
         mdata['all_raid_recipes'] = self.raid_recipes.list_recipes()
         mdata['pxeconfig'] = self.has_pxeconfig(machine)
         if machine.recipe_id is not None:
-            mdata['recipe'] = self.recipes.get(machine.recipe_id).serialize()
+            mdata['recipe'] = self.recipes.get(machine.recipe_id).name
         if machine.raid_recipe_id is not None:
-            mdata['raid_recipe'] = self.raid_recipes.get(machine.raid_recipe_id).serialize()
+            mdata['raid_recipe'] = self.raid_recipes.get(machine.raid_recipe_id).name
         return mdata
     
 
@@ -79,29 +79,37 @@ class MachineAdminResource(BaseMachineResource):
     
         
 
-    def _install_machine(self, data):
-        uuid = data['uuid']
-        settings = self.request.registry.settings
-        machine = self.mgr.get_by_uuid(uuid)
-        make_pxeconfig(machine, settings)
-        filename = pxeconfig_filename(uuid)
-        if not os.path.isfile(filename):
-            raise RuntimeError, "%s doesn't exist." % filename
-        return
-
-
-    def _unset_install_pxeconfig(self, uuid):
-        remove_pxeconfig(uuid) 
-        filename = pxeconfig_filename(uuid)
-        if os.path.isfile(filename):
-            raise RuntimeError, "%s still exists." % filename
-        return
-        
-    def _stage_one_over(self, data):
-        uuid = data['uuid']
-        self._unset_install_pxeconfig(uuid)
-        
-
+    def put(self):
+        data = self.request.json
+        #log.info("PUT data is %s" % data)
+        [log.info('PUT[%s]: %s' % (k,v)) for k,v in data.items()]
+        fields = ['arch', 'ostype', 'iface']
+        recipeFields = ['recipe', 'raid_recipe']
+        update = {}
+        machine = self.mgr.get_by_uuid(data['uuid'])
+        for field in fields:
+            if data[field] != getattr(machine, field):
+                log.debug('update field %s with value %s' % (field, data[field]))
+                update[field] = data[field]
+        for rfield in recipeFields:
+            attr = '%s_id' % rfield
+            log.info('attr is %s...........................' % attr)
+            if rfield in data:
+                rname = data[rfield]
+                log.info("recipe field %s present with value %s" % (rfield, rname))
+                recipe = self.rmgr[rfield].get_by_name(rname)
+                log.info("recipe_id is %d" % recipe.id)
+                if getattr(machine, attr) != recipe.id:
+                    update[rfield] = recipe
+            elif getattr(machine, attr) is not None:
+                log.info('attr %s is %s' % (attr, getattr(machine, attr)))
+                update[rfield] = None
+            self.mgr.update(machine, **update)
+            
+                
+                    
+                
+                
     def post(self):
         textkeys = ['name', 'autoinstall', 'ostype', 'release', 'arch',
                     'imagepath']
@@ -129,6 +137,9 @@ class MachineAdminResource(BaseMachineResource):
         
     def collection_post(self):
         data = self.request.json
+        if 'uuid' not in data:
+            raise HTTPBadRequest, "UUID is required"
+        machine = self.mgr.get_by_uuid(data['uuid'])
         action = data['action']
         if action == 'submit':
             # submit a brand new machine
@@ -136,10 +147,10 @@ class MachineAdminResource(BaseMachineResource):
         elif action == 'install':
             # set a machine to be installed
             # creates pxeconfig
-            self._install_machine(data)
+            self._set_machine_install(machine, install=True)
             data = dict(result='success')
         elif action == 'stage_over':
-            self._stage_one_over(data)
+            self._set_machine_install(machine, install=False)
             data = dict(result='success')
         return data
         

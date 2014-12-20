@@ -21,7 +21,7 @@ log = logging.getLogger(__name__)
 
 # Machine POST Actions
 #
-# submit - submit a brand new machien
+# submit - submit a brand new machine
 #
 # install - sets a machine to be installed
 #
@@ -36,6 +36,7 @@ class BaseMachineResource(object):
         self.mgr = MachineManager(self.db)
         self.recipes = PartmanRecipeManager(self.db)
         self.raid_recipes = PartmanRaidRecipeManager(self.db)
+        self.rmgr = dict(recipe=self.recipes, raid_recipe=self.raid_recipes)
         
 
     def collection_get(self):

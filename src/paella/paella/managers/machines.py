@@ -1,9 +1,4 @@
-#import os
-#from datetime import datetime, timedelta
-#from zipfile import ZipFile
-#from StringIO import StringIO
-#import csv
-#from io import BytesIO
+import logging
 
 import transaction
 from sqlalchemy.orm.exc import NoResultFound
@@ -15,6 +10,8 @@ import networkx as nx
 from paella.models.main import Machine
 
 from paella.managers.saltkeys import SaltKeyManager
+
+log = logging.getLogger(__name__)
 
 class MachineManager(object):
     def __init__(self, session):
@@ -67,26 +64,52 @@ class MachineManager(object):
 
     def update(self, machine, name=None, autoinstall=None,
                recipe=None, ostype=None, release=None, arch=None,
-               imagepath=None):
+               imagepath=None, raid_recipe=None, iface=None):
         with transaction.manager:
-            if name is not None or autoinstall is not None \
-                    or recipe is not None or ostype is not None \
-                    or release is not None or arch is not None \
-                    or imagepath is not None:
-                if name is not None:
-                    machine.name = name
-                if autoinstall is not None:
-                    machine.autoinstall = autoinstall
-                if recipe is not None:
-                    machine.recipe_id = recipe.id
-                if ostype is not None:
-                    machine.ostype = ostype
-                if release is not None:
-                    machine.release = release
-                if arch is not None:
-                    machine.arch = arch
-                if imagepath is not None:
-                    machine.imagepath = imagepath
+            # merge machine before update
+            machine = self.session.merge(machine)
+            updated = False
+            if name is not None:
+                machine.name = name
+                updated = True
+            if autoinstall is not None:
+                machine.autoinstall = autoinstall
+                updated = True
+            log.info('MANAGERl: recipe is %s' % recipe)
+            log.info('MANAGER: machine.recipe_id is %s' % machine.recipe_id)
+            # partition recipe
+            if recipe is not None:
+                machine.recipe_id = recipe.id
+                updated = True
+            elif machine.recipe_id is not None:
+                machine.recipe_id = None
+                updated = True
+
+                    
+            # raid recipe
+            if raid_recipe is not None:
+                machine.raid_recipe_id = raid_recipe.id
+                updated = True
+            elif machine.raid_recipe_id is not None:
+                machine.raid_recipe_id = None
+                updated = True
+
+            if ostype is not None:
+                machine.ostype = ostype
+                updated = True
+            if release is not None:
+                machine.release = release
+                updated = True
+            if arch is not None:
+                machine.arch = arch
+                updated = True
+            if imagepath is not None:
+                machine.imagepath = imagepath
+                updated = True
+            if iface is not None:
+                machine.iface = iface
+                updated = True
+            if updated:
                 self.session.add(machine)
         return self.session.merge(machine)
 
