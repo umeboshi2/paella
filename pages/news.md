@@ -15,9 +15,10 @@
   installation and configuration.
 
 - Using system [uuid's](#pages/system-uuid) to for machine 
-  identification and network access.
+  identification and network access.  MACs from ethernet interfaces
+  are no longer required to identify machines.
 
-- Currently supporting i386 and amd64 debian installs
+- Currently supporting i386 and amd64 debian installs.
 
 - A preliminary environment exists to help manage windows 
   installations.  The installation of a customized system 
@@ -25,10 +26,25 @@
   for the time being will have to be, configured manually 
   using sysprep.
 
-- Web interface to help manage machines and configurations.
+- Web interface to help manage machines and configurations.  The web
+  server uses [trumpet](https://github.com/umeboshi2/trumpet.git),
+  which is a small collection of code to help make pyramid web services that
+  support RESTful interaction.  The client side browser application uses the
+  "paella" branch of [conspectus](https://github.com/umeboshi2/conspectus.git).
+  
+	  - Partition recipes and raid recipes are created and edited on web interface.
+
+	  - Machines can be set/unset for installation.
+
+	  - Architecture and OS type can be set.
+
+
 
 
 ## links
 
 [Windows Deployment Services](http://en.wikipedia.org/wiki/Windows_Deployment_Services) to the network.
 
+[debian wiki id systems](https://wiki.debian.org/HowToIdentifyADevice/System)
+
+[generate unique id](http://unix.stackexchange.com/questions/144812/generate-consistent-machine-unique-id)
