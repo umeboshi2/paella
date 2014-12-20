@@ -19,3 +19,5 @@
 # compass
 .sass-cache
 
+# local symlink that interferes with github pages
+/paella
