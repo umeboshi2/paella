@@ -58,6 +58,10 @@ class BaseMachineResource(object):
         filename = pxeconfig_filename(machine.uuid)
         if install:
             make_pxeconfig(machine, settings)
+            # FIXME: this makes sure that the key in the database
+            # that the machine will be preseeded with is accepted
+            # by the salt-master.
+            self.mgr.accept_machine(machine, force=True)
             if not self.has_pxeconfig(machine, filename=filename):
                 raise RuntimeError, "%s doesn't exist." % filename
         else:

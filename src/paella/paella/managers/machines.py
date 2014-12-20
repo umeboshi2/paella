@@ -57,8 +57,8 @@ class MachineManager(object):
             skey = self.keymanager.add_keypair_no_txn(machine.id, keydata)
         return self.session.merge(machine)
 
-    def accept_machine(self, machine, id=None, name=None):
-        self.keymanager.accept_machine(machine)
+    def accept_machine(self, machine, id=None, name=None, force=False):
+        self.keymanager.accept_machine(machine, force=force)
 
     
 

@@ -40,13 +40,13 @@ class SaltKeyFiles(object):
     def get_masterkey(self):
         return file(self.master_keyname).read()
     
-    def accept(self, name, content):
+    def accept(self, name, content, force=False):
         if name in os.listdir(self.minions_rejected_path):
             raise RuntimeError, "Minion %s is rejected." % name
         if name in os.listdir(self.minions_pre_path):
             os.remove(os.path.join(self.minions_pre_path, name))
         filename = os.path.join(self.minions_path, name)
-        if name in os.listdir(self.minions_path):
+        if name in os.listdir(self.minions_path) and not force:
             return
         else:
             self._create(filename, content)
@@ -115,9 +115,9 @@ class SaltKeyManager(object):
             skey = self.add_keypair_without_txn(machine.id, keydata)
         return self.session.merge(skey)
 
-    def accept_machine(self, machine):
+    def accept_machine(self, machine, force=False):
         keydata = self.get(machine.id)
-        self.filemgr.accept(machine.name, keydata.public)
+        self.filemgr.accept(machine.name, keydata.public, force=force)
         
         
         

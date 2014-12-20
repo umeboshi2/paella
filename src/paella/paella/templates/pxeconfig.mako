@@ -33,10 +33,16 @@ label install
 
 %elif machine.ostype == 'mswindows':
 
+<% winpe = 'winpe.iso' %>
+%if machine.arch == 'amd64':
+<% winpe = 'winpe64.iso' %>
+%endif
+
+
 label install
-      menu label WinPE Auto ^Install
+      menu label WinPE Auto ^Install (${machine.arch})
       kernel memdisk
-      append iso initrd=http://${paella_server_ip}/debrepos/winpe.iso
+      append iso initrd=http://${paella_server_ip}/debrepos/${winpe}
 
 %endif
 
