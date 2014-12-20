@@ -53,7 +53,7 @@ define (require, exports, module) ->
     div '.input-group', ->
       span '.input-group-addon', label
       select "##{attribute}.selectpicker.form-control", dataLiveSearch:'true',
-      title:title, ->
+      title:title, name:attribute, ->
         if attribute in ['recipe', 'raid_recipe']
           _recipe_option machine, attribute
         for opt in optionlist
@@ -108,7 +108,8 @@ define (require, exports, module) ->
           name: 'iface'
           placeholder: ''
           value: machine.iface
-      div '#update-machine-button.btn.btn-default.btn-sm', 'Update Machine'
+      input '#update-machine-button.btn.btn-default.btn-sm', type:'submit',
+      value:'Update Machine'
     
   edit_recipe = renderable (recipe) ->
     div '.listview-header', ->

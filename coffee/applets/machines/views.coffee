@@ -8,9 +8,9 @@ define (require, exports, module) ->
   BaseSideBarView = require 'common/views/sidebar'
   PageableView = require 'common/views/pageable'
   NameContentFormView = require 'common/views/namecontentform'
-  
-  { navigate_to_url } = require 'common/util'
 
+  Util = require 'common/util'
+  
   FDTemplates = require 'frontdoor/templates'
   
   Templates = require 'machines/templates'
@@ -33,26 +33,73 @@ define (require, exports, module) ->
       super
         container: @childViewContainer
 
-  class BasicMachineView extends Backbone.Marionette.ItemView
+  class BasicMachineViewOrig extends Backbone.Marionette.ItemView
     template: Templates.view_machine
     
-  class EditRecipeView extends BaseEditPageView
-    template: Templates.edit_recipe
+  class BasicMachineView extends FormView
+    fields: ['arch', 'ostype', 'iface']
+    recipeFields: ['recipe', 'raid_recipe']
+    template: Templates.view_machine
+    
+    ui: () ->
+      data = {}
+      for fieldlist in [@fields, @recipeFields]
+        for field in fieldlist
+          data[field] = "[name=\"#{field}\"]"
+      data['set_install_button'] = '#set-install-button'
+      return data
 
-  class NewRecipeView extends NameContentFormView
-    template: Templates.new_recipe_form
-    collection: AppBus.reqres.request 'recipe:collection'
+    events:
+      'click @ui.set_install_button': 'setInstallClicked'
 
+    # model is fetched and passed to view constructor
     createModel: ->
-      new Backbone.Model
-      
-      
-  class NewRaidRecipeView extends NameContentFormView
-    template: Templates.new_raid_recipe_form
-    collection: AppBus.reqres.request 'raid_recipe:collection'
+      @model
 
-    createModel: ->
-      new Backbone.Model
+    updateModel: ->
+      window.fview = @
+      update = {}
+      for field in @fields
+        value = @ui[field].val()
+        if value != @model.get field
+          console.log 'updateModel', field, value
+          @model.set field, value
+      # FIXME: I don't like magic names like this.
+      no_recipe_marker = '<No Recipe>'
+      for rfield in @recipeFields
+        value = @ui[rfield].val()
+        if value != no_recipe_marker
+          if @model.has rfield
+            mval = @model.get rfield
+            if mval == value
+              continue
+          console.log 'set rfield', rfield, 'to', value
+          @model.set rfield, value
+          continue
+        if value == no_recipe_marker and @model.has rfield
+          console.log "remove #{rfield} from", @model
+          @model.unset rfield
+
+    setInstallClicked: ->
+      # http://stackoverflow.com/questions/16876970/marionette-itemview-how-to-re-render-model-on-change
+      url = '/paella/rest/v0/main/admin/machines'
+      action = 'install'
+      if @model.get('pxeconfig')
+        action = 'stage_over'
+      data =
+        uuid: @model.get 'uuid'
+        action: action
+      settings =
+        type: 'POST'
+        url: url
+        data: JSON.stringify data
+        accepts: 'application/json'
+        contentType: 'application/json'
+      response = $.ajax settings
+      response.done =>
+        mresponse = @model.fetch()
+        mresponse.done =>
+          @render()
       
       
   module.exports =
@@ -60,7 +107,4 @@ define (require, exports, module) ->
     SideBarView: SideBarView
     SimpleMachineListView: SimpleMachineListView
     BasicMachineView: BasicMachineView
-    EditRecipeView: EditRecipeView
-    NewRecipeView: NewRecipeView
-    NewRaidRecipeView: NewRaidRecipeView
     

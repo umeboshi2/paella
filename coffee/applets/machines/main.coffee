@@ -19,7 +19,6 @@ define (require, exports, module) ->
       'machines/viewmachine/:name': 'view_machine'
 
       
-      
   MainBus.commands.setHandler 'machines:route', () ->
     console.log "machines:route being handled"
     controller = new Controller MainBus

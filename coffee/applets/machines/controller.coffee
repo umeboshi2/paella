@@ -52,6 +52,7 @@ define (require, exports, module) ->
         Util.scroll_top_fast()
 
     view_machine: (name) ->
+      console.log 'view_machine called'
       @make_sidebar()
       machine = new Models.Machine
       machine.name = name
