@@ -12,38 +12,29 @@ Two scripts on the live system:
    
    1. sends a name to the server
    
-	   - actually sends json.dumps(
-		 dict(action='submit', machine=name, addresses=[a1, a2]))
-		 in a POST request to http://host/paella/machines
+   2. FIXME: the salt config should already have this name
    
-   2. the salt config should already have this name
-   
-   3. all mac addresses sent to server and tied to name
+   3. the system-uuid is sent to the server
    
 
 2. install-machine
    
    1. machine must already be submitted by script above
    
-   2. name lookup based on matching mac address
+   2. system uuid is retrieved from the machine
    
-   3. the script gets addresses on local machine then checks 
-   http://host/paella/addresses/{address} for a machine name, 
-   accepting the first match.
-		 
-   4. after a successful match, the retrieved machine name is sent 
-   in a POST request dict(action='install', machine=name) to
-   http;//host/paella/machines .
+   4. the retrieved machine uuid is sent 
+   in a POST request dict(action='install', uuid=uuid) to
+   http;//host/paella/rest/v0/main/machines .
    
    5. The request above tells the server to create special pxe config 
-   files named after the mac addresses linked to the machine in the 
-   database.
+   files named after the system uuid of the machine.
    
    6. The distinctive feature of the specific pxe config file for the
-   mac address of the target machine is that appends a preseed 
+   system uuid of the target machine is that appends a preseed 
    url to the kernel command line specific to the machine.
    
-	   - http://host/paella/preseed/{machine}
+	   - http://host/paella/preseed/{uuid}
 	   
    7. It is the preseed file's duty to make sure salt-minion is installed,
    and the machine identified for the minion to work.  This is currently being 

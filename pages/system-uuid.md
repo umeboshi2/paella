@@ -66,11 +66,6 @@ pxe config files.  The preseed file will need to be retrieved using
 the uuid, rather than the name.  This needs to be true for the late 
 command script as well.
 
-### Preseed and late command files
-
-Preseed files on the server are referred to by uuid.  The url for 
-the late command script is also retrieved by uuid.
-
 ### Retrieve machine data
 
 The GET request for a machine's data needs a url with the uuid 
@@ -78,11 +73,20 @@ included.  A machine's data cannot be retrieved by the name of
 the machine.
 
 
+### Preseed and late command files
+
+Preseed files on the server are referred to by uuid.  The url for 
+the late command script is also retrieved by uuid.
+
 ### Salt Minion
 
 The salt minion id will be the name of the machine, which will be 
 unique.  It seems to be too cumbersome to use the uuid as the minion 
-id when maintaining configurations.
+id when maintaining configurations.  The actual "minion", or system,
+should not be identified by a hardware uuid, yet merely attached to a
+single system-uuid that can change when the hardware dies and needs
+replacement.
+
 
 
 ## Network Discovery of UUIDs

@@ -13,6 +13,10 @@
    the server to create pxe config files for the system
    uuid of the machine.
 
+4. The attributes in the database for the machine will direct the
+   pxe config that will be generated.  The type of os, architecture,
+   and release are all considered when making the pxeconfig file.
+   
 ### Procedure when machine set to be installed:
  
 1. Boot machine from network.  The pxe menu will have an install

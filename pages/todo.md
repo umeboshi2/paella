@@ -9,21 +9,29 @@
   - wipe out all hardcoded entries of '10.0.4.1' to config files or pillar data
 
 - Create some simple disk/partition recipes to use as a starting 
-  point.
-  
+  point.(STARTED)
+  - a couple of recipes have been created.
+  - find place in repos to place recipes for db init
+
+- test raid recipes and determine if disklist is needed in database
+  - can we presume disklist on null entry in db?
+
 - Automate key generation and preseed the keys during first stage 
   install.
   http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
   - pyramid_celery and rabbitmq to help queue key generation jobs
   - keys are instaled in configure netboot script
   - need to enforce ssl on apache to pass data across network
-  
+  - **update**
+	- some work has been done of generating keys
 
 - work on web interface
+  - basic recipe management is possibly complete
+  - edit state files with ace editor
 
-- edit state files with ace editor
+- need late command to remove pxeconfig during windows installs
 
-
+- need to respect arch decision when installing ostype mswindows
 
 - work on deployment plan
 
@@ -32,9 +40,9 @@
 
 - Start preparing to handle both amd64 and i386. (STARTED)
 
-	- make sure debian installs work on both archs
+	- DONE: make sure debian installs work on both archs
 	
-	- make sure that mswindows ostype installs with live system
+	- make sure that mswindows ostype installs with live system (STARTED)
 	
 
 - Handle different operating system releases
@@ -68,6 +76,4 @@
   
 - Make image capture and submission scripts. Should WIM's get their 
   own database table?
-  
 
-  
