@@ -84,3 +84,4 @@ database lent itself to quicker gui development.
 - The structure of the database allows the administrator to distinguish 
   between logical and physical configurations.  This allows the administrator 
   to more easily upgrade a machine to a new physical configuration.
+
