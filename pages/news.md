@@ -16,7 +16,12 @@
 
 - Using system [uuid's](#pages/system-uuid) to for machine 
   identification and network access.  MACs from ethernet interfaces
-  are no longer required to identify machines.
+  are no longer required to identify machines. (Code to consistently
+  generate a uuid based on network interfaces on machines lacking
+  a SMBIOS to retrieve the system uuid from should be looked into
+  using.  It is expected that most i386/amd64 machines will have
+  a system uuid, however armhf (raspberrrypi) machines won't have
+  this.
 
 - Currently supporting i386 and amd64 debian installs.
 
@@ -37,8 +42,6 @@
 	  - Machines can be set/unset for installation.
 
 	  - Architecture and OS type can be set.
-
-
 
 
 ## links
