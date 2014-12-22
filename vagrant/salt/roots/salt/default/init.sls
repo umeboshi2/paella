@@ -107,6 +107,8 @@ disk-tools:
       - reiserfsprogs
       - btrfs-tools
       - e2fsprogs
+      - mdadm
+      
 
 # the virtualbox packages will be 
 # needed for the live installer

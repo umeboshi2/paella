@@ -81,30 +81,35 @@ class MachineAdminResource(BaseMachineResource):
 
     def put(self):
         data = self.request.json
-        #log.info("PUT data is %s" % data)
-        [log.info('PUT[%s]: %s' % (k,v)) for k,v in data.items()]
+        #[log.info('PUT[%s]: %s' % (k,v)) for k,v in data.items()]
         fields = ['arch', 'ostype', 'iface']
         recipeFields = ['recipe', 'raid_recipe']
         update = {}
         machine = self.mgr.get_by_uuid(data['uuid'])
         for field in fields:
             if data[field] != getattr(machine, field):
-                log.debug('update field %s with value %s' % (field, data[field]))
+                #log.debug('update field %s with value %s' % (field, data[field]))
                 update[field] = data[field]
         for rfield in recipeFields:
             attr = '%s_id' % rfield
-            log.info('attr is %s...........................' % attr)
+            #log.debug('attr is %s...........................' % attr)
             if rfield in data:
                 rname = data[rfield]
-                log.info("recipe field %s present with value %s" % (rfield, rname))
+                if rname is None:
+                    #log.debug("Delete %s from %s" % (rfield, machine.name))
+                    delkey = 'delete_%s' % rfield
+                    update[delkey] = True
+                    continue
+                #log.debug("recipe field %s present with value %s" % (rfield, rname))
                 recipe = self.rmgr[rfield].get_by_name(rname)
-                log.info("recipe_id is %d" % recipe.id)
+                #log.debug("recipe_id is %d" % recipe.id)
                 if getattr(machine, attr) != recipe.id:
                     update[rfield] = recipe
             elif getattr(machine, attr) is not None:
-                log.info('attr %s is %s' % (attr, getattr(machine, attr)))
+                #log.debug('attr %s is %s' % (attr, getattr(machine, attr)))
                 update[rfield] = None
-            self.mgr.update(machine, **update)
+        #[log.debug('UPDATE:---> %s: %s' % (k,v)) for k,v in update.items()]
+        self.mgr.update(machine, **update)
             
                 
                     
@@ -126,7 +131,7 @@ class MachineAdminResource(BaseMachineResource):
             rname = data['recipe']
             recipe = self.recipes.get_by_name(rname)
             update['recipe'] = recipe
-        update['recipe'] = None
+        update['raid_recipe'] = None
         if 'raid_recipe' in data:
             rname = data['raid_recipe']
             recipe = self.raid_recipes.get_by_name(rname)

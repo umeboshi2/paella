@@ -64,7 +64,8 @@ class MachineManager(object):
 
     def update(self, machine, name=None, autoinstall=None,
                recipe=None, ostype=None, release=None, arch=None,
-               imagepath=None, raid_recipe=None, iface=None):
+               imagepath=None, raid_recipe=None, iface=None,
+               delete_recipe=False, delete_raid_recipe=False):
         with transaction.manager:
             # merge machine before update
             machine = self.session.merge(machine)
@@ -81,7 +82,8 @@ class MachineManager(object):
             if recipe is not None:
                 machine.recipe_id = recipe.id
                 updated = True
-            elif machine.recipe_id is not None:
+            if delete_recipe:
+                log.info("MANAGER---> delete_recipe:")
                 machine.recipe_id = None
                 updated = True
 
@@ -90,7 +92,8 @@ class MachineManager(object):
             if raid_recipe is not None:
                 machine.raid_recipe_id = raid_recipe.id
                 updated = True
-            elif machine.raid_recipe_id is not None:
+            if delete_raid_recipe:
+                log.info("MANAGER---> delete_raid_recipe:")
                 machine.raid_recipe_id = None
                 updated = True
 

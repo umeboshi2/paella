@@ -64,6 +64,9 @@ d-i clock-setup/ntp boolean true
 
 # FIXME: if there are multiple disks on the machine the disk needs to be selected
 #d-i partman-auto/disk string /dev/sda /dev/sdb
+%if disk_list is not None:
+d-i partman-auto/disk string ${' '.join(disk_list)}
+%endif
 
 d-i partman-auto/method string ${method}
 d-i partman-lvm/device_remove_lvm boolean true
@@ -78,7 +81,10 @@ d-i partman-auto/expert_recipe string ${recipe}
 %endif
 
 # FIXME: raid support
-#di partman-auto-raid/recipe string <insert raid recipe>
+#d-i partman-auto-raid/recipe string <insert raid recipe>
+%if raid_recipe is not None:
+d-i partman-auto-raid/recipe string ${raid_recipe}
+%endif
 
 # Or provide a recipe of your own...
 # If you have a way to get a recipe file into the d-i environment, 
@@ -87,17 +93,13 @@ d-i partman-auto/expert_recipe string ${recipe}
 
 # This makes partman automatically partition without confirmation, 
 # provided that you told it what to do using one of the methods above.
+d-i partman-md/confirm boolean true
+d-i partman-md/confirm_nooverwrite boolean true
 d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman-partitioning/confirm_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
-
-# This makes partman automatically partition without confirmation.
-#d-i partman-md/confirm boolean true
-#d-i partman-partitioning/confirm_write_new_label boolean true
-#d-i partman/choose_partition select finish
-#d-i partman/confirm boolean true
-#d-i partman/confirm_nooverwrite boolean true
 
 d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 
