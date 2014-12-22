@@ -18,10 +18,12 @@ stage of the installation.
 	  being able to retrieve the udeb packages from the local repository 
 	  other than modifying the initrd. **IMPORTANT**
 	  
-2. The preseed file selects the network install interface.  This defaults to 
+2. **FIXME: THIS IS ACTUALLY PXE CONFIG** The preseed
+   file selects the network install interface.  This defaults to 
    eth0, but can be set in the database for machines with multiple interfaces.
-   **FIXME**  The netcfg select is currently done on kernel command line, while
-   the netcfg question in the preseed defaults to auto.
+   The netcfg select is must be done on kernel command line.  Since the
+   preseed file is retrieved from the network, the network interface must
+   be decided upon before this.
 
 3. The preseed file must add the salt and paella package repositories to
    the apt sources, and make sure salt-minion is in the list of installed packages.
@@ -40,13 +42,7 @@ stage of the installation.
 	  hard disk in ten seconds if a key isn't pressed, which helps in the 
 	  case that the computer always boots from the network first.
 
-	- **OLD** Preseeds the salt-minion with the installer keys. (This isn't implemented
-	  yet.  The master is running in open mode.)  The request made above should 
-	  signal the server to locate the minion keys for the machine, and if no 
-	  keys are found, to generate them.  The paella server should keep track of 
-	  all the keys and only set the master to accept those that it preseeds.
-
-	- **NEW** Preseeds the salt-minion with the installer keys.  The keys are present
+	- Preseeds the salt-minion with the installer keys.  The keys are present
 	  as python variables in the script.  The script should be conveyed via ssl.  The 
 	  keys should already be generated upon the initial submission of the machine.
 

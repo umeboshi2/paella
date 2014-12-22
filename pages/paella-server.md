@@ -14,15 +14,20 @@ and needs to be adapted.
 The paella server will also help with maintaining partial local debian 
 repositories.
 
-## Client
+## Browser Client
 
 The client is being written on the paella branch of [conspectus](https://github.com/umeboshi2/conspectus.git).  Authentication will be required to perform any useful
 management action on a machine.
 
 
-## Interface
+## REST Interface
 
-### /paella/rest/v0/machines
+### Prefix
+
+The current prefix for all requests in /paella/rest/v0/main
+
+
+### /machines
 
 This is the main url for managing the machines from the target machine.  All
 POST and GET requests have an "action" parameter.  Also, all POST and GET
@@ -31,7 +36,7 @@ request.
 
 #### GET Actions
 
-- /paella/rest/v0/machines/{uuid}
+- /machines/{uuid}
   This will basically get a JSON machine object from the database.
 
 #### POST Actions
@@ -49,7 +54,7 @@ request.
   PXE config file for the machine identified by the uuid.
 
 - **update_machine** (name=None, recipe=None, autoinstall=None)
-  /paella/rest/v0/machines/{uuid}
+  /admin/machines/{uuid}
   Any parameter that is not None will be updated accordingly in the 
   database.  The autoinstall paramater is boolean. The recipe is 
   identified by a unique name.
@@ -57,10 +62,12 @@ request.
 - **update_package_list**
   This needs to be done with another url.
 
-### /paella/rest/v0/recipes and /paella/rest/v0/recipes/{name}
+### /recipes and /recipes/{name}
 
 This is a simple CRUD interface for the partman recipes.
 
+
+## Other endpoints
 
 ### /paella/preseed/{uuid}
 
