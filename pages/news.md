@@ -51,3 +51,28 @@
 [debian wiki id systems](https://wiki.debian.org/HowToIdentifyADevice/System)
 
 [generate unique id](http://unix.stackexchange.com/questions/144812/generate-consistent-machine-unique-id)
+
+[wimboot](http://ipxe.org/wimboot) - boot wim images via pxe
+
+[uefi-pxe-netboot-install](https://wiki.ubuntu.com/UEFI/PXE-netboot-install)
+
+[uefi-pxe-win8](http://technet.microsoft.com/en-us/library/jj938037.aspx)
+
+[Wikipedia article on PXE](http://en.wikipedia.org/wiki/Preboot_Execution_Environment)
+
+[Wikipedia article on UEFI](http://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
+
+http://en.wikipedia.org/wiki/EFI_System_partition
+
+http://en.wikipedia.org/wiki/GUID_Partition_Table
+
+http://en.wikipedia.org/wiki/System_Management_BIOS
+
+[virtualbox uefi support for windows guests]( https://www.virtualbox.org/ticket/7702)
+
+[Protecting the pre-OS env with UEFI - building win8](http://blogs.msdn.com/b/b8/archive/2011/09/22/protecting-the-pre-os-environment-with-uefi.aspx)
+
+[ubuntu secure boot](https://wiki.ubuntu.com/SecurityTeam/SecureBoot)
+
+[reflections on trusting trust (reloaded)](https://www.hackinparis.com/sites/hackinparis.com/files/JohnButterworth.pdf)
+
