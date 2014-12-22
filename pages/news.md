@@ -46,33 +46,38 @@
 
 ## links
 
-[Windows Deployment Services](http://en.wikipedia.org/wiki/Windows_Deployment_Services) to the network.
+### Windows Deployment
+- [Windows Deployment Services](http://en.wikipedia.org/wiki/Windows_Deployment_Services) to the network.
 
-[debian wiki id systems](https://wiki.debian.org/HowToIdentifyADevice/System)
+- [wimboot](http://ipxe.org/wimboot) - boot wim images via pxe
 
-[generate unique id](http://unix.stackexchange.com/questions/144812/generate-consistent-machine-unique-id)
+### Unique ID
+- [debian wiki id systems](https://wiki.debian.org/HowToIdentifyADevice/System)
 
-[wimboot](http://ipxe.org/wimboot) - boot wim images via pxe
+- [generate unique id](http://unix.stackexchange.com/questions/144812/generate-consistent-machine-unique-id)
 
-[uefi-pxe-netboot-install](https://wiki.ubuntu.com/UEFI/PXE-netboot-install)
+### UEFI and PXE
+- [uefi-pxe-netboot-install](https://wiki.ubuntu.com/UEFI/PXE-netboot-install)
 
-[uefi-pxe-win8](http://technet.microsoft.com/en-us/library/jj938037.aspx)
+- [ubuntu secure boot](https://wiki.ubuntu.com/SecurityTeam/SecureBoot)
 
-[Wikipedia article on PXE](http://en.wikipedia.org/wiki/Preboot_Execution_Environment)
+- [uefi-pxe-win8](http://technet.microsoft.com/en-us/library/jj938037.aspx)
 
-[Wikipedia article on UEFI](http://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
+### Wikipedia Articles
+- [Wikipedia article on PXE](http://en.wikipedia.org/wiki/Preboot_Execution_Environment)
 
-http://en.wikipedia.org/wiki/EFI_System_partition
+- [Wikipedia article on UEFI](http://en.wikipedia.org/wiki/Unified_Extensible_Firmware_Interface)
 
-http://en.wikipedia.org/wiki/GUID_Partition_Table
+- http://en.wikipedia.org/wiki/EFI_System_partition
 
-http://en.wikipedia.org/wiki/System_Management_BIOS
+- http://en.wikipedia.org/wiki/GUID_Partition_Table
 
-[virtualbox uefi support for windows guests]( https://www.virtualbox.org/ticket/7702)
+- http://en.wikipedia.org/wiki/System_Management_BIOS
 
-[Protecting the pre-OS env with UEFI - building win8](http://blogs.msdn.com/b/b8/archive/2011/09/22/protecting-the-pre-os-environment-with-uefi.aspx)
+###Misc
+- [virtualbox uefi support for windows guests]( https://www.virtualbox.org/ticket/7702)
 
-[ubuntu secure boot](https://wiki.ubuntu.com/SecurityTeam/SecureBoot)
+- [Protecting the pre-OS env with UEFI - building win8](http://blogs.msdn.com/b/b8/archive/2011/09/22/protecting-the-pre-os-environment-with-uefi.aspx)
 
-[reflections on trusting trust (reloaded)](https://www.hackinparis.com/sites/hackinparis.com/files/JohnButterworth.pdf)
+- [reflections on trusting trust (reloaded)](https://www.hackinparis.com/sites/hackinparis.com/files/JohnButterworth.pdf)
 
