@@ -33,13 +33,18 @@ define (require, exports, module) ->
   class RecipeCollection extends BaseCollection
     url: '/paella/rest/v0/main/recipes'
 
+  class RaidRecipeCollection extends BaseCollection
+    url: '/paella/rest/v0/main/raidrecipes'
+    
   main_recipe_collection = new RecipeCollection
   AppBus.reqres.setHandler 'recipe:collection', ->
     main_recipe_collection
     
-  main_raid_recipe_collection = new RecipeCollection
+  main_raid_recipe_collection = new RaidRecipeCollection
   AppBus.reqres.setHandler 'raid_recipe:collection', ->
     main_raid_recipe_collection
     
   module.exports =
     RecipeCollection: RecipeCollection
+    RaidRecipeCollection: RaidRecipeCollection
+    

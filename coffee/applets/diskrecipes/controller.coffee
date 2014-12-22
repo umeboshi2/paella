@@ -25,7 +25,7 @@ define (require, exports, module) ->
         url: '#diskrecipes'
       }
       {
-        name: 'New Recipy'
+        name: 'New Recipe'
         url: '#diskrecipes/newrecipe'
       }
       {
@@ -75,6 +75,17 @@ define (require, exports, module) ->
       response = recipe.fetch()
       response.done =>
         view = new Views.EditRecipeView
+          model: recipe
+        @App.content.show view
+        Util.scroll_top_fast()
+        
+    edit_raid_recipe: (name) ->
+      @make_sidebar()
+      recipe = new Models.RaidRecipe
+      recipe.name = name
+      response = recipe.fetch()
+      response.done =>
+        view = new Views.EditRaidRecipeView
           model: recipe
         @App.content.show view
         Util.scroll_top_fast()

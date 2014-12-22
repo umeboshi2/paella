@@ -52,7 +52,7 @@ define (require, exports, module) ->
   _select_input = renderable (machine, attribute, optionlist, label, title) ->
     div '.input-group', ->
       span '.input-group-addon', label
-      select "##{attribute}.selectpicker.form-control", dataLiveSearch:'true',
+      select "##{attribute}.form-control", dataLiveSearch:'true',
       title:title, name:attribute, ->
         if attribute in ['recipe', 'raid_recipe']
           _recipe_option machine, attribute

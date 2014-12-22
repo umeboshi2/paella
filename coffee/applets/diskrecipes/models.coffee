@@ -10,8 +10,14 @@ define (require, exports, module) ->
     url: () ->
       "/paella/rest/v0/main/recipes/#{@name}"
         
+  class RaidRecipe extends Backbone.Model
+    url: () ->
+      "/paella/rest/v0/main/raidrecipes/#{@name}"
+        
     
   module.exports =
     Recipe: Recipe
+    RaidRecipe: RaidRecipe
+    
     
     

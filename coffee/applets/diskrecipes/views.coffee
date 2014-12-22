@@ -48,6 +48,9 @@ define (require, exports, module) ->
   class EditRecipeView extends BaseEditPageView
     template: Templates.edit_recipe
 
+  class EditRaidRecipeView extends BaseEditPageView
+    template: Templates.edit_recipe
+
   class NewRecipeView extends NameContentFormView
     template: Templates.new_recipe_form
     collection: AppBus.reqres.request 'recipe:collection'
@@ -70,6 +73,7 @@ define (require, exports, module) ->
     SimpleRecipeListView: SimpleRecipeListView
     SimpleRaidRecipeListView: SimpleRaidRecipeListView
     EditRecipeView: EditRecipeView
+    EditRaidRecipeView: EditRaidRecipeView
     NewRecipeView: NewRecipeView
     NewRaidRecipeView: NewRaidRecipeView
     

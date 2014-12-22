@@ -69,17 +69,14 @@ define (require, exports, module) ->
       for rfield in @recipeFields
         value = @ui[rfield].val()
         if value != no_recipe_marker
-          if @model.has rfield
-            mval = @model.get rfield
-            if mval == value
-              continue
           console.log 'set rfield', rfield, 'to', value
           @model.set rfield, value
           continue
         if value == no_recipe_marker and @model.has rfield
           console.log "remove #{rfield} from", @model
-          @model.unset rfield
-
+          #@model.unset rfield
+          @model.set rfield, null
+          
     setInstallClicked: ->
       # http://stackoverflow.com/questions/16876970/marionette-itemview-how-to-re-render-model-on-change
       url = '/paella/rest/v0/main/admin/machines'

@@ -20,7 +20,7 @@ define (require, exports, module) ->
       'diskrecipes/newrecipe': 'new_recipe'
       'diskrecipes/listraid': 'list_raid_recipes'
       'diskrecipes/newraid': 'new_raid_recipe'
-      
+      'diskrecipes/viewraid/:name': 'edit_raid_recipe'
       
   MainBus.commands.setHandler 'diskrecipes:route', () ->
     console.log "diskrecipes:route being handled"
