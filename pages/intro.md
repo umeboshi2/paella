@@ -60,14 +60,15 @@ strong preference for using [python](https://python.org) instead of
 Unlike, FAI, paella is no longer using the [debian-live](https://live.debian.net/)
 to install the debian systems.  Instead, the
 [debian installer](https://www.debian.org/devel/debian-installer/) is being
-used to install the base system and prepare it to be configured with salt on the
+used to [install](#pages/debian-install) the base system
+and prepare it to be configured with salt on the
 next reboot.  Up until the present rewrite, paella depended upon 
 [fai-setup-storage](https://packages.debian.org/unstable/main/fai-setup-storage),
 which was thoughtfully split from the other FAI packages, as it proves to be
 very useful.  There exists a possibility that fai-setup-storage may be included
 along with febootstrap to automatically install rpm type systems.
 
-Also, paella uses a web server to help with the installation and
+Also, paella uses a [web server](#pages/paella-server) to help with the installation and
 management of the machines.  While the browser application is still in it's
 infancy and only performs the most minimal of management functions, the
 api it provides allows the debian installs to retrieve preseed files and special

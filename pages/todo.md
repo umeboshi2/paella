@@ -61,6 +61,8 @@
 
 ### Debian Installs
 
+- Can we put the debian installer in an LXC container on the debian-live system?
+
 - Create some simple disk/partition recipes to use as a starting 
   point.(STARTED)
   - a couple of recipes have been created.
@@ -89,6 +91,7 @@
 
 - integrate preexisting windows into paella server on deployment to client network.
 
+- look at using wimboot instead of booting winpe iso's
 
 ### Completed!
 
