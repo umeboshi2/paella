@@ -212,7 +212,7 @@ swigwin-3.0.0-zip:
 
 ez_setup_py:
   source: https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py
-  source_hash: sha256=9dfc64e3e2124489c490696c6ff943a5a2a5f03d9e55874b0aacd5d579e6f41c
+  source_hash: sha256=28f6a6398e1b2037af9e8ea521d2355cbd195c496a896a88c4237ca6e49889d1
   name: ez_setup.py
 
 codeblocks-setup-exe:
