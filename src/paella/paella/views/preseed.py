@@ -49,11 +49,15 @@ def _installer_view(request, template):
             disk_list = devices
         raid_recipe = rdmgr.prepare_recipe(m.raid_recipe_id)
     keydata = mgr.keymanager.get(m.id)
+    release = 'wheezy'
+    if m.release is not None:
+        release = m.release
     env = dict(uuid=uuid, hostname=name, machine=name,
                paella_server_ip=paella_server_ip,
                recipe=recipe, raid_recipe=raid_recipe,
                disk_list=disk_list, keydata=keydata,
-               masterkey=mgr.keymanager.masterkey)
+               masterkey=mgr.keymanager.masterkey,
+               release=release)
     content = render(template, env)
     return content
     

@@ -18,6 +18,17 @@ from paella.models.base import Base, SerialBase
 
 log = logging.getLogger(__name__)
 
+MachineTemplateType = Enum('preseed', 'pxeconfig', 'latescript',
+                           name='machine_template_type_enum')
+
+class MachineTemplate(Base):
+    __tablename__ = 'machine_templates'
+    id = Column(Integer, primary_key=True)
+    type = Column(MachineTemplateType)
+    name = Column(Unicode, unique=True)
+    content = Column(UnicodeText)
+    
+
 # FIXME - get rid of this
 class MyModel(Base):
     __tablename__ = 'models'
@@ -68,6 +79,15 @@ class Machine(Base, SerialBase):
     # by the debian-installer, this is the interface that will be used
     # during the install.
     iface = Column(Text, default='eth0')
+
+
+    # make way for overriding default scripts
+    preseed = Column(Integer, ForeignKey('machine_templates'),
+                     nullable=True)
+    pxeconfig = Column(Integer, ForeignKey('machine_templates'),
+                       nullable=True)
+    latescript = Column(Integer, ForeignKey('machine_templates'),
+                        nullable=True)
     
 
 class SaltKey(Base, SerialBase):

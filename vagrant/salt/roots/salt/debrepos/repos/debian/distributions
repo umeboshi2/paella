@@ -9,3 +9,15 @@ Description: Debian 7.4 Released 08 February 2014
 Log: logfile
 Update: main di
 SignWith: 62804AE5
+
+Origin: Debian
+Label: Debian
+Suite: testing
+Codename: jessie
+Architectures: ${pillar['reprepro']['architectures']}
+Components: main contrib non-free
+UDebComponents: main contrib non-free
+Description: Debian Testing
+Log: logfile
+Update: main di
+SignWith: 62804AE5

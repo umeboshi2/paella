@@ -32,3 +32,13 @@ build-keyring-package:
       - cmd: update-debrepos
 
 
+build-keyring-package-jessie:
+  cmd.script:
+    - source: salt://scripts/build-keyring-package-jessie.sh
+    - unless: test -r /home/vagrant/workspace/jessie/debian-archive-keyring_2014.3-paella1_amd64.changes
+    - user: ${user}
+    - group: ${group}
+    - requires:
+      - cmd: update-debrepos
+
+

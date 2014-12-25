@@ -24,8 +24,8 @@ d-i mirror/http/proxy string
 
 d-i apt-setup/${paella_server_ip}/key string http://${paella_server_ip}/debrepos/paella.gpg
 
-d-i mirror/suite string wheezy
-d-i mirror/udeb/suite string wheezy
+d-i mirror/suite string ${release}
+d-i mirror/udeb/suite string ${release}
 
 d-i passwd/root-login boolean true
 # Root password, either in clear text
@@ -105,7 +105,7 @@ d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 
 # Additional repositories, local[0-9] available
 d-i apt-setup/local0/repository string \
-       http://${paella_server_ip}/debrepos/salt wheezy-saltstack-2014-01 main
+       http://${paella_server_ip}/debrepos/salt ${release}-saltstack-2014-01 main
 d-i apt-setup/local0/comment string saltrepos
 d-i apt-setup/local0/key string http://${paella_server_ip}/debrepos/paella.gpg
 
@@ -120,6 +120,10 @@ tasksel tasksel/first multiselect standard
 d-i pkgsel/include string salt-minion python-requests
 
 popularity-contest popularity-contest/participate boolean false
+
+# This is fairly safe to set, it makes grub install automatically to the MBR
+# if no other operating system is detected on the machine.
+d-i grub-installer/only_debian boolean true
 
 # Avoid that last message about the install being complete.
 d-i finish-install/reboot_in_progress note

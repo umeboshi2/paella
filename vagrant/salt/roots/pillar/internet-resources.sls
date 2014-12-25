@@ -29,16 +29,40 @@ debian_pxe_installer:
         source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/udeb.list
         source_hash: sha256=6d2a05b7b1f7ecc9a8ab868905c9b1254e3e82fc47bce8b5eef78b26cca1cc2c
   jessie:
+    ###############################
     i386:
       linux:
-        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20140316/images/netboot/debian-installer/i386/linux
-        source_hash: sha256=17a5a290a5c83478394e604877653058d7a5bb6a1198d40dde32e4b988af3df9
+        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20141002/images/netboot/debian-installer/i386/linux
+        source_hash: sha256=92b9b272008e297235a036fd8f014e8f6dfca69fe3f8ae3fa78efe53d944c7cb
       initrd.gz:
-        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20140316/images/netboot/debian-installer/i386/initrd.gz
-        source_hash: sha256=04627b4d2ba7feaa70fc970884524fecf1ed39b3446f677f626b89058a9887cd
+        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20141002/images/netboot/debian-installer/i386/initrd.gz
+        source_hash: sha256=1e754777abb23bf35a6765c6672aa5043baf8ab19eca6b46f8fc2d5f6ee16d34
       udeb_list:
-        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20140316/images/udeb.list
-        source_hash: sha256=a5a9e0a7ecc78df2183feaceffabfd4b563e167faf37383fa7072abb2419461b
+        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20141002/images/udeb.list
+        source_hash: sha256=e7f67e920aef37b3d2ffe47afac56795c20c51ca6cc17dc6dc6c32545a387ec4
+    ###############################
+    amd64:
+      clinux:
+        #source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-amd64/20141002/images/netboot/debian-installer/amd64/linux
+        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/debian-installer/amd64/linux
+        source_hash: sha256=7f5fbeb9b3191b4c1311860a678ebcdd3946f10b6776932cf16720b44413d9bd
+      cinitrd.gz:
+        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/debian-installer/amd64/initrd.gz
+        source_hash: sha256=e5c9b02215770803aa740fc2cdb1ecb081db763c9da0513ceeaa8c94ce359c62
+      cudeb_list:
+        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/udeb.list
+        source_hash: sha256=220cc624c10cc12dd57beccec0cf886183914169cd6ed0f0b5a11bb6370317b0
+
+      linux:
+        #source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-amd64/20141002/images/netboot/debian-installer/amd64/linux
+        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/gtk/debian-installer/amd64/linux
+        source_hash: sha256=7f5fbeb9b3191b4c1311860a678ebcdd3946f10b6776932cf16720b44413d9bd
+      initrd.gz:
+        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/gtk/debian-installer/amd64/initrd.gz
+        source_hash: sha256=cb6828db5fac400a5062af74fea3e9be7bbef5e6030571f7f9ba9eee6fdd4efe
+      udeb_list:
+        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/udeb.list
+        source_hash: sha256=220cc624c10cc12dd57beccec0cf886183914169cd6ed0f0b5a11bb6370317b0
 
 
 debian_installer_i386_checksums:
@@ -211,7 +235,8 @@ dotnet-4.0-exe:
 
 
 cached_windows_files:
-  - chrome_standalone_enterprise_msi
+  # chrome changes too much
+  #- chrome_standalone_enterprise_msi
   - 7zip-install.msi
   - 7zip-install-x64-msi
   - python27-amd64-msi

@@ -8,9 +8,18 @@ bash-completion
 # need access to nfs exports
 nfs-common
 
+# disk and filesystem tools
+
+mdadm
+lvm2
+btrfs-tools
+xfsprogs
+reiserfsprogs
+
 # need to partition disk and make filesystems for win7
 parted
 ntfs-3g
+
 
 # virtualbox needed to run bcdboot in a winpe environment
 virtualbox

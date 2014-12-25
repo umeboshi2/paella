@@ -22,28 +22,37 @@ include:
     - makedirs: True
 
 <% checksums = pillar['debian_installer_i386_checksums'] %>
-
-
-i386-udeb-list-upstream:
+<% DI = pillar['debian_pxe_installer'] %>
+%for dist in DI:
+%for arch in DI[dist]:
+<% upstream_filename = '/srv/debrepos/debian/conf/udebs-%s-%s-upstream' % (dist, arch) %>
+<% list_filename = '/srv/debrepos/debian/conf/%s-%s-udeb.list' % (dist, arch) %>
+udeb-list-upstream-${dist}-${arch}:
   file.managed:
-    - name: /srv/debrepos/debian/conf/i386-udeb-list-upstream
-    - source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-i386/current/images/udeb.list
-    - source_hash: ${checksums['udeb_list']}
+    - name: ${upstream_filename}
+    - source: ${DI[dist][arch]['udeb_list']['source']}
+    - source_hash: ${DI[dist][arch]['udeb_list']['source_hash']}
     - requires:
       - file: /srv/debrepos/debian/conf
 
-create-udeb-list:
+create-udeb-list-${dist}-${arch}:
   cmd.run:
-    - unless: test -r /srv/debrepos/debian/conf/i386-udeb-list
-    - name: cat /srv/debrepos/debian/conf/i386-udeb-list-upstream | awk '{print $1 "\tinstall"}' > /srv/debrepos/debian/conf/i386-udeb-list
+    - unless: test -r ${list_filename}
+    - name: awk '{print $1 "\tinstall"}' < ${upstream_filename} > ${list_filename}
     - requires:
-      - file: i386-udeb-list-upstream
-    - creates: 
+        - file: udeb-list-upstream-${dist}-${arch}
+    - creates: ${list_filename}
+%endfor      
+%endfor      
 
 
 /srv/debrepos/debian/conf/live-packages:
   file.managed:
     - source: salt://debrepos/live-packages
+
+/srv/debrepos/debian/conf/jessie-pkgs:
+  file.managed:
+    - source: salt://debrepos/jessie-pkgs
 
 /srv/debrepos/debian/conf/updates:
   file.managed:

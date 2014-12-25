@@ -1,3 +1,15 @@
+<% DI = pillar['debian_pxe_installer'] %>
+<% udeb_lists = list() %>
+%for dist in DI:
+%for arch in DI[dist]:
+<%
+filename = '%s-%s-udeb.list' % (dist, arch)
+udeb_lists.append(filename)
+%>
+%endfor
+%endfor
+<% udebs = ' '.join(udeb_lists) %>
+
 Name: main
 Method: http://ftp.us.debian.org/debian
 Fallback: http://debian.mirrors.tds.net/debian
@@ -5,7 +17,7 @@ VerifyRelease: 46925553
 Architectures: ${pillar['reprepro']['architectures']}
 Components: main contrib non-free
 UDebComponents: none
-FilterList: deinstall local-packages live-packages i386-udeb-list
+FilterList: deinstall local-packages live-packages jessie-pkgs ${udebs}
 
 Name: di
 Method: http://ftp.us.debian.org/debian
