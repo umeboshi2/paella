@@ -1,8 +1,21 @@
 # -*- mode: yaml -*-
 
 include:
+  - default
+  - network
   - dhcpd.base
 
+
+
+<% cachedir = '/vagrant/vagrant/cache' %>
+<% reposdir = '%s/repos' % cachedir %>
+cache-wimlib-git-repos:
+  git.latest:
+    - name: https://gist.github.com/robinsmidsrod/4008017.git
+    - target: ${reposdir}/dchpd-conf-ipxe
+    - user: ${pillar['paella_user']}
+    - rev: 17a55e4de91fcae87f8b90b6db4890c27c15b0f6
+  
 isc-dhcp-server:
   service:
     - running
