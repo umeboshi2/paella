@@ -64,5 +64,5 @@ logs/
 
 
 # web client
-client
+#client
 src/paella/data
