@@ -1,0 +1,42 @@
+{
+  "name": "conspectus",
+  "version": "0.0.0",
+  "description": "project skeleton",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/umeboshi2/conspectus.git"
+  },
+  "author": "Joseph Rawson",
+  "license": "Public Domain",
+  "bugs": {
+    "url": "https://github.com/umeboshi2/conspectus/issues"
+  },
+  "homepage": "https://github.com/umeboshi2/conspectus",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-compass": "^0.9.1",
+    "grunt-contrib-coffee": "^0.11.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "git://github.com/jacksonrayhamilton/grunt-contrib-watch.git",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-requirejs": "^0.4.4",
+    "grunt-contrib-compress": "^0.10.0",
+    "grunt-contrib-csslint": "^0.2.0",
+    "grunt-shell": "^1.0.1",
+    "grunt-lodash": "^0.3.0",
+    "matchdep": "^0.3.0",
+    "lodash-cli": "^2.4.2",
+    "bower": "^1.3.9",
+    "requirejs": "^2.1.14",
+    "http-server": "^0.6.1",
+    "grunt-concurrent": "^1.0.0",
+    "lodash": "^2.4.1"
+  }
+}

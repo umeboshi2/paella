@@ -1,0 +1,5 @@
+# Standard masterless salt minion set-up
+master: localhost
+file_client: local
+id: default
+renderer: yaml_mako

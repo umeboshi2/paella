@@ -1,0 +1,10 @@
+@import "partials/X11colors";
+
+$primary-color: $color-LavenderBlush3;
+$secondary-color: $color-MistyRose;
+$text-color: darken($color-RosyBrown, 35%);
+
+$background-color: darken($primary-color, 10%);
+$button-background-color: darken($background-color, 15%);
+
+

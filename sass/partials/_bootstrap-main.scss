@@ -1,0 +1,16 @@
+
+body {
+    //min-height: 2000px;
+    padding-top: 70px;
+}
+
+.sidebar-menu {
+    @extend .btn-group-vertical;
+    }
+
+.sidebar-entry-button {
+    @extend .btn;
+    @extend .btn-default;
+    color: $secondary_color;
+}
+
