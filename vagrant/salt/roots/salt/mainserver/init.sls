@@ -4,7 +4,8 @@ include:
   - apache
   - virtualenv
   - postgresql
-
+  - webdev
+  
 rabbitmq-packages:
   pkg.installed:
     - pkgs:
