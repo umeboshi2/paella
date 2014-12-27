@@ -16,7 +16,9 @@ include:
     - user: postgres
     - group: postgres
     - mode: 644
+    - template: mako
 
+      
 postgresql-service:
   service.running:
     - name: postgresql
