@@ -4,6 +4,18 @@ live-build:
   pkg:
     - installed
 
+# FIXME: these are being installed on the paella server to be available
+# in the local repository when building live images.  Recreate the live
+# package list, then comment this state out.
+live-image-packages:
+  pkg.installed:
+    - pkgs:
+      - iceweasel
+      - libreoffice
+      - xfprint4
+      - epdfview
+      - miscfiles
+
 <% basedir = pillar['livebuild']['base_directory'] %>
 # This is modified to accept a url with the _KEY variable
 /usr/lib/live/build/bootstrap_archive-keys:

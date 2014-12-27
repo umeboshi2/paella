@@ -131,10 +131,10 @@ _QUIET="false"
 # $_VERBOSE: enable verbose
 # (Default: false)
 #_VERBOSE="false"
-_VERBOSE="false"
+_VERBOSE="true"
 
 # Internal stuff (FIXME)
-APT_OPTIONS="--yes"
+APT_OPTIONS="--yes --install-recommends"
 APTITUDE_OPTIONS="--assume-yes"
 DEBOOTSTRAP_OPTIONS="--keyring=/home/vagrant/.gnupg/pubring.gpg"
 CDEBOOTSTRAP_OPTIONS=""
