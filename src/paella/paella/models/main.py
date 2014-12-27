@@ -82,11 +82,11 @@ class Machine(Base, SerialBase):
 
 
     # make way for overriding default scripts
-    preseed = Column(Integer, ForeignKey('machine_templates'),
+    preseed = Column(Integer, ForeignKey('machine_templates.id'),
                      nullable=True)
-    pxeconfig = Column(Integer, ForeignKey('machine_templates'),
+    pxeconfig = Column(Integer, ForeignKey('machine_templates.id'),
                        nullable=True)
-    latescript = Column(Integer, ForeignKey('machine_templates'),
+    latescript = Column(Integer, ForeignKey('machine_templates.id'),
                         nullable=True)
     
 
