@@ -44,3 +44,9 @@ paella_really_download_or_check_the_large_iso_files: False
 
 
 paella_virtualenv_basedir: /var/lib/paella
+
+
+
+
+node_version: 0.10.25
+
