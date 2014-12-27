@@ -150,3 +150,12 @@ mingw-packages:
     - pkgs:
       - mingw-w64
       - mingw-w64-tools
+
+
+<% cachedir = '/vagrant/vagrant/cache' %>
+cache-repos-dir:
+  file.directory:
+    - name: ${cachedir}/repos
+    - makedirs: True
+    - requires: pkg:devpackages
+      
