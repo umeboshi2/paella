@@ -1,5 +1,8 @@
 # -*- mode: yaml -*-
 
+include:
+  - default
+  
 <% repodir = '/vagrant/vagrant/cache/repos' %>
 node-debian-git-repo:
   git.latest:
