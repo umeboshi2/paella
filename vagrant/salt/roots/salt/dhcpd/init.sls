@@ -9,7 +9,7 @@ include:
 
 <% cachedir = '/vagrant/vagrant/cache' %>
 <% reposdir = '%s/repos' % cachedir %>
-cache-wimlib-git-repos:
+cache-ipxe-dhcpd-files-gist-repos:
   git.latest:
     - name: https://gist.github.com/robinsmidsrod/4008017.git
     - target: ${reposdir}/dchpd-conf-ipxe

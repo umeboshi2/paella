@@ -7,18 +7,13 @@
 # the local debian repository must be ready
 
 include:
+  - default
   - debrepos
   - default
   - schroot
 
 
 <% cachedir = '/vagrant/vagrant/cache' %>
-
-cache-repos-dir:
-  file.directory:
-    - name: ${cachedir}/repos
-    - makedirs: True
-
 <% reposdir = '%s/repos' % cachedir %>
 
 cache-wimlib-git-repos:
