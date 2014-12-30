@@ -5,3 +5,5 @@ WSGIProcessGroup pyramid
 WSGIApplicationGroup %{GLOBAL}
 
 Alias /paella/client /vagrant/client
+
+RedirectMatch ^/$ /paella/
