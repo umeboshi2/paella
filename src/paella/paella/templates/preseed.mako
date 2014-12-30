@@ -3,7 +3,7 @@
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
 
-d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${paella_server_ip}/debrepos/paella.bin.gpg ; anna-install partman-reiserfs
+d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${paella_server_ip}/debrepos/paella.bin.gpg
 
 d-i keymap select us
 d-i console-setup/ask_detect boolean false

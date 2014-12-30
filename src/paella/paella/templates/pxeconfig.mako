@@ -16,7 +16,7 @@ menu color title 1;36;44 #ffcccc55 #ee220000 std
 menu color border 0 #00ffffff #55cc55cc std
 menu color timeout_msg 37;44 #ffcccc55 #cc222200 std
 
-menu title Network Boot Menu
+menu title Paella Installer Menu
 
 %if machine.ostype == 'debian':
 
@@ -26,9 +26,14 @@ menu title Network Boot Menu
 %endif
 
 label install
-      menu label ^Install ${machine.name} with Paella
+      menu label ^Install ${release}(${machine.arch}) to ${machine.name} with Paella
       kernel debinstall/${release}/${machine.arch}/linux
-      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name} netcfg/choose_interface=${machine.iface} ${debconf_debug}
+      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd-gtk.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name} netcfg/choose_interface=${machine.iface} ${debconf_debug}
+      
+label console_install
+      menu label ^Install ${release}(${machine.arch}) to ${machine.name} with Paella (console)
+      kernel debinstall/${release}/${machine.arch}/linux
+      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd-console.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name} netcfg/choose_interface=${machine.iface} ${debconf_debug}
       
 
 %elif machine.ostype == 'mswindows':
