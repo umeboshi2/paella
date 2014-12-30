@@ -81,6 +81,9 @@ class Machine(Base, SerialBase):
     iface = Column(Text, default='eth0')
 
 
+class MachineTemplateRel(Base, SerialBase):
+    __tablename__ = 'machine_template_rel'
+    id = Column(Integer, ForeignKey('machines.id'), primary_key=True)
     # make way for overriding default scripts
     preseed = Column(Integer, ForeignKey('machine_templates.id'),
                      nullable=True)
