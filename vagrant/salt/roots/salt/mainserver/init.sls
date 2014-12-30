@@ -19,7 +19,8 @@ extend:
       - watch:
         - file: paella-apache-config
         - file: paella-wsgi-script
-
+        - file: paella-pyramid-settings-file
+          
 
 
 paella-apache-config:
@@ -37,7 +38,13 @@ paella-wsgi-script:
     - group: root
     - mode: 755
 
-
+paella-pyramid-settings-file:
+  file.managed:
+    - name: /etc/apache2/paella-dev.ini
+    - source: salt://mainserver/paella-dev.ini
+    - template: mako
+      
+      
 # this command is always run
 # this command checks if paella is in `pip freeze` 
 # before executing, but this can't be done easily

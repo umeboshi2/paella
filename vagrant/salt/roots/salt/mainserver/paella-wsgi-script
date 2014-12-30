@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from pyramid.paster import get_app, setup_logging
-ini_path = '/srv/src/paella/development.ini'
+ini_path = '/etc/apache2/paella-dev.ini'
 setup_logging(ini_path)
 application = get_app(ini_path, 'main')
 

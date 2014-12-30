@@ -5,7 +5,7 @@
 # you should have to configure and refrence the paella_server_ip
 # variable is in this file.  The variable is used in the dhcpd and
 # livebuild namespaces below.  The 'n3' variable below is
-# only used in the dhcpd namespace below, and isn't truly
+# only used in the dhcpd and bind namespaces below, and isn't truly
 # necessary, but handy for testing.
 <% n3 = 5 %>
 <% paella_server_ip = '10.0.%d.1' % n3 %>
@@ -28,7 +28,9 @@ dhcpd:
   paella_subnet_routers: ${paella_server_ip}
   paella_subnet_tftp_server: ${paella_server_ip}
 
-
+bind:
+  in-addr: ${n3}.0.10
+  
   
 # The default is to operate in a vagrant virtual machine.
 # In order for some ofthe states to work, the paella_user 
