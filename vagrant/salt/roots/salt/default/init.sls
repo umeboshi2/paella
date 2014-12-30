@@ -17,13 +17,10 @@ emacs:
     - name: editor
     - path: /usr/bin/emacs23
 
-screen:
-  pkg:
-    - installed
-
 basic-tools:
   pkg.installed:
     - pkgs:
+      - screen
       - iotop
       - htop
       - rsync
@@ -109,6 +106,32 @@ disk-tools:
       - e2fsprogs
       - mdadm
       
+  
+python-debrepos-support-packages:
+  pkg.installed:
+    - pkgs:
+      - python-libtorrent
+      - python-feedparser
+
+# These may not be necessary, but are here in case
+# it's easier to build some of the salt-minion dependencies
+# in debian.
+mingw-packages:
+  pkg.installed:
+    - pkgs:
+      - mingw-w64
+      - mingw-w64-tools
+
+# A desktop is needed on the live system
+# In order to more easily prepare the local
+# partial debian repository, install the packages
+# on the vagrant machine.
+test-virtualbox-packages:
+  pkg.installed:
+    - pkgs:
+      - xfce4
+      - lightdm
+
 
 # the virtualbox packages will be 
 # needed for the live installer
@@ -116,13 +139,6 @@ virtualbox-packages:
   pkg.installed:
     - pkgs:
       - virtualbox
-
-# I need this to test virtualbox
-test-virtualbox-packages:
-  pkg.installed:
-    - pkgs:
-      - xfce4
-      - lightdm
 
 disable-lightdm-service:
   service.disabled:
@@ -138,20 +154,6 @@ kill-lightdm-service:
       - service: disable-lightdm-service
 
   
-python-debrepos-support-packages:
-  pkg.installed:
-    - pkgs:
-      - python-libtorrent
-      - python-feedparser
-
-
-mingw-packages:
-  pkg.installed:
-    - pkgs:
-      - mingw-w64
-      - mingw-w64-tools
-
-
 <% cachedir = '/vagrant/vagrant/cache' %>
 cache-repos-dir:
   file.directory:

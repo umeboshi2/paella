@@ -6,6 +6,11 @@ include:
   - shorewall.base
   - shorewall.macros
 
+# FIXME
+# Shorewall is not a normal service, such as a running daemon, but
+# a collection of iptable rules that is loaded in the kernel.  Currently,
+# it seems the vagrant machine must be rebooted, or shorewall restarted
+# before things work right.  
 restart-shorewall:
   cmd.run:
     - name: /etc/init.d/shorewall restart

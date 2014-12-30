@@ -3,6 +3,10 @@
 include:
   - postgresql.base
 
+# FIXME
+# We really need to make a password for the dbadmin user
+# and fix the pg_hba.conf file as well.
+  
 /etc/postgresql/9.1/main/pg_hba.conf:
   file.managed:
     - source: salt://postgresql/pg_hba.conf
@@ -10,6 +14,11 @@ include:
     - group: postgres
     - mode: 640
 
+# FIXME      
+# For debug and development purposes, the
+# paella server is accepting db connections
+# on the second network interface.  This should
+# not be done in production.
 /etc/postgresql/9.1/main/postgresql.conf:
   file.managed:
     - source: salt://postgresql/postgresql.conf
@@ -36,6 +45,11 @@ pg_createuser_dbadmin:
     - requires:
       - service: postgresql
 
+# FIXME
+# Traditionally, the paella database user had read only access to the
+# paella database and the installers used this user for access to
+# postgresql.  Using a web server as a layer between the app and the
+# database probably removes the need for an underprivileged user.
 pg_createuser_paella:
   cmd.run:
     - name: createuser --no-superuser --no-createdb --no-createrole paella

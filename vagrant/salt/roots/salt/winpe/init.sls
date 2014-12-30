@@ -77,7 +77,9 @@ example-autounattend-xml:
   file.managed:
     - name: /var/cache/netboot/winpe/Autounattend.xml
     - source: salt://winpe/Autounattend.xml
-
+    - require:
+      - file: example-overlay-directory
+        
 example-winpe-files:
   cmd.wait:
     - name: echo "example-winpe-files ready"

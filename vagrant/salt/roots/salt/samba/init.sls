@@ -5,7 +5,12 @@ include:
   - samba.isofiles
   - samba.winfiles
 
-  
+# FIXME
+# The three iso's that are mounted in this sls need to be
+# in the fstab so that they are present on reboot.  Currently
+# the vagrant machine must be provisioned on each boot,
+# partially because these iso's are not in fstab but must be
+# mounted.
 <% cache = '/vagrant/vagrant/cache' %>
 
 

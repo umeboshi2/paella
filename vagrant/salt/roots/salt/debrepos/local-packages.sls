@@ -1,5 +1,8 @@
 # -*- mode: yaml -*-
 
+# This sls is responsible for installing many of  the packages on the
+# vagrant machine that will be required in the local debian repository.
+
 <% user = pillar['paella_user'] %>
 <% group = pillar['paella_group'] %>
 

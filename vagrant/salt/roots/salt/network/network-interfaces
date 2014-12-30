@@ -1,3 +1,5 @@
+# This file has been created to assign an ip address
+# to the secondary network interface on the vagrant machine.
 auto lo
 iface lo inet loopback
 

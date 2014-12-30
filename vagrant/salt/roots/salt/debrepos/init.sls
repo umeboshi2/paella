@@ -22,6 +22,17 @@ debrepos-ready:
       - sls: debrepos.secrepos
       - sls: debrepos.paellarepos
       
+# This script will rebuild the debian-archive-keyring
+# package with the paella repository key inserted.
+# FIXME  This script only works if the package is
+# built manually and the appropriate signatures
+# placed in the script.
+# The fix should be to attempt to build the package
+# gather and store the correct signatures, destroy
+# the failed build and build again with correct
+# signatures.  This script may be need to be
+# written in python to more easily achieve this.
+
 build-keyring-package:
   cmd.script:
     - source: salt://scripts/build-keyring-package.sh
@@ -32,6 +43,7 @@ build-keyring-package:
       - cmd: update-debrepos
 
 
+# FIXME make one script instead of one for each release        
 build-keyring-package-jessie:
   cmd.script:
     - source: salt://scripts/build-keyring-package-jessie.sh

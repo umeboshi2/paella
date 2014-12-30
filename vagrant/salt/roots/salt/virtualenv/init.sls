@@ -4,6 +4,9 @@ include:
   - default
 
 
+# FIXME
+# I'm not sure it is necessary to prepare the pip.conf file for vagrant user.
+# If it is necessary, I have forgotten why.
 vagrant-pip-config:
   file.managed:
     - name: /home/${pillar['paella_user']}/.pip/pip.conf
@@ -20,6 +23,7 @@ virtualenv-basedir:
     - mode: 2775
 
 
+# This is the virtualenv used to gather the driverpacks      
 get-driverpacks-virtualenv:
   virtualenv.managed:
     - name: ${pillar['paella_virtualenv_basedir']}/dp-venv
@@ -30,7 +34,7 @@ get-driverpacks-virtualenv:
       - file: virtualenv-basedir
 
 
-
+# This is the virtualenv that the paella server needs
 mainserver-virtualenv:
   virtualenv.managed:
     - name: ${pillar['paella_virtualenv_basedir']}/venv
@@ -40,11 +44,17 @@ mainserver-virtualenv:
     - require:
       - file: virtualenv-basedir
 
+
+# This looks funky, but it happens to be the only way known
+# to easily put python packages hosted in git repos in the
+# virtualenv's.
 <% import os %>
 <% basedir = pillar['paella_virtualenv_basedir'] %>
 %for repo in ['trumpet', 'debrepos']:
+# These states only exist if the symlink doesn't exist
+# in the virtualenv.
 %if not os.path.isfile(os.path.join(basedir, 'venv/lib/python2.7/site-packages/%s.egg-link' % repo)):
-${repo}-requirement:
+mainserver-virtualenv-${repo}-requirement:
   pip.installed:
     - name: ${repo}
     - user: ${pillar['paella_user']}
