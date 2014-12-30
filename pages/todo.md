@@ -106,6 +106,8 @@ system.
 - test raid recipes and determine if disklist is needed in database
   - can we presume disklist on null entry in db?
 
+- need place for kernel cmdline parameters in machine row
+
 - think about making a special section in preseed to handle the  disk options.  The
   special section will include debconf questions and answers that complement the
   recipes. It looks like a disk list will be needed to use the raid recipe.  Can I create

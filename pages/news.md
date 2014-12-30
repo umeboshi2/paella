@@ -63,6 +63,8 @@
 
 - [uefi-pxe-win8](http://technet.microsoft.com/en-us/library/jj938037.aspx)
 
+- [dhcp options for pxe](http://tools.ietf.org/html/rfc4578)
+
 ### Wikipedia Articles
 - [Wikipedia article on PXE](http://en.wikipedia.org/wiki/Preboot_Execution_Environment)
 
