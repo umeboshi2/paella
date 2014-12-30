@@ -14,7 +14,6 @@ define (require, exports, module) ->
 
   class Router extends BootStrapAppRouter
     appRoutes:
-      '': 'start'
       'diskrecipes': 'start'
       'diskrecipes/viewrecipe/:name': 'edit_recipe'
       'diskrecipes/newrecipe': 'new_recipe'

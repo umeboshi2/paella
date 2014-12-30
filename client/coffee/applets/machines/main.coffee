@@ -14,7 +14,6 @@ define (require, exports, module) ->
 
   class Router extends BootStrapAppRouter
     appRoutes:
-      '': 'start'
       'machines': 'start'
       'machines/viewmachine/:name': 'view_machine'
 

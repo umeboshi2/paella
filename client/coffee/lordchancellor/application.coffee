@@ -24,6 +24,8 @@ define (require, exports, module) ->
   require 'frontdoor/main'
   require 'useradmin/main'
   require 'sitetext/main'
+  require 'machines/main'
+  require 'diskrecipes/main'
   
   app = new Marionette.Application()
     

@@ -38,13 +38,7 @@ require.config
     # component.
     common: '../common'
     # applets
-    hubby: '../applets/hubby'
-    bumblr: '../applets/bumblr'
     wiki: '../applets/wiki'
-    frontdoor: '../applets/frontdoor'
-    bookstore: '../applets/bookstore'
-    diskrecipes: '../applets/diskrecipes'
-    machines: '../applets/machines'
     
   # FIXME:  try to reduce the shim to only the
   # necessary resources

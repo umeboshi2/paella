@@ -90,7 +90,6 @@ define (require, exports, module) ->
         @App.content.empty()
       #console.log 'controller.start called'
       @make_main_content()
-      #console.log 'wiki started'
 
   module.exports = Controller
   

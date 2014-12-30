@@ -38,6 +38,11 @@ require.config
     # These should maybe be packaged as bower
     # component.
     common: '../common'
+    diskrecipes: '../applets/diskrecipes'
+    machines: '../applets/machines'
+
+    #FIXME why am i including this?
+    wiki: '../applets/wiki'
     
   # FIXME:  try to reduce the shim to only the
   # necessary resources

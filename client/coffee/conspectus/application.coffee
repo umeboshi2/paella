@@ -19,9 +19,6 @@ define (require, exports, module) ->
   # require applets
   require 'frontdoor/main'
   require 'wiki/main'
-  require 'bumblr/main'
-  require 'hubby/main'
-  require 'bookstore/main'
 
   
   app = new Marionette.Application()

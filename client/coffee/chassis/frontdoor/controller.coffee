@@ -5,8 +5,7 @@ define (require, exports, module) ->
   MainBus = require 'msgbus'
 
   Views = require 'frontdoor/views'
-
-  WikiBus = require 'sitetext/msgbus'
+  WikiBus = require 'wiki/msgbus'
 
   marked = require 'marked'
   Models = require 'models'
@@ -16,14 +15,8 @@ define (require, exports, module) ->
 
   { SideBarController } = require 'common/controllers'
 
-
   side_bar_data = new Backbone.Model
-    entries: [
-      {
-        name: 'Home'
-        url: '#'
-      }
-      ]
+    entries: [      ]
 
   class Controller extends SideBarController
     mainbus: MainBus
@@ -32,21 +25,22 @@ define (require, exports, module) ->
       
     make_main_content: ->
       @make_sidebar()
-      @show_page 'intro'
+      @show_page 'main_page'
 
     show_page: (name) ->
       @make_sidebar()
       page = WikiBus.reqres.request 'pages:getpage', name
-      #response = page.fetch()
-      #response.done =>
-      view = new Views.FrontDoorMainView
-        model: page
-      @App.content.show view
+      window.wpage = page
+      response = page.fetch()
+      response.done =>
+        view = new Views.FrontDoorMainView
+          model: page
+        @App.content.show view
 
     start: ->
-      #console.log 'controller.start called'
+      console.log 'controller.start called'
       @make_main_content()
-      #console.log 'frontdoor started'
+      console.log 'frontdoor started'
 
   module.exports = Controller
   
