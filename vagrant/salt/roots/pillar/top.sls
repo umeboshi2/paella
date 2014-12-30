@@ -4,9 +4,7 @@ base:
   '*':
     - base
     - localnet
-    - dhcpd
     - default-ports
-    - livebuild
     - reprepro
     - saltmaster
     - internet-resources
