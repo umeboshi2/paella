@@ -19,7 +19,7 @@ The design is mostly to keep a user of one machine to be able to
 retrieve the pillar data or minion keys of another machine.
 
 
-## Rules Concerning System UUID
+## How System UUID is used
 
 These are the rules that are intended to be implemented in the paella 
 system.  These are the rules for the unauthenticated access that the 

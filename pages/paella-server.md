@@ -62,6 +62,10 @@ request.
 - **update_package_list**
   This needs to be done with another url.
 
+
+### /admin/machines
+
+
 ### /recipes and /recipes/{name}
 
 This is a simple CRUD interface for the partman recipes.

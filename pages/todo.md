@@ -34,6 +34,31 @@
 
 - Use debian live system to install custom wim image and prepare boot.
 
+- Virtualbox fails to reboot PXE, needs poweroff.  Determine if this is true
+for both wheezy and jessie.  Verify, then reportbug.
+
+- Implement just enough DNS on paella server to add paella CNAME
+entry.  Fix paella-client to use paella hostname by default for paella server.
+
+- Create default disk recipes and some sitetext pages for the paella server.
+
+- Make fstab entries for loopback mounted iso files.
+
+- Three pillar files hold "paella_server_ip".  Make sure paella-client talks
+to paella host instead of ip address.  The .ini file that paella sever uses
+also has "paella_server_ip" defined.  In total, there are currently four
+files that contain "paella_server_ip."  Consolidate the three pillar files into
+a single file, then make notes that there are only two files to adjust when
+changing "paella_server_ip" for vagrant machine.
+
+- Make note that 10.0.2.0/24 cidr interferes with default NAT addresses
+on virtualbox.  Make note that option to change this is commented out
+in Vagrantfile.
+
+- Consider using vagrant rsync updates for some shared directories.
+
+
+
 ### Paella Server
 
 - Automate key generation and preseed the keys during first stage 
@@ -41,23 +66,33 @@
   http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
   - pyramid_celery and rabbitmq to help queue key generation jobs
   - keys are instaled in configure netboot script
-  - need to enforce ssl on apache to pass data across network
+  - **IMPORTANT** need to enforce ssl on apache to pass data across network
   - **update**
 	- some work has been done of generating keys
 
 - Implement per machine auto install option when generating install pxe 
-  config file.
+config file.  Implement a short delay in pxeconfig, but still automatically install
+system.
 
 - work on web interface
-
-	- basic recipe management is possibly complete
 
 	- edit state files with ace editor
 
 	- change layout a bit and put paella management in it's own page.
 
-	- create front page
+	- create front page  and cleanup unneeded applets **STARTED**
 
+	- implement specific machine templates.  Create, edit and add/remove
+	to/from machine.
+
+	- get wiki/sitetext working properly on web interface.
+
+	- check pxeconfig on machine update, and refresh pxeconfig if exists.
+
+	- create interface to assign release to machine.  Release is just simple
+	text field with hardcoded entries.  **FIXME** figure out nice way to
+	manage release info.
+	
 
 ### Debian Installs
 
@@ -90,8 +125,9 @@
 - handle windows releases other than 7, and also possibly support flavors.
 
 - integrate preexisting windows into paella server on deployment to client network.
+  **IMPORTANT**, I forgot what I meant by this statement.
 
-- look at using wimboot instead of booting winpe iso's
+- look at using wimboot instead of booting winpe iso's.
 
 ### Completed!
 
@@ -108,3 +144,4 @@
 
 - DONE: use system uuid instead of mac addresses: dmidecode -s system-uuid
 
+- DONE: web-interface:  recipe managers

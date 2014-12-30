@@ -105,10 +105,27 @@ debian-live system!  The simple script that does this can be viewed
 [here](https://github.com/umeboshi2/paella/blob/master/vagrant/salt/roots/salt/debianlive/install-win7-image.sh).
 
 
+## Planned Usage and Development Direction
 
+It seems to be quite often when a fully automated network installer is
+considered to be necessary for an environment, there is a large farm
+of very similar machines performing very similar functions.  Outside of
+identifying and keeping track of the machines, they are not otherwise
+treated differently.
 
+It also seems to be that investment in time and knowledge required to
+implement a fully automated network installation and configuration
+management system drives the price of service considerably in order
+for the developer of the system to receive an adequate return on the
+investment spent.
 
-
+The result of these facts seem to indicate that this type of software (or
+service) is often labelled as "enterprise" quality, with a price tag attached
+that exceeds the budget for many smaller businesses that are required to
+keep and maintain a small computer network.  The goal of paella is to
+deliver a similar service to a business that is almost big enough to require
+an internal IT person, or some small businesses that have IT but need help
+with system and network administration.
 
 
 

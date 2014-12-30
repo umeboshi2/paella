@@ -4,18 +4,24 @@
 
 ### Procedure when the machine is introduced to the network
 
-1. Boot machine from network into live system.
+1. Boot machine from network into live system.  When the machine
+   finishes rendering the desktop screen, lauch a terminal emulator.
 
 2. At command prompt type: paella-submit-machine <name>
    where <name> is the name of the machine.
    
-3. Next, type: paella-set-install.  This will instruct 
+3. Next (optionally), type: paella-set-install.  This will instruct 
    the server to create pxe config files for the system
-   uuid of the machine.
+   uuid of the machine.  
 
 4. The attributes in the database for the machine will direct the
    pxe config that will be generated.  The type of os, architecture,
    and release are all considered when making the pxeconfig file.
+   The default parameters for the machine is a debian stable system
+   with a simple atomic filesystem recipe. on the architecture of the live
+   system that the machine was submitted with.  These attributes
+   can be manipulated on the paella web interface prior to installing the
+   machine.
    
 ### Procedure when machine set to be installed:
  
