@@ -7,7 +7,7 @@
 # livebuild namespaces below.  The 'n3' variable below is
 # only used in the dhcpd and bind namespaces below, and isn't truly
 # necessary, but handy for testing.
-<% n3 = 5 %>
+<% n3 = 4 %>
 <% paella_server_ip = '10.0.%d.1' % n3 %>
 
 # This ip can also be found in dhcpd.sls and livebuild.sls
