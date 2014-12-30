@@ -6,65 +6,6 @@
 #nu2_mirror: http://securitywonks.org/n2u/mirrorfiles
 nu2_mirror: ftp://dl.xs4all.nl/pub/mirror/nu2files
 
-debian_pxe_installer:
-  wheezy:
-    i386:
-      linux:
-        source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/linux
-        source_hash: sha256=1f256c7d273247fc257cdd3d40046c8e32f3a9f8e78bbfecc925999ff69d7b82
-      initrd.gz:
-        source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images/netboot/debian-installer/i386/initrd.gz
-        source_hash: sha256=ae122861a3f1eaceb0de9591e17f1c8eadd6761e06eacfffe0b49d6c34e8ca6e
-      udeb_list:
-        source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-i386/current/images/udeb.list
-        source_hash: sha256=a4bce242e3b8a32a68f980cd4011fbb3f20ec6a1370f2bee10a046a41a2f80d0
-    amd64:
-      linux:
-        source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux
-        source_hash: sha256=487e2dc3635e22f3f7d6e90e36d6dccbf9c5e09a747179d0aa42bc6b063d492a
-      initrd.gz:
-        source: http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
-        source_hash: sha256=c91a2216fe00ddb9bd42a8000e19997b5df897a561f904b0a88e03a65f6c6dad
-      udeb_list:
-        source: http://ftp.us.debian.org/debian/dists/wheezy/main/installer-amd64/current/images/udeb.list
-        source_hash: sha256=6d2a05b7b1f7ecc9a8ab868905c9b1254e3e82fc47bce8b5eef78b26cca1cc2c
-  jessie:
-    ###############################
-    i386:
-      linux:
-        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20141002/images/netboot/debian-installer/i386/linux
-        source_hash: sha256=92b9b272008e297235a036fd8f014e8f6dfca69fe3f8ae3fa78efe53d944c7cb
-      initrd.gz:
-        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20141002/images/netboot/debian-installer/i386/initrd.gz
-        source_hash: sha256=1e754777abb23bf35a6765c6672aa5043baf8ab19eca6b46f8fc2d5f6ee16d34
-      udeb_list:
-        source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-i386/20141002/images/udeb.list
-        source_hash: sha256=e7f67e920aef37b3d2ffe47afac56795c20c51ca6cc17dc6dc6c32545a387ec4
-    ###############################
-    amd64:
-      clinux:
-        #source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-amd64/20141002/images/netboot/debian-installer/amd64/linux
-        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/debian-installer/amd64/linux
-        source_hash: sha256=7f5fbeb9b3191b4c1311860a678ebcdd3946f10b6776932cf16720b44413d9bd
-      cinitrd.gz:
-        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/debian-installer/amd64/initrd.gz
-        source_hash: sha256=e5c9b02215770803aa740fc2cdb1ecb081db763c9da0513ceeaa8c94ce359c62
-      cudeb_list:
-        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/udeb.list
-        source_hash: sha256=220cc624c10cc12dd57beccec0cf886183914169cd6ed0f0b5a11bb6370317b0
-
-      linux:
-        #source: http://ftp.nl.debian.org/debian/dists/jessie/main/installer-amd64/20141002/images/netboot/debian-installer/amd64/linux
-        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/gtk/debian-installer/amd64/linux
-        source_hash: sha256=7f5fbeb9b3191b4c1311860a678ebcdd3946f10b6776932cf16720b44413d9bd
-      initrd.gz:
-        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/netboot/gtk/debian-installer/amd64/initrd.gz
-        source_hash: sha256=cb6828db5fac400a5062af74fea3e9be7bbef5e6030571f7f9ba9eee6fdd4efe
-      udeb_list:
-        source: http://d-i.debian.org/daily-images/amd64/20141224-00:17/udeb.list
-        source_hash: sha256=220cc624c10cc12dd57beccec0cf886183914169cd6ed0f0b5a11bb6370317b0
-
-
 debian_installer_i386_checksums:
   udeb_list: sha256=a4bce242e3b8a32a68f980cd4011fbb3f20ec6a1370f2bee10a046a41a2f80d0
   initrd: sha256=0aef8471b5092000991d7549be503d46b7e301cf89582d2c68619b14cedea50f
