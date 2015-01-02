@@ -91,11 +91,10 @@ live-${arch}-directory:
     - user: ${pillar['paella_user']}
 
 edit-live-${arch}.cfg:
-  file.sed:
+  file.replace:
     - name: /var/lib/tftpboot/live-${arch}.cfg
-    - before: /live/
-    - after: /live-${arch}/
-    - flags: g
+    - pattern: /live/
+    - repl: /live-${arch}/
 
 
 %if arch == 'i386':

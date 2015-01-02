@@ -72,8 +72,3 @@ salt-master:
     - recurse:
       - group
   
-<% cachedir = '/vagrant/vagrant/cache' %>
-
-<% reposdir = '%s/repos' % cachedir %>
-
-
