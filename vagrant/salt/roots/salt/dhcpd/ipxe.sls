@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - default
@@ -7,12 +10,12 @@ include:
 
 
 
-<% cachedir = '/vagrant/vagrant/cache' %>
-<% reposdir = '%s/repos' % cachedir %>
+{% set cachedir = '/vagrant/vagrant/cache' %}
+{% set reposdir = '%s/repos' % cachedir %}
 cache-ipxe-git-repos:
   git.latest:
     - name: git://git.ipxe.org/ipxe.git
-    - target: ${reposdir}/ipxe
-    - user: ${pillar['paella_user']}
+    - target: {{ reposdir }}/ipxe
+    - user: {{ user }}
     #- rev: 
   

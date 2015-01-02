@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - winpe
@@ -13,17 +16,17 @@ include:
     - source: salt://netboot/pxelinux-cfg
     - template: mako
     - makedirs: True
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
 
 /var/lib/tftpboot/splash.png:
   file.managed:
     - source: salt://netboot/splash.png
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
 
 /var/lib/tftpboot/paella-splash.png:
   file.managed:
     - source: salt://netboot/paella-splash.png
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
 
 
 #####################################
@@ -53,102 +56,102 @@ build-live-image-script:
     - source: salt://scripts/make-live-image.sh
     - mode: 755
 
-%for arch in ['i386', 'amd64']:
-<% lbdir = '/var/cache/netboot/livebuild/%s' % arch %>
-build-live-image-${arch}:
+{% for arch in ['i386', 'amd64']: %}
+{% set lbdir = '/var/cache/netboot/livebuild/%s' % arch %}
+build-live-image-{{ arch }}:
   cmd.run:
     - require:
       - sls: winpe
       - file: build-live-image-script
-    - unless: test -r ${lbdir}/binary/md5sum.txt
-    - name: make-live-image ${arch}
-    - cwd: ${lbdir}
+    - unless: test -r {{ lbdir }}/binary/md5sum.txt
+    - name: make-live-image {{ arch }}
+    - cwd: {{ lbdir }}
 
-livebuild-filesystem-share-${arch}:
+livebuild-filesystem-share-{{ arch }}:
   file.directory:
-    - name: /srv/debian-live/${arch}
+    - name: /srv/debian-live/{{ arch }}
     - makedirs: True
 
-install-live-filesystem-${arch}:
+install-live-filesystem-{{ arch }}:
   cmd.script:
     - require:
-      - cmd: build-live-image-${arch}
-      - file: livebuild-filesystem-share-${arch}
-    - unless: test -r /srv/debian-live/${arch}/FIXME
+      - cmd: build-live-image-{{ arch }}
+      - file: livebuild-filesystem-share-{{ arch }}
+    - unless: test -r /srv/debian-live/{{ arch }}/FIXME
     - source: salt://scripts/install-netboot-filesystem.sh
     - env:
-      - ARCH: ${arch}
+      - ARCH: {{ arch }}
 
-live-${arch}.cfg:
+live-{{ arch }}.cfg:
   file.copy:
-    - name: /var/lib/tftpboot/live-${arch}.cfg
-    - source: ${lbdir}/tftpboot/live.cfg
+    - name: /var/lib/tftpboot/live-{{ arch }}.cfg
+    - source: {{ lbdir }}/tftpboot/live.cfg
 
-live-${arch}-directory:
+live-{{ arch }}-directory:
   file.directory:
-    - name: /var/lib/tftpboot/live-${arch}
+    - name: /var/lib/tftpboot/live-{{ arch }}
     - makedirs: True
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
 
-edit-live-${arch}.cfg:
+edit-live-{{ arch }}.cfg:
   file.replace:
-    - name: /var/lib/tftpboot/live-${arch}.cfg
+    - name: /var/lib/tftpboot/live-{{ arch }}.cfg
     - pattern: /live/
-    - repl: /live-${arch}/
+    - repl: /live-{{ arch }}/
 
 
-%if arch == 'i386':
-%for ver in ['1', '2']:
-livebuild-bootfile-vmlinuz${ver}-${arch}:
+{% if arch == 'i386': %}
+{% for ver in ['1', '2']: %}
+livebuild-bootfile-vmlinuz{{ ver }}-{{ arch }}:
   file.copy:
-    - name: /var/lib/tftpboot/live-${arch}/vmlinuz${ver}
-    - source: ${lbdir}/binary/live/vmlinuz${ver}
+    - name: /var/lib/tftpboot/live-{{ arch }}/vmlinuz{{ ver }}
+    - source: {{ lbdir }}/binary/live/vmlinuz{{ ver }}
     - makedirs: True
     - require:
-      - file: live-${arch}-directory
-livebuild-bootfile-initrd${ver}.img-${arch}:
+      - file: live-{{ arch }}-directory
+livebuild-bootfile-initrd{{ ver }}.img-{{ arch }}:
   file.copy:
-    - name: /var/lib/tftpboot/live-${arch}/initrd${ver}.img
-    - source: ${lbdir}/binary/live/initrd${ver}.img
+    - name: /var/lib/tftpboot/live-{{ arch }}/initrd{{ ver }}.img
+    - source: {{ lbdir }}/binary/live/initrd{{ ver }}.img
     - makedirs: True
     - require:
-      - file: live-${arch}-directory
-%endfor
-%elif arch == 'amd64':
-%for filename in ['vmlinuz', 'initrd.img']:
-livebuild-bootfile-${filename}-${arch}:
+      - file: live-{{ arch }}-directory
+{% endfor %}
+{% elif arch == 'amd64': %}
+{% for filename in ['vmlinuz', 'initrd.img']: %}
+livebuild-bootfile-{{ filename }}-{{ arch }}:
   file.copy:
-    - name: /var/lib/tftpboot/live-${arch}/${filename}
-    - source: ${lbdir}/binary/live/${filename}
+    - name: /var/lib/tftpboot/live-{{ arch }}/{{ filename }}
+    - source: {{ lbdir }}/binary/live/{{ filename }}
     - makedirs: True
     - require:
-      - file: live-${arch}-directory
-%endfor
-%endif
+      - file: live-{{ arch }}-directory
+{% endfor %}
+{% endif %}
 
-%endfor
+{% endfor %}
 
-
+# FIXME this may not work in jinja
 # copy syslinux files to tftpboot
-<% statenames = [] %>
-%for filename in ['chain.c32', 'gpxelinux.0', 'memdisk', 'pxelinux.0', 'vesamenu.c32']:
-<% sname = 'copy-%s' % filename %>
-<% statenames.append(sname) %>
-${sname}:
+{% set statenames = [] %}
+{% for filename in ['chain.c32', 'gpxelinux.0', 'memdisk', 'pxelinux.0', 'vesamenu.c32']: %}
+{% set sname = 'copy-%s' % filename %}
+{% set ignore = statenames.append(sname) %}
+{{ sname }}:
   file.copy:
-    - name: /var/lib/tftpboot/${filename}
-    - source: /usr/lib/syslinux/${filename}
+    - name: /var/lib/tftpboot/{{ filename }}
+    - source: /usr/lib/syslinux/{{ filename }}
     - require:
       - file: /var/lib/tftpboot
-%endfor
+{% endfor %}
 
 syslinux-files-installed:
   cmd.run:
     - name: echo "syslinux-files-installed"
     - requires:
-      %for sname in statenames:
-      - ${sname}
-      %endfor
+      {% for sname in statenames: %}
+      - {{ sname }}
+      {% endfor %}
 
 ipxe-boot-file:
   cmd.run:

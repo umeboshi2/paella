@@ -11,7 +11,7 @@ include:
 # the vagrant machine must be provisioned on each boot,
 # partially because these iso's are not in fstab but must be
 # mounted.
-<% cache = '/vagrant/vagrant/cache' %>
+{% set cache = '/vagrant/vagrant/cache' %}
 
 
 shares_directory:
@@ -27,13 +27,13 @@ aik_share_directory:
 
 aik-iso-exists:
   file.exists:
-    - name: ${cache}/kb3aik.iso
+    - name: {{ cache }}/kb3aik.iso
 
 
 aik_share_mounted:
   mount.mounted:
     - name: /srv/shares/aik
-    - device: ${cache}/kb3aik.iso
+    - device: {{ cache }}/kb3aik.iso
     - fstype: udf
     - mkmnt: True
     - opts:
@@ -42,28 +42,28 @@ aik_share_mounted:
     - require:
       - file: aik-iso-exists
 
-%for arch in ['i386', 'amd64']:
-win7_${arch}_share_directory:
+{% for arch in ['i386', 'amd64']: %}
+win7_{{ arch }}_share_directory:
   file.directory:
-    - name: /srv/shares/win7/${arch}
+    - name: /srv/shares/win7/{{ arch }}
     - makedirs: True
 
-win7-${arch}-iso-exists:
+win7-{{ arch }}-iso-exists:
   file.exists:
-    - name: ${cache}/win7-ultimate-${arch}.iso
+    - name: {{ cache }}/win7-ultimate-{{ arch }}.iso
 
-win7_${arch}_share_mounted:
+win7_{{ arch }}_share_mounted:
   mount.mounted:
-    - name: /srv/shares/win7/${arch}
-    - device: ${cache}/win7-ultimate-${arch}.iso
+    - name: /srv/shares/win7/{{ arch }}
+    - device: {{ cache }}/win7-ultimate-{{ arch }}.iso
     - fstype: udf
     - mkmnt: True
     - opts:
       - defaults
       - loop
     - require:
-      - file: win7-${arch}-iso-exists
-%endfor
+      - file: win7-{{ arch }}-iso-exists
+{% endfor %}
 
 samba_incoming_share_directory:
   file.directory:

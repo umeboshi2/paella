@@ -1,7 +1,8 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
-<% user = pillar['paella_user'] %>
-<% group = pillar['paella_group'] %>
 
 
 # saltrepos
@@ -17,7 +18,7 @@
 paellarepos-ready:
   cmd.run:
     - name: echo "paellarepos-ready"
-    - user: ${user}
+    - user: {{ user }}
     - cwd: /srv/debrepos/paella
     - requires:
       - file: /srv/debrepos/paella/conf
@@ -27,7 +28,7 @@ export-paellarepos:
   cmd.run:
     - name: reprepro -VV --noskipold export
     - unless: test -d /srv/debrepos/paella/db
-    - user: ${user}
+    - user: {{ user }}
     - cwd: /srv/debrepos/paella
     - requires:
       - cmd: paellarepos-ready

@@ -1,7 +1,7 @@
 # Standard masterless salt minion set-up
 master: localhost
 id: paella
-renderer: yaml_mako
+renderer: yaml_jinja
 
 file_client: local
 file_roots:

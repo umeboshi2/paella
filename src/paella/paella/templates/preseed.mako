@@ -104,8 +104,9 @@ d-i partman/confirm_nooverwrite boolean true
 d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 
 # Additional repositories, local[0-9] available
+# FIXME put salt branch in settings
 d-i apt-setup/local0/repository string \
-       http://${paella_server_ip}/debrepos/salt ${release}-saltstack-2014-01 main
+       http://${paella_server_ip}/debrepos/salt ${release}-saltstack-2014-07 main
 d-i apt-setup/local0/comment string saltrepos
 d-i apt-setup/local0/key string http://${paella_server_ip}/debrepos/paella.gpg
 

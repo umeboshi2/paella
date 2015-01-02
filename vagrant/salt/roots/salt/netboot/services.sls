@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - default
@@ -20,8 +23,8 @@ tftpd-default-config:
 tftpbootdir:
   file.directory:
     - name: /var/lib/tftpboot
-    - user: ${pillar['paella_user']}
-    - group: ${pillar['paella_group']}
+    - user: {{ user }}
+    - group: {{ group }}
     - dir_mode: 755
     - file_mode: 644
     - makedirs: True

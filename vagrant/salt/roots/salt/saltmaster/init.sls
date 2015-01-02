@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - saltmaster.base
@@ -30,8 +33,8 @@ salt-master:
   file.directory:
     - require:
       - pkg: salt-master
-    #- user: ${pillar['paella_user']}
-    - group: ${pillar['paella_group']}
+    #- user: {{ user }}
+    - group: {{ group }}
     - mode: 2775
 
 /etc/salt/pki:
@@ -39,8 +42,8 @@ salt-master:
     - require:
       - pkg: salt-master
       - file: /etc/salt
-    - user: ${pillar['paella_user']}
-    - group: ${pillar['paella_group']}
+    - user: {{ user }}
+    - group: {{ group }}
     - mode: 2775
     - recurse:
       - user
@@ -51,7 +54,7 @@ salt-master:
     - require:
       - pkg: salt-master
     - user: root
-    - group: ${pillar['paella_group']}
+    - group: {{ group }}
     - mode: 2775
     - recurse:
       - user
@@ -67,7 +70,7 @@ salt-master:
     - require:
       - pkg: salt-master
     - user: root
-    - group: ${pillar['paella_group']}
+    - group: {{ group }}
     - mode: 2775
     - recurse:
       - group

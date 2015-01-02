@@ -64,7 +64,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision "shell", path: "vagrant/scripts/vagrant-bootstrap.sh"
-  config.vm.provision "shell", inline: "chown vagrant /etc/salt"
+  config.vm.provision "shell", inline: "sudo mkdir -p /etc/salt && sudo chown -R vagrant /etc/salt || true"
   config.vm.provision "file", source: "vagrant/salt/minion",
                       destination: "/etc/salt/minion"
   config.vm.provision :salt do |salt|

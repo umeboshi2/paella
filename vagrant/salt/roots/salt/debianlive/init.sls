@@ -1,5 +1,5 @@
 # -*- mode: yaml -*-
-
+{% set pget = salt['pillar.get'] %}
 live-build:
   pkg:
     - installed
@@ -16,7 +16,7 @@ live-image-packages:
       - epdfview
       - miscfiles
 
-<% basedir = pillar['livebuild']['base_directory'] %>
+{% set basedir = pget('livebuild:base_directory') %}
 # This is modified to accept a url with the _KEY variable
 /usr/lib/live/build/bootstrap_archive-keys:
   file.managed:
@@ -26,111 +26,111 @@ live-image-packages:
     - mode: 755
 
 
-%for arch in ['i386', 'amd64']:
-<% configdir = '%s/%s/config' % (basedir, arch) %>
-livebuild-configdir-${arch}:
+{% for arch in ['i386', 'amd64']: %}
+{% set configdir = '%s/%s/config' % (basedir, arch) %}
+livebuild-configdir-{{ arch }}:
   file.directory:
-    - name: ${configdir}
+    - name: {{ configdir }}
     - user: root
     - group: root
     - mode: 755
     - makedirs: True
 
-%for cfile in ['binary', 'bootstrap', 'chroot', 'common', 'source']:
-livebuild-config-${arch}-${cfile}:
+{% for cfile in ['binary', 'bootstrap', 'chroot', 'common', 'source']: %}
+livebuild-config-{{ arch }}-{{ cfile }}:
   file.managed:
-    - name: ${configdir}/${cfile}
-    - source: salt://debianlive/templates/${cfile}
+    - name: {{ configdir }}/{{ cfile }}
+    - source: salt://debianlive/templates/{{ cfile }}
     - template: mako
     - defaults:
-        arch: ${arch}
+        arch: {{ arch }}
     - require:
-      - file: livebuild-configdir-${arch}
-%endfor
+      - file: livebuild-configdir-{{ arch }}
+{% endfor %}
 
-${configdir}/archives:
+{{ configdir }}/archives:
   file.directory:
     - mode: 755
     - makedirs: True
 
-${configdir}/package-lists:
+{{ configdir }}/package-lists:
   file.directory:
     - mode: 755
     - makedirs: True
 
-livebuild-${arch}-paella-apt-chroot:
+livebuild-{{ arch }}-paella-apt-chroot:
   file.managed:
-    - name: ${configdir}/archives/paella.list.chroot
+    - name: {{ configdir }}/archives/paella.list.chroot
     - source: salt://debianlive/paella.list.chroot
     - template: mako
     - require:
-      - file: ${configdir}/archives
+      - file: {{ configdir }}/archives
 
 
-livebuild-${arch}-paella-apt-binary:
+livebuild-{{ arch }}-paella-apt-binary:
   file.managed:
-    - name: ${configdir}/archives/paella.list.binary
+    - name: {{ configdir }}/archives/paella.list.binary
     - source: salt://debianlive/paella.list.binary
     - template: mako
     - require:
-      - file: ${configdir}/archives
+      - file: {{ configdir }}/archives
 
 
-livebuild-${arch}-paella-package-list:
+livebuild-{{ arch }}-paella-package-list:
   file.managed:
-    - name: ${configdir}/package-lists/paella.list.chroot
+    - name: {{ configdir }}/package-lists/paella.list.chroot
     - source: salt://debianlive/paella.package.list.chroot
     - template: mako
     - defaults:
-        arch: ${arch}
+        arch: {{ arch }}
     - require:
-      - file: ${configdir}/package-lists
+      - file: {{ configdir }}/package-lists
 
 
 
-livebuild-${arch}-user-setup-conf:
+livebuild-{{ arch }}-user-setup-conf:
   file.managed:
     - makedirs: True
-    - name: ${configdir}/includes.chroot/etc/live/config/user-setup.conf
+    - name: {{ configdir }}/includes.chroot/etc/live/config/user-setup.conf
     - source: salt://debianlive/user-setup.conf
     - template: mako
     - require:
-      - file: livebuild-configdir-${arch}
+      - file: livebuild-configdir-{{ arch }}
 
-make-win7-system-${arch}:
+make-win7-system-{{ arch }}:
   file.managed:
     - makedirs: True
-    - name: ${configdir}/includes.chroot/usr/local/bin/make-win7-system
+    - name: {{ configdir }}/includes.chroot/usr/local/bin/make-win7-system
     - mode: 755
     - source: salt://paella-client/make-win7-disk.parted.sh
     - require:
-      - file: livebuild-configdir-${arch}
+      - file: livebuild-configdir-{{ arch }}
 
-install-win7-image-${arch}:
+install-win7-image-{{ arch }}:
   file.managed:
     - makedirs: True
-    - name: ${configdir}/includes.chroot/usr/local/bin/install-win7-image
+    - name: {{ configdir }}/includes.chroot/usr/local/bin/install-win7-image
     - mode: 755
     - source: salt://debianlive/install-win7-image.sh
     - require:
-      - file: livebuild-configdir-${arch}
+      - file: livebuild-configdir-{{ arch }}
 
-livebuild-${arch}-srv-incoming:
+livebuild-{{ arch }}-srv-incoming:
   file.directory:
     - makedirs: True
-    - name: ${configdir}/includes.chroot/srv/incoming
+    - name: {{ configdir }}/includes.chroot/srv/incoming
     - require:
-      - file: livebuild-configdir-${arch}
+      - file: livebuild-configdir-{{ arch }}
 
-livebuild-${arch}-fstab:
+livebuild-{{ arch }}-fstab:
   file.managed:
     - makedirs: True
-    - name: ${configdir}/includes.chroot/etc/fstab
+    - name: {{ configdir }}/includes.chroot/etc/fstab
     - source: salt://debianlive/fstab
     - template: mako
     - require:
-      - file: livebuild-${arch}-srv-incoming
+      - file: livebuild-{{ arch }}-srv-incoming
 
-%endfor
+{% endfor %}
 
 

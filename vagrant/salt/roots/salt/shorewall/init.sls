@@ -27,16 +27,16 @@ restart-shorewall:
       - file: /etc/default/shorewall
       - sls: network
 
-<% conffiles = ['interfaces', 'Makefile', 'masq', 'policy', 'routestopped', 'rules', 'shorewall.conf', 'zones'] %>
+{% set conffiles = ['interfaces', 'Makefile', 'masq', 'policy', 'routestopped', 'rules', 'shorewall.conf', 'zones'] %}
 
-%for filename in conffiles:
-/etc/shorewall/${filename}:
+{% for filename in conffiles: %}
+/etc/shorewall/{{ filename }}:
   file.managed:
-    - source: salt://shorewall/templates/double/${filename}
+    - source: salt://shorewall/templates/double/{{ filename }}
     - user: root
     - group: root
     - mode: 644
-%endfor
+{% endfor %}
 
 /etc/default/shorewall:
   file.managed:

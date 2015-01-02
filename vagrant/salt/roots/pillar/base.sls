@@ -7,29 +7,29 @@
 # livebuild namespaces below.  The 'n3' variable below is
 # only used in the dhcpd and bind namespaces below, and isn't truly
 # necessary, but handy for testing.
-<% n3 = 4 %>
-<% paella_server_ip = '10.0.%d.1' % n3 %>
+{% set n3 = 4 %}
+{% set paella_server_ip = '10.0.%d.1' % n3 %}
 
 # This ip can also be found in dhcpd.sls and livebuild.sls
 # If this value is changed, the corresponding variables in 
 # those files need to be changed as well.
-paella_server_ip:  ${paella_server_ip}
+paella_server_ip:  {{ paella_server_ip }}
 
 dhcpd:
-  paella_subnet: 10.0.${n3}.0
+  paella_subnet: 10.0.{{ n3 }}.0
   paella_netmask: 255.255.255.128
-  paella_subnet_range_low_ip: 10.0.${n3}.20
-  paella_subnet_range_high_ip: 10.0.${n3}.126
+  paella_subnet_range_low_ip: 10.0.{{ n3 }}.20
+  paella_subnet_range_high_ip: 10.0.{{ n3 }}.126
   #paella_subnet_domain: pillar['localnet']['domain']
   # need to reference pillar data within pillar
   paella_subnet_domain: 'paellanet'
   paella_subnet_ddns_domain: 'paellanet'
-  paella_subnet_dns_servers: ${paella_server_ip}
-  paella_subnet_routers: ${paella_server_ip}
-  paella_subnet_tftp_server: ${paella_server_ip}
+  paella_subnet_dns_servers: {{ paella_server_ip }}
+  paella_subnet_routers: {{ paella_server_ip }}
+  paella_subnet_tftp_server: {{ paella_server_ip }}
 
 bind:
-  in-addr: ${n3}.0.10
+  in-addr: {{ n3 }}.0.10
   
   
 # The default is to operate in a vagrant virtual machine.
@@ -87,14 +87,14 @@ livebuild:
   mirror_security: http://security.debian.org/
   bootloader: syslinux
   binary_images: netboot
-  net_root_server: ${paella_server_ip}
+  net_root_server: {{ paella_server_ip }}
   net_root_filesystem: nfs
   net_root_path: /srv/debian-live
   apt_key: http://localhost/debrepos/paella.gpg
   local_mirror: http://localhost/debrepos/debian
   local_security_mirror: http://localhost/debrepos/security
-  lan_mirror: http://${paella_server_ip}/debrepos/debian
-  lan_security_mirror: http://${paella_server_ip}/debrepos/security
+  lan_mirror: http://{{ paella_server_ip }}/debrepos/debian
+  lan_security_mirror: http://{{ paella_server_ip }}/debrepos/security
   enable_xfce_desktop: True
 
 

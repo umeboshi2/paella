@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - apache
@@ -57,7 +60,7 @@ setup-paella:
       - virtualenv: mainserver-virtualenv
       - sls: postgresql
     - source: salt://scripts/setup-paella.sh
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
     - template: mako
     
 

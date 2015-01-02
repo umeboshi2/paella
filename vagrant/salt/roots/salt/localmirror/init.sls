@@ -1,12 +1,13 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
 
 # FIXME This isn't working yet
-<% use_localmirror = pillar['paella_use_local_mirror'] %>
+{% set use_localmirror = pget('paella_use_local_mirror') %}
 
-%if use_localmirror:
+{% if use_localmirror: %}
 
-<% archive_key = pillar['paella_localmirror_archive_key'] %>
-<% archive_key_id = pillar['paella_localmirror_archive_key_id'] %>
+{% set archive_key = pget('paella_localmirror_archive_key') %}
+{% set archive_key_id = pillar('paella_localmirror_archive_key_id') %}
 sources-list:
   file.managed:
     - name: /etc/apt/sources.list
@@ -15,7 +16,8 @@ sources-list:
 
 add-localmirror-key:
   cmd.run:
-    - unless: apt-key list | grep ${archive_key_id}
-    - name: wget -q -O - ${archive_key} | apt-key add - && apt-get -y update
+    - unless: apt-key list | grep {{ archive_key_id }}
+    - name: wget -q -O - {{ archive_key }} | apt-key add - && apt-get -y update
     
-%endif
+{% endif %}
+

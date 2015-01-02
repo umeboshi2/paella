@@ -2,8 +2,8 @@
 
 DEBMIRROR=http://ftp.us.debian.org/debian
 DEBDIST=wheezy
-#SALTBRANCH=2014-07
-SALTBRANCH=2014-01
+SALTBRANCH=2014-07
+#SALTBRANCH=2014-01
 
 if [ -x /usr/bin/salt-minion ]; then
     echo "Salt Minion already installed, skipping....."
@@ -45,16 +45,6 @@ fi
 apt-get -y update
 apt-get -y install salt-minion
 
-# FIXME (do I need this? what was I doing?)
-if [ -d /etc/salt ]; then
-    if [ -d /etc/salt.orig ]; then
-	echo "removing /etc/salt"
-	rm -rf /etc/salt
-    else
-	echo "moving config to /etc/salt.orig"
-	mv /etc/salt /etc/salt.orig
-    fi
-fi
 
 
 echo "Finished with vagrant bootstrap."

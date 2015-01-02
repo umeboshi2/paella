@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 #####################################
 
@@ -105,7 +108,7 @@ wimlib-tools-ready:
 # image and/or other special images.
 make-test-winpe-iso:
   cmd.run:
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
     - cwd: /vagrant
     - unless: test -r /vagrant/testme-peauto.iso
     - require:
@@ -114,7 +117,7 @@ make-test-winpe-iso:
 
 make-another-test-winpe-iso:
   cmd.run:
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
     - cwd: /vagrant
     - unless: test -r /srv/debrepos/winpe.iso
     - require:
@@ -123,7 +126,7 @@ make-another-test-winpe-iso:
 
 make-another-test-winpe-iso-amd64:
   cmd.run:
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
     - cwd: /vagrant
     - unless: test -r /srv/debrepos/winpe64.iso
     - require:
@@ -132,20 +135,20 @@ make-another-test-winpe-iso-amd64:
 
 make-test-winpe-shell-iso:
   cmd.run:
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
     - cwd: /vagrant
     - unless: test -r /srv/debrepos/winpe-shell.iso
     - require:
       - cmd: wimlib-tools-ready
     - name: mkwinpeimg -A /srv/shares/aik --iso /srv/debrepos/winpe-shell.iso
 
-<% bcdauto = '/srv/shares/incoming/bcdauto.iso' %>
+{% set bcdauto = '/srv/shares/incoming/bcdauto.iso' %}
 make-test-bcdauto-winpe-iso:
   cmd.run:
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
     - cwd: /vagrant
-    - unless: test -r ${bcdauto}
+    - unless: test -r {{ bcdauto }}
     - require:
       - cmd: wimlib-tools-ready
-    - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/bcdauto.bat ${bcdauto}
+    - name: mkwinpeimg -A /srv/shares/aik --iso -s /home/vagrant/workspace/bcdauto.bat {{ bcdauto }}
 

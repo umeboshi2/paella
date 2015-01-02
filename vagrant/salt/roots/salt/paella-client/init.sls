@@ -1,4 +1,7 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 #####################################
 
@@ -18,7 +21,7 @@ build-paella-client-package:
     - unless: test -r /srv/src/paella-client_0.1dev-1_amd64.changes
     - name: debuild --no-lintian --no-tgz-check -us -uc
     - cwd: /srv/src/paella-client
-    - user: ${pillar['paella_user']}
+    - user: {{ user }}
 
 upload-paella-client-package:
   cmd.run:
@@ -27,7 +30,4 @@ upload-paella-client-package:
     - unless: test -n "`reprepro -b /srv/debrepos/paella list wheezy python-paella-client`"
     - cwd: /srv/src
     - name: reprepro -b /srv/debrepos/paella --ignore=wrongdistribution include wheezy paella-client_0.1dev-1_amd64.changes
-    - user: ${pillar['paella_user']}
-
-
-
+    - user: {{ user }} 

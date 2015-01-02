@@ -14,18 +14,18 @@ bind-local-zone-config-file:
     - group: bind
       
 
-%for direction in ['paellanet', 'rev']:
-bind-paella-zone-${direction}-file:
+{% for direction in ['paellanet', 'rev']: %}
+bind-paella-zone-{{ direction }}-file:
   file.managed:
-    - name: /etc/bind/db.${direction}
-    - source: salt://bind/db.${direction}
+    - name: /etc/bind/db.{{ direction }}
+    - source: salt://bind/db.{{ direction }}
     - template: mako
     - requires:
       - pkg: bind9
     - user: root
     - group: root
 
-%endfor
+{% endfor %}
   
       
 bind-service:

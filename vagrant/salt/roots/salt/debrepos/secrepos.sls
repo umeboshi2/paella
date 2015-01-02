@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
-
-<% user = pillar['paella_user'] %>
-<% group = pillar['paella_group'] %>
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 
 # security updates
@@ -38,8 +38,8 @@ local-packages-security:
 security-repos-ready:
   cmd.run:
     - name: echo "security repos ready"
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - requires:
       - cmd: local-packages-security
 
@@ -47,8 +47,8 @@ update-security-repos:
   cmd.run:
     - name: reprepro -VV --noskipold update
     - unless: test -d /srv/debrepos/security/db
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - cwd: /srv/debrepos/security
     - requires:
       - cmd: security-repos-ready

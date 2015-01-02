@@ -1,7 +1,8 @@
 # -*- mode: yaml -*-
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
-<% user = pillar['paella_user'] %>
-<% group = pillar['paella_group'] %>
 
 
 # saltrepos
@@ -22,8 +23,8 @@
 saltrepos-ready:
   cmd.run:
     - name: echo "saltrepos-ready"
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - cwd: /srv/debrepos/salt
     - requires:
       - file: /srv/debrepos/salt/conf
@@ -34,8 +35,8 @@ update-saltrepos:
   cmd.run:
     - name: reprepro -VV --noskipold update
     - unless: test -d /srv/debrepos/salt/db
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - cwd: /srv/debrepos/salt
     - requires:
       - cmd: saltrepos-ready

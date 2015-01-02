@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
-
-<% user = pillar['paella_user'] %>
-<% group = pillar['paella_group'] %>
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 
 reprepro:
@@ -41,8 +41,8 @@ germinate:
 /home/vagrant/add-paella-insecure:
   file.managed:
     - source: salt://debrepos/add-paella-insecure
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - mode: 644
 
 
@@ -51,8 +51,8 @@ germinate:
 #  cmd.script:
 #    - source: salt://scripts/build-keyring-package.sh
 #    - unless: test -d /home/vagrant/workspace
-#    - user: ${user}
-#    - group: ${group}
+#    - user: {{ user }}
+#    - group: {{ group }}
 #    - requires:
 #      - cmd: update-debrepos
 

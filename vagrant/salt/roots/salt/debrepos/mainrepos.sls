@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
-
-<% user = pillar['paella_user'] %>
-<% group = pillar['paella_group'] %>
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - apache
@@ -21,29 +21,29 @@ include:
   file.directory:
     - makedirs: True
 
-<% checksums = pillar['debian_installer_i386_checksums'] %>
-<% DI = pillar['debian_pxe_installer'] %>
-%for dist in DI:
-%for arch in DI[dist]:
-<% upstream_filename = '/srv/debrepos/debian/conf/udebs-%s-%s-upstream' % (dist, arch) %>
-<% list_filename = '/srv/debrepos/debian/conf/%s-%s-udeb.list' % (dist, arch) %>
-udeb-list-upstream-${dist}-${arch}:
+{% set checksums = pget('debian_installer_i386_checksums') %}
+{% set DI = pget('debian_pxe_installer') %}
+{% for dist in DI: %}
+{% for arch in DI[dist]: %}
+{% set upstream_filename = '/srv/debrepos/debian/conf/udebs-%s-%s-upstream' % (dist, arch) %}
+{% set list_filename = '/srv/debrepos/debian/conf/%s-%s-udeb.list' % (dist, arch) %}
+udeb-list-upstream-{{ dist }}-{{ arch }}:
   file.managed:
-    - name: ${upstream_filename}
-    - source: ${DI[dist][arch]['udeb_list']['source']}
-    - source_hash: ${DI[dist][arch]['udeb_list']['source_hash']}
+    - name: {{ upstream_filename }}
+    - source: {{ DI[dist][arch]['udeb_list']['source'] }}
+    - source_hash: {{ DI[dist][arch]['udeb_list']['source_hash'] }}
     - requires:
       - file: /srv/debrepos/debian/conf
 
-create-udeb-list-${dist}-${arch}:
+create-udeb-list-{{ dist }}-{{ arch }}:
   cmd.run:
-    - unless: test -r ${list_filename}
-    - name: awk '{print $1 "\tinstall"}' < ${upstream_filename} > ${list_filename}
+    - unless: test -r {{ list_filename }}
+    - name: awk '{print $1 "\tinstall"}' < {{ upstream_filename }} > {{ list_filename }}
     - requires:
-        - file: udeb-list-upstream-${dist}-${arch}
-    - creates: ${list_filename}
-%endfor      
-%endfor      
+        - file: udeb-list-upstream-{{ dist }}-{{ arch }}
+    - creates: {{ list_filename }}
+{% endfor %}
+{% endfor %}
 
 
 /srv/debrepos/debian/conf/live-packages:
@@ -67,8 +67,8 @@ create-udeb-list-${dist}-${arch}:
 repos-ready:
   cmd.run:
     - name: echo "repos-ready"
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - cwd: /srv/debrepos/debian
     - requires:
       - cmd: create-udeb-list
@@ -113,8 +113,8 @@ update-debrepos:
   cmd.run:
     - name: reprepro -VV --noskipold update
     - unless: test -d /srv/debrepos/debian/db
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - cwd: /srv/debrepos/debian
     - requires:
       - cmd: apache-ready

@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
-
-<% user = pillar['paella_user'] %>
-<% group = pillar['paella_group'] %>
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - debrepos.base
@@ -37,8 +37,8 @@ build-keyring-package:
   cmd.script:
     - source: salt://scripts/build-keyring-package.sh
     - unless: test -r /home/vagrant/workspace/debian-archive-keyring_2014.1~deb7u1-paella1_amd64.changes
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - requires:
       - cmd: update-debrepos
 
@@ -48,8 +48,8 @@ build-keyring-package-jessie:
   cmd.script:
     - source: salt://scripts/build-keyring-package-jessie.sh
     - unless: test -r /home/vagrant/workspace/jessie/debian-archive-keyring_2014.3-paella1_amd64.changes
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - requires:
       - cmd: update-debrepos
 

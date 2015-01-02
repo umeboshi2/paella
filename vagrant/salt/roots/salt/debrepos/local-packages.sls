@@ -2,9 +2,9 @@
 
 # This sls is responsible for installing many of  the packages on the
 # vagrant machine that will be required in the local debian repository.
-
-<% user = pillar['paella_user'] %>
-<% group = pillar['paella_group'] %>
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
+{% set group = pget('paella_group') %}
 
 include:
   - apache
@@ -65,8 +65,8 @@ update-debrepos:
   cmd.run:
     - name: reprepro -VV --noskipold update
     - unless: test -d /srv/debrepos/debian/db
-    - user: ${user}
-    - group: ${group}
+    - user: {{ user }}
+    - group: {{ group }}
     - cwd: /srv/debrepos/debian
     - requires:
       - cmd: apache-ready

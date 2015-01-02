@@ -154,10 +154,10 @@ kill-lightdm-service:
       - service: disable-lightdm-service
 
   
-<% cachedir = '/vagrant/vagrant/cache' %>
+{% set cachedir = '/vagrant/vagrant/cache' %}
 cache-repos-dir:
   file.directory:
-    - name: ${cachedir}/repos
+    - name: {{ cachedir }}/repos
     - makedirs: True
     - requires: pkg:devpackages
       
