@@ -59,6 +59,11 @@ class BaseRecipeManager(object):
         if r is None:
             raise NoResultFound
         return prepare_recipe(r.content)
+
+    def export_recipes(self):
+        return dict(data=[r.serialize() for r in self.query()])
+    
+                    
     
 
 class PartmanRecipeManager(BaseRecipeManager):
@@ -67,3 +72,10 @@ class PartmanRecipeManager(BaseRecipeManager):
 class PartmanRaidRecipeManager(BaseRecipeManager):
     dbmodel = PartmanRaidRecipe
     
+
+def export_recipes(session):
+    pmgr = PartmanRecipeManager(session)
+    recipes = pmgr.export_recipes()
+    rmgr = PartmanRaidRecipeManager(session)
+    raid_recipes = rmgr.export_recipes()
+    return dict(recipes=recipes, raid_recipes=raid_recipes)

@@ -10,6 +10,8 @@ import networkx as nx
 from paella.models.main import Machine
 
 from paella.managers.saltkeys import SaltKeyManager
+from paella.managers.recipes import PartmanRecipeManager
+from paella.managers.recipes import PartmanRaidRecipeManager
 
 log = logging.getLogger(__name__)
 
@@ -124,5 +126,27 @@ class MachineManager(object):
     def delete(self, machine):
         with transaction.manager:
             self.session.delete(machine)
-            
+
+    def export(self, name):
+        machine = self.get_by_name(name)
+        return self._export(machine)
+
+    def _export(self, machine):
+        data = machine.serialize()
+        data['minion_keys'] = self.keymanager.get(machine.id).serialize()
+        if machine.recipe_id is not None:
+            mgr = PartmanRecipeManager(self.session)
+            data['recipe'] = mgr.get(machine.recipe_id).serialize()
+        if machine.raid_recipe_id is not None:
+            mgr = PartmanRaidRecipeManager(self.session)
+            data['raid_recipe'] = mgr.get(machine.raid_recipe_id).serialize()
+        return data
+
+
+
+def export_machines(session):
+    mgr = MachineManager(session)
+    return dict(data=[mgr._export(m) for m in mgr._query()])
+    
+        
 

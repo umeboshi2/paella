@@ -64,7 +64,7 @@ class SaltKeyFiles(object):
 class SaltKeyManager(object):
     def __init__(self, session):
         self.session = session
-        self.filemgr =SaltKeyFiles()
+        self.filemgr = SaltKeyFiles()
         self.masterkey = self.filemgr.get_masterkey()
 
     def query(self):
