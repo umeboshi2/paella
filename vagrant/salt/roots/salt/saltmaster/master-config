@@ -4,7 +4,8 @@
 # Values that are commented out but have no space after the comment are
 # defaults that need not be set in the config. If there is a space after the
 # comment that the value is presented as an example and is not the default.
-<% saltmaster = pillar['saltmaster'] %>
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella_user') %}
 # Per default, the master will automatically include all config files
 # from master.d/*.conf (master.d is a directory in the same directory
 # as the main master config file)
@@ -24,7 +25,7 @@
 # permissions to allow the specified user to run the master. The exception is
 # the job cache, which must be deleted if this user is changed.  If the
 # modified files cause conflicts set verify_env to False.
-user: ${pillar['paella_user']}
+user: {{ user }}
 
 # Set the default timeout for the salt command and api, the default is 5
 # seconds
@@ -59,11 +60,11 @@ user: ${pillar['paella_user']}
 # authentication, this is only intended for highly secure environments or for
 # the situation where your keys end up in a bad state. If you run in open mode
 # you do so at your own risk!
-open_mode: ${saltmaster['open_mode']}
+open_mode: {{ pget('saltmaster:open_mode') }}
 
 # Enable auto_accept, this setting will automatically accept all incoming
 # public keys from the minions. Note that this is insecure.
-auto_accept: ${saltmaster['auto_accept']}
+auto_accept: {{ pget('saltmaster:auto_accept') }}
 
 
 # If the autosign_file is specified, incoming keys specified in the
@@ -137,7 +138,7 @@ auto_accept: ${saltmaster['auto_accept']}
 #####      State System settings     #####
 
 # The renderer to use on the minions to render the state data
-renderer: ${saltmaster['renderer']}
+renderer: {{ pget('saltmaster: renderer', 'yaml_jinja') }}
 
 # The failhard option tells the minions to stop immediately after the first
 # failure detected in the state execution, defaults to False
@@ -177,34 +178,39 @@ renderer: ${saltmaster['renderer']}
 #     - /srv/salt/prod/services
 #     - /srv/salt/prod/states
 
-
-hash_type: ${saltmaster['hash_type']}
+{% set use_gitfs_remote = pget('saltmaster:use_gitfs_remote', False) %}
+hash_type: {{ pget('saltmaster:hash_type', 'md5') }}
 file_ignore_glob:
   - '.#*'
-
+{% set formula_path = pget('saltmaster:formula_path', '/vagrant/Formulas') %}
 file_roots:
   base:
-    - ${saltmaster['base_fileserver_root']}
+    - {{ pget('saltmaster:base_fileserver_root', '/srv/salt') }}
+    {% for formula in pget('saltmaster:formulae'): %}
+    - {{ formula_path }}/{{ formula }}-formula
+    {% endfor %}
+    
 fileserver_backend:
-%if saltmaster['use_gitfs_remote']:
+{% if use_gitfs_remote: %}
   - git
-%else:
+{% else: %}
   - roots
-%endif
+{% endif %}
 
-%if saltmaster['use_gitfs_remote']:
+{% if use_gitfs_remote: %}
 gitfs_remotes:
-   - ${saltmaster['top_gitfs_remote']}
-%endif
+   - {{ pget('saltmaster:top_gitfs_remote') }}
+{% endif %}
 
 pillar_roots:
   base:
-    - ${saltmaster['base_pillar_root']}
+    - {{ pget('saltmaster:base_pillar_root', '/srv/pillar') }}
 
-%if saltmaster['use_ext_git_pillar']:
+{% if pget('saltmaster:use_ext_git_pillar', False): %}
 ext_pillar:
-  - git: ${saltmaster['top_ext_git_pillar']}
-%endif
+  - git: {{ pget('saltmaster:top_ext_git_pillar') }}
+{% endif %}
+
 
 # The pillar_gitfs_ssl_verify option specifies whether to ignore ssl certificate
 # errors when contacting the pillar gitfs backend. You might want to set this to

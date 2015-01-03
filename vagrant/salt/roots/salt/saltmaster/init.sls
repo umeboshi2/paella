@@ -19,7 +19,7 @@ salt-master:
 /etc/default/salt-master:
   file.managed:
     - source: salt://saltmaster/master-init-default
-    - template: mako
+    - template: jinja
       
 /etc/salt/master:
   file.managed:
@@ -27,7 +27,7 @@ salt-master:
     - user: root
     - group: root
     - mode: 644
-    - template: mako
+    - template: jinja
 
 /etc/salt:
   file.directory:

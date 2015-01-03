@@ -1,3 +1,5 @@
 # salt-master defaults for initscript
+{% set pget = salt['pillar.get'] %}
 
-DAEMON_ARGS="-d -l ${pillar['saltmaster']['daemon_loglevel']} -u${pillar['paella_user']}"
+DAEMON_ARGS="-d -l {{ pget('saltmaster:daemon_loglevel') }} -u{{ pget('paella_user') }}"
+
