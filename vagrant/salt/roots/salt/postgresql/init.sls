@@ -37,6 +37,22 @@ postgresql-service:
       - file: /etc/postgresql/9.1/main/pg_hba.conf
       - file: /etc/postgresql/9.1/main/postgresql.conf
 
+paella_database_user:
+  postgres_user.present:
+    - name: dbadmin
+    - createdb: true
+    - createruser: true
+    - superuser: true
+    - user: postgres
+      
+paella_database:
+  postgres_database.present:
+    - name: paella
+    - owner: dbadmin
+    - user: postgres
+      
+{#
+
 pg_createuser_dbadmin:
   cmd.run:
     - name: createuser --superuser --createdb --createrole dbadmin
@@ -44,23 +60,13 @@ pg_createuser_dbadmin:
     - user: postgres
     - requires:
       - service: postgresql
-
-# FIXME
-# Traditionally, the paella database user had read only access to the
-# paella database and the installers used this user for access to
-# postgresql.  Using a web server as a layer between the app and the
-# database probably removes the need for an underprivileged user.
-pg_createuser_paella:
-  cmd.run:
-    - name: createuser --no-superuser --no-createdb --no-createrole paella
-    - unless: psql --tuples-only -c 'SELECT rolname FROM pg_catalog.pg_roles;' | grep '^ paella$'
-    - user: postgres
-    - requires:
-      - service: postgresql
-
+        
 pg_createdb_paella:
   cmd.run:
     - name: createdb -O dbadmin paella
     - unless: psql -ltA | grep '^paella'
     - user: postgres
 
+#}
+
+        
