@@ -1,19 +1,7 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
-{% set user = pget('paella_user') %}
-{% set group = pget('paella_group') %}
-
-
-reprepro:
-  pkg:
-    - installed
-
-# use germinate to help build
-# small partial debian repository
-# capable of debootstrap
-germinate:
-  pkg:
-    - installed
+{% set user = pget('paella:paella_user') %}
+{% set group = pget('paella:paella_group') %}
 
 
 # This fake-random-source state is

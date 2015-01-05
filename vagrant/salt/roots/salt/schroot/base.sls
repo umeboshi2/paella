@@ -1,10 +1,5 @@
 # -*- mode: yaml -*-
 
-schroot-packages:
-  pkg.installed:
-    - pkgs:
-      - schroot
-
 schroot-parent-directory:
   file.directory:
     - name: /srv/roots
