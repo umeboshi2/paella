@@ -1,1 +1,1 @@
-deb http://${pillar['paella_server_ip']}/debrepos/paella wheezy main contrib non-free
+deb http://${pillar['paella']['paella_server_ip']}/debrepos/paella wheezy main contrib non-free

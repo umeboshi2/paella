@@ -1,6 +1,6 @@
 $ORIGIN .
 $TTL 604800	; 1 week
-${pillar['bind']['in-addr']}.in-addr.arpa	IN SOA	paella. root.paella. (
+${pillar['paella']['bind']['in-addr']}.in-addr.arpa	IN SOA	paella. root.paella. (
 				1970       ; serial
 				604800     ; refresh (1 week)
 				86400      ; retry (1 day)
@@ -8,5 +8,5 @@ ${pillar['bind']['in-addr']}.in-addr.arpa	IN SOA	paella. root.paella. (
 				604800     ; minimum (1 week)
 				)
 			NS	paella.
-$ORIGIN ${pillar['bind']['in-addr']}.in-addr.arpa.
+$ORIGIN ${pillar['paella']['bind']['in-addr']}.in-addr.arpa.
 1			PTR	paella.

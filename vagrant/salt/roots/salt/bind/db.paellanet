@@ -10,7 +10,7 @@ paellanet			IN SOA	paella. root.paella. (
 			NS	paella.
 $ORIGIN paellanet.
 $TTL 604800	; 1 week
-paella			A	${pillar['paella_server_ip']}
+paella			A	${pillar['paella']['paella_server_ip']}
 
 $TTL 604800	; 1 week
 ntinstall		CNAME	paella

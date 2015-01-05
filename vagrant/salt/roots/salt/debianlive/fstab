@@ -1,2 +1,2 @@
-${pillar['paella_server_ip']}:/srv/shares/incoming /srv/incoming nfs defaults 0 0
+${pillar['paella']['paella_server_ip']}:/srv/shares/incoming /srv/incoming nfs defaults 0 0
 

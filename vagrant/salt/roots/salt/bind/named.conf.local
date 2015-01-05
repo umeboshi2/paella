@@ -12,7 +12,7 @@ zone "paellanet" {
      file "/etc/bind/db.paellanet";
 };
 
-zone "${pillar['bind']['in-addr']}.in-addr.arpa" {
+zone "${pillar['paella']['bind']['in-addr']}.in-addr.arpa" {
      type master;
      file "/etc/bind/db.rev";
 };
