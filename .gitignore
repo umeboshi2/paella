@@ -58,7 +58,7 @@ logs/
 /vagrant/salt/roots/pillar.local
 /vagrant/paella
 /vagrant/cache*
-
+/vagrant/salt/roots/pillar/local-overrides.sls
 *.iso
 *.wim
 
