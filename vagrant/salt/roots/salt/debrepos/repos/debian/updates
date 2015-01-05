@@ -1,7 +1,6 @@
-<% DI = pillar['debian_pxe_installer'] %>
+%for dist in ['wheezy', 'jessie']:
+%for arch in ['i386', 'amd64']:
 <% udeb_lists = list() %>
-%for dist in DI:
-%for arch in DI[dist]:
 <%
 filename = '%s-%s-udeb.list' % (dist, arch)
 udeb_lists.append(filename)

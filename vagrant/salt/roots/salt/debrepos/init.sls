@@ -1,9 +1,13 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
-{% set user = pget('paella_user') %}
-{% set group = pget('paella_group') %}
+{% set user = pget('paella:paella_user') %}
+{% set group = pget('paella:paella_group') %}
+{% macro pkgname(pkg, version, deb) -%}
+{{ pkg }}_{{ version }}-paella1_all.{{ deb }}
+{%- endmacro %}
 
 include:
+  - services.apache
   - debrepos.base
   - debrepos.keys
   - debrepos.mainrepos
@@ -11,6 +15,12 @@ include:
   - debrepos.secrepos
   - debrepos.paellarepos
 
+#extend:
+#  apache-service:
+#    - service:
+#        - watch:
+#            - file: debrepos-apache-config
+        
 debrepos-ready:
   cmd.run: 
     - name: echo "debrepos-ready"
@@ -21,36 +31,47 @@ debrepos-ready:
       - sls: debrepos.saltrepos
       - sls: debrepos.secrepos
       - sls: debrepos.paellarepos
-      
+
+# setup apache config
+debrepos-apache-config:
+  file.managed:
+    - name: /etc/apache2/conf.d/debrepos
+    - source: salt://debrepos/apache.conf
+    - template: jinja
+    #- require_in:
+    #  - service: apache-service
+    - watch_in:
+      - service: apache-service
+
 # This script will rebuild the debian-archive-keyring
 # package with the paella repository key inserted.
-# FIXME  This script only works if the package is
-# built manually and the appropriate signatures
-# placed in the script.
-# The fix should be to attempt to build the package
-# gather and store the correct signatures, destroy
-# the failed build and build again with correct
-# signatures.  This script may be need to be
-# written in python to more easily achieve this.
 
-build-keyring-package:
+{% for dist in pget('paella:debian_archive_keyring_versions'): %}
+{% set version = pget('paella:debian_archive_keyring_versions')[dist] %}
+{% set changes = '/home/vagrant/workspace/debian-archive-keyring_%s-paella1_amd64.changes' % version %}
+build-keyring-package-{{ dist }}:
   cmd.script:
-    - source: salt://scripts/build-keyring-package.sh
-    - unless: test -r /home/vagrant/workspace/debian-archive-keyring_2014.1~deb7u1-paella1_amd64.changes
+    - source: salt://scripts/build-keyring-package.py
+    - unless: test -r {{ changes }}
+    - args: "-d {{ dist }} -v {{ version }} -w /home/vagrant/workspace"
     - user: {{ user }}
     - group: {{ group }}
     - requires:
       - cmd: update-debrepos
-
-
-# FIXME make one script instead of one for each release        
-build-keyring-package-jessie:
-  cmd.script:
-    - source: salt://scripts/build-keyring-package-jessie.sh
-    - unless: test -r /home/vagrant/workspace/jessie/debian-archive-keyring_2014.3-paella1_amd64.changes
+{% set dirname = '/srv/debrepos/debian/pool/main/d/debian-archive-keyring' %}
+{% for deb in ['deb', 'udeb']: %}
+{% set pkg = 'debian-archive-keyring' %}
+{% if deb == 'udeb' %}
+{% set pkg = '%s-udeb' % pkg %}
+{% endif %}
+{% set basename = pkgname(pkg, version, deb) %}
+upload-keyring-package-{{ dist}}-{{ deb }}:
+  cmd.run:
+    - name: reprepro -b /srv/debrepos/debian --ignore=wrongdistribution include{{ deb }} {{ dist }} {{ basename }}
+    - unless: test -r {{ dirname }}/{{ basename }}
     - user: {{ user }}
     - group: {{ group }}
-    - requires:
-      - cmd: update-debrepos
-
+    - cwd: /home/vagrant/workspace
+{% endfor %}    
+{% endfor %}      
 

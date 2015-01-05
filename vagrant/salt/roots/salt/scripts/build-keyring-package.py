@@ -1,12 +1,38 @@
+#!/usr/bin/env python
 import os, sys
 import pwd
 import hashlib
 import subprocess
+from optparse import OptionParser
 
 class BuildException29(Exception):
     pass
 
 
+parser = OptionParser()
+parser.add_option('-u', '--user', dest='builduser', default='vagrant')
+parser.add_option('-w', '--workspace', dest='workspace',
+                  default='')
+parser.add_option('-s', '--script', dest='script',
+                  default='/home/vagrant/add-paella-insecure')
+parser.add_option('-v', '--version', dest='version',
+                  default='2014.1~deb7u1')
+parser.add_option('-d', '--dist', dest='dist', default='wheezy')
+parser.add_option('-p', '--packagename', dest='packagename',
+                  default='debian-archive-keyring')
+parser.add_option('-m', '--mirror', dest='mirror',
+                  default='http://ftp.us.debian.org/debian')
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+
+def download_keyring_source_package(mirror, packagename, version):
+    print "Downloading", packagename, version, "from", mirror
+    url = '%s/pool/main/d/%s/%s_%s.dsc'
+    url = url % (mirror, packagename, packagename, version)
+    cmd = ['dget', '-xu', url]
+    subprocess.check_call(cmd)
+    
 def _get_file(filename):
     if filename == '-':
         return sys.stdout
@@ -57,18 +83,23 @@ def sign_keyrings(srctree):
     sign_keyring(srctree, 'debian-archive-keyring.gpg')
     sign_keyring(srctree, 'debian-archive-removed.gpg')
 
-    
-#builduser = 'vagrant'    
-#add_paellla_insecure = '/home/vagrant/add-paella-insecure'
-#workspace = '/home/vagrant/workspace'
-builduser = 'umeboshi'
-add_paellla_insecure = '/tmp/debian/add-paella-insecure'
-workspace = '/tmp/debian'
-pkg = 'debian-archive-keyring'
-version = '2014.1~deb7u1'
+
+builduser = opts.builduser
+add_paellla_insecure = opts.script
+workspace = opts.workspace
+if not workspace:
+    workspace = os.getcwd()
+pkg = opts.packagename
+version = opts.version
+dist = opts.dist
+mirror = opts.mirror
+
+
 dirname = '%s-%s' % (pkg, version)
 pkgdir = os.path.join(workspace, dirname)
-dist = 'wheezy'
+
+
+
 
 _s = hashlib.sha256()
 _s.update(file(add_paellla_insecure).read())
@@ -86,7 +117,8 @@ if not os.path.isdir(workspace):
 
 os.chdir(workspace)
 
-subprocess.check_call(['apt-get', 'source', 'debian-archive-keyring'])
+#subprocess.check_call(['apt-get', 'source', 'debian-archive-keyring'])
+download_keyring_source_package(mirror, pkg, version)
 
 os.chdir(pkgdir)
 
