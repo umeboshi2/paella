@@ -5,10 +5,10 @@
 #
 #	This macro handles sunrpc mountd for nfs
 #
-# <% dest = pillar['default-ports']['mountd'] %> destination port is ${dest}
+# {% dest = salt['pillar.get']('localnet:default-ports:mountd') %} destination port is {{ dest }}
 ###############################################################################
 #ACTION	SOURCE	DEST	PROTO	DEST	SOURCE	RATE	USER/
 #				PORT(S)	PORT(S)	LIMIT	GROUP
-PARAM	-	-	tcp	${dest}
-PARAM	-	-	udp	${dest}
+PARAM	-	-	tcp	{{ dest }}
+PARAM	-	-	udp	{{ dest }}
 #LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE

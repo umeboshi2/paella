@@ -19,7 +19,7 @@ for macro in macros:
     mfile = state(macro_deploy_path(macro))
     mfile.file('managed',
                source=template_path(macro),
-               template='mako',
+               template='jinja',
                user='root',
                group='root',
                mode='0644')
