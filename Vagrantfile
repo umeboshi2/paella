@@ -38,7 +38,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # salt 
   config.vm.synced_folder 'vagrant/salt/roots/salt/', '/srv/salt/'
   config.vm.synced_folder 'vagrant/salt/roots/pillar/', '/srv/pillar/'
-  config.vm.synced_folder 'vagrant/salt/roots/pillar.local/', '/srv/pillar.local/'
 
   # debrepos for reprepro
   config.vm.synced_folder 'vagrant/debrepos', '/srv/debrepos'
