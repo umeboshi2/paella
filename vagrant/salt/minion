@@ -1,18 +1,19 @@
-# Standard masterless salt minion set-up
+# -*- mode: yaml -*-
+# Paella masterless salt minion set-up
 master: localhost
 id: paella
 renderer: yaml_jinja
 
 file_client: local
+fileserver_backend:
+  - roots
+  
 file_roots:
   base:
+    - /vagrant/repos/paella-states
     - /srv/salt
 
 pillar_roots:
   base:
     - /srv/pillar
-# For your own local config, copy pillar to pillar.local
-# and edit those files. Comment the "- /srv/pillar" line 
-# above and uncomment the one below.  The git repository 
-# will ignore files in the pillar.local directory.
-#    - /srv/pillar.local
+
