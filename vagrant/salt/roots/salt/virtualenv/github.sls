@@ -1,8 +1,8 @@
 #!pydsl
 # -*- mode: python -*-
 import os
-basedir = __pillar__['paella_virtualenv_basedir']
-user = __pillar__['paella_user']
+basedir = __pillar__['paella']['virtualenv_basedir']
+user = __pillar__['paella']['paella_user']
 
 for repo in ['trumpet', 'debrepos']:
     basename = 'venv/lib/python2.7/site-packages/%s.egg' % repo

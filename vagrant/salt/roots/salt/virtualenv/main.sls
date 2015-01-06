@@ -1,10 +1,10 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
-{% set user = pget('paella_user') %}
-{% set group = pget('paella_group') %}
+{% set user = pget('paella:paella_user') %}
+{% set group = pget('paella:paella_group') %}
 
 include:
-  - default
+  - default.pkgsets
 
 
 # FIXME
@@ -17,11 +17,12 @@ vagrant-pip-config:
     - user: {{ user }}
     - makedirs: True
 
-
+{% set basedir = pget('paella:virtualenv_basedir') %}
 virtualenv-basedir:
   file.directory:
-    - name: {{ pget('paella_virtualenv_basedir') }}
+    - name: {{ basedir }}
     - makedirs: True
+    - user: {{ user }}
     - group: {{ group }}
     - mode: 2775
 
@@ -29,7 +30,7 @@ virtualenv-basedir:
 # This is the virtualenv used to gather the driverpacks      
 get-driverpacks-virtualenv:
   virtualenv.managed:
-    - name: {{ pget('paella_virtualenv_basedir') }}/dp-venv
+    - name: {{ basedir }}/dp-venv
     - system_site_packages: False
     - user: {{ user }}
     - requirements: salt://driverpacks/requirements.txt
@@ -40,13 +41,22 @@ get-driverpacks-virtualenv:
 # This is the virtualenv that the paella server needs
 mainserver-virtualenv:
   virtualenv.managed:
-    - name: {{ pget('paella_virtualenv_basedir') }}/venv
+    - name: {{ pget('paella:virtualenv_basedir') }}/venv
     - system_site_packages: False
     - user: {{ user }}
     - requirements: salt://mainserver/requirements.txt
     - require:
       - file: virtualenv-basedir
 
+halite-virtualenv:
+  virtualenv.managed:
+    - name: {{ pget('paella:virtualenv_basedir') }}/venv
+    - system_site_packages: False
+    - user: {{ user }}
+    - requirements: salt://mainserver/requirements.txt
+    - require:
+      - file: virtualenv-basedir
+  
 
 # This looks funky, but it happens to be the only way known
 # to easily put python packages hosted in git repos in the

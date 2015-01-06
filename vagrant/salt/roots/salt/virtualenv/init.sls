@@ -4,7 +4,7 @@
 {% set group = pget('paella_group') %}
 
 include:
-  - default
+  - default.pkgsets
   - virtualenv.main
   - virtualenv.github
   
