@@ -9,5 +9,5 @@ schroot.conf:
   file.managed:
     - name: /etc/schroot/schroot.conf
     - source: salt://schroot/schroot.conf
-    - template: mako
+    - template: jinja
 
