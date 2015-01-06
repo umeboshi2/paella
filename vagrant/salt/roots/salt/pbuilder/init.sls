@@ -1,4 +1,0 @@
-# -*- mode: yaml -*-
-
-include:
-  - default
