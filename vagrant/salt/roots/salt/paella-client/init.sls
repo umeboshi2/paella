@@ -10,8 +10,8 @@
 # the local debian repository must be ready
 
 include:
+  - default.pkgsets
   - debrepos
-  - default
 
 
 build-paella-client-package:
