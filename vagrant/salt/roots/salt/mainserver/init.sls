@@ -4,7 +4,7 @@
 {% set group = pget('paella_group') %}
 
 include:
-  - apache
+  - services.apache
   - virtualenv
   - postgresql
   - webdev

@@ -2,9 +2,9 @@
 {% set pget = salt['pillar.get'] %}
 
 include:
-  - default
+  - default.pkgsets
   
-{% set repodir = '/vagrant/vagrant/cache/repos' %}
+{% set repodir = '/vagrant/repos' %}
 node-debian-git-repo:
   git.latest:
     # replace with mark-webster upstream if/when pull request accepted
@@ -25,7 +25,10 @@ node-debian-build-repo:
 build-nodejs-package:
   cmd.script:
     - require:
-      - sls: default
+      - pkg: devpackages
+      - pkg: python-dev
+      - pkg: python-libdev
+      - pkg: wimlib-build-depends
       - git: node-debian-build-repo
     - unless: test -x /usr/bin/npm
     - source: salt://webdev/files/build-nodejs.sh
@@ -39,12 +42,14 @@ nodejs:
     - require:
       - cmd: build-nodejs-package
 
-
-{% for pkg in ['coffee-script', 'grunt-cli', 'bower', 'http-server', 'js2coffee']: %}
-
-npm-{{ pkg }}:
+npm-webdev-packages:
   npm.installed:
     - require:
       - pkg: nodejs
-    - name: {{ pkg }}
-{% endfor %}
+    - pkgs:
+      - coffee-script
+      - grunt-cli
+      - bower
+      - http-server
+      - js2coffee
+      - express
