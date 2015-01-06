@@ -59,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--intnet2", "intloc"]
     # bridged
     #vb.customize ["modifyvm", :id, "--nic2", "bridged"]
-    #vb.customize ["modifyvm", :id, "--intnet2", "eth1"]
+    #vb.customize ["modifyvm", :id, "--bridgeadapter2", "eth1"]
   end
 
   config.vm.provision "shell", path: "vagrant/scripts/vagrant-bootstrap.sh"
