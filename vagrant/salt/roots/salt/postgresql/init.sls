@@ -25,7 +25,7 @@ include:
     - user: postgres
     - group: postgres
     - mode: 644
-    - template: mako
+    - template: jinja
 
       
 postgresql-service:
