@@ -8,6 +8,7 @@ pkgsets:
     python-dev: True
     python-libdev: True
     misc-packages: True
+    driverpacks-support: True
     deb-keyring-builddeps: True
     wimlib-builddeps: True
     wimlib-deps: True

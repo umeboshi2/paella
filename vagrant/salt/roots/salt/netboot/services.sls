@@ -41,12 +41,6 @@ tftpd-service:
     - watch:
         - file: tftpbootdir
 
-nfsd-service:
-  service.running:
-    - name: nfs-kernel-server
-    - watch:
-        - file: nfs-exports
-
 nfs-exports:
   file.managed:
     - name: /etc/exports
@@ -55,4 +49,10 @@ nfs-exports:
     - group: root
     - mode: 644
     - template: mako
+
+nfsd-service:
+  service.running:
+    - name: nfs-kernel-server
+    - watch:
+        - file: nfs-exports
 
