@@ -10,3 +10,15 @@ Description: Paella local repository for wheezy
 Log: logfile
 SignWith: 62804AE5
 
+Origin: Paella
+Label: Paella
+Suite: jessie
+Version: 8
+Codename: jessie
+Architectures: ${pillar['reprepro']['architectures']} source
+Components: main contrib non-free
+UDebComponents: main non-free
+Description: Paella local repository for jessie
+Log: logfile
+SignWith: 62804AE5
+

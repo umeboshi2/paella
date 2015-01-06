@@ -4,19 +4,8 @@
 {% set group = pget('paella:paella_group') %}
 
 include:
-  - default
+  - default.pkgsets
   - services.apache
-  #- postgresql.base
-  #- bind
-  #- dhcpd.base
-  #- shorewall.base
-  #- debianlive
-  #- netboot.base
-  #- saltmaster.base
-  #- samba.base
-  #- pbuilder
-  #- schroot.base
-
 
 /srv/debrepos/debian/conf:
   file.directory:

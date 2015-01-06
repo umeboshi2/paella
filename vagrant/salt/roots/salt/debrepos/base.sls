@@ -4,6 +4,14 @@
 {% set group = pget('paella:paella_group') %}
 
 
+# add this script to debian-archive-keyring package
+/home/vagrant/add-paella-insecure:
+  file.managed:
+    - source: salt://debrepos/add-paella-insecure
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 644
+
 # This fake-random-source state is
 # is to quickly generate gpg keys
 # to sign the package repository.
@@ -24,24 +32,4 @@
 #  file.managed:
 #    - name: /etc/default/rng-tools
 #    - source: salt://debrepos/rng-tools
-
-# add this script to debian-archive-keyring package
-/home/vagrant/add-paella-insecure:
-  file.managed:
-    - source: salt://debrepos/add-paella-insecure
-    - user: {{ user }}
-    - group: {{ group }}
-    - mode: 644
-
-
-
-#build-keyring-package:
-#  cmd.script:
-#    - source: salt://scripts/build-keyring-package.sh
-#    - unless: test -d /home/vagrant/workspace
-#    - user: {{ user }}
-#    - group: {{ group }}
-#    - requires:
-#      - cmd: update-debrepos
-
 
