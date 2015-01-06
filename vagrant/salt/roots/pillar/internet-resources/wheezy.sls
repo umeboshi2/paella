@@ -15,7 +15,7 @@ internet_resources:
     source: {{ wheezy_installer_i386 }}/netboot/debian-installer/i386/linux
     source_hash: sha256=1f256c7d273247fc257cdd3d40046c8e32f3a9f8e78bbfecc925999ff69d7b82
     name: {{ parent_path }}/i386/linux
-  debian_pxe_installer_wheezy_i386_inird_console:
+  debian_pxe_installer_wheezy_i386_initrd_console:
     source: {{ wheezy_installer_i386 }}/netboot/debian-installer/i386/initrd.gz
     source_hash: sha256=ae122861a3f1eaceb0de9591e17f1c8eadd6761e06eacfffe0b49d6c34e8ca6e
     name: {{ parent_path }}/i386/initrd-console.gz
