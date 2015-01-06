@@ -4,6 +4,7 @@
 {% set group = pget('paella:paella_group', 'vagrant') %}
 
 include:
+  - debianlive
   - winpe
   - mainserver
   - driverpacks

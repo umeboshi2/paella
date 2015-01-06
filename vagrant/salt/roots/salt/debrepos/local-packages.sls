@@ -7,7 +7,7 @@
 {% set group = pget('paella:paella_group', 'vagrant') %}
 
 include:
-  - default
+  - default.pkgsets
   - saltmaster.base
 
 {#  

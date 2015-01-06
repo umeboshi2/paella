@@ -1,6 +1,9 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
 
+include:
+  - default.pkgsets
+
 {% set basedir = pget('livebuild:base_directory') %}
 # This is modified to accept a url with the _KEY variable
 /usr/lib/live/build/bootstrap_archive-keys:

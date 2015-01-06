@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 
 include:
-  - default
+  - default.pkgsets
 
 
 nfs-kernel-server:

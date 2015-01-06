@@ -4,7 +4,7 @@
 {% set group = pget('paella:paella_group', 'vagrant') %}
 
 include:
-  - default
+  - default.pkgsets
   - shorewall
   - dhcpd
   - services.samba

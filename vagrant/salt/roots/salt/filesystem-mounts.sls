@@ -4,7 +4,7 @@
 # for paella.
 
 include:
-  - default
+  - default.pkgsets
   - managed-files
   
 {% set cache = '/vagrant/vagrant/cache' %}
