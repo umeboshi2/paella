@@ -3,8 +3,8 @@
 # This sls is responsible for installing many of  the packages on the
 # vagrant machine that will be required in the local debian repository.
 {% set pget = salt['pillar.get'] %}
-{% set user = pget('paella:paella_user') %}
-{% set group = pget('paella:paella_group') %}
+{% set user = pget('paella:paella_user', 'vagrant') %}
+{% set group = pget('paella:paella_group', 'vagrant') %}
 
 include:
   - default

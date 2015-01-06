@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
-{% set user = pget('paella:paella_user') %}
-{% set group = pget('paella:paella_group') %}
+{% set user = pget('paella:paella_user', 'vagrant') %}
+{% set group = pget('paella:paella_group', 'vagrant') %}
 {% macro pkgname(pkg, version, deb) -%}
 {{ pkg }}_{{ version }}-paella1_all.{{ deb }}
 {%- endmacro %}
