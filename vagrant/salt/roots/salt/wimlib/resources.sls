@@ -33,7 +33,7 @@ salt-windows-installer-files:
   git.latest:
     - name: {{ reposdir }}/salt-windows-install
     - target: /srv/shares/incoming/salt-windows-install
-    - user: {{ user }}
+    #- user: {{ user }}
 
 
 {% set localrepo = '%s/wimlib-code' % reposdir %}

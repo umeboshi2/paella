@@ -45,7 +45,7 @@ paella-pyramid-settings-file:
   file.managed:
     - name: /etc/apache2/paella-dev.ini
     - source: salt://mainserver/paella-dev.ini
-    - template: mako
+    - template: jinja
       
       
 # this command is always run
