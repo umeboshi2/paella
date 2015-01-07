@@ -17,6 +17,7 @@ pkgsets:
     mingw-packages: True
     live-system-dekstop-packages: True
     virtualbox: True
+    apache: True
     apache-wsgi-support: True
     bind: True
     live-builder: True

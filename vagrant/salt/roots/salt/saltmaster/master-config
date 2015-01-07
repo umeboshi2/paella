@@ -203,7 +203,7 @@ fileserver_backend:
 gitfs_remotes:
   {% for remote in pget('saltmaster:gitfs_remotes', []) -%}
   - {{ remote }}
-  {%- endfor %}
+  {% endfor -%}
 {% endif %}
 
   
