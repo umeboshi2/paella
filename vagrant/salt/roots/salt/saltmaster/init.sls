@@ -33,7 +33,7 @@ salt-master:
   file.directory:
     - require:
       - pkg: salt-master
-    #- user: {{ user }}
+    - user: {{ user }}
     - group: {{ group }}
     - mode: 2775
 
@@ -53,7 +53,7 @@ salt-master:
   file.directory:
     - require:
       - pkg: salt-master
-    - user: root
+    - user: {{ user }}
     - group: {{ group }}
     - mode: 2775
     - recurse:

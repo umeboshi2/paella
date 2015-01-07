@@ -184,26 +184,29 @@ renderer: {{ pget('saltmaster: renderer', 'yaml_jinja') }}
 hash_type: {{ pget('saltmaster:hash_type', 'md5') }}
 file_ignore_glob:
   - '.#*'
-{% set formula_path = pget('saltmaster:formula_path', '/vagrant/Formulas') %}
 file_roots:
-  base:
-    - {{ pget('saltmaster:base_fileserver_root', '/srv/salt') }}
-    {% for formula in pget('saltmaster:formulae'): %}
-    - {{ formula_path }}/{{ formula }}-formula
-    {% endfor %}
-    
+  {% for data in pget('saltmaster:file_roots'): -%}
+  {% set env = data.keys()[0] -%}
+  {{ env }}:
+    {%- for root in data[env] %}
+    - {{ root }}
+    {%- endfor %}
+  {% endfor %}
+  
 fileserver_backend:
-{% if use_gitfs_remote: %}
+{% if use_gitfs_remote: -%}
   - git
-{% else: %}
+{% endif -%}
   - roots
-{% endif %}
 
 {% if use_gitfs_remote: %}
 gitfs_remotes:
-   - {{ pget('saltmaster:top_gitfs_remote') }}
+  {% for remote in pget('saltmaster:gitfs_remotes', []) -%}
+  - {{ remote }}
+  {%- endfor %}
 {% endif %}
 
+  
 pillar_roots:
   base:
     - {{ pget('saltmaster:base_pillar_root', '/srv/pillar') }}
