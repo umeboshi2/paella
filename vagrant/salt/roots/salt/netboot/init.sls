@@ -4,6 +4,7 @@
 {% set group = pget('paella:paella_group', 'vagrant') %}
 
 include:
+  - bind
   - debianlive
   - winpe
   - mainserver
