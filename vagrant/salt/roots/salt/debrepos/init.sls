@@ -13,6 +13,7 @@ include:
   - debrepos.mainrepos
   - debrepos.saltrepos
   - debrepos.secrepos
+  - debrepos.ubunturepos
   - debrepos.paellarepos
 
 #extend:

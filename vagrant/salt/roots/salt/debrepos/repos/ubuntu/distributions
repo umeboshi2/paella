@@ -4,7 +4,7 @@ Suite: trusty
 Version: 14.04
 Codename: trusty
 Architectures: ${pillar['reprepro']['architectures']}
-Components: main restrited universe multiverse
+Components: main restricted universe multiverse
 UDebComponents: main restricted universe multiverse
 Description: Ubuntu Trusty 14.04
 Log: logfile

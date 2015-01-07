@@ -18,6 +18,10 @@
   file.managed:
     - source: salt://debrepos/live-packages
 
+/srv/debrepos/ubuntu/conf/jessie-pkgs:
+  file.managed:
+    - source: salt://debrepos/jessie-pkgs
+
 /srv/debrepos/ubuntu/conf/distributions:
   file.managed:
     - source: salt://debrepos/repos/ubuntu/distributions

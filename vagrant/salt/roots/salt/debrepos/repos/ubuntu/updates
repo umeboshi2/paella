@@ -2,7 +2,7 @@
 %for arch in ['i386', 'amd64']:
 <% udeb_lists = list() %>
 <%
-filename = '%s-%s-udeb.list' % (dist, arch)
+filename = '../../debian/conf/%s-%s-udeb.list' % (dist, arch)
 udeb_lists.append(filename)
 %>
 %endfor
@@ -21,6 +21,6 @@ Name: di
 Method: http://archive.ubuntu.com/ubuntu
 VerifyRelease: C0B21F32
 Architectures: ${pillar['reprepro']['architectures']}
-Components:
+Components: 
 UDebComponents: main restricted universe multiverse
 

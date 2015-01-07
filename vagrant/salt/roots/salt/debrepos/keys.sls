@@ -36,6 +36,13 @@
     - group: {{ group }}
     - mode: 644
 
+/home/vagrant/ubuntu-automatic.gpg:
+  file.managed:
+    - source: salt://debrepos/keys/ubuntu-automatic.gpg
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 644
+      
 import-insecure-gpg-key:
   cmd.run:
     - name: gpg --import paella-insecure-sec.gpg
@@ -76,7 +83,17 @@ import-saltrepos-key:
     - cwd: /home/vagrant
     - requires:
       - file: /home/vagrant/saltrepos.gpg
-
+        
+import-ubuntu-automatic-key:
+  cmd.run:
+    - name: gpg --import ubuntu-automatic.gpg
+    - unless: gpg --list-key C0B21F32
+    - user: {{ user }}
+    - group: {{ group }}
+    - cwd: /home/vagrant
+    - requires:
+      - file: /home/vagrant/ubuntu-automatic.gpg
+  
 keyring-ready:
   cmd.run:
     - name: echo "Keyring Ready"
@@ -89,6 +106,7 @@ keyring-ready:
       - cmd: import-wheezy-automatic-key
       - cmd: import-insecure-gpg-key
       - cmd: import-saltrepos-key
+      - cmd: import-ubuntu-automatic-key
 
 
 # This key goes into the web server's
