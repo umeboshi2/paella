@@ -185,7 +185,7 @@ hash_type: {{ pget('saltmaster:hash_type', 'md5') }}
 file_ignore_glob:
   - '.#*'
 file_roots:
-  {% for data in pget('saltmaster:file_roots'): -%}
+  {% for data in pget('saltmaster:file_roots', []): -%}
   {% set env = data.keys()[0] -%}
   {{ env }}:
     {%- for root in data[env] %}
