@@ -20,18 +20,14 @@ class MachineManager(object):
         self.session = session
         self.keymanager = SaltKeyManager(self.session)
 
-    def _query(self):
-        print "FIXME: don't use me"
-        return self.session.query(Machine)
-
     def query(self):
         return self.session.query(Machine)
 
     def get(self, id):
-        return self._query().get(id)
+        return self.query().get(id)
 
     def _get_one_by(self, **kw):
-        return self._query().filter_by(**kw).one()
+        return self.query().filter_by(**kw).one()
     
     def get_by_name(self, name):
         return self._get_one_by(name=name)
@@ -124,8 +120,8 @@ class MachineManager(object):
 
     def list_machines(self, names=False):
         if names:
-            return [m.name for m in self._query()]
-        return [m.serialize() for m in self._query()]
+            return [m.name for m in self.query()]
+        return [m.serialize() for m in self.query()]
     
     def delete(self, machine):
         with transaction.manager:
@@ -150,7 +146,7 @@ class MachineManager(object):
 
 def export_machines(session):
     mgr = MachineManager(session)
-    return dict(data=[mgr._export(m) for m in mgr._query()])
+    return dict(data=[mgr._export(m) for m in mgr.query()])
     
         
 
