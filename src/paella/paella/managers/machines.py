@@ -21,6 +21,10 @@ class MachineManager(object):
         self.keymanager = SaltKeyManager(self.session)
 
     def _query(self):
+        print "FIXME: don't use me"
+        return self.session.query(Machine)
+
+    def query(self):
         return self.session.query(Machine)
 
     def get(self, id):

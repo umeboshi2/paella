@@ -1,11 +1,13 @@
 ##### Primary configuration settings #####
 ##########################################
+{% set pget = salt['pillar.get'] %}
+{% set user = pget('paella:paella_user', 'vagrant') %}
+{% set group = pget('paella:paella_group', 'vagrant') %}
 # This configuration file is used to manage the behavior of the Salt Master
 # Values that are commented out but have no space after the comment are
 # defaults that need not be set in the config. If there is a space after the
 # comment that the value is presented as an example and is not the default.
-{% set pget = salt['pillar.get'] %}
-{% set user = pget('paella_user') %}
+
 # Per default, the master will automatically include all config files
 # from master.d/*.conf (master.d is a directory in the same directory
 # as the main master config file)
