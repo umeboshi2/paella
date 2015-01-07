@@ -1,0 +1,26 @@
+%for dist in ['wheezy', 'jessie']:
+%for arch in ['i386', 'amd64']:
+<% udeb_lists = list() %>
+<%
+filename = '%s-%s-udeb.list' % (dist, arch)
+udeb_lists.append(filename)
+%>
+%endfor
+%endfor
+<% udebs = ' '.join(udeb_lists) %>
+
+Name: main
+Method: http://archive.ubuntu.com/ubuntu
+VerifyRelease: C0B21F32
+Architectures: ${pillar['reprepro']['architectures']}
+Components: main restricted universe multiverse
+UDebComponents: none
+FilterList: deinstall local-packages live-packages jessie-pkgs ${udebs}
+
+Name: di
+Method: http://archive.ubuntu.com/ubuntu
+VerifyRelease: C0B21F32
+Architectures: ${pillar['reprepro']['architectures']}
+Components:
+UDebComponents: main restricted universe multiverse
+
