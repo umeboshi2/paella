@@ -25,7 +25,8 @@ pkgsets:
     debrepos-support: True
     postgresql: True
     dhcpd: True
-    shorewall: True
+    # shorewall now conflicts with formula
+    #shorewall: True
     nfsd: True
     tftpd: True
     samba: True

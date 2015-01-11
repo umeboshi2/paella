@@ -8,7 +8,7 @@ include:
   - shorewall
   - iscdhcp
   - ipxe
-  - services.samba
+  - samba.config
   - saltmaster
   - mainserver
   - netboot.base

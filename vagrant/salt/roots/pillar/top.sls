@@ -10,7 +10,7 @@ base:
     - samba
     - schroot
     - livebuild
-
+    - shorewall
     
     - reprepro
     - saltmaster

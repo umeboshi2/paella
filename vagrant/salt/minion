@@ -10,6 +10,7 @@ fileserver_backend:
   
 file_roots:
   base:
+    - /vagrant/repos/formulae
     - /vagrant/repos/paella-states
     - /srv/salt
 
