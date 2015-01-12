@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 {% from 'bvars.jinja' import paella_user %}
 {% from 'bvars.jinja' import paella_group %}
-{% from 'bvars.jinja' import n3, paella_server_ip %}
+{% from 'bvars.jinja' import paella_server_ip %}
 
 paella:  
   # The default is to operate in a vagrant virtual machine.

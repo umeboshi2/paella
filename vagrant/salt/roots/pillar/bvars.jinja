@@ -1,16 +1,6 @@
 # -*- mode: jinja2 -*-
-
-
-# set user and group here
-{% set paella_user = 'vagrant' %}
-{% set paella_group = 'vagrant' %}
-
-# The server ip is configurable.  The only places where
-# you should have to configure and refrence the paella_server_ip
-# variable is in this file.  The variable is used in the dhcpd and
-# livebuild namespaces below.  The 'n3' variable below is
-# only used in the dhcpd and bind namespaces below, and isn't truly
-# necessary, but handy for testing.
-{% set n3 = 4 %}
-{% set paella_server_ip = '10.0.%d.1' % n3 %}
-
+{% load_yaml %}
+paella_user: vagrant
+paella_group: vagrant
+paella_server_ip: 10.0.4.1
+{% endload %}
