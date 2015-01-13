@@ -16,6 +16,86 @@ localnet:
     portmap: 111
     manage_sieve: 2020
 
+
+network:
+  interfaces:
+    - name: eth1
+      proto: static
+      ipaddr: 10.0.4.1
+      netmask: 255.255.255.0
+      
+dhclient:
+  supersede:
+    domain-name: '"paellanet"'
+  prepend:
+    domain-name-servers: 127.0.0.1
+    
+binddns:
+  lookup:
+    config:
+      named_conf:
+        controls:
+          - 'inet 127.0.0.1 port 953 allow { 127.0.0.1; } keys { "rndc-key"; };'
+    dnssec_validation: 'no'
+  zones:
+    - create_db_only: true
+      name: paellanet
+      soa: paella
+      additional:
+        - allow-update { key "rndc-key"; }
+      records:
+        - owner: paella
+          ttl: 86400
+          class: A
+          data: 10.0.4.1
+    - create_db_only: true
+      name: 4.0.10.in-addr.arpa
+      soa: paella
+      additional:
+        - allow-update { key "rndc-key"; }
+      records:
+        - owner: 1
+          ttl: 86400
+          class: PTR
+          data: paella.paellanet.
+  
+iscdhcp: 
+  listen_interfaces:
+    - eth1
+  lookup:
+    config:
+      subnets:
+        manage: true
+      pxe_subnets:
+        manage: true
+      dhcpd:
+        options:
+          - domain-name "paellanet"
+          - domain-name-servers 10.0.4.1
+        zones:
+          - name: paellanet.
+            primary: 127.0.0.1
+            key: rndc-key
+          - name: 4.0.10.in-addr.arpa.
+            primary: 127.0.0.1
+            key: rndc-key
+            
+        file_prepend: |
+          include "/etc/bind/rndc.key";
+  pxe_subnets:
+    - network: 10.0.4.0
+      netmask: 255.255.255.0
+      range: '10.0.4.20 10.0.4.126'
+      routers: 10.0.4.1
+      ddns_domainname: paellanet
+      ddns_updates: 'on'
+      do_forward_updates: 'on'
+      tftp_server: 10.0.4.1
+      pxelinux: pxelinux.0
+      gpxelinux: gpxelinux.0
+
+
+
 paella:
   # The server ip is configurable.  The only places where
   # you should have to configure and refrence the paella_server_ip
@@ -43,4 +123,5 @@ paella:
 
   # If you already have a local mirror, set this to True
   use_local_mirror_for_vagrant: False
+
 

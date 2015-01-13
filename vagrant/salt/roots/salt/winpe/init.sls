@@ -11,7 +11,7 @@
 
 
 include:
-  - services.samba
+  - samba.config
   - paella-client
   - wimlib
 
@@ -21,7 +21,7 @@ local_paella_repos_sources_list:
     - name: /etc/apt/sources.list.d/paella.list
     - contents: deb http://localhost/debrepos/paella wheezy main
     - require:
-      - sls: services.samba
+      - sls: samba.config
       - sls: paella-client
       # FIXME why is this not found when included above?
       #- sls: wimlib

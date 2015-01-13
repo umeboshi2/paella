@@ -6,12 +6,14 @@
 include:
   - default.pkgsets
   - shorewall
-  - dhcpd
-  - services.samba
+  - iscdhcp
+  - ipxe
+  - samba.config
   - saltmaster
   - mainserver
   - netboot.base
-
+  - rsyslog
+  
 tftpd-default-config:
   file.managed:
     - name: /etc/default/tftpd-hpa

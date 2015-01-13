@@ -7,12 +7,13 @@
 {%- endmacro %}
 
 include:
-  - services.apache
+  - apache
   - debrepos.base
   - debrepos.keys
   - debrepos.mainrepos
   - debrepos.saltrepos
   - debrepos.secrepos
+  - debrepos.ubunturepos
   - debrepos.paellarepos
 
 #extend:
@@ -38,10 +39,8 @@ debrepos-apache-config:
     - name: /etc/apache2/conf.d/debrepos
     - source: salt://debrepos/apache.conf
     - template: jinja
-    #- require_in:
-    #  - service: apache-service
     - watch_in:
-      - service: apache-service
+      - service: apache
 
 # This script will rebuild the debian-archive-keyring
 # package with the paella repository key inserted.

@@ -17,6 +17,7 @@ pkgsets:
     mingw-packages: True
     live-system-dekstop-packages: True
     virtualbox: True
+    apache: True
     apache-wsgi-support: True
     bind: True
     live-builder: True
@@ -24,7 +25,8 @@ pkgsets:
     debrepos-support: True
     postgresql: True
     dhcpd: True
-    shorewall: True
+    # shorewall now conflicts with formula
+    #shorewall: True
     nfsd: True
     tftpd: True
     samba: True

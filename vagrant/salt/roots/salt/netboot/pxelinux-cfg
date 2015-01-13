@@ -47,3 +47,8 @@ label WinPEinstall64
       kernel memdisk
       append iso initrd=http://${pillar['paella']['paella_server_ip']}/debrepos/winpe64.iso
 
+label Ubuntu
+      menu lebel Ubuntu Netboot Intall
+      kernel debinstall/trusty/amd64/linux
+      append initrd=debinstall/trusty/amd64/initrd-console.gz
+      

@@ -24,6 +24,7 @@ master: {paella_server_ip}
 id: {machine}
 grains:
     system-uuid: {uuid}
+log_file: udp://paella:514
 """.format(**template_data)
 
 rc_local = """\

@@ -18,13 +18,15 @@ paella:
     jessie: 2014.3
   virtualenv_basedir: /var/lib/paella
   node_version: 0.10.25
-  
-    
-
 
 paella_virtualenv_basedir: /var/lib/paella
 
-
-
-
 node_version: 0.10.25
+
+
+rsyslog:
+  listentcp: true
+  listenudp: true
+  logbasepath: /var/log/minions
+  
+  

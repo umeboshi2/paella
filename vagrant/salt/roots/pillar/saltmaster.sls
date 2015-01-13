@@ -15,36 +15,10 @@ saltmaster:
   #use_ext_git_pillar: True
   use_ext_git_pillar: False
   top_ext_git_pillar: master https://github.com/umeboshi2/paella-pillar.git
-  formulae:
-    - apache
-    - apt
-    - bind
-    - build-essential
-    - dhcpd
-    - docker
-    - dovecot
-    - ejabberd
-    - emacs
-    - git-annex
-    - git
-    - jenkins
-    - logrotate
-    - mysql
-    - nano
-    - nfs
-    - nginx
-    - ntp
-    - openssh
-    - pam-ldap
-    - postfix
-    - postgres
-    - rsyslog
-    - salt
-    - samba
-    - screen
-    - squid
-    - ssh
-    - sudoers
-    - users
-    - virtualenv
+
+  file_roots:
+    - base:
+      - /srv/salt
+    
+    
     

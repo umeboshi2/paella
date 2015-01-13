@@ -4,7 +4,7 @@
 {% set group = pget('paella:paella_group', 'vagrant') %}
 
 include:
-  - services.apache
+  - apache
   - virtualenv
   - postgresql
   - webdev
@@ -17,7 +17,7 @@ rabbitmq-packages:
 
   
 extend:
-  apache-service:
+  apache:
     service:
       - watch:
         - file: paella-apache-config
