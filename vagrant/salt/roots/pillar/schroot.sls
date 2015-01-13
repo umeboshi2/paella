@@ -1,6 +1,6 @@
 # -*- mode: yaml -*-
 
-{% from 'bvars.jinja' import paella_user %}
+{% from 'bvars.jinja' import paella %}
 
 schroot_sections:
   {% set nmap = dict(amd64='', i386='32') %}
@@ -11,8 +11,8 @@ schroot_sections:
     description: Debian {{ dist }} ({{ arch }})
     directory: /srv/roots/{{ dist }}-{{ arch }}
     type: directory
-    users: {{ paella_user }}
-    root-users: {{ paella_user }}
+    users: {{ paella.paella_user }}
+    root-users: {{ paella.paella_user }}
   {% endfor %}
   {% endfor %}
 

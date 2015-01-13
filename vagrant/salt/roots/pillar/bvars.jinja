@@ -1,6 +1,13 @@
 # -*- mode: jinja2 -*-
-{% load_yaml %}
+{% load_yaml as paella %}
 paella_user: vagrant
 paella_group: vagrant
+paella_hostname: paella
 paella_server_ip: 10.0.4.1
+paella_subnet_network: 10.0.4.0
+paella_subnet_netmask: 255.255.255.0
+paella_subnet_range_low: 10.0.4.20
+paella_subnet_range_high: 10.0.4.126
+paella_subnet_in_addr: 4.0.10
+paella_subnet_domain: paellanet
 {% endload %}
