@@ -11,6 +11,7 @@
 
 
 include:
+  - filesystem-mounts
   - samba.config
   - paella-client
   - wimlib
