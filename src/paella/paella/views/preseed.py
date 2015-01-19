@@ -52,7 +52,8 @@ def _installer_view(request, template):
     release = 'wheezy'
     if m.release is not None:
         release = m.release
-    env = dict(uuid=uuid, hostname=name, machine=name,
+    env = dict(uuid=uuid, settings=settings,
+               hostname=name, machine=name,
                paella_server_ip=paella_server_ip,
                recipe=recipe, raid_recipe=raid_recipe,
                disk_list=disk_list, keydata=keydata,

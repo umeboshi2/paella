@@ -3,7 +3,7 @@ prompt 0
 
 %if machine.autoinstall:
 timeout 100
-default install
+default gtk_install
 %endif
 
 menu background paella-splash.png
@@ -25,16 +25,15 @@ menu title Paella Installer Menu
 <% release = machine.release %>
 %endif
 
-label install
-      menu label ^Install ${release}(${machine.arch}) to ${machine.name} with Paella
+label gtk_install
+      menu label ^Install ${release}(${machine.arch}) to ${machine.name} with Paella (gtk)
       kernel debinstall/${release}/${machine.arch}/linux
-      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd-gtk.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name} netcfg/choose_interface=${machine.iface} ${debconf_debug}
+      append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd-gtk.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name} netcfg/choose_interface=${machine.iface} ${debconf_debug} 
       
 label console_install
       menu label ^Install ${release}(${machine.arch}) to ${machine.name} with Paella (console)
       kernel debinstall/${release}/${machine.arch}/linux
       append vga=788 initrd=debinstall/${release}/${machine.arch}/initrd-console.gz auto=true priority=critical url=http://${paella_server_ip}/paella/preseed/${machine.uuid} hostname=${machine.name} netcfg/choose_interface=${machine.iface} ${debconf_debug}
-      
 
 %elif machine.ostype == 'mswindows':
 

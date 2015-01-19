@@ -17,7 +17,7 @@ def pxeconfig_filename(uuid):
 # machine is db object
 def make_pxeconfig(machine, settings):
     filename = pxeconfig_filename(machine.uuid)
-    env = dict(machine=machine,
+    env = dict(machine=machine, settings=settings,
                paella_server_ip=settings['paella_server_ip'],
                debconf_debug=settings.get('debconf_debug', ''))
     template = 'paella:templates/pxeconfig.mako'
