@@ -22,12 +22,12 @@ include:
 
 /var/lib/tftpboot/splash.png:
   file.managed:
-    - source: salt://netboot/splash.png
+    - source: salt://netboot/bigwave-splash.png
     - user: {{ user }}
 
 /var/lib/tftpboot/paella-splash.png:
   file.managed:
-    - source: salt://netboot/paella-splash.png
+    - source: salt://netboot/splash.png
     - user: {{ user }}
 
 
