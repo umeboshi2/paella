@@ -10,11 +10,13 @@ include:
   - apache
   - debrepos.base
   - debrepos.keys
-  - debrepos.mainrepos
   - debrepos.saltrepos
+  - debrepos.paellarepos
+  {%- if pget('paella:make_local_partial_mirror', False) %}
+  - debrepos.mainrepos
   - debrepos.secrepos
   - debrepos.ubunturepos
-  - debrepos.paellarepos
+  {% endif %}
 
 #extend:
 #  apache-service:
@@ -28,10 +30,13 @@ debrepos-ready:
     - require:
       - sls: debrepos.base
       - sls: debrepos.keys
-      - sls: debrepos.mainrepos
       - sls: debrepos.saltrepos
-      - sls: debrepos.secrepos
       - sls: debrepos.paellarepos
+      {%- if pget('paella:make_local_partial_mirror', False) %}
+      - sls: debrepos.mainrepos
+      - sls: debrepos.secrepos
+      - sls: debrepos.ubunturepos
+      {% endif %}
 
 # setup apache config
 debrepos-apache-config:
@@ -42,6 +47,8 @@ debrepos-apache-config:
     - watch_in:
       - service: apache
 
+
+{%- if pget('paella:make_local_partial_mirror', False) %}
 # This script will rebuild the debian-archive-keyring
 # package with the paella repository key inserted.
 
@@ -73,4 +80,5 @@ upload-keyring-package-{{ dist}}-{{ deb }}:
     - cwd: /home/vagrant/workspace
 {% endfor %}    
 {% endfor %}      
+{% endif %}
 

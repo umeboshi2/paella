@@ -1,4 +1,5 @@
 # config/common - common options for live-build(7)
+<% livebuild = pillar['livebuild'] %>
 
 # LB_CONFIG_VERSION: internal version of the configuration file format
 LB_CONFIG_VERSION="3.0.5"
@@ -13,7 +14,7 @@ LB_APT_FTP_PROXY=""
 
 # $LB_APT_HTTP_PROXY: set apt/aptitude http proxy
 # (Default: autodetected or empty)
-LB_APT_HTTP_PROXY=""
+LB_APT_HTTP_PROXY="${livebuild['apt_http_proxy']}"
 
 # $LB_APT_PIPELINE: set apt/aptitude pipeline depth
 # (Default: )
