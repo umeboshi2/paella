@@ -15,7 +15,7 @@ paella:
     wheezy: 2014.1~deb7u1
     jessie: 2014.3
   virtualenv_basedir: /var/lib/paella
-  node_version: 0.10.25
+  node_version: 0.10.29
   install_mswindows_machines: False
   make_local_partial_mirror: False
 
