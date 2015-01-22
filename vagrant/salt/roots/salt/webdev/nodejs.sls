@@ -13,7 +13,8 @@ node-debian-git-repo:
     #- name: https://github.com/mark-webster/node-debian.git
     - name: https://github.com/umeboshi2/node-debian.git
     - target: {{ repodir }}/node-debian
-
+    - rev: 26eae47ae00a677e0a8e521e4d19d07f9b6a561c
+      
 node-debian-build-repo:
   git.latest:
     - require:
@@ -30,7 +31,6 @@ build-nodejs-package:
       - pkg: devpackages
       - pkg: python-dev
       - pkg: python-libdev
-      - pkg: wimlib-build-depends
       - git: node-debian-build-repo
     - unless: test -r /var/tmp/make-nodejs/node-debian/nodejs_{{ node_version }}-1_amd64.deb || test -n "`reprepro -b /srv/debrepos/paella list wheezy nodejs`"
     - source: salt://webdev/files/build-nodejs.sh

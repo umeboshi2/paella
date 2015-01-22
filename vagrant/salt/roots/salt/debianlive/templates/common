@@ -137,7 +137,7 @@ _VERBOSE="true"
 # Internal stuff (FIXME)
 APT_OPTIONS="--yes --install-recommends"
 APTITUDE_OPTIONS="--assume-yes"
-DEBOOTSTRAP_OPTIONS="--keyring=/home/vagrant/.gnupg/pubring.gpg"
+#DEBOOTSTRAP_OPTIONS="--keyring=/home/vagrant/.gnupg/pubring.gpg"
 CDEBOOTSTRAP_OPTIONS=""
 GZIP_OPTIONS="-6 --rsyncable"
 ISOHYBRID_OPTIONS=""

@@ -10,3 +10,10 @@ nfs-kernel-server:
     - watch:
         - file: nfs-exports
 
+netboot-support-packages:
+  pkg.installed:
+    - pkgs:
+      - live-build
+      - ipxe
+      
+    

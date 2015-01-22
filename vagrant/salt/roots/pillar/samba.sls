@@ -1,4 +1,6 @@
 # -*- mode: yaml -*-
+{% from 'bvars.jinja' import paella %}
+{% set mswin = paella.install_mswindows_machines %}
 
 samba:
   samba_sections:

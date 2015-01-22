@@ -11,13 +11,13 @@ include:
   - samba.config
   - saltmaster
   - mainserver
-  - netboot.base
+  - paella-netboot.base
   - rsyslog
   
 tftpd-default-config:
   file.managed:
     - name: /etc/default/tftpd-hpa
-    - source: salt://netboot/tftpd-default-config
+    - source: salt://paella-netboot/tftpd-default-config
     - user: root
     - group: root
     - mode: 644
@@ -43,15 +43,27 @@ tftpd-service:
     - watch:
         - file: tftpbootdir
 
+nfs-incoming-share:
+  file.directory:
+    - name: /srv/shares/incoming
+    - makedirs: True
+    - mode: 777
+      
 nfs-exports:
   file.managed:
     - name: /etc/exports
-    - source: salt://netboot/nfs-exports
+    - source: salt://paella-netboot/nfs-exports
     - user: root
     - group: root
     - mode: 644
     - template: mako
+    - require:
+      - file: nfs-incoming-share
 
+nfs-kernel-server-package:
+  pkg.installed:
+    - name: nfs-kernel-server
+      
 nfsd-service:
   service.running:
     - name: nfs-kernel-server

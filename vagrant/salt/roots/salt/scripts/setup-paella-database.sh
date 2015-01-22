@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e
+{% set pget = salt['pillar.get'] %}
 
-. ${pillar['paella_virtualenv_basedir']}/venv/bin/activate
+. {{ pget('paella:virtualenv_basedir', '/var/lib/paella') }}/venv/bin/activate
 
 if true; then
     echo "Initializing paella database"
