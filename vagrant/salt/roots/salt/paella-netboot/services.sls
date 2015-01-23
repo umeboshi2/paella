@@ -35,6 +35,10 @@ tftpbootdir:
         - group
         - mode
 
+tftpd-package:
+  pkg.installed:
+    - name: tftpd-hpa
+      
 tftpd-service:
   service.running:
     - name: tftpd-hpa

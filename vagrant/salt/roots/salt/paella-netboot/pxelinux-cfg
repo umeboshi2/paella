@@ -1,3 +1,5 @@
+{% set pget = salt['pillar.get'] %}
+{% set mswin = pget('paella:install_mswindows_machines', False) %}
 ui vesamenu.c32
 prompt 0
 timeout 100
@@ -24,31 +26,31 @@ label harddisk
       kernel chain.c32
       append hd0 0
 
-include live-amd64.cfg Standard Live System (amd64)
-include live-i386.cfg Standard Live System (i386)
+{% for arch in pget('livebuild:architectures_to_build', ['amd64']) %}
+include live-{{ arch }}.cfg Standard Live System ({{ arch }})
+{% endfor %}
 
-
-include installer/i386/installer.cfg Test Install
-
-
-label WinPEshell 
-      menu label WinPE Shell
-      kernel memdisk
-      append iso initrd=http://${pillar['paella']['paella_server_ip']}/debrepos/winpe-shell.iso
-
-
-label WinPEinstall
-      menu label WinPE Auto Install
-      kernel memdisk
-      append iso initrd=http://${pillar['paella']['paella_server_ip']}/debrepos/winpe.iso
-
-label WinPEinstall64
-      menu label WinPE Auto Install amd64
-      kernel memdisk
-      append iso initrd=http://${pillar['paella']['paella_server_ip']}/debrepos/winpe64.iso
 
 label Ubuntu
       menu lebel Ubuntu Netboot Intall
       kernel debinstall/trusty/amd64/linux
       append initrd=debinstall/trusty/amd64/initrd-console.gz
-      
+
+{% if mswin %}
+label WinPEshell 
+      menu label WinPE Shell
+      kernel memdisk
+      append iso initrd=http://{{ pget('paella:paella_server_ip') }}/debrepos/winpe-shell.iso
+
+
+label WinPEinstall
+      menu label WinPE Auto Install
+      kernel memdisk
+      append iso initrd=http://{{ pget('paella:paella_server_ip') }}/debrepos/winpe.iso
+
+label WinPEinstall64
+      menu label WinPE Auto Install amd64
+      kernel memdisk
+      append iso initrd=http://{{ pget('paella:paella_server_ip') }}/debrepos/winpe64.iso
+{% endif %}
+

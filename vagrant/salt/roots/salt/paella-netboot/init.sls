@@ -15,12 +15,13 @@ include:
   - mainserver
   - paella-netboot.debian-installer
   - paella-netboot.services
-
+  - debrepos
+  
 
 /var/lib/tftpboot/pxelinux.cfg/default:
   file.managed:
     - source: salt://paella-netboot/pxelinux-cfg
-    - template: mako
+    - template: jinja
     - makedirs: True
     - user: {{ user }}
 
@@ -34,6 +35,16 @@ include:
     - source: salt://paella-netboot/threesisters-splash.png
     - user: {{ user }}
 
+
+/var/lib/tftpboot/bigwave-splash.png:
+  file.managed:
+    - source: salt://paella-netboot/bigwave-splash.png
+    - user: {{ user }}
+
+/var/lib/tftpboot/threesisters-splash.png:
+  file.managed:
+    - source: salt://paella-netboot/threesisters-splash.png
+    - user: {{ user }}
 
 #####################################
 

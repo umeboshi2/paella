@@ -55,6 +55,13 @@ livebuild-{{ arch }}-paella-apt-chroot:
     - require:
       - file: {{ configdir }}/archives
 
+livebuild-{{ arch }}-paella-apt-chroot-gpg:
+  file.managed:
+    - name: {{ configdir }}/archives/paella.key.chroot
+    - source: salt://debrepos/keys/paella-insecure-pub.gpg
+    - require:
+      - file: {{ configdir }}/archives
+
 
 livebuild-{{ arch }}-paella-apt-binary:
   file.managed:
@@ -64,12 +71,19 @@ livebuild-{{ arch }}-paella-apt-binary:
     - require:
       - file: {{ configdir }}/archives
 
+livebuild-{{ arch }}-paella-apt-binary-gpg:
+  file.managed:
+    - name: {{ configdir }}/archives/paella.key.binary
+    - source: salt://debrepos/keys/paella-insecure-pub.gpg
+    - require:
+      - file: {{ configdir }}/archives
+
 
 livebuild-{{ arch }}-paella-package-list:
   file.managed:
     - name: {{ configdir }}/package-lists/paella.list.chroot
     - source: salt://debianlive/paella.package.list.chroot
-    - template: mako
+    - template: jinja
     - defaults:
         arch: {{ arch }}
     - require:

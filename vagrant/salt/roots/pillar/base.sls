@@ -12,9 +12,6 @@ paella:
   # If you already have a local mirror, set this to True
   use_local_mirror_for_vagrant: False
 
-  debian_archive_keyring_versions:
-    wheezy: 2014.1~deb7u1
-    jessie: 2014.3
   virtualenv_basedir: /var/lib/paella
   node_version: 0.10.29
   install_mswindows_machines: False
@@ -32,11 +29,12 @@ paella:
     - samba.config
     {% endif %}
     - binddns
-    - apache
     - virtualenv
+    - apache
+    - apache.mod_wsgi
     - postgres
-    - webdev
     - debrepos
+    - webdev
     - paella-client
     - mainserver
     {% if mswin %}
@@ -45,22 +43,13 @@ paella:
     - winpe
     {% endif %}
     - paella-netboot
-    
 
-#paella_virtualenv_basedir: /var/lib/paella
+  # these are only needed if building a local
+  # partial mirror
+  debian_archive_keyring_versions:
+    wheezy: 2014.1~deb7u1
+    jessie: 2014.3
 
-#node_version: 0.10.25
-
-apt_cacher_ng:
-  #server_cache_dir: /vagrant/cache/apt-cacher-ng
-  server_cache_dir_mode: '0755'
-  admin_account: vagrant
-  admin_passwd: vagrant
-  user: vagrant
-  group: vagrant
-  #no_cache_requested: 10.0.2.1
-  
-    
 rsyslog:
   listentcp: true
   listenudp: true
@@ -103,7 +92,7 @@ postgres:
       # FIXME, I would rather get the formulas working
       # appropriately
       # https://github.com/saltstack/salt/issues/19924
-      #32template: 'template0'
+      template: 'template0'
   #postgresconf: |
   #  listen_addresses = 'localhost,*'
   pg_hba.conf: salt://postgres/pg_hba.conf

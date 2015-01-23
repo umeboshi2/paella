@@ -15,5 +15,5 @@ netboot-support-packages:
     - pkgs:
       - live-build
       - ipxe
-      
+      - syslinux
     

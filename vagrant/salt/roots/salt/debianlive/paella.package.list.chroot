@@ -1,4 +1,5 @@
-<% livebuild = pillar['livebuild'] %>
+{% set pget = salt['pillar.get'] %}
+{% set mswin = pget('paella:install_mswindows_machines', False) %}
 
 screen
 most
@@ -20,19 +21,23 @@ reiserfsprogs
 parted
 ntfs-3g
 
+# need paella debrepos for these
+python-paella-client
+
+{% if mswin %}
+# need paella debrepos for these
+wimtools
 
 # virtualbox needed to run bcdboot in a winpe environment
 virtualbox
+{% endif %}
 
-# need paella debrepos for these
-python-paella-client
-wimtools
 
-%if livebuild['enable_xfce_desktop']:
+{% if pget('livebuild:enable_xfce_desktop') %}
 # needed to test virtualbox
 #xfce4
 task-xfce-desktop
 iceweasel
 miscfiles
-%endif
+{% endif %}
 
