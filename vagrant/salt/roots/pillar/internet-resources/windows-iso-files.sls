@@ -1,6 +1,6 @@
 # -*- mode: yaml -*-
 
-{% set parent_path = '/vagrant/vagrant/cache' %}
+{% set parent_path = '/vagrant/cache' %}
 internet_resources:
   win7_ultimate_iso_i386:
     source: http://msft.digitalrivercontent.net/win/X17-59463.iso

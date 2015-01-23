@@ -2,7 +2,7 @@
 
 {% set wheezy_installer_i386 = 'http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u2+b4/images' %}
 {% set wheezy_installer_amd64 = 'http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/20130613+deb7u2+b4/images' %}
-{% set parent_path = '/vagrant/vagrant/cache/debinstall/wheezy' %}
+{% set parent_path = '/vagrant/cache/debinstall/wheezy' %}
 {% set udeb_i386 = '/srv/debrepos/debian/conf/udebs-wheezy-i386-upstream' %}
 {% set udeb_amd64 = '/srv/debrepos/debian/conf/udebs-wheezy-amd64-upstream' %}
 
