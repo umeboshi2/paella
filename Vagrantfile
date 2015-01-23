@@ -61,7 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #vb.customize ["modifyvm", :id, "--nic2", "bridged"]
     #vb.customize ["modifyvm", :id, "--bridgeadapter2", "eth1"]
   end
-
+  config.vm.provision "shell", path: "vagrant/scripts/restore-deb-cache.sh"
   config.vm.provision "shell", path: "vagrant/scripts/vagrant-bootstrap.sh"
   config.vm.provision "shell", inline: "sudo mkdir -p /etc/salt && sudo chown -R vagrant /etc/salt || true"
   config.vm.provision "file", source: "vagrant/salt/minion",
