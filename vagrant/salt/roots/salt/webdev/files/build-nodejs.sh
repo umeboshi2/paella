@@ -20,8 +20,6 @@ node_deb=nodejs_$node_version-1_$arch.deb
 if [ -f $node_deb ]; then
     echo "Installing $node_deb"
     dpkg -i $node_deb
-    echo "Moving $node_deb to /root"
-    mv -i $node_deb /root
 fi
 
 popd

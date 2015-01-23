@@ -1,6 +1,6 @@
 # -*- mode: yaml -*-
 
-{% set parent_path = '/vagrant/vagrant/cache/windows' %}
+{% set parent_path = '/vagrant/cache/windows' %}
 internet_resources:
   msysgit:
     source: https://github.com/msysgit/msysgit/releases/download/Git-1.9.2-preview20140411/Git-1.9.2-preview20140411.exe

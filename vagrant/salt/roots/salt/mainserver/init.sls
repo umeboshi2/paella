@@ -6,14 +6,15 @@
 include:
   - apache
   - virtualenv
-  - postgresql
+  - postgres
   - webdev
-  
+
+{% if pget('paella:install_rabbitmq', False) %}
 rabbitmq-packages:
   pkg.installed:
     - pkgs:
       - rabbitmq-server
-
+{% endif %}
 
   
 extend:
@@ -58,10 +59,10 @@ setup-paella:
     - unless: false
     - requires:
       - virtualenv: mainserver-virtualenv
-      - sls: postgresql
+      - sls: postgres
     - source: salt://scripts/setup-paella.sh
     - user: {{ user }}
-    - template: mako
+    - template: jinja
     
 
 
@@ -74,5 +75,5 @@ setup-paella-database:
       - cmd: setup-paella
     - source: salt://scripts/setup-paella-database.sh
     - user: postgres
-    - template: mako
+    - template: jinja
 

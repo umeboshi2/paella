@@ -1,5 +1,5 @@
 # -*- mode: yaml -*-
-{% set parent_path = '/vagrant/vagrant/cache' %}
+{% set parent_path = '/vagrant/cache' %}
 
 internet_resources:
   clonezilla_iso:

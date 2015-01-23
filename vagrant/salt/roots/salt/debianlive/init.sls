@@ -1,20 +1,21 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
+{% set mswin = pget('paella:install_mswindows_machines', False) %}
 
 include:
   - default.pkgsets
 
 {% set basedir = pget('livebuild:base_directory') %}
 # This is modified to accept a url with the _KEY variable
-/usr/lib/live/build/bootstrap_archive-keys:
-  file.managed:
-    - source: salt://debianlive/bootstrap_archive-keys
-    - user: root
-    - group: root
-    - mode: 755
+#/usr/lib/live/build/bootstrap_archive-keys:
+#  file.managed:
+#    - source: salt://debianlive/bootstrap_archive-keys
+#    - user: root
+#    - group: root
+#    - mode: 755
 
 
-{% for arch in ['i386', 'amd64']: %}
+{% for arch in pget('livebuild:architectures_to_build', ['amd64']) %}
 {% set configdir = '%s/%s/config' % (basedir, arch) %}
 livebuild-configdir-{{ arch }}:
   file.directory:
@@ -54,6 +55,13 @@ livebuild-{{ arch }}-paella-apt-chroot:
     - require:
       - file: {{ configdir }}/archives
 
+livebuild-{{ arch }}-paella-apt-chroot-gpg:
+  file.managed:
+    - name: {{ configdir }}/archives/paella.key.chroot
+    - source: salt://debrepos/keys/paella-insecure-pub.gpg
+    - require:
+      - file: {{ configdir }}/archives
+
 
 livebuild-{{ arch }}-paella-apt-binary:
   file.managed:
@@ -63,12 +71,19 @@ livebuild-{{ arch }}-paella-apt-binary:
     - require:
       - file: {{ configdir }}/archives
 
+livebuild-{{ arch }}-paella-apt-binary-gpg:
+  file.managed:
+    - name: {{ configdir }}/archives/paella.key.binary
+    - source: salt://debrepos/keys/paella-insecure-pub.gpg
+    - require:
+      - file: {{ configdir }}/archives
+
 
 livebuild-{{ arch }}-paella-package-list:
   file.managed:
     - name: {{ configdir }}/package-lists/paella.list.chroot
     - source: salt://debianlive/paella.package.list.chroot
-    - template: mako
+    - template: jinja
     - defaults:
         arch: {{ arch }}
     - require:
@@ -84,7 +99,24 @@ livebuild-{{ arch }}-user-setup-conf:
     - template: mako
     - require:
       - file: livebuild-configdir-{{ arch }}
+        
+livebuild-{{ arch }}-fstab:
+  file.managed:
+    - makedirs: True
+    - name: {{ configdir }}/includes.chroot/etc/fstab
+    - source: salt://debianlive/fstab
+    - template: mako
+    - require:
+      - file: livebuild-{{ arch }}-srv-incoming
 
+livebuild-{{ arch }}-srv-incoming:
+  file.directory:
+    - makedirs: True
+    - name: {{ configdir }}/includes.chroot/srv/incoming
+    - require:
+      - file: livebuild-configdir-{{ arch }}
+        
+{% if mswin %}
 make-win7-system-{{ arch }}:
   file.managed:
     - makedirs: True
@@ -103,22 +135,7 @@ install-win7-image-{{ arch }}:
     - require:
       - file: livebuild-configdir-{{ arch }}
 
-livebuild-{{ arch }}-srv-incoming:
-  file.directory:
-    - makedirs: True
-    - name: {{ configdir }}/includes.chroot/srv/incoming
-    - require:
-      - file: livebuild-configdir-{{ arch }}
-
-livebuild-{{ arch }}-fstab:
-  file.managed:
-    - makedirs: True
-    - name: {{ configdir }}/includes.chroot/etc/fstab
-    - source: salt://debianlive/fstab
-    - template: mako
-    - require:
-      - file: livebuild-{{ arch }}-srv-incoming
-
+{% endif %}
 {% endfor %}
 
 

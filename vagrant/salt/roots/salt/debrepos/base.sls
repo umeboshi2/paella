@@ -12,6 +12,12 @@
     - group: {{ group }}
     - mode: 644
 
+
+debrepos-packages:
+  pkg.installed:
+    - pkgs:
+      - reprepro
+      
 # This fake-random-source state is
 # is to quickly generate gpg keys
 # to sign the package repository.

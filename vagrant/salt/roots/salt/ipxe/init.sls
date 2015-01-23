@@ -21,5 +21,6 @@ cache-ipxe-git-repos:
     - name: git://git.ipxe.org/ipxe.git
     - target: {{ reposdir }}/ipxe
     - user: {{ user }}
-    #- rev: 
+    - rev: d38bac05e7d0eb67fc19f3532a6b4fa00804106e
+      
   

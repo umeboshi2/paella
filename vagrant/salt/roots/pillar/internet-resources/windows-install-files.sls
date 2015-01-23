@@ -1,6 +1,6 @@
 # -*- mode: yaml -*-
 
-{% set parent_path = '/vagrant/vagrant/cache/windows' %}
+{% set parent_path = '/vagrant/cache/windows' %}
 internet_resources:
   salt_windows_installer_i386:
     source: http://docs.saltstack.com/downloads/Salt-Minion-2014.7.0-1-win32-Setup.exe

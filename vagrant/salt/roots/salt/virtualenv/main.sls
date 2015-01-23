@@ -2,6 +2,7 @@
 {% set pget = salt['pillar.get'] %}
 {% set user = pget('paella:paella_user', 'vagrant') %}
 {% set group = pget('paella:paella_group', 'vagrant') %}
+{% set mswin = pget('paella:install_mswindows_machines', False) %}
 
 include:
   - default.pkgsets
@@ -26,7 +27,7 @@ virtualenv-basedir:
     - group: {{ group }}
     - mode: 2775
 
-
+{% if mswin %}
 # This is the virtualenv used to gather the driverpacks      
 get-driverpacks-virtualenv:
   virtualenv.managed:
@@ -37,6 +38,7 @@ get-driverpacks-virtualenv:
     - require:
       - file: virtualenv-basedir
 
+{% endif %}
 
 # This is the virtualenv that the paella server needs
 mainserver-virtualenv:
@@ -48,6 +50,7 @@ mainserver-virtualenv:
     - require:
       - file: virtualenv-basedir
 
+{% if pget('paella:use_halite', False) %}        
 halite-virtualenv:
   virtualenv.managed:
     - name: {{ pget('paella:virtualenv_basedir') }}/venv
@@ -56,7 +59,8 @@ halite-virtualenv:
     - requirements: salt://mainserver/requirements.txt
     - require:
       - file: virtualenv-basedir
-  
+{% endif %}
+
 
 # This looks funky, but it happens to be the only way known
 # to easily put python packages hosted in git repos in the

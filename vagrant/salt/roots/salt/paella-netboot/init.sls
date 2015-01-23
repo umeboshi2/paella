@@ -2,34 +2,49 @@
 {% set pget = salt['pillar.get'] %}
 {% set user = pget('paella:paella_user', 'vagrant') %}
 {% set group = pget('paella:paella_group', 'vagrant') %}
+{% set mswin = pget('paella:install_mswindows_machines', False) %}
 
 include:
   - binddns
   - debianlive
+  - paella-netboot.base
+  {% if mswin %}
   - winpe
-  - mainserver
   - driverpacks
-  - netboot.debian-installer
-  - netboot.services
-
+  {% endif %}
+  - mainserver
+  - paella-netboot.debian-installer
+  - paella-netboot.services
+  - debrepos
+  
 
 /var/lib/tftpboot/pxelinux.cfg/default:
   file.managed:
-    - source: salt://netboot/pxelinux-cfg
-    - template: mako
+    - source: salt://paella-netboot/pxelinux-cfg
+    - template: jinja
     - makedirs: True
     - user: {{ user }}
 
 /var/lib/tftpboot/splash.png:
   file.managed:
-    - source: salt://netboot/bigwave-splash.png
+    - source: salt://paella-netboot/bigwave-splash.png
     - user: {{ user }}
 
 /var/lib/tftpboot/paella-splash.png:
   file.managed:
-    - source: salt://netboot/splash.png
+    - source: salt://paella-netboot/threesisters-splash.png
     - user: {{ user }}
 
+
+/var/lib/tftpboot/bigwave-splash.png:
+  file.managed:
+    - source: salt://paella-netboot/bigwave-splash.png
+    - user: {{ user }}
+
+/var/lib/tftpboot/threesisters-splash.png:
+  file.managed:
+    - source: salt://paella-netboot/threesisters-splash.png
+    - user: {{ user }}
 
 #####################################
 
@@ -41,7 +56,6 @@ include:
     - user: root
     - group: root
     - makedirs: True
-
 
 # FIXME:  These scripts aren't really that great and
 # are not really good for salt states.  They will 
@@ -58,12 +72,14 @@ build-live-image-script:
     - source: salt://scripts/make-live-image.sh
     - mode: 755
 
-{% for arch in ['i386', 'amd64']: %}
+{% for arch in pget('livebuild:architectures_to_build', ['amd64']) %}
 {% set lbdir = '/var/cache/netboot/livebuild/%s' % arch %}
 build-live-image-{{ arch }}:
   cmd.run:
     - require:
+      {% if mswin %}
       - sls: winpe
+      {% endif %}
       - file: build-live-image-script
     - unless: test -r {{ lbdir }}/binary/md5sum.txt
     - name: make-live-image {{ arch }}
