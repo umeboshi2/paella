@@ -4,6 +4,8 @@
 
 ### General
 
+- **FILE ISSUES ON GITHUB AND GET RID OF THIS TODO**
+
 - need to respect arch decision when installing ostype mswindows
 
 - work on deployment plan
@@ -19,11 +21,11 @@
 
 - Move more info into pillar data
 
-  - wipe out all hardcoded entries of '10.0.4.1' to config files or pillar data
+  - wipe out all hardcoded entries of '10.0.4.1' to config files or pillar data (DONE)
 
 - Handle different operating system releases
 
-	- test using debian jessie pxe boot
+	- test using debian jessie pxe boot (DONE)
 	
 	- windows is left as local exercise due to availability of content
 	
@@ -38,7 +40,7 @@
 for both wheezy and jessie.  Verify, then reportbug.
 
 - Implement just enough DNS on paella server to add paella CNAME
-entry.  Fix paella-client to use paella hostname by default for paella server.
+entry.  Fix paella-client to use paella hostname by default for paella server. (DONE)
 
 - Create default disk recipes and some sitetext pages for the paella server.
 
@@ -49,13 +51,13 @@ to paella host instead of ip address.  The .ini file that paella sever uses
 also has "paella_server_ip" defined.  In total, there are currently four
 files that contain "paella_server_ip."  Consolidate the three pillar files into
 a single file, then make notes that there are only two files to adjust when
-changing "paella_server_ip" for vagrant machine.
+changing "paella_server_ip" for vagrant machine. (DONE, all variables should be in bvars.jinja(todo: rename))
 
 - Make note that 10.0.2.0/24 cidr interferes with default NAT addresses
 on virtualbox.  Make note that option to change this is commented out
 in Vagrantfile.
 
-- Consider using vagrant rsync updates for some shared directories.
+- Consider using vagrant rsync updates for some shared directories. (UNSURE IF NEEDED)
 
 
 
@@ -65,10 +67,10 @@ in Vagrantfile.
   install.
   http://docs.saltstack.com/en/latest/topics/tutorials/preseed_key.html
   - pyramid_celery and rabbitmq to help queue key generation jobs
-  - keys are instaled in configure netboot script
+  - minion keys are generated and accepted on server on submit machine
+  - minion keys remain in database
+  - keys are installed to minion in configure netboot script (latecmd)
   - **IMPORTANT** need to enforce ssl on apache to pass data across network
-  - **update**
-	- some work has been done of generating keys
 
 - Implement per machine auto install option when generating install pxe 
 config file.  Implement a short delay in pxeconfig, but still automatically install
@@ -147,3 +149,5 @@ system.
 - DONE: use system uuid instead of mac addresses: dmidecode -s system-uuid
 
 - DONE: web-interface:  recipe managers
+
+
