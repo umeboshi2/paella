@@ -3,6 +3,7 @@
 module.exports = (grunt) ->
   # variables to use in config
   # foo = 'bar'
+  _ = require 'lodash'
   app_dir = 'javascripts'
     
   # config
@@ -12,60 +13,63 @@ module.exports = (grunt) ->
         options:
           bare: false
         expand: true
-        src: ['coffee/**/*.coffee']
+        src: ['**/*.coffee']
         dest: app_dir
         ext: '.js'
+        cwd: 'coffee'
                 
       compileWithMaps:
         options:
           bare: false
           sourceMap: true
         expand: true
-        src: ['coffee/**/*.coffee']
+        src: ['**/*.coffee']
         dest: app_dir
         ext: '.js'
-
-      compileBuildJS:
-        options:
-          bare: true
-        src: 'build.coffee'
-        dest: 'build.js'
-        
+        cwd: 'coffee'
         
     compass:
       compile:
         config: 'config.rb'
+      watch:
+        config: 'config.rb'
+        watch: true
+        quiet: false
+        
         
     watch:
       coffee:
-        files: ['**/*.coffee']
+        files: ['coffee/**/*.coffee']
         tasks: ['coffee:compileWithMaps']
+        options:
+          spawn: false
       compass:
         files: ['sass/**/*.scss']
-        tasks: ['compass']
-      cpcoffee:
-        files: ['coffee/**/*.coffee']
-        tasks: ['copy:coffee']
+        tasks: ['compass:watch']
       buildjs:
         files: 'build.coffee'
-        tasks: ['coffee:compileBuildJS']
-      makepages:
-        files: ['pages/**/*.md']
-        tasks: ['shell:pages']
+        tasks: ['shell:compileBuildJS']
+
+    concurrent:
+      watchers:
+        tasks: ['watch:coffee', 'watch:compass']
+        options:
+          logConcurrentOutput: true
         
-        
+    # from the docs
+    changedFiles = Object.create null
+    update_changedFiles = () ->
+      grunt.config.set 'coffee.compileWithMaps.src', Object.keys changedFiles
+      changedFiles = Object.create null
+    onChange = _.debounce(update_changedFiles, 200)
       
-        
-    copy:
-      coffee:
-        files:
-          [
-            expand: true
-            src: ['coffee/**']
-            dest: 'javascripts/'
-          ]  
-        
-        
+    grunt.event.on 'watch', (action, filepath) ->
+      #console.log "watch:->#{action} on #{filepath}"
+      filepath = filepath.split('coffee/')[1]
+      changedFiles[filepath] = action
+      #console.log "files should equal -> #{Object.keys changedFiles}"
+      onChange()
+      
     clean:
       js:
         src: ['javascripts/**/*.js']
@@ -79,12 +83,19 @@ module.exports = (grunt) ->
           stdout: true
       pages:
         command: 'python scripts/make-pages.py'
+
+      compileBuildJS:
+        command: 'python scripts/make-build-js.py'
         options:
           stdout: true
           
-        
     # load grunt-* tasks
     require('matchdep').filterDev('grunt-*').forEach grunt.loadNpmTasks
+    
+
+    #grunt.event.on 'watch', (action, filepath, target) ->
+    #  message = target + ': ' + filepath + ' has ' + action
+    #  console.log message
     
     grunt.registerTask 'default', [
       'shell:bower'
@@ -94,5 +105,7 @@ module.exports = (grunt) ->
       'coffee:compileWithMaps'
       'shell:pages'
       ]
-                          
-        
+
+    grunt.registerTask 'watchers', [
+      'concurrent:watchers'
+      ]

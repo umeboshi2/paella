@@ -1,0 +1,155 @@
+/*https://github.com/patrickward/compass-ui/blob/master/stylesheets/compass-ui/theme/_absolution.scss
+*/
+/** 
+ * The Absolution Theme is based on 
+ * Absolution by Michael Vanderheeren
+ * Copyright (c) 2010 Michael Vanderheeren
+ * 
+ * Please follow the his Github project to stay up to date on that theme:
+ * https://github.com/michaelvanderheeren/Absolution
+ */
+@import "compass/css3/border-radius";
+@import "compass/css3/images";
+@import "compass/css3/opacity";
+@import "compass/css3/box-shadow";
+@import "compass/css3/text-shadow";
+
+@import "compass-ui";
+@import "compass-ui/theme/absolution/progressbar";
+@import "compass-ui/theme/absolution/dialog";
+@import "compass-ui/theme/absolution/accordion";
+@import "compass-ui/theme/absolution/autocomplete";
+@import "compass-ui/theme/absolution/datepicker";
+@import "compass-ui/theme/absolution/slider";
+@import "compass-ui/theme/absolution/tabs";
+
+// Theme mixin that calls the relevant jQuery and theme 
+// mixins when appropriate. 
+@mixin absolution-theme {
+  @include jquery-ui-theme;
+  @include absolution-dialog;
+  @include absolution-progressbar;
+  @include absolution-accordion;
+  @include absolution-autocomplete;
+  @include absolution-datepicker;
+  @include absolution-slider;
+  @include absolution-tabs;
+}
+
+@import "partials/base_variables";
+
+// Default Radius
+$ui-border-radius: $ui-border-radius;
+
+// Default Fonts
+$ui-font-family: $base-font-family;
+
+$ui-fixed-font-family: "andale mono", "lucida console", monospace;
+
+$ui-font-size: 1.1em;
+
+$ui-widget-font-size: 1em;
+
+$ui-form-font-size: 1em;
+
+$ui-header-font-weight: bold;
+
+// ------------------------------------------
+// Icon Images 
+// ------------------------------------------
+$ui-images-url: "absolution/";
+$ui-icons: "ui-icons_222222_256x240.png";
+$ui-icons-content: $ui-icons;
+$ui-icons-header: $ui-icons;
+$ui-icons-default: $ui-icons;
+$ui-icons-hover: "ui-icons_ffffff_256x240.png";
+$ui-icons-focus: $ui-icons-hover;
+$ui-icons-active: $ui-icons-hover;
+$ui-icons-highlight: $ui-icons;
+$ui-icons-error: $ui-icons;
+
+// ------------------------------------------
+// Color Scheme
+// ------------------------------------------
+
+// content
+$ui-content-border-color: #a9a9a9; 
+$ui-content-color: #333333;
+$ui-content-link-color: $ui-content-color;
+$ui-content-background-color: $background-color;
+// If the background is default, add a full background description: 
+// $ui-content-background: #ffffff url(...);
+$ui-content-background: linear-gradient($ui-content-background-color,darken($primary-color, 15%));
+$ui-content-background-type: image;
+
+// header
+$ui-header-border-color: $ui-content-border-color;
+$ui-header-color: $ui-content-color;
+$ui-header-link-color: $ui-header-color;
+$ui-header-background-color: $ui-content-background-color;
+$ui-header-background: $ui-content-background;
+
+// titlebar
+$ui-titlebar-color: #ffffff;
+$ui-titlebar-background-color: #4c4c4e;
+$ui-titlebar-background: linear-gradient($ui-titlebar-background-color, #282425);
+$ui-titlebar-background-type: image;
+
+
+// state-default
+$ui-default-color: $text-color;
+$ui-default-background-color: lighten($background-color, 10%);
+$ui-default-border-color: darken($ui-default-border-color, 20%);
+$ui-default-background: linear-gradient($ui-default-background-color,#ececec);
+$ui-default-link-color: $ui-default-color;
+
+// state-hover
+$ui-hover-color: $text-color;
+$ui-hover-background-color: lighten($button-background-color, 10%);
+$ui-hover-border-color: lighten($ui-hover-border-color, 20%);
+$ui-hover-background: linear-gradient($ui-hover-background-color,darken($ui-hover-background-color, 10%));
+$ui-hover-link-color: $ui-hover-color;
+
+// state-active
+$ui-active-color: $text-color; 
+$ui-active-background-color: $button-background-color;
+$ui-active-border-color: lighten($ui-active-background-color, 20%);
+$ui-active-background: linear-gradient($ui-active-background-color, darken($ui-active-background-color, 10%));
+$ui-active-link-color: $ui-active-color;
+
+// state-highlight
+$ui-highlight-color: $text-color;
+$ui-highlight-background-color: $button-background-color;
+$ui-highlight-border-color: lighten($ui-highlight-background-color, 20%);
+$ui-highlight-background: $ui-highlight-background-color;
+$ui-highlight-background-type: default;
+$ui-highlight-link-color: $ui-highlight-color;
+
+// state-error
+$ui-error-border-color: #953737;
+$ui-error-color: #363636;
+$ui-error-background-color: #f35757;
+$ui-error-background: $ui-error-background-color; 
+$ui-error-background-type: default;
+$ui-error-link-color: $ui-error-color;
+
+// state-primary
+
+// priority-secondary
+$ui-priority-secondary-opacity: .7;
+
+// state-disabled
+$ui-disabled-opacity: .35;
+
+// overlay
+$ui-overlay-opacity: .3;
+$ui-overlay-background-color: #aaaaaa;
+$ui-overlay-background: linear-gradient($ui-overlay-background-color,adjust-lightness($ui-overlay-background-color, -5));
+$ui-overlay-background-type: image;
+
+// shadow
+$ui-shadow-opacity: .3;
+$ui-shadow-background-color: #aaaaaa;
+$ui-shadow-background: linear-gradient($ui-shadow-background-color,adjust-lightness($ui-shadow-background-color, -5));
+$ui-shadow-background-type: image;
+

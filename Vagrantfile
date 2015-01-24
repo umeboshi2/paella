@@ -10,34 +10,62 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "umeboshi/trumpet-i386"
+  boxname = 'chef-debian-7.4-vboxguest-4.1.18'
+  dirname = ENV['HOME'] + '/.vagrant.d/boxes/' + boxname
+  if File.directory?(dirname)
+    config.vm.box = boxname
+  else
+    config.vm.box = 'chef/debian-7.4'
+  end
 
+  # The url from where the 'config.vm.box' box will be fetched if it
+  # doesn't already exist on the user's system.
+  # config.vm.box_url = "http://domain.com/path/to/above.box"
+  #config.vm.box_check_update = false
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 8080, host: 8080
+  #config.vm.network "forwarded_port", guest: 6543, host: 6543
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
 
-  # salt 
-  config.vm.synced_folder 'salt/roots/salt/', '/srv/salt/'
-  config.vm.synced_folder 'salt/roots/pillar/', '/srv/pillar/'
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
 
+  # If true, then any SSH connections made will enable agent forwarding.
+  # Default value: false
   # config.ssh.forward_agent = true
 
-  config.vm.provider "virtualbox" do |vb|
-    # Don't boot with headless mode
-    #vb.gui = true
-    
-    # if you need a different nat ip
-    #vb.customize ["modifyvm", :id, "--natnet1", "10.0.3/24"]
-  end
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+  
+  # TODO: share salt directories for provisioning
+  config.vm.synced_folder 'vagrant/salt/roots/salt/', '/srv/salt/'
+  config.vm.synced_folder 'vagrant/salt/roots/pillar/', '/srv/pillar/'
 
-  config.vm.provision "shell", path: "vagrant-bootstrap.sh"
+
+  # This config is needed for building nodejs
+  # and can be readjusted once the package is built.
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 1024
+    vb.cpus = 4
+  end
+  #config.vm.provision "shell", path: "scripts/vagrant-bootstrap.sh"
+  config.vm.provision "shell", path: "vagrant/scripts/vagrant-bootstrap.sh"
 
   config.vm.provision :salt do |salt|
-    salt.minion_config = 'salt/minion'
+    salt.minion_config = 'vagrant/salt/minion'
     salt.run_highstate = true
     salt.verbose = true
   end
+
 
 end

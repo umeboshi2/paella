@@ -1,0 +1,18 @@
+@import "partials/X11colors";
+
+/*
+$primary-color: desaturate($color-BlanchedAlmond, 80%);
+$secondary-color: $color-salmon4;
+$text-color: darken($color-RosyBrown, 35%);
+*/
+
+
+$primary-color: desaturate($color-AliceBlue, 80%);
+$secondary-color: darken($color-DeepSkyBlue, 30%);
+$text-color: darken($color-DeepSkyBlue, 35%);
+
+
+$background-color: darken($primary-color, 10%);
+$button-background-color: darken($background-color, 15%);
+
+

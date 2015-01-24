@@ -2,7 +2,14 @@
   "name": "paella",
   "version": "0.0.0",
   "homepage": "https://github.com/umeboshi2/paella",
-  "license": "MIT",
+  "authors": [
+    "Joseph Rawson <joseph.rawson.works@littledebian.org>"
+  ],
+  "description": "project skeleton",
+  "moduleType": [
+    "amd"
+  ],
+  "license": "Public Domain",
   "private": true,
   "ignore": [
     "**/.*",
@@ -12,39 +19,26 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "~3.1.1",
-    "backbone.modal": "*",
-    "font-awesome": "~4.0.3",
-    "backbone.validation": "~0.7.1",
-    "font-droidsans-bold": "https://googlefontdirectory.googlecode.com/hg/apache/droidsans/DroidSans-Bold.ttf",
-    "backbone.wreqr": "~1.2.0",
-    "font-droidserif-bold": "https://googlefontdirectory.googlecode.com/hg/apache/droidserif/DroidSerif-Bold.ttf",
-    "font-droidsans": "https://googlefontdirectory.googlecode.com/hg/apache/droidsans/DroidSans.ttf",
-    "font-nunito-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/nunito/Nunito-Regular.ttf",
-    "font-play-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/play/Play-Regular.ttf",
-    "font-cabin-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/cabin/Cabin-Regular.ttf",
-    "font-rambla-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/rambla/Rambla-Regular.ttf",
-    "font-droidserif": "https://googlefontdirectory.googlecode.com/hg/apache/droidserif/DroidSerif.ttf",
-    "font-sacramento-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/sacramento/Sacramento-Regular.ttf",
-    "font-rumraisin-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/rumraisin/RumRaisin-Regular.ttf",
-    "fullcalendar": "~1.6.4",
-    "font-questrial-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/questrial/Questrial-Regular.ttf",
-    "marked": "~0.3.2",
-    "font-sourcesanspro-regular": "https://googlefontdirectory.googlecode.com/hg/ofl/sourcesanspro/SourceSansPro-Regular.ttf",
-    "marionette.bundle": "https://raw.github.com/marionettejs/backbone.marionette/master/lib/backbone.marionette.js",
+    "jquery": "~2.1.1",
     "lodash": "~2.4.1",
-    "jquery-ui": "~1.10.3",
-    "teacup": "https://github.com/goodeggs/teacup.git",
-    "modernizr": "~2.7.2",
-    "require-cs": "~0.4.4",
-    "requirejs-bower": "~2.1.11",
-    "coffee-script": "~1.7.1",
-    "backbone.babysitter": "~0.1.1",
-    "underscore": "~1.6.0",
     "backbone": "~1.1.2",
-    "requirejs-text": "~2.0.12"
+    "marionette": "~2.1.0",
+    "bootstrap": "~3.2.0",
+    "jquery-ui": "~1.11.1",
+    "teacup": "https://github.com/goodeggs/teacup.git#169d92198db33e0e85d4b7872e0db0640c2df579",
+    "marked": "~0.3.2",
+    "backbone.validation": "~0.7.1",
+    "backbone.paginator": "~2.0.2",
+    "requirejs": "~2.1.14",
+    "backbone.localStorage": "~1.1.13",
+    "font-awesome": "~4.2.0",
+    "fullcalendar": "~2.1.0",
+    "ace": "~1.1.6",
+    "imagesloaded": "~3.1.8",
+    "masonry": "~3.1.5"
   },
   "resolutions": {
-    "jquery": ">= 1.9.0"
+    "jquery": "~2.1.1",
+    "backbone": "~1.1.2"
   }
 }
