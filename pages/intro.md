@@ -41,7 +41,7 @@ project.
 
 ## Features
 
-[Here](/pages/features.json) is a `tl;dr` page of features.  Not many features, but extensively
+[Here](/pages/features) is a `tl;dr` page of features.  Not many features, but extensively
 explained.  Not "featuritis", yet a few features with a lot of reasoning.
 
 ## Getting Started
