@@ -12,11 +12,6 @@ define (require, exports, module) ->
       url: '#'
     apps:
       [
-        {
-          appname: 'docs'
-          name: 'Documents'
-          url: '#docs'
-        }
       ]
     appregions: AppRegions.basic_appregions
     approutes: [

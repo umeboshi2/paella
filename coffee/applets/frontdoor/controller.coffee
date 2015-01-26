@@ -22,12 +22,12 @@ define (require, exports, module) ->
   side_bar_data = new Backbone.Model
     entries: [
       {
-        name: 'Home'
-        url: '#'
-      }
-      {
         name: 'News'
         url: '#pages/news'
+      }
+      {
+        name: 'Introduction'
+        url: '#pages/intro'
       }
       {
         name: 'Todo List'
@@ -62,6 +62,10 @@ define (require, exports, module) ->
         url: '#pages/preseed'
       }
       {
+        name: 'Debian Installer'
+        url: '#pages/debian-install'
+      }
+      {
         name: 'History'
         url: '#pages/history'
       }
@@ -79,6 +83,7 @@ define (require, exports, module) ->
 
     show_page: (name) ->
       @make_sidebar()
+      console.log "getting page #{name}"
       page = MainBus.reqres.request 'pages:getpage', name
       window.mypage = page
       response = page.fetch()
@@ -86,7 +91,8 @@ define (require, exports, module) ->
         view = new Views.FrontDoorMainView
           model: page
         @App.content.show view
-
+      Util.scroll_top_fast()
+      
     start: ->
       #console.log 'controller.start called'
       @make_main_content()

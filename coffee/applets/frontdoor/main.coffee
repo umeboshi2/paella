@@ -24,4 +24,10 @@ define (require, exports, module) ->
       controller = new Controller MainBus
       router = new Router
         controller: controller
-      controller.show_page 'intro'
+      if not location.hash
+        controller.show_page 'intro'
+      else
+        name = location.hash.replace '#pages/', ''
+        console.log "Asking for #{name}"
+        controller.show_page name
+        
