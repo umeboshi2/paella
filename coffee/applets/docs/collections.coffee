@@ -15,7 +15,8 @@ define (require, exports, module) ->
   ########################################
   class PageCollection extends Backbone.Collection
     model: Models.Page
-    url: '/paella/rest/v0/main/sitetext'
+    url: '/paella/pages/index.json'
+    
     
   # set handlers on message bus
   #
@@ -25,7 +26,9 @@ define (require, exports, module) ->
 
   AppBus.reqres.setHandler 'pages:getpage', (page_id) ->
     #console.log 'handle pages:getpage ' + page_id
-    model = main_page_collection.get page_id
+    #model = main_page_collection.get page_id
+    model = new Models.Page
+      id: page_id
     window.mmodel = model
     #return model
     if model is undefined

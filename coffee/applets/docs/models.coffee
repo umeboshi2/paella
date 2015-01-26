@@ -9,6 +9,9 @@ define (require, exports, module) ->
   ########################################
 
   class Page extends Backbone.Model
+    url: () ->
+      "/paella/pages/#{@id}.json"
+      
     validation:
       name:
         required: true

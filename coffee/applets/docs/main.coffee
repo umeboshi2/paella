@@ -12,11 +12,9 @@ define (require, exports, module) ->
   
   class Router extends BootStrapAppRouter
     appRoutes:
-      'wiki': 'start'
-      'wiki/listpages': 'list_pages'
-      'wiki/showpage/:name' : 'show_page'
-      'wiki/editpage/:name': 'edit_page'
-      'wiki/addpage': 'add_page'
+      'docs': 'start'
+      'docs/listpages': 'list_pages'
+      'docs/showpage/:name' : 'show_page'
       
   MainBus.commands.setHandler 'wiki:route', () ->
     console.log "wiki:route being handled"

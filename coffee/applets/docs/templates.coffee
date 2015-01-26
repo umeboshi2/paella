@@ -35,15 +35,15 @@ define (require, exports, module) ->
   page_list_entry = renderable (page) ->
     div '.listview-list-entry', ->
       span '.btn-default.btn-xs', ->
-        a href:'#wiki/editpage/' + page.id,
+        a href:'#docs/editpage/' + page.id,
         style:'color:black', ->
           icon '.edit-page.fa.fa-pencil'
       text "    " 
-      a href:'#wiki/showpage/' + page.id, page.id
+      a href:'#docs/showpage/' + page.id, page.id
         
   page_list = renderable () ->
     div '.listview-header', ->
-      text 'Wiki Pages'
+      text 'Documents'
       span '#add-new-page-button.btn.btn-default.btn-xs.pull-right', 'New Page'
     div '.listview-list'
 
@@ -60,21 +60,6 @@ define (require, exports, module) ->
         text 'save'
     div '#editor'
 
-  new_page_form = renderable () ->
-    div '.form-group', ->
-      label '.control-label', for:'input_name', 'Page Name'
-      input '#input_name.form-control',
-      name:'name', dataValidation:'name',
-      placeholder:'New Page', value:''
-    div '.form-group', ->
-      label '.control-label', for:'input_content', 'Content'
-      textarea '#input_content.form-control',
-      name:'content', dataValidation:'content',
-      placeholder:'...add text....', value:''
-    input '.btn.btn-default.btn-xs', type:'submit', value:'Add Page'
-    
-
-      
   module.exports =
     frontdoor_main: frontdoor_main
     page_list_entry: page_list_entry

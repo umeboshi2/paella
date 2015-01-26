@@ -18,11 +18,11 @@ define (require, exports, module) ->
       }
       {
         name: 'News'
-        url: '#wiki/showpage/news'
+        url: '#docs/showpage/news'
       }
       {
         name: 'List Pages'
-        url: '#wiki/listpages'
+        url: '#docs/listpages'
       }
       ]
 
@@ -47,9 +47,11 @@ define (require, exports, module) ->
     show_page: (name) ->
       @make_sidebar()
       page = AppBus.reqres.request 'pages:getpage', name
-      view = new Views.FrontDoorMainView
-        model: page
-      @App.content.show view
+      response = page.fetch()
+      response.done =>
+        view = new Views.FrontDoorMainView
+          model: page
+        @App.content.show view
   
     edit_page: (name) ->
       @make_sidebar()
@@ -67,7 +69,7 @@ define (require, exports, module) ->
     start: ->
       #console.log 'controller.start called'
       @make_main_content()
-      #console.log 'wiki started'
+      #console.log 'docs started'
 
   module.exports = Controller
   
