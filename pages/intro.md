@@ -1,7 +1,4 @@
-# [Paella](#)
-
-
-## Introduction 
+# Introduction 
 
 Paella is a system for automatically installing fully configured 
 [debian](https://debian.org) machines on a local network, and managing 
@@ -17,37 +14,15 @@ it can be configured either continuously, or as needed, with paella.  Currently,
 this includes many major linux distrubutions, newer apple operating systems,
 and microsoft windows systems.
 
-While the possibilities seem numerous, the cold hard fact is that this is a
-project created by a single developer to perform installation and configuration
-management operations on a smaller range of operating systems and
-hardware configurations.  However, I have taken the time to keep the
-framework open and flexible.  The configuration management system is
-actually an open and fair game.  There should not be much difficulty in
-using another system such as ansible or puppet if desired.  The example
-salt configuration that is provided isn't required for operation, and is also
-not highly opinionated.
-
-The machine management data is split between a postgresql database
-and the configuration management system, which is currently salt.  The
-postgresql database houses the minion_id/hostname and system-uuid
-of the machine, as well as the disk configuration held in the form of
-debian-installer expert recipes.  The decision to have this split, instead
-of a centralized data store stems from the desire to keep the configuration
-management system as open as possible and determine the best way
-to link the information in the database to the preferred configuration
-system.  I feel that this opportunity for flexibility overrides the desire for
-a completely central database at this point in the development of the
-project.
-
-## Features
+# Features
 
 [Here](#pages/features) is a `tl;dr` page of features.  Not many features, but extensively
 explained.  Not "featuritis", yet a few features with a lot of reasoning.
 
-## Getting Started
+# Getting Started
 
 Paella requires quite a few things in order to operate.  The best way to 
-get things started is to use [Virtual Box](https://virtualbox.org) and 
+get things started is to use [Virtual Box](http://virtualbox.org) and 
 [Vagrant](https://vagrantup.com) to install and configure the Paella 
 server.  The complexity of installing and configuring the network 
 services, creating the debian repositories, creating and installing 
@@ -55,8 +30,15 @@ the default live system, is handled by provisioning the vagrant virtual
 machine with salt.  Instructions for using vagrant to setup paella are 
 [here](#pages/vagrant).
 
+# Development
 
-## Planned Usage and Development Direction
+The core of paella is written in [python](http://python.org).
+[Here](#pages/pythondev) is a page with some
+information about what python libraries are used with paella.  For the
+web application, I have written a page discussing the [css](#pages/cssdev)
+and [javascript](#pages/jsdev) environments.
+
+# Planned Usage and Development Direction
 
 It seems to be quite often when a fully automated network installer is
 considered to be necessary for an environment, there is a large farm

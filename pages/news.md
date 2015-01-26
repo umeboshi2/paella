@@ -1,6 +1,4 @@
-# [Paella](#)
-
-## NEWS
+# NEWS
 
 - Paella has been rewritten completely.  
 

@@ -1,4 +1,4 @@
-# [Features](#)
+# Features
 
 
 Paella has some features that may make it desirable over other
@@ -124,12 +124,13 @@ then execute virtualbox to prepare the bootloader.  While this is happening
 a user of the live system can browse the web or use office tools while they
 recover from a malware attack or broken hard drive.
 
-### System Dependencies
+###[System Dependencies](#pages/sysdeps)
 
-Although this is the last feature listed, it is by far the most important.  The selection
-of code and environment that paella depends upon has been chosen very
-carefully, but not by a team of people.  The selection of dependencies are crucial with
-respect to predictable operation and long term management.  A system such as
+Although this is the last feature listed, it is by far the most important.
+The selection of code and environment that paella depends upon has
+been chosen very carefully, but not by a team of people.  The
+selection of dependencies are crucial with respect to predictable
+operation and long term management.  A system such as
 paella has a heavy dependence on many system services, libraries, and
 frameworks in order to perform its function.  These dependencies can generally
 be categorized into two distinct types.
@@ -178,3 +179,25 @@ have to be worked with in the next two years, if history and experience are
 any guide, which is why the selection process is so important, and it has
 taken much of my time.
 
+
+While the possibilities seem numerous, the cold hard fact is that this is a
+project created by a single developer to perform installation and configuration
+management operations on a smaller range of operating systems and
+hardware configurations.  However, I have taken the time to keep the
+framework open and flexible.  The configuration management system is
+actually an open and fair game.  There should not be much difficulty in
+using another system such as ansible or puppet if desired.  The example
+salt configuration that is provided isn't required for operation, and is also
+not highly opinionated.
+
+The machine management data is split between a postgresql database
+and the configuration management system, which is currently salt.  The
+postgresql database houses the minion_id/hostname and system-uuid
+of the machine, as well as the disk configuration held in the form of
+debian-installer expert recipes.  The decision to have this split, instead
+of a centralized data store stems from the desire to keep the configuration
+management system as open as possible and determine the best way
+to link the information in the database to the preferred configuration
+system.  I feel that this opportunity for flexibility overrides the desire for
+a completely central database at this point in the development of the
+project.

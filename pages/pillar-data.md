@@ -1,6 +1,4 @@
-# [Paella](#)
-
-### Pillar Data
+# Pillar Data
 
 The default pillar data is in a git repository.  I desire for these pillar 
 files, eventually, to be python scripts that access a database using 

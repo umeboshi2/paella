@@ -1,8 +1,6 @@
-# [Paella](#)
+# TODO
 
-## TODO
-
-### General
+## General
 
 - **FILE ISSUES ON GITHUB AND GET RID OF THIS TODO**
 
@@ -61,7 +59,7 @@ in Vagrantfile.
 
 
 
-### Paella Server
+## Paella Server
 
 - Automate key generation and preseed the keys during first stage 
   install.
@@ -96,7 +94,7 @@ system.
 	manage release info.
 	
 
-### Debian Installs
+## Debian Installs
 
 - Can we put the debian installer in an LXC container on the debian-live system?
 
@@ -116,7 +114,7 @@ system.
   a reasonable disk list by reading the raid recipe on the server and answering the
   disk list question in the template?
 
-### Windows Installs
+## Windows Installs
 
 - Look at using streamable WIM's using wimlib.  Serve WIM based on 
   uuid.  Serve unattend.xml based on uuid.
@@ -133,7 +131,7 @@ system.
 
 - look at using wimboot instead of booting winpe iso's.
 
-### Completed!
+## Completed!
 
 - DONE: Make scripts for live netboot system to identify machines and set
   for install.

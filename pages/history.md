@@ -1,13 +1,10 @@
-# [Paella](#)
-
-
-## History
+# History
 
 The old website for this project is at http://paella.berlios.de
 
 **This page needs to be rewritten/reorganized**
 
-### What was it?
+## What was it?
 
 Paella was written over eight years ago, yet much of the core components 
 have changed little since the project started approaching stability.  Some 
@@ -52,7 +49,7 @@ configuration database is not located on the local network.  Furthermore,
 I desired to develop a gui to manipulate the configuration, and the sql 
 database lent itself to quicker gui development.
 
-### Features on Older Version
+## Features on Older Version
 - Automated network installation over a local network.
 
 - The configuration is split into conceptual entities that are
@@ -89,7 +86,7 @@ database lent itself to quicker gui development.
 
 
 
-## That was then, this is now
+# That was then, this is now
 
 Paella is not a new project.  It has been rewritten entirely from scratch.
 You are looking at what could best be called version 2.  A brief overview
@@ -116,7 +113,8 @@ few systems to choose from, but the choice was between
 up using salt, primarily for the use of [zeromq](https://zeromq.org) for
 communication.
 
-## Paella and FAI
+
+# Paella and FAI
 
 Paella was originally inspired by [FAI](https://fai-project.org), and in fact,
 the earliest incarnation was a set of python scripts that communicated with

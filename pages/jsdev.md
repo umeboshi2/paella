@@ -1,5 +1,3 @@
-# [Javascript Dependencies](#)
-
 # Basic Javascript Libraries
 
 -  [CoffeeScript](http://coffeescript.org/):

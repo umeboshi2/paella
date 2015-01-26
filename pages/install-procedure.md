@@ -1,8 +1,6 @@
-# [Paella](#)
+# General Install Procedure  
 
-## General Install Procedure  
-
-### Procedure when the machine is introduced to the network
+## Procedure when the machine is introduced to the network
 
 1. Boot machine from network into live system.  When the machine
    finishes rendering the desktop screen, lauch a terminal emulator.
@@ -23,7 +21,7 @@
    can be manipulated on the paella web interface prior to installing the
    machine.
    
-### Procedure when machine set to be installed:
+## Procedure when machine set to be installed:
  
 1. Boot machine from network.  The pxe menu will have an install
    entry at the top that provides the installer with a preseed file 

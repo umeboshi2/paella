@@ -1,6 +1,4 @@
-# [Paella](#)
-
-## Outline
+# Outline
 
 How is paella going to work?
 
@@ -13,7 +11,7 @@ Two deployment scenarios:
 2. Set up a network where the hosts on the network are installed and managed 
    by a paella server.
 
-## Where is this stuff useful?
+# Where is this stuff useful?
 
 Paella is not designed for deploying debian systems in a cloud environment.  
 There are plenty of tools to help with this, and ability to use 
@@ -30,7 +28,7 @@ server farm was configured to boot from the network automatically, and
 the autoinstall property is set for each machine, the network can be 
 completely managed remotely.
 
-## Interesting Links
+# Interesting Links
 
 http://sourceforge.net/projects/unattended/
 
@@ -47,9 +45,9 @@ DriverPacks with Sysprep
 
 http://forum.driverpacks.net/viewtopic.php?id=4849
 
-## Windows Stuff
+# Windows Stuff
 
-### Netboot a PE environment
+## Netboot a PE environment
 
 Use wimlib to make pe iso.
 netboot iso and server iso http instead of tftp (ipxe or gpxe?)
@@ -59,7 +57,7 @@ or
 Use PXE entirely, (seems that sending the winpe.wim will 
 take too long).
 
-### Configure PE environment
+## Configure PE environment
 
 Another approach:  make custom winpe iso for each machine on demand.
 Autounattend.xml for specific machine on iso root directory.
@@ -76,7 +74,7 @@ setup.exe
 Hopefully if windows installer picks up Autounattend.xml on cd drive
 things will be ok.  It did!
 
-### Learn GuiRunOnce
+## Learn GuiRunOnce
 
 Attempt to stick python and autoit on the base system after install.
 
@@ -87,7 +85,7 @@ circumstance, the autoit binary will have to be provided by the
 configuration provisioner to execute the autoit scripts.
 
 
-### Set up reference environment
+## Set up reference environment
 
 - Use the automated install to install base system.
 
@@ -130,13 +128,13 @@ configuration provisioner to execute the autoit scripts.
 	  
 	
 	
-### Look at using salt windows software repo
+## Look at using salt windows software repo
 
 salt-minion on windows
 
 preseeded keys can be included in winpe.iso
 
-### Driverpacks
+## Driverpacks
 
 - slipstream driverpacks into iso
 

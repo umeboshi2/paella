@@ -1,6 +1,4 @@
-# [Paella](#)
-
-### Preseed builder
+# Preseed builder
 
 The preseed is currently a [Mako](http://www.makotemplates.org/) template 
 that is served from the paella [server](#pages/paella-server). 

@@ -1,6 +1,4 @@
-# [Paella](#)
-
-#### Default Live System
+# Default Live System
 
 Boot a machine over the network.  The default boot menu will allow you to 
 boot into a live system where you can identify the machine and set a flag 
