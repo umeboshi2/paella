@@ -19,7 +19,7 @@ define (require, exports, module) ->
   class MainPageView extends Backbone.Marionette.ItemView
     template: SiteTemplates.PageLayoutTemplate
 
-  class MainPageLayout extends Backbone.Marionette.Layout
+  class MainPageLayout extends Backbone.Marionette.LayoutView
     template: SiteTemplates.PageLayoutTemplate
     
     

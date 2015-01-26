@@ -6,7 +6,7 @@ define (require, exports, module) ->
   bootstrap = require 'bootstrap'
   Marionette = require 'marionette'
 
-  
+  Util = require 'common/util'
   AppRegions = require 'common/appregions'
   MainPage = require 'common/mainpage'
   
@@ -18,19 +18,14 @@ define (require, exports, module) ->
   
   # require applets
   require 'frontdoor/main'
-  require 'wiki/main'
-  require 'bumblr/main'
-  require 'hubby/main'
-  require 'bookstore/main'
-
   
-  app = new Marionette.Application()
+  app = new Marionette.Application
+    ready: false
     
-  app.ready = false
+  #app.ready = false
 
   AppRegions.prepare_app app, appmodel, MainBus
   app.ready = true
-
   
   module.exports = app
   

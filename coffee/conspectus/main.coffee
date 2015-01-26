@@ -49,8 +49,6 @@ require [
   'common/util'
   'frontdoor/main'
   ], (App, Util) ->
-  # debug
-  window.app = App
   # simple app starter
   return Util.start_application(App)
         

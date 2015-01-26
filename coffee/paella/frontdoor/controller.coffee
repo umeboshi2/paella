@@ -82,8 +82,8 @@ define (require, exports, module) ->
         #$('html, body').animate {scrollTop: 0}, 'fast'
           
     start: ->
-      @make_main_content()
       console.log 'frontdoor started'
+      @make_main_content()
         
 
   module.exports = Controller

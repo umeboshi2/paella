@@ -24,7 +24,7 @@ define (require, exports, module) ->
       sidebar: '#sidebar'
       rcontent: '#main-content'
       
-    app.on 'initialize:after', ->
+    app.on 'start', ->
       Backbone.history.start() unless Backbone.history.started
       
     app.msgbus = MSGBUS

@@ -8,6 +8,23 @@ module.exports = (grunt) ->
     
   # config
   grunt.initConfig
+    shell:
+      bower:
+        command: 'python scripts/prepare-bower-components.py'
+        options:
+          stdout: true
+
+      compileBuildJS:
+        command: 'python scripts/make-build-js.py'
+        options:
+          stdout: true
+          
+    clean:
+      js:
+        src: ['javascripts/**/*.js']
+      emacs:
+        src: ['**/*~']
+        
     coffee:
       compile:
         options:
@@ -70,25 +87,6 @@ module.exports = (grunt) ->
       #console.log "files should equal -> #{Object.keys changedFiles}"
       onChange()
       
-    clean:
-      js:
-        src: ['javascripts/**/*.js']
-      emacs:
-        src: ['**/*~']
-        
-    shell:
-      bower:
-        command: 'python scripts/prepare-bower-components.py'
-        options:
-          stdout: true
-      pages:
-        command: 'python scripts/make-pages.py'
-
-      compileBuildJS:
-        command: 'python scripts/make-build-js.py'
-        options:
-          stdout: true
-          
     # load grunt-* tasks
     require('matchdep').filterDev('grunt-*').forEach grunt.loadNpmTasks
     
@@ -101,9 +99,8 @@ module.exports = (grunt) ->
       'shell:bower'
       'coffee:compile'
       'compass:compile'
-      'coffee:compileBuildJS'
+      'shell:compileBuildJS'
       'coffee:compileWithMaps'
-      'shell:pages'
       ]
 
     grunt.registerTask 'watchers', [

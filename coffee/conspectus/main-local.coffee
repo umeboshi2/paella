@@ -38,11 +38,13 @@ require.config
     # component.
     common: '../common'
     # applets
-    hubby: '../applets/hubby'
-    bumblr: '../applets/bumblr'
-    wiki: '../applets/wiki'
+    #hubby: '../applets/hubby'
+    #bumblr: '../applets/bumblr'
+    #docs: '../applets/docs'
     frontdoor: '../applets/frontdoor'
-    bookstore: '../applets/bookstore'
+    #bookstore: '../applets/bookstore'
+    machines: '../applets/machines'
+    diskrecipes: '../applets/diskrecipes'
     
     
   # FIXME:  try to reduce the shim to only the
@@ -80,15 +82,3 @@ require.config
     else
       console.log "no modulename found via location.pathname"  if window.console
     return
-    
-#require [
-#  'application'
-#  'common/util'
-#  'frontdoor/main'
-#  ], (App, Util) ->
-#  # debug
-#  window.app = App
-#  # simple app starter
-#  return Util.start_application(App)
-        
-        
