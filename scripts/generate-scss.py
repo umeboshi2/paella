@@ -9,6 +9,7 @@ jquery_ui_template = """\
 bootstrap_template = """\
 @import "partials/themes/%(basecolor)s";
 @import "partials/bootstrap-variables";
+@import "partials/themes/%(basecolor)s";
 @import "bootstrap";
 @import "partials/bootstrap-main";
 """
