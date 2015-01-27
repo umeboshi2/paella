@@ -16,8 +16,7 @@ and microsoft windows systems.
 
 # Features
 
-[Here](#pages/features) is a `tl;dr` page of features.  Not many features, but extensively
-explained.  Not "featuritis", yet a few features with a lot of reasoning.
+[Here](#pages/features) is a page of features.
 
 # Getting Started
 
