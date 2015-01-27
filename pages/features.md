@@ -6,10 +6,10 @@ automated installation options.
 
 ## Self Hosting
 
-The development environment, using [vagrant](FIXME), creates a
-[virtual box](FIXME) server with two interfaces that is ready to
+The development environment, using [vagrant](https://vagrantup.com), creates a
+[virtual box](http://virtualbox.org) server with two interfaces that is ready to
 perform automated installs.  All that is needed is to clone the
-project from [github](FIXME) and type `vagrant up` (and sadly,
+project from [github](https://github.com) and type `vagrant up` (and sadly,
 followed by one `vagrant provision`, due to a small bug in the ordering
 of states) and you are ready to start submitting machines and instaling.
 
@@ -47,7 +47,7 @@ that gives details on how the install procedure operates.
 Configuration management extends beyond a preconfigured installation.  When
 the desire to create an automated installer that created fully configured
 systems originated, configuration management as it is seen today was
-nowhere nearly as mature.  There existed [cfengine](FIXME) and an assortment
+nowhere nearly as mature.  There existed [cfengine]() and an assortment
 of less complete solutions to the serious problems that lack of good
 configuration managment eventually incurs.  Cfengine was written perl, which
 I really don't like using.  I was forced, as many other administrators at the time,
