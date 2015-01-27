@@ -3,7 +3,7 @@
 #http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/20101020ubuntu318.12/images/SHA256SUMS
 {% set trusty_installer_i386 = 'http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-i386/20101020ubuntu318.12/images' %}
 {% set trusty_installer_amd64 = 'http://archive.ubuntu.com/ubuntu/dists/trusty-updates/main/installer-amd64/20101020ubuntu318.12/images' %}
-{% set parent_path = '/vagrant/vagrant/cache/debinstall/trusty' %}
+{% set parent_path = '/vagrant/cache/debinstall/trusty' %}
 {% set udeb_i386 = '/srv/debrepos/debian/conf/udebs-trusty-i386-upstream' %}
 {% set udeb_amd64 = '/srv/debrepos/debian/conf/udebs-trusty-amd64-upstream' %}
 

@@ -1,41 +1,41 @@
 # -*- mode: yaml -*-
 
-{% set wheezy_installer_i386 = 'http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/current/images' %}
-{% set wheezy_installer_amd64 = 'http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/current/images' %}
-{% set parent_path = '/vagrant/vagrant/cache/debinstall/wheezy' %}
+{% set wheezy_installer_i386 = 'http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-i386/20130613+deb7u2+b4/images' %}
+{% set wheezy_installer_amd64 = 'http://ftp.nl.debian.org/debian/dists/wheezy/main/installer-amd64/20130613+deb7u2+b4/images' %}
+{% set parent_path = '/vagrant/cache/debinstall/wheezy' %}
 {% set udeb_i386 = '/srv/debrepos/debian/conf/udebs-wheezy-i386-upstream' %}
 {% set udeb_amd64 = '/srv/debrepos/debian/conf/udebs-wheezy-amd64-upstream' %}
 
 internet_resources:
   debian_pxe_installer_wheezy_i386_udeb_list:
     source: {{ wheezy_installer_i386 }}/udeb.list
-    source_hash: sha256=a4bce242e3b8a32a68f980cd4011fbb3f20ec6a1370f2bee10a046a41a2f80d0
+    source_hash: sha256=c1d5e75677a1d64e2f485f186ae7cbddacede8deec91dc011f17a50029e97277
     name: {{ udeb_i386 }}
   debian_pxe_installer_wheezy_i386_linux:
     source: {{ wheezy_installer_i386 }}/netboot/debian-installer/i386/linux
-    source_hash: sha256=1f256c7d273247fc257cdd3d40046c8e32f3a9f8e78bbfecc925999ff69d7b82
+    source_hash: sha256=269c3b05657817a11ead163268f4489ea20e757f62046484c59ceeada3dd8a85
     name: {{ parent_path }}/i386/linux
   debian_pxe_installer_wheezy_i386_initrd_console:
     source: {{ wheezy_installer_i386 }}/netboot/debian-installer/i386/initrd.gz
-    source_hash: sha256=ae122861a3f1eaceb0de9591e17f1c8eadd6761e06eacfffe0b49d6c34e8ca6e
+    source_hash: sha256=838a4eaa8dcb5cb71fbf3f3aa1c2aaaa57b44457a3b0f61f2f89da2848541b58
     name: {{ parent_path }}/i386/initrd-console.gz
   debian_pxe_installer_wheezy_i386_initrd_gtk:
     source: {{ wheezy_installer_i386 }}/netboot/gtk/debian-installer/i386/initrd.gz
-    source_hash: sha256=f623c3dc53fce89106aa31a1607a550f40899cbc7fcfaf0cfefbd565e35bc6e3
+    source_hash: sha256=0dbeb38d980d929b8e16de4ad1bc6afb752d89c4a00edb7554e82ffa493ab4c7
     name: {{ parent_path }}/i386/initrd-gtk.gz
   debian_pxe_installer_wheezy_amd64_udeb_list:
     source: {{ wheezy_installer_amd64 }}/udeb.list
-    source_hash: sha256=6d2a05b7b1f7ecc9a8ab868905c9b1254e3e82fc47bce8b5eef78b26cca1cc2c
+    source_hash: sha256=a55f929587778fc0e73dae0fcdca90f401721b16c8b0e945bfd7ba16afb2d4e9
     name: {{ udeb_amd64 }}
   debian_pxe_installer_wheezy_amd64_linux:
     source: {{ wheezy_installer_amd64 }}/netboot/debian-installer/amd64/linux
-    source_hash: sha256=487e2dc3635e22f3f7d6e90e36d6dccbf9c5e09a747179d0aa42bc6b063d492a
+    source_hash: sha256=726cdc20aac7fb4e11630469f14f4c03e42bb5878498bf4ebede7b238220b50f
     name: {{ parent_path }}/amd64/linux
   debian_pxe_installer_wheezy_amd64_initrd_console:
     source: {{ wheezy_installer_amd64 }}/netboot/debian-installer/amd64/initrd.gz
-    source_hash: sha256=c91a2216fe00ddb9bd42a8000e19997b5df897a561f904b0a88e03a65f6c6dad
+    source_hash: sha256=7ff6bf2c90647fb530c730efad3cbacdbba531ff9542d40f7b87a2acd9914cb3
     name: {{ parent_path }}/amd64/initrd-console.gz
   debian_pxe_installer_wheezy_amd64_initrd_gtk:
     source: {{ wheezy_installer_amd64 }}/netboot/gtk/debian-installer/amd64/initrd.gz
-    source_hash: sha256=b177215ff00ca5d0432d0a85fdd01c70b06ef35469371809e629416e51bd3003
+    source_hash: sha256=c9a92f2a102d3031b9e37295fb61906a51a409ca7e700b0f65e55bc25184b9c8
     name: {{ parent_path }}/amd64/initrd-gtk.gz

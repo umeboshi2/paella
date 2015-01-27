@@ -15,20 +15,6 @@
     - group: {{ group }}
     - mode: 400
 
-/home/vagrant/wheezy-stable.gpg:
-  file.managed:
-    - source: salt://debrepos/keys/wheezy-stable.gpg
-    - user: {{ user }}
-    - group: {{ group }}
-    - mode: 644
-
-/home/vagrant/wheezy-automatic.gpg:
-  file.managed:
-    - source: salt://debrepos/keys/wheezy-automatic.gpg
-    - user: {{ user }}
-    - group: {{ group }}
-    - mode: 644
-
 /home/vagrant/saltrepos.gpg:
   file.managed:
     - source: salt://debrepos/keys/saltrepos.gpg
@@ -45,6 +31,31 @@ import-insecure-gpg-key:
     - cwd: /home/vagrant
     - requires:
       - file: /home/vagrant/paella-insecure-sec.gpg
+
+import-saltrepos-key:
+  cmd.run:
+    - name: gpg --import saltrepos.gpg
+    - unless: gpg --list-key F2AE6AB9
+    - user: {{ user }}
+    - group: {{ group }}
+    - cwd: /home/vagrant
+    - requires:
+      - file: /home/vagrant/saltrepos.gpg
+
+{% if pget('paella:make_local_partial_mirror', False) %}        
+/home/vagrant/wheezy-stable.gpg:
+  file.managed:
+    - source: salt://debrepos/keys/wheezy-stable.gpg
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 644
+
+/home/vagrant/wheezy-automatic.gpg:
+  file.managed:
+    - source: salt://debrepos/keys/wheezy-automatic.gpg
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 644
 
 import-wheezy-automatic-key:
   cmd.run:
@@ -67,15 +78,23 @@ import-wheezy-stable-key:
     - requires:
       - file: /home/vagrant/wheezy-stable.gpg
 
-import-saltrepos-key:
+/home/vagrant/ubuntu-automatic.gpg:
+  file.managed:
+    - source: salt://debrepos/keys/ubuntu-automatic.gpg
+    - user: {{ user }}
+    - group: {{ group }}
+    - mode: 644
+      
+import-ubuntu-automatic-key:
   cmd.run:
-    - name: gpg --import saltrepos.gpg
-    - unless: gpg --list-key F2AE6AB9
+    - name: gpg --import ubuntu-automatic.gpg
+    - unless: gpg --list-key C0B21F32
     - user: {{ user }}
     - group: {{ group }}
     - cwd: /home/vagrant
     - requires:
-      - file: /home/vagrant/saltrepos.gpg
+      - file: /home/vagrant/ubuntu-automatic.gpg
+{% endif %}
 
 keyring-ready:
   cmd.run:
@@ -85,10 +104,13 @@ keyring-ready:
     - group: {{ group }}
     - cwd: /home/vagrant
     - requires:
-      - cmd: import-wheezy-stable-key
-      - cmd: import-wheezy-automatic-key
       - cmd: import-insecure-gpg-key
       - cmd: import-saltrepos-key
+      {%- if pget('paella:make_local_partial_mirror', False) %}        
+      - cmd: import-wheezy-stable-key
+      - cmd: import-wheezy-automatic-key
+      - cmd: import-ubuntu-automatic-key
+      {% endif %}
 
 
 # This key goes into the web server's

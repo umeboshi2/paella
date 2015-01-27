@@ -1,0 +1,56 @@
+{% set pget = salt['pillar.get'] %}
+{% set mswin = pget('paella:install_mswindows_machines', False) %}
+ui vesamenu.c32
+prompt 0
+timeout 100
+
+menu background splash.png
+#menu vshift 13
+menu color unsel 37;44 #ffcccc55 #cc222200 std
+menu color tabmsg 37;44 #ffcccc55 #cc222200 std
+menu color sel 7;37;40 #ffcccc55 #ff555555 all
+menu color cmdline 37;44 #ffcccc55 #cc222200 std
+menu color unsel 37;44 #ffcccc55 #cc222200 std
+menu color title 1;36;44 #ffcccc55 #cc220000 std
+menu color border 0 #00ffffff #00000000 std
+
+# The default is to boot from the hard drive.  If a 
+# machine needs to default to a netboot system, it 
+# should get a specific pxe config before reaching
+# this file.
+default harddisk
+menu title Network Boot Menu
+
+label harddisk
+      menu label Boot from Hard Disk
+      kernel chain.c32
+      append hd0 0
+
+{% for arch in pget('livebuild:architectures_to_build', ['amd64']) %}
+include live-{{ arch }}.cfg Standard Live System ({{ arch }})
+{% endfor %}
+
+
+label Ubuntu
+      menu lebel Ubuntu Netboot Intall
+      kernel debinstall/trusty/amd64/linux
+      append initrd=debinstall/trusty/amd64/initrd-console.gz
+
+{% if mswin %}
+label WinPEshell 
+      menu label WinPE Shell
+      kernel memdisk
+      append iso initrd=http://{{ pget('paella:paella_server_ip') }}/debrepos/winpe-shell.iso
+
+
+label WinPEinstall
+      menu label WinPE Auto Install
+      kernel memdisk
+      append iso initrd=http://{{ pget('paella:paella_server_ip') }}/debrepos/winpe.iso
+
+label WinPEinstall64
+      menu label WinPE Auto Install amd64
+      kernel memdisk
+      append iso initrd=http://{{ pget('paella:paella_server_ip') }}/debrepos/winpe64.iso
+{% endif %}
+

@@ -2,7 +2,7 @@
 
 {% set jessie_installer_i386 = 'http://d-i.debian.org/daily-images/i386/20141224-00:11' %}
 {% set jessie_installer_amd64 = 'http://d-i.debian.org/daily-images/amd64/20141224-00:17' %}
-{% set parent_path = '/vagrant/vagrant/cache/debinstall/jessie' %}
+{% set parent_path = '/vagrant/cache/debinstall/jessie' %}
 {% set udeb_i386 = '/srv/debrepos/debian/conf/udebs-jessie-i386-upstream' %}
 {% set udeb_amd64 = '/srv/debrepos/debian/conf/udebs-jessie-amd64-upstream' %}
 

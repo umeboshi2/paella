@@ -45,6 +45,13 @@ fi
 apt-get -y update
 apt-get -y install python-git salt-minion
 
+if ! [ -d /vagrant/repos/formulae ]; then
+    if ! [ -d /vagrant/repos/ ]; then
+	mkdir /vagrant/repos/
+    fi
+    git clone https://github.com/umeboshi2/saltstack-formulae.git /vagrant/repos/formulae
+fi
+
 if ! [ -d /vagrant/repos/paella-states ]; then
     if ! [ -d /vagrant/repos/ ]; then
 	mkdir /vagrant/repos/

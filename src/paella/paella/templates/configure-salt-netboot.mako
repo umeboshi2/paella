@@ -24,6 +24,7 @@ master: {paella_server_ip}
 id: {machine}
 grains:
     system-uuid: {uuid}
+#log_file: udp://paella:514
 """.format(**template_data)
 
 rc_local = """\
@@ -96,6 +97,43 @@ with file('/etc/rc.local', 'w') as rfile:
 
 subprocess.call(['chmod', '755', '/etc/rc.local'])
 
+
+rclocal_systemd_unit_file_content = """\
+#  This file is part of systemd.
+#
+#  systemd is free software; you can redistribute it and/or modify it
+#  under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation; either version 2.1 of the License, or
+#  (at your option) any later version.
+
+# This unit gets pulled automatically into multi-user.target by
+# systemd-rc-local-generator if /etc/rc.local is executable.
+[Unit]
+Description=/etc/rc.local Compatibility
+ConditionFileIsExecutable=/etc/rc.local
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+RemainAfterExit=yes
+SysVStartPriority=99
+StandardOutput=syslog+console
+"""
+
+if os.path.isdir('/etc/systemd'):
+    with file('/etc/systemd/system/rc-local.service', 'w') as rfile:
+        rfile.write(rclocal_systemd_unit_file_content)
+
+print "="*20 + "Env" + 20*'='
+for k,v in os.environ.items():
+    print '%s: %s' % (k,v)
+    
+if 'http_proxy' in os.environ:
+    print "Deleting http_proxy: %s" % os.environ['http_proxy']
+    del os.environ['http_proxy']
+    
 # FIXME - fix ip address
 url = 'http://{paella_server_ip}/paella/rest/v0/main/machines'.format(**template_data)
 headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}    

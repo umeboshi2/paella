@@ -3,7 +3,7 @@
 # Preseeding only locale sets language, country and locale.
 d-i debian-installer/locale string en_US
 
-d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${paella_server_ip}/debrepos/paella.bin.gpg
+#d-i preseed/early_command string wget -O /usr/share/keyrings/archive.gpg http://${paella_server_ip}/debrepos/paella.bin.gpg
 
 d-i keymap select us
 d-i console-setup/ask_detect boolean false
@@ -17,12 +17,13 @@ d-i netcfg/get_domain string unassigned-domain
 d-i netcfg/wireless_wep string
 
 d-i mirror/country string manual
-d-i mirror/http/hostname string ${paella_server_ip}
-d-i mirror/http/directory string /debrepos/debian
-d-i mirror/http/proxy string
+d-i mirror/http/hostname string ftp.us.debian.org
+d-i mirror/http/directory string /debian
+%if settings.get('paella_apt_proxy', ''):
+d-i mirror/http/proxy string ${settings.get('paella_apt_proxy')}
+%endif
 
-
-d-i apt-setup/${paella_server_ip}/key string http://${paella_server_ip}/debrepos/paella.gpg
+#d-i apt-setup/${paella_server_ip}/key string http://${paella_server_ip}/debrepos/paella.gpg
 
 d-i mirror/suite string ${release}
 d-i mirror/udeb/suite string ${release}
@@ -103,15 +104,23 @@ d-i partman/confirm_nooverwrite boolean true
 
 d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 
+d-i debian-installer/allow_unauthenticated boolean false
+
 # Additional repositories, local[0-9] available
 # FIXME put salt branch in settings
-d-i apt-setup/local0/repository string \
-       http://${paella_server_ip}/debrepos/salt ${release}-saltstack-2014-07 main
-d-i apt-setup/local0/comment string saltrepos
-d-i apt-setup/local0/key string http://${paella_server_ip}/debrepos/paella.gpg
-
-
-d-i debian-installer/allow_unauthenticated boolean false
+<% 
+data = {}
+for num in range(10):
+  local = 'local%d' % num
+  for name in ['repository', 'comment', 'key']:
+    dckey = 'apt-setup/%s/%s' % (local, name)
+    skey = 'paella_debrepo_%d_%s_%s' % (num, release, name)
+    if settings.get(skey, ''):
+      data[dckey] = settings.get(skey)
+%>
+%for key, value in data.items():
+d-i ${key} string ${value}
+%endfor
 
 # select a task or we'll get desktop if desktop task is in repository
 tasksel tasksel/first multiselect standard
@@ -126,7 +135,12 @@ popularity-contest popularity-contest/participate boolean false
 # if no other operating system is detected on the machine.
 d-i grub-installer/only_debian boolean true
 
+# use default device for grub: #712907, #759737
+d-i grub-installer/bootdev string default
+
+
 # Avoid that last message about the install being complete.
 d-i finish-install/reboot_in_progress note
 
 d-i preseed/late_command string wget -O /target/tmp/configure-salt http://${paella_server_ip}/paella/latecmd/${uuid} ; in-target python /tmp/configure-salt
+

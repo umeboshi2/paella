@@ -5,7 +5,7 @@
 
 include:
   - default.pkgsets
-  - services.apache
+  - apache
 
 /srv/debrepos/debian/conf:
   file.directory:
