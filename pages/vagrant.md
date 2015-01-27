@@ -2,7 +2,8 @@
 
 ## Introduction
 
-Vagrant is used to establish a testing environment for paella.  The 
+[Vagrant](https://vagrantup.com) is used to establish a testing
+environment for paella.  The 
 Vagrantfile creates a virtualbox machine with two network interfaces.  The 
 second network is a virtualbox internal network where the installation system 
 is hosted.  The installation system can be tested by creating virtual 
@@ -10,22 +11,22 @@ machines and booting from the internal network to define and install the
 system.
 
 The vagrant virtual machine configuration is quite
-[involved](#pages/saltconfig).  The VM will
-be serving the files necessary to automatically install debian systems based
-on either wheezy or jessie, and on either an i386 or amd64 architecture.  This
-means that there are quite a few files to be downloaded and prepared before
-the vagrant environment is operational.
+[involved](#pages/saltconfig).  The default configuration
+is to configure an http proxy for apt and install amd64
+debian systems.  This is to ease the barrier for entry, as it can
+take much time to configure the server completely to install the
+full range of systems that lies within its capacity.
 
-Also, the paella server needs to download two windows 7 iso files, one for each
-architecture, as well as the Windows Automated Installation Kit iso, for
-retrieving the boot.wim file.  Moreover, there are quite a few windows applications
-that are also downloaded for use with paella.  Some of these are build and
-runtime dependencies for the salt-minion, which will be used later to
-automatically build the salt-minion windows package.
-
-All in all, the vagrant machine will need to download approximately
-15 gigabytes, more or less, of data from the internet.
-**FIXME Check size of local repo.**
+Formerly, the vagrant machine would make a local partial debian
+mirror with reprepro for both wheezy and jessie, and for both
+i386 and amd64 architectures.  The machine would also download
+three very large microsoft iso files to perform the windows
+installations.  I felt that this was too much of a requirement
+for a person who would like to use paella, but didn't need all
+of these requirements just to test the system.  I chose not to
+use the i386 architecture as the default architecture, due to the
+proliferation of amd64 machines.  With only the minimal requirements
+prepared, the vagrant machine can be ready to be used much more quickly.
 
 ## Set up the Environment
 
@@ -136,4 +137,26 @@ so you must press enter for the machine to boot.  The machine will then
 boot into an automated debian install, then reboot back into a system 
 that immediately engages in configuring itself using salt.
 
+
+######## oldstuff
+
+
+
+The VM will
+be serving the files necessary to automatically install debian systems based
+on either wheezy or jessie, and on either an i386 or amd64 architecture.  This
+means that there are quite a few files to be downloaded and prepared before
+the vagrant environment is operational.
+
+Also, the paella server needs to download two windows 7 iso files, one for each
+architecture, as well as the Windows Automated Installation Kit iso, for
+retrieving the boot.wim file.  Moreover, there are quite a few windows
+applications
+that are also downloaded for use with paella.  Some of these are build and
+runtime dependencies for the salt-minion, which will be used later to
+automatically build the salt-minion windows package.
+
+All in all, the vagrant machine will need to download approximately
+15 gigabytes, more or less, of data from the internet.
+**FIXME Check size of local repo.**
 

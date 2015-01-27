@@ -17,7 +17,7 @@ already been designed for other sites.
 This project uses the [bootstrap-sass](https://github.com/twbs/bootstrap-sass) 
 plugin for compass, making it easier to customize pages that use the 
 [bootstrap](http://getbootstrap.com/) framework.  Also, a helper for 
-generating [jquery-ui](FIXME) themes,
+generating [jquery-ui](http://jqueryui.com) themes,
 [Compass UI](https://github.com/patrickward/compass-ui), is used in 
 this probject.  At full size the bootstrap css file is 291K(120K,
 compass compressed output), while the jqueryui css file is 77K(31k,

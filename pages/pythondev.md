@@ -3,17 +3,17 @@
 
 - [Python](http://python.org)
 
-- [Pyramid](FIXME)
+- [Pyramid](http://www.pylonsproject.org/)
 
 - [Mako](http://makotemplates.org)
 
 - [SQLAlchemy](http://sqlalchemy.org)
 
-- [Cornice](FIXME)
+- [Cornice](https://github.com/mozilla-services/cornice)
 
-- [Beaker](FIXME) -- to be replaced, don't want file locking
+- [Beaker](https://github.com/bbangert/beaker) -- to be replaced, don't want file locking
 
-- [Requests](FIXME)
+- [Requests](https://github.com/kennethreitz/requests/)
 
 - [trumpet](https://github.com/umeboshi2/trumpet.git)
 

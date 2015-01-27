@@ -9,17 +9,12 @@
 -  [jQuery](http://jquery.com/): 
    jQuery is a very good for selecting and maninpulating elements in the DOM.
 
--  [jQuery User Interface](http://jqueryui.com/): 
-   jQueryUI is used for the fullcalendar widget, as well as for dialog boxes 
-   and other user interface elements that aren't used through boostrap.  The 
-   corresponding styles are maintained with compass.
-
 -  [Bootstrap v3](http://getbootstrap.com/): 
    Bootstrap is a CSS/Javascript framework used to help make responsive 
    websites.  Bootstrap was selected to be used in order to serve to 
    mobile devices.  The CSS is handled through compass with bootstrap-sass.
    
--  [LoDash](FIXME): 
+-  [LoDash](https://lodash.com/): 
    I decided to use lodash instead of underscore.  Quite a few of the
    utilities provided by this library are easily handled with coffee script,
    however, backbone and marionette depend on this library.

@@ -35,9 +35,9 @@
   support RESTful interaction.  The client side browser application uses the
   "paella" branch of [conspectus](https://github.com/umeboshi2/conspectus.git).
   
-	  - Partition recipes and raid recipes are created and edited on web interface.
+  - Partition recipes and raid recipes are created and edited on web interface.
 
-	  - Machines can be set/unset for installation.
+  - Machines can be set/unset for installation.
 
-	  - Architecture and OS type can be set.
+  - Architecture and OS type can be set.
 

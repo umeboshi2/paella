@@ -6,10 +6,11 @@ automated installation options.
 
 ## Self Hosting
 
-The development environment, using [vagrant](FIXME), creates a
-[virtual box](FIXME) server with two interfaces that is ready to
-perform automated installs.  All that is needed is to clone the
-project from [github](FIXME) and type `vagrant up` (and sadly,
+The development environment, using [vagrant](https://vagrantup.com),
+creates a [virtual box](http://virtualbox.org) server with two
+interfaces that is ready to perform automated installs.  All that
+is needed is to clone the project from [github](https://github.com)
+and type `vagrant up` (and sadly,
 followed by one `vagrant provision`, due to a small bug in the ordering
 of states) and you are ready to start submitting machines and instaling.
 
@@ -47,25 +48,27 @@ that gives details on how the install procedure operates.
 Configuration management extends beyond a preconfigured installation.  When
 the desire to create an automated installer that created fully configured
 systems originated, configuration management as it is seen today was
-nowhere nearly as mature.  There existed [cfengine](FIXME) and an assortment
+nowhere nearly as mature.  There existed an assortment
 of less complete solutions to the serious problems that lack of good
-configuration managment eventually incurs.  Cfengine was written perl, which
-I really don't like using.  I was forced, as many other administrators at the time,
-to implement a hand-rolled solution, which, as expected, was less than completely
-satisfactory, but performed well enough.
+configuration managment eventually incurs.  Much of it required writing
+in perl, which I really don't like using.  I was forced, as many other
+administrators at the time, to implement a hand-rolled solution, which,
+as expected, was less than completely satisfactory, but performed
+well enough.
 
-This is no longer needed.  There now exists a plethora of configuration management
-options, many of them providing continuous or on demand configuration management
-after the install and possible deployment to another location.  The large variety of
-options now available implies that there are good, bad, and ugly options.  There
-are very likely people that consider salt either on the bad or ugly side and would
+This is no longer needed.  There now exists a very wide variety of
+configuration management options, many of them providing continuous or on
+demand configuration management after the install and possible deployment
+to another location.  The large variety of options now available implies
+that there are good, bad, and ugly options.  There are very likely people
+that consider salt either on the bad or ugly side and would
 like another option, especially over what can be perceived as a hand-rolled and
 little tested crypto solution for communication, and for them, the configuration
-system is basically open.  The only places where salt is used in the install process
-is to add the apt repositories and install the minion and initial config.  This is
-done in the preseed file and latecmd script.  The submission of a new machine
-will also generate minion keys that are stored in the database and preseeded
-to the minion during the latecmd.
+system is basically open.  The only places where salt is used in the
+install process is to add the apt repositories and install the minion and
+initial config.  This is done in the preseed file and latecmd script.
+The submission of a new machine will also generate minion keys that are
+stored in the database and preseeded to the minion during the latecmd.
 
 ### Machine Administration
 
@@ -79,20 +82,26 @@ falling prey to the likelihood of increased problems and downtime as their
 dependencies on interaction over the internet and with each other increases or
 otherwise changes,
 
-Paella includes a web application capable of administring the machines.  Currently
-this is just the barebones necessity required to perform simple installations with
-expert disk recipes.  Partition and RAID recipes can be edited on the web
-application using the [ACE](FIXME) text editor in the browser.  The recipe editor
-on the paella web application doesn't require the recipe to exist on a single line, or
+Paella includes a web application capable of administring the machines.
+Currently this is just the barebones necessity required to perform simple
+installations with expert disk recipes.  Partition and RAID recipes
+can be edited on the web application using the
+[ACE](http://ace.c9.io/#nav=about) text editor in the browser.  The recipe
+editor on the paella web application doesn't require the recipe to exist
+on a single line, or
 to use backslash escaping to write the recipe.  The recipe can be written as a
 normal multiline text file, that is later squeezed into the proper single line
 when the preseed template is filled and served.
 
 The paella web server itself has been written with an eye towards the
-future.  The server is a [pyramid](FIXME) application using [cornice](FIXME) to
-provide the [REST](FIXME) interface.  On the client side, in the browser,
+future.  The server is a [pyramid](http://www.pylonsproject.org/)
+application using [cornice](https://github.com/mozilla-services/cornice) to
+provide the
+[REST](http://en.wikipedia.org/wiki/Representational_state_transfer)
+interface.  On the client side, in the browser,
 everything is a single page application.  The client application is written in
-[coffee-script](FIXME) and uses [backbone.marionette](FIXME) as well as
+[coffee-script](http://coffeescript.org) and
+uses [backbone.marionette](http://marionettejs.com/) as well as
 other good quality javascript libraries.
 
 ### PXE/Netboot Environment
@@ -119,7 +128,9 @@ other specialized tools that would benefit from operating without writing to
 the fixed media of the host is needed.
 
 A good example of this is that the windows installer works on a debian live
-system and uses wimlib to install a [WIM](FIXME) file to an ntfs partition,
+system and uses wimlib to install a
+[WIM](http://en.wikipedia.org/wiki/Windows_Imaging_Format) file to an
+ntfs partition,
 then execute virtualbox to prepare the bootloader.  While this is happening
 a user of the live system can browse the web or use office tools while they
 recover from a malware attack or broken hard drive.
@@ -140,8 +151,8 @@ these dependencies are the selection of implmentations of the various services
 that paella needs to install and configure systems.  These are things like DNS,
 DHCP, TFTP, HTTP, SMB, etc.  These are dependencies that used, rather than
 used or called directly by the paella python code.  I have chosed
-the [ISC](FIXME) implementations
-of dns and dhcp, H. Peter Alvin's tftp server, the venerable Apache webserver,
+the [ISC](http://isc.org) implementations
+of dns and dhcp, H. Peter Anvin's tftp server, the venerable Apache webserver,
 as well as Samba for implenting stable and reliable services.  While some of
 these services are much more difficult to configure an operate compared to
 many of the alternatives I have seen chosen for similar environments, the

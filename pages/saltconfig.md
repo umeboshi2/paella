@@ -133,7 +133,8 @@ Debian Live
 Debian live systems are used with paella to assist with installs, management,
 and other unforeseen tasks.  The live system has the command line tools to
 submit a machine to the paella server.   It also has wimlib ready to install
-[WIM](FIXME)images to the hard drive.  All the files and configuration to
+[WIM](http://en.wikipedia.org/wiki/Windows_Imaging_Format) images
+to the hard drive.  All the files and configuration to
 build the live systems are installed with this set of states.
 
 Driver Packs (Optional)

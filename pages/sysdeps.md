@@ -2,27 +2,19 @@
 
 ## Short List
 
-- [Vagrant](FIXME)
+- [Vagrant](https://vagrantup.com)
 
 - [VirtualBox](http://virtualbox.org)
 
-- [Debian Installer](FIXME)
+- [Debian Installer](https://www.debian.org/devel/debian-installer/)
 
 - [Salt](http://github.com/saltstack/salt.git)
 
-- [ACE](FIXME)
+- [wimlib](http://wimlib.sourceforge.net/) - optional
 
-- [Pyramid](FIXME)
+- [ISC Bind and DHCPD](http://isc.org/)
 
-- [Cornice](FIXME)
-
-- [wimlib](FIXME) - optional
-
-- [ISC Bind](FIXME)
-
-- [ISC DHCPD](FIXME)
-
-- [tftp-hpa](FIXME)
+- [tftp-hpa](https://www.kernel.org/pub/software/network/tftp/)
 
 - [Samba](http://samba.org)
 
@@ -35,8 +27,8 @@ these dependencies are the selection of implmentations of the various services
 that paella needs to install and configure systems.  These are things like DNS,
 DHCP, TFTP, HTTP, SMB, etc.  These are dependencies that used, rather than
 used or called directly by the paella python code.  I have chosed
-the [ISC](FIXME) implementations
-of dns and dhcp, H. Peter Alvin's tftp server, the venerable Apache webserver,
+the [ISC](http://isc.org/) implementations
+of dns and dhcp, H. Peter Anvin's tftp server, the venerable Apache webserver,
 as well as Samba for implenting stable and reliable services.  While some of
 these services are much more difficult to configure an operate compared to
 many of the alternatives I have seen chosen for similar environments, the
