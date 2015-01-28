@@ -1,10 +1,11 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
 {% set user = pget('paella:paella_user', 'vagrant') %}
-
+{% set build_nodejs_deb = pget('paella:build_nodejs_deb', False)
 include:
   - default.pkgsets
-  
+
+{% if build_nodejs_deb %}
 {% set repodir = '/vagrant/repos' %}
 {% set node_version = pget('paella:node_version', '0.10.26') %}
 node-debian-git-repo:
@@ -52,6 +53,14 @@ nodejs:
   pkg.installed:
     - require:
       - cmd: build-nodejs-package
+{% else %}
+nodejs:
+  pkg.installed:
+    - pkgs:
+      - nodjs-legacy
+      - npm
+    - fromrepo: wheezy-backports
+{% endif %}
 
 npm-webdev-packages:
   npm.installed:
