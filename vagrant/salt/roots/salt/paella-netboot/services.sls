@@ -7,7 +7,9 @@ include:
   - default.pkgsets
   - shorewall
   - iscdhcp
+  {% if pget('pget:get_upstream_ipxe', False) %}
   - ipxe
+  {% endif %}
   - samba.config
   - saltmaster
   - mainserver
