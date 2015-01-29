@@ -37,7 +37,7 @@ LB_APT_SOURCE_ARCHIVES="false"
 
 # $LB_BOOTSTRAP: set bootstrap program
 # (Default: debootstrap)
-LB_BOOTSTRAP="debootstrap"
+LB_BOOTSTRAP="{{ pget('livebuild:debootstrap' , 'debootstrap') }}"
 
 # $LB_CACHE: control cache
 # (Default: true)

@@ -1,4 +1,4 @@
-# -*- mode: jinja2 -*-
+# -*- mode: yaml -*-
 {% load_yaml as paella %}
 # The user and group are set to vagrant for the vagrant machine.
 # If you are using vagrant, don't change these.
@@ -93,7 +93,10 @@ ubuntu_releases: []
 live_system_dist: wheezy
 
 # This is where the debian mirror and security mirror can be set
-# The default is to use the mirror listed the vagrant box
-debian_mirror: http://mirrors.kernel.org/debian
-debian_security_mirror: http://security.debian.org/
+# Don't use a round-robin dns mirror for the http_proxy
+# make sure the debian mirror has wheezy-backports
+#debian_mirror_host: ftp.gtlib.gatech.edu
+debian_mirror: http://slartibardfast.gtlib.gatech.edu/debian
+#debian_security_mirror: http://security.debian.org/
+debian_security_mirror: http://sechter.debian.org/
 {% endload %}

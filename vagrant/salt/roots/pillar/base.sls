@@ -69,16 +69,29 @@ apt:
   lookup:
     remove_popularitycontest: true
   repos:
+    {% for debtype in ['deb', 'deb-src'] %}
+    {% for dist in ['wheezy', 'wheezy-updates'] %}
+    vagrant-{{ dist }}-{{ debtype }}-pkgrepo:
+      ensure: absent
+      debtype: {{ debtype }}
+      url: http://mirrors.kernel.org/debian
+      dist: {{ dist }}
+      comps:
+        - main
+    paella-{{ dist }}-{{ debtype }}-pkgrepo:
+      ensure: managed
+      debtype: {{ debtype }}
+      url: {{ paella.debian_mirror }}
+      dist: {{ dist }}
+      comps:
+        - main
+    {% endfor %}
+    {% endfor %}
     backports-pkgrepo:
-      url: http://http.debian.net/debian
+      url: {{ paella.debian_mirror }}
       globalfile: true
       dist: wheezy-backports
-    littledebian-paella-pkgrepo:
-      url: http://debrepos.littledebian.org/paella
-      keyuri: http://debrepos.littledebian.org/littledebian.key
-      globalfile: true
-      dist: wheezy
-
+        
 
 # FIXME make a password for dbadmin and get rid of
 # trust in acls
@@ -108,7 +121,6 @@ squid:
   debproxy:
     dstdomains:
       - .kernel.org
-      - .debian.net
-      - .littledebian.org
       - .saltstack.com
       - localhost
+      - .gatech.edu
