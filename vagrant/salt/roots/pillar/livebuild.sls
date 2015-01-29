@@ -5,12 +5,10 @@
 {% if paella.use_local_apt_cache_proxy %}
 {% set apt_http_proxy = paella.local_apt_cache_proxy %}
 {% endif %}
-
+{% set archs = paella.debian_release_archs[paella.live_system_dist] %}
 
 livebuild:
-  architectures_to_build:
-    - amd64
-    #- i386
+  architectures_to_build: archs
   apt_http_proxy: {{ apt_http_proxy }}
   base_directory: /var/cache/netboot/livebuild
   distribution: {{ paella.live_system_dist }}

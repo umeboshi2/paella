@@ -9,7 +9,7 @@ if [ -d $DESTDIR/$NAME ]; then
     exit 0
 fi
 
-if ! [ -d $SRCDIR ]; then
+if ! [ -d $SRCDIR/$NAME ]; then
     echo "No cache backup found, exiting."
     exit 0
 fi

@@ -109,7 +109,6 @@ squid:
     dstdomains:
       - .kernel.org
       - .debian.net
-      - .debian.org
       - .littledebian.org
       - .saltstack.com
       - localhost
