@@ -1,7 +1,7 @@
 # -*- mode: yaml -*-
 {% set pget = salt['pillar.get'] %}
 {% set user = pget('paella:paella_user', 'vagrant') %}
-{% set build_nodejs_deb = pget('paella:build_nodejs_deb', False)
+{% set build_nodejs_deb = pget('paella:build_nodejs_deb', False) %}
 include:
   - default.pkgsets
 
