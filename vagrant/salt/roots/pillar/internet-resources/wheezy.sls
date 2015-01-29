@@ -7,7 +7,7 @@
 {% set udeb_amd64 = '/srv/debrepos/debian/conf/udebs-wheezy-amd64-upstream' %}
 
 internet_resources:
-  {% if 'i386' in pget('paella.debian_release_archs.wheezy') %}
+  {% if 'i386' in paella.debian_release_archs.wheezy %}
   debian_pxe_installer_wheezy_i386_udeb_list:
     source: {{ wheezy_installer_i386 }}/udeb.list
     source_hash: sha256=c1d5e75677a1d64e2f485f186ae7cbddacede8deec91dc011f17a50029e97277
@@ -25,7 +25,7 @@ internet_resources:
     source_hash: sha256=0dbeb38d980d929b8e16de4ad1bc6afb752d89c4a00edb7554e82ffa493ab4c7
     name: {{ parent_path }}/i386/initrd-gtk.gz
   {% endif %}
-  {% if 'amd64' in pget('paella.debian_release_archs.wheezy') %}
+  {% if 'amd64' in paella.debian_release_archs.wheezy %}
   debian_pxe_installer_wheezy_amd64_udeb_list:
     source: {{ wheezy_installer_amd64 }}/udeb.list
     source_hash: sha256=a55f929587778fc0e73dae0fcdca90f401721b16c8b0e945bfd7ba16afb2d4e9
