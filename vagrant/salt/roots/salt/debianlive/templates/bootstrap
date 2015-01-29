@@ -1,36 +1,36 @@
 # config/bootstrap - options for live-build(7), bootstrap stage
-<% livebuild = pillar['livebuild'] %>
+{% set pget = salt['pillar.get'] %}
 # $LB_ARCHITECTURES: select chroot architectures
 # (Default: autodetected)
-LB_ARCHITECTURES="${arch}"
+LB_ARCHITECTURES="{{ arch }}"
 
 # $LB_DISTRIBUTION: select distribution to use
 # (Default: wheezy)
-LB_DISTRIBUTION="${livebuild['distribution']}"
+LB_DISTRIBUTION="{{ pget('livebuild:distribution') }}"
 
 # $LB_PARENT_DISTRIBUTION: select parent distribution to use
 # (Default: wheezy)
-LB_PARENT_DISTRIBUTION="${livebuild['parent_distribution']}"
+LB_PARENT_DISTRIBUTION="{{ pget('livebuild:parent_distribution') }}"
 
 # $LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION: select parent distribution for debian-installer to use
 # (Default: wheezy)
-LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION="${livebuild['parent_distribution']}"
+LB_PARENT_DEBIAN_INSTALLER_DISTRIBUTION="{{ pget('livebuild:parent_distribution') }}"
 
 # key for localhost debrepos
-_KEY="${livebuild['apt_key']}"
+_KEY="{{ pget('livebuild:apt_key') }}"
 
 
 # $LB_PARENT_MIRROR_BOOTSTRAP: set parent mirror to bootstrap from
 # (Default: http://ftp.debian.org/debian/)
-LB_PARENT_MIRROR_BOOTSTRAP="${livebuild['local_mirror']}"
+LB_PARENT_MIRROR_BOOTSTRAP="{{ pget('livebuild:local_mirror') }}"
 
 # $LB_PARENT_MIRROR_CHROOT: set parent mirror to fetch packages from
 # (Default: http://ftp.debian.org/debian/)
-LB_PARENT_MIRROR_CHROOT="${livebuild['local_mirror']}"
+LB_PARENT_MIRROR_CHROOT="{{ pget('livebuild:local_mirror') }}"
 
 # $LB_PARENT_MIRROR_CHROOT_SECURITY: set security parent mirror to fetch packages from
 # (Default: http://security.debian.org/)
-LB_PARENT_MIRROR_CHROOT_SECURITY="${livebuild['local_security_mirror']}"
+LB_PARENT_MIRROR_CHROOT_SECURITY="{{ pget('livebuild:local_security_mirror') }}"
 
 # $LB_PARENT_MIRROR_CHROOT_UPDATES: set updates parent mirror to fetch packages from
 # (Default: http://ftp.debian.org/debian/)
@@ -42,11 +42,11 @@ LB_PARENT_MIRROR_CHROOT_BACKPORTS=""
 
 # $LB_PARENT_MIRROR_BINARY: set parent mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
-LB_PARENT_MIRROR_BINARY="${livebuild['lan_mirror']}"
+LB_PARENT_MIRROR_BINARY="{{ pget('livebuild:lan_mirror') }}"
 
 # $LB_PARENT_MIRROR_BINARY_SECURITY: set security parent mirror which ends up in the image
 # (Default: http://security.debian.org/)
-LB_PARENT_MIRROR_BINARY_SECURITY="${livebuild['lan_security_mirror']}"
+LB_PARENT_MIRROR_BINARY_SECURITY="{{ pget('livebuild:lan_security_mirror') }}"
 
 # $LB_PARENT_MIRROR_BINARY_UPDATES: set updates parent mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
@@ -62,15 +62,15 @@ LB_PARENT_MIRROR_DEBIAN_INSTALLER="http://ftp.us.debian.org/debian/"
 
 # $LB_MIRROR_BOOTSTRAP: set mirror to bootstrap from
 # (Default: http://ftp.debian.org/debian/)
-LB_MIRROR_BOOTSTRAP="${livebuild['local_mirror']}"
+LB_MIRROR_BOOTSTRAP="{{ pget('livebuild:local_mirror') }}"
 
 # $LB_MIRROR_CHROOT: set mirror to fetch packages from
 # (Default: http://ftp.debian.org/debian/)
-LB_MIRROR_CHROOT="${livebuild['local_mirror']}"
+LB_MIRROR_CHROOT="{{ pget('livebuild:local_mirror') }}"
 
 # $LB_MIRROR_CHROOT_SECURITY: set security mirror to fetch packages from
 # (Default: http://security.debian.org/)
-LB_MIRROR_CHROOT_SECURITY="${livebuild['local_security_mirror']}"
+LB_MIRROR_CHROOT_SECURITY="{{ pget('livebuild:local_security_mirror') }}"
 
 # $LB_MIRROR_CHROOT_UPDATES: set updates mirror to fetch packages from
 # (Default: http://ftp.debian.org/debian/)
@@ -82,11 +82,11 @@ LB_MIRROR_CHROOT_BACKPORTS=""
 
 # $LB_MIRROR_BINARY: set mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)
-LB_MIRROR_BINARY="${livebuild['lan_mirror']}"
+LB_MIRROR_BINARY="{{ pget('livebuild:lan_mirror') }}"
 
 # $LB_MIRROR_BINARY_SECURITY: set security mirror which ends up in the image
 # (Default: http://security.debian.org/)
-LB_MIRROR_BINARY_SECURITY="${livebuild['lan_security_mirror']}"
+LB_MIRROR_BINARY_SECURITY="{{ pget('livebuild:lan_security_mirror') }}"
 
 # $LB_MIRROR_BINARY_UPDATES: set updates mirror which ends up in the image
 # (Default: http://http.debian.net/debian/)

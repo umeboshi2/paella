@@ -26,11 +26,12 @@ LB_KEYRING_PACKAGES="debian-archive-keyring"
 
 # $LB_LINUX_FLAVOURS: set kernel flavour to use
 # (Default: autodetected)
-%if arch == 'i386':
+{% if arch == 'i386' %}:
 LB_LINUX_FLAVOURS="686-pae 486"
-%else:
+{% else %}
 LB_LINUX_FLAVOURS="amd64"
-%endif
+{% endif %}
+
 
 # $LB_LINUX_PACKAGES: set kernel packages to use
 # (Default: autodetected)

@@ -30,7 +30,7 @@ livebuild-config-{{ arch }}-{{ cfile }}:
   file.managed:
     - name: {{ configdir }}/{{ cfile }}
     - source: salt://debianlive/templates/{{ cfile }}
-    - template: mako
+    - template: jinja
     - defaults:
         arch: {{ arch }}
     - require:
