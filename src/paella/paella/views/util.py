@@ -5,9 +5,9 @@ from sqlalchemy.orm.exc import NoResultFound
 
 from pyramid.security import remember, forget
 
-from trumpet.security import check_password, encrypt_password
+from paella.security import check_password, encrypt_password
 
-from trumpet.models.usergroup import User, Password
+from paella.models.usergroup import User, Password
 
 log = logging.getLogger(__name__)
 

@@ -24,21 +24,16 @@ class CleanCommand(Command):
 
 requires = [
     'pyramid',
-    'pyramid_chameleon',
     'pyramid_mako',
     'pyramid_debugtoolbar',
-    'pyramid_celery',
     'pyramid_tm',
     'SQLAlchemy',
     'transaction',
     'zope.sqlalchemy',
     'pyramid-beaker',
     'waitress',
-    'debrepos',
     'requests',
     'cornice',
-    'networkx',
-    'trumpet',
     ]
 
 setup(name='paella',
@@ -67,9 +62,4 @@ setup(name='paella',
       initialize_paella_db = paella.scripts.initializedb:main
       """,
       cmdclass=dict(clean=CleanCommand),
-      dependency_links=[
-        'https://github.com/umeboshi2/debrepos/archive/master.tar.gz#egg=debrepos',
-        'https://github.com/knowah/PyPDF2/archive/master.tar.gz#egg=PyPDF2-1.15dev',
-        'https://github.com/umeboshi2/trumpet/archive/master.tar.gz#egg=trumpet',
-        ]
       )

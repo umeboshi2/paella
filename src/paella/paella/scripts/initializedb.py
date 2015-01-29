@@ -13,11 +13,10 @@ from pyramid.paster import (
 
 from pyramid.scripts.common import parse_vars
 
-from trumpet.security import encrypt_password
+from paella.security import encrypt_password
 
-from trumpet.models.base import Base as TrumpetBase
-from trumpet.models.usergroup import User, Password, Group, UserConfig, UserGroup
-from trumpet.models.usergroup import populate
+from paella.models.usergroup import User, Password, Group, UserConfig, UserGroup
+from paella.models.usergroup import populate
 
 from paella.models.base import (
     DBSession,
@@ -63,7 +62,6 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
-    TrumpetBase.metadata.create_all(engine)
     with transaction.manager:
         model = MyModel(name='one', value=1)
         DBSession.add(model)

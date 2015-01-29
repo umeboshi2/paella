@@ -5,10 +5,10 @@ from sqlalchemy.orm.exc import NoResultFound
 import transaction
 
 
-from trumpet.security import encrypt_password
+from paella.security import encrypt_password
 
-from trumpet.models.usergroup import User, Group, Password
-from trumpet.models.usergroup import UserGroup, UserConfig
+from paella.models.usergroup import User, Group, Password
+from paella.models.usergroup import UserGroup, UserConfig
 
 log = logging.getLogger(__name__)
 

@@ -4,8 +4,10 @@ from ConfigParser import ConfigParser
 from datetime import datetime
 
 from cornice.resource import resource, view
-from trumpet.views.base import BaseUserView
-from trumpet.views.rest import BaseManagementResource
+
+# FIXME merge from trumpet
+from paella.views.tbase import BaseUserView
+from paella.views.trest import BaseManagementResource
 
 from paella.models.sitecontent import SiteText
 from paella.views.base import MAIN_RESOURCE_ROOT

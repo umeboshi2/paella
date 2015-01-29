@@ -14,7 +14,7 @@ from sqlalchemy import func
 
 from sqlalchemy.orm import relationship, backref
 
-from trumpet.models.util import SerialBase
+from paella.models.util import SerialBase
 from paella.models.base import DBSession, Base
 
 from sqlalchemy.exc import IntegrityError
@@ -67,7 +67,8 @@ class SiteText(Base, SerialBase):
         self.type = type
         self.content = content
     
-        
+
+# FIXME this function depends on trumpet
 def populate_images(imagedir='images'):
     import os
     if not os.path.isdir(imagedir):

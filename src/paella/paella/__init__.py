@@ -1,3 +1,4 @@
+import os
 import logging
 
 from pyramid.config import Configurator
@@ -6,9 +7,8 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
 
-from trumpet.models.usergroup import User, Password
-from trumpet.security import authn_policy, authz_policy
-from trumpet.config import add_static_views
+from paella.models.usergroup import User, Password
+from paella.security import authn_policy, authz_policy
 
 from paella.models.base import Base
 
@@ -16,6 +16,13 @@ log = logging.getLogger(__name__)
 
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
+def add_static_views(config, settings):
+    assets_path = settings['static_assets_path']
+    assets = settings['static_assets'].strip().split('\n')
+    for asset in assets:
+        config.add_static_view(name=asset,
+                               path=os.path.join(assets_path, asset))
+    
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -31,8 +38,8 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
 
-    root_factory = 'trumpet.resources.RootGroupFactory'
-    request_factory = 'trumpet.request.AlchemyRequest'
+    root_factory = 'paella.resources.RootGroupFactory'
+    request_factory = 'paella.request.AlchemyRequest'
     
     config = Configurator(settings=settings,
                           root_factory=root_factory,

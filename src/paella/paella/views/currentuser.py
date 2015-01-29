@@ -4,9 +4,11 @@ from ConfigParser import ConfigParser
 from datetime import datetime
 
 from cornice.resource import resource, view
-from trumpet.views.base import BaseUserView
 
-from trumpet.models.usergroup import User
+# FIXME merge from trumpet
+from paella.views.tbase import BaseUserView
+
+from paella.models.usergroup import User
 
 log = logging.getLogger(__name__)
 

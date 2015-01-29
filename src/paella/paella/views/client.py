@@ -9,7 +9,8 @@ from pyramid.httpexceptions import HTTPForbidden
 
 from pyramid.security import remember, forget
 
-from trumpet.views.base import BaseUserViewCallable
+# FIXME merge from trumpet
+from paella.views.tbase import BaseUserViewCallable
 
 from paella.views.util import check_login_form
 

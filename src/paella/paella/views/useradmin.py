@@ -4,10 +4,10 @@ from ConfigParser import ConfigParser
 from datetime import datetime
 
 from cornice.resource import resource, view
-from trumpet.views.rest import BaseResource, BaseManagementResource
+from paella.views.trest import BaseResource, BaseManagementResource
 
-from trumpet.models.usergroup import User, Group, Password
-from trumpet.models.usergroup import UserGroup
+from paella.models.usergroup import User, Group, Password
+from paella.models.usergroup import UserGroup
 
 from paella.views.util import make_resource as make_base_resource
 from paella.views.base import MAIN_RESOURCE_ROOT
