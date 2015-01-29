@@ -1,6 +1,6 @@
 # -*- mode: yaml -*-
 
-{% from 'bvars.jinja' import paella %}
+{% from 'config.jinja' import paella %}
 
 schroot_sections:
   {% set nmap = dict(amd64='', i386='32') %}

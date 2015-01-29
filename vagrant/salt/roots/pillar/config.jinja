@@ -1,0 +1,94 @@
+# -*- mode: jinja2 -*-
+{% load_yaml as paella %}
+# The user and group are set to vagrant for the vagrant machine.
+# If you are using vagrant, don't change these.
+paella_user: vagrant
+paella_group: vagrant
+
+# The default hostname for the paella server is paella
+# The paella-client package uses this a default in the
+# configuration file.  This should not need to be changed
+# on the vagrant system.
+paella_hostname: paella
+
+# The values below represent the network that paella will
+# be controlling.  If the default 10.0.4 network conflicts
+# with your local network, adjust the following values to
+# better fit your network.
+paella_server_ip: 10.0.4.1
+paella_subnet_network: 10.0.4.0
+paella_subnet_netmask: 255.255.255.0
+paella_subnet_range_low: 10.0.4.20
+paella_subnet_range_high: 10.0.4.126
+paella_subnet_in_addr: 4.0.10
+# The domain name is not used
+paella_subnet_domain: paellanet
+
+# If you already have a local apt cache proxy
+# on your network, you can set these values
+# to use it, instead of the installed squid proxy
+use_local_apt_cache_proxy: false
+local_apt_cache_proxy: http://apt-cache:3142
+
+# If this option is set to true, paella will be
+# configured to install microsoft windows 7 machines
+# over the network.  Enabling this option will cause
+# the vagrant machine to download two windows 7 iso
+# files, along with the windows automated install kit
+# iso, which can take some time.  It will also configure
+# samba shares to host the installs, and build wimlib to
+# create winpe isos to help perform various tasks.
+# Completing the states enabled by this option can
+# take many hours, and may need to be re-run a
+# couple of times to make sure things are in order.
+# This option is disabled by default.
+install_mswindows_machines: false
+
+# Enabling this option will create a partial debian
+# mirror in the /srv/debrepos directory of the vagrant
+# machine.  By default, it will make a partial mirror
+# of wheezy and jessies, both i386 and amd64.  The
+# debian-archive-keyring packages will be rebuilt,
+# adding the example paella gpg key.  The udebs are
+# also mirrored so that netboot installs can be
+# completely hosted locally, without need for
+# an caching proxy.
+# 
+# Having a local partial mirror is the quickest and
+# most reliable method of performing automated installs
+# on a local network, but it takes more configuration and
+# maintainence.  A local partial mirror was used in
+# developing paella for those reasons, but is disabled by
+# default to make it easier to get started with paella
+# on a vagrant machine.  This option shouldn't be enabled
+# until the default configured system is working.  If this
+# option is enabled, some of the states corresponding to
+# the local mirror may need to be adjusted.
+make_local_partial_mirror: false
+
+# These options enable states are planned to be integrated
+# into paella at some point in the future, but are not
+# needed for core development.
+get_upstream_ipxe: false
+get_extra_iso_files: false
+
+# This option will build a nodejs package that is
+# closer to what many people not using debian may
+# expect.  The default is to use the nodejs-legacy
+# package from wheezy-backports.  This option should
+# not be enabled.
+build_nodejs_deb: false
+
+debian_releases:
+  - wheezy
+ubuntu_releases: []
+
+# This is the dist of the live system.  It should be
+# in the debian_releases list above
+live_system_dist: wheezy
+
+# This is where the debian mirror and security mirror can be set
+# The default is to use the mirror listed the vagrant box
+debian_mirror: http://mirrors.kernel.org/debian
+debian_security_mirror: http://security.debian.org/
+{% endload %}

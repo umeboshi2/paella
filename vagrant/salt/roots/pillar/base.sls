@@ -1,5 +1,5 @@
 # -*- mode: yaml -*-
-{% from 'bvars.jinja' import paella %}
+{% from 'config.jinja' import paella %}
 {% set mswin = paella.install_mswindows_machines %}
 
 paella:  
@@ -55,12 +55,16 @@ rsyslog:
   listenudp: true
   logbasepath: /var/log/minions
   
+{% set apt_http_proxy = "http://127.0.0.1:8000/" %}
+{% if paella.use_local_apt_cache_proxy %}
+{% set apt_http_proxy = paella.local_apt_cache_proxy %}
+{% endif %}
 
 apt:
   configs:
     02proxy:
       content: |
-        Acquire::http { Proxy "http://127.0.0.1:8000"; };
+        Acquire::http { Proxy "{{ apt_http_proxy }}"; };
         
   lookup:
     remove_popularitycontest: true
@@ -76,6 +80,8 @@ apt:
       dist: wheezy
 
 
+# FIXME make a password for dbadmin and get rid of
+# trust in acls
 postgres:
   lookup:
     pkg_dev: False
@@ -103,6 +109,7 @@ squid:
     dstdomains:
       - .kernel.org
       - .debian.net
+      - .debian.org
       - .littledebian.org
       - .saltstack.com
       - localhost

@@ -1,5 +1,5 @@
 # -*- mode: yaml -*-
-{% from 'bvars.jinja' import paella %}
+{% from 'config.jinja' import paella %}
 {% set mswin = paella.install_mswindows_machines %}
 
 
