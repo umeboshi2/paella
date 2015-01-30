@@ -1,6 +1,6 @@
 # config/binary - options for live-build(7), binary stage
 {% set pget = salt['pillar.get'] %}
-{% set nfsroot = pget('livebuild:net_root_server) ~ ':' ~ pget('livebuild:net_root_path')~ '/' ~ arch %}
+{% set nfsroot = '%s:%s/%s' % (pget('livebuild:net_root_server'), pget('livebuild:net_root_path'), arch) %}
 
 # $LB_BINARY_FILESYSTEM: set image filesystem
 # (Default: fat32)
