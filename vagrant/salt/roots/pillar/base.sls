@@ -83,6 +83,7 @@ apt:
       debtype: {{ debtype }}
       url: {{ paella.debian_mirror }}
       dist: {{ dist }}
+      globalfile: true
       comps:
         - main
     {% endfor %}
