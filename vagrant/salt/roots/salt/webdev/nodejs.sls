@@ -57,7 +57,7 @@ nodejs:
 nodejs:
   pkg.installed:
     - pkgs:
-      - nodjs-legacy
+      - nodejs-legacy
       - npm
     - fromrepo: wheezy-backports
 {% endif %}
