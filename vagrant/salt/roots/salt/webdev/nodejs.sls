@@ -59,7 +59,10 @@ nodejs:
     - pkgs:
       - nodejs-legacy
       - npm
+    # npm in not in wheezy-backports
+    {% if salt['grains.get']('oscodename') == 'wheezy' %}
     - fromrepo: wheezy-backports
+    {% endif %}
 {% endif %}
 
 npm-webdev-packages:

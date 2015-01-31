@@ -8,7 +8,7 @@ WebOb==1.4
 argparse==1.2.1
 cornice==0.17
 distribute==0.6.24
-paella==0.0
+psycopg2==2.5.4
 pyramid==1.5.2
 pyramid-beaker==0.8
 pyramid-debugtoolbar==2.3
