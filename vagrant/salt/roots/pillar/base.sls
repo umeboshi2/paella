@@ -76,6 +76,7 @@ apt:
   lookup:
     remove_popularitycontest: true
   repos:
+    {% if paella.debian_mirror != 'http://mirrors.kernel.org/debian' %}
     {% for debtype in ['deb', 'deb-src'] %}
     {% for dist in ['wheezy', 'wheezy-updates'] %}
     vagrant-{{ dist }}-{{ debtype }}-pkgrepo:
@@ -95,6 +96,7 @@ apt:
         - main
     {% endfor %}
     {% endfor %}
+    {% endif %}
     backports-pkgrepo:
       url: {{ paella.debian_mirror }}
       globalfile: true
