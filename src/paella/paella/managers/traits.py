@@ -5,8 +5,6 @@ from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import desc
 from sqlalchemy import func
 
-import networkx as nx
-
 from paella.models.main import Trait, TraitParent, TraitVariable
 
 log = logging.getLogger(__name__)
