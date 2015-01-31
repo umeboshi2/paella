@@ -46,8 +46,7 @@ def main(global_config, **settings):
                           request_factory=request_factory,
                           authentication_policy=authn_policy,
                           authorization_policy=authz_policy)
-    includes = ['pyramid_chameleon',
-                'pyramid_mako',
+    includes = ['pyramid_mako',
                 'pyramid_beaker',
                 'cornice',]
     for i in includes:
