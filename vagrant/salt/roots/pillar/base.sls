@@ -19,6 +19,10 @@ paella:
   get_upstream_ipxe: {{ paella.get_upstream_ipxe }}
   get_extra_iso_files: {{ paella.get_extra_iso_files }}
   build_nodejs_deb: {{ paella.build_nodejs_deb }}
+  debian_releases:
+    {% for r in paella.debian_releases %}
+    - {{ r }}
+    {% endfor %}
   top_states:
     #- apt-cacher.ng.server
     - apt.repos

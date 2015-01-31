@@ -12,7 +12,7 @@ include:
     - makedirs: True
 
 
-{% for dist in ['wheezy', 'jessie'] %}
+{% for dist in pget('paella:debian_releases', ['wheezy']) %}
 {% for arch in pget('livebuild:architectures_to_build', ['amd64']) %}
 {% set prefix = 'debian_pxe_installer_%s_%s' % (dist, arch) %}
 {% set cachepath = '/vagrant/cache/debinstall/%s/%s' % (dist, arch) %}
