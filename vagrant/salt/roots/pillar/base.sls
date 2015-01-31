@@ -14,8 +14,11 @@ paella:
 
   virtualenv_basedir: /var/lib/paella
   node_version: 0.10.29
-  install_mswindows_machines: False
-  make_local_partial_mirror: False
+  install_mswindows_machines: {{ paella.install_mswindows_machines }}
+  make_local_partial_mirror: {{ paella.make_local_partial_mirror }}
+  get_upstream_ipxe: {{ paella.get_upstream_ipxe }}
+  get_extra_iso_files: {{ paella.get_extra_iso_files }}
+  build_nodejs_deb: {{ paella.build_nodejs_deb }}
   top_states:
     #- apt-cacher.ng.server
     - apt.repos

@@ -77,7 +77,7 @@ get_extra_iso_files: false
 # expect.  The default is to use the nodejs-legacy
 # package from wheezy-backports.  This option should
 # not be enabled.
-build_nodejs_deb: false
+build_nodejs_deb: true
 
 debian_releases:
   - wheezy
@@ -97,6 +97,5 @@ live_system_dist: wheezy
 # make sure the debian mirror has wheezy-backports
 #debian_mirror_host: ftp.gtlib.gatech.edu
 debian_mirror: http://slartibardfast.gtlib.gatech.edu/debian
-#debian_security_mirror: http://security.debian.org/
-debian_security_mirror: http://sechter.debian.org/
+debian_security_mirror: http://security.debian.org/
 {% endload %}
