@@ -28,6 +28,7 @@ requires = [
     'pyramid_debugtoolbar',
     'pyramid_tm',
     'SQLAlchemy',
+    'psycopg2',
     'transaction',
     'zope.sqlalchemy',
     'pyramid-beaker',
