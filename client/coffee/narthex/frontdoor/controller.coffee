@@ -16,12 +16,7 @@ define (require, exports, module) ->
   { LoginView } = require 'common/mainviews'
   
   side_bar_data = new Backbone.Model
-    entries: [
-      {
-        name: 'Home'
-        url: '#'
-      }
-      ]
+    entries: []
 
   class Controller extends SideBarController
     mainbus: MainBus

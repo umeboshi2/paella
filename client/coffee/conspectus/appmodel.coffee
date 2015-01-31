@@ -8,7 +8,7 @@ define (require, exports, module) ->
   
   appmodel = new Backbone.Model
     brand:
-      name: 'Conspectus'
+      name: 'Paella'
       url: '#'
     apps:
       [

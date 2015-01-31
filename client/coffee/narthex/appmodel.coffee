@@ -11,14 +11,7 @@ define (require, exports, module) ->
     brand:
       name: 'Paella'
       url: '/paella'
-    apps:
-      [
-        {
-          appname: 'conspectus'
-          name: 'Conspectus'
-          url: '/paella/app/conspectus'
-        }
-      ]
+    apps: []
     appregions: AppRegions.user_appregions
     approutes: [
       'frontdoor:route'
