@@ -63,6 +63,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   config.vm.provision "shell", path: "vagrant/scripts/restore-deb-cache.sh"
   config.vm.provision "shell", path: "vagrant/scripts/vagrant-bootstrap.sh"
+  config.vm.provision "shell", path: "vagrant/scripts/prepare-salt-roots.sh"
+  #config.vm.provision "shell", path: "vagrant/scripts/early-debootstrap.sh"
   config.vm.provision "shell", inline: "sudo mkdir -p /etc/salt && sudo chown -R vagrant /etc/salt || true"
   config.vm.provision "file", source: "vagrant/salt/minion",
                       destination: "/etc/salt/minion"
