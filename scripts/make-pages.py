@@ -14,6 +14,7 @@ os.chdir(pages_dir)
 md_suffix = '.md'
 
 files = [f for f in os.listdir('.') if f.endswith(md_suffix)]
+files = [f for f in files if not f.startswith('.')]
 pages = list()
 for filename in files:
     name = filename[:-len(md_suffix)]
