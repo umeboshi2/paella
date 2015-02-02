@@ -65,10 +65,6 @@ define (require, exports, module) ->
         name: 'Debian Installer'
         url: '#pages/debian-install'
       }
-      {
-        name: 'History'
-        url: '#pages/history'
-      }
       ]
 
            
@@ -83,7 +79,7 @@ define (require, exports, module) ->
 
     show_page: (name) ->
       @make_sidebar()
-      console.log "getting page #{name}"
+      #console.log "getting page #{name}"
       page = MainBus.reqres.request 'pages:getpage', name
       window.mypage = page
       response = page.fetch()

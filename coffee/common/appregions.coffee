@@ -55,7 +55,7 @@ define (require, exports, module) ->
     mainbus.reqres.setHandler 'main:app:object', ->
       #console.log 'requesting app', app
       app
-    console.log 'handler set for main:app:object++++++++++++++++++++'  
+    #console.log 'handler set for main:app:object'  
     app.radio = Backbone.Wreqr.radio
     app.msgbus = mainbus
     app.appmodel = appmodel

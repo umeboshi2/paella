@@ -17,7 +17,7 @@ define (require, exports, module) ->
       'pages/:name' : 'show_page'
       
   MainBus.commands.setHandler 'frontdoor:route', () ->
-    console.log "frontdoor:route being handled"
+    #console.log "frontdoor:route being handled"
     pages = MainBus.reqres.request 'pages:collection'
     response = pages.fetch()
     response.done =>
@@ -28,6 +28,6 @@ define (require, exports, module) ->
         controller.show_page 'intro'
       else
         name = location.hash.replace '#pages/', ''
-        console.log "Asking for #{name}"
+        #console.log "Asking for #{name}"
         controller.show_page name
         
