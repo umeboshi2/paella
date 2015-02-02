@@ -28,6 +28,11 @@ use the i386 architecture as the default architecture, due to the
 proliferation of amd64 machines.  With only the minimal requirements
 prepared, the vagrant machine can be ready to be used much more quickly.
 
+## Short Demonstration
+<iframe width="560" height="315" src="https://www.youtube.com/embed/f0dlicdREEE" frameborder="0" allowfullscreen></iframe>
+
+This is a very short demonstration of paella running in a vagrant environment.
+
 ## Set up the Environment
 
 First you will need to have [Virtual Box](http://virtualbox.org) installed 

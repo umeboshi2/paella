@@ -1,4 +1,8 @@
-# [Python Dependencies](#)
+# Python Dependencies
+
+The core of paella is written in python and is based on a
+pyramid webserver.  The primary libraries that are used in
+writing the service are listed below.
 
 
 - [Python](http://python.org)
