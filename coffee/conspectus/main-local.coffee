@@ -69,7 +69,7 @@ require.config
   callback: (require) ->
     'use strict'
     filename = location.pathname.match(/\/([^\/]*)$/)
-    console.log "Filename #{filename}"
+    #console.log "Filename #{filename}"
     modulename = undefined
     if filename and filename[1] isnt ""
       modulename = [
