@@ -31,3 +31,5 @@ After looking at a couple of laptops, the bigger problem seems to be how
 to enable netboot on these machines.  It seems that a network efi module
 must be installed manually on these systems before the system can boot
 from the network.
+
+# hello thewre
