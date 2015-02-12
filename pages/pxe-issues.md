@@ -32,4 +32,3 @@ to enable netboot on these machines.  It seems that a network efi module
 must be installed manually on these systems before the system can boot
 from the network.
 
-# hello there
