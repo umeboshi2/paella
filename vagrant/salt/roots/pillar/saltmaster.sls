@@ -9,7 +9,7 @@ saltmaster:
   #use_gitfs_remote: True
   use_gitfs_remote: true
   gitfs_remotes:
-    - https://github.com/umeboshi2/saltstack-formulae.git
+    - https://github.com/umeboshi2/formulae.git
     - https://github.com/umeboshi2/paella-states.git
   base_fileserver_root: /vagrant/paella/salt
 
