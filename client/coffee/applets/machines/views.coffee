@@ -37,7 +37,7 @@ define (require, exports, module) ->
     template: Templates.view_machine
     
   class BasicMachineView extends FormView
-    fields: ['arch', 'ostype', 'iface']
+    fields: ['arch', 'ostype', 'release', 'iface']
     recipeFields: ['recipe', 'raid_recipe']
     template: Templates.view_machine
     

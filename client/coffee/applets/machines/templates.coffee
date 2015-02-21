@@ -88,8 +88,11 @@ define (require, exports, module) ->
       text "#{verb} #{machine.name} for install."
       
   view_machine = renderable (machine) ->
+    # FIXME: pull avail options from server in nested
+    # structure and create more dynamic form
     archs = ['amd64', 'i386']
     ostypes = ['debian', 'mswindows']
+    releases = ['wheezy', 'jessie']
     _set_install_button machine
     div '.listview-header', ->
       div machine.name
@@ -97,6 +100,7 @@ define (require, exports, module) ->
     div '.listview-list', ->
       _select_input machine, 'arch', archs, 'Arch:', 'Select an architecture.'
       _select_input machine, 'ostype', ostypes, 'OS Type:', 'Select an operating system.'
+      _select_input machine, 'release', releases, 'Release:', 'Select a release.'
       _select_input machine, 'recipe', machine.all_recipes, 'Partition Recipe',
       'Select a partition recipe.'
       _select_input machine, 'raid_recipe', machine.all_raid_recipes, 'Raid Recipe',
