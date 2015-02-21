@@ -72,8 +72,7 @@ d-i partman-auto/disk string ${' '.join(disk_list)}
 d-i partman-auto/method string ${method}
 d-i partman-lvm/device_remove_lvm boolean true
 d-i partman-md/device_remove_md boolean true
-d-i partman-lvm/confirm boolean true
-d-i partman-lvm/confirm_nooverwrite boolean true
+
 
 %if recipe is None:
 d-i partman-auto/choose_recipe select atomic
@@ -101,6 +100,8 @@ d-i partman-partitioning/confirm_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
+d-i partman-auto-lvm/no_boot boolean true
+d-i mdadm/boot_degraded boolean true
 
 d-i apt-setup/use_mirror boolean false
 d-i apt-setup/services-select multiselect 

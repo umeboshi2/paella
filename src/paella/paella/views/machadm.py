@@ -82,7 +82,7 @@ class MachineAdminResource(BaseMachineResource):
     def put(self):
         data = self.request.json
         #[log.info('PUT[%s]: %s' % (k,v)) for k,v in data.items()]
-        fields = ['arch', 'ostype', 'iface']
+        fields = ['arch', 'ostype', 'release', 'iface']
         recipeFields = ['recipe', 'raid_recipe']
         update = {}
         machine = self.mgr.get_by_uuid(data['uuid'])
