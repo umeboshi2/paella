@@ -100,6 +100,7 @@ d-i partman-partitioning/confirm_new_label boolean true
 d-i partman/choose_partition select finish
 d-i partman/confirm boolean true
 d-i partman/confirm_nooverwrite boolean true
+d-i partman-lvm/confirm_nooverwrite boolean true
 d-i partman-auto-lvm/no_boot boolean true
 d-i mdadm/boot_degraded boolean true
 
