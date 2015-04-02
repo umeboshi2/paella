@@ -33,9 +33,6 @@ define (require, exports, module) ->
       super
         container: @childViewContainer
 
-  class BasicMachineViewOrig extends Backbone.Marionette.ItemView
-    template: Templates.view_machine
-    
   class BasicMachineView extends FormView
     fields: ['arch', 'ostype', 'release', 'iface']
     recipeFields: ['recipe', 'raid_recipe']
@@ -99,9 +96,35 @@ define (require, exports, module) ->
           @render()
       
       
+  class NewMachineView extends FormView
+    fields: ['name', 'uuid']
+    template: Templates.new_machine_form
+    
+    ui: () ->
+      data = {}
+      for field in @fields
+        data[field] = "[name=\"#{field}\"]"
+      return data
+
+    # model is fetched and passed to view constructor
+    createModel: ->
+      @model
+
+    updateModel: ->
+      window.fview = @
+      update = {}
+      for field in @fields
+        value = @ui[field].val()
+        if value != @model.get field
+          console.log 'updateModel', field, value
+          @model.set field, value
+      @model.set 'action', 'submit'
+      @collection.add @model
+         
   module.exports =
     FrontDoorMainView: FrontDoorMainView
     SideBarView: SideBarView
     SimpleMachineListView: SimpleMachineListView
     BasicMachineView: BasicMachineView
+    NewMachineView: NewMachineView
     

@@ -74,7 +74,18 @@ define (require, exports, module) ->
         @App.content.show view
         Util.scroll_top_fast()
         
-      
+    new_machine: () ->
+      console.log 'new_machine called'
+      @make_sidebar()
+      collection = AppBus.reqres.request 'machine:collection'
+      machine = new Backbone.Model
+      view = new Views.NewMachineView
+        model: machine
+        collection: collection
+        
+      @App.content.show view
+      Util.scroll_top_fast()
+        
     new_recipe: () ->
       @make_sidebar()
       view = new Views.NewRecipeView

@@ -62,7 +62,11 @@ define (require, exports, module) ->
           else
             option opt
             
+  _text_input = renderable (machine, label, title) ->
+    div '.input-group', ->
+      span '.input-group-addon', label
       
+  
   machine_name_entry = renderable (model) ->
     div '.listview-list-entry.machine', ->
       a href: '#machines/viewmachine/' + model.name, model.name
@@ -71,12 +75,6 @@ define (require, exports, module) ->
     _listview_header 'Machines'
     div '.listview-list'
 
-  view_machine_orig = renderable (machine) ->
-    div ->
-      text machine.name
-    div ->
-      text machine.uuid
-    
   _set_install_button = renderable (machine) ->
     bmain = '#set-install-button.btn.btn-default.btn-xs'
     verb = 'Set'
@@ -86,6 +84,23 @@ define (require, exports, module) ->
       bvalue = 'remove'
     div bmain, bvalue: bvalue, ->
       text "#{verb} #{machine.name} for install."
+
+  new_machine_form = renderable () ->
+    _listview_header "Add New Machine"
+    div '.listview-list', ->
+      form_group_input_div
+        input_id: 'input_name'
+        label: 'Name'
+        input_attributes:
+          name: 'name'
+          placeholder: 'Name'
+      form_group_input_div
+        input_id: 'input_uuid'
+        label: 'System UUID'
+        input_attributes:
+          name: 'uuid'
+          placeholder: '00000000-0000-0000-0000-000000000000'
+      input '.btn.btn-default.btn-xs', type: 'submit', value: 'Add'
       
   view_machine = renderable (machine) ->
     # FIXME: pull avail options from server in nested
@@ -127,4 +142,6 @@ define (require, exports, module) ->
     frontdoor_main: frontdoor_main
     machine_name_entry: machine_name_entry
     simple_machine_list: simple_machine_list
+    new_machine_form: new_machine_form
     view_machine: view_machine
+    

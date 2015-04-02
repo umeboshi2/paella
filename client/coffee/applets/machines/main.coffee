@@ -16,6 +16,8 @@ define (require, exports, module) ->
     appRoutes:
       'machines': 'start'
       'machines/viewmachine/:name': 'view_machine'
+      'machines/newmachine': 'new_machine'
+      
 
       
   MainBus.commands.setHandler 'machines:route', () ->
