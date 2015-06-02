@@ -62,5 +62,5 @@ setup(name='paella',
       [console_scripts]
       initialize_paella_db = paella.scripts.initializedb:main
       """,
-      cmdclass=dict(clean=CleanCommand),
+      cmdclass=dict(cleanemacs=CleanCommand),
       )
