@@ -5,7 +5,8 @@
 include:
   - default.pkgsets
 
-{% if build_nodejs_deb %}
+{% set oscodename = salt['grains.get']('oscodename') %}
+{% if oscodename == 'wheezy': %}
 {% set repodir = '/vagrant/repos' %}
 {% set node_version = pget('paella:node_version', '0.10.26') %}
 node-debian-git-repo:

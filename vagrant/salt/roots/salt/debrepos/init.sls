@@ -6,6 +6,13 @@
 {{ pkg }}_{{ version }}-paella1_all.{{ deb }}
 {%- endmacro %}
 
+{% set oscodename = salt['grains.get']('oscodename') %}
+{% if oscodename == 'wheezy': %}
+{% set apache_confdir = '/etc/apache2/conf.d' %}
+{% else %}
+{% set apache_confdir = '/etc/apache2/conf-available' %}
+{% endif %}
+
 include:
   - apache
   - debrepos.base
@@ -41,11 +48,12 @@ debrepos-ready:
 # setup apache config
 debrepos-apache-config:
   file.managed:
-    - name: /etc/apache2/conf.d/debrepos
+    - name: {{ apache_confdir }}/debrepos
     - source: salt://debrepos/apache.conf
     - template: jinja
     - watch_in:
       - service: apache
+        
 
 
 {%- if pget('paella:make_local_partial_mirror', False) %}

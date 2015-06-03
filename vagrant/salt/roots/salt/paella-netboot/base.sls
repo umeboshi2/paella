@@ -36,3 +36,8 @@ netboot-support-packages:
       - ipxe
       - syslinux
       - cdebootstrap
+      # FIXME: this breaks wheezy
+      # make macro to generate netboot
+      # package names
+      - debian-installer-8-netboot-amd64
+      

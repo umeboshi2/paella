@@ -29,6 +29,7 @@ require.config
     'get-size': "#{components}/get-size"
     eventie: "#{components}/eventie"
     'get-style-property': "#{components}/get-style-property"
+    'fizzy-ui-utils': "#{components}/fizzy-ui-utils"
     masonry: "#{components}/masonry/masonry"
     outlayer: "#{components}/outlayer"
     imagesloaded: "#{components}/imagesloaded/imagesloaded"

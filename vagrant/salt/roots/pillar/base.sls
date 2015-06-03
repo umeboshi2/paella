@@ -26,11 +26,14 @@ paella:
   top_states:
     #- apt-cacher.ng.server
     - apt.repos
+    {% if not paella.use_local_apt_cache_proxy %}
     - squid
     - squid.debproxy
+    {% endif %}
     - apt.config
     - apt
     - default
+    - managed-packages
     {% if mswin %}
     - filesystem-mounts
     - samba.config
@@ -78,7 +81,7 @@ apt:
   repos:
     {% if paella.debian_mirror != 'http://mirrors.kernel.org/debian' %}
     {% for debtype in ['deb', 'deb-src'] %}
-    {% for dist in ['wheezy', 'wheezy-updates'] %}
+    {% for dist in ['jessie', 'jessie-updates'] %}
     vagrant-{{ dist }}-{{ debtype }}-pkgrepo:
       ensure: absent
       debtype: {{ debtype }}
@@ -100,7 +103,7 @@ apt:
     backports-pkgrepo:
       url: {{ paella.debian_mirror }}
       globalfile: true
-      dist: wheezy-backports
+      dist: jessie-backports
         
 
 # FIXME make a password for dbadmin and get rid of

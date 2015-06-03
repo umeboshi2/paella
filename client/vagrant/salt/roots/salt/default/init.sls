@@ -12,10 +12,10 @@ pager:
 
 emacs:
   pkg.installed:
-    - name: emacs23
+    - name: emacs24
   alternatives.set:
     - name: editor
-    - path: /usr/bin/emacs23
+    - path: /usr/bin/emacs24
 
 screen:
   pkg:
@@ -39,4 +39,5 @@ devpackages:
       - curl
       - zlib1g-dev
       - rubygems
-
+      - ruby-dev
+      

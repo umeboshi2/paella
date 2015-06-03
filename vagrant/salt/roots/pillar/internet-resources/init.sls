@@ -2,9 +2,10 @@
 {% from 'config.jinja' import paella %}
 include:
   - internet-resources.main
-  {% for dist in paella.debian_releases %}
-  - internet-resources.{{ dist }}
-  {% endfor %}
+  # use debian netboot packages instead
+  #{% for dist in paella.debian_releases %}
+  #- internet-resources.{{ dist }}
+  #{% endfor %}
   {% for dist in paella.ubuntu_releases %}
   - internet-resources.{{ dist }}
   {% endfor %}

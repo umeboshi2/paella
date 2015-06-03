@@ -2,4 +2,4 @@
 master: localhost
 file_client: local
 id: default
-renderer: yaml_mako
+renderer: yaml_jinja

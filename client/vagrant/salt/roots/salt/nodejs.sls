@@ -3,6 +3,7 @@
 include:
   - default
 
+{#  
 node-debian-git-repo:
   git.latest:
     - name: https://github.com/mark-webster/node-debian
@@ -26,19 +27,24 @@ build-nodejs-package:
     - unless: test -x /usr/bin/npm
     - source: salt://files/build-nodejs.sh
     - env:
-      - NODE_VERSION: ${pillar['node_version']}
+      - NODE_VERSION: {{ pillar['node_version'] }}
 
 nodejs:
   pkg.installed:
     - require:
       - cmd: build-nodejs-package
+#}
+nodejs:
+  pkg.installed:
+    - pkgs:
+      - nodejs-legacy
+      - npm
 
+{% for pkg in ['coffee-script', 'grunt-cli', 'bower', 'http-server', 'js2coffee']: %}
 
-%for pkg in ['coffee-script', 'grunt-cli', 'bower', 'http-server', 'js2coffee']:
-
-npm-${pkg}:
+npm-{{ pkg }}:
   npm.installed:
     - require:
       - pkg: nodejs
-    - name: ${pkg}
-%endfor
+    - name: {{ pkg }}
+{% endfor %}

@@ -29,6 +29,7 @@ IGNORED = IGNORED_NEEDED + IGNORED_TESTING + IGNORED_NOT_NEEDED
 
 SPECIAL_PATHS = [
     'bower_components/bootstrap/js/modal.js',
+    'bower_components/outlayer/item.js',
     ]
 
 

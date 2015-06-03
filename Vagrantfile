@@ -20,14 +20,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
   # Then, adjust this Vagrantfile and use the box you 
   # most desire.
-  # 
-  boxname = 'chef-debian-7.4-vboxguest-4.1.18'
-  dirname = ENV['HOME'] + '/.vagrant.d/boxes/' + boxname
-  if File.directory?(dirname)
-    config.vm.box = boxname
-  else
-    config.vm.box = 'chef/debian-7.4'
-  end
+  #
+  # This box is built from:
+  # https://github.com/umeboshi2/vagrant-debian-jessie-64
+  config.vm.box = 'debian-jessie'
 
   config.vm.hostname = 'paella'
 
@@ -61,6 +57,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     #vb.customize ["modifyvm", :id, "--nic2", "bridged"]
     #vb.customize ["modifyvm", :id, "--bridgeadapter2", "eth1"]
   end
+  config.vm.
+    provision :shell,
+              inline:
+                "echo 'Acquire::http { Proxy \"http://10.0.3.2:3142\"; };' > /etc/apt/apt.conf.d/02proxy"
   config.vm.provision "shell", path: "vagrant/scripts/restore-deb-cache.sh"
   config.vm.provision "shell", path: "vagrant/scripts/vagrant-bootstrap.sh"
   config.vm.provision "shell", path: "vagrant/scripts/prepare-salt-roots.sh"

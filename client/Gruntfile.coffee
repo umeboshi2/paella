@@ -36,6 +36,17 @@ module.exports = (grunt) ->
         watch: true
         quiet: false
         
+    shell:
+      bower:
+        command: 'python scripts/prepare-bower-components.py'
+        options:
+          stdout: true
+
+      compileBuildJS:
+        command: 'python scripts/make-build-js.py'
+        options:
+          stdout: true
+          
         
     watch:
       coffee:
@@ -56,6 +67,16 @@ module.exports = (grunt) ->
         options:
           logConcurrentOutput: true
         
+    clean:
+      js:
+        src: ['javascripts/**/*.js']
+      emacs:
+        src: ['**/*~']
+        
+    # ###########################
+    # no targets below this line
+    # ###########################
+    
     # from the docs
     changedFiles = Object.create null
     update_changedFiles = () ->
@@ -70,23 +91,6 @@ module.exports = (grunt) ->
       #console.log "files should equal -> #{Object.keys changedFiles}"
       onChange()
       
-    clean:
-      js:
-        src: ['javascripts/**/*.js']
-      emacs:
-        src: ['**/*~']
-        
-    shell:
-      bower:
-        command: 'python scripts/prepare-bower-components.py'
-        options:
-          stdout: true
-
-      compileBuildJS:
-        command: 'python scripts/make-build-js.py'
-        options:
-          stdout: true
-          
     # load grunt-* tasks
     require('matchdep').filterDev('grunt-*').forEach grunt.loadNpmTasks
     
@@ -99,7 +103,7 @@ module.exports = (grunt) ->
       'shell:bower'
       'coffee:compile'
       'compass:compile'
-      'coffee:compileBuildJS'
+      'shell:compileBuildJS'
       'coffee:compileWithMaps'
       ]
 

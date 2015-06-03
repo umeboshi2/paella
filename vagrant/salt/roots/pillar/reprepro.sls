@@ -11,7 +11,7 @@ reprepro:
     debdists:
       #- squeeze
       - wheezy
-      #- jessie
+      - jessie
     saltbranches:
       - 2014-07
       #- 2014-01

@@ -1,4 +1,5 @@
 # -*- mode: yaml -*-
+{% from 'config.jinja' import paella %}
 
 shorewall:
   ip_forwarding: 'On'
@@ -15,7 +16,7 @@ shorewall:
   masq:
     - iface: eth0
       sources:
-        - 10.0.4.0/24
+        - {{ paella.paella_subnet_cidr }}
   # policies
   lan_access_internet_policy: true
   # lan host accepts all traffic

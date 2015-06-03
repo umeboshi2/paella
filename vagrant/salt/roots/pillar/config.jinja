@@ -21,14 +21,16 @@ paella_subnet_netmask: 255.255.255.0
 paella_subnet_range_low: 10.0.4.20
 paella_subnet_range_high: 10.0.4.126
 paella_subnet_in_addr: 4.0.10
+paella_subnet_cidr: 10.0.4.0/24
 # The domain name is not used
 paella_subnet_domain: paellanet
 
 # If you already have a local apt cache proxy
 # on your network, you can set these values
 # to use it, instead of the installed squid proxy
-use_local_apt_cache_proxy: false
-local_apt_cache_proxy: http://apt-cache:3142
+use_local_apt_cache_proxy: true
+#local_apt_cache_proxy: http://apt-cache:3142
+local_apt_cache_proxy: http://10.0.3.2:3142
 
 # If this option is set to true, paella will be
 # configured to install microsoft windows 7 machines
@@ -80,17 +82,17 @@ get_extra_iso_files: false
 build_nodejs_deb: true
 
 debian_releases:
-  - wheezy
+  - jessie
 
 debian_release_archs:
-  wheezy:
+  jessie:
     - amd64
     
 ubuntu_releases: []
 
 # This is the dist of the live system.  It should be
 # in the debian_releases list above
-live_system_dist: wheezy
+live_system_dist: jessie
 
 # This is where the debian mirror and security mirror can be set
 # Don't use a round-robin dns mirror for the http_proxy

@@ -16,9 +16,16 @@ def check_requirements():
             raise RuntimeError, "Please run apt-get instal %s" % basename
 
 
-def make_root_filesystem(dest, dist='wheezy'):
+def make_root_filesystem(dest, dist='jessie', http_proxy=''):
     cmd = ['debootstrap', dist, dest]
+    if http_proxy:
+        cmd = ['env', 'http_proxy=%s' % http_proxy] + cmd
     retval = subprocess.check_call(cmd)
+    if http_proxy:
+        filename = os.path.join(dest, 'etc/apt/apt.conf.d/02proxy')
+        with file(filename, 'w') as aconf:
+            aconf.write('Acquire::http::Proxy "%s";\n' % http_proxy)
+
 
 def bootstrap_salt(dest):
     here = os.getcwd()
@@ -53,7 +60,7 @@ def main(dest):
         raise RuntimeError, "This script needs root permissions."
     check_requirements()
     if not os.path.isdir(dest):
-        make_root_filesystem(dest)
+        make_root_filesystem(dest, http_proxy='http://localhost:3142')
     if os.path.isdir(os.path.join(dest, 'debootstrap')):
         raise RuntimeError, "Try running debootstrap again"
     bootstrap_salt(dest)
